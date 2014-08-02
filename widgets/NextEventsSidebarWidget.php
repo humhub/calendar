@@ -23,26 +23,24 @@
  *
  * @author luke
  */
-class NextEventsSidebarWidget extends StackWidget {
-
+class NextEventsSidebarWidget extends StackWidget
+{
     public $contentContainer;
+
     public $daysInFuture = 7;
     public $maxEvents = 3;
-    
-    public function run() {
-        
-        $start = new DateTime();
-        $end = new DateTime();
-        $end->add(new DateInterval("P".$this->daysInFuture."D"));
-        
-        $calendarEntries = CalendarEntry::getEntriesByRange($start,$end, $this->contentContainer, $this->maxEvents);
-        
+
+    public function run()
+    {
+
+        $calendarEntries = CalendarEntry::getUpcomingEntries($this->contentContainer, $this->daysInFuture, $this->maxEvents);
+        //$calendarEntries = array();
+
         if (count($calendarEntries) == 0) {
             return;
         }
-        
-        $this->render('nextEvents', array('calendarEntries'=>$calendarEntries));
+
+        $this->render('nextEvents', array('calendarEntries' => $calendarEntries));
     }
 
 }
-

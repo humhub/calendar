@@ -33,6 +33,16 @@ class ViewController extends ContentContainerController
         $entryId = (int) Yii::app()->request->getParam('entryId', '');
         $entries = CalendarEntry::model()->contentContainer($this->contentContainer)->findAll();
 
+
+        Yii::app()->clientScript->registerCssFile($this->getModule()->getAssetsUrl() . '/fullcalendar/fullcalendar.css');
+        Yii::app()->clientScript->registerCssFile($this->getModule()->getAssetsUrl() . '/fullcalendar/fullcalendar.print.css', 'print');
+
+        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/fullcalendar/lib/moment.min.js');
+        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/fullcalendar/lib/jquery-ui.custom.min.js');
+        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/fullcalendar/fullcalendar.min.js');
+        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/fullcalendar/lang-all.js');
+
+
         $this->render('index', array('calendarEntries' => $entries, 'entryId' => $entryId));
     }
 
@@ -52,6 +62,5 @@ class ViewController extends ContentContainerController
 
         echo CJSON::encode($output);
     }
-
 
 }

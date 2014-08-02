@@ -165,8 +165,6 @@ class CalendarEntry extends HActiveRecordContent
             throw new Exception('Range maximum exceeded!');
         }
 
-        $entries = array();
-
         $criteria = new CDbCriteria();
         $criteria->condition = 'start_time >= :start AND end_time <= :end';
         $criteria->params = array('start' => $start->format('Y-m-d H:i:s'), 'end' => $end->format('Y-m-d H:i:s'));
@@ -175,6 +173,31 @@ class CalendarEntry extends HActiveRecordContent
         if ($limit != 0) {
             $criteria->limit = $limit;
         }
+
+        return self::getEntriesByCriteria($criteria, $contentContainer);
+    }
+
+    public static function getUpcomingEntries(HActiveRecordContentContainer $contentContainer, $daysInFuture = 7, $limit = 5)
+    {
+        $start = new DateTime();
+        $startEnd = new DateTime();
+        $startEnd->add(new DateInterval("P" . $daysInFuture . "D"));
+
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'start_time >= :start AND start_time <= :end';
+        $criteria->params = array('start' => $start->format('Y-m-d H:i:s'), 'end' => $startEnd->format('Y-m-d H:i:s'));
+        $criteria->order = "start_time ASC";
+
+        if ($limit != 0) {
+            $criteria->limit = $limit;
+        }
+
+        return self::getEntriesByCriteria($criteria, $contentContainer);
+    }
+
+    public static function getEntriesByCriteria($criteria, HActiveRecordContentContainer $contentContainer)
+    {
+        $entries = array();
 
         foreach (CalendarEntry::model()->contentContainer($contentContainer)->findAll($criteria) as $entry) {
             if ($entry->content->canRead()) {
@@ -353,13 +376,13 @@ class CalendarEntry extends HActiveRecordContent
     public function createContainerUrlTemp($route, $params = array())
     {
         $container = $this->content->getContainer();
-        
+
         if ($container instanceof Space) {
             $params['sguid'] = $container->guid;
         } elseif ($container instanceof User) {
             $params['uguid'] = $container->guid;
         }
-        
+
         return Yii::app()->createUrl($route, $params);
     }
 
