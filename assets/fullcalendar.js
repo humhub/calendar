@@ -2,6 +2,12 @@ $(document).ready(function() {
 
     var jsonDateFormat = "YYYY-MM-DD HH:mm:ss";
 
+    if (fullCalendarCanWrite == 'false' || fullCalendarCanWrite == false) {
+        fullCalendarCanWrite = false;
+    } else {
+        fullCalendarCanWrite = true;
+    }
+
     var calendar = $('#calendar').fullCalendar({
         timezone: fullCalendarTimezone,
         lang: fullCalendarLanguage,
@@ -18,7 +24,7 @@ $(document).ready(function() {
             url: fullCalendarLoadUrl.replace('-selectors-', fullCalendarSelectors),
             data: {selectors: fullCalendarSelectors, filters: fullCalendarFilters},
             error: function() {
-                alert("loading error!");
+                //alert("loading error!");
             }
         },
         selectable: fullCalendarCanWrite,
