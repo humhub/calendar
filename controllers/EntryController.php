@@ -26,6 +26,33 @@
 class EntryController extends ContentContainerController
 {
 
+    /**
+     * @return array action filters
+     */
+    public function filters()
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
+
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules()
+    {
+        return array(
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'users' => array('@'),
+            ),
+            array('deny', // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
+
     public function actionView()
     {
         $this->checkContainerAccess();
@@ -42,7 +69,7 @@ class EntryController extends ContentContainerController
 
         $calendarEntryParticipant = CalendarEntryParticipant::model()->findByAttributes(array('user_id' => Yii::app()->user->id, 'calendar_entry_id' => $calendarEntry->id));
 
-       $this->render('view', array(
+        $this->render('view', array(
             'calendarEntry' => $calendarEntry,
             'calendarEntryParticipant' => $calendarEntryParticipant,
             'userCanRespond' => $calendarEntry->canRespond(),

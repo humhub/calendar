@@ -286,6 +286,8 @@ class CalendarEntry extends HActiveRecordContent
             'title' => $this->title,
             'editable' => $this->content->canWrite(),
             'allDay' => ($this->all_day) ? true : false,
+            'updateUrl' => $this->createContainerUrlTemp('//calendar/entry/editAjax', array('id' => $this->id, 'end_time' => '-end-', 'start_time' => '-start-', 'fullCalendar' => '1')),
+            'viewUrl' => $this->createContainerUrlTemp('//calendar/entry/view', array('id' => $this->id, 'fullCalendar' => '1')),
             'start' => $this->formatDateTime($dateFormat, $this->start_time),
             'end' => $end,
         );

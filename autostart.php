@@ -12,7 +12,8 @@ Yii::app()->moduleManager->register(array(
         array('class' => 'SpaceMenuWidget', 'event' => 'onInit', 'callback' => array('CalendarModule', 'onSpaceMenuInit')),
         array('class' => 'ProfileMenuWidget', 'event' => 'onInit', 'callback' => array('CalendarModule', 'onProfileMenuInit')),
         array('class' => 'SpaceSidebarWidget', 'event' => 'onInit', 'callback' => array('CalendarModule', 'onSpaceSidebarInit')),        
-        array('class' => 'ProfileSidebarWidget', 'event' => 'onInit', 'callback' => array('CalendarModule', 'onProfileSidebarInit')),        
+        array('class' => 'ProfileSidebarWidget', 'event' => 'onInit', 'callback' => array('CalendarModule', 'onProfileSidebarInit')),       
+        //array('class' => 'TopMenuWidget', 'event' => 'onInit', 'callback' => array('CalendarModule', 'onTopMenuInit')),
     ),
 ));
 ?>

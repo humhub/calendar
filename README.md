@@ -8,7 +8,7 @@ For more informations (bugs, feature requests) visit:
 
 ## ToDos
 
-- Activities (on create, on respond)
+  - Activities (on create, on respond)
 - Refresh Wall Entry on Buttons
 - Check translation, create german 
 - Create global calendar / dashboard widget for user
@@ -19,7 +19,7 @@ For more informations (bugs, feature requests) visit:
 - Notifications before event starts
 - Download ICal 
 - WebDav?
-
+- Allow Google Calendar integration
 
 
 Calendar UI is based on FullCalendar (http://arshaw.com/fullcalendar/)

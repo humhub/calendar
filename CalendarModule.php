@@ -53,6 +53,18 @@ class CalendarModule extends HWebModule
         }
     }
 
+    public static function onTopMenuInit($event)
+    {
+
+        $event->sender->addItem(array(
+            'label' => Yii::t('CalendarModule.base', 'Calendar'),
+            'url' => Yii::app()->createUrl('//calendar/view/main', array('uguid' => Yii::app()->user->guid)),
+            'icon' => '<i class="fa fa-calendar"></i>',
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'calendar' && Yii::app()->controller->action->id == 'main'),
+            'sortOrder' => 300,
+        ));
+    }
+
     public static function onSpaceMenuInit($event)
     {
 
