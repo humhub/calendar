@@ -8,11 +8,7 @@ For more informations (bugs, feature requests) visit:
 
 
 ## ToDos
-
 - Refresh Wall Entry on Buttons
-- Check translation, create german 
-
-
 - Settings for Space/User Module (enable Widget, ...)
 - Allow invitation to Events
 - Allow modules to add entries to calendar

@@ -5,20 +5,20 @@
 
 
         <div class="pull-right">
-            
+
 
             <?php if ($calendarEntry->canRespond() && !$calendarEntry->hasResponded()): ?>
-                <?php echo CHtml::link(Yii::t('CalendarModule.base', "Attend"),  $calendarEntry->createContainerUrlTemp('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-success')); ?>
-                <?php echo CHtml::link(Yii::t('CalendarModule.base', "Maybe"),  $calendarEntry->createContainerUrlTemp('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default')); ?>
-                <?php echo CHtml::link(Yii::t('CalendarModule.base', "Decline"), $calendarEntry->createContainerUrlTemp('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default')); ?>
+                <?php echo CHtml::link(Yii::t('CalendarModule.views_entry_view', "Attend"), $calendarEntry->createContainerUrlTemp('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-success')); ?>
+                <?php echo CHtml::link(Yii::t('CalendarModule.views_entry_view', "Maybe"), $calendarEntry->createContainerUrlTemp('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default')); ?>
+                <?php echo CHtml::link(Yii::t('CalendarModule.views_entry_view', "Decline"), $calendarEntry->createContainerUrlTemp('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default')); ?>
             <?php endif; ?>
 
             <?php if ($calendarEntry->hasResponded()): ?>
                 <?php
                 $participationModes = array();
-                $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED] = Yii::t('CalendarModule.base', "Attending");
-                $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE] = Yii::t('CalendarModule.base', "Maybe");
-                $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED] = Yii::t('CalendarModule.base', "Declined");
+                $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED] = Yii::t('CalendarModule.views_entry_view', "I´m attending");
+                $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE] = Yii::t('CalendarModule.views_entry_view', "I´m maybe attending");
+                $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED] = Yii::t('CalendarModule.views_entry_view', "I´m not attending");
                 ?>
 
                 <div class="btn-group">
@@ -33,15 +33,15 @@
                         ?>
 
                         <?php foreach ($participationModes as $participationMode => $title): ?>
-                            <li><?php echo CHtml::link($title,  $calendarEntry->createContainerUrlTemp('/calendar/entry/respond', array('type' => $participationMode, 'id' => $calendarEntry->id)), array('class' => '')); ?></li>
+                            <li><?php echo CHtml::link($title, $calendarEntry->createContainerUrlTemp('/calendar/entry/respond', array('type' => $participationMode, 'id' => $calendarEntry->id)), array('class' => '')); ?></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
             <?php endif; ?>
             <br />            
         </div>
-        
-        
+
+
         <strong>Event: <?php echo $calendarEntry->title; ?></strong><br />
         <?php $this->widget('application.modules.calendar.widgets.CalendarEntryDateWidget', array('calendarEntry' => $calendarEntry)); ?><br />
         <br />
