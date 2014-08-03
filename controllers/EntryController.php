@@ -19,8 +19,9 @@
  */
 
 /**
- * EntryController
+ * EntryController used to display, edit or delete calendar entries
  *
+ * @package humhub.modules_core.calendar.controllers
  * @author luke
  */
 class EntryController extends ContentContainerController
@@ -116,6 +117,11 @@ class EntryController extends ContentContainerController
     {
         $this->checkContainerAccess();
 
+        
+        // Indicates this entry is created by global calendar
+        // We show a notice in this case.
+        $createFromGlobalCalendar = false;
+        
         $calendarEntry = CalendarEntry::model()->contentContainer($this->contentContainer)->findByPk(Yii::app()->request->getParam('id'));
         if ($calendarEntry == null) {
 
@@ -125,6 +131,10 @@ class EntryController extends ContentContainerController
 
             $calendarEntry = new CalendarEntry;
 
+            if (Yii::app()->request->getParam('createFromGlobalCalendar') == 1) {
+                $createFromGlobalCalendar = true;
+            }
+            
             if (Yii::app()->request->getParam('fullCalendar') == 1) {
 
                 $startTime = new DateTime(Yii::app()->request->getParam('start_time', ''));
@@ -184,7 +194,7 @@ class EntryController extends ContentContainerController
             }
         }
 
-        $this->renderPartial('edit', array('calendarEntry' => $calendarEntry), false, true);
+        $this->renderPartial('edit', array('calendarEntry' => $calendarEntry, 'createFromGlobalCalendar' => $createFromGlobalCalendar), false, true);
     }
 
     public function actionUserList()

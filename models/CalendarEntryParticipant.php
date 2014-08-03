@@ -22,7 +22,6 @@ class CalendarEntryParticipant extends HActiveRecord
      * @param string $className active record class name.
      * @return CalendarEntryParticipant the static model class
      */
-
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -57,9 +56,8 @@ class CalendarEntryParticipant extends HActiveRecord
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
+            'calendar_entry' => array(self::BELONGS_TO, 'CalendarEntry', 'calendar_entry_id'),
         );
     }
 
@@ -95,6 +93,35 @@ class CalendarEntryParticipant extends HActiveRecord
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
         ));
+    }
+
+    public function beforeDelete()
+    {
+        parent::beforeDelete();
+        
+        foreach (Activity::model()->findAllByAttributes(array('user_id'=>$this->user_id, 'calendar_entry_id'=>$this->calendar_entry_id)) as $activity) {
+            $activity->delete();
+        }
+        
+    }
+    
+    public function afterSave()
+    {
+        # Handled by Notification now
+        $activity = Activity::CreateForContent($this->calendar_entry);
+        
+        if ($this->participation_state == self::PARTICIPATION_STATE_ACCEPTED) {
+            $activity->type = "EntryResponseAttend";
+        } elseif ($this->participation_state == self::PARTICIPATION_STATE_MAYBE) {
+            $activity->type = "EntryResponseMaybe";
+        } elseif ($this->participation_state == self::PARTICIPATION_STATE_DECLINED) {
+            $activity->type = "EntryResponseDeclined";
+        }
+        
+        $activity->module = "calendar";
+        $activity->content->user_id = $this->user_id;
+        $activity->save();
+        $activity->fire();
     }
 
 }

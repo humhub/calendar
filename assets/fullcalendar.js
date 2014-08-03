@@ -61,6 +61,16 @@ $(document).ready(function() {
         reloadFullCalendar();
     });
     $(".filterCheckbox").click(function() {
+
+        // Make sure responded / not resondend  filters are not checked
+        // at the same time
+        if ($(this).val() == '3') {
+            $(":checkbox[value=4][name='filter']").attr("checked", false);
+        }
+        if ($(this).val() == '4') {
+            $(":checkbox[value=3][name='filter']").attr("checked", false);
+        }
+        
         reloadFullCalendar();
     });
 

@@ -11,7 +11,7 @@
                         'selectors' => $selectors,
                         'filters' => $filters,
                         'loadUrl' => $this->createUrl('loadAjax'),
-                        'createUrl' => $this->createUrl('entry/edit', array('uguid' => Yii::app()->user->guid, 'start_time' => '-start-', 'end_time' => '-end-', 'fullCalendar' => '1')),
+                        'createUrl' => $this->createUrl('entry/edit', array('uguid' => Yii::app()->user->guid, 'start_time' => '-start-', 'end_time' => '-end-', 'fullCalendar' => '1', 'createFromGlobalCalendar'=>1)),
                     ));
                     ?>
 

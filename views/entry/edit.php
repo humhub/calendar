@@ -19,6 +19,10 @@ $form = $this->beginWidget('HActiveForm', array(
         </div>
         <div class="modal-body">
 
+            <?php if ($createFromGlobalCalendar): ?>
+                <p><?php echo Yii::t('CalendarModule.base', '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.'); ?></p>
+            <?php endif; ?>
+
             <?php echo $form->errorSummary($calendarEntry); ?>
 
 

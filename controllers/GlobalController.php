@@ -19,12 +19,22 @@
  */
 
 /**
- * Description of ViewController
+ * GlobalController provides a global view.
  *
+ * @package humhub.modules_core.calendar.controllers
  * @author luke
  */
-class MainController extends Controller
+class GlobalController extends Controller
 {
+
+    public function beforeAction($action)
+    {
+        if (!Yii::app()->user->getModel()->isModuleEnabled('calendar')) {
+            throw new CHttpException('500', 'Calendar module is not enabled for your user!');
+        }
+
+        return parent::beforeAction($action);
+    }
 
     public function actionIndex()
     {
@@ -40,6 +50,7 @@ class MainController extends Controller
             );
         }
 
+        // Restore users last used filter
         $lastFilterJson = Yii::app()->user->getModel()->getSetting('lastFilters', 'calendar');
         if ($lastFilterJson != "") {
             $filters = CJSON::decode($lastFilterJson);

@@ -1,18 +1,20 @@
-Calendar Module
-===============
+Calendar Module *beta*
+======================
 
 Full featured calendar for your users and spaces.
 
 For more informations (bugs, feature requests) visit:
 <https://github.com/humhub/humhub-modules-calendar>
 
+
 ## ToDos
 
-- Activities (on create, on respond)
+- Indexes?
 - Refresh Wall Entry on Buttons
 - Check translation, create german 
-- Dashboard widget for user
 
+
+- Settings for Space/User Module (enable Widget, ...)
 - Allow invitation to Events
 - Allow modules to add entries to calendar
 - Recuring Events

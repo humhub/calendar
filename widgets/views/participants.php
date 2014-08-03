@@ -9,7 +9,7 @@
         }
         echo " &middot; ";
 
-        $title = Yii::t('CalendarModule.base', ":count maybe attending", array(':count' => $countMaybe));
+        $title = Yii::t('CalendarModule.base', ":count maybe", array(':count' => $countMaybe));
         if ($countMaybe > 0) {
             echo HHtml::link($title, $calendarEntry->createContainerUrlTemp('/calendar/entry/userList', array('state' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id)), array("class" => "tt", "title" => "", "data-toggle" => "modal", "data-target" => '#globalModal', "data-placement" => "top", "data-original-title" => ""));
         } else {

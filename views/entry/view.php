@@ -48,7 +48,6 @@
                 <?php if ($calendarEntry->content->canWrite()) : ?>
                     <?php echo HHtml::link(Yii::t('CalendarModule.base', 'Edit this event'), '#', array('class' => 'btn btn-primary btn-sm', 'onclick' => 'openEditModal(' . $calendarEntry->id . ')')); ?>
                 <?php endif; ?>
-                <!--<?php echo HHtml::link(Yii::t('CalendarModule.base', 'Invite'), '#', array('class' => 'btn btn-primary btn-xs', 'onclick' => 'openEditModal(' . $calendarEntry->id . ')')); ?>-->
             </div>
             <br />            
         </div>

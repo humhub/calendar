@@ -19,8 +19,9 @@
  */
 
 /**
- * Description of ViewController
+ * ViewController displays the calendar on spaces or user profiles.
  *
+ * @package humhub.modules_core.calendar.controllers
  * @author luke
  */
 class ViewController extends ContentContainerController
@@ -61,7 +62,6 @@ class ViewController extends ContentContainerController
 
     public function actionLoadAjax()
     {
-
         $output = array();
 
         $startDate = new DateTime(Yii::app()->request->getParam('start'));
