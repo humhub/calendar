@@ -56,21 +56,7 @@ class ViewController extends ContentContainerController
     public function actionIndex()
     {
         $this->checkContainerAccess();
-
-        $entryId = (int) Yii::app()->request->getParam('entryId', '');
-        $entries = CalendarEntry::model()->contentContainer($this->contentContainer)->findAll();
-
-
-        Yii::app()->clientScript->registerCssFile($this->getModule()->getAssetsUrl() . '/fullcalendar/fullcalendar.css');
-        Yii::app()->clientScript->registerCssFile($this->getModule()->getAssetsUrl() . '/fullcalendar/fullcalendar.print.css', 'print');
-
-        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/fullcalendar/lib/moment.min.js');
-        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/fullcalendar/lib/jquery-ui.custom.min.js');
-        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/fullcalendar/fullcalendar.min.js');
-        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/fullcalendar/lang-all.js');
-
-
-        $this->render('index', array('calendarEntries' => $entries, 'entryId' => $entryId));
+        $this->render('index', array());
     }
 
     public function actionLoadAjax()
@@ -81,7 +67,7 @@ class ViewController extends ContentContainerController
         $startDate = new DateTime(Yii::app()->request->getParam('start'));
         $endDate = new DateTime(Yii::app()->request->getParam('end'));
 
-        $entries = CalendarEntry::getEntriesByRange($startDate, $endDate, $this->contentContainer);
+        $entries = CalendarEntry::getContainerEntriesByRange($startDate, $endDate, $this->contentContainer);
 
         foreach ($entries as $entry) {
             $output[] = $entry->getFullCalendarArray();

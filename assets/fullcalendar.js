@@ -5,7 +5,9 @@ $(document).ready(function() {
     var calendar = $('#calendar').fullCalendar({
         timezone: fullCalendarTimezone,
         lang: fullCalendarLanguage,
-        defaultView: 'agendaWeek',
+//        defaultView: 'agendaWeek',
+        defaultView: 'month',
+        aspectRatio: 1.5,
         header: {
             left: 'prev,next today',
             center: 'title',
@@ -13,7 +15,8 @@ $(document).ready(function() {
         },
         editable: fullCalendarCanWrite,
         events: {
-            url: fullCalendarLoadUrl,
+            url: fullCalendarLoadUrl.replace('-selectors-', fullCalendarSelectors),
+            data: {selectors: fullCalendarSelectors, filters: fullCalendarFilters},
             error: function() {
                 alert("loading error!");
             }
@@ -53,4 +56,44 @@ $(document).ready(function() {
             $('#loading').toggle(bool);
         }
     });
+
+    $(".selectorCheckbox").click(function() {
+        reloadFullCalendar();
+    });
+    $(".filterCheckbox").click(function() {
+        reloadFullCalendar();
+    });
+
 });
+
+
+
+
+function reloadFullCalendar() {
+    fullCalendarSelector = "";
+    fullCalendarFilter = "";
+
+    $(".selectorCheckbox").each(function() {
+        if ($(this).attr('checked')) {
+            fullCalendarSelector += $(this).val() + ",";
+        }
+    });
+    $(".filterCheckbox").each(function() {
+        if ($(this).attr('checked')) {
+            fullCalendarFilter += $(this).val() + ",";
+        }
+    });
+
+    var events = {
+        url: fullCalendarLoadUrl,
+        type: 'POST',
+        data: {
+            selectors: fullCalendarSelector,
+            filters: fullCalendarFilter,
+        }
+    };
+
+    $('#calendar').fullCalendar('removeEventSource', events);
+    $('#calendar').fullCalendar('addEventSource', events);
+    $('#calendar').fullCalendar('refetchEvents');
+}

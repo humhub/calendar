@@ -8,12 +8,12 @@ For more informations (bugs, feature requests) visit:
 
 ## ToDos
 
-  - Activities (on create, on respond)
+- Activities (on create, on respond)
 - Refresh Wall Entry on Buttons
 - Check translation, create german 
-- Create global calendar / dashboard widget for user
+- Dashboard widget for user
 
-- Allow invitation 
+- Allow invitation to Events
 - Allow modules to add entries to calendar
 - Recuring Events
 - Notifications before event starts

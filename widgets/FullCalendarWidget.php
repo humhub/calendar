@@ -26,6 +26,14 @@
 class FullCalendarWidget extends HWidget
 {
 
+    public $canWrite = true;
+    
+    public $loadUrl = "";
+    public $createUrl = "";
+    
+    public $selectors = array();
+    public $filters = array();
+    
     public function init()
     {
 
@@ -41,12 +49,14 @@ class FullCalendarWidget extends HWidget
 
         Yii::app()->clientScript->registerScriptFile($calendarModule->getAssetsUrl() . '/fullcalendar.js');
         
-        Yii::app()->clientScript->setJavascriptVariable('fullCalendarCanWrite', Yii::app()->getController()->contentContainer->canWrite() ? 'true' : 'false');
+        Yii::app()->clientScript->setJavascriptVariable('fullCalendarCanWrite', $this->canWrite ? 'true' : 'false');
         Yii::app()->clientScript->setJavascriptVariable('fullCalendarTimezone', date_default_timezone_get());
         Yii::app()->clientScript->setJavascriptVariable('fullCalendarLanguage', Yii::app()->language);
-        Yii::app()->clientScript->setJavascriptVariable('fullCalendarLoadUrl', Yii::app()->getController()->createContainerUrl('view/loadAjax'));
-        Yii::app()->clientScript->setJavascriptVariable('fullCalendarCreateUrl', Yii::app()->getController()->createContainerUrl('entry/edit', array('start_time' => '-start-', 'end_time' => '-end-', 'fullCalendar' => '1')));
+        Yii::app()->clientScript->setJavascriptVariable('fullCalendarLoadUrl', $this->loadUrl);
+        Yii::app()->clientScript->setJavascriptVariable('fullCalendarCreateUrl', $this->createUrl);
         
+        Yii::app()->clientScript->setJavascriptVariable('fullCalendarSelectors', join(",",$this->selectors));
+        Yii::app()->clientScript->setJavascriptVariable('fullCalendarFilters', join(",",$this->filters));
     }
 
     public function run()
