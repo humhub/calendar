@@ -79,13 +79,18 @@ $form = $this->beginWidget('HActiveForm', array(
                 <?php
                 $modes = array(
                     CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
-                    //CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.base', 'Invite participants'),
+                    //CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.base', 'Select participants'),
                     CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
                 );
                 ?>
                 <?php echo $form->labelEx($calendarEntry, 'participant_mode'); ?>
-                <?php echo $form->dropDownList($calendarEntry, 'participation_mode', $modes, array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')), array('pickTime' => true)); ?>
-            </div>                    
+                <?php echo $form->dropDownList($calendarEntry, 'participation_mode', $modes, array('id' => 'participation_mode', 'class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')), array('pickTime' => true)); ?>
+            </div>
+
+            <div class="form-group" id="selectedUsersField">
+                <?php echo $form->labelEx($calendarEntry, 'selected_participants'); ?>
+                <?php echo $form->textField($calendarEntry, 'selected_participants', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Participants'))); ?>
+            </div>                
         </div>
 
 
@@ -120,7 +125,6 @@ $form = $this->beginWidget('HActiveForm', array(
 <script>
     $("#allDayCheckbox").change(function() {
         if ($("#allDayCheckbox").attr("checked")) {
-            console.log("hide");
             $("#datepicker_datetime").hide();
             $("#datepicker_date").show();
         } else {
@@ -130,6 +134,16 @@ $form = $this->beginWidget('HActiveForm', array(
         }
     });
 
+    $("#participation_mode").change(function() {
+        if ($("#participation_mode").val() == <?php echo CalendarEntry::PARTICIPATION_MODE_INVITE; ?>) {
+            $("#selectedUsersField").show();
+        } else {
+            $("#selectedUsersField").hide();
+        }
+    });
+    if ($("#participation_mode").val() != <?php echo CalendarEntry::PARTICIPATION_MODE_INVITE; ?>) {
+            $("#selectedUsersField").hide();
+    }
 
     if ($("#allDayCheckbox").attr("checked")) {
         console.log("hide");

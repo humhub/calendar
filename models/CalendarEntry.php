@@ -29,19 +29,31 @@ class CalendarEntry extends HActiveRecordContent
      */
     public $start_time_date = null;
     public $end_time_date = null;
+    public $selected_participants = "";
 
     /**
      * Default participiation Mode
      */
     public $participation_mode = 2;
 
+    /**
+     * Participation Modes
+     */
     const PARTICIPATION_MODE_NONE = 0;
     const PARTICIPATION_MODE_INVITE = 1;
     const PARTICIPATION_MODE_ALL = 2;
+
+    /**
+     * Selectors
+     */
     const SELECTOR_MINE = 1;
     const SELECTOR_SPACES = 2;
     const SELECTOR_FOLLOWED_SPACES = 3;
     const SELECTOR_FOLLOWED_USERS = 4;
+
+    /**
+     * Filters
+     */
     const FILTER_PARTICIPATE = 1;
     const FILTER_INVITED = 2;
     const FILTER_NOT_RESPONDED = 3;
@@ -342,7 +354,7 @@ class CalendarEntry extends HActiveRecordContent
     public function afterSave()
     {
         parent::afterSave();
-                
+
         if ($this->isNewRecord) {
             // Creator automatically attends to this event
             $participant = new CalendarEntryParticipant;
