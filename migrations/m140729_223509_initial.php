@@ -25,6 +25,8 @@ class m140729_223509_initial extends EDbMigration
             'user_id' => 'int(11) NOT NULL',
             'participation_state' => 'tinyint(4) NULL',
                 ), '');
+
+        $this->createIndex('unique_entryuser', 'calendar_entry_participant', 'calendar_entry_id,user_id', true);
     }
 
     public function down()

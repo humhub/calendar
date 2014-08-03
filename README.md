@@ -9,7 +9,6 @@ For more informations (bugs, feature requests) visit:
 
 ## ToDos
 
-- Indexes?
 - Refresh Wall Entry on Buttons
 - Check translation, create german 
 

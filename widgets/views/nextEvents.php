@@ -1,6 +1,6 @@
 <div class="panel">
 
-    <div class="panel-heading"><?php echo Yii::t('CalendarModule.base', '<strong>Upcoming</strong> events '); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('CalendarModule.widgets_views_nextEvents', '<strong>Upcoming</strong> events '); ?></div>
     <div class="panel-body">
 
         <?php foreach ($calendarEntries as $calendarEntry) : ?>

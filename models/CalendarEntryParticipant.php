@@ -99,10 +99,7 @@ class CalendarEntryParticipant extends HActiveRecord
     {
         parent::beforeDelete();
         
-        foreach (Activity::model()->findAllByAttributes(array('user_id'=>$this->user_id, 'calendar_entry_id'=>$this->calendar_entry_id)) as $activity) {
-            $activity->delete();
-        }
-        
+        //ToDo: Delete activities?
     }
     
     public function afterSave()

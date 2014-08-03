@@ -11,16 +11,16 @@ $form = $this->beginWidget('HActiveForm', array(
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <?php if (!$calendarEntry->isNewRecord) : ?>
-                    <?php echo Yii::t('CalendarModule.base', '<strong>Edit</strong> event'); ?>
+                    <?php echo Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> event'); ?>
                 <?php else: ?>
-                    <?php echo Yii::t('CalendarModule.base', '<strong>Create</strong> event'); ?>
+                    <?php echo Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> event'); ?>
                 <?php endif; ?>
             </h4>
         </div>
         <div class="modal-body">
 
             <?php if ($createFromGlobalCalendar): ?>
-                <p><?php echo Yii::t('CalendarModule.base', '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.'); ?></p>
+                <p><?php echo Yii::t('CalendarModule.views_entry_edit', '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.'); ?></p>
             <?php endif; ?>
 
             <?php echo $form->errorSummary($calendarEntry); ?>
@@ -28,12 +28,12 @@ $form = $this->beginWidget('HActiveForm', array(
 
             <div class="form-group">
                 <?php echo $form->labelEx($calendarEntry, 'title'); ?>
-                <?php echo $form->textField($calendarEntry, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.base', 'Title'))); ?>
+                <?php echo $form->textField($calendarEntry, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title'))); ?>
             </div>
 
             <div class="form-group">
                 <?php echo $form->labelEx($calendarEntry, 'description'); ?>
-                <?php echo $form->textArea($calendarEntry, 'description', array('class' => 'form-control', 'rows' => '3', 'placeholder' => Yii::t('CalendarModule.base', 'Description'))); ?>
+                <?php echo $form->textArea($calendarEntry, 'description', array('class' => 'form-control', 'rows' => '3', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Description'))); ?>
             </div>
             <div class="form-group">
                 <div class="checkbox">
@@ -53,24 +53,24 @@ $form = $this->beginWidget('HActiveForm', array(
             <div id="datepicker_datetime">
                 <div class="form-group">
                     <?php echo $form->labelEx($calendarEntry, 'start_time'); ?>
-                    <?php echo $form->dateTimeField($calendarEntry, 'start_time', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.base', 'Start Date/Time')), array('pickTime' => true)); ?>
+                    <?php echo $form->dateTimeField($calendarEntry, 'start_time', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Start Date/Time')), array('pickTime' => true)); ?>
                 </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($calendarEntry, 'end_time'); ?>
-                    <?php echo $form->dateTimeField($calendarEntry, 'end_time', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.base', 'End Date/Time')), array('pickTime' => true)); ?>
+                    <?php echo $form->dateTimeField($calendarEntry, 'end_time', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')), array('pickTime' => true)); ?>
                 </div>
             </div>
 
             <div id="datepicker_date">
                 <div class="form-group">
                     <?php echo $form->labelEx($calendarEntry, 'start_time_date'); ?>
-                    <?php echo $form->dateTimeField($calendarEntry, 'start_time_date', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.base', 'Start Date')), array('pickTime' => false)); ?>
+                    <?php echo $form->dateTimeField($calendarEntry, 'start_time_date', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Start Date')), array('pickTime' => false)); ?>
                 </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($calendarEntry, 'end_time_date'); ?>
-                    <?php echo $form->dateTimeField($calendarEntry, 'end_time_date', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.base', 'End Date')), array('pickTime' => false)); ?>
+                    <?php echo $form->dateTimeField($calendarEntry, 'end_time_date', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date')), array('pickTime' => false)); ?>
                 </div>
             </div>
 
@@ -78,13 +78,13 @@ $form = $this->beginWidget('HActiveForm', array(
             <div class="form-group">
                 <?php
                 $modes = array(
-                    CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.base', 'No participants'),
+                    CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
                     //CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.base', 'Invite participants'),
-                    CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.base', 'Everybody can participate')
+                    CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
                 );
                 ?>
                 <?php echo $form->labelEx($calendarEntry, 'participant_mode'); ?>
-                <?php echo $form->dropDownList($calendarEntry, 'participation_mode', $modes, array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.base', 'End Date/Time')), array('pickTime' => true)); ?>
+                <?php echo $form->dropDownList($calendarEntry, 'participation_mode', $modes, array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')), array('pickTime' => true)); ?>
             </div>                    
         </div>
 
@@ -93,7 +93,7 @@ $form = $this->beginWidget('HActiveForm', array(
         <div class="modal-footer">
 
             <?php
-            echo HHtml::ajaxButton(Yii::t('CalendarModule.base', 'Save'), $this->createContainerUrl('//calendar/entry/edit', array('id' => $calendarEntry->id)), array(
+            echo HHtml::ajaxButton(Yii::t('CalendarModule.views_entry_edit', 'Save'), $this->createContainerUrl('//calendar/entry/edit', array('id' => $calendarEntry->id)), array(
                 'type' => 'POST',
                 'beforeSend' => 'function(){ $("#invite-loader").removeClass("hidden"); }',
                 'success' => 'function(html){ $("#globalModal").html(html);}',
@@ -102,12 +102,12 @@ $form = $this->beginWidget('HActiveForm', array(
 
             <?php
             if (!$calendarEntry->isNewRecord) {
-                echo CHtml::link(Yii::t('CalendarModule.base', 'Delete'), $this->createContainerUrl('//calendar/entry/delete', array('id' => $calendarEntry->id)), array('class' => 'btn btn-danger'));
+                echo CHtml::link(Yii::t('CalendarModule.views_entry_edit', 'Delete'), $this->createContainerUrl('//calendar/entry/delete', array('id' => $calendarEntry->id)), array('class' => 'btn btn-danger'));
             }
             ?>
 
             <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_invite', 'Close'); ?></button>
+                    data-dismiss="modal"><?php echo Yii::t('CalendarModule.views_entry_edit', 'Close'); ?></button>
 
             <div class="col-md-1 modal-loader">
                 <div id="invite-loader" class="loader loader-small hidden"></div>
