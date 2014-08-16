@@ -97,7 +97,7 @@ class CalendarEntryParticipant extends HActiveRecord
 
     public function beforeDelete()
     {
-        parent::beforeDelete();
+        return parent::beforeDelete();
         
         //ToDo: Delete activities?
     }
