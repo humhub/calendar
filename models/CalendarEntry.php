@@ -179,6 +179,7 @@ class CalendarEntry extends HActiveRecordContent
 
     public static function getContainerEntriesByRange(DateTime $start, DateTime $end, HActiveRecordContentContainer $contentContainer, $limit = 0)
     {
+        $entries = array();
 
         // Limit Range to one month
         $interval = $start->diff($end);
@@ -195,54 +196,68 @@ class CalendarEntry extends HActiveRecordContent
             $criteria->limit = $limit;
         }
 
-        return self::getEntriesByCriteria($criteria, $contentContainer);
+        foreach (CalendarEntry::model()->contentContainer($contentContainer)->findAll($criteria) as $entry) {
+            if ($entry->content->canRead()) {
+                $entries[] = $entry;
+            }
+        }
+
+        return $entries;
     }
 
-    public static function getEntriesByRange(DateTime $start, DateTime $end, $selectors = array(), $filters = array(), $limit = 0)
+    public static function getEntriesByRange(DateTime $start, DateTime $end, $includes = array(), $filters = array(), $limit = 0)
     {
-
         // Limit Range to one month
         $interval = $start->diff($end);
         if ($interval->days > 50) {
             throw new Exception('Range maximum exceeded!');
         }
 
+        $model = CalendarEntry::model();
+
         $criteria = new CDbCriteria();
-        $criteria->alias = "calendar_entry";
+        $criteria->alias = "t";
         $criteria->condition = 'start_time >= :start AND end_time <= :end';
         $criteria->params = array('start' => $start->format('Y-m-d H:i:s'), 'end' => $end->format('Y-m-d H:i:s'));
         $criteria->order = "start_time ASC";
 
         // Join Content
-        $criteria->join = 'left join content c on c.object_id = calendar_entry.id';
+        $criteria->join = 'left join content c on c.object_id = t.id';
         $criteria->condition .= ' AND c.object_model="CalendarEntry"';
 
-        // Join Participation
-        $criteria->join .= ' left join calendar_entry_participant p on p.calendar_entry_id = calendar_entry.id';
-        $criteria->condition .= ' AND (p.user_id=' . Yii::app()->user->id . ' OR p.id IS NULL)';
 
         // Attach selectors
-        $selectorSql = array();
-        if (in_array(self::SELECTOR_MINE, $selectors)) {
-            // Add personal events
-            $selectorSql[] = 'c.user_id=' . Yii::app()->user->id . ' and c.space_id IS NULL';
+        if (!version_compare(HVersion::VERSION, "0.9.0-dev", 'ge')) {
+            /**
+             * Workaround for 0.8.x Versions
+             */
+            $selectorSql = array();
+            if (in_array(self::SELECTOR_MINE, $includes)) {
+                // Add personal events
+                $selectorSql[] = 'c.user_id=' . Yii::app()->user->id . ' and c.space_id IS NULL';
+            }
+            if (in_array(self::SELECTOR_SPACES, $includes)) {
+                // Add events of my spaces
+                $selectorSql[] = 'c.space_id IN (SELECT space_id FROM space_membership sm WHERE sm.user_id=' . Yii::app()->user->id . ' AND sm.status =' . SpaceMembership::STATUS_MEMBER . ')';
+            }
+            if (in_array(self::SELECTOR_FOLLOWED_SPACES, $includes)) {
+                // Add events of followed spaces
+                $selectorSql[] = 'c.visibility=1 AND c.space_id IN (SELECT space_id FROM space_follow sf WHERE sf.user_id=' . Yii::app()->user->id . ')';
+            }
+            if (in_array(self::SELECTOR_FOLLOWED_USERS, $includes)) {
+                // Add events of followed users
+                $selectorSql[] = 'c.visibility=1 AND c.space_id IS NULL AND c.user_id IN (SELECT user_followed_id FROM user_follow uf WHERE uf.user_follower_id=' . Yii::app()->user->id . ')';
+            }
+            if (count($selectorSql) == 0) {
+                return array();
+            }
+            $criteria->condition .= " AND ((" . join(') OR (', $selectorSql) . "))";
+        } else {
+            $model = $model->userRelated($includes);
         }
-        if (in_array(self::SELECTOR_SPACES, $selectors)) {
-            // Add events of my spaces
-            $selectorSql[] = 'c.space_id IN (SELECT space_id FROM space_membership sm WHERE sm.user_id=' . Yii::app()->user->id . ' AND sm.status =' . SpaceMembership::STATUS_MEMBER . ')';
-        }
-        if (in_array(self::SELECTOR_FOLLOWED_SPACES, $selectors)) {
-            // Add events of followed spaces
-            $selectorSql[] = 'c.visibility=1 AND c.space_id IN (SELECT space_id FROM space_follow sf WHERE sf.user_id=' . Yii::app()->user->id . ')';
-        }
-        if (in_array(self::SELECTOR_FOLLOWED_USERS, $selectors)) {
-            // Add events of followed users
-            $selectorSql[] = 'c.visibility=1 AND c.space_id IS NULL AND c.user_id IN (SELECT user_followed_id FROM user_follow uf WHERE uf.user_follower_id=' . Yii::app()->user->id . ')';
-        }
-        if (count($selectorSql) == 0) {
-            return array();
-        }
-        $criteria->condition .= " AND ((" . join(') OR (', $selectorSql) . "))";
+
+        // Join Participation
+        $criteria->join .= ' left join calendar_entry_participant p on p.calendar_entry_id = t.id AND p.user_id=' . Yii::app()->user->id;
 
         // Attach filters
         if (in_array(self::FILTER_PARTICIPATE, $filters)) {
@@ -265,11 +280,20 @@ class CalendarEntry extends HActiveRecordContent
             $criteria->limit = $limit;
         }
 
-        return self::getEntriesByCriteria($criteria);
+        $entries = array();
+        foreach ($model->findAll($criteria) as $entry) {
+            if ($entry->content->canRead()) {
+                $entries[] = $entry;
+            }
+        }
+
+        return $entries;
     }
 
     public static function getUpcomingEntries(HActiveRecordContentContainer $contentContainer = null, $daysInFuture = 7, $limit = 5)
     {
+
+        $entries = array();
         $start = new DateTime();
         $startEnd = new DateTime();
         $startEnd->add(new DateInterval("P" . $daysInFuture . "D"));
@@ -286,36 +310,25 @@ class CalendarEntry extends HActiveRecordContent
             $criteria->condition .= ' AND p.user_id=' . Yii::app()->user->id . ' AND p.participation_state=' . CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED;
         }
 
-
         if ($limit != 0) {
             $criteria->limit = $limit;
         }
 
-        return self::getEntriesByCriteria($criteria, $contentContainer);
-    }
-
-    public static function getEntriesByCriteria($criteria, HActiveRecordContentContainer $contentContainer = null)
-    {
-        $entries = array();
-
+        $model = CalendarEntry::model();
         if ($contentContainer != null) {
-            $query = CalendarEntry::model()->contentContainer($contentContainer)->findAll($criteria);
-        } else {
-            $query = CalendarEntry::model()->findAll($criteria);
+            $model = $model->contentContainer($contentContainer);
         }
 
-        foreach ($query as $entry) {
+        foreach ($model->findAll($criteria) as $entry) {
             if ($entry->content->canRead()) {
                 $entries[] = $entry;
             }
         }
-
         return $entries;
     }
 
     public function afterFind()
     {
-
         parent::afterFind();
 
         // Load Form Attributes
@@ -327,7 +340,7 @@ class CalendarEntry extends HActiveRecordContent
     public function beforeDelete()
     {
 
-        foreach (CalendarEntryParticipant::model()->findAll() as $participant) {
+        foreach (CalendarEntryParticipant::model()->findAllByAttributes(array('calendar_entry_id' => $this->id)) as $participant) {
             $participant->delete();
         }
 
