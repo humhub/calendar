@@ -505,7 +505,6 @@ class CalendarEntry extends HActiveRecordContent
         
         if (version_compare(HVersion::VERSION, '0.9', 'lt')) {
             $container = $this->content->getContainer();
-            $params['old'] = "old";
 
             if ($container instanceof Space) {
                 $params['sguid'] = $container->guid;
@@ -515,7 +514,6 @@ class CalendarEntry extends HActiveRecordContent
 
             return Yii::app()->createUrl($route, $params);
         } else {
-            $params['old'] = "new";
             return $this->content->container->createUrl($route, $params);
         }
     }
