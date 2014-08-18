@@ -1,11 +1,17 @@
-Calendar Module *beta*
-======================
-
+## Description
 Full featured calendar for your users and spaces.
 
-For more informations (bugs, feature requests) visit:
-<https://github.com/humhub/humhub-modules-calendar>
+__Module website:__ <https://github.com/humhub/humhub-modules-calendar>    
+__Author:__ luke, andystrobel    
+__Author website:__ [humhub.org](http://humhub.org)    
 
+## Changelog
+
+<https://github.com/humhub/humhub-modules-calendar/commits/master>
+
+## Bugtracker
+
+<https://github.com/humhub/humhub-modules-calendar/issues>
 
 ## ToDos
 - Refresh Wall Entry on Buttons
@@ -17,6 +23,5 @@ For more informations (bugs, feature requests) visit:
 - Download ICal 
 - WebDav?
 - Allow Google Calendar integration
-
 
 Calendar UI is based on FullCalendar (http://arshaw.com/fullcalendar/)
