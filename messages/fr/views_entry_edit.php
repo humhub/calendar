@@ -27,6 +27,7 @@ return array (
   'End Date/Time' => '',
   'Everybody can participate' => '',
   'No participants' => '',
+  'Participants' => '',
   'Save' => '',
   'Start Date' => '',
   'Start Date/Time' => '',
