@@ -17,14 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Filter</strong> events' => '',
-  '<strong>Select</strong> calendars' => '',
-  'Already responded' => '',
-  'Followed spaces' => '',
-  'Followed users' => '',
-  'I´m attending' => '',
-  'My events' => '',
-  'My profile' => '',
-  'My spaces' => '',
-  'Not responded yet' => '',
+  '<strong>Filter</strong> events' => 'Termine <strong>filtern</strong>',
+  '<strong>Select</strong> calendars' => 'Kalender <strong>auswählen</strong>',
+  'Already responded' => 'Bereits beantwortet',
+  'Followed spaces' => 'Folgende Spaces',
+  'Followed users' => 'Folgende Benutzer',
+  'I´m attending' => 'Ich nehme teil',
+  'My events' => 'Meine Termine',
+  'My profile' => 'Aus meinem Profil',
+  'My spaces' => 'Aus meinen Spaces',
+  'Not responded yet' => 'Nicht beantwortet',
 );
