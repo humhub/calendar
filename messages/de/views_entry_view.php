@@ -17,13 +17,13 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Attend' => '',
-  'Created by:' => '',
-  'Decline' => '',
-  'Edit this event' => '',
-  'I´m attending' => '',
-  'I´m maybe attending' => '',
-  'I´m not attending' => '',
-  'Maybe' => '',
-  'Public' => '',
+  'Attend' => 'Teilnehmen',
+  'Created by:' => 'Erstellt von:',
+  'Decline' => 'Absagen',
+  'Edit this event' => 'Diesen Termin ändern',
+  'I´m attending' => 'Ich nehme teil',
+  'I´m maybe attending' => 'Ich nehme vielleicht teil',
+  'I´m not attending' => 'Ich nehme nicht teil',
+  'Maybe' => 'Vielleicht',
+  'Public' => 'Öffentlich',
 );
