@@ -43,6 +43,5 @@ return array (
   'You don\'t have permission to access this event!' => 'Unzureichende Berechtigungen, diesen Termin anzusehen!',
   'You don\'t have permission to create events!' => 'Unzureichende Berechtigungen, diesen Termin zu erstellen!',
   'You don\'t have permission to delete this event!' => 'Unzureichende Berechtigungen, diesen Termin zu löschen!',
-  'You don\'t have permission to edit  this event!' => 'Unzureichende Berechtigungen, diesen Termin zu ändern!',
   'You don\'t have permission to edit this event!' => 'Unzureichende Berechtigungen, diesen Termin zu ändern!',
 );

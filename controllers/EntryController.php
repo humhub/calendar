@@ -117,11 +117,11 @@ class EntryController extends ContentContainerController
     {
         $this->checkContainerAccess();
 
-        
+
         // Indicates this entry is created by global calendar
         // We show a notice in this case.
         $createFromGlobalCalendar = false;
-        
+
         $calendarEntry = CalendarEntry::model()->contentContainer($this->contentContainer)->findByPk(Yii::app()->request->getParam('id'));
         if ($calendarEntry == null) {
 
@@ -134,7 +134,7 @@ class EntryController extends ContentContainerController
             if (Yii::app()->request->getParam('createFromGlobalCalendar') == 1) {
                 $createFromGlobalCalendar = true;
             }
-            
+
             if (Yii::app()->request->getParam('fullCalendar') == 1) {
 
                 $startTime = new DateTime(Yii::app()->request->getParam('start_time', ''));
@@ -251,7 +251,7 @@ class EntryController extends ContentContainerController
         }
 
         if (!$calendarEntry->content->canWrite()) {
-            throw new CHttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit  this event!"));
+            throw new CHttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit this event!"));
         }
 
         if ((Yii::app()->request->getParam('start_time', '') != '')) {

@@ -43,6 +43,5 @@ return array (
   'You don\'t have permission to access this event!' => '',
   'You don\'t have permission to create events!' => '',
   'You don\'t have permission to delete this event!' => '',
-  'You don\'t have permission to edit  this event!' => '',
   'You don\'t have permission to edit this event!' => '',
 );
