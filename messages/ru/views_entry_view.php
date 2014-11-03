@@ -8,5 +8,5 @@ return array (
   'I´m maybe attending' => 'Может быть, пойду',
   'I´m not attending' => 'Я не пойду',
   'Maybe' => 'Возможно',
-  'Public' => 'Публчиное',
+  'Public' => 'Публичное',
 );

@@ -2,7 +2,7 @@
 return array (
   '<strong>Create</strong> event' => '<strong>Создать</strong> событие',
   '<strong>Edit</strong> event' => '<strong>Редактировать</strong> событие',
-  '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>Внимание:</strong> это событие будет создано в вашем профиле. Чтобы создать событие для Пространства, откройте календарь в желаемом Пространстве',
+  '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>Внимание:</strong> это событие будет создано в вашем профиле. Чтобы создать событие для пространства, откройте календарь в желаемом пространстве',
   'Close' => 'Закрыть',
   'Delete' => 'Удалить',
   'Description' => 'Описание',
