@@ -2,6 +2,6 @@
 return array (
   ':count attending' => ':count Zusagen',
   ':count declined' => ':count Absagen',
-  ':count maybe' => ':count Mit Vorbehalt',
+  ':count maybe' => ':count mit Vorbehalt',
   'Participants:' => 'Teilnehmer:',
 );
