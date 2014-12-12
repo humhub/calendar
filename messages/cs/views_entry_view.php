@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Attend' => 'Zúčastnit se',
+  'Attend' => 'Chci se zúčastnit',
   'Created by:' => 'Vytvořeno:',
-  'Decline' => 'Odmítnout',
+  'Decline' => 'Nechci se zúčastnit',
   'Edit this event' => 'Upravit tuto událost',
   'I´m attending' => 'Zúčastním se',
   'I´m maybe attending' => 'Možná se zúčastním',
