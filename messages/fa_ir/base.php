@@ -5,7 +5,7 @@ return array (
   'All Day' => 'تمام روز',
   'Attending users' => 'شرکت‌کنندگان',
   'Calendar' => 'تقویم',
-  'Declining users' => '',
+  'Declining users' => 'کاربران غیرحاضر',
   'Description' => 'توضیحات',
   'End Date' => 'تاریخ پایان',
   'End Date and Time' => 'تاریخ و زمان پایان',
