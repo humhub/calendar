@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <h1>
-            Event: <?php echo $calendarEntry->title; ?>
+            Event: <?php echo CHtml::encode($calendarEntry->title); ?>
 
             <?php if ($calendarEntry->is_public): ?>
                 <span class="label label-success"><?php echo Yii::t('CalendarModule.views_entry_view', 'Public'); ?></span>
@@ -62,7 +62,7 @@
         
         <br />
 
-        <?php $this->beginWidget('CMarkdown'); ?><?php echo nl2br($calendarEntry->description); ?><?php $this->endWidget(); ?>
+        <?php $this->beginWidget('CMarkdown'); ?><?php echo nl2br(CHtml::encode($calendarEntry->description)); ?><?php $this->endWidget(); ?>
 
 
         <hr>

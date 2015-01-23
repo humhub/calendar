@@ -55,8 +55,8 @@ class FullCalendarWidget extends HWidget
         Yii::app()->clientScript->setJavascriptVariable('fullCalendarLoadUrl', $this->loadUrl);
         Yii::app()->clientScript->setJavascriptVariable('fullCalendarCreateUrl', $this->createUrl);
         
-        Yii::app()->clientScript->setJavascriptVariable('fullCalendarSelectors', join(",",$this->selectors));
-        Yii::app()->clientScript->setJavascriptVariable('fullCalendarFilters', join(",",$this->filters));
+        Yii::app()->clientScript->setJavascriptVariable('fullCalendarSelectors', CHtml::encode(join(",",$this->selectors)));
+        Yii::app()->clientScript->setJavascriptVariable('fullCalendarFilters', CHtml::encode(join(",",$this->filters)));
     }
 
     public function run()

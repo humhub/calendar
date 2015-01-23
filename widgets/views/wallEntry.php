@@ -42,13 +42,13 @@
         </div>
 
 
-        <strong>Event: <?php echo $calendarEntry->title; ?></strong><br />
+        <strong>Event: <?php echo CHtml::encode($calendarEntry->title); ?></strong><br />
         <?php $this->widget('application.modules.calendar.widgets.CalendarEntryDateWidget', array('calendarEntry' => $calendarEntry)); ?><br />
         <br />
         <?php $this->widget('application.modules.calendar.widgets.CalendarEntryParticipantsWidget', array('calendarEntry' => $calendarEntry)); ?><br />
 
         <?php if ($calendarEntry->description != ""): ?>
-            <?php $this->beginWidget('CMarkdown'); ?><?php echo nl2br($calendarEntry->description); ?><?php $this->endWidget(); ?>
+            <?php $this->beginWidget('CMarkdown'); ?><?php echo nl2br(CHtml::encode($calendarEntry->description)); ?><?php $this->endWidget(); ?>
         <?php endif; ?>
 
         <?php $this->endContent(); ?>
