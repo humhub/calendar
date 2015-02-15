@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Message translations.
  *
@@ -16,8 +17,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
-  '%displayName% attends to %contentTitle%.' => '',
-  '%displayName% maybe attends to %contentTitle%.' => '',
-  '%displayName% not attends to %contentTitle%.' => '',
+return array(
+    '%displayName% attends to %contentTitle%.' => '%displayName% hat für %contentTitle% zugesagt.',
+    '%displayName% maybe attends to %contentTitle%.' => '%displayName% 参加了 %contentTitle% teil.',
+    '%displayName% not attends to %contentTitle%.' => '%displayName% 没有参加 %contentTitle% teil.',
 );

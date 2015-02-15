@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Message translations.
  *
@@ -16,6 +17,6 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
-  '%displayName% created a new %contentTitle%.' => '',
+return array(
+    '%displayName% created a new %contentTitle%.' => '%displayName% 创建了一个新事件 %contentTitle%.',
 );

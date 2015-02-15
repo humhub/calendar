@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Message translations.
  *
@@ -16,14 +17,14 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
-  'Attend' => '',
-  'Created by:' => '',
-  'Decline' => '',
-  'Edit this event' => '',
-  'I´m attending' => '',
-  'I´m maybe attending' => '',
-  'I´m not attending' => '',
-  'Maybe' => '',
-  'Public' => '',
+return array(
+    'Attend' => '参加',
+    'Created by:' => '创建人',
+    'Decline' => '拒绝',
+    'Edit this event' => '编辑事件',
+    'I´m attending' => '我参加',
+    'I´m maybe attending' => '我可能参加',
+    'I´m not attending' => '我不参加',
+    'Maybe' => '可能',
+    'Public' => '公共',
 );

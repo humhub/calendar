@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Message translations.
  *
@@ -16,15 +17,15 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
-  '<strong>Filter</strong> events' => '',
-  '<strong>Select</strong> calendars' => '',
-  'Already responded' => '',
-  'Followed spaces' => '',
-  'Followed users' => '',
-  'I´m attending' => '',
-  'My events' => '',
-  'My profile' => '',
-  'My spaces' => '',
-  'Not responded yet' => '',
+return array(
+    '<strong>Filter</strong> events' => '<strong>筛选</strong> 事件',
+    '<strong>Select</strong> calendars' => '<strong>选择</strong> 日历',
+    'Already responded' => '已经回应',
+    'Followed spaces' => '关注的版块',
+    'Followed users' => '关注的用户',
+    'I´m attending' => '我参加',
+    'My events' => '我的事件',
+    'My profile' => '我的属性',
+    'My spaces' => '我的版块',
+    'Not responded yet' => '还没有回应',
 );

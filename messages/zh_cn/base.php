@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Message translations.
  *
@@ -16,32 +17,33 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
-  'Adds an calendar for private or public events to your profile and mainmenu.' => '',
-  'Adds an event calendar to this space.' => '',
-  'All Day' => '',
-  'Attending users' => '',
-  'Calendar' => '',
-  'Declining users' => '',
-  'Description' => '',
-  'End Date' => '',
-  'End Date and Time' => '',
-  'End time must be after start time!' => '',
-  'Event' => '',
-  'Event not found!' => '',
-  'ID' => '',
-  'Maybe attending users' => '',
-  'Participation Mode' => '',
-  'Recur' => '',
-  'Recur End' => '',
-  'Recur Interval' => '',
-  'Recur Type' => '',
-  'Select participants' => '',
-  'Start Date' => '',
-  'Start Date and Time' => '',
-  'Title' => '',
-  'You don\'t have permission to access this event!' => '',
-  'You don\'t have permission to create events!' => '',
-  'You don\'t have permission to delete this event!' => '',
-  'You don\'t have permission to edit this event!' => '',
+return array(
+    'Adds an calendar for private or public events to your profile and mainmenu.' => '在主菜单和个人属性页为你的私有或公共事件增加一个日历。',
+    'Adds an event calendar to this space.' => '为这个版块增加一个事件日历。',
+    'All Day' => '全天',
+    'Attending users' => '参加用户',
+    'Calendar' => '日历',
+    'Declining users' => '拒绝用户',
+    'Description' => '描述',
+    'End Date' => '结束日期',
+    'End Date and Time' => '结束日期和时间',
+    'End time must be after start time!' => '结束时间必须晚于开始时间！',
+    'Event' => '事件',
+    'Event not found!' => '没找到事件',
+    'ID' => '',
+    'Invite participants' => '邀请参与者',
+    'Maybe attending users' => '可能参加的用户',
+    'Participation Mode' => '参与模式',
+    'Recur' => '',
+    'Recur End' => '',
+    'Recur Interval' => '',
+    'Recur Type' => '',
+    'Start Date' => '开始日期',
+    'Start Date and Time' => '开始日期和时间',
+    'Title' => '标题',
+    'You don\'t have permission to access this event!' => '你无权访问这个事件！',
+    'You don\'t have permission to create events!' => '你无权创建事件！',
+    'You don\'t have permission to delete this event!' => '你无权删除事件！',
+    'You don\'t have permission to edit  this event!' => '你无权编辑事件！',
+    'You don\'t have permission to edit this event!' => '你无权编辑事件！',
 );

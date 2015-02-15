@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Upcoming</strong> events ' => '',
+  '<strong>Upcoming</strong> events ' => '<strong>即将到来的</strong> 事件',
 );
