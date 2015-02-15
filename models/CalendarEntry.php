@@ -295,13 +295,18 @@ class CalendarEntry extends HActiveRecordContent
 
         $entries = array();
         $start = new DateTime();
-        $startEnd = new DateTime();
-        $startEnd->add(new DateInterval("P" . $daysInFuture . "D"));
 
         $criteria = new CDbCriteria();
         $criteria->alias = "t";
-        $criteria->condition = 'start_time >= :start AND start_time <= :end';
-        $criteria->params = array('start' => $start->format('Y-m-d H:i:s'), 'end' => $startEnd->format('Y-m-d H:i:s'));
+        if ($daysInFuture > 0) {
+            $startEnd = $start;
+            $startEnd->add(new DateInterval("P" . $daysInFuture . "D"));
+            $criteria->condition = 'start_time >= :start AND start_time <= :end';
+            $criteria->params = array('start' => $start->format('Y-m-d H:i:s'), 'end' => $startEnd->format('Y-m-d H:i:s'));
+        } else {
+            $criteria->condition = 'start_time >= :start';
+            $criteria->params = array('start' => $start->format('Y-m-d H:i:s'));
+        }
         $criteria->order = "start_time ASC";
 
         if ($contentContainer == null) {
