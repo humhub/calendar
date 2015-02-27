@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Attend' => 'Atiende',
+  'Attend' => 'Asistir',
   'Created by:' => 'Creado por:',
-  'Decline' => 'Declinar',
+  'Decline' => 'No asistir',
   'Edit this event' => 'Editar este evento',
   'I´m attending' => 'Asistiré',
   'I´m maybe attending' => 'Tal vez asista',
