@@ -49,6 +49,7 @@ class CalendarModuleEvents
 
             $event->sender->addItem(array(
                 'label' => Yii::t('CalendarModule.base', 'Calendar'),
+                'group' => 'modules',
                 'url' => Yii::app()->createUrl('//calendar/view/index', array('sguid' => $space->guid)),
                 'icon' => '<i class="fa fa-calendar"></i>',
                 'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'calendar'),

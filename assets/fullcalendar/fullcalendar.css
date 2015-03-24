@@ -256,9 +256,9 @@ html .fc,
 	}
 
 .fc-event {
-	border: 1px solid #4cd9c0; /* default BORDER color */
-	background-color: #e1f9f4; /* default BACKGROUND color */
-	color: #42bfa9;               /* default TEXT color */
+	border: 1px solid #68c884; /* default BORDER color */
+	background-color: #d5f8df; /* default BACKGROUND color */
+	color: #62be7d;               /* default TEXT color */
 	font-size: .85em;
 	cursor: default;
 	}
