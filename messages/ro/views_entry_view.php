@@ -8,5 +8,5 @@ return array (
   'I´m maybe attending' => '',
   'I´m not attending' => '',
   'Maybe' => '',
-  'Public' => 'Công cộng',
+  'Public' => '',
 );
