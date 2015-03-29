@@ -4,7 +4,7 @@ return array (
   '<strong>Edit</strong> event' => '',
   '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '',
   'Close' => 'Luk',
-  'Delete' => '',
+  'Delete' => '@@@@',
   'Description' => '',
   'End Date' => '',
   'End Date/Time' => '',
