@@ -28,6 +28,10 @@ class CalendarModuleEvents
 
     public static function onTopMenuInit($event)
     {
+        if (Yii::app()->user->isGuest) {
+            return;
+        }
+
         $user = Yii::app()->user->getModel();
         if ($user->isModuleEnabled('calendar')) {
             $event->sender->addItem(array(
@@ -42,7 +46,6 @@ class CalendarModuleEvents
 
     public static function onSpaceMenuInit($event)
     {
-
         $space = Yii::app()->getController()->getSpace();
 
         if ($space->isModuleEnabled('calendar')) {
@@ -59,7 +62,7 @@ class CalendarModuleEvents
 
     public static function onProfileMenuInit($event)
     {
-
+               
         $user = Yii::app()->getController()->getUser();
 
         // Is Module enabled on this workspace?
@@ -74,6 +77,11 @@ class CalendarModuleEvents
 
     public static function onSpaceSidebarInit($event)
     {
+        
+        if (Yii::app()->user->isGuest) {
+            return;
+        }
+                
         $space = null;
 
         if (isset(Yii::app()->params['currentSpace'])) {
@@ -93,6 +101,10 @@ class CalendarModuleEvents
 
     public static function onDashboardSidebarInit($event)
     {
+        if (Yii::app()->user->isGuest) {
+            return;
+        }
+
         $user = Yii::app()->user->getModel();
         if ($user->isModuleEnabled('calendar')) {
             $event->sender->addWidget('application.modules.calendar.widgets.NextEventsSidebarWidget', array(), array('sortOrder' => 550));
@@ -101,6 +113,11 @@ class CalendarModuleEvents
 
     public static function onProfileSidebarInit($event)
     {
+        
+        if (Yii::app()->user->isGuest) {
+            return;
+        }
+                
         $user = null;
 
         if (isset(Yii::app()->params['currentUser'])) {
