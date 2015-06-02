@@ -1,12 +1,12 @@
 <?php
 return array (
-  'Attend' => '',
-  'Created by:' => '',
-  'Decline' => '',
-  'Edit this event' => '',
-  'I´m attending' => '',
-  'I´m maybe attending' => '',
-  'I´m not attending' => '',
-  'Maybe' => '',
-  'Public' => '',
+  'Attend' => 'Participă',
+  'Created by:' => 'Creat de:',
+  'Decline' => 'Respinge',
+  'Edit this event' => 'Editează acest eveniment',
+  'I´m attending' => 'Particip',
+  'I´m maybe attending' => 'Probabil particip',
+  'I´m not attending' => 'Nu particip',
+  'Maybe' => 'Probabil',
+  'Public' => 'Public',
 );
