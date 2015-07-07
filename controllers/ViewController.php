@@ -1,22 +1,11 @@
 <?php
 
-/**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- */
+namespace module\calendar\controllers;
+
+use DateTime;
+use Yii;
+use humhub\modules\content\components\ContentContainerController;
+use module\calendar\models\CalendarEntry;
 
 /**
  * ViewController displays the calendar on spaces or user profiles.
@@ -27,18 +16,23 @@
 class ViewController extends ContentContainerController
 {
 
+    public $hideSidebar = true;
+
     public function actionIndex()
     {
-        $this->checkContainerAccess();
-        $this->render('index', array());
+        return $this->render('index', array(
+                    'contentContainer' => $this->contentContainer
+        ));
     }
 
     public function actionLoadAjax()
     {
+        Yii::$app->response->format = 'json';
+
         $output = array();
 
-        $startDate = new DateTime(Yii::app()->request->getParam('start'));
-        $endDate = new DateTime(Yii::app()->request->getParam('end'));
+        $startDate = new DateTime(Yii::$app->request->get('start'));
+        $endDate = new DateTime(Yii::$app->request->get('end'));
 
         $entries = CalendarEntry::getContainerEntriesByRange($startDate, $endDate, $this->contentContainer);
 
@@ -46,7 +40,7 @@ class ViewController extends ContentContainerController
             $output[] = $entry->getFullCalendarArray();
         }
 
-        echo CJSON::encode($output);
+        return $output;
     }
 
 }

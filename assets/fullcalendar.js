@@ -90,19 +90,19 @@ function reloadFullCalendar() {
     fullCalendarFilter = "";
 
     $(".selectorCheckbox").each(function() {
-        if ($(this).attr('checked')) {
+        if ($(this).prop( "checked" )) {
             fullCalendarSelector += $(this).val() + ",";
         }
     });
     $(".filterCheckbox").each(function() {
-        if ($(this).attr('checked')) {
+        if ($(this).prop( "checked" )) {
             fullCalendarFilter += $(this).val() + ",";
         }
     });
 
     var events = {
         url: fullCalendarLoadUrl,
-        type: 'POST',
+        type: 'GET',
         data: {
             selectors: fullCalendarSelector,
             filters: fullCalendarFilter,

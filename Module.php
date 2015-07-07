@@ -1,25 +1,28 @@
 <?php
 
-class CalendarModule extends HWebModule
+namespace module\calendar;
+
+use Yii;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use module\calendar\models\CalendarEntry;
+
+class Module extends \humhub\components\Module
 {
 
     public function behaviors()
     {
-        return array(
-            'SpaceModuleBehavior' => array(
-                'class' => 'application.modules_core.space.behaviors.SpaceModuleBehavior',
-            ),
-            'UserModuleBehavior' => array(
-                'class' => 'application.modules_core.user.behaviors.UserModuleBehavior',
-            ),
-        );
+        return [
+            \humhub\modules\user\behaviors\UserModule::className(),
+            \humhub\modules\space\behaviors\SpaceModule::className(),
+        ];
     }
 
     public function disable()
     {
         if (parent::disable()) {
 
-            foreach (CalendarEntry::model()->findAll() as $entry) {
+            foreach (CalendarEntry::find()->all() as $entry) {
                 $entry->delete();
             }
 
@@ -41,14 +44,14 @@ class CalendarModule extends HWebModule
 
     public function disableSpaceModule(Space $space)
     {
-        foreach (CalendarEntry::model()->contentContainer($space)->findAll() as $entry) {
+        foreach (CalendarEntry::find()->contentContainer($space)->all() as $entry) {
             $entry->delete();
         }
     }
 
     public function disableUserModule(User $user)
     {
-        foreach (CalendarEntry::model()->contentContainer($user)->findAll() as $entry) {
+        foreach (CalendarEntry::find()->contentContainer($user)->all() as $entry) {
             $entry->delete();
         }
     }
