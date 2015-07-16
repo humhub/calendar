@@ -51,7 +51,7 @@ $contentContainer = $calendarEntry->content->container;
 <?php echo \humhub\modules\calendar\widgets\EntryParticipants::widget(array('calendarEntry' => $calendarEntry)); ?><br />
 
 <?php if ($calendarEntry->description != ""): ?>
-    <?php echo nl2br(CHtml::encode($calendarEntry->description)); ?>
+    <?php echo nl2br(Html::encode($calendarEntry->description)); ?>
 <?php endif; ?>
 
 <?php $this->endContent(); ?>
