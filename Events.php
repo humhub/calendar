@@ -1,10 +1,10 @@
 <?php
 
-namespace module\calendar;
+namespace humhub\modules\calendar;
 
 use Yii;
 use yii\helpers\Url;
-use module\calendar\widgets\NextEvents;
+use humhub\modules\calendar\widgets\NextEvents;
 
 /**
  * Description of CalendarEvents

@@ -1,9 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use module\calendar\models\CalendarEntryParticipant;
-use module\calendar\widgets\EntryDate;
-use module\calendar\widgets\EntryParticipants;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\widgets\EntryDate;
+use humhub\modules\calendar\widgets\EntryParticipants;
 ?>
 <div class="panel panel-default">
     <div class="panel-body">
@@ -56,7 +56,7 @@ use module\calendar\widgets\EntryParticipants;
                     <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', 'Edit this event'), '#', array('class' => 'btn btn-primary btn-sm', 'onclick' => 'openEditModal(' . $calendarEntry->id . ')')); ?>
                 <?php endif; ?>
             </div>
-            <br />            
+            <br />
         </div>
 
         <?php echo EntryDate::widget(['calendarEntry' => $calendarEntry]); ?>
@@ -92,4 +92,4 @@ use module\calendar\widgets\EntryParticipants;
             remote: editUrl
         });
     }
-</script>    
+</script>

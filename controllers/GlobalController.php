@@ -1,11 +1,11 @@
 <?php
 
-namespace module\calendar\controllers;
+namespace humhub\modules\calendar\controllers;
 
 use Yii;
 use yii\helpers\Json;
 use humhub\components\Controller;
-use module\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntry;
 use yii\web\HttpException;
 
 /**

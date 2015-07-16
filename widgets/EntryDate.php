@@ -1,6 +1,6 @@
 <?php
 
-namespace module\calendar\widgets;
+namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
 

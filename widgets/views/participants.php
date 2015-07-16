@@ -1,8 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use module\calendar\models\CalendarEntry;
-use module\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 ?>
 
 <?php if ($calendarEntry->participation_mode != CalendarEntry::PARTICIPATION_MODE_NONE) : ?>

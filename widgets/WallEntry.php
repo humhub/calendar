@@ -1,10 +1,10 @@
 <?php
 
-namespace module\calendar\widgets;
+namespace humhub\modules\calendar\widgets;
 
 use Yii;
 use humhub\components\Widget;
-use module\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 
 class WallEntry extends Widget
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace module\calendar;
+namespace humhub\modules\calendar;
 
 use DateTime;
 
@@ -13,10 +13,10 @@ class Utils
 {
 
     /**
-     * 
+     *
      * @param DateTime $date1
      * @param DateTime $date2
-     * @param type $endDateMomentAfter 
+     * @param type $endDateMomentAfter
      * @return boolean
      */
     public static function isFullDaySpan(DateTime $date1, DateTime $date2, $endDateMomentAfter = false)

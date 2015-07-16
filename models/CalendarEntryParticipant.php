@@ -1,10 +1,10 @@
 <?php
 
-namespace module\calendar\models;
+namespace humhub\modules\calendar\models;
 
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
-use module\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntry;
 
 /**
  * This is the model class for table "calendar_entry_participant".
@@ -68,19 +68,17 @@ class CalendarEntryParticipant extends ActiveRecord
     public function beforeDelete()
     {
         return parent::beforeDelete();
-
-        //ToDo: Delete activities?
     }
 
-    public function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         $activity = null;
         if ($this->participation_state == self::PARTICIPATION_STATE_ACCEPTED) {
-            $activity = new \module\calendar\activities\ResponseAttend;
+            $activity = new \humhub\modules\calendar\activities\ResponseAttend;
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_MAYBE) {
-            $activity = new \module\calendar\activities\ResponseMaybe();
+            $activity = new \humhub\modules\calendar\activities\ResponseMaybe();
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_DECLINED) {
-            $activity = new \module\calendar\activities\ResponseDeclined();
+            $activity = new \humhub\modules\calendar\activities\ResponseDeclined();
         } else {
             throw new \yii\base\Exception("Invalid participation state!");
         }
@@ -88,6 +86,8 @@ class CalendarEntryParticipant extends ActiveRecord
         $activity->source = $this->calendarEntry;
         $activity->originator = $this->user;
         $activity->create();
+
+        return parent::afterSave($insert, $changedAttributes);
     }
 
 }

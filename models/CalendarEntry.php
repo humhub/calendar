@@ -1,6 +1,6 @@
 <?php
 
-namespace module\calendar\models;
+namespace humhub\modules\calendar\models;
 
 use DateTime;
 use DateInterval;
@@ -8,7 +8,7 @@ use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
-use module\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 
 /**
  * This is the model class for table "calendar_entry".
@@ -111,7 +111,7 @@ class CalendarEntry extends ContentActiveRecord
 
     /**
      * Validator for the endtime field
-     * 
+     *
      * @param type $attr
      * @param type $options
      */
@@ -167,7 +167,7 @@ class CalendarEntry extends ContentActiveRecord
         $query->userRelated($includes);
         $query->leftJoin('calendar_entry_participant', 'calendar_entry.id=calendar_entry_participant.calendar_entry_id AND calendar_entry_participant.user_id=:userId', [':userId' => Yii::$app->user->id]);
         $query->readable();
-        
+
         // Attach filters
         if (in_array(self::FILTER_PARTICIPATE, $filters)) {
             $query->andWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
@@ -260,7 +260,7 @@ class CalendarEntry extends ContentActiveRecord
     {
         $this->content->visibility = $this->is_public;
 
-        if ($this->all_day == 0 && \module\calendar\Utils::isFullDaySpan(new DateTime($this->start_datetime), new DateTime($this->end_datetime))) {
+        if ($this->all_day == 0 && \humhub\modules\calendar\Utils::isFullDaySpan(new DateTime($this->start_datetime), new DateTime($this->end_datetime))) {
             $this->all_day = 1;
         }
 
@@ -293,7 +293,7 @@ class CalendarEntry extends ContentActiveRecord
 
     /**
      * Returns array for FullCalendar Javascript
-     * 
+     *
      * @return Array information for fullcalendar
      */
     public function getFullCalendarArray()
@@ -325,12 +325,12 @@ class CalendarEntry extends ContentActiveRecord
      */
     public function getWallOut()
     {
-        return \module\calendar\widgets\WallEntry::widget(array('calendarEntry' => $this));
+        return \humhub\modules\calendar\widgets\WallEntry::widget(array('calendarEntry' => $this));
     }
 
     /**
      * Checks if given or current user can respond to this event
-     * 
+     *
      * @param User $user
      * @return boolean
      */
@@ -355,8 +355,8 @@ class CalendarEntry extends ContentActiveRecord
     }
 
     /**
-     * Checks if given or current user already responded to this event 
-     * 
+     * Checks if given or current user already responded to this event
+     *
      * @param User $user
      * @return boolean
      */
@@ -376,7 +376,7 @@ class CalendarEntry extends ContentActiveRecord
 
     /**
      * Get events duration in days
-     * 
+     *
      * @return int days
      */
     public function GetDurationDays()

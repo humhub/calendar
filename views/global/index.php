@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\content\components\ActiveQueryContent;
-use module\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntry;
 use yii\helpers\Url;
 ?>
 <div class="container">
@@ -12,7 +12,7 @@ use yii\helpers\Url;
             <div class="panel panel-default">
                 <div class="panel-body">
                     <?php
-                    echo \module\calendar\widgets\FullCalendar::widget(array(
+                    echo \humhub\modules\calendar\widgets\FullCalendar::widget(array(
                         'canWrite' => true,
                         'selectors' => $selectors,
                         'filters' => $filters,
@@ -83,7 +83,7 @@ use yii\helpers\Url;
                             <input type="checkbox" name="filter" class="filterCheckbox" value="<?php echo CalendarEntry::FILTER_MINE; ?>" <?php if (in_array(CalendarEntry::FILTER_MINE, $filters)): ?>checked="checked"<?php endif; ?>>
                             <?php echo Yii::t('CalendarModule.views_global_index', 'My events'); ?>
                         </label>
-                    </div>                    
+                    </div>
                     <br />
                     <div class="checkbox">
                         <label>
@@ -96,10 +96,10 @@ use yii\helpers\Url;
                             <input type="checkbox" name="filter" class="filterCheckbox"  value="<?php echo CalendarEntry::FILTER_RESPONDED; ?>" <?php if (in_array(CalendarEntry::FILTER_RESPONDED, $filters)): ?>checked="checked"<?php endif; ?>>
                             <?php echo Yii::t('CalendarModule.views_global_index', 'Already responded'); ?>
                         </label>
-                    </div>                    
+                    </div>
                 </div>
             </div>
-        </div>        
+        </div>
 
     </div>
 </div>
@@ -108,4 +108,4 @@ use yii\helpers\Url;
 <script>
 
 
-</script>    
+</script>

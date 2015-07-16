@@ -9,7 +9,7 @@ use yii\helpers\Html;
 
         <?php foreach ($calendarEntries as $calendarEntry) : ?>
             <strong><?php echo Html::a($calendarEntry->title, $calendarEntry->content->container->createUrl('/calendar/entry/view', array('id' => $calendarEntry->id))); ?></strong><br />
-            <?php echo module\calendar\widgets\EntryDate::widget(array('calendarEntry' => $calendarEntry)); ?><br />
+            <?php echo humhub\modules\calendar\widgets\EntryDate::widget(array('calendarEntry' => $calendarEntry)); ?><br />
             <br/>
         <?php endforeach; ?>
     </div>

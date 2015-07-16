@@ -1,6 +1,6 @@
 <?php
 
-namespace module\calendar\controllers;
+namespace humhub\modules\calendar\controllers;
 
 use DateTime;
 use DateInterval;
@@ -10,8 +10,8 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\models\Setting;
-use module\calendar\models\CalendarEntry;
-use module\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 
 /**
  * EntryController used to display, edit or delete calendar entries
@@ -74,7 +74,7 @@ class EntryController extends ContentContainerController
             $calendarEntry->content->container = $this->contentContainer;
 
             if (Yii::$app->request->get('fullCalendar') == 1) {
-                \module\calendar\widgets\FullCalendar::populate($calendarEntry);
+                \humhub\modules\calendar\widgets\FullCalendar::populate($calendarEntry);
             }
         }
 
@@ -136,7 +136,7 @@ class EntryController extends ContentContainerController
         }
 
         if (Yii::$app->request->get('fullCalendar') == 1) {
-            \module\calendar\widgets\FullCalendar::populate($calendarEntry);
+            \humhub\modules\calendar\widgets\FullCalendar::populate($calendarEntry);
         }
 
         if ($calendarEntry->validate() && $calendarEntry->save()) {
@@ -169,7 +169,7 @@ class EntryController extends ContentContainerController
 
     /**
      * Returns a readable calendar entry by given id
-     * 
+     *
      * @param int $id
      * @return CalendarEntry
      */

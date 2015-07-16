@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use module\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 
 $contentContainer = $calendarEntry->content->container;
 ?>
@@ -41,14 +41,14 @@ $contentContainer = $calendarEntry->content->container;
             </ul>
         </div>
     <?php endif; ?>
-    <br />            
+    <br />
 </div>
 
 
 <strong>Event: <?php echo Html::encode($calendarEntry->title); ?></strong><br />
-<?php echo module\calendar\widgets\EntryDate::widget(array('calendarEntry' => $calendarEntry)); ?><br />
+<?php echo humhub\modules\calendar\widgets\EntryDate::widget(array('calendarEntry' => $calendarEntry)); ?><br />
 <br />
-<?php echo \module\calendar\widgets\EntryParticipants::widget(array('calendarEntry' => $calendarEntry)); ?><br />
+<?php echo \humhub\modules\calendar\widgets\EntryParticipants::widget(array('calendarEntry' => $calendarEntry)); ?><br />
 
 <?php if ($calendarEntry->description != ""): ?>
     <?php echo nl2br(CHtml::encode($calendarEntry->description)); ?>

@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace module\calendar\activities;
+namespace humhub\modules\calendar\activities;
 
 use humhub\modules\activity\components\BaseActivity;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace module\calendar\widgets;
+namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use module\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntry;
 
 /**
  * NextEventsSidebarWidget shows next events in sidebar.
@@ -16,7 +16,7 @@ class NextEvents extends Widget
 
     /**
      * ContentContainer to limit events to. (Optional)
-     * 
+     *
      * @var HActiveRecordContentContainer
      */
     public $contentContainer;
@@ -30,7 +30,7 @@ class NextEvents extends Widget
 
     /**
      * Maximum Events to display
-     * 
+     *
      * @var int
      */
     public $maxEvents = 3;

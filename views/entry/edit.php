@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\jui\DatePicker;
 use humhub\compat\CActiveForm;
-use module\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntry;
 ?>
 
 
@@ -65,7 +65,7 @@ use module\calendar\models\CalendarEntry;
                 </div>
             </div>
 
-            <?php echo $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?> 
+            <?php echo $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
             <?php echo $form->field($calendarEntry, 'end_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
 
             <div id="timeFields">
@@ -87,7 +87,7 @@ use module\calendar\models\CalendarEntry;
             <div class="form-group" id="selectedUsersField">
                 <?php echo $form->labelEx($calendarEntry, 'selected_participants'); ?>
                 <?php echo $form->textField($calendarEntry, 'selected_participants', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Participants'))); ?>
-            </div>       
+            </div>
         </div>
 
 

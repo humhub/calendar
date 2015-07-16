@@ -1,11 +1,11 @@
 <?php
 
-namespace module\calendar;
+namespace humhub\modules\calendar;
 
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use module\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntry;
 
 class Module extends \humhub\components\Module
 {

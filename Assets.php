@@ -6,14 +6,13 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace module\calendar;
+namespace humhub\modules\calendar;
 
 use yii\web\AssetBundle;
 
 class Assets extends AssetBundle
 {
 
-    public $sourcePath = '@module/calendar/assets';
     public $css = [
         'fullcalendar/fullcalendar.css',
             //'fullcalendar/fullcalendar.print.css', // print
@@ -25,5 +24,11 @@ class Assets extends AssetBundle
         'fullcalendar/lang-all.js',
         'fullcalendar.js'
     ];
+
+    public function init()
+    {
+        $this->sourcePath = dirname(__FILE__) . '/assets';
+        parent::init();
+    }
 
 }

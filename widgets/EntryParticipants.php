@@ -1,9 +1,9 @@
 <?php
 
-namespace module\calendar\widgets;
+namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use module\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 /**
  * Description of CalendarEntryDateWidget
  *

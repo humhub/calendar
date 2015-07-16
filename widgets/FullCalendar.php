@@ -1,6 +1,6 @@
 <?php
 
-namespace module\calendar\widgets;
+namespace humhub\modules\calendar\widgets;
 
 use Yii;
 use humhub\components\Widget;
@@ -30,7 +30,7 @@ class FullCalendar extends Widget
         ]);
     }
 
-    public function populate($calendarEntry)
+    public static function populate($calendarEntry)
     {
         $startTime = new \DateTime(Yii::$app->request->get('start_datetime', ''));
         $endTime = new \DateTime(Yii::$app->request->get('end_datetime', ''));
@@ -39,7 +39,7 @@ class FullCalendar extends Widget
         $calendarEntry->start_time = $startTime->format('H:i');
 
         // Fix FullCalendar EndTime
-        if (\module\calendar\Utils::isFullDaySpan($startTime, $endTime, true)) {
+        if (\humhub\modules\calendar\Utils::isFullDaySpan($startTime, $endTime, true)) {
             // In Fullcalendar the EndTime is the moment AFTER the event
             $oneSecond = new \DateInterval("PT1S");
             $endTime->sub($oneSecond);

@@ -1,11 +1,11 @@
 <?php
 
-namespace module\calendar\controllers;
+namespace humhub\modules\calendar\controllers;
 
 use DateTime;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
-use module\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntry;
 
 /**
  * ViewController displays the calendar on spaces or user profiles.
