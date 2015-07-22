@@ -13,6 +13,11 @@ class WallEntry extends Widget
 
     public function run()
     {
+        // Not supported yet
+        if (Yii::$app->user->isGuest) {
+            return;
+        }
+        
         $calendarEntryParticipant = CalendarEntryParticipant::find()->where(array('user_id' => Yii::$app->user->id, 'calendar_entry_id' => $this->calendarEntry->id))->one();
 
         return $this->render('wallEntry', array(

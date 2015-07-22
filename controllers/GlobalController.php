@@ -7,6 +7,8 @@ use yii\helpers\Json;
 use humhub\components\Controller;
 use humhub\modules\calendar\models\CalendarEntry;
 use yii\web\HttpException;
+use humhub\modules\content\components\ActiveQueryContent;
+
 
 /**
  * GlobalController provides a global view.
@@ -34,8 +36,8 @@ class GlobalController extends Controller
             $selectors = Json::decode($lastSelectorsJson);
         } else {
             $selectors = array(
-                CalendarEntry::SELECTOR_MINE,
-                CalendarEntry::SELECTOR_SPACES,
+                ActiveQueryContent::USER_RELATED_SCOPE_OWN,
+                ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
             );
         }
 
