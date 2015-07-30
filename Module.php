@@ -6,53 +6,54 @@ use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
-class Module extends \humhub\components\Module
+class Module extends \humhub\modules\content\components\ContentContainerModule
 {
 
-    public function behaviors()
+    /**
+     * @inheritdoc
+     */
+    public function getContentContainerTypes()
     {
         return [
-            \humhub\modules\user\behaviors\UserModule::className(),
-            \humhub\modules\space\behaviors\SpaceModule::className(),
+            Space::className(),
+            User::className(),
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function disable()
     {
-        if (parent::disable()) {
+        parent::disable();
 
-            foreach (CalendarEntry::find()->all() as $entry) {
-                $entry->delete();
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public function getSpaceModuleDescription()
-    {
-        return Yii::t('CalendarModule.base', 'Adds an event calendar to this space.');
-    }
-
-    public function getUserModuleDescription()
-    {
-        return Yii::t('CalendarModule.base', 'Adds an calendar for private or public events to your profile and mainmenu.');
-    }
-
-    public function disableSpaceModule(Space $space)
-    {
-        foreach (CalendarEntry::find()->contentContainer($space)->all() as $entry) {
+        foreach (CalendarEntry::find()->all() as $entry) {
             $entry->delete();
         }
     }
 
-    public function disableUserModule(User $user)
+    /**
+     * @inheritdoc
+     */
+    public function disableContentContainer(ContentContainerActiveRecord $container)
     {
-        foreach (CalendarEntry::find()->contentContainer($user)->all() as $entry) {
+        parent::disableContentContainer($container);
+        foreach (CalendarEntry::find()->contentContainer($container)->all() as $entry) {
             $entry->delete();
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentContainerDescription(ContentContainerActiveRecord $container)
+    {
+        if ($container instanceof Space) {
+            return Yii::t('CalendarModule.base', 'Adds an event calendar to this space.');
+        } elseif ($container instanceof User) {
+            return Yii::t('CalendarModule.base', 'Adds an calendar for private or public events to your profile and mainmenu.');
         }
     }
 
