@@ -27,11 +27,11 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
      */
     public function disable()
     {
-        parent::disable();
-
         foreach (CalendarEntry::find()->all() as $entry) {
             $entry->delete();
         }
+
+        parent::disable();
     }
 
     /**
