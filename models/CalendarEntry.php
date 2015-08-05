@@ -26,7 +26,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
  * @property integer $recur_interval
  * @property string $recur_end
  */
-class CalendarEntry extends ContentActiveRecord
+class CalendarEntry extends ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
 
     /**
@@ -401,6 +401,17 @@ class CalendarEntry extends ContentActiveRecord
     public function getContentDescription()
     {
         return $this->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchAttributes()
+    {
+        return array(
+            'title' => $this->title,
+            'description' => $this->description,
+        );
     }
 
 }
