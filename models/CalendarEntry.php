@@ -30,6 +30,11 @@ class CalendarEntry extends ContentActiveRecord
 {
 
     /**
+     * @inheritdoc
+     */
+    public $wallEntryClass = "humhub\modules\calendar\widgets\WallEntry";
+
+    /**
      * Flag for Entry Form to set this content to public
      */
     public $is_public = false;
@@ -321,14 +326,6 @@ class CalendarEntry extends ContentActiveRecord
     }
 
     /**
-     * Returns the Wall Output
-     */
-    public function getWallOut()
-    {
-        return \humhub\modules\calendar\widgets\WallEntry::widget(array('calendarEntry' => $this));
-    }
-
-    /**
      * Checks if given or current user can respond to this event
      *
      * @param User $user
@@ -393,7 +390,7 @@ class CalendarEntry extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public function getContentTitle()
+    public function getContentName()
     {
         return Yii::t('CalendarModule.base', "Event");
     }
@@ -401,13 +398,9 @@ class CalendarEntry extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public function getContentPreview($maxLength = 0)
+    public function getContentDescription()
     {
-        if ($maxLength == 0) {
-            return $this->title;
-        }
-
-        return \humhub\libs\Helpers::truncateText($this->title, $maxLength);
+        return $this->title;
     }
 
 }

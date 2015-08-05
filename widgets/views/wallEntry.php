@@ -5,8 +5,6 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 
 $contentContainer = $calendarEntry->content->container;
 ?>
-<?php $this->beginContent('@humhub/modules/content/views/layouts/wallLayout.php', array('object' => $calendarEntry)); ?>
-
 
 <div class="pull-right">
 
@@ -53,5 +51,3 @@ $contentContainer = $calendarEntry->content->container;
 <?php if ($calendarEntry->description != ""): ?>
     <?php echo nl2br(Html::encode($calendarEntry->description)); ?>
 <?php endif; ?>
-
-<?php $this->endContent(); ?>
