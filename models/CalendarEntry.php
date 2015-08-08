@@ -29,6 +29,9 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 class CalendarEntry extends ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
 
+    // Atm not attach meetings to wall
+    public $autoAddToWall = true;
+
     /**
      * @inheritdoc
      */
@@ -370,6 +373,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
 
         return false;
     }
+
 
     /**
      * Get events duration in days

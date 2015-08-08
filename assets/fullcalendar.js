@@ -63,6 +63,9 @@ $(document).ready(function() {
         }
     });
 
+
+
+
     $(".selectorCheckbox").click(function() {
         reloadFullCalendar();
     });
@@ -81,7 +84,6 @@ $(document).ready(function() {
     });
 
 });
-
 
 
 
@@ -112,4 +114,5 @@ function reloadFullCalendar() {
     $('#calendar').fullCalendar('removeEventSource', events);
     $('#calendar').fullCalendar('addEventSource', events);
     $('#calendar').fullCalendar('refetchEvents');
+
 }

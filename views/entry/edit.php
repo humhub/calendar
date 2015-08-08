@@ -4,11 +4,12 @@ use yii\helpers\Html;
 use yii\jui\DatePicker;
 use humhub\compat\CActiveForm;
 use humhub\modules\calendar\models\CalendarEntry;
+
 ?>
 
 
 <?php $form = CActiveForm::begin(); ?>
-<div class="modal-dialog modal-dialog-small animated fadeIn">
+<div class="modal-dialog modal-dialog-normal animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -64,14 +65,28 @@ use humhub\modules\calendar\models\CalendarEntry;
                     <?php // echo $form->dateTimeField($calendarEntry, 'end_time', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')), array('pickTime' => true)); ?>
                 </div>
             </div>
-
-            <?php echo $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
-            <?php echo $form->field($calendarEntry, 'end_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
-
-            <div id="timeFields">
-                <?php echo $form->field($calendarEntry, 'start_time')->textInput(['placeholder' => 'hh:mm']); ?>
-                <?php echo $form->field($calendarEntry, 'end_time')->textInput(['placeholder' => 'hh:mm']); ?>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <?php echo $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
+                </div>
+                <div class="col-md-6">
+                    <div class="timeFields">
+                        <?php echo $form->field($calendarEntry, 'start_time')->textInput(['placeholder' => 'hh:mm']); ?>
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                <div
+                    class="col-md-6"><?php echo $form->field($calendarEntry, 'end_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?></div>
+                <div class="col-md-6">
+                    <div class="timeFields">
+                        <?php echo $form->field($calendarEntry, 'end_time')->textInput(['placeholder' => 'hh:mm']); ?>
+                    </div>
+                </div>
+            </div>
+            <hr>
 
             <div class="form-group">
                 <?php
@@ -90,55 +105,69 @@ use humhub\modules\calendar\models\CalendarEntry;
             </div>
         </div>
 
-
-
         <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-8 text-left">
+                    <?php
+                    echo \humhub\widgets\AjaxButton::widget([
+                        'label' => Yii::t('CalendarModule.views_entry_edit', 'Save'),
+                        'ajaxOptions' => [
+                            'type' => 'POST',
+                            'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                            'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
+                            'url' => $contentContainer->createUrl('/calendar/entry/edit', ['id' => $calendarEntry->id]),
+                        ],
+                        'htmlOptions' => [
+                            'class' => 'btn btn-primary'
+                        ]
+                    ]);
+                    ?>
+                    <button type="button" class="btn btn-primary"
+                            data-dismiss="modal"><?php echo Yii::t('CalendarModule.views_entry_edit', 'Close'); ?></button>
+                </div>
+                <div class="col-md-4 text-right">
+                    <?php
+                    if (!$calendarEntry->isNewRecord) {
+                        echo Html::a(Yii::t('CalendarModule.views_entry_edit', 'Delete'), $contentContainer->createUrl('//calendar/entry/delete', array('id' => $calendarEntry->id)), array('class' => 'btn btn-danger'));
+                    }
+                    ?>
 
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('CalendarModule.views_entry_edit', 'Save'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => $contentContainer->createUrl('/calendar/entry/edit', ['id' => $calendarEntry->id]),
-                ],
-                'htmlOptions' => [
-                    'class' => 'btn btn-primary'
-                ]
-            ]);
-            ?>
+                </div>
+            </div>
 
-            <?php
-            if (!$calendarEntry->isNewRecord) {
-                echo Html::a(Yii::t('CalendarModule.views_entry_edit', 'Delete'), $contentContainer->createUrl('//calendar/entry/delete', array('id' => $calendarEntry->id)), array('class' => 'btn btn-danger'));
-            }
-            ?>
 
-            <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('CalendarModule.views_entry_edit', 'Close'); ?></button>
 
-            <div id="event-loader" class="loader loader-modal hidden"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>
+            <div id="event-loader" class="loader loader-modal hidden">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
+            </div>
 
         </div>
 
 
     </div>
 </div>
-<script>
+
+<script type="text/javascript">
+    $("#calendarentry-start_time").format({type: "daytime"});
+    $("#calendarentry-end_time").format({type: "daytime"});
+
 
     $("#allDayCheckbox").change(function () {
         if ($("#allDayCheckbox").prop('checked')) {
-            $("#timeFields").hide();
+            $(".timeFields").hide();
         } else {
-            $("#timeFields").show();
+            $(".timeFields").show();
         }
     });
 
     if ($("#allDayCheckbox").prop('checked')) {
-        $("#timeFields").hide();
+        $(".timeFields").hide();
     } else {
-        $("#timeFields").show();
+        $(".timeFields").show();
     }
 
 
@@ -157,25 +186,12 @@ use humhub\modules\calendar\models\CalendarEntry;
     $('#CalendarEntry_title').focus();
 
     // Shake modal after wrong validation
-<?php if ($calendarEntry->hasErrors()) { ?>
-        $('.modal-dialog').removeClass('fadeIn');
-        $('.modal-dialog').addClass('shake');
-<?php } ?>
+    <?php if ($calendarEntry->hasErrors()) { ?>
+    $('.modal-dialog').removeClass('fadeIn');
+    $('.modal-dialog').addClass('shake');
+    <?php } ?>
 
 </script>
 
 
 <?php CActiveForm::end(); ?>
-
-<script>
-    function openViewModal(id) {
-        var viewUrl = '<?php echo $contentContainer->createUrl('/calendar/entry/view', array('id' => '-id-')); ?>';
-        viewUrl = viewUrl.replace('-id-', encodeURIComponent(id));
-
-        $('#globalModal').modal('hide');
-        $('#globalModal').modal({
-            show: 'true',
-            remote: viewUrl
-        });
-    }
-</script>
