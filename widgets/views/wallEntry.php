@@ -14,7 +14,7 @@ $contentContainer = $calendarEntry->content->container;
             <div class="col-md-11">
                 <h4 class="media-heading"><?php echo Html::encode($calendarEntry->title); ?>
                     <?php if ($calendarEntry->content->canWrite()) : ?>
-                        <?php echo Html::a('<i class="fa fa-pencil"></i>', $contentContainer->createUrl('/calendar/entry/edit', array('id' => $calendarEntry->id)), array("data-target" => "#globalModal","data-toggle" => "tooltip", "data-placement" => "top", "title" => Yii::t('CalendarModule.views_entry_view', "Edit event"), 'class' => 'tt')); ?>
+                        <?php echo Html::a('<i class="fa fa-pencil"></i>', $contentContainer->createUrl('/calendar/entry/edit', array('id' => $calendarEntry->id)), array("data-target" => "#globalModal", "data-toggle" => "tooltip", "data-placement" => "top", "title" => Yii::t('CalendarModule.views_entry_view', "Edit event"), 'class' => 'tt')); ?>
                     <?php endif; ?>
                 </h4>
                 <h5>
@@ -31,9 +31,13 @@ $contentContainer = $calendarEntry->content->container;
                 <?php echo \humhub\modules\calendar\widgets\EntryParticipants::widget(array('calendarEntry' => $calendarEntry)); ?>
                 <br>
                 <?php if ($calendarEntry->canRespond()): ?>
-                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Attend"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-info')); ?>
-                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Maybe"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default')); ?>
-                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Decline"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default')); ?>
+                    <?php
+                    $cssState = array("", "", "", "");
+                    $cssState[$calendarEntry->getParticipationState()] = "disabled";
+                    ?>
+                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Attend"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-info '. $cssState[3])); ?>
+                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Maybe"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default '. $cssState[2])); ?>
+                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Decline"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default '. $cssState[1])); ?>
                 <?php endif; ?>
 
             </div>

@@ -35,8 +35,9 @@ $(document).ready(function() {
             editUrl = editUrl.replace('-end-', encodeURIComponent(end.format(jsonDateFormat)));
             $('#globalModal').modal({
                 show: 'true',
-                remote: editUrl
+                //remote: editUrl
             });
+            $('#globalModal').load(editUrl);
             calendar.fullCalendar('unselect');
         },
         eventResize: function(event, delta, revertFunc) {
