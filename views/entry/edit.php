@@ -83,7 +83,7 @@ $form = $this->beginWidget('HActiveForm', array(
                     CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
                 );
                 ?>
-                <?php echo $form->labelEx($calendarEntry, 'participant_mode'); ?>
+                <?php echo $form->labelEx($calendarEntry, 'participation_mode'); ?>
                 <?php echo $form->dropDownList($calendarEntry, 'participation_mode', $modes, array('id' => 'participation_mode', 'class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')), array('pickTime' => true)); ?>
             </div>
 

@@ -2,6 +2,7 @@
 return array (
   'Adds an calendar for private or public events to your profile and mainmenu.' => 'Добавляет календарь для лчиных или публичных событий в ваш профиль или в главное меню.',
   'Adds an event calendar to this space.' => 'Добавляет календарь к этому Пространству',
+  'Is Public' => 'Публичное',
   'All Day' => 'Весь день',
   'Attending users' => 'Пользователи, которые собираются посетить событие',
   'Calendar' => 'Календарь',
