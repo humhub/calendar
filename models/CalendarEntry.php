@@ -122,6 +122,7 @@ class CalendarEntry extends HActiveRecordContent
             'end_time' => Yii::t('CalendarModule.base', 'End Date and Time'),
             'start_time_date' => Yii::t('CalendarModule.base', 'Start Date'),
             'end_time_date' => Yii::t('CalendarModule.base', 'End Date'),
+            'is_public' => Yii::t('CalendarModule.base', 'Is Public'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
             'recur' => Yii::t('CalendarModule.base', 'Recur'),
