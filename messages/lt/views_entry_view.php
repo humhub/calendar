@@ -1,12 +1,12 @@
 <?php
 return array (
-  'Attend' => '',
-  'Created by:' => '',
-  'Decline' => '',
-  'Edit this event' => '',
-  'I´m attending' => '',
-  'I´m maybe attending' => '',
-  'I´m not attending' => '',
-  'Maybe' => '',
-  'Public' => '',
+  'Attend' => 'Dalyvauti',
+  'Created by:' => 'Sukurta:',
+  'Decline' => 'Atmesti',
+  'Edit this event' => 'Redaguoti šį įvykį',
+  'I´m attending' => 'Dalyvauju',
+  'I´m maybe attending' => 'Galbūt dalyvauju',
+  'I´m not attending' => 'Nedalyvauju',
+  'Maybe' => 'Galbūt',
+  'Public' => 'Viešas',
 );
