@@ -5,7 +5,7 @@
     "keywords": ["calendar"],
     "version": "0.2.0",
     "humhub": {
-        "minVersion": "0.20.0"
+        "minVersion": "0.20"
     },
     "screenshots": ["assets/screen1.jpg", "assets/screen2.jpg", "assets/screen3.jpg"]
 }
