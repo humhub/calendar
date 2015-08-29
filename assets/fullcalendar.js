@@ -35,8 +35,9 @@ $(document).ready(function() {
             editUrl = editUrl.replace('-end-', encodeURIComponent(end.format(jsonDateFormat)));
             $('#globalModal').modal({
                 show: 'true',
-                remote: editUrl
+                //remote: editUrl
             });
+            $('#globalModal').load(editUrl);
             calendar.fullCalendar('unselect');
         },
         eventResize: function(event, delta, revertFunc) {
@@ -63,6 +64,9 @@ $(document).ready(function() {
         }
     });
 
+
+
+
     $(".selectorCheckbox").click(function() {
         reloadFullCalendar();
     });
@@ -81,7 +85,6 @@ $(document).ready(function() {
     });
 
 });
-
 
 
 
@@ -112,4 +115,5 @@ function reloadFullCalendar() {
     $('#calendar').fullCalendar('removeEventSource', events);
     $('#calendar').fullCalendar('addEventSource', events);
     $('#calendar').fullCalendar('refetchEvents');
+
 }

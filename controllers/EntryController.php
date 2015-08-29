@@ -62,6 +62,7 @@ class EntryController extends ContentContainerController
         }
 
         return $this->redirect($this->contentContainer->createUrl('view', array('id' => $calendarEntry->id)));
+
     }
 
     public function actionEdit()

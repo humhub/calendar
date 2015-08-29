@@ -29,6 +29,9 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 class CalendarEntry extends ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
 
+    // Atm not attach meetings to wall
+    public $autoAddToWall = true;
+
     /**
      * @inheritdoc
      */
@@ -370,6 +373,23 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
 
         return false;
     }
+
+    public function getParticipationState(User $user = null)
+    {
+
+        if ($user == null) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        $participant = CalendarEntryParticipant::findOne(['user_id' => $user->id, 'calendar_entry_id' => $this->id]);
+
+        if ($participant !== null) {
+            return $participant->participation_state;
+        }
+
+        return 0;
+    }
+
 
     /**
      * Get events duration in days

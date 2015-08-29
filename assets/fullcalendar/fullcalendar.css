@@ -212,8 +212,9 @@ html .fc,
 */
 
 .fc-state-default {
-	background-color: #7191a8;
-	color: #fff;
+	background-color: #ededed;
+    color: #777;
+    border-color: #ededed;
 	}
 
 .fc-state-hover,
@@ -224,13 +225,15 @@ html .fc,
 	}
 
 .fc-state-hover {
-	background-color: #61849f;
+	background-color: #ededed;
+    color: #777;
 	}
 
 .fc-state-down,
 .fc-state-active {
-	background-color: #61849f;
-	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+	background-color: #d7d7d7;
+    border-color: #d7d7d7;
+    color: #777;
 	}
 
 .fc-state-disabled {
@@ -256,9 +259,8 @@ html .fc,
 	}
 
 .fc-event {
-	border: 1px solid #68c884; /* default BORDER color */
-	background-color: #d5f8df; /* default BACKGROUND color */
-	color: #62be7d;               /* default TEXT color */
+	background-color: #6fdbe8; /* default BACKGROUND color */
+    color: #ffffff;
 	font-size: .85em;
 	cursor: default;
 	}
@@ -280,11 +282,15 @@ a.fc-event,
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+    padding: 5px;
+
 	}
 
 .fc-event-time,
 .fc-event-title {
 	padding: 0 1px;
+    font-size: 13px;
+    /*text-shadow: 0px 1px #61c2d0;*/
 	}
 
 .fc .ui-resizable-handle {
@@ -540,7 +546,8 @@ table.fc-border-separate {
 
 .fc-event-vert .fc-event-time {
 	white-space: nowrap;
-	font-size: 10px;
+	font-size: 13px;
+    font-weight: bold;
 	}
 
 .fc-event-vert .fc-event-inner {

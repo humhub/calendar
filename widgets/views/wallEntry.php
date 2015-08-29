@@ -6,48 +6,43 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 $contentContainer = $calendarEntry->content->container;
 ?>
 
-<div class="pull-right">
 
-    <?php if ($calendarEntry->canRespond() && !$calendarEntry->hasResponded()): ?>
-        <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Attend"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-success')); ?>
-        <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Maybe"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default')); ?>
-        <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Decline"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default')); ?>
-    <?php endif; ?>
-
-    <?php if ($calendarEntry->hasResponded()): ?>
-        <?php
-        $participationModes = array();
-        $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED] = Yii::t('CalendarModule.views_entry_view', "I´m attending");
-        $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE] = Yii::t('CalendarModule.views_entry_view', "I´m maybe attending");
-        $participationModes[CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED] = Yii::t('CalendarModule.views_entry_view', "I´m not attending");
-        ?>
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-success"><?php echo $participationModes[$calendarEntryParticipant->participation_state]; ?></button>
-            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <?php
-                unset($participationModes[$calendarEntryParticipant->participation_state]);
-                ?>
-
-                <?php foreach ($participationModes as $participationMode => $title): ?>
-                    <li><?php echo Html::a($title, $contentContainer->createUrl('/calendar/entry/respond', array('type' => $participationMode, 'id' => $calendarEntry->id)), array('class' => '')); ?></li>
-                <?php endforeach; ?>
-            </ul>
+<div class="media event">
+    <div class="media-body">
+        <div class="row">
+            <div class="col-md-1"><i class="fa fa-calendar colorDefault" style="font-size: 35px;"></i><br><br></div>
+            <div class="col-md-11">
+                <h4 class="media-heading"><?php echo Html::encode($calendarEntry->title); ?>
+                    <?php if ($calendarEntry->content->canWrite()) : ?>
+                        <?php echo Html::a('<i class="fa fa-pencil"></i>', $contentContainer->createUrl('/calendar/entry/edit', array('id' => $calendarEntry->id)), array("data-target" => "#globalModal", "data-toggle" => "tooltip", "data-placement" => "top", "title" => Yii::t('CalendarModule.views_entry_view', "Edit event"), 'class' => 'tt')); ?>
+                    <?php endif; ?>
+                </h4>
+                <h5>
+                    <?php echo humhub\modules\calendar\widgets\EntryDate::widget(array('calendarEntry' => $calendarEntry)); ?>
+                </h5>
+            </div>
         </div>
-    <?php endif; ?>
-    <br />
+        <div class="row">
+            <div class="col-md-12">
+                <?php if ($calendarEntry->description != ""): ?>
+                    <?php echo nl2br(Html::encode($calendarEntry->description)); ?>
+                <?php endif; ?>
+                <br><br>
+                <?php echo \humhub\modules\calendar\widgets\EntryParticipants::widget(array('calendarEntry' => $calendarEntry)); ?>
+                <br>
+                <?php if ($calendarEntry->canRespond()): ?>
+                    <?php
+                    $cssState = array("", "", "", "");
+                    $cssState[$calendarEntry->getParticipationState()] = "disabled";
+                    ?>
+                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Attend"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-info '. $cssState[3])); ?>
+                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Maybe"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default '. $cssState[2])); ?>
+                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Decline"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default '. $cssState[1])); ?>
+                <?php endif; ?>
+
+            </div>
+        </div>
+
+    </div>
 </div>
 
-
-<strong>Event: <?php echo Html::encode($calendarEntry->title); ?></strong><br />
-<?php echo humhub\modules\calendar\widgets\EntryDate::widget(array('calendarEntry' => $calendarEntry)); ?><br />
-<br />
-<?php echo \humhub\modules\calendar\widgets\EntryParticipants::widget(array('calendarEntry' => $calendarEntry)); ?><br />
-
-<?php if ($calendarEntry->description != ""): ?>
-    <?php echo nl2br(Html::encode($calendarEntry->description)); ?>
-<?php endif; ?>
