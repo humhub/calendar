@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'End Time' => '',
-    'Start Time' => '',
     'End Date and Time' => 'Data e hora final',
     'Recur' => 'Lembrete',
     'Recur End' => 'Final do lembrete',
@@ -36,13 +34,15 @@ return [
     'Declining users' => 'Não Confirmaram presença',
     'Description' => 'Descrição',
     'End Date' => 'Data Final',
-    'End time must be after start time!' => 'A hora final precisa ser depois da hora inicial!',
+    'End Time' => 'Hora de término',
+    'End time must be after start time!' => 'A hora de término precisa ser depois da hora de início!',
     'Event' => 'Evento',
     'Event not found!' => 'Evento não encontrado!',
     'ID' => 'ID',
     'Maybe attending users' => 'Talvez marcarão presença',
     'Participation Mode' => 'Modo de Participação',
     'Start Date' => 'Data de Inicio',
+    'Start Time' => 'Hora de início',
     'Title' => 'Título',
     'You don\'t have permission to delete this event!' => 'Você não tem permissão para apagar este evento!',
     'You don\'t have permission to edit this event!' => 'Você não tem permissão para editar este evento!',

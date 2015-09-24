@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Edit event' => '',
     'Created by:' => 'Criado por:',
     'Edit this event' => 'Editar esse evento',
     'I´m attending' => 'Estou participando',
@@ -26,5 +25,6 @@ return [
     'Public' => 'Público',
     'Attend' => 'Participar',
     'Decline' => 'Recusar',
+    'Edit event' => 'Editar evento',
     'Maybe' => 'Talvez',
 ];
