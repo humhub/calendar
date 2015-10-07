@@ -126,8 +126,15 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     public function validateEndTime($attribute, $params)
     {
         if ($this->all_day) {
-            $s = new \DateTime($this->start_datetime);
-            $e = new \DateTime($this->end_datetime);
+            $format = Yii::$app->formatter->dateFormat;
+            if (substr($format, 0, 4)=="php:") {
+                $format = substr($format, 4);
+                $s = \DateTime::createFromFormat($format, $this->start_datetime);
+                $e = \DateTime::createFromFormat($format, $this->end_datetime);
+            } else {
+                $s = new \DateTime($this->start_datetime);
+                $e = new \DateTime($this->end_datetime);
+            }
 
             if ($s > $e) {
                 $this->addError($attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
@@ -268,16 +275,26 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     {
         $this->content->visibility = $this->is_public;
 
-        if ($this->all_day == 0 && \humhub\modules\calendar\Utils::isFullDaySpan(new DateTime($this->start_datetime), new DateTime($this->end_datetime))) {
+        $format = Yii::$app->formatter->dateFormat;
+        if (substr($format, 0, 4)=="php:") {
+            $format = substr($format, 4);
+            $s = \DateTime::createFromFormat($format, $this->start_datetime);
+            $e = \DateTime::createFromFormat($format, $this->end_datetime);
+        } else {
+            $s = new \DateTime($this->start_datetime);
+            $e = new \DateTime($this->end_datetime);
+        }
+        
+        if ($this->all_day == 0 && \humhub\modules\calendar\Utils::isFullDaySpan($s, $e)) {
             $this->all_day = 1;
         }
 
         if ($this->all_day) {
-            $this->start_datetime = Yii::$app->formatter->asDateTime($this->start_datetime, 'php:Y-m-d') . " 00:00:00";
-            $this->end_datetime = Yii::$app->formatter->asDateTime($this->end_datetime, 'php:Y-m-d') . " 23:59:59";
+            $this->start_datetime = Yii::$app->formatter->asDateTime($s, 'php:Y-m-d') . " 00:00:00";
+            $this->end_datetime = Yii::$app->formatter->asDateTime($e, 'php:Y-m-d') . " 23:59:59";
         } else {
-            $this->start_datetime = Yii::$app->formatter->asDateTime($this->start_datetime, 'php:Y-m-d') . " " . $this->start_time . ":00";
-            $this->end_datetime = Yii::$app->formatter->asDateTime($this->end_datetime, 'php:Y-m-d') . " " . $this->end_time . ":59";
+            $this->start_datetime = Yii::$app->formatter->asDateTime($s, 'php:Y-m-d') . " " . $this->start_time . ":00";
+            $this->end_datetime = Yii::$app->formatter->asDateTime($e, 'php:Y-m-d') . " " . $this->end_time . ":59";
         }
 
         return parent::beforeSave($insert);
