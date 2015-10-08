@@ -53,10 +53,6 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     public $start_time;
     public $end_time;
 
-    /**
-     * Default participiation Mode
-     */
-    public $participation_mode = 2;
 
     /**
      * Participation Modes
@@ -73,6 +69,16 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     const FILTER_NOT_RESPONDED = 3;
     const FILTER_RESPONDED = 4;
     const FILTER_MINE = 5;
+
+    public function init()
+    {
+        parent::init();
+
+        /**
+        * Default participiation Mode
+        */
+        $this->participation_mode = 2;
+    }
 
     /**
      * @inheritdoc
