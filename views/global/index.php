@@ -17,7 +17,7 @@ use yii\helpers\Url;
                         'selectors' => $selectors,
                         'filters' => $filters,
                         'loadUrl' => Url::to(['load-ajax']),
-                        'createUrl' => $user->createUrl('/calendar/entry/edit', array('start_time' => '-start-', 'end_time' => '-end-', 'fullCalendar' => '1', 'createFromGlobalCalendar' => 1)),
+                        'createUrl' => $user->createUrl('/calendar/entry/edit', array('start_datetime' => '-start-', 'end_datetime' => '-end-', 'fullCalendar' => '1', 'createFromGlobalCalendar' => 1)),
                     ));
                     ?>
 
