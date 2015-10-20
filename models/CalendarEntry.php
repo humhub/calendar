@@ -385,6 +385,10 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
      */
     public function hasResponded(User $user = null)
     {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        
         if ($user == null) {
             $user = Yii::$app->user->getIdentity();
         }

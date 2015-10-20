@@ -10,11 +10,6 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
 
     public function run()
     {
-        // Not supported yet
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
-
         $calendarEntryParticipant = CalendarEntryParticipant::find()->where(array('user_id' => Yii::$app->user->id, 'calendar_entry_id' => $this->contentObject->id))->one();
 
         return $this->render('wallEntry', array(
