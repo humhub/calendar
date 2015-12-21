@@ -54,18 +54,6 @@ use humhub\modules\calendar\models\CalendarEntry;
                 </div>
             </div>
 
-            <div id="datepicker_datetime">
-                <div class="form-group">
-                    <?php //echo $form->labelEx($calendarEntry, 'start_time');  ?>
-                    <?php // echo $form->dateTimeField($calendarEntry, 'start_time', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Start Date/Time')), array('pickTime' => true)); ?>
-                </div>
-
-                <div class="form-group">
-                    <?php //echo $form->labelEx($calendarEntry, 'end_time');  ?>
-                    <?php // echo $form->dateTimeField($calendarEntry, 'end_time', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')), array('pickTime' => true)); ?>
-                </div>
-            </div>
-            <hr>
             <div class="row">
                 <div class="col-md-6">
                     <?php echo $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>

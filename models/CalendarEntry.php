@@ -6,6 +6,7 @@ use DateTime;
 use DateInterval;
 use Yii;
 use yii\base\Exception;
+use humhub\libs\DbDateValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
@@ -53,7 +54,6 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     public $start_time;
     public $end_time;
 
-
     /**
      * Participation Modes
      */
@@ -75,8 +75,8 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
         parent::init();
 
         /**
-        * Default participiation Mode
-        */
+         * Default participiation Mode
+         */
         $this->participation_mode = 2;
     }
 
@@ -95,13 +95,14 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     {
         return [
             [['title', 'start_datetime', 'end_datetime'], 'required'],
-            [['start_datetime', 'end_datetime'], 'date'],
             [['start_time', 'end_time'], 'date', 'format' => 'php:H:i'],
+            [['start_datetime'], DbDateValidator::className(), 'format' => 'short', 'timeAttribute' => 'start_time'],
+            [['end_datetime'], DbDateValidator::className(), 'format' => 'short', 'timeAttribute' => 'end_time'],
             [['is_public', 'all_day'], 'boolean'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => [self::PARTICIPATION_MODE_ALL, self::PARTICIPATION_MODE_INVITE, self::PARTICIPATION_MODE_NONE]],
-            [['description'], 'safe'],
             [['end_datetime'], 'validateEndTime'],
+            [['description'], 'safe'],
         ];
     }
 
@@ -124,27 +125,16 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     }
 
     /**
-     * Validator for the endtime field
+     * Validator for the endtime field.
+     * Execute this after DbDateValidator
      *
-     * @param type $attr
-     * @param type $options
+     * @param string $attribute attribute name
+     * @param type $params parameters
      */
     public function validateEndTime($attribute, $params)
     {
-        if ($this->all_day) {
-            $format = Yii::$app->formatter->dateFormat;
-            if (substr($format, 0, 4)=="php:") {
-                $format = substr($format, 4);
-                $s = \DateTime::createFromFormat($format, $this->start_datetime);
-                $e = \DateTime::createFromFormat($format, $this->end_datetime);
-            } else {
-                $s = new \DateTime($this->start_datetime);
-                $e = new \DateTime($this->end_datetime);
-            }
-
-            if ($s > $e) {
-                $this->addError($attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
-            }
+        if (new \DateTime($this->start_datetime) >= new \DateTime($this->end_datetime)) {
+            $this->addError($attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
         }
     }
 
@@ -281,26 +271,17 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     {
         $this->content->visibility = $this->is_public;
 
-        $format = Yii::$app->formatter->dateFormat;
-        if (substr($format, 0, 4)=="php:") {
-            $format = substr($format, 4);
-            $s = \DateTime::createFromFormat($format, $this->start_datetime);
-            $e = \DateTime::createFromFormat($format, $this->end_datetime);
-        } else {
-            $s = new \DateTime($this->start_datetime);
-            $e = new \DateTime($this->end_datetime);
-        }
-        
-        if ($this->all_day == 0 && \humhub\modules\calendar\Utils::isFullDaySpan($s, $e)) {
+        $startDateTime = new \DateTime($this->start_datetime);
+        $endDateTime = new \DateTime($this->end_datetime);
+
+        // Check is a full day span
+        if ($this->all_day == 0 && \humhub\modules\calendar\Utils::isFullDaySpan($startDateTime, $endDateTime)) {
             $this->all_day = 1;
         }
 
         if ($this->all_day) {
-            $this->start_datetime = Yii::$app->formatter->asDateTime($s, 'php:Y-m-d') . " 00:00:00";
-            $this->end_datetime = Yii::$app->formatter->asDateTime($e, 'php:Y-m-d') . " 23:59:59";
-        } else {
-            $this->start_datetime = Yii::$app->formatter->asDateTime($s, 'php:Y-m-d') . " " . $this->start_time . ":00";
-            $this->end_datetime = Yii::$app->formatter->asDateTime($e, 'php:Y-m-d') . " " . $this->end_time . ":59";
+            $this->start_datetime = Yii::$app->formatter->asDateTime($startDateTime, 'php:Y-m-d') . " 00:00:00";
+            $this->end_datetime = Yii::$app->formatter->asDateTime($endDateTime, 'php:Y-m-d') . " 23:59:59";
         }
 
         return parent::beforeSave($insert);
@@ -388,7 +369,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
         if (Yii::$app->user->isGuest) {
             return false;
         }
-        
+
         if ($user == null) {
             $user = Yii::$app->user->getIdentity();
         }
@@ -416,7 +397,6 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
 
         return 0;
     }
-
 
     /**
      * Get events duration in days

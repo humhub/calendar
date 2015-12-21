@@ -62,7 +62,6 @@ class EntryController extends ContentContainerController
         }
 
         return $this->redirect($this->contentContainer->createUrl('view', array('id' => $calendarEntry->id)));
-
     }
 
     public function actionEdit()
@@ -75,8 +74,15 @@ class EntryController extends ContentContainerController
             $calendarEntry->content->container = $this->contentContainer;
 
             if (Yii::$app->request->get('fullCalendar') == 1) {
-                \humhub\modules\calendar\widgets\FullCalendar::populate($calendarEntry);
+                \humhub\modules\calendar\widgets\FullCalendar::populate($calendarEntry, Yii::$app->timeZone);
             }
+        }
+        if ($calendarEntry->all_day) {
+            // Timezone Fix: If all day event, remove time of start/end datetime fields
+            $calendarEntry->start_datetime = preg_replace('/\d{2}:\d{2}:\d{2}$/', '', $calendarEntry->start_datetime);
+            $calendarEntry->end_datetime = preg_replace('/\d{2}:\d{2}:\d{2}$/', '', $calendarEntry->end_datetime);
+            $calendarEntry->start_time = '00:00';
+            $calendarEntry->end_time = '23:59';
         }
 
         if ($calendarEntry->load(Yii::$app->request->post()) && $calendarEntry->validate() && $calendarEntry->save()) {

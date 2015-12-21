@@ -3,9 +3,9 @@
     "name": "Calendar - Beta",
     "description": "Calendar for spaces or user profiles.",
     "keywords": ["calendar"],
-    "version": "0.3.1",
+    "version": "0.3.2",
     "humhub": {
-        "minVersion": "0.20"
+        "minVersion": "1.0.0.beta.3"
     },
     "screenshots": ["assets/screen1.jpg", "assets/screen2.jpg", "assets/screen3.jpg"]
 }

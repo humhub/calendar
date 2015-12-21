@@ -1,22 +1,28 @@
 <?php if ($calendarEntry->all_day): ?>
-    <?php if ($calendarEntry->GetDurationDays() > 1): ?>
-        <?php echo Yii::$app->formatter->asDate($calendarEntry->start_datetime, 'long'); ?> 
-        - <?php echo Yii::$app->formatter->asDate($calendarEntry->end_datetime, 'long'); ?>
+    <?php
+    // Don't use timeZone on full day events
+    $userTimeZone = Yii::$app->formatter->timeZone;
+    Yii::$app->formatter->timeZone = Yii::$app->timeZone;
+    ?>
+    <?php if ($durationDays > 1): ?>
+        <?php echo Yii::$app->formatter->asDate($start, 'long'); ?> 
+        - <?php echo Yii::$app->formatter->asDate($end, 'long'); ?>
     <?php else: ?>
-        <?php echo Yii::$app->formatter->asDate($calendarEntry->start_datetime, 'long'); ?>
+        <?php echo Yii::$app->formatter->asDate($start, 'long'); ?>
     <?php endif; ?>
+    <?php Yii::$app->formatter->timeZone = $userTimeZone; ?>
 <?php else: ?>
-    <?php if ($calendarEntry->GetDurationDays() > 1): ?>
-        <?php echo Yii::$app->formatter->asDate($calendarEntry->start_datetime, 'long'); ?>
-        (<?php echo Yii::$app->formatter->asTime($calendarEntry->start_datetime, 'short'); ?>)
+    <?php if ($durationDays > 1): ?>
+        <?php echo Yii::$app->formatter->asDate($start, 'long'); ?>
+        (<?php echo Yii::$app->formatter->asTime($start, 'short'); ?>)
         - 
-        <?php echo Yii::$app->formatter->asDate($calendarEntry->end_datetime, 'long'); ?>
-        (<?php echo Yii::$app->formatter->asTime($calendarEntry->end_datetime, 'short'); ?>)
+        <?php echo Yii::$app->formatter->asDate($end, 'long'); ?>
+        (<?php echo Yii::$app->formatter->asTime($end, 'short'); ?>)
     <?php else: ?>
-        <?php echo Yii::$app->formatter->asDate($calendarEntry->start_datetime, 'long'); ?>
+        <?php echo Yii::$app->formatter->asDate($start, 'long'); ?>
 
-        (<?php echo Yii::$app->formatter->asTime($calendarEntry->start_datetime, 'short'); ?>
+        (<?php echo Yii::$app->formatter->asTime($start, 'short'); ?>
         - 
-        <?php echo Yii::$app->formatter->asTime($calendarEntry->end_datetime, 'short'); ?>)
+        <?php echo Yii::$app->formatter->asTime($end, 'short'); ?>)
     <?php endif; ?>
 <?php endif; ?>
