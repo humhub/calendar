@@ -96,8 +96,8 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
         return [
             [['title', 'start_datetime', 'end_datetime'], 'required'],
             [['start_time', 'end_time'], 'date', 'format' => 'php:H:i'],
-            [['start_datetime'], DbDateValidator::className(), 'format' => 'short', 'timeAttribute' => 'start_time'],
-            [['end_datetime'], DbDateValidator::className(), 'format' => 'short', 'timeAttribute' => 'end_time'],
+            [['start_datetime'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time'],
+            [['end_datetime'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'end_time'],
             [['is_public', 'all_day'], 'boolean'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => [self::PARTICIPATION_MODE_ALL, self::PARTICIPATION_MODE_INVITE, self::PARTICIPATION_MODE_NONE]],

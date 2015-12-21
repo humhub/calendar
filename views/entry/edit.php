@@ -56,7 +56,7 @@ use humhub\modules\calendar\models\CalendarEntry;
 
             <div class="row">
                 <div class="col-md-6">
-                    <?php echo $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
+                    <?php echo $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'], 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
                 </div>
                 <div class="col-md-6">
                     <div class="timeFields">
@@ -67,7 +67,7 @@ use humhub\modules\calendar\models\CalendarEntry;
 
             <div class="row">
                 <div
-                    class="col-md-6"><?php echo $form->field($calendarEntry, 'end_datetime')->widget(DatePicker::className(), ['clientOptions' => [], 'options' => ['class' => 'form-control']]); ?></div>
+                    class="col-md-6"><?php echo $form->field($calendarEntry, 'end_datetime')->widget(DatePicker::className(), ['dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'], 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?></div>
                 <div class="col-md-6">
                     <div class="timeFields">
                         <?php echo $form->field($calendarEntry, 'end_time')->textInput(['placeholder' => 'hh:mm']); ?>
