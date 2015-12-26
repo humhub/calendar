@@ -21,10 +21,4 @@ return [
     'Decline' => '',
     'Edit event' => '',
     'Maybe' => '',
-    'Created by:' => '@@@@',
-    'Edit this event' => '@@@@',
-    'I´m attending' => '@@@@',
-    'I´m maybe attending' => '@@@@',
-    'I´m not attending' => '@@@@',
-    'Public' => 'Công cộng',
 ];

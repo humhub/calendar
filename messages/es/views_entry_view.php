@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => 'Creado por:',
-    'Edit this event' => 'Editar este evento',
-    'I´m attending' => 'Asistiré',
-    'I´m maybe attending' => 'Tal vez asista',
-    'I´m not attending' => 'No asistiré',
-    'Public' => 'Público',
     'Attend' => 'Asistir',
     'Decline' => 'No asistir',
     'Maybe' => 'Tal vez',

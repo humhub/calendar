@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => 'ساخته‌شده توسط:',
-    'Edit this event' => 'این رویداد را به پایان برسان',
-    'I´m attending' => 'حضور خواهم‌داشت',
-    'I´m maybe attending' => 'احتمالا حضور خواهم‌داشت',
-    'I´m not attending' => 'حضور نخواهم داشت',
-    'Public' => 'عمومی',
     'Attend' => 'حضور',
     'Decline' => 'انصراف',
     'Maybe' => 'احتمالا',

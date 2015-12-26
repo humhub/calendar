@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => '创建人',
-    'Edit this event' => '编辑事件',
-    'I´m attending' => '我参加',
-    'I´m maybe attending' => '我可能参加',
-    'I´m not attending' => '我不参加',
-    'Public' => '公共',
     'Attend' => '参加',
     'Decline' => '拒绝',
     'Maybe' => '可能',

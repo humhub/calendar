@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'End Date' => 'تاریخ اتمام',
-    'Start Date' => 'تاریخ شروع',
-    'Start Date/Time' => 'تاریخ/زمان آغاز',
     '<strong>Create</strong> event' => '<strong>ساختن</strong> گروه',
     '<strong>Edit</strong> event' => '<strong>ویرایش</strong> گروه',
     '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>توجه:</strong> این رویداد در پروفایل شما ساخته خواهدشد. برای تولید رویداد انجمن، تقویم آن انجمن را باز کنید.',

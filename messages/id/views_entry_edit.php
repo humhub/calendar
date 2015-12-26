@@ -29,7 +29,4 @@ return [
     'Participants' => '',
     'Save' => '',
     'Title' => '',
-    'End Date' => '@@@@',
-    'Start Date' => '@@@@',
-    'Start Date/Time' => '@@@@',
 ];

@@ -17,12 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Created by:' => 'Criado por:',
-    'Edit this event' => 'Editar esse evento',
-    'I´m attending' => 'Estou participando',
-    'I´m maybe attending' => 'Talvez participarei',
-    'I´m not attending' => 'Não vou participar',
-    'Public' => 'Público',
     'Attend' => 'Participar',
     'Decline' => 'Recusar',
     'Edit event' => 'Editar evento',

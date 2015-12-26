@@ -17,15 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'End Date and Time' => 'Data e hora final',
-    'Recur' => 'Lembrete',
-    'Recur End' => 'Final do lembrete',
-    'Recur Interval' => 'Intervalo do lembrete',
-    'Recur Type' => 'Tipo de lembrete',
-    'Select participants' => 'Selecionar participantes',
-    'Start Date and Time' => 'Data e hora inicial',
-    'You don\'t have permission to access this event!' => 'Você não tem permissão para acessar este evento!',
-    'You don\'t have permission to create events!' => 'Você não tem permissão para criar eventos!',
     'Adds an calendar for private or public events to your profile and mainmenu.' => 'Adicione um calendário para eventos privados ou públicos em seu perfil e menu principal.',
     'Adds an event calendar to this space.' => 'Adicione um evento para este espaço.',
     'All Day' => 'Todo dia',

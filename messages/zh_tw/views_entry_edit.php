@@ -27,9 +27,6 @@ return [
     'Everybody can participate' => '',
     'No participants' => '',
     'Participants' => '',
-    'End Date' => '@@@@',
-    'Start Date' => '@@@@',
-    'Start Date/Time' => '@@@@',
     'Save' => '儲存',
     'Title' => '標題',
 ];

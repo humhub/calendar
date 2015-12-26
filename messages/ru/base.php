@@ -17,15 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'End Date and Time' => 'Дата и время окончания',
-    'Recur' => 'Повторять',
-    'Recur End' => 'Конец повторения',
-    'Recur Interval' => 'Интервал повторения',
-    'Recur Type' => 'Тип повторения',
-    'Select participants' => 'Выбрать участников',
-    'Start Date and Time' => 'Дата и время начала',
-    'You don\'t have permission to access this event!' => 'У вас нет доступа к этому событию!',
-    'You don\'t have permission to create events!' => 'У вас нет доступа для создания события!',
     'Adds an calendar for private or public events to your profile and mainmenu.' => 'Добавляет календарь для лчиных или публичных событий в ваш профиль или в главное меню.',
     'Adds an event calendar to this space.' => 'Добавляет календарь к этому Пространству',
     'All Day' => 'Весь день',

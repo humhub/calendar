@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => '作成者：',
-    'Edit this event' => 'このイベントを編集',
-    'I´m attending' => '参加する',
-    'I´m maybe attending' => '参加未定',
-    'I´m not attending' => '参加しない',
-    'Public' => '公開',
     'Attend' => '参加',
     'Decline' => '辞退',
     'Maybe' => '未定',

@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => 'Sukurta:',
-    'Edit this event' => 'Redaguoti šį įvykį',
-    'I´m attending' => 'Dalyvauju',
-    'I´m maybe attending' => 'Galbūt dalyvauju',
-    'I´m not attending' => 'Nedalyvauju',
-    'Public' => 'Viešas',
     'Attend' => 'Dalyvauti',
     'Decline' => 'Atmesti',
     'Maybe' => 'Galbūt',

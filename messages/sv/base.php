@@ -37,13 +37,4 @@ return [
     'Title' => '',
     'You don\'t have permission to delete this event!' => '',
     'You don\'t have permission to edit this event!' => '',
-    'End Date and Time' => '@@@@',
-    'Recur' => '@@@@',
-    'Recur End' => '@@@@',
-    'Recur Interval' => '@@@@',
-    'Recur Type' => '@@@@',
-    'Select participants' => '@@@@',
-    'Start Date and Time' => '@@@@',
-    'You don\'t have permission to access this event!' => '@@@@',
-    'You don\'t have permission to create events!' => '@@@@',
 ];

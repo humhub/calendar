@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => 'Creat de:',
-    'Edit this event' => 'Editează acest eveniment',
-    'I´m attending' => 'Particip',
-    'I´m maybe attending' => 'Probabil particip',
-    'I´m not attending' => 'Nu particip',
-    'Public' => 'Public',
     'Attend' => 'Participă',
     'Decline' => 'Respinge',
     'Maybe' => 'Probabil',

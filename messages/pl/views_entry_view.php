@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => 'Utworzone przez:',
-    'Edit this event' => 'Edytuj to wydarzenie ',
-    'I´m attending' => 'Biorę udział',
-    'I´m maybe attending' => 'Może biorę udział',
-    'I´m not attending' => 'Nie biorę udziału',
-    'Public' => 'Publiczne ',
     'Attend' => 'Biorący udział',
     'Decline' => 'Odrzuć',
     'Maybe' => 'Może',

@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'End Date' => 'Data Scadentă',
-    'Start Date' => 'Data Începerii',
-    'Start Date/Time' => 'Data/Timpul Începerii',
     '<strong>Create</strong> event' => '<strong>Crează</strong> eveniment',
     '<strong>Edit</strong> event' => '<strong>Editează</strong> eveniment',
     '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>Notă:</strong> Acest eveniment va fi creat pe profilul tău. Pentru a crea un eveniment de spațiu deschide calendarul pe spațiul dorit.',

@@ -27,9 +27,6 @@ return [
     'No participants' => '',
     'Participants' => '',
     'Save' => '',
-    'End Date' => '@@@@',
-    'Start Date' => '@@@@',
-    'Start Date/Time' => '@@@@',
     'Close' => 'ปิด',
     'Title' => 'Título',
 ];

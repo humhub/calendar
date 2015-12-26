@@ -17,12 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Created by:' => 'Создано: ',
-    'Edit this event' => 'Редактировать событие',
-    'I´m attending' => 'Я пойду',
-    'I´m maybe attending' => 'Может быть, пойду',
-    'I´m not attending' => 'Я не пойду',
-    'Public' => 'Публичное',
     'Attend' => 'Посетить',
     'Decline' => 'Отказать',
     'Edit event' => 'Редактировать событие',

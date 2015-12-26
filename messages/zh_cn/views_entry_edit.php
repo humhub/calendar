@@ -18,9 +18,6 @@
  */
 return [
     'Participants' => '',
-    'End Date' => '结束日期',
-    'Start Date' => '开始日期',
-    'Start Date/Time' => '开始日期/时间',
     '<strong>Create</strong> event' => '<strong>创建</strong> 事件',
     '<strong>Edit</strong> event' => '<strong>编辑</strong> 事件',
     '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>提示：</strong>此事件将在您的属性页面创建。若要创建一个版块日历事件，请在所需版块打开日历来创建。',

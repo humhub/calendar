@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => 'Oluşturan:',
-    'Edit this event' => 'Etkinliği düzenle',
-    'I´m attending' => 'Katılıyorum',
-    'I´m maybe attending' => 'Belki katılırım',
-    'I´m not attending' => 'Katılmıyorum',
-    'Public' => 'Herkes',
     'Attend' => 'Katış',
     'Decline' => 'Katılma',
     'Maybe' => 'Belki',

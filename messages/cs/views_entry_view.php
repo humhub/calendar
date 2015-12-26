@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => 'Vytvořeno:',
-    'Edit this event' => 'Upravit tuto událost',
-    'I´m attending' => 'Zúčastním se',
-    'I´m maybe attending' => 'Možná se zúčastním',
-    'I´m not attending' => 'Nezůčastním se',
-    'Public' => 'Veřejné',
     'Attend' => 'Chci se zúčastnit',
     'Decline' => 'Nechci se zúčastnit',
     'Maybe' => 'Možná',

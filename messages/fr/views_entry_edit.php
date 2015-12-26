@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'End Date' => 'Date de fin',
-    'Start Date' => 'Date de début',
-    'Start Date/Time' => 'Heure et date de début',
     '<strong>Create</strong> event' => '<strong>Créer</strong> un événement',
     '<strong>Edit</strong> event' => '<strong>Editer</strong> un événement',
     '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>Note :</strong> Cet événement sera créé dans votre profil. Pour créer un événement dans un espace, ouvrez le calendrier de l\'espace concerné.',

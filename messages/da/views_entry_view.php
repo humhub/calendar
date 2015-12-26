@@ -18,12 +18,6 @@
  */
 return [
     'Edit event' => '',
-    'Created by:' => 'Oprettet af:',
-    'Edit this event' => 'Rediger dette event',
-    'I´m attending' => 'Jeg deltager',
-    'I´m maybe attending' => 'Jeg deltager måske',
-    'I´m not attending' => 'Jeg deltager ikke',
-    'Public' => 'Offentlig',
     'Attend' => 'Deltag',
     'Decline' => 'Afslå',
     'Maybe' => 'Måske',

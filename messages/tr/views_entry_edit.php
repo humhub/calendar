@@ -17,9 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'End Date' => 'Bitiş tarihi',
-    'Start Date' => 'Başlangıç tarihi',
-    'Start Date/Time' => 'Başlangıç tarih/saat',
     '<strong>Create</strong> event' => '<strong>Etkinlik</strong> oluştur',
     '<strong>Edit</strong> event' => '<strong>Etkinlik</strong> düzenle',
     '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>Not:</strong> Bu etkinlik profilinizde oluşturulur. Eğer mekanda etkinlik açmak istiyorsanız mekan takvimini kullanın.',
