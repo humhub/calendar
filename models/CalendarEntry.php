@@ -340,6 +340,10 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
      */
     public function canRespond(User $user = null)
     {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
         if ($user == null) {
             $user = Yii::$app->user->getIdentity();
         }
@@ -384,6 +388,10 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
 
     public function getParticipationState(User $user = null)
     {
+        if (Yii::$app->user->isGuest) {
+            return 0;
+        }
+
 
         if ($user == null) {
             $user = Yii::$app->user->getIdentity();
