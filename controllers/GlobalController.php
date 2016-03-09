@@ -9,7 +9,6 @@ use humhub\modules\calendar\models\CalendarEntry;
 use yii\web\HttpException;
 use humhub\modules\content\components\ActiveQueryContent;
 
-
 /**
  * GlobalController provides a global view.
  *
