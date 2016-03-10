@@ -44,7 +44,7 @@ $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpick
             <div class="form-group">
                 <?php echo $form->labelEx($calendarEntry, 'color'); ?>
 		<div class="input-group event-color-chooser">
-		 <?php echo yii\bootstrap\Html::activeTextInput($calendarEntry, 'color', ['class' => 'form-control', 'id' => 'event-color-picker', 'value' => '']); ?>
+		 <?php echo yii\bootstrap\Html::activeTextInput($calendarEntry, 'color', ['class' => 'form-control', 'id' => 'event-color-picker']); ?>
 		 <span class="input-group-addon"><i></i></span>
 		</div>
             </div>
