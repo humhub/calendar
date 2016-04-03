@@ -1,6 +1,6 @@
 <?php
 return array (
-  '%displayName% attends to %contentTitle%.' => '%displayName% hat für »%contentTitle%« zugesagt.',
-  '%displayName% maybe attends to %contentTitle%.' => '%displayName% nimmt vielleicht bei »%contentTitle%« teil.',
-  '%displayName% not attends to %contentTitle%.' => '%displayName% nimmt nicht bei »%contentTitle%« teil.',
+  '%displayName% attends to %contentTitle%.' => '%displayName% nimmt an »%contentTitle%« teil.',
+  '%displayName% maybe attends to %contentTitle%.' => '%displayName% nimmt vielleicht an »%contentTitle%« teil.',
+  '%displayName% not attends to %contentTitle%.' => '%displayName% nimmt nicht an »%contentTitle%« teil.',
 );

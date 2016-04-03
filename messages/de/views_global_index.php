@@ -1,13 +1,13 @@
 <?php
 return array (
-  '<strong>Filter</strong> events' => '<strong>Termine</strong> filtern',
-  '<strong>Select</strong> calendars' => '<strong>Kalender</strong> auswählen',
+  '<strong>Filter</strong> events' => 'Termine <strong>filtern</strong>',
+  '<strong>Select</strong> calendars' => 'Kalender <strong>auswählen</strong>',
   'Already responded' => 'Beantwortet',
-  'Followed spaces' => 'Folgende Spaces',
-  'Followed users' => 'Folgende Benutzer',
+  'Followed spaces' => 'Beobachtete Spaces',
+  'Followed users' => 'Beobachtete Benutzer',
   'I´m attending' => 'Ich nehme teil',
   'My events' => 'Meine Termine',
   'My profile' => 'Aus meinem Profil',
   'My spaces' => 'Aus meinen Spaces',
-  'Not responded yet' => 'Nicht beantwortet',
+  'Not responded yet' => 'Noch nicht beantwortet',
 );
