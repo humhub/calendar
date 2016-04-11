@@ -34,7 +34,7 @@ class ViewController extends ContentContainerController
         $startDate = new DateTime(Yii::$app->request->get('start'));
         $endDate = new DateTime(Yii::$app->request->get('end'));
 
-        $entries = CalendarEntry::getContainerEntriesByRange($startDate, $endDate, $this->contentContainer);
+        $entries = CalendarEntry::getContainerEntriesByOpenRange($startDate, $endDate, $this->contentContainer);
 
         foreach ($entries as $entry) {
             $output[] = $entry->getFullCalendarArray();

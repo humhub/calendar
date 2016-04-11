@@ -137,6 +137,46 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             $this->addError($attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
         }
     }
+    
+    /**
+     * Searches for container calendar entries with the start and/or the end date within a given range.
+     * This will include all entries ending or starting within the given range.
+     * @param DateTime $start start range
+     * @param DateTime $end end range
+     * @param ContentContainerActiveRecord $contentContainer
+     * @param type $limit
+     * @return type
+     */
+    public static function getContainerEntriesByOpenRange(DateTime $start, DateTime $end, ContentContainerActiveRecord $contentContainer, $limit = 0)
+    {
+        $entries = array();
+        
+        $query = self::find()->contentContainer($contentContainer)->readable();
+        //Search for all container entries with start and/or end within the given range
+        $query->andFilterWhere(
+                    ['or',
+                        ['and',
+                            ['>=', 'start_datetime', $start->format('Y-m-d H:i:s')],
+                            ['<=', 'start_datetime', $end->format('Y-m-d H:i:s')]
+                        ],
+                        ['and',
+                            ['>=', 'end_datetime', $start->format('Y-m-d H:i:s')],
+                            ['<=', 'end_datetime', $end->format('Y-m-d H:i:s')]
+                        ]
+                    ]
+        );
+        
+        $query->orderBy('start_datetime ASC');
+
+        if ($limit != 0) {
+            $query->limit($limit);
+        }
+
+        foreach ($query->all() as $entry) {
+            $entries[] = $entry;
+        }
+        return $entries;
+    }
 
     public static function getContainerEntriesByRange(DateTime $start, DateTime $end, ContentContainerActiveRecord $contentContainer, $limit = 0)
     {
