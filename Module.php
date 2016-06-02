@@ -57,4 +57,17 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         }
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        if ($contentContainer !== null) {
+            return [
+                new permissions\CreateEntry(),
+            ];
+        }
+        return [];
+    }
+
 }

@@ -22,6 +22,8 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 class EntryController extends ContentContainerController
 {
 
+    public $hideSidebar = true;
+
     public function actionView()
     {
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
@@ -69,6 +71,9 @@ class EntryController extends ContentContainerController
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
 
         if ($calendarEntry == null) {
+            if (!$this->contentContainer->permissionManager->can(new \humhub\modules\calendar\permissions\CreateEntry())) {
+                throw new HttpException(403, 'No permission to add new entries');
+            }
 
             $calendarEntry = new CalendarEntry;
             $calendarEntry->content->container = $this->contentContainer;
@@ -76,7 +81,11 @@ class EntryController extends ContentContainerController
             if (Yii::$app->request->get('fullCalendar') == 1) {
                 \humhub\modules\calendar\widgets\FullCalendar::populate($calendarEntry, Yii::$app->timeZone);
             }
+        } elseif (!$calendarEntry->content->canEdit()) {
+            throw new HttpException(403, 'No permission to edit this entry');
         }
+
+
         if ($calendarEntry->all_day) {
             // Timezone Fix: If all day event, remove time of start/end datetime fields
             $calendarEntry->start_datetime = preg_replace('/\d{2}:\d{2}:\d{2}$/', '', $calendarEntry->start_datetime);
@@ -138,7 +147,7 @@ class EntryController extends ContentContainerController
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        if (!$calendarEntry->content->canWrite()) {
+        if (!$calendarEntry->content->canEdit()) {
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit this event!"));
         }
 
@@ -161,7 +170,7 @@ class EntryController extends ContentContainerController
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        if (!$calendarEntry->content->canDelete()) {
+        if (!$calendarEntry->content->canEdit()) {
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to delete this event!"));
         }
 

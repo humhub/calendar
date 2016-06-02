@@ -20,9 +20,12 @@ class ViewController extends ContentContainerController
 
     public function actionIndex()
     {
-        return $this->render('index', array(
-                    'contentContainer' => $this->contentContainer
-        ));
+        $canAddEntries = $this->contentContainer->permissionManager->can(new \humhub\modules\calendar\permissions\CreateEntry());
+
+        return $this->render('index', [
+                    'contentContainer' => $this->contentContainer,
+                    'canAddEntries' => $canAddEntries
+        ]);
     }
 
     public function actionLoadAjax()
