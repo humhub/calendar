@@ -25,3 +25,5 @@ __Author website:__ [humhub.org](http://humhub.org)
 - Allow Google Calendar integration
 
 Calendar UI is based on FullCalendar (http://arshaw.com/fullcalendar/)
+
+FORK By CCRS
