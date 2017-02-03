@@ -3,7 +3,7 @@
     "name": "Calendar - Beta",
     "description": "Calendar for spaces or user profiles.",
     "keywords": ["calendar"],
-    "version": "0.4.0",
+    "version": "0.4.1",
     "humhub": {
         "minVersion": "1.1"
     },
