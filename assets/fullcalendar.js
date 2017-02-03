@@ -41,6 +41,7 @@ function init() {
             var editUrl = fullCalendarCreateUrl;
             editUrl = editUrl.replace('-start-', encodeURIComponent(start.format(jsonDateFormat)));
             editUrl = editUrl.replace('-end-', encodeURIComponent(end.format(jsonDateFormat)));
+            var humhub = humhub || {};
             if(humhub && humhub.modules) {
                 humhub.modules.ui.modal.global.load(editUrl);
             } else {
