@@ -1,5 +1,13 @@
-$(document).ready(function() {
+$(document).ready(init);
 
+// V1.2 copmatibility
+$(document).on('humhub:ready', function(evt, isPjax) {
+    if(isPjax) {
+        init();
+    }
+});
+
+function init() {
     var jsonDateFormat = "YYYY-MM-DD HH:mm:ss";
 
     if (fullCalendarCanWrite == 'false' || fullCalendarCanWrite == false) {
@@ -23,24 +31,28 @@ $(document).ready(function() {
         events: {
             url: fullCalendarLoadUrl.replace('-selectors-', fullCalendarSelectors),
             data: {selectors: fullCalendarSelectors, filters: fullCalendarFilters},
-            error: function() {
+            error: function () {
                 //alert("loading error!");
             }
         },
         selectable: fullCalendarCanWrite,
         selectHelper: fullCalendarCanWrite,
-        select: function(start, end) {
+        select: function (start, end) {
             var editUrl = fullCalendarCreateUrl;
             editUrl = editUrl.replace('-start-', encodeURIComponent(start.format(jsonDateFormat)));
             editUrl = editUrl.replace('-end-', encodeURIComponent(end.format(jsonDateFormat)));
-            $('#globalModal').modal({
-                show: 'true',
-                //remote: editUrl
-            });
-            $('#globalModal').load(editUrl);
+            if(humhub && humhub.modules) {
+                humhub.modules.ui.modal.global.load(editUrl);
+            } else {
+                $('#globalModal').modal({
+                    show: 'true',
+                    //remote: editUrl
+                });
+                $('#globalModal').load(editUrl);
+            }
             calendar.fullCalendar('unselect');
         },
-        eventResize: function(event, delta, revertFunc) {
+        eventResize: function (event, delta, revertFunc) {
             editUrl = event.updateUrl.replace('-end-', encodeURIComponent(event.end.format(jsonDateFormat)));
             editUrl = editUrl.replace('-start-', '');
             editUrl = editUrl.replace('-id-', encodeURIComponent(event.id));
@@ -48,7 +60,7 @@ $(document).ready(function() {
                 url: editUrl
             });
         },
-        eventDrop: function(event, delta, revertFunc) {
+        eventDrop: function (event, delta, revertFunc) {
             editUrl = event.updateUrl.replace('-start-', encodeURIComponent(event.start.format(jsonDateFormat)));
             editUrl = editUrl.replace('-end-', encodeURIComponent(event.end.format(jsonDateFormat)));
             editUrl = editUrl.replace('-id-', encodeURIComponent(event.id));
@@ -56,10 +68,10 @@ $(document).ready(function() {
                 url: editUrl
             });
         },
-        eventClick: function(event, element) {
+        eventClick: function (event, element) {
             window.location = event.viewUrl;
         },
-        loading: function(bool) {
+        loading: function (bool) {
             $('#loading').toggle(bool);
         }
     });
@@ -67,10 +79,10 @@ $(document).ready(function() {
 
 
 
-    $(".selectorCheckbox").click(function() {
+    $(".selectorCheckbox").click(function () {
         reloadFullCalendar();
     });
-    $(".filterCheckbox").click(function() {
+    $(".filterCheckbox").click(function () {
 
         // Make sure responded / not resondend  filters are not checked
         // at the same time
@@ -80,25 +92,23 @@ $(document).ready(function() {
         if ($(this).val() == '4') {
             $(":checkbox[value=3][name='filter']").attr("checked", false);
         }
-        
+
         reloadFullCalendar();
     });
 
-});
-
-
+}
 
 function reloadFullCalendar() {
     fullCalendarSelector = "";
     fullCalendarFilter = "";
 
-    $(".selectorCheckbox").each(function() {
-        if ($(this).prop( "checked" )) {
+    $(".selectorCheckbox").each(function () {
+        if ($(this).prop("checked")) {
             fullCalendarSelector += $(this).val() + ",";
         }
     });
-    $(".filterCheckbox").each(function() {
-        if ($(this).prop( "checked" )) {
+    $(".filterCheckbox").each(function () {
+        if ($(this).prop("checked")) {
             fullCalendarFilter += $(this).val() + ",";
         }
     });
