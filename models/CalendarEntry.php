@@ -233,7 +233,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             $query->andWhere(['IS', 'calendar_entry_participant.id', new \yii\db\Expression('NULL')]);
         }
         if (in_array(self::FILTER_MINE, $filters)) {
-            $query->andWhere(['content.user_id' => Yii::$app->user->id]);
+            $query->andWhere(['content.contentcontainer_id' => Yii::$app->user->getIdentity()->contentcontainer_id]);
         }
 
         if ($limit != 0) {
