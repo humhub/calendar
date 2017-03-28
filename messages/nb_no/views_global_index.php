@@ -8,6 +8,6 @@ return array (
   'I´m attending' => '',
   'My events' => '',
   'My profile' => 'Min profil',
-  'My spaces' => '',
+  'My spaces' => 'Mine grupper',
   'Not responded yet' => '',
 );

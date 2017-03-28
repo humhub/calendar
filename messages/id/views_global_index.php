@@ -7,7 +7,7 @@ return array (
   'Followed users' => '',
   'I´m attending' => '',
   'My events' => '',
-  'My profile' => '',
+  'My profile' => 'Profil saya',
   'My spaces' => '',
   'Not responded yet' => '',
 );

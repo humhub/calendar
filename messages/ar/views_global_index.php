@@ -7,7 +7,7 @@ return array (
   'Followed users' => '',
   'I´m attending' => '',
   'My events' => '',
-  'My profile' => '',
+  'My profile' => 'صفحتي الشخصية',
   'My spaces' => '',
   'Not responded yet' => '',
 );
