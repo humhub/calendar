@@ -1,13 +1,13 @@
 <?php
 return array (
-  '<strong>Filter</strong> events' => '',
-  '<strong>Select</strong> calendars' => '',
-  'Already responded' => '',
-  'Followed spaces' => '',
-  'Followed users' => '',
-  'I´m attending' => '',
-  'My events' => '',
+  '<strong>Filter</strong> events' => '<strong>Filtrer</strong> events',
+  '<strong>Select</strong> calendars' => '<strong>Velg</strong> kalendere',
+  'Already responded' => 'Allerede besvart',
+  'Followed spaces' => 'Følger grupper',
+  'Followed users' => 'Følger brukere',
+  'I´m attending' => 'Jeg deltar',
+  'My events' => 'Mine events',
   'My profile' => 'Min profil',
   'My spaces' => 'Mine grupper',
-  'Not responded yet' => '',
+  'Not responded yet' => 'Ikke besvart enda',
 );
