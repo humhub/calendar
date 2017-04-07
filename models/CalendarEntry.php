@@ -120,6 +120,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             'start_time' => Yii::t('CalendarModule.base', 'Start Time'),
             'end_time' => Yii::t('CalendarModule.base', 'End Time'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
+            'is_public' => Yii::t('CalendarModule.base', 'Is Public'),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
         );
     }
