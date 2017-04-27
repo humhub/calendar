@@ -26,6 +26,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
  * @property integer $recur_type
  * @property integer $recur_interval
  * @property string $recur_end
+ * @property string $color
  */
 class CalendarEntry extends ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
@@ -103,6 +104,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             [['participation_mode'], 'in', 'range' => [self::PARTICIPATION_MODE_ALL, self::PARTICIPATION_MODE_INVITE, self::PARTICIPATION_MODE_NONE]],
             [['end_datetime'], 'validateEndTime'],
             [['description'], 'safe'],
+            [['color'], 'safe'],
         ];
     }
 
@@ -121,6 +123,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             'end_time' => Yii::t('CalendarModule.base', 'End Time'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
+            'color' => Yii::t('CalendarModule.base', 'Color'),
         );
     }
 
@@ -360,6 +363,10 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             $end = $endDateTime->format('Y-m-d');
         }
 
+	$color = $this->color;
+	if (!$color && is_a($this->content->container, "humhub\modules\space\models\Space"))
+	    $color = $this->content->container->color;
+
         return array(
             'id' => $this->id,
             'title' => $this->title,
@@ -369,6 +376,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             'viewUrl' => $this->content->container->createUrl('/calendar/entry/view', array('id' => $this->id, 'fullCalendar' => '1')),
             'start' => Yii::$app->formatter->asDatetime($this->start_datetime, 'php:c'),
             'end' => $end,
+            'color' => $color,
         );
     }
 

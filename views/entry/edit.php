@@ -5,6 +5,8 @@ use yii\jui\DatePicker;
 use humhub\compat\CActiveForm;
 use humhub\modules\calendar\models\CalendarEntry;
 
+$this->registerJsFile('@web/resources/space/colorpicker/js/bootstrap-colorpicker-modified.js', ['position' => \humhub\components\View::POS_BEGIN]);
+$this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpicker.min.css');
 ?>
 
 
@@ -40,17 +42,26 @@ use humhub\modules\calendar\models\CalendarEntry;
                 <?php echo $form->textArea($calendarEntry, 'description', array('class' => 'form-control', 'rows' => '3', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Description'))); ?>
             </div>
             <div class="form-group">
+                <?php echo $form->labelEx($calendarEntry, 'color'); ?>
+		<div class="input-group event-color-chooser">
+		 <?php echo yii\bootstrap\Html::activeTextInput($calendarEntry, 'color', ['class' => 'form-control', 'id' => 'event-color-picker']); ?>
+		 <span class="input-group-addon"><i></i></span>
+		</div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
                 <div class="checkbox">
                     <label>
                         <?php echo $form->checkBox($calendarEntry, 'is_public', array()); ?> <?php echo $calendarEntry->getAttributeLabel('is_public'); ?>
                     </label>
                 </div>
-            </div>
-            <div class="form-group">
+                </div>
+                <div class="col-md-6">
                 <div class="checkbox">
                     <label>
                         <?php echo $form->checkBox($calendarEntry, 'all_day', array('id' => 'allDayCheckbox')); ?> <?php echo $calendarEntry->getAttributeLabel('all_day'); ?>
                     </label>
+                </div>
                 </div>
             </div>
 
@@ -91,6 +102,8 @@ use humhub\modules\calendar\models\CalendarEntry;
                 <?php echo $form->labelEx($calendarEntry, 'selected_participants'); ?>
                 <?php echo $form->textField($calendarEntry, 'selected_participants', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Participants'))); ?>
             </div>
+
+
         </div>
 
         <div class="modal-footer">
@@ -178,6 +191,14 @@ use humhub\modules\calendar\models\CalendarEntry;
     $('.modal-dialog').removeClass('fadeIn');
     $('.modal-dialog').addClass('shake');
     <?php } ?>
+
+    $('.event-color-chooser').colorpicker({
+        format: 'hex',
+        color: '<?php echo $calendarEntry->color?>',
+        horizontal: true,
+        component: '.input-group-addon',
+        input: '#event-color-picker',
+    });
 
 </script>
 
