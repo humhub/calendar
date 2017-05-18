@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar;
 
 use Yii;
+use yii\helpers\Url;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -10,6 +11,10 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
+    /**
+     * @inheritdoc
+     */
+    public $resourcesPath = 'resources';
 
     /**
      * @inheritdoc
@@ -55,6 +60,14 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         } elseif ($container instanceof User) {
             return Yii::t('CalendarModule.base', 'Adds an calendar for private or public events to your profile and mainmenu.');
         }
+    }
+    
+    
+    public function getConfigUrl()
+    {
+        return Url::to([
+            '/calendar/config'
+        ]);
     }
 
     /**

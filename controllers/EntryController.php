@@ -4,12 +4,16 @@ namespace humhub\modules\calendar\controllers;
 
 use DateTime;
 use DateInterval;
+use humhub\modules\calendar\widgets\FullCalendar;
+use humhub\modules\calendar\widgets\WallEntry;
+use humhub\widgets\ModalDialog;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\models\Setting;
+use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 
@@ -24,22 +28,24 @@ class EntryController extends ContentContainerController
 
     public $hideSidebar = true;
 
-    public function actionView()
+    public function actionView($cal = null)
     {
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
-        if ($calendarEntry == null) {
+        $entry = $this->getCalendarEntry(Yii::$app->request->get('id'));
+
+        if ($entry == null) {
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        $calendarEntryParticipant = CalendarEntryParticipant::findOne(['user_id' => Yii::$app->user->id, 'calendar_entry_id' => $calendarEntry->id]);
+        if ($cal) {
+            $wallEntry = Yii::createObject(['class' => WallEntry::class, 'contentObject' => $entry]);
+            return $this->renderAjax('modal', [
+                'content' => $this->renderAjax('view', ['entry' => $entry]),
+                'entry' => $entry, 'editUrl' => $wallEntry->getEditUrl(),
+                'contentContainer' => $this->contentContainer,
+            ]);
+        }
 
-        return $this->render('view', array(
-                    'calendarEntry' => $calendarEntry,
-                    'calendarEntryParticipant' => $calendarEntryParticipant,
-                    'userCanRespond' => $calendarEntry->canRespond(),
-                    'userAlreadyResponded' => $calendarEntry->hasResponded(),
-                    'contentContainer' => $this->contentContainer,
-        ));
+        return $this->render('view', ['entry' => $entry]);
     }
 
     public function actionRespond()
@@ -59,57 +65,69 @@ class EntryController extends ContentContainerController
                 $calendarEntryParticipant->calendar_entry_id = $calendarEntry->id;
             }
 
-            $calendarEntryParticipant->participation_state = (int) Yii::$app->request->get('type');
+            $calendarEntryParticipant->participation_state = (int)Yii::$app->request->get('type');
             $calendarEntryParticipant->save();
         }
 
-        return $this->redirect($this->contentContainer->createUrl('view', array('id' => $calendarEntry->id)));
+        return $this->asJson([
+            'success' => true
+        ]);
     }
 
-    public function actionEdit()
+    public function actionEdit($id = null, $cal = null)
     {
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
+        $calendarEntry = null;
 
-        if ($calendarEntry == null) {
-            if (!$this->contentContainer->permissionManager->can(new \humhub\modules\calendar\permissions\CreateEntry())) {
-                throw new HttpException(403, 'No permission to add new entries');
-            }
-
+        if (!$id && $this->contentContainer->permissionManager->can(new CreateEntry)) {
             $calendarEntry = new CalendarEntry;
             $calendarEntry->content->container = $this->contentContainer;
-
-            if (Yii::$app->request->get('fullCalendar') == 1) {
-                \humhub\modules\calendar\widgets\FullCalendar::populate($calendarEntry, Yii::$app->timeZone);
+            if ($cal) {
+                FullCalendar::populate($calendarEntry, Yii::$app->timeZone);
             }
-        } elseif (!$calendarEntry->content->canEdit()) {
+        } elseif ($id) {
+            $calendarEntry = $this->getCalendarEntry($id);
+        }
+
+        if (!$calendarEntry || !$calendarEntry->content->canEdit()) {
             throw new HttpException(403, 'No permission to edit this entry');
         }
 
-
-        if ($calendarEntry->all_day) {
-            // Timezone Fix: If all day event, remove time of start/end datetime fields
-            $calendarEntry->start_datetime = preg_replace('/\d{2}:\d{2}:\d{2}$/', '', $calendarEntry->start_datetime);
-            $calendarEntry->end_datetime = preg_replace('/\d{2}:\d{2}:\d{2}$/', '', $calendarEntry->end_datetime);
-            $calendarEntry->start_time = '00:00';
-            $calendarEntry->end_time = '23:59';
+        if ($calendarEntry->isNewRecord || $calendarEntry->all_day) {
+            $calendarEntry->cutTime();
         }
 
-        if ($calendarEntry->load(Yii::$app->request->post()) && $calendarEntry->validate() && $calendarEntry->save()) {
-            // After closing modal refresh calendar or page
-            $output = "<script>";
-            $output .= 'if(typeof $("#calendar").fullCalendar != "undefined") { $("#calendar").fullCalendar("refetchEvents"); } else { location.reload(); }';
-            $output .= "</script>";
-
-            $output .= $this->renderModalClose();
-
-            return $this->renderAjaxContent($output);
+        if ($calendarEntry->load(Yii::$app->request->post()) && $calendarEntry->save()) {
+            return \humhub\widgets\ModalClose::widget(['saved' => true]);
         }
 
         return $this->renderAjax('edit', [
-                    'calendarEntry' => $calendarEntry,
-                    'contentContainer' => $this->contentContainer,
-                    'createFromGlobalCalendar' => false
+            'calendarEntry' => $calendarEntry,
+            'contentContainer' => $this->contentContainer,
+            'createFromGlobalCalendar' => false
         ]);
+    }
+
+    public function actionEditAjax()
+    {
+        $this->forcePostRequest();
+
+        $entry = $this->getCalendarEntry(Yii::$app->request->post('id'));
+
+        if (!$entry) {
+            throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
+        }
+
+        if (!$entry->content->canEdit()) {
+            throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit this event!"));
+        }
+
+        FullCalendar::populate($entry);
+
+        if ($entry->save()) {
+            return $this->asJson(['success' => true]);
+        }
+
+        throw new HttpException(400, "Could not save! " . print_r($entry->getErrors()));
     }
 
     public function actionUserList()
@@ -139,31 +157,10 @@ class EntryController extends ContentContainerController
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
-    public function actionEditAjax()
-    {
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
-
-        if ($calendarEntry == null) {
-            throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
-        }
-
-        if (!$calendarEntry->content->canEdit()) {
-            throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit this event!"));
-        }
-
-        if (Yii::$app->request->get('fullCalendar') == 1) {
-            \humhub\modules\calendar\widgets\FullCalendar::populate($calendarEntry);
-        }
-
-        if ($calendarEntry->validate() && $calendarEntry->save()) {
-            return;
-        }
-
-        throw new HttpException("Could not save!" . print_r($calendarEntry->getErrors(), 1));
-    }
-
     public function actionDelete()
     {
+        $this->forcePostRequest();
+
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
 
         if ($calendarEntry == null) {
@@ -177,7 +174,7 @@ class EntryController extends ContentContainerController
         $calendarEntry->delete();
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderModalClose();
+            $this->asJson(['success' => true]);
         } else {
             return $this->redirect($this->contentContainer->createUrl('/calendar/view/index'));
         }
