@@ -12,3 +12,4 @@ Changelog
 - Enh: Guest calendar access
 - Enh: Added filter to space calendar
 - Enh: Added calendar configuration
+- Fix: Added is public translation

@@ -130,6 +130,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             'start_time' => Yii::t('CalendarModule.base', 'Start Time'),
             'end_time' => Yii::t('CalendarModule.base', 'End Time'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
+            'is_public' => Yii::t('CalendarModule.base', 'Public'),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
         ];
     }
