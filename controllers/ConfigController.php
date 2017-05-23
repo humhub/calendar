@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\drip\controllers;
+namespace humhub\modules\calendar\controllers;
 
 use Yii;
 use humhub\modules\admin\components\Controller;
