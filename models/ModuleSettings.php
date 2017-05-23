@@ -65,6 +65,10 @@ class ModuleSettings extends Model
     
     public function showGlobalCalendarItems()
     {
+        if(Yii::$app->user->isGuest) {
+            return false;
+        }
+        
         return !ModuleSettings::instance()->showIfInstalled || Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
     }
     
