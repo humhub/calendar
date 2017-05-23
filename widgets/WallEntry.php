@@ -3,11 +3,16 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\assets\Assets;
+use humhub\modules\calendar\permissions\ManageEntry;
 use Yii;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 
 class WallEntry extends \humhub\modules\content\widgets\WallEntry
 {
+    /**
+     * @var string
+     */
+    public $managePermission = ManageEntry::class;
 
     /**
      * @inheritdoc
@@ -25,14 +30,14 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     public function run()
     {
         Assets::register($this->getView());
-        $calendarEntryParticipant = CalendarEntryParticipant::find()->where(['user_id' => Yii::$app->user->id, 'calendar_entry_id' => $this->contentObject->id])->one();
+        $entry = $this->contentObject;
 
         return $this->render('wallEntry', [
-                    'calendarEntry' => $this->contentObject,
-                    'calendarEntryParticipant' => $calendarEntryParticipant,
+            'calendarEntry' => $entry,
+            'participantSate' => $entry->getParticipationState(),
+            'contentContainer' => $entry->content->container
         ]);
     }
-
 }
 
 ?>

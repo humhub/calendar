@@ -78,6 +78,7 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         if ($contentContainer !== null) {
             return [
                 new permissions\CreateEntry(),
+                new permissions\ManageEntry(),
             ];
         }
         return [];

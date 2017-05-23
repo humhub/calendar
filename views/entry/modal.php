@@ -12,7 +12,7 @@
         <?= $content ?>
     </div>
     <div class="modal-footer" style="padding-top:0px">
-        <?php if($entry->content->canEdit()): ?>
+        <?php if($canManageEntries): ?>
             <button data-action-click="calendar.editModal"  data-ui-loader
                     data-action-url="<?= $editUrl ?>"
                     data-action-target="[data-content-key='<?= $entry->content->id ?>']"

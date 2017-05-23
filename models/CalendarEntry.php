@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\models;
 
+use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\content\models\Content;
 use humhub\modules\search\interfaces\Searchable;
 use Yii;
@@ -51,6 +52,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
      * This attributes are used for time input
      */
     public $selected_participants = "";
+
+    /**
+     * @inheritdoc
+     */
+    public $managePermission = ManageEntry::class;
 
     /**
      * Times

@@ -4,9 +4,7 @@ use yii\helpers\Html;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntry;
 
-$contentContainer = $calendarEntry->content->container;
 $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable('info');
-$participantSate = $calendarEntry->getParticipationState();
 ?>
 
 <div class="media event">

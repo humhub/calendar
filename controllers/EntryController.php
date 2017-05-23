@@ -4,6 +4,7 @@ namespace humhub\modules\calendar\controllers;
 
 use DateTime;
 use DateInterval;
+use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\calendar\widgets\WallEntry;
 use humhub\widgets\ModalDialog;
@@ -41,6 +42,7 @@ class EntryController extends ContentContainerController
             return $this->renderAjax('modal', [
                 'content' => $this->renderAjax('view', ['entry' => $entry]),
                 'entry' => $entry, 'editUrl' => $wallEntry->getEditUrl(),
+                'canManageEntries' => $this->canManageEntries(),
                 'contentContainer' => $this->contentContainer,
             ]);
         }
@@ -78,7 +80,7 @@ class EntryController extends ContentContainerController
     {
         $calendarEntry = null;
 
-        if (!$id && $this->contentContainer->permissionManager->can(new CreateEntry)) {
+        if (!$id && $this->canCreateEntries()) {
             $calendarEntry = new CalendarEntry;
             $calendarEntry->content->container = $this->contentContainer;
             if ($cal) {
@@ -88,7 +90,7 @@ class EntryController extends ContentContainerController
             $calendarEntry = $this->getCalendarEntry($id);
         }
 
-        if (!$calendarEntry || !$calendarEntry->content->canEdit()) {
+        if (!$calendarEntry || !$this->canManageEntries()) {
             throw new HttpException(403, 'No permission to edit this entry');
         }
 
@@ -117,7 +119,7 @@ class EntryController extends ContentContainerController
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        if (!$entry->content->canEdit()) {
+        if (!$this->canManageEntries()) {
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit this event!"));
         }
 
@@ -167,7 +169,7 @@ class EntryController extends ContentContainerController
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        if (!$calendarEntry->content->canEdit()) {
+        if (!$this->canManageEntries()) {
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to delete this event!"));
         }
 
@@ -191,4 +193,24 @@ class EntryController extends ContentContainerController
         return CalendarEntry::find()->contentContainer($this->contentContainer)->readable()->where(['calendar_entry.id' => $id])->one();
     }
 
+    /**
+     * Checks the CreatEntry permission for the given user on the given contentContainer.
+     * @return bool
+     */
+    private function canCreateEntries()
+    {
+        return $this->contentContainer->permissionManager->can(new CreateEntry);
+    }
+
+    /**
+     * Checks the ManageEntry permission for the given user on the given contentContainer.
+     *
+     * Todo: After 1.2.1 use $entry->content->canEdit();
+     *
+     * @return bool
+     */
+    private function canManageEntries()
+    {
+        return $this->contentContainer->permissionManager->can(new ManageEntry);
+    }
 }
