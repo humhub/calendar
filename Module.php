@@ -11,6 +11,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
+
     /**
      * @inheritdoc
      */
@@ -61,12 +62,11 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
             return Yii::t('CalendarModule.base', 'Adds an calendar for private or public events to your profile and mainmenu.');
         }
     }
-    
-    
+
     public function getConfigUrl()
     {
         return Url::to([
-            '/calendar/config'
+                    '/calendar/config'
         ]);
     }
 
@@ -82,6 +82,19 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
             ];
         }
         return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        // Fix prior 1.2.1 without set formatter timeZone
+        // https://github.com/humhub/humhub/commit/3a06a3816131c3c10659b65e70422a8b8bdca15c#diff-6245cc1612ecb552c18a2e5a1d9bbca2c
+        if (empty(Yii::$app->formatter->timeZone)) {
+            Yii::$app->formatter->timeZone = Yii::$app->timeZone;
+        }
+        return parent::beforeAction($action);
     }
 
 }
