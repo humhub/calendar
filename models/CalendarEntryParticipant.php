@@ -79,13 +79,15 @@ class CalendarEntryParticipant extends ActiveRecord
             $activity = new \humhub\modules\calendar\activities\ResponseMaybe();
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_DECLINED) {
             $activity = new \humhub\modules\calendar\activities\ResponseDeclined();
-        } else {
+        } else if(!$this->participation_state == self::PARTICIPATION_STATE_INVITED) {
             throw new \yii\base\Exception("Invalid participation state!");
         }
 
-        $activity->source = $this->calendarEntry;
-        $activity->originator = $this->user;
-        $activity->create();
+        if($activity) {
+            $activity->source = $this->calendarEntry;
+            $activity->originator = $this->user;
+            $activity->create();
+        }
 
         return parent::afterSave($insert, $changedAttributes);
     }

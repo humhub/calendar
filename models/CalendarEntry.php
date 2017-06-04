@@ -2,14 +2,18 @@
 
 namespace humhub\modules\calendar\models;
 
+use humhub\modules\calendar\permissions\ManageEntry;
+use humhub\modules\content\models\Content;
+use humhub\modules\search\interfaces\Searchable;
+use Yii;
 use DateTime;
 use DateInterval;
-use Yii;
 use yii\base\Exception;
 use humhub\libs\DbDateValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\user\models\User;
 
 /**
  * This is the model class for table "calendar_entry".
@@ -26,8 +30,9 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
  * @property integer $recur_type
  * @property integer $recur_interval
  * @property string $recur_end
+ * @property string $color
  */
-class CalendarEntry extends ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
+class CalendarEntry extends ContentActiveRecord implements Searchable
 {
 
     // Atm not attach meetings to wall
@@ -41,12 +46,17 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     /**
      * Flag for Entry Form to set this content to public
      */
-    public $is_public = false;
+    public $is_public = Content::VISIBILITY_PUBLIC;
 
     /**
      * This attributes are used for time input
      */
     public $selected_participants = "";
+
+    /**
+     * @inheritdoc
+     */
+    public $managePermission = ManageEntry::class;
 
     /**
      * Times
@@ -88,6 +98,11 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
         return 'calendar_entry';
     }
 
+    public function getParticipants()
+    {
+        return $this->hasMany(CalendarEntryParticipant::className(), ['calendar_entry_id' => 'id']);
+    }
+
     /**
      * @inheritdoc
      */
@@ -95,10 +110,11 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
     {
         return [
             [['title', 'start_datetime', 'end_datetime'], 'required'],
+            ['color', 'string'],
             [['start_time', 'end_time'], 'date', 'format' => 'php:H:i'],
             [['start_datetime'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time'],
             [['end_datetime'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'end_time'],
-            [['is_public', 'all_day'], 'boolean'],
+            [['is_public', 'all_day'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => [self::PARTICIPATION_MODE_ALL, self::PARTICIPATION_MODE_INVITE, self::PARTICIPATION_MODE_NONE]],
             [['end_datetime'], 'validateEndTime'],
@@ -111,7 +127,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id' => Yii::t('CalendarModule.base', 'ID'),
             'title' => Yii::t('CalendarModule.base', 'Title'),
             'description' => Yii::t('CalendarModule.base', 'Description'),
@@ -120,8 +136,9 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             'start_time' => Yii::t('CalendarModule.base', 'Start Time'),
             'end_time' => Yii::t('CalendarModule.base', 'End Time'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
+            'is_public' => Yii::t('CalendarModule.base', 'Public'),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
-        );
+        ];
     }
 
     /**
@@ -136,155 +153,6 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
         if (new \DateTime($this->start_datetime) >= new \DateTime($this->end_datetime)) {
             $this->addError($attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
         }
-    }
-    
-    /**
-     * Searches for container calendar entries with the start and/or the end date within a given range.
-     * This will include all entries ending or starting within the given range.
-     * @param DateTime $start start range
-     * @param DateTime $end end range
-     * @param ContentContainerActiveRecord $contentContainer
-     * @param type $limit
-     * @return type
-     */
-    public static function getContainerEntriesByOpenRange(DateTime $start, DateTime $end, ContentContainerActiveRecord $contentContainer, $limit = 0)
-    {
-        $entries = array();
-        
-        $query = self::find()->contentContainer($contentContainer)->readable();
-        //Search for all container entries with start and/or end within the given range
-        $query->andFilterWhere(
-                    ['or',
-                        ['and',
-                            ['>=', 'start_datetime', $start->format('Y-m-d H:i:s')],
-                            ['<=', 'start_datetime', $end->format('Y-m-d H:i:s')]
-                        ],
-                        ['and',
-                            ['>=', 'end_datetime', $start->format('Y-m-d H:i:s')],
-                            ['<=', 'end_datetime', $end->format('Y-m-d H:i:s')]
-                        ]
-                    ]
-        );
-        
-        $query->orderBy('start_datetime ASC');
-
-        if ($limit != 0) {
-            $query->limit($limit);
-        }
-
-        foreach ($query->all() as $entry) {
-            $entries[] = $entry;
-        }
-        return $entries;
-    }
-
-    public static function getContainerEntriesByRange(DateTime $start, DateTime $end, ContentContainerActiveRecord $contentContainer, $limit = 0)
-    {
-        $entries = array();
-
-        // Limit Range to one month
-        $interval = $start->diff($end);
-        if ($interval->days > 50) {
-            throw new Exception('Range maximum exceeded!');
-        }
-
-        $query = self::find()->contentContainer($contentContainer)->readable();
-        $query->andWhere(['>=', 'start_datetime', $start->format('Y-m-d H:i:s')]);
-        $query->andWhere(['<=', 'end_datetime', $end->format('Y-m-d H:i:s')]);
-        $query->orderBy('start_datetime ASC');
-
-        if ($limit != 0) {
-            $query->limit($limit);
-        }
-
-        foreach ($query->all() as $entry) {
-            $entries[] = $entry;
-        }
-        return $entries;
-    }
-
-    public static function getEntriesByRange(DateTime $start, DateTime $end, $includes = array(), $filters = array(), $limit = 0)
-    {
-        // Limit Range to one month
-        $interval = $start->diff($end);
-        if ($interval->days > 50) {
-            throw new Exception('Range maximum exceeded!');
-        }
-
-        $query = self::find();
-        $query->andWhere(['>=', 'start_datetime', $start->format('Y-m-d H:i:s')]);
-        $query->andWhere(['<=', 'end_datetime', $end->format('Y-m-d H:i:s')]);
-        $query->orderBy('start_datetime ASC');
-        $query->userRelated($includes);
-        $query->leftJoin('calendar_entry_participant', 'calendar_entry.id=calendar_entry_participant.calendar_entry_id AND calendar_entry_participant.user_id=:userId', [':userId' => Yii::$app->user->id]);
-        $query->readable();
-
-        // Attach filters
-        if (in_array(self::FILTER_PARTICIPATE, $filters)) {
-            $query->andWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
-        }
-        if (in_array(self::FILTER_INVITED, $filters)) {
-            $query->andWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED]);
-        }
-        if (in_array(self::FILTER_RESPONDED, $filters)) {
-            $query->andWhere(['IS NOT', 'calendar_entry_participant.id', new \yii\db\Expression('NULL')]);
-        }
-        if (in_array(self::FILTER_NOT_RESPONDED, $filters)) {
-            $query->andWhere(['IS', 'calendar_entry_participant.id', new \yii\db\Expression('NULL')]);
-        }
-        if (in_array(self::FILTER_MINE, $filters)) {
-            $query->andWhere(['content.contentcontainer_id' => Yii::$app->user->getIdentity()->contentcontainer_id]);
-        }
-
-        if ($limit != 0) {
-            $query->limit($limit);
-        }
-
-        $entries = array();
-        foreach ($query->all() as $entry) {
-            $entries[] = $entry;
-        }
-
-        return $entries;
-    }
-
-    public static function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5)
-    {
-        $entries = array();
-        $start = new DateTime();
-
-        $query = CalendarEntry::find();
-        $query->orderBy('start_datetime ASC');
-
-        if ($daysInFuture > 0) {
-            $startEnd = new DateTime();
-            $startEnd->add(new DateInterval("P" . $daysInFuture . "D"));
-            $query->andWhere(['>=', 'start_datetime', $start->format('Y-m-d H:i:s')]);
-            $query->andWhere(['<=', 'end_datetime', $startEnd->format('Y-m-d H:i:s')]);
-        } else {
-            $query->andWhere(['>=', 'start_datetime', $start->format('Y-m-d H:i:s')]);
-        }
-
-        if ($contentContainer == null) {
-            // When no contentcontainer is specified - limit to events where current user participate
-            $query->leftJoin('calendar_entry_participant', 'calendar_entry.id=calendar_entry_participant.calendar_entry_id AND calendar_entry_participant.user_id=:userId', [':userId' => Yii::$app->user->id]);
-            $query->andWhere(['IS NOT', 'calendar_entry_participant.id', new \yii\db\Expression('NULL')]);
-        }
-
-        if ($limit != 0) {
-            $query->limit($limit);
-        }
-
-        if ($contentContainer !== null) {
-            $query->contentContainer($contentContainer);
-        }
-
-        foreach ($query->all() as $entry) {
-            if ($entry->content->canRead()) {
-                $entries[] = $entry;
-            }
-        }
-        return $entries;
     }
 
     public function afterFind()
@@ -309,7 +177,7 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
 
     public function beforeSave($insert)
     {
-        $this->content->visibility = $this->is_public;
+        $this->content->visibility = $this->is_public ? Content::VISIBILITY_PUBLIC : Content::VISIBILITY_PRIVATE;
 
         $startDateTime = new \DateTime($this->start_datetime);
         $endDateTime = new \DateTime($this->end_datetime);
@@ -327,17 +195,46 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
         return parent::beforeSave($insert);
     }
 
+    public function inviteParticipant($user)
+    {
+        $this->setParticipant($user, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED);
+    }
+
+    public function setParticipant($user, $state = CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED)
+    {
+        $participant = $this->findParticipant($user);
+
+        if (!$participant) {
+            $participant = new CalendarEntryParticipant;
+        }
+
+        $participant->user_id = $user->id;
+        $participant->calendar_entry_id = $this->id;
+        $participant->participation_state = $state;
+        $participant->save();
+    }
+
+    /**
+     * Finds a participant instance for the given user or the logged in user if no user provided.
+     *
+     * @param User $user
+     * @return CalendarEntryParticipant
+     */
+    public function findParticipant(User $user = null)
+    {
+        if (!$user) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        return CalendarEntryParticipant::findOne(['user_id' => $user->id, 'calendar_entry_id' => $this->id]);
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
 
         if ($insert) {
-            // Creator automatically attends to this event
-            $participant = new CalendarEntryParticipant;
-            $participant->user_id = Yii::$app->user->id;
-            $participant->calendar_entry_id = $this->id;
-            $participant->participation_state = CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED;
-            $participant->save();
+            $this->setParticipant(Yii::$app->user->getIdentity());
         }
 
         return;
@@ -360,16 +257,22 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
             $end = $endDateTime->format('Y-m-d');
         }
 
-        return array(
+        return [
             'id' => $this->id,
             'title' => $this->title,
             'editable' => $this->content->canWrite(),
-            'allDay' => ($this->all_day) ? true : false,
-            'updateUrl' => $this->content->container->createUrl('/calendar/entry/edit-ajax', array('id' => $this->id, 'end_datetime' => '-end-', 'start_datetime' => '-start-', 'fullCalendar' => '1')),
-            'viewUrl' => $this->content->container->createUrl('/calendar/entry/view', array('id' => $this->id, 'fullCalendar' => '1')),
+            'backgroundColor' => $this->color,
+            'allDay' => $this->all_day,
+            'updateUrl' => $this->content->container->createUrl('/calendar/entry/edit-ajax', ['id' => $this->id, 'end_datetime' => '-end-', 'start_datetime' => '-start-', 'fullCalendar' => '1']),
+            'viewUrl' => $this->content->container->createUrl('/calendar/entry/view', ['id' => $this->id, 'cal' => '1']),
             'start' => Yii::$app->formatter->asDatetime($this->start_datetime, 'php:c'),
             'end' => $end,
-        );
+        ];
+    }
+
+    public function getUrl()
+    {
+        return $this->content->container->createUrl('/calendar/entry/view', ['id' => $this->id, 'fullCalendar' => '1']);
     }
 
     /**
@@ -451,15 +354,36 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
      *
      * @return int days
      */
-    public function GetDurationDays()
+    public function getDurationDays()
     {
-
         $s = new DateTime($this->start_datetime);
         $e = new DateTime($this->end_datetime);
 
         $interval = $s->diff($e, true);
 
         return $interval->days + 1;
+    }
+
+    /**
+     * Checks if the event is currently running.
+     */
+    public function isRunning()
+    {
+        $s = new DateTime($this->start_datetime);
+        $e = new DateTime($this->end_datetime);
+
+        $now = new DateTime();
+
+        return $now >= $s && $now <= $e;
+    }
+
+    /**
+     * Checks the offset till the start date.
+     */
+    public function getOffsetDays()
+    {
+        $s = new DateTime($this->start_datetime);
+        return $s->diff(new DateTime)->days;
     }
 
     /**
@@ -483,10 +407,94 @@ class CalendarEntry extends ContentActiveRecord implements \humhub\modules\searc
      */
     public function getSearchAttributes()
     {
-        return array(
+        return [
             'title' => $this->title,
             'description' => $this->description,
-        );
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function cutTime()
+    {
+        $this->start_datetime = preg_replace('/\d{2}:\d{2}:\d{2}$/', '', $this->start_datetime);
+        $this->end_datetime = preg_replace('/\d{2}:\d{2}:\d{2}$/', '', $this->end_datetime);
+        $this->start_time = '00:00';
+        $this->end_time = '23:59';
+    }
+
+    /**
+     * Returns all entries filtered by the given $includes and $filters within a given range.
+     * Note this function uses an open range which will include all events which start and/or end within the given search interval.
+     *
+     * @param DateTime $start
+     * @param DateTime $end
+     * @param array $includes
+     * @param array $filters
+     * @param int $limit
+     * @return CalendarEntry[]
+     * @throws Exception
+     * @see CalendarEntryQuery
+     */
+    public static function getEntriesByRange(DateTime $start, DateTime $end, $includes = [], $filters = [], $limit = 50)
+    {
+        // Limit Range to one month
+        $interval = $start->diff($end);
+        if ($interval->days > 50) {
+            throw new Exception('Range maximum exceeded!');
+        }
+
+        return CalendarEntryQuery::find()
+            ->from($start)->to($end)
+            ->filter($filters)
+            ->userRelated($includes)
+            ->limit($limit)->all();
+    }
+
+    /**
+     * Returns all entries filtered by the given $includes and $filters within a given range.
+     * Note this function uses an open range which will include all events which start and/or end within the given search interval.
+     *
+     * @param DateTime $start
+     * @param DateTime $end
+     * @param ContentContainerActiveRecord $container
+     * @param array $filters
+     * @param int $limit
+     * @return CalendarEntry[]
+     * @throws Exception
+     * @see CalendarEntryQuery
+     */
+    public static function getContainerEntriesByRange(DateTime $start, DateTime $end, ContentContainerActiveRecord $container, $filters = [], $limit = 50)
+    {
+        // Limit Range to one month
+        $interval = $start->diff($end);
+        if ($interval->days > 50) {
+            throw new Exception('Range maximum exceeded!');
+        }
+
+        return CalendarEntryQuery::find()
+            ->container($container)
+            ->from($start)->to($end)
+            ->filter($filters)
+            ->limit($limit)->all();
+    }
+
+    /**
+     * Returns a list of upcoming events for the given $contentContainer.
+     *
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @param int $daysInFuture
+     * @param int $limit
+     * @return CalendarEntry[]
+     */
+    public static function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5)
+    {
+        if ($contentContainer) {
+            return CalendarEntryQuery::find()->container($contentContainer)->days($daysInFuture)->limit($limit)->all();
+        } else {
+            return CalendarEntryQuery::find()->userRelated()->days($daysInFuture)->limit($limit)->all();
+        }
     }
 
 }

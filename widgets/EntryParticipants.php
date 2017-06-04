@@ -4,9 +4,9 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\user\models\User;
+
 /**
- * Description of CalendarEntryDateWidget
+ * Description of EntryParticipants
  *
  * @author luke
  */

@@ -2,47 +2,65 @@
 
 use yii\helpers\Html;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\CalendarEntry;
 
-$contentContainer = $calendarEntry->content->container;
+$color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable('info');
 ?>
 
-
 <div class="media event">
-    <div class="media-body">
-        <div class="row">
-            <div class="col-md-1"><i class="fa fa-calendar colorDefault" style="font-size: 35px;"></i><br><br></div>
-            <div class="col-md-11">
-                <h4 class="media-heading"><?php echo Html::encode($calendarEntry->title); ?>
-                    <?php if ($calendarEntry->content->canWrite()) : ?>
-                        <?php echo Html::a('<i class="fa fa-pencil"></i>', $contentContainer->createUrl('/calendar/entry/edit', array('id' => $calendarEntry->id)), array("data-target" => "#globalModal", "data-toggle" => "tooltip", "data-placement" => "top", "title" => Yii::t('CalendarModule.views_entry_view', "Edit event"), 'class' => 'tt')); ?>
-                    <?php endif; ?>
-                </h4>
-                <h5>
-                    <?php echo humhub\modules\calendar\widgets\EntryDate::widget(array('calendarEntry' => $calendarEntry)); ?>
-                </h5>
-            </div>
+    <div class="media-body" style="padding-left:10px; border-left: 3px solid <?= $color ?>">
+        <div class="clearfix">
+            <a href="<?= $calendarEntry->getUrl(); ?>" class="pull-left" style="margin-right: 10px">
+                <i class="fa fa-calendar colorDefault" style="font-size: 35px;"></i>
+            </a>
+            <h4 class="media-heading">
+                <a href="<?= $calendarEntry->getUrl(); ?>">
+                    <b><?= Html::encode($calendarEntry->title); ?></b>
+                </a>
+            </h4>
+            <h5>
+                <?= humhub\modules\calendar\widgets\EntryDate::widget(['entry' => $calendarEntry]); ?>
+            </h5>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <?php if ($calendarEntry->description != ""): ?>
-                    <?php echo nl2br(Html::encode($calendarEntry->description)); ?>
+                    <?= nl2br(Html::encode($calendarEntry->description)); ?>
+                    <br>
                 <?php endif; ?>
-                <br><br>
-                <?php echo \humhub\modules\calendar\widgets\EntryParticipants::widget(array('calendarEntry' => $calendarEntry)); ?>
-                <br>
-                <?php if ($calendarEntry->canRespond()): ?>
+                <?php if ($calendarEntry->participation_mode != CalendarEntry::PARTICIPATION_MODE_NONE) : ?>
+                    <br>
+                    <?= \humhub\modules\calendar\widgets\EntryParticipants::widget(['calendarEntry' => $calendarEntry]); ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <?php if ($calendarEntry->canRespond()): ?>
+       <div class="row" style="padding-top:10px">
+            <div class="col-md-12">
+
                     <?php
-                    $cssState = array("", "", "", "");
-                    $cssState[$calendarEntry->getParticipationState()] = "disabled";
+                    $cssState = ["", "", "", ""];
+                    $cssState[$participantSate] = "disabled";
                     ?>
-                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Attend"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-info '. $cssState[3])); ?>
-                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Maybe"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default '. $cssState[2])); ?>
-                    <?php echo Html::a(Yii::t('CalendarModule.views_entry_view', "Decline"), $contentContainer->createUrl('/calendar/entry/respond', array('type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id)), array('class' => 'btn btn-default '. $cssState[1])); ?>
-                <?php endif; ?>
+                    <button data-action-click="calendar.respond" class="btn btn-default btn-sm" data-ui-loader <?= $cssState[CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED] ?>
+                            data-action-url="<?= $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id]) ?>">
+                        <?= $participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED ? '<i class="fa fa-check"></i>' : '' ?>
+                        <?= Yii::t('CalendarModule.views_entry_view', "Attend") ?>
+                    </button>
+                    <button data-action-click="calendar.respond" class="btn btn-default btn-sm" data-ui-loader  <?= $cssState[CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE] ?>
+                            data-action-url="<?= $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id]) ?>">
+                        <?= $participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE ? '<i class="fa fa-check"></i>' : ''?>
+                        <?= Yii::t('CalendarModule.views_entry_view', "Maybe") ?>
+                    </button>
+                    <button data-action-click="calendar.respond" class="btn btn-default btn-sm" data-ui-loader  <?= $cssState[CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED] ?>
+                            data-action-url="<?= $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id]) ?>">
+                        <?= $participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED ? '<i class="fa fa-check"></i>' : ''?>
+                        <?= Yii::t('CalendarModule.views_entry_view', "Decline") ?>
+                    </button>
 
             </div>
         </div>
-
-    </div>
+    <?php endif; ?>
 </div>
 

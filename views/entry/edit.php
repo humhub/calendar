@@ -1,143 +1,95 @@
 <?php
 
-use yii\helpers\Html;
 use yii\jui\DatePicker;
-use humhub\compat\CActiveForm;
+use yii\widgets\ActiveForm;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\widgets\ModalDialog;
 
+\humhub\modules\calendar\assets\Assets::register($this);
+
+$header = ($calendarEntry->isNewRecord) ? Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> event') :
+        Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> event');
 ?>
 
 
-<?php $form = CActiveForm::begin(); ?>
-<div class="modal-dialog modal-dialog-normal animated fadeIn">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">
-                <?php if (!$calendarEntry->isNewRecord) : ?>
-                    <?php echo Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> event'); ?>
-                <?php else: ?>
-                    <?php echo Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> event'); ?>
+<?php ModalDialog::begin(['header' => $header]) ?>
+    <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+            <div class="modal-body">
+
+                <?php if ($createFromGlobalCalendar): ?>
+                    <p><?= Yii::t('CalendarModule.views_entry_edit', '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.'); ?></p>
                 <?php endif; ?>
-            </h4>
-        </div>
-        <div class="modal-body">
 
-            <?php if ($createFromGlobalCalendar): ?>
-                <p><?php echo Yii::t('CalendarModule.views_entry_edit', '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.'); ?></p>
-            <?php endif; ?>
-
-            <?php echo $form->errorSummary($calendarEntry); ?>
-
-
-            <div class="form-group">
-                <?php echo $form->labelEx($calendarEntry, 'title'); ?>
-                <?php echo $form->textField($calendarEntry, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title'))); ?>
-            </div>
-
-            <div class="form-group">
-                <?php echo $form->labelEx($calendarEntry, 'description'); ?>
-                <?php echo $form->textArea($calendarEntry, 'description', array('class' => 'form-control', 'rows' => '3', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Description'))); ?>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <?php echo $form->checkBox($calendarEntry, 'is_public', array()); ?> <?php echo $calendarEntry->getAttributeLabel('is_public'); ?>
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <?php echo $form->checkBox($calendarEntry, 'all_day', array('id' => 'allDayCheckbox')); ?> <?php echo $calendarEntry->getAttributeLabel('all_day'); ?>
-                    </label>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <?php echo $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'], 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
-                </div>
-                <div class="col-md-6">
-                    <div class="timeFields">
-                        <?php echo $form->field($calendarEntry, 'start_time')->textInput(['placeholder' => 'hh:mm']); ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div
-                    class="col-md-6"><?php echo $form->field($calendarEntry, 'end_datetime')->widget(DatePicker::className(), ['dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'], 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?></div>
-                <div class="col-md-6">
-                    <div class="timeFields">
-                        <?php echo $form->field($calendarEntry, 'end_time')->textInput(['placeholder' => 'hh:mm']); ?>
-                    </div>
-                </div>
-            </div>
-            <hr>
-
-            <div class="form-group">
+                    
                 <?php
-                $modes = array(
+                    if($calendarEntry->color === null) {
+                        $calendarEntry->color = $this->theme->variable('info');
+                    }
+                ?>
+
+                <div id="event-color-field" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
+                    <?= humhub\widgets\ColorPickerField::widget(['model' => $calendarEntry, 'field' => 'color', 'container' => 'event-color-field']); ?>
+
+                    <?= $form->field($calendarEntry, 'title', ['template' => '
+                        {label}
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i></i>
+                            </span>
+                            {input}
+                        </div>
+                        {error}{hint}'
+                        ])->textInput(['placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title'), 'maxlength' => 45 ])->label(false) ?>
+                </div>
+                    
+                <?= $form->field($calendarEntry, 'description')->textarea(['rows' => '3', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Description')]) ?>   
+                <?= $form->field($calendarEntry, 'is_public')->checkbox() ?>   
+                <?= $form->field($calendarEntry, 'all_day')->checkbox(['id' => 'allDayCheckbox']) ?>   
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <?= $form->field($calendarEntry, 'start_datetime')->widget(DatePicker::className(), ['dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'], 'clientOptions' => [], 'options' => ['class' => 'form-control']]) ?>   
+                    </div>
+                    <div class="col-md-6 timeField" >
+                        <?= $form->field($calendarEntry, 'start_time')->textInput(['placeholder' => 'hh:mm']); ?>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <?= $form->field($calendarEntry, 'end_datetime')->widget(DatePicker::className(), ['dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'], 'clientOptions' => [], 'options' => ['class' => 'form-control']]) ?>   
+                    </div>
+                    <div class="col-md-6 timeField">
+                        <?= $form->field($calendarEntry, 'end_time')->textInput(['placeholder' => 'hh:mm']); ?>
+                    </div>
+                </div>
+
+                <?php
+                $modes = [
                     CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
                     //CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.base', 'Select participants'),
                     CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
-                );
+                ];
                 ?>
-                <?php echo $form->labelEx($calendarEntry, 'participant_mode'); ?>
-                <?php echo $form->dropDownList($calendarEntry, 'participation_mode', $modes, array('id' => 'participation_mode', 'class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')), array('pickTime' => true)); ?>
-            </div>
-            <div class="form-group" id="selectedUsersField">
-                <?php echo $form->labelEx($calendarEntry, 'selected_participants'); ?>
-                <?php echo $form->textField($calendarEntry, 'selected_participants', array('class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Participants'))); ?>
-            </div>
-        </div>
 
-        <div class="modal-footer">
-            <div class="row">
-                <div class="col-md-8 text-left">
-                    <?php
-                    echo \humhub\widgets\AjaxButton::widget([
-                        'label' => Yii::t('CalendarModule.views_entry_edit', 'Save'),
-                        'ajaxOptions' => [
-                            'type' => 'POST',
-                            'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                            'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                            'url' => $contentContainer->createUrl('/calendar/entry/edit', ['id' => $calendarEntry->id]),
-                        ],
-                        'htmlOptions' => [
-                            'class' => 'btn btn-primary'
-                        ]
-                    ]);
-                    ?>
-                    <button type="button" class="btn btn-primary"
-                            data-dismiss="modal"><?php echo Yii::t('CalendarModule.views_entry_edit', 'Close'); ?></button>
-                </div>
-                <div class="col-md-4 text-right">
-                    <?php
-                    if (!$calendarEntry->isNewRecord) {
-                        echo Html::a(Yii::t('CalendarModule.views_entry_edit', 'Delete'), $contentContainer->createUrl('//calendar/entry/delete', array('id' => $calendarEntry->id)), array('class' => 'btn btn-danger'));
-                    }
-                    ?>
+                <?= $form->field($calendarEntry, 'participation_mode')->dropDownList($modes, ['id' => 'participation_mode', 'class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'End Date/Time')])?>
+                <?php // $form->field($calendarEntry, 'selected_participants')->textInput($modes, ['class' => 'form-control', 'placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Participants')])?>
+            </div>
 
+            <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"
+                                data-action-click="ui.modal.submit"  
+                                data-action-url="<?= $contentContainer->createUrl('/calendar/entry/edit', ['id' => $calendarEntry->id]) ?>" data-ui-loader>
+                                    <?= Yii::t('base', 'Save') ?>
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <?= Yii::t('base', 'Close'); ?>
+                        </button>
+                    </div>
                 </div>
             </div>
-
-
-
-            <div id="event-loader" class="loader loader-modal hidden">
-                <div class="sk-spinner sk-spinner-three-bounce">
-                    <div class="sk-bounce1"></div>
-                    <div class="sk-bounce2"></div>
-                    <div class="sk-bounce3"></div>
-                </div>
-            </div>
-
-        </div>
-
-
-    </div>
-</div>
+    <?php ActiveForm::end(); ?>
+<?php ModalDialog::end() ?>
 
 <script type="text/javascript">
     $("#calendarentry-start_time").format({type: "daytime"});
@@ -145,28 +97,28 @@ use humhub\modules\calendar\models\CalendarEntry;
 
 
     $("#allDayCheckbox").change(function () {
-        if ($("#allDayCheckbox").prop('checked')) {
-            $(".timeFields").hide();
+        if ($(this).prop('checked')) {
+            $(".timeField").hide();
         } else {
-            $(".timeFields").show();
+            $(".timeField").show();
         }
     });
 
     if ($("#allDayCheckbox").prop('checked')) {
-        $(".timeFields").hide();
+        $(".timeField").hide();
     } else {
-        $(".timeFields").show();
+        $(".timeField").show();
     }
 
 
     $("#participation_mode").change(function () {
-        if ($("#participation_mode").val() == <?php echo CalendarEntry::PARTICIPATION_MODE_INVITE; ?>) {
+        if ($("#participation_mode").val() == <?= CalendarEntry::PARTICIPATION_MODE_INVITE; ?>) {
             $("#selectedUsersField").show();
         } else {
             $("#selectedUsersField").hide();
         }
     });
-    if ($("#participation_mode").val() != <?php echo CalendarEntry::PARTICIPATION_MODE_INVITE; ?>) {
+    if ($("#participation_mode").val() != <?= CalendarEntry::PARTICIPATION_MODE_INVITE; ?>) {
         $("#selectedUsersField").hide();
     }
 
@@ -174,12 +126,9 @@ use humhub\modules\calendar\models\CalendarEntry;
     $('#CalendarEntry_title').focus();
 
     // Shake modal after wrong validation
-    <?php if ($calendarEntry->hasErrors()) { ?>
-    $('.modal-dialog').removeClass('fadeIn');
-    $('.modal-dialog').addClass('shake');
-    <?php } ?>
+<?php if ($calendarEntry->hasErrors()) { ?>
+        $('.modal-dialog').removeClass('fadeIn');
+        $('.modal-dialog').addClass('shake');
+<?php } ?>
 
 </script>
-
-
-<?php CActiveForm::end(); ?>

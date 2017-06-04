@@ -4,6 +4,7 @@ namespace humhub\modules\calendar\controllers;
 
 use DateTime;
 use Yii;
+use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar\models\CalendarEntry;
 
@@ -20,30 +21,24 @@ class ViewController extends ContentContainerController
 
     public function actionIndex()
     {
-        $canAddEntries = $this->contentContainer->permissionManager->can(new \humhub\modules\calendar\permissions\CreateEntry());
-
         return $this->render('index', [
-                    'contentContainer' => $this->contentContainer,
-                    'canAddEntries' => $canAddEntries
+            'contentContainer' => $this->contentContainer,
+            'canAddEntries' => $this->contentContainer->permissionManager->can(new CreateEntry()),
+            'filters' => [],
         ]);
     }
 
-    public function actionLoadAjax()
+    public function actionLoadAjax($start, $end)
     {
-        Yii::$app->response->format = 'json';
+        $result = [];
 
-        $output = array();
+        $filters = Yii::$app->request->get('filters', []);
 
-        $startDate = new DateTime(Yii::$app->request->get('start'));
-        $endDate = new DateTime(Yii::$app->request->get('end'));
-
-        $entries = CalendarEntry::getContainerEntriesByOpenRange($startDate, $endDate, $this->contentContainer);
-
-        foreach ($entries as $entry) {
-            $output[] = $entry->getFullCalendarArray();
+        foreach (CalendarEntry::getContainerEntriesByRange(new DateTime($start), new DateTime($end), $this->contentContainer, $filters) as $entry) {
+            $result[] = $entry->getFullCalendarArray();
         }
 
-        return $output;
+        return $this->asJson($result);
     }
 
 }

@@ -6,26 +6,32 @@ use DateTime;
 use humhub\components\Widget;
 
 /**
- * Description of CalendarEntryDateWidget
+ * Description of CalendarEntryDate
  *
  * @author luke
  */
 class EntryDate extends Widget
 {
 
-    public $calendarEntry;
+    /**
+     * @var \humhub\modules\calendar\models\CalendarEntry 
+     */
+    public $entry;
 
+    /**
+     * @inerhitdoc
+     */
     public function run()
     {
-        $start = new DateTime($this->calendarEntry->start_datetime);
-        $end = new DateTime($this->calendarEntry->end_datetime);
+        $start = new DateTime($this->entry->start_datetime);
+        $end = new DateTime($this->entry->end_datetime);
 
-        return $this->render('displayDate', array(
-                    'calendarEntry' => $this->calendarEntry,
-                    'durationDays' => $this->calendarEntry->GetDurationDays(),
+        return $this->render('displayDate', [
+                    'entry' => $this->entry,
+                    'durationDays' => $this->entry->getDurationDays(),
                     'start' => $start,
                     'end' => $end,
-        ));
+        ]);
     }
 
 }
