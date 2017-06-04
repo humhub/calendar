@@ -1,13 +1,13 @@
 <?php
 return array (
-  '<strong>Filter</strong> events' => '',
-  '<strong>Select</strong> calendars' => '',
-  'Already responded' => '',
-  'Followed spaces' => '',
-  'Followed users' => '',
-  'I´m attending' => '',
-  'My events' => '',
+  '<strong>Filter</strong> events' => 'Filter Acara',
+  '<strong>Select</strong> calendars' => 'Pilih Kalender',
+  'Already responded' => 'Sudah terespons',
+  'Followed spaces' => 'Ikuti Ruang',
+  'Followed users' => 'Ikuti pengguna',
+  'I´m attending' => 'Saya menghadiri',
+  'My events' => 'Acara Saya',
   'My profile' => 'Profil saya',
-  'My spaces' => '',
-  'Not responded yet' => '',
+  'My spaces' => 'Ruang Saya',
+  'Not responded yet' => 'Belum dapat respons',
 );
