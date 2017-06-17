@@ -28,20 +28,19 @@ class FullCalendar extends \humhub\widgets\JsWidget
     {
         \humhub\modules\calendar\assets\Assets::register($this->getView());
 
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             parent::init();
             return;
         }
 
-        if(!$this->contentContainer) {
+        if (!$this->contentContainer) {
             $this->contentContainer = Yii::$app->user->getIdentity();
         }
 
         // Used by the global calendar if the module is not enabled for the given user.
-        if($this->contentContainer && !$this->contentContainer->isModuleEnabled('calendar')) {
+        if ($this->contentContainer && !$this->contentContainer->isModuleEnabled('calendar')) {
             $this->enabled = false;
         }
-
 
         $this->editUrl = $this->contentContainer->createUrl('/calendar/entry/edit', ['cal' => true]);
         $this->dropUrl = $this->contentContainer->createUrl('/calendar/entry/edit-ajax');
@@ -77,11 +76,11 @@ class FullCalendar extends \humhub\widgets\JsWidget
         $end = Yii::$app->request->get('end', Yii::$app->request->post('end'));
 
         // Get given start & end datetime
-        if($start) {
+        if ($start) {
             $startTime = new \DateTime($start, new \DateTimeZone($timeZone));
         }
 
-        if($end) {
+        if ($end) {
             $endTime = new \DateTime($end, new \DateTimeZone($timeZone));
         }
 
