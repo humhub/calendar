@@ -61,8 +61,8 @@ class FullCalendar extends \humhub\widgets\JsWidget
             'selectHelper' => $this->canWrite,
             'selectors' => $this->selectors,
             'filters' => $this->filters,
-            'timezone' => date_default_timezone_get(),
-            'lang' => Yii::$app->language,
+            'timezone' => Yii::$app->formatter->timeZone,
+            'locale' => Yii::$app->language,
             'enabled' => $this->enabled
         ];
     }
