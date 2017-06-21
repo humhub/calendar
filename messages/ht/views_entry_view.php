@@ -19,6 +19,5 @@
 return [
     'Attend' => '',
     'Decline' => '',
-    'Edit event' => '',
     'Maybe' => '',
 ];
