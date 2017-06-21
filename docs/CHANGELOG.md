@@ -1,7 +1,9 @@
 Changelog
 =========
+0.4.5 - Under developement
+- Enh: Enable global calendar for guests
 
-0.4.3 - Under development
+0.4.4 - 06.06.2017
 ----------------------
 - Enh: Major refactoring
 - Enh: Usability enhancements

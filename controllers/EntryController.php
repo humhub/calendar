@@ -42,7 +42,7 @@ class EntryController extends ContentContainerController
             return $this->renderAjax('modal', [
                 'content' => $this->renderAjax('view', ['entry' => $entry]),
                 'entry' => $entry, 'editUrl' => $wallEntry->getEditUrl(),
-                'canManageEntries' => $this->canManageEntries(),
+                'canManageEntries' => $entry->content->canEdit() || $this->canManageEntries(),
                 'contentContainer' => $this->contentContainer,
             ]);
         }
@@ -88,9 +88,13 @@ class EntryController extends ContentContainerController
             }
         } elseif ($id) {
             $calendarEntry = $this->getCalendarEntry($id);
+            if($calendarEntry && !($calendarEntry->content->canEdit() || $this->canManageEntries())) {
+                throw new HttpException(403, 'No permission to edit this entry');
+            }
         }
 
-        if (!$calendarEntry || !$this->canManageEntries()) {
+
+        if (!$calendarEntry) {
             throw new HttpException(403, 'No permission to edit this entry');
         }
 
@@ -119,7 +123,7 @@ class EntryController extends ContentContainerController
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        if (!$this->canManageEntries()) {
+        if (!($this->canManageEntries() || $entry->content->canEdit())) {
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit this event!"));
         }
 
@@ -169,7 +173,7 @@ class EntryController extends ContentContainerController
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        if (!$this->canManageEntries()) {
+        if (!($this->canManageEntries() ||  $calendarEntry->content->canEdit())) {
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to delete this event!"));
         }
 
