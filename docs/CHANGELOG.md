@@ -2,6 +2,7 @@ Changelog
 =========
 0.4.5 - Under developement
 - Enh: Enable global calendar for guests
+- Fix: Hide follow filter if user following is disabled
 
 0.4.4 - 06.06.2017
 ----------------------
