@@ -9,7 +9,7 @@ use DateTime;
  *
  * @author luke
  */
-class Utils
+class CalendarUtils
 {
 
     /**
@@ -21,7 +21,6 @@ class Utils
      */
     public static function isFullDaySpan(DateTime $date1, DateTime $date2, $endDateMomentAfter = false)
     {
-
         $dateInterval = $date1->diff($date2, true);
 
         if ($endDateMomentAfter) {

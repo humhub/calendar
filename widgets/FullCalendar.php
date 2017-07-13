@@ -2,6 +2,8 @@
 
 namespace humhub\modules\calendar\widgets;
 
+use humhub\modules\calendar\CalendarUtils;
+use humhub\widgets\JsWidget;
 use Yii;
 use yii\helpers\Url;
 
@@ -10,7 +12,7 @@ use yii\helpers\Url;
  *
  * @author luke
  */
-class FullCalendar extends \humhub\widgets\JsWidget
+class FullCalendar extends JsWidget
 {
     public $jsWidget = 'calendar.Calendar';
     public $id = 'calendar';
@@ -50,6 +52,9 @@ class FullCalendar extends \humhub\widgets\JsWidget
     
     public function getData()
     {
+
+        $timeZone = (Yii::$app->user->isGuest) ? Yii::$app->user->getIdentity()->time_zone : date_default_timezone_get();
+
         return [
             'load-url' => $this->loadUrl,
             'edit-url' => $this->editUrl,
@@ -61,49 +66,10 @@ class FullCalendar extends \humhub\widgets\JsWidget
             'selectHelper' => $this->canWrite,
             'selectors' => $this->selectors,
             'filters' => $this->filters,
-            'timezone' => date_default_timezone_get(),
+            'timezone' => $timeZone,
+            'locale' => Yii::$app->formatter->locale,
             'lang' => Yii::$app->language,
             'enabled' => $this->enabled
         ];
-    }
-
-    public static function populate($calendarEntry, $timeZone = '')
-    {
-        if ($timeZone == '') {
-            $timeZone = Yii::$app->formatter->timeZone;
-        }
-
-        $start = Yii::$app->request->get('start', Yii::$app->request->post('start'));
-        $end = Yii::$app->request->get('end', Yii::$app->request->post('end'));
-
-        // Get given start & end datetime
-        if($start) {
-            $startTime = new \DateTime($start, new \DateTimeZone($timeZone));
-        }
-
-        if($end) {
-            $endTime = new \DateTime($end, new \DateTimeZone($timeZone));
-        }
-
-        // Remember current (user) timeZone - and switch to system timezone
-        $userTimeZone = Yii::$app->formatter->timeZone;
-        Yii::$app->formatter->timeZone = Yii::$app->timeZone;
-
-        $calendarEntry->start_datetime = Yii::$app->formatter->asDateTime($startTime, 'php:Y-m-d H:i:s');
-        $calendarEntry->start_time = $startTime->format('H:i');
-
-        // Fix FullCalendar EndTime
-        if (\humhub\modules\calendar\Utils::isFullDaySpan($startTime, $endTime, true)) {
-            // In Fullcalendar the EndTime is the moment AFTER the event
-            $oneSecond = new \DateInterval("PT1S");
-            $endTime->sub($oneSecond);
-            $calendarEntry->all_day = 1;
-        }
-
-        $calendarEntry->end_time = $endTime->format('H:i');
-        $calendarEntry->end_datetime = Yii::$app->formatter->asDateTime($endTime, 'php:Y-m-d H:i:s');
-
-        // Switch back to user time zone
-        Yii::$app->formatter->timeZone = $userTimeZone;
     }
 }

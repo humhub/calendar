@@ -202,6 +202,35 @@ humhub.module('calendar', function (module, require, $) {
         loader.reset(this.$);
     };
 
+    var Form = function (node, options) {
+        Widget.call(this, node, options);
+    };
+
+    object.inherits(Form, Widget);
+
+    Form.prototype.init = function() {
+        $("#calendarentry-start_time").format({type: "daytime"});
+        $("#calendarentry-end_time").format({type: "daytime"});
+    };
+
+    Form.prototype.toggleDateTime = function(evt) {
+        if (evt.$trigger.prop('checked')) {
+            modal.global.$.find('.timeField').fadeOut('fast');
+        } else {
+            modal.global.$.find('.timeField').fadeIn('fast');
+        }
+    };
+
+    Form.prototype.changeTimezone = function(evt) {
+        $dropDown = this.$.find('.timeZoneInput');
+        this.$.find('.calendar-timezone').text($dropDown.find('option:selected').text());
+        $dropDown.hide();
+    };
+
+    Form.prototype.toggleTimezoneInput = function(evt) {
+        this.$.find('.timeZoneInput').fadeToggle();
+    };
+
     /**
      * Action respond to calendar entry (participation)
      * @param evt
@@ -268,12 +297,16 @@ humhub.module('calendar', function (module, require, $) {
         });
     };
 
+
+
+
     module.export({
         Calendar: Calendar,
         respond:respond,
         editModal: editModal,
         submitEdit: submitEdit,
         deleteEvent: deleteEvent,
-        enabled: enabled
+        enabled: enabled,
+        Form: Form
     });
 });

@@ -13,6 +13,7 @@ $extraMenus = '<li><a href="'.$calendarUrl.'"><i class="fa fa-arrow-circle-right
     </div>
 
     <div class="panel-body" style="padding:0px;">
+        <hr style="margin:0px">
         <ul class="media-list">
             <?php foreach ($calendarEntries as $entry) : ?>
                 <?php /* @var $entry \humhub\modules\calendar\models\CalendarEntry */ ?>

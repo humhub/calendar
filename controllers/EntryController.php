@@ -2,18 +2,16 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use DateTime;
-use DateInterval;
+use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\calendar\widgets\WallEntry;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\ModalClose;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\models\Setting;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
@@ -27,21 +25,25 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 class EntryController extends ContentContainerController
 {
 
+    /**
+     * @inheritdoc
+     */
     public $hideSidebar = true;
 
-    public function actionView($cal = null)
+    public function actionView($id, $cal = null)
     {
-        $entry = $this->getCalendarEntry(Yii::$app->request->get('id'));
+        $entry = $this->getCalendarEntry($id);
 
-        if ($entry == null) {
-            throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
+        if (!$entry) {
+            throw new HttpException('404');
         }
 
         if ($cal) {
             $wallEntry = Yii::createObject(['class' => WallEntry::class, 'contentObject' => $entry]);
             return $this->renderAjax('modal', [
                 'content' => $this->renderAjax('view', ['entry' => $entry]),
-                'entry' => $entry, 'editUrl' => $wallEntry->getEditUrl(),
+                'entry' => $entry,
+                'editUrl' => $wallEntry->getEditUrl(),
                 'canManageEntries' => $entry->content->canEdit() || $this->canManageEntries(),
                 'contentContainer' => $this->contentContainer,
             ]);
@@ -50,64 +52,54 @@ class EntryController extends ContentContainerController
         return $this->render('view', ['entry' => $entry]);
     }
 
-    public function actionRespond()
+    public function actionRespond($id, $type)
     {
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
+        $calendarEntry = $this->getCalendarEntry($id);
 
         if ($calendarEntry == null) {
-            throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
+            throw new HttpException('404');
         }
 
         if ($calendarEntry->canRespond()) {
-            $calendarEntryParticipant = CalendarEntryParticipant::findOne(['calendar_entry_id' => $calendarEntry->id, 'user_id' => Yii::$app->user->id]);
+            $calendarEntryParticipant = $calendarEntry->findParticipant(Yii::$app->user->getIdentity());
 
             if ($calendarEntryParticipant == null) {
-                $calendarEntryParticipant = new CalendarEntryParticipant;
-                $calendarEntryParticipant->user_id = Yii::$app->user->id;
-                $calendarEntryParticipant->calendar_entry_id = $calendarEntry->id;
+                $calendarEntryParticipant = new CalendarEntryParticipant([
+                    'user_id' => Yii::$app->user->id,
+                    'calendar_entry_id' => $calendarEntry->id]);
             }
 
-            $calendarEntryParticipant->participation_state = (int)Yii::$app->request->get('type');
+            $calendarEntryParticipant->participation_state = (int) $type;
             $calendarEntryParticipant->save();
         }
 
-        return $this->asJson([
-            'success' => true
-        ]);
+        return $this->asJson(['success' => true]);
     }
 
-    public function actionEdit($id = null, $cal = null)
+    public function actionEdit($id = null, $start = null, $end = null, $cal = null)
     {
-        $calendarEntry = null;
+        if (empty($id)) {
+            $calendarEntryForm = new CalendarEntryForm();
+            $calendarEntryForm->createNew($this->contentContainer, $start, $end);
+        } else if($this->canCreateEntries()) {
+            $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
+        } else {
+            throw new HttpException(403);
+        }
 
-        if (!$id && $this->canCreateEntries()) {
-            $calendarEntry = new CalendarEntry;
-            $calendarEntry->content->container = $this->contentContainer;
-            if ($cal) {
-                FullCalendar::populate($calendarEntry, Yii::$app->timeZone);
-            }
-        } elseif ($id) {
-            $calendarEntry = $this->getCalendarEntry($id);
-            if($calendarEntry && !($calendarEntry->content->canEdit() || $this->canManageEntries())) {
-                throw new HttpException(403, 'No permission to edit this entry');
-            }
+        if (!$calendarEntryForm->entry) {
+            throw new HttpException(404);
+        } else if(!$calendarEntryForm->entry->content->canEdit()) {
+            throw new HttpException(403);
         }
 
 
-        if (!$calendarEntry) {
-            throw new HttpException(403, 'No permission to edit this entry');
-        }
-
-        if ($calendarEntry->isNewRecord || $calendarEntry->all_day) {
-            $calendarEntry->cutTime();
-        }
-
-        if ($calendarEntry->load(Yii::$app->request->post()) && $calendarEntry->save()) {
-            return \humhub\widgets\ModalClose::widget(['saved' => true]);
+        if ($calendarEntryForm->load(Yii::$app->request->post()) && $calendarEntryForm->save()) {
+            return ModalClose::widget(['saved' => true]);
         }
 
         return $this->renderAjax('edit', [
-            'calendarEntry' => $calendarEntry,
+            'calendarEntryForm' => $calendarEntryForm,
             'contentContainer' => $this->contentContainer,
             'createFromGlobalCalendar' => false
         ]);
@@ -127,9 +119,9 @@ class EntryController extends ContentContainerController
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit this event!"));
         }
 
-        FullCalendar::populate($entry);
+        $entryForm = new CalendarEntryForm(['entry' => $entry]);
 
-        if ($entry->save()) {
+        if ($entryForm->updateTime(Yii::$app->request->post('start'), Yii::$app->request->post('end'))) {
             return $this->asJson(['success' => true]);
         }
 

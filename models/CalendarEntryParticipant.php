@@ -36,10 +36,10 @@ class CalendarEntryParticipant extends ActiveRecord
      */
     public function rules()
     {
-        return array(
-            array(['calendar_entry_id', 'user_id'], 'required'),
-            array(['calendar_entry_id', 'user_id', 'participation_state'], 'integer'),
-        );
+        return [
+            [['calendar_entry_id', 'user_id'], 'required'],
+            [['calendar_entry_id', 'user_id', 'participation_state'], 'integer'],
+        ];
     }
 
     public function getCalendarEntry()

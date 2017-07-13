@@ -1,6 +1,11 @@
 Changelog
 =========
-0.4.5 - Under developement
+0.4.6 
+- Enh: Change timeZone setting in edit form
+- Enh: Seperation of CalendarEntryForm and CalendarEntry model
+- Enh: Use user locale in fullCalendar
+
+0.4.5 - 30.06.2017
 - Enh: Enable global calendar for guests
 
 0.4.4 - 06.06.2017
