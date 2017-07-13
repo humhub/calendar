@@ -28,22 +28,24 @@ use humhub\modules\calendar\models\CalendarEntry;
                     </div>
                 </div>
 
-                <div style="display:inline-block;">
-                    <div class="checkbox">
-                        <label class="calendar_followed_spaces">
-                            <input type="checkbox" name="selector" class="selectorCheckbox" value="<?= ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES; ?>"
-                                   <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES, $selectors)): ?>checked="checked"<?php endif; ?>>
-                            <?= Yii::t('CalendarModule.views_global_index', 'Followed spaces'); ?>
-                        </label>
+                <?php if(!Yii::$app->getModule('user')->disableFollow) : ?>
+                    <div style="display:inline-block;">
+                        <div class="checkbox">
+                            <label class="calendar_followed_spaces">
+                                <input type="checkbox" name="selector" class="selectorCheckbox" value="<?= ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES; ?>"
+                                       <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES, $selectors)): ?>checked="checked"<?php endif; ?>>
+                                <?= Yii::t('CalendarModule.views_global_index', 'Followed spaces'); ?>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label class="calendar_followed_users">
+                                <input type="checkbox" name="selector" class="selectorCheckbox" value="<?= ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS; ?>"
+                                       <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS, $selectors)): ?>checked="checked"<?php endif; ?>>
+                                <?= Yii::t('CalendarModule.views_global_index', 'Followed users'); ?>
+                            </label>
+                        </div>
                     </div>
-                    <div class="checkbox">
-                        <label class="calendar_followed_users">
-                            <input type="checkbox" name="selector" class="selectorCheckbox" value="<?= ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS; ?>"
-                                   <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS, $selectors)): ?>checked="checked"<?php endif; ?>>
-                            <?= Yii::t('CalendarModule.views_global_index', 'Followed users'); ?>
-                        </label>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
         <?php endif ?>
 
