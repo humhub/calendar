@@ -53,7 +53,7 @@ class FullCalendar extends JsWidget
     public function getData()
     {
 
-        $timeZone = (Yii::$app->user->isGuest) ? Yii::$app->user->getIdentity()->time_zone : date_default_timezone_get();
+        $timeZone = (!Yii::$app->user->isGuest) ? Yii::$app->user->getIdentity()->time_zone : date_default_timezone_get();
 
         return [
             'load-url' => $this->loadUrl,

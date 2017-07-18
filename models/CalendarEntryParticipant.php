@@ -42,6 +42,11 @@ class CalendarEntryParticipant extends ActiveRecord
         ];
     }
 
+    public function showParticipantInfo()
+    {
+        return $this->participation_state != self::PARTICIPATION_STATE_DECLINED;
+    }
+
     public function getCalendarEntry()
     {
         return $this->hasOne(CalendarEntry::className(), ['id' => 'calendar_entry_id']);
@@ -57,12 +62,12 @@ class CalendarEntryParticipant extends ActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id' => 'ID',
             'calendar_entry_id' => 'Calendar Entry',
             'user_id' => 'User',
             'participation_state' => 'Participation State',
-        );
+        ];
     }
 
     public function beforeDelete()

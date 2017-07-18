@@ -33,6 +33,10 @@ use humhub\modules\user\models\User;
  * @property integer $recur_interval
  * @property string $recur_end
  * @property string $color
+ * @property integer $allow_decline
+ * @property integer $allow_maybe
+ * @property string $participant_info
+ * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable
 {
@@ -63,6 +67,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     const PARTICIPATION_MODE_INVITE = 1;
     const PARTICIPATION_MODE_ALL = 2;
 
+    public static $participationModes = [
+        self::PARTICIPATION_MODE_NONE,
+        self::PARTICIPATION_MODE_INVITE,
+        self::PARTICIPATION_MODE_ALL
+    ];
+
     /**
      * Filters
      */
@@ -77,7 +87,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         parent::init();
 
         // Default participiation Mode
-        $this->participation_mode = 2;
+        $this->participation_mode = self::PARTICIPATION_MODE_ALL;
     }
 
     /**
@@ -86,11 +96,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     public static function tableName()
     {
         return 'calendar_entry';
-    }
-
-    public function getParticipants()
-    {
-        return $this->hasMany(CalendarEntryParticipant::className(), ['calendar_entry_id' => 'id']);
     }
 
     /**
@@ -103,11 +108,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             ['color', 'string'],
             [['start_datetime'], DbDateValidator::className()],
             [['end_datetime'], DbDateValidator::className()],
-            [['all_day'], 'integer'],
+            [['all_day', 'allow_decline', 'allow_maybe'], 'integer'],
             [['title'], 'string', 'max' => 200],
-            [['participation_mode'], 'in', 'range' => [self::PARTICIPATION_MODE_ALL, self::PARTICIPATION_MODE_INVITE, self::PARTICIPATION_MODE_NONE]],
+            [['participation_mode'], 'in', 'range' => self::$participationModes],
             [['end_datetime'], 'validateEndTime'],
-            [['description'], 'safe'],
+            [['description', 'participant_info'], 'safe'],
         ];
     }
 
@@ -121,6 +126,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             'title' => Yii::t('CalendarModule.base', 'Title'),
             'description' => Yii::t('CalendarModule.base', 'Description'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
+            'allow_decline' => Yii::t('CalendarModule.base', 'Allow participation state \'decline\''),
+            'allow_maybe' => Yii::t('CalendarModule.base', 'Allow participation state \'maybe\''),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
         ];
     }
@@ -141,17 +148,14 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
 
     public function beforeSave($insert)
     {
-        $startDateTime = new DateTime($this->start_datetime);
-        $endDateTime = new DateTime($this->end_datetime);
-
         // Check is a full day span
-        if ($this->all_day == 0 && CalendarUtils::isFullDaySpan($startDateTime, $endDateTime)) {
+        /*if ($this->all_day == 0 && CalendarUtils::isFullDaySpan($startDateTime, $endDateTime)) {
             $this->all_day = 1;
-        }
+        }*/
 
-        if ($this->all_day) {
-            $this->start_datetime = Yii::$app->formatter->asDateTime($startDateTime, 'php:Y-m-d') . " 00:00:00";
-            $this->end_datetime = Yii::$app->formatter->asDateTime($endDateTime, 'php:Y-m-d') . " 23:59:59";
+        if(!$this->isParticipationAllowed()) {
+            $this->allow_decline = false;
+            $this->allow_maybe = false;
         }
 
         return parent::beforeSave($insert);
@@ -160,11 +164,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-
-        if ($insert) {
-            $this->setParticipant(Yii::$app->user->getIdentity());
-        }
-
         return;
     }
 
@@ -175,6 +174,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         }
 
         return parent::beforeDelete();
+    }
+
+    public function getParticipants()
+    {
+        return $this->hasMany(CalendarEntryParticipant::className(), ['calendar_entry_id' => 'id']);
+    }
+
+    public function isParticipationAllowed()
+    {
+        return $this->participation_mode != self::PARTICIPATION_MODE_NONE;
     }
 
     public function setParticipant($user, $state = CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED)
@@ -204,6 +213,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         }
 
         return CalendarEntryParticipant::findOne(['user_id' => $user->id, 'calendar_entry_id' => $this->id]);
+    }
+
+    public function isParticipant(User $user = null)
+    {
+        $participant = $this->findParticipant($user);
+        return !empty($participant) && $participant->showParticipantInfo();
     }
 
     /**
@@ -381,6 +396,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             'title' => $this->title,
             'description' => $this->description,
         ];
+    }
+
+    public function getParticipantCount($state)
+    {
+        return CalendarEntryParticipant::find()->where(['calendar_entry_id' => $this->id, 'participation_state' => $state])->count();
     }
 
     /**

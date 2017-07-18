@@ -6,8 +6,9 @@
  * @license https://www.humhub.com/licences
  */
 /* @var $this yii\web\View */
-/* @var $model \humhub\modules\calendar\models\ModuleSettings */
+/* @var $model \humhub\modules\calendar\models\SnippetModuleSettings */
 
+use humhub\modules\calendar\widgets\GlobalConfigMenu;
 use yii\widgets\ActiveForm;
 use \yii\helpers\Html;
 ?>
@@ -15,6 +16,8 @@ use \yii\helpers\Html;
 <div class="panel panel-default">
 
     <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
+
+    <?= GlobalConfigMenu::widget() ?>
 
     <div class="panel-body">
         <?php $form = ActiveForm::begin(); ?>

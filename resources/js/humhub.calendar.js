@@ -191,6 +191,7 @@ humhub.module('calendar', function (module, require, $) {
     Calendar.prototype.clickEvent = function (event, delta, revertFunc) {
         modal.global.load(event.viewUrl).then(function() {
             modal.global.$.find('.preferences').hide();
+            modal.global.$.find('.media-heading').find('.labels').css('padding-right', '0px');
             modal.global.set({backdrop: true});
         });
     };
@@ -209,15 +210,35 @@ humhub.module('calendar', function (module, require, $) {
     object.inherits(Form, Widget);
 
     Form.prototype.init = function() {
-        $("#calendarentry-start_time").format({type: "daytime"});
-        $("#calendarentry-end_time").format({type: "daytime"});
+        modal.global.$.find('.tab-basic').on('shown.bs.tab', function (e) {
+            $('#calendarentry-title').focus();
+        });
+
+        modal.global.$.find('.tab-participation').on('shown.bs.tab', function (e) {
+            $('#calendarentry-participation_mode').focus();
+        });
     };
 
     Form.prototype.toggleDateTime = function(evt) {
+        $timeFields = modal.global.$.find('.timeField');
+        $timeInputs =  $timeFields.find('input');
         if (evt.$trigger.prop('checked')) {
-            modal.global.$.find('.timeField').fadeOut('fast');
+            $timeInputs.prop('disabled', true);
+            $timeInputs.each(function() {
+               $this = $(this);
+               $this.data('oldVal', $this.val());
+               $this.val($this.attr('placeholder'));
+            });
+            $timeFields.css('opacity', '0.5');
         } else {
-            modal.global.$.find('.timeField').fadeIn('fast');
+            $timeInputs.each(function() {
+                $this = $(this);
+                if($this.data('oldVal')) {
+                    $this.val($this.data('oldVal'));
+                }
+            });
+            $timeInputs.prop('disabled', false);
+            $timeFields.css('opacity', '1.0');
         }
     };
 
@@ -229,6 +250,14 @@ humhub.module('calendar', function (module, require, $) {
 
     Form.prototype.toggleTimezoneInput = function(evt) {
         this.$.find('.timeZoneInput').fadeToggle();
+    };
+
+    Form.prototype.changeParticipationMode = function(evt) {
+        if(evt.$trigger.val() == 0) {
+            this.$.find('.participationOnly').fadeOut('fast');
+        } else {
+            this.$.find('.participationOnly').fadeIn('fast');
+        }
     };
 
     /**
@@ -253,20 +282,10 @@ humhub.module('calendar', function (module, require, $) {
         });
     };
 
-    var submitEdit = function (evt) {
-        modal.submit(evt).then(function (resp) {
-            modal.global.close();
-            module.log.success('saved');
-        }).catch(function (err) {
-            module.log.error(err, true);
-        });
-    };
-
     var editModal = function (evt) {
         var that = this;
         modal.load(evt).then(function (response) {
             modal.global.$.one('submitted', function () {
-                modal.global.close();
                 getCalendar().fetch();
             });
         }).catch(function (e) {
@@ -297,14 +316,10 @@ humhub.module('calendar', function (module, require, $) {
         });
     };
 
-
-
-
     module.export({
         Calendar: Calendar,
         respond:respond,
         editModal: editModal,
-        submitEdit: submitEdit,
         deleteEvent: deleteEvent,
         enabled: enabled,
         Form: Form

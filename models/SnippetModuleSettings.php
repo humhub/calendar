@@ -14,7 +14,7 @@ use \yii\base\Model;
 /**
  * 
  */
-class ModuleSettings extends Model
+class SnippetModuleSettings extends Model
 {
     /**
      * Duration settings in days
@@ -65,7 +65,7 @@ class ModuleSettings extends Model
     
     public function showGlobalCalendarItems()
     {
-        return !ModuleSettings::instance()->showIfInstalled || Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
+        return !self::instance()->showIfInstalled || Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
     }
     
     /**

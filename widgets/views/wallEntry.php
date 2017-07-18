@@ -1,8 +1,13 @@
 <?php
 
+use humhub\modules\calendar\widgets\EntryDate;
+use humhub\modules\calendar\widgets\EntryParticipants;
+use humhub\widgets\MarkdownView;
 use yii\helpers\Html;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntry;
+
+/* @var $calendarEntry CalendarEntry */
 
 $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable('info');
 ?>
@@ -19,45 +24,65 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
                 </a>
             </h4>
             <h5>
-                <?= humhub\modules\calendar\widgets\EntryDate::widget(['entry' => $calendarEntry]); ?>
+                <?= EntryDate::widget(['entry' => $calendarEntry]); ?>
             </h5>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <?php if ($calendarEntry->description != ""): ?>
-                    <?= nl2br(Html::encode($calendarEntry->description)); ?>
-                    <br>
-                <?php endif; ?>
-                <?php if ($calendarEntry->participation_mode != CalendarEntry::PARTICIPATION_MODE_NONE) : ?>
-                    <br>
-                    <?= \humhub\modules\calendar\widgets\EntryParticipants::widget(['calendarEntry' => $calendarEntry]); ?>
+                <?php if (!empty($calendarEntry->description)) : ?>
+                    <div data-ui-show-more data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full description...") ?>" style="overflow:hidden">
+                        <?= MarkdownView::widget(['markdown' => $calendarEntry->description]); ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
+    <?php if ($calendarEntry->isParticipationAllowed()) : ?>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <?= EntryParticipants::widget(['calendarEntry' => $calendarEntry]); ?>
+            </div>
+        </div>
+        <?php if(!empty($calendarEntry->participant_info) && $calendarEntry->isParticipant()) : ?>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <strong><?= Yii::t('CalendarModule.views_entry_view', 'Participant information:') ?></strong>
+                    <?= MarkdownView::widget(['markdown' => $calendarEntry->participant_info]); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
     <?php if ($calendarEntry->canRespond()): ?>
        <div class="row" style="padding-top:10px">
             <div class="col-md-12">
 
-                    <?php
-                    $cssState = ["", "", "", ""];
-                    $cssState[$participantSate] = "disabled";
-                    ?>
-                    <button data-action-click="calendar.respond" class="btn btn-default btn-sm" data-ui-loader <?= $cssState[CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED] ?>
-                            data-action-url="<?= $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id]) ?>">
-                        <?= $participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED ? '<i class="fa fa-check"></i>' : '' ?>
-                        <?= Yii::t('CalendarModule.views_entry_view', "Attend") ?>
-                    </button>
+                <?php
+                $cssState = ["", "", "", ""];
+                $cssState[$participantSate] = "disabled";
+                ?>
+                <button data-action-click="calendar.respond" class="btn btn-default btn-sm" data-ui-loader <?= $cssState[CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED] ?>
+                        data-action-url="<?= $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id]) ?>">
+                    <?= $participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED ? '<i class="fa fa-check"></i>' : '' ?>
+                    <?= Yii::t('CalendarModule.views_entry_view', "Attend") ?>
+                </button>
+
+                <?php if($calendarEntry->allow_maybe) : ?>
                     <button data-action-click="calendar.respond" class="btn btn-default btn-sm" data-ui-loader  <?= $cssState[CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE] ?>
                             data-action-url="<?= $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id]) ?>">
                         <?= $participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE ? '<i class="fa fa-check"></i>' : ''?>
                         <?= Yii::t('CalendarModule.views_entry_view', "Maybe") ?>
                     </button>
+                <?php endif; ?>
+
+                <?php if($calendarEntry->allow_decline) : ?>
                     <button data-action-click="calendar.respond" class="btn btn-default btn-sm" data-ui-loader  <?= $cssState[CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED] ?>
                             data-action-url="<?= $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id]) ?>">
                         <?= $participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED ? '<i class="fa fa-check"></i>' : ''?>
                         <?= Yii::t('CalendarModule.views_entry_view', "Decline") ?>
                     </button>
+                <?php endif;?>
 
             </div>
         </div>

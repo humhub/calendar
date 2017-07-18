@@ -15,6 +15,7 @@ use DateTimeZone;
 use humhub\libs\DbDateValidator;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -56,12 +57,12 @@ class CalendarEntryForm extends Model
     public $end_time;
 
     /**
-     * @var timeZone set in calendar form
+     * @var string timeZone set in calendar form
      */
     public $timeZone;
 
     /**
-     * @var cached timeZone option items used for the form dropdown
+     * @var []cached timeZone option items used for the form dropdown
      */
     public $timeZoneItems;
 
@@ -72,12 +73,17 @@ class CalendarEntryForm extends Model
 
     public function init()
     {
-        if($this->entry) {
-            $this->populateTime($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone);
-            $this->is_public = $this->entry->content->visibility;
-        }
+        $this->timeZone = empty($this->timeZone) ? Yii::$app->formatter->timeZone : $this->timeZone;
 
-        $this->timeZone = Yii::$app->user->getIdentity()->time_zone;
+        if($this->entry) {
+            // Translate time/date from app (db) timeZone to user (or configured) timeZone
+            $this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
+            $this->is_public = $this->entry->content->visibility;
+
+            if(!empty($this->entry->time_zone)) {
+                $this->timeZone = $this->entry->time_zone;
+            }
+        }
     }
 
     /**
@@ -89,8 +95,8 @@ class CalendarEntryForm extends Model
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
             [['is_public'], 'integer'],
             [['start_time', 'end_time'], 'date', 'format' => 'php:H:i'],
-            [['start_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time'],
-            [['end_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'end_time'],
+            [['start_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time', 'timeZone' => $this->timeZone],
+            [['end_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'end_time', 'timeZone' => $this->timeZone],
             [['end_date'], 'validateEndTime'],
         ];
     }
@@ -100,7 +106,7 @@ class CalendarEntryForm extends Model
      * Execute this after DbDateValidator
      *
      * @param string $attribute attribute name
-     * @param type $params parameters
+     * @param [] $params parameters
      */
     public function validateEndTime($attribute, $params)
     {
@@ -125,25 +131,38 @@ class CalendarEntryForm extends Model
     {
         $this->entry = new CalendarEntry();
         $this->entry->content->container = $contentContainer;
+        $this->is_public = ($this->entry->content->visibility != null) ? $this->entry->content->visibility : Content::VISIBILITY_PRIVATE;
+        $this->timeZone = Yii::$app->formatter->timeZone;
 
-        $this->is_public = $this->entry->content->visibility;
+        $defaultSettings = new DefaultSettings(['contentContainer' => $contentContainer]);
+        $this->entry->participation_mode = $defaultSettings->participation_mode;
+        $this->entry->allow_decline = $defaultSettings->allow_decline;
+        $this->entry->allow_maybe = $defaultSettings->allow_maybe;
 
-        $this->timeZone = Yii::$app->user->getIdentity()->time_zone;
-
-        // Populate start / end time from fullcalendar
-        $this->populateTime($start, $end);
+        // Translate from user timeZone to app timeZone
+        $this->translateDateTimes($start, $end);
     }
 
     public function load($data, $formName = null)
     {
-        parent::load($data);
+        if(parent::load($data) && !empty($this->timeZone)) {
+            $this->entry->time_zone = $this->timeZone;
+        }
+
+        //$this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
         $this->entry->content->visibility = $this->is_public;
 
-        // We set the forms timeZone as formatter timeZone
-        Yii::$app->formatter->timeZone = $this->timeZone;
+        if(!$this->entry->load($data)) {
+            return false;
+        }
 
-        return $this->entry->load($data);
+        if($this->entry->all_day) {
+            $this->start_time = '00:00';
+            $this->end_time = '23:59';
+        }
+
+        return true;
     }
 
     public function save()
@@ -152,17 +171,27 @@ class CalendarEntryForm extends Model
             return false;
         }
 
+        if(!$this->entry->isParticipationAllowed()) {
+            $this->entry->allow_decline = 0;
+            $this->entry->allow_maybe = 0;
+        }
+
         // After validation the date was translated to system time zone, which we expect in the database.
         $this->entry->start_datetime = $this->start_date;
         $this->entry->end_datetime = $this->end_date;
 
-        // The form expects user time zone, so we translate back from app timeZone to user timezone
-        $this->populateTime($this->start_date, $this->end_date, Yii::$app->timeZone);
+        // The form expects user time zone, so we translate back from app to user timezone
+        $this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
-        return $this->entry->save();
+        if($this->entry->save()) {
+            $this->entry->fileManager->attach(Yii::$app->request->post('fileUploaderHiddenGuidField'));
+            return true;
+        }
+
+        return false;
     }
 
-    public function getParticipationModeItems()
+    public static function getParticipationModeItems()
     {
         return [
             CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
@@ -184,32 +213,44 @@ class CalendarEntryForm extends Model
         return $this->timeZoneItems;
     }
 
-    public function getUserTimezoneLabel()
+    public function getTimezoneLabel()
     {
         $entries = $this->getTimeZoneItems();
-        $userTimezone = Yii::$app->user->getIdentity()->time_zone;
-        return $entries[$userTimezone];
+        return $entries[$this->timeZone];
     }
 
     public function updateTime($start = null, $end = null)
     {
-        $this->populateTime($start, $end);
+        $this->translateDateTimes($start, $end);
         return $this->save();
     }
 
-    public function populateTime($start = null, $end = null, $timeZone = null)
+    /**
+     * Translates the given start and end dates from $sourceTimeZone to $targetTimeZone and populates the form start/end time
+     * and dates.
+     *
+     * By default $sourceTimeZone is the forms timeZone e.g user timeZone and $targetTimeZone is the app timeZone.
+     *
+     * @param string $start start string date in $sourceTimeZone
+     * @param string $end end string date in $targetTimeZone
+     * @param string $sourceTimeZone
+     * @param string $targetTimeZone
+     */
+    public function translateDateTimes($start = null, $end = null, $sourceTimeZone = null, $targetTimeZone = null)
     {
         if(!$start) {
             return;
         }
 
-        $timeZone = empty($timeZone) ? $this->timeZone : $timeZone;
+        $sourceTimeZone = (empty($sourceTimeZone)) ? $this->timeZone : $sourceTimeZone;
+        $targetTimeZone = (empty($targetTimeZone)) ? Yii::$app->timeZone : $targetTimeZone;
 
-        $startTime = new DateTime($start, new DateTimeZone($timeZone));
-        $endTime = new DateTime($end, new DateTimeZone($timeZone));
+        $startTime = new DateTime($start, new DateTimeZone($sourceTimeZone));
+        $endTime = new DateTime($end, new DateTimeZone($sourceTimeZone));
 
-        $this->start_date = Yii::$app->formatter->asDateTime($startTime, 'php:Y-m-d');
-        $this->start_time = Yii::$app->formatter->asTime($startTime, 'short');
+        Yii::$app->formatter->timeZone = $targetTimeZone;
+        $this->start_date = Yii::$app->formatter->asDateTime($startTime, 'php:Y-m-d H:i:s');
+        $this->start_time = Yii::$app->formatter->asTime($startTime, 'php:H:i');
 
         // Fix FullCalendar EndTime
         if (CalendarUtils::isFullDaySpan($startTime, $endTime, true)) {
@@ -219,7 +260,9 @@ class CalendarEntryForm extends Model
             $this->entry->all_day = 1;
         }
 
-        $this->end_date = Yii::$app->formatter->asDateTime($endTime, 'php:Y-m-d');
-        $this->end_time = Yii::$app->formatter->asTime($endTime, 'short');
+        $this->end_date = Yii::$app->formatter->asDateTime($endTime, 'php:Y-m-d H:i:s');
+        $this->end_time = Yii::$app->formatter->asTime($endTime, 'php:H:i');
+
+        Yii::$app->i18n->autosetLocale();
     }
 }

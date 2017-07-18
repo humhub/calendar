@@ -627,3 +627,11 @@ table.fc-border-separate {
 .calendar-options .calendar-filters {
 	display:inline-block;
 }
+
+.timeField .form-group {
+	margin-bottom: 0px;
+}
+
+.timeField .help-block {
+	margin: 0px;
+}

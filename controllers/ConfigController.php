@@ -8,28 +8,47 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\calendar\models\DefaultSettings;
 use Yii;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\calendar\models\ModuleSettings;
+use humhub\modules\calendar\models\SnippetModuleSettings;
 
 /**
  * 
  */
 class ConfigController extends Controller
 {
+    public function getAccessRules()
+    {
+        return [['permissions' => ManageModules::class]];
+    }
 
     /**
      * Configuration action for system admins.
      */
     public function actionIndex()
     {
-        $model = new ModuleSettings();
+        $model = new DefaultSettings();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
         }
 
-        return $this->render('index', [
+        return $this->render('@calendar/views/common/defaultConfig', [
+            'model' => $model
+        ]);
+    }
+
+    public function actionSnippet()
+    {
+        $model = new SnippetModuleSettings();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('snippet', [
             'model' => $model
         ]);
     }

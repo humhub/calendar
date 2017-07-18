@@ -63,10 +63,15 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         }
     }
 
+    public function getContentContainerConfigUrl(ContentContainerActiveRecord $container)
+    {
+        return $container->createUrl('/calendar/entry/config');
+    }
+
     public function getConfigUrl()
     {
         return Url::to([
-                    '/calendar/config'
+            '/calendar/config'
         ]);
     }
 

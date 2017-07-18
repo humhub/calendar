@@ -4,7 +4,8 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\ModuleSettings;
+use humhub\modules\calendar\models\SnippetModuleSettings;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\helpers\Url;
 
 /**
@@ -19,7 +20,7 @@ class UpcomingEvents extends Widget
     /**
      * ContentContainer to limit events to. (Optional)
      *
-     * @var HActiveRecordContentContainer
+     * @var ContentContainerActiveRecord
      */
     public $contentContainer;
 
@@ -32,7 +33,7 @@ class UpcomingEvents extends Widget
 
     public function run()
     {
-        $settings = ModuleSettings::instance();
+        $settings = SnippetModuleSettings::instance();
         $calendarEntries = CalendarEntry::getUpcomingEntries($this->contentContainer, $settings->upcomingEventsSnippetDuration, $settings->upcomingEventsSnippetMaxItems);
 
         if (empty($calendarEntries)) {

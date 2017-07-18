@@ -2,10 +2,12 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\calendar\widgets\WallEntry;
+use humhub\modules\space\models\Space;
 use humhub\widgets\ModalClose;
 use Yii;
 use yii\web\HttpException;
@@ -38,18 +40,57 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
+        // We need the $cal information, since the edit redirect in case of fullcalendar view is other than stream view
         if ($cal) {
-            $wallEntry = Yii::createObject(['class' => WallEntry::class, 'contentObject' => $entry]);
-            return $this->renderAjax('modal', [
-                'content' => $this->renderAjax('view', ['entry' => $entry]),
-                'entry' => $entry,
-                'editUrl' => $wallEntry->getEditUrl(),
-                'canManageEntries' => $entry->content->canEdit() || $this->canManageEntries(),
-                'contentContainer' => $this->contentContainer,
-            ]);
+            return $this->renderModal($entry, $cal);
         }
 
         return $this->render('view', ['entry' => $entry]);
+    }
+
+    private function renderModal($entry, $cal)
+    {
+        return $this->renderAjax('modal', [
+            'content' => $this->renderAjax('view', ['entry' => $entry]),
+            'entry' => $entry,
+            'editUrl' => $this->contentContainer->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal]),
+            'canManageEntries' => $entry->content->canEdit() || $this->canManageEntries(),
+            'contentContainer' => $this->contentContainer,
+        ]);
+    }
+
+    public function actionResetConfig()
+    {
+        $this->checkAdminAccess();
+        $model = new DefaultSettings(['contentContainer' => $this->contentContainer]);
+        $model->reset();
+        return $this->render('@calendar/views/common/defaultConfig', [
+            'model' => $model
+        ]);
+    }
+
+    public function actionConfig()
+    {
+        $this->checkAdminAccess();
+
+        $model = new DefaultSettings(['contentContainer' => $this->contentContainer]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('@calendar/views/common/defaultConfig', [
+            'model' => $model
+        ]);
+    }
+
+    private function checkAdminAccess()
+    {
+        /*if($this->contentContainer instanceof Space && !$this->contentContainer->isAdmin()) {
+            throw new HttpException(403);
+        } else if(!$this->contentContainer->id === Yii::$app->user->id) {
+            throw new HttpException(403);
+        }*/
     }
 
     public function actionRespond($id, $type)
@@ -95,12 +136,17 @@ class EntryController extends ContentContainerController
 
 
         if ($calendarEntryForm->load(Yii::$app->request->post()) && $calendarEntryForm->save()) {
-            return ModalClose::widget(['saved' => true]);
+            if(empty($cal)) {
+                return ModalClose::widget(['saved' => true]);
+            } else {
+                $this->view->saved();
+                return $this->renderModal($calendarEntryForm->entry, 1);
+            }
         }
 
         return $this->renderAjax('edit', [
             'calendarEntryForm' => $calendarEntryForm,
-            'contentContainer' => $this->contentContainer,
+            'editUrl' => $this->contentContainer->createUrl('/calendar/entry/edit', ['id' => $calendarEntryForm->entry->id, 'cal' => $cal]),
             'createFromGlobalCalendar' => false
         ]);
     }
@@ -112,11 +158,11 @@ class EntryController extends ContentContainerController
         $entry = $this->getCalendarEntry(Yii::$app->request->post('id'));
 
         if (!$entry) {
-            throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
+            throw new HttpException('404');
         }
 
         if (!($this->canManageEntries() || $entry->content->canEdit())) {
-            throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to edit this event!"));
+            throw new HttpException('403');
         }
 
         $entryForm = new CalendarEntryForm(['entry' => $entry]);
