@@ -1,7 +1,7 @@
 <?php
 return array (
-  ':count attending' => ':человек посетит',
-  ':count declined' => ':отказалось посетить',
-  ':count maybe' => ':возможно посетят',
+  ':count attending' => ':count посетят',
+  ':count declined' => ':count отказалось',
+  ':count maybe' => ':count может быть',
   'Participants:' => 'Участники:',
 );
