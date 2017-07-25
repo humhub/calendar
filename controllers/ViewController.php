@@ -24,6 +24,7 @@ class ViewController extends ContentContainerController
         return $this->render('index', [
             'contentContainer' => $this->contentContainer,
             'canAddEntries' => $this->contentContainer->permissionManager->can(new CreateEntry()),
+            'canConfigure' => $this->contentContainer->isAdmin(),
             'filters' => [],
         ]);
     }

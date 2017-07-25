@@ -11,6 +11,7 @@ humhub.module('calendar', function (module, require, $) {
     var loader = require('ui.loader');
     var modal = require('ui.modal');
     var action = require('action');
+    var Content = require('content').Content;
 
     var Calendar = function (node, options) {
         Widget.call(this, node, options);
@@ -102,14 +103,17 @@ humhub.module('calendar', function (module, require, $) {
             },
             defaultView: 'month',
             aspectRatio: 1.5,
-            editable: true,
+            canCreate: true,
             selectable: true,
             select: $.proxy(this.select, this),
             eventResize: $.proxy(this.resizeEvent, this),
             eventDrop: $.proxy(this.dropEvent, this),
             eventClick: $.proxy(this.clickEvent, this),
-            jsonFormat: "YYYY-MM-DD HH:mm:ss"
-                    /*loading: $.proxy(this.loader, this),*/
+            eventAllow: function() {
+                return true;
+            },
+            jsonFormat: "YYYY-MM-DD HH:mm:ss",
+            loading: $.proxy(this.loader, this),
         };
     };
 
@@ -124,17 +128,18 @@ humhub.module('calendar', function (module, require, $) {
 
         var that = this;
 
-        if(this.options.enabled) {
+        if(!this.options.enabled) {
+            this.lastStart = start;
+            this.lastEnd = end;
+            modal.global.load(this.options.enableUrl);
+        } else if(this.options.canCreate) {
             modal.global.load(this.options.editUrl, options).then(function() {
                 modal.global.$.on('submitted', function() {
                     that.fetch();
                 });
             });
-        } else {
-            this.lastStart = start;
-            this.lastEnd = end;
-            modal.global.load(this.options.enableUrl);
         }
+
         this.$.fullCalendar('unselect');
     };
     
@@ -152,6 +157,7 @@ humhub.module('calendar', function (module, require, $) {
         };
 
         var that = this;
+        this.loader();
         client.post(entry.updateUrl, options).then(function(response) {
            if(response.success) {
                module.log.success('saved');
@@ -162,6 +168,8 @@ humhub.module('calendar', function (module, require, $) {
         }).catch(function(e) {
             module.log.error(e,true);
             that.fetch();
+        }).finally(function() {
+            that.loader(false);
         });
     };
 
@@ -175,6 +183,8 @@ humhub.module('calendar', function (module, require, $) {
             }
         };
 
+        this.loader();
+        var that = this;
         client.post(this.options.dropUrl, options).then(function(response) {
             if(response.success) {
                 module.log.success('saved');
@@ -185,22 +195,29 @@ humhub.module('calendar', function (module, require, $) {
         }).catch(function(e) {
             module.log.error(e, true);
             revertFunc();
-        });
+        }).finally(function() {
+            that.loader(false);
+        })
     };
 
     Calendar.prototype.clickEvent = function (event, delta, revertFunc) {
         modal.global.load(event.viewUrl).then(function() {
-            modal.global.$.find('.preferences').hide();
-            modal.global.$.find('.media-heading').find('.labels').css('padding-right', '0px');
             modal.global.set({backdrop: true});
         });
     };
 
     Calendar.prototype.loader = function (show) {
-        if (show) {
-            loader.set(this.$);
+        if (show === false) {
+            loader.reset($('#calendar-overview-loader'));
+        } else {
+            loader.set($('#calendar-overview-loader'),{
+                'size': '8px',
+                'css': {
+                    padding: '2px ',
+                    width: '60px'
+
+                }});
         }
-        loader.reset(this.$);
     };
 
     var Form = function (node, options) {
@@ -217,19 +234,30 @@ humhub.module('calendar', function (module, require, $) {
         modal.global.$.find('.tab-participation').on('shown.bs.tab', function (e) {
             $('#calendarentry-participation_mode').focus();
         });
+
+        this.initTimeInput();
+    };
+
+    Form.prototype.initTimeInput = function(evt) {
+        $timeFields = modal.global.$.find('.timeField');
+        $timeInputs =  $timeFields.find('.form-control');
+        $timeInputs.each(function() {
+            var $this = $(this);
+            if($this.prop('disabled')) {
+                $this.data('oldVal', $this.val()).val('');
+            }
+        });
     };
 
     Form.prototype.toggleDateTime = function(evt) {
         $timeFields = modal.global.$.find('.timeField');
-        $timeInputs =  $timeFields.find('input');
+        $timeInputs =  $timeFields.find('.form-control');
         if (evt.$trigger.prop('checked')) {
             $timeInputs.prop('disabled', true);
             $timeInputs.each(function() {
-               $this = $(this);
-               $this.data('oldVal', $this.val());
-               $this.val($this.attr('placeholder'));
+                $(this).data('oldVal', $(this).val()).val('');
             });
-            $timeFields.css('opacity', '0.5');
+            $timeFields.css('opacity', '0.2');
         } else {
             $timeInputs.each(function() {
                 $this = $(this);
@@ -260,6 +288,52 @@ humhub.module('calendar', function (module, require, $) {
         }
     };
 
+    Form.prototype.changeEventType = function(evt) {
+        $selected = evt.$trigger.find(':selected');
+        $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('type-color'));
+        $('.colorpicker-element').data('colorpicker').update();
+    };
+
+    var CalendarEntry = function (id) {
+        Content.call(this, id);
+    };
+
+    object.inherits(CalendarEntry, Content);
+
+    CalendarEntry.prototype.toggleClose = function (event) {
+        this.update(client.post(event));
+    };
+
+    CalendarEntry.prototype.reload = function (event) {
+        return this.parent().reload();
+    };
+
+    CalendarEntry.prototype.update = function (update) {
+        this.loader();
+        update.then($.proxy(this.handleUpdateSuccess, this))
+            .catch(CalendarEntry.handleUpdateError)
+            .finally($.proxy(this.loader, this, false));
+    };
+
+    CalendarEntry.prototype.loader = function ($loader) {
+        this.streamEntry().loader($loader);
+    };
+
+    CalendarEntry.prototype.handleUpdateSuccess = function (response) {
+        var streamEntry = this.streamEntry();
+        return streamEntry.replace(response.output).catch(function(e) {
+            module.log.error(e, true);
+        });
+    };
+
+    CalendarEntry.handleUpdateError = function (e) {
+        module.log.error(e, true);
+    };
+
+    CalendarEntry.prototype.streamEntry = function () {
+        return this.parent();
+    };
+
     /**
      * Action respond to calendar entry (participation)
      * @param evt
@@ -284,6 +358,8 @@ humhub.module('calendar', function (module, require, $) {
 
     var editModal = function (evt) {
         var that = this;
+        var streamEntry = Widget.closest(evt.$trigger);
+        streamEntry.loader();
         modal.load(evt).then(function (response) {
             modal.global.$.one('submitted', function () {
                 getCalendar().fetch();
@@ -308,6 +384,8 @@ humhub.module('calendar', function (module, require, $) {
     };
 
     var deleteEvent = function(evt) {
+        var streamEntry = Widget.closest(evt.$trigger);
+        streamEntry.loader();
         client.post(evt).then(function() {
             modal.global.close();
             getCalendar().fetch();
@@ -322,6 +400,7 @@ humhub.module('calendar', function (module, require, $) {
         editModal: editModal,
         deleteEvent: deleteEvent,
         enabled: enabled,
+        CalendarEntry: CalendarEntry,
         Form: Form
     });
 });

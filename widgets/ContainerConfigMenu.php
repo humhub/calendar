@@ -21,7 +21,7 @@ use Yii;
 use humhub\widgets\BaseMenu;
 use yii\helpers\Url;
 
-class GlobalConfigMenu extends SettingsTabs
+class ContainerConfigMenu extends SettingsTabs
 {
 
     /**
@@ -29,16 +29,18 @@ class GlobalConfigMenu extends SettingsTabs
      */
     public function init()
     {
+        $contentContainer = Yii::$app->controller->contentContainer;
+
         $this->items = [
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Defaults'),
-                'url' => Url::toRoute(['/calendar/config/index']),
-                'active' => $this->isCurrentRoute('calendar', 'config', 'index')
+                'url' => $contentContainer->createUrl('/calendar/container-config/index'),
+                'active' => $this->isCurrentRoute('calendar', 'container-config', 'index')
             ],
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Snippet'),
-                'url' => Url::toRoute(['/calendar/config/snippet']),
-                'active' => $this->isCurrentRoute('calendar', 'config', 'snippet')
+                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
+                'url' => $contentContainer->createUrl('/calendar/container-config/types'),
+                'active' => $this->isCurrentRoute('calendar', 'container-config', 'types')
             ]
         ];
         parent::init();

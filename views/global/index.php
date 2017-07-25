@@ -5,12 +5,16 @@ use humhub\modules\calendar\widgets\FullCalendar;
 use yii\helpers\Url;
 
 /* @var $this \humhub\components\View */
+/* @var $canConfigure boolean */
+/* @var $configureUrl string */
 ?>
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-body" style="background-color:<?= $this->theme->variable('background-color-secondary') ?>">
             <?= CalendarFilterBar::widget([
                     'selectors' => $selectors,
+                    'canConfigure' => $canConfigure,
+                    'configUrl' => $configureUrl,
                     'filters' => $filters
             ])?>
         </div>
@@ -28,7 +32,6 @@ use yii\helpers\Url;
                             'editUrl' => $editUrl,
                         ]);
                         ?>
-
                     </div>
                 </div>
 

@@ -3,10 +3,15 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\notifications\CanceledEvent;
+use humhub\modules\calendar\notifications\ReopenedEvent;
 use humhub\modules\calendar\permissions\ManageEntry;
+use humhub\modules\calendar\widgets\EntryParticipants;
 use humhub\modules\calendar\widgets\WallEntry;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentTag;
 use humhub\modules\search\interfaces\Searchable;
+use humhub\widgets\Label;
 use Yii;
 use DateTime;
 use DateInterval;
@@ -16,6 +21,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\user\models\User;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "calendar_entry".
@@ -36,6 +42,8 @@ use humhub\modules\user\models\User;
  * @property integer $allow_decline
  * @property integer $allow_maybe
  * @property string $participant_info
+ * @property integer closed
+ * @property integer max_participants
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable
@@ -67,6 +75,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     const PARTICIPATION_MODE_INVITE = 1;
     const PARTICIPATION_MODE_ALL = 2;
 
+    /**
+     * @var array all given participation modes as array
+     */
     public static $participationModes = [
         self::PARTICIPATION_MODE_NONE,
         self::PARTICIPATION_MODE_INVITE,
@@ -88,6 +99,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
 
         // Default participiation Mode
         $this->participation_mode = self::PARTICIPATION_MODE_ALL;
+        $this->allow_maybe = 1;
+        $this->allow_decline = 1;
     }
 
     /**
@@ -108,7 +121,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             ['color', 'string'],
             [['start_datetime'], DbDateValidator::className()],
             [['end_datetime'], DbDateValidator::className()],
-            [['all_day', 'allow_decline', 'allow_maybe'], 'integer'],
+            [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => self::$participationModes],
             [['end_datetime'], 'validateEndTime'],
@@ -124,11 +137,13 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         return [
             'id' => Yii::t('CalendarModule.base', 'ID'),
             'title' => Yii::t('CalendarModule.base', 'Title'),
+            'type_id' => Yii::t('CalendarModule.base', 'Event Type'),
             'description' => Yii::t('CalendarModule.base', 'Description'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
             'allow_decline' => Yii::t('CalendarModule.base', 'Allow participation state \'decline\''),
             'allow_maybe' => Yii::t('CalendarModule.base', 'Allow participation state \'maybe\''),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
+            'max_participants' => Yii::t('CalendarModule.base', 'Maximum number of participants'),
         ];
     }
 
@@ -149,13 +164,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     public function beforeSave($insert)
     {
         // Check is a full day span
-        /*if ($this->all_day == 0 && CalendarUtils::isFullDaySpan($startDateTime, $endDateTime)) {
+        if ($this->all_day == 0 && CalendarUtils::isFullDaySpan(new DateTime($this->start_datetime), new DateTime($this->end_datetime))) {
             $this->all_day = 1;
-        }*/
-
-        if(!$this->isParticipationAllowed()) {
-            $this->allow_decline = false;
-            $this->allow_maybe = false;
         }
 
         return parent::beforeSave($insert);
@@ -176,9 +186,74 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         return parent::beforeDelete();
     }
 
+    public function toggleClosed()
+    {
+        $this->closed = ($this->closed) ? 0 : 1;
+        $this->save();
+
+        $participants = $this->getParticipantUsersByState([
+            CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
+            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
+            CalendarEntryParticipant::PARTICIPATION_STATE_INVITED]);
+
+        if($this->closed) {
+            CanceledEvent::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
+        } else {
+            ReopenedEvent::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
+        }
+    }
+
+    /**
+     * Returns the related CalendarEntryType relation if given.
+     *
+     * @return CalendarEntryType
+     */
+    public function getType()
+    {
+        return CalendarEntryType::findByContent($this->content)->one();
+    }
+
+    /**
+     * Sets the clanedarentry type.
+     * @param $type
+     */
+    public function setType($type)
+    {
+        $type = ($type instanceof ContentTag) ? $type : ContentTag::findOne($type);
+        if($type->is(CalendarEntryType::class)) {
+            CalendarEntryType::deleteContentRelations($this->content);
+            $this->content->addTag($type);
+        }
+    }
+
+    /**
+     * @return ActiveQuery
+     */
     public function getParticipants()
     {
-        return $this->hasMany(CalendarEntryParticipant::className(), ['calendar_entry_id' => 'id']);
+        return $this->hasMany(CalendarEntryParticipant::class, ['calendar_entry_id' => 'id']);
+    }
+
+    /**
+     * Returns an ActiveQuery for all participant user models of this meeting.
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParticipantUsers()
+    {
+        return $this->hasMany(User::class, ['id' => 'user_id'])->via('participants');
+    }
+
+    public function getParticipantUsersByState($state)
+    {
+        if(is_int($state)) {
+            $state = [$state];
+        }
+
+        return $this->hasMany(User::class, ['id' => 'user_id'])->via('participants', function($query) use ($state) {
+            /* @var $query ActiveQuery */
+            $query->andWhere(['IN', 'calendar_entry_participant.participation_state', $state]);
+        })->all();
     }
 
     public function isParticipationAllowed()
@@ -210,6 +285,10 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
+        }
+
+        if(!$user) {
+            return;
         }
 
         return CalendarEntryParticipant::findOne(['user_id' => $user->id, 'calendar_entry_id' => $this->id]);
@@ -245,7 +324,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'editable' => $this->content->canWrite(),
+            'editable' => $this->content->canEdit(),
             'backgroundColor' => $this->color,
             'allDay' => $this->all_day,
             'updateUrl' => $this->content->container->createUrl('/calendar/entry/edit-ajax', ['id' => $this->id]),
@@ -268,12 +347,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
      */
     public function canRespond(User $user = null)
     {
-        if (Yii::$app->user->isGuest) {
-            return false;
+        if ($user == null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
         }
 
-        if ($user == null) {
-            $user = Yii::$app->user->getIdentity();
+        if ($this->closed || Yii::$app->user->isGuest || !$this->checkMaxParticipants()) {
+            return false;
         }
 
         if ($this->participation_mode == self::PARTICIPATION_MODE_ALL) {
@@ -288,6 +367,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         }
 
         return false;
+    }
+
+    public function checkMaxParticipants()
+    {
+        return empty($this->max_participants)
+            || ($this->getParticipantCount(CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED) < $this->max_participants);
     }
 
     /**
@@ -382,6 +467,33 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
+    public function getIcon()
+    {
+        return 'fa-calendar';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLabels($result = [], $includeContentName = true)
+    {
+        $labels = [];
+
+        if($this->closed) {
+            $labels[] = Label::danger('closed')->sortOrder(15);
+        }
+
+        $type = $this->getType();
+        if($type) {
+            $labels[] = Label::asColor($type->color, $type->name)->sortOrder(310);
+        }
+
+        return parent::getLabels($labels);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getContentDescription()
     {
         return $this->title;
@@ -398,9 +510,13 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         ];
     }
 
-    public function getParticipantCount($state)
+    public function getParticipantCount($state = null)
     {
-        return CalendarEntryParticipant::find()->where(['calendar_entry_id' => $this->id, 'participation_state' => $state])->count();
+        if($state) {
+            return $this->getParticipants()->where(['participation_state' => $state])->count();
+        } else {
+            return $this->getParticipants()->count();
+        }
     }
 
     /**
@@ -475,5 +591,4 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             return CalendarEntryQuery::find()->userRelated()->days($daysInFuture)->limit($limit)->all();
         }
     }
-
 }

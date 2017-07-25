@@ -138,16 +138,16 @@ class DefaultSettings extends Model
 
     public function showResetButton()
     {
-        return !$this->isGlobal() && $this->getSettings()->get(self::SETTING_PARTICIPATION_MODE) !== null;
+        return $this->getSettings()->get(self::SETTING_PARTICIPATION_MODE) !== null;
     }
 
     public function getResetButtonUrl()
     {
-        return ($this->isGlobal()) ? null : $this->contentContainer->createUrl('/calendar/entry/reset-config');
+        return ($this->isGlobal()) ? Url::to(['/calendar/config/reset-config']) : $this->contentContainer->createUrl('/calendar/container-config/reset-config');
     }
 
     public function getSubmitUrl()
     {
-        return ($this->isGlobal()) ? Url::to(['/calendar/config']) : $this->contentContainer->createUrl('/calendar/entry/config');
+        return ($this->isGlobal()) ? Url::to(['/calendar/config']) : $this->contentContainer->createUrl('/calendar/container-config');
     }
 }

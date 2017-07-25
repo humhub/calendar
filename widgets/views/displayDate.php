@@ -24,11 +24,11 @@ $formatter = Yii::$app->formatter;
     <?php endif ?>
 <?php else: ?>
     <?php if ($durationDays > 1): ?>
-        <?= $formatter->asDate($start, 'long'); ?>
-        (<?= $formatter->asTime($start, 'short'); ?>)
+        <?= $formatter->asDate($start, 'long'); ?>,
+        <?= $formatter->asTime($start, 'short'); ?>
         - 
-        <?= $formatter->asDate($end, 'long'); ?>
-        (<?= $formatter->asTime($end, 'short'); ?>)
+        <?= $formatter->asDate($end, 'long'); ?>,
+        <?= $formatter->asTime($end, 'short'); ?>
     <?php else: ?>
         <?= $formatter->asDate($start, 'long'); ?>
 

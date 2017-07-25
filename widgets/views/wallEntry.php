@@ -8,11 +8,13 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntry;
 
 /* @var $calendarEntry CalendarEntry */
+/* @var $stream boolean */
+/* @var $collapse boolean */
 
 $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable('info');
 ?>
 
-<div class="media event">
+<div class="media event" data-action-component="calendar.CalendarEntry" data-calendar-entry="<?= $calendarEntry->id ?>">
     <div class="media-body" style="padding-left:10px; border-left: 3px solid <?= $color ?>">
         <div class="clearfix">
             <a href="<?= $calendarEntry->getUrl(); ?>" class="pull-left" style="margin-right: 10px">
@@ -30,30 +32,37 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
         <div class="row">
             <div class="col-md-12">
                 <?php if (!empty($calendarEntry->description)) : ?>
-                    <div data-ui-show-more data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full description...") ?>" style="overflow:hidden">
+                    <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full description...") ?>" style="overflow:hidden">
                         <?= MarkdownView::widget(['markdown' => $calendarEntry->description]); ?>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
+
     <?php if ($calendarEntry->isParticipationAllowed()) : ?>
-        <br>
-        <div class="row">
-            <div class="col-md-12">
-                <?= EntryParticipants::widget(['calendarEntry' => $calendarEntry]); ?>
+        <?php if(!$calendarEntry->closed) : ?>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <?= EntryParticipants::widget(['calendarEntry' => $calendarEntry]); ?>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
+
         <?php if(!empty($calendarEntry->participant_info) && $calendarEntry->isParticipant()) : ?>
             <br />
             <div class="row">
                 <div class="col-md-12">
-                    <strong><?= Yii::t('CalendarModule.views_entry_view', 'Participant information:') ?></strong>
-                    <?= MarkdownView::widget(['markdown' => $calendarEntry->participant_info]); ?>
+                    <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full participation info...") ?>">
+                        <strong><i class="fa fa-info-circle"></i> <?= Yii::t('CalendarModule.views_entry_view', 'Participant information:') ?></strong>
+                        <?= MarkdownView::widget(['markdown' => $calendarEntry->participant_info]); ?>
+                    </div>
                 </div>
             </div>
         <?php endif; ?>
     <?php endif; ?>
+
     <?php if ($calendarEntry->canRespond()): ?>
        <div class="row" style="padding-top:10px">
             <div class="col-md-12">

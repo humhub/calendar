@@ -12,8 +12,11 @@
 \humhub\modules\calendar\assets\Assets::register($this);
 
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
+use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
 use humhub\widgets\ActiveForm;
+use humhub\widgets\Button;
+use humhub\widgets\Tabs;
 use \yii\helpers\Html;
 
 $helpBlock = $model->isGlobal()
@@ -27,6 +30,8 @@ $helpBlock = $model->isGlobal()
 
     <?php if($model->isGlobal()) : ?>
         <?= GlobalConfigMenu::widget() ?>
+    <?php else: ?>
+        <?= ContainerConfigMenu::widget()?>
     <?php endif; ?>
 
     <div class="panel-body" data-ui-widget="calendar.Form">
@@ -44,7 +49,9 @@ $helpBlock = $model->isGlobal()
                 <?= $form->field($model, 'allow_decline')->checkbox() ?>
                 <?= $form->field($model, 'allow_maybe')->checkbox() ?>
             </div>
-            <?= Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
+
+            <?= Button::primary(Yii::t('base', 'Save'))->submit() ?>
+
             <?php if($model->showResetButton()) : ?>
                 <a href="<?= $model->getResetButtonUrl(); ?>" class='btn btn-default pull-right' data-ui-loader><?= Yii::t('CalendarModule.config', 'Reset'); ?></a>
             <?php endif; ?>

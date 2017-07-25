@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\helpers\Url;
@@ -17,7 +18,7 @@ class FullCalendar extends JsWidget
     public $jsWidget = 'calendar.Calendar';
     public $id = 'calendar';
     public $init = true;
-    public $canWrite = true;
+    public $canWrite = false;
     public $loadUrl;
     public $dropUrl;
     public $editUrl;
@@ -31,6 +32,8 @@ class FullCalendar extends JsWidget
         \humhub\modules\calendar\assets\Assets::register($this->getView());
 
         if(Yii::$app->user->isGuest) {
+            $this->canWrite = false;
+            $this->enabled = false;
             parent::init();
             return;
         }
@@ -52,24 +55,34 @@ class FullCalendar extends JsWidget
     
     public function getData()
     {
-
-        $timeZone = (!Yii::$app->user->isGuest) ? Yii::$app->user->getIdentity()->time_zone : date_default_timezone_get();
-
         return [
             'load-url' => $this->loadUrl,
             'edit-url' => $this->editUrl,
             'drop-url' => $this->dropUrl,
             'enable-url' => Url::to(['/calendar/global/enable']),
+            'enabled' => $this->enabled,
             'can-write' => $this->canWrite,
+            'can-create' => $this->canCreate(),
             'editable' => $this->canWrite,
             'selectable' => $this->canWrite,
             'selectHelper' => $this->canWrite,
             'selectors' => $this->selectors,
             'filters' => $this->filters,
-            'timezone' => $timeZone,
+            'timezone' =>  Yii::$app->formatter->timeZone,
             'locale' => Yii::$app->formatter->locale,
             'lang' => Yii::$app->language,
             'enabled' => $this->enabled
         ];
+    }
+
+    private function canCreate()
+    {
+        if($this->contentContainer && !Yii::$app->user->isGuest) {
+            return $this->contentContainer->can(CreateEntry::class);
+        } else if(!Yii::$app->user->isGuest) {
+            return Yii::$app->user->getIdentity()->isCurrentUser();
+        }
+
+        return false;
     }
 }

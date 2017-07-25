@@ -20,6 +20,9 @@ class CalendarFilterBar extends Widget
     public $showFilter = true;
     public $showSelectors = true;
 
+    public $canConfigure = false;
+    public $configUrl;
+
     public function run()
     {
         if(Yii::$app->user->isGuest) {
@@ -28,6 +31,8 @@ class CalendarFilterBar extends Widget
 
         return $this->render('calendarFilterBar', [
             'filters' => $this->filters,
+            'canConfigure' => $this->canConfigure,
+            'configUrl' => $this->configUrl,
             'selectors' => $this->selectors,
             'showFilters' => $this->showFilter,
             'showSelectors' => $this->showSelectors

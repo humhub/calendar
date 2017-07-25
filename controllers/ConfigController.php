@@ -40,6 +40,16 @@ class ConfigController extends Controller
         ]);
     }
 
+    public function actionResetConfig()
+    {
+        $model = new DefaultSettings();
+        $model->reset();
+        $this->view->saved();
+        return $this->render('@calendar/views/common/defaultConfig', [
+            'model' => $model
+        ]);
+    }
+
     public function actionSnippet()
     {
         $model = new SnippetModuleSettings();

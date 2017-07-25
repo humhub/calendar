@@ -635,3 +635,11 @@ table.fc-border-separate {
 .timeField .help-block {
 	margin: 0px;
 }
+
+#calendar-entry-form {
+	padding-top:0px;
+}
+
+#calendar-entry-form .tab-menu {
+	margin-bottom:0px;
+}

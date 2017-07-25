@@ -36,9 +36,21 @@ class GlobalController extends Controller
 
     public function actionIndex()
     {
+        if(!Yii::$app->user->isGuest){
+            $configureUrl = Yii::$app->user->getIdentity()->createUrl('/calendar/container-config');
+            $moduleEnabled = Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
+        } else {
+            $moduleEnabled = false;
+            $configureUrl = null;
+        }
+
+
+
         return $this->render('index', [
                     'selectors' => $this->getSelectorSettings(),
                     'filters' => $this->getFilterSettings(),
+                    'canConfigure' => $moduleEnabled,
+                    'configureUrl' => $configureUrl,
                     'editUrl' => Url::to(['/calendar/entry/edit'])
         ]);
     }

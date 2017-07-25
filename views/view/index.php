@@ -1,17 +1,28 @@
+<?php
+use humhub\modules\calendar\widgets\CalendarFilterBar;
+use humhub\modules\calendar\widgets\FullCalendar;
+use humhub\widgets\Button;
+use humhub\widgets\FadeIn;
+
+$configUrl = $contentContainer->createUrl('/calendar/container-config');
+$loadAjaxUrl = $contentContainer->createUrl('/calendar/view/load-ajax');
+?>
 <div class="panel panel-default">
     <div class="panel-body" style="background-color:<?= $this->theme->variable('background-color-secondary') ?>">
-        <?= \humhub\modules\calendar\widgets\CalendarFilterBar::widget([
+        <?= CalendarFilterBar::widget([
             'filters' => $filters,
+            'canConfigure' => $canConfigure,
+            'configUrl' => $configUrl,
             'showSelectors' => false
-        ]) ?>
+            ]) ?>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="panel-body">
-                <?= \humhub\modules\calendar\widgets\FullCalendar::widget(array(
+                <?= FullCalendar::widget([
                     'canWrite' => $canAddEntries,
-                    'loadUrl' => $contentContainer->createUrl('/calendar/view/load-ajax'),
-                    'contentContainer' => $contentContainer));
+                    'loadUrl' => $loadAjaxUrl,
+                    'contentContainer' => $contentContainer]);
                 ?>
             </div>
         </div>

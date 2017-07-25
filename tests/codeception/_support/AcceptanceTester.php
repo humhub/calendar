@@ -23,4 +23,25 @@ class AcceptanceTester extends \AcceptanceTester
    /**
     * Define custom actions here
     */
+   public function createEventToday($title = 'My Test Entry', $description = 'My Test Entry Description', $startTime = null, $endTime = null, $save = true)
+   {
+       $this->waitForElementVisible('.fc-today');
+       $this->click('.fc-today');
+       $this->waitForText('Create event');
+
+       $this->fillField('CalendarEntry[title]', $title);
+       $this->fillField('CalendarEntry[description]', $description);
+
+       if($startTime) {
+           $this->click('[for="calendarentry-all_day"]');
+           $this->wait(1);
+           $this->fillField('#calendarentryform-start_time', $startTime);
+           $this->fillField('#calendarentryform-start_time', $endTime);
+       }
+
+       if($save) {
+           $this->click('Save', '#globalModal');
+           $this->wait(1);
+       }
+   }
 }
