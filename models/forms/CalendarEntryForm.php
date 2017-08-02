@@ -130,11 +130,11 @@ class CalendarEntryForm extends Model
     public function checkAllDay()
     {
         if($this->entry->all_day) {
-            $date = new DateTime();
+            $date = new DateTime('now', new DateTimeZone($this->timeZone));
             $date->setTime(0,0);
             $this->start_time = Yii::$app->formatter->asTime($date, 'short');
             $date->setTime(23,59);
-            $this->end_time = Yii::$app->formatter->asTime($date, 'short');;
+            $this->end_time = Yii::$app->formatter->asTime($date, 'short');
         }
     }
 
