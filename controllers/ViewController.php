@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use DateTime;
+use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentContainerController;
@@ -24,7 +25,7 @@ class ViewController extends ContentContainerController
         return $this->render('index', [
             'contentContainer' => $this->contentContainer,
             'canAddEntries' => $this->contentContainer->permissionManager->can(new CreateEntry()),
-            'canConfigure' => $this->contentContainer->isAdmin(),
+            'canConfigure' => $this->canConfigure(),
             'filters' => [],
         ]);
     }
@@ -40,6 +41,15 @@ class ViewController extends ContentContainerController
         }
 
         return $this->asJson($result);
+    }
+
+    public function canConfigure()
+    {
+        if($this->contentContainer instanceof Space) {
+            return $this->contentContainer->isAdmin();
+        } else {
+            return $this->contentContainer->isCurrentUser();
+        }
     }
 
 }

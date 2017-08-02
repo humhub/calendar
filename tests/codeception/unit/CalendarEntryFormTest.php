@@ -40,9 +40,9 @@ class CalendarEntryFormTest extends HumHubDbTestCase
                 'is_public' => '1',
                 'all_day' => '0',
                 'start_date' => '6/27/17',
-                'start_time' => '12:00',
+                'start_time' => '12:00 PM',
                 'end_date' => '6/28/17',
-                'end_time' => '13:00'
+                'end_time' => '01:00 PM'
             ]
         ]));
 
@@ -82,10 +82,10 @@ class CalendarEntryFormTest extends HumHubDbTestCase
         Yii::$app->formatter->timeZone = 'Europe/Berlin';
 
         $calendarForm = new CalendarEntryForm(['entry' => $entry]);
-        $this->assertEquals('2017-06-27', $calendarForm->start_date);
-        $this->assertEquals('14:00', $calendarForm->start_time);
-        $this->assertEquals('2017-06-28', $calendarForm->end_date);
-        $this->assertEquals('15:00', $calendarForm->end_time);
+        $this->assertEquals('2017-06-27 14:00:00', $calendarForm->start_date);
+        $this->assertEquals('2:00 PM', $calendarForm->start_time);
+        $this->assertEquals('2017-06-28 15:00:00', $calendarForm->end_date);
+        $this->assertEquals('3:00 PM', $calendarForm->end_time);
 
         // Load same time data, but with user timeZone
         $this->assertTrue($calendarForm->load([
@@ -94,9 +94,9 @@ class CalendarEntryFormTest extends HumHubDbTestCase
                 'is_public' => '1',
                 'all_day' => '0',
                 'start_date' => '6/27/17',
-                'start_time' => '14:00',
+                'start_time' => '02:00 PM',
                 'end_date' => '6/28/17',
-                'end_time' => '15:00'
+                'end_time' => '03:00 PM'
             ]
         ]));
 
@@ -105,6 +105,7 @@ class CalendarEntryFormTest extends HumHubDbTestCase
         // Change back to UTC
         Yii::$app->user->getIdentity()->time_zone = Yii::$app->timeZone;
         Yii::$app->formatter->timeZone = Yii::$app->timeZone;
+        Yii::$app->formatter->locale = 'de';
 
         // Make sure the time values of the actual entry are as before (since we did only change timezone)
         $entry = CalendarEntry::findOne(['id' => $calendarForm->entry->id]);
@@ -118,9 +119,9 @@ class CalendarEntryFormTest extends HumHubDbTestCase
 
         // Reload form with UTC timeZone and make sure the time values are valid
         $calendarForm = new CalendarEntryForm(['entry' => $entry]);
-        $this->assertEquals('2017-06-27', $calendarForm->start_date);
+        $this->assertEquals('2017-06-27 12:00:00', $calendarForm->start_date);
         $this->assertEquals('12:00', $calendarForm->start_time);
-        $this->assertEquals('2017-06-28', $calendarForm->end_date);
+        $this->assertEquals('2017-06-28 13:00:00', $calendarForm->end_date);
         $this->assertEquals('13:00', $calendarForm->end_time);
     }
 }

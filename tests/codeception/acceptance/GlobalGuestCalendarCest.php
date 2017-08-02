@@ -14,7 +14,7 @@ use calendar\AcceptanceTester;
  * Date: 25.07.2017
  * Time: 15:44
  */
-class GlobalCalendarCest
+class GlobalGuestCalendarCest
 {
     public function testGlobalGuestView(AcceptanceTester $I)
     {
