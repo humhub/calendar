@@ -15,7 +15,7 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 
 /**
- * 
+ *
  */
 class ConfigController extends Controller
 {

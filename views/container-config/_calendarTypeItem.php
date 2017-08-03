@@ -26,9 +26,10 @@ $deleteUrl = $contentContainer->createUrl('/calendar/container-config/delete-typ
             <span class="input-group-addon">
                 <?= ModalButton::primary()->load($editUrl)->icon('fa-pencil')->xs() ?>
                 <?= ModalButton::danger()->post($deleteUrl)->confirm(
-                        Yii::t('CalendarModule.config', '<strong>Confirm</strong> Deletion'),
-                        Yii::t('CalendarModule.config', 'Do you really want to delte this event type?'),
-                        Yii::t('CalendarModule.config', 'Delete'))->icon('fa-times')->xs() ?>
+                    Yii::t('CalendarModule.config', '<strong>Confirm</strong> Deletion'),
+                    Yii::t('CalendarModule.config', 'Do you really want to delte this event type?'),
+                    Yii::t('CalendarModule.config', 'Delete')
+                )->icon('fa-times')->xs() ?>
             </span>
         </div>
     </div>

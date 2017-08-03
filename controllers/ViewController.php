@@ -45,11 +45,10 @@ class ViewController extends ContentContainerController
 
     public function canConfigure()
     {
-        if($this->contentContainer instanceof Space) {
+        if ($this->contentContainer instanceof Space) {
             return $this->contentContainer->isAdmin();
         } else {
             return $this->contentContainer->isCurrentUser();
         }
     }
-
 }

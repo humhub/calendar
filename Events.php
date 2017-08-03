@@ -47,12 +47,12 @@ class Events extends \yii\base\Object
     {
         $user = $event->sender->user;
         if ($user->isModuleEnabled('calendar')) {
-            $event->sender->addItem(array(
+            $event->sender->addItem([
                 'label' => Yii::t('CalendarModule.base', 'Calendar'),
                 'url' => $user->createUrl('/calendar/view/index'),
                 'icon' => '<i class="fa fa-calendar"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
-            ));
+            ]);
         }
     }
 
@@ -98,5 +98,4 @@ class Events extends \yii\base\Object
             }
         }
     }
-
 }

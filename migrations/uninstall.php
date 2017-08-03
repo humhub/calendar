@@ -16,5 +16,4 @@ class uninstall extends Migration
         echo "uninstall does not support migration down.\n";
         return false;
     }
-
 }

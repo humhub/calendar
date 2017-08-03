@@ -106,5 +106,4 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         }
         return parent::beforeAction($action);
     }
-
 }

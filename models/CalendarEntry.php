@@ -61,7 +61,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     /**
      * This attributes are used for time input
      */
-    public $selected_participants = "";
+    public $selected_participants = '';
 
     /**
      * @inheritdoc
@@ -157,7 +157,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     public function validateEndTime($attribute, $params)
     {
         if (new DateTime($this->start_datetime) >= new DateTime($this->end_datetime)) {
-            $this->addError($attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
+            $this->addError($attribute, Yii::t('CalendarModule.base', 'End time must be after start time!'));
         }
     }
 
@@ -196,7 +196,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
             CalendarEntryParticipant::PARTICIPATION_STATE_INVITED]);
 
-        if($this->closed) {
+        if ($this->closed) {
             CanceledEvent::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
         } else {
             ReopenedEvent::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
@@ -220,7 +220,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     public function setType($type)
     {
         $type = ($type instanceof ContentTag) ? $type : ContentTag::findOne($type);
-        if($type->is(CalendarEntryType::class)) {
+        if ($type->is(CalendarEntryType::class)) {
             CalendarEntryType::deleteContentRelations($this->content);
             $this->content->addTag($type);
         }
@@ -246,11 +246,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
 
     public function getParticipantUsersByState($state)
     {
-        if(is_int($state)) {
+        if (is_int($state)) {
             $state = [$state];
         }
 
-        return $this->hasMany(User::class, ['id' => 'user_id'])->via('participants', function($query) use ($state) {
+        return $this->hasMany(User::class, ['id' => 'user_id'])->via('participants', function ($query) use ($state) {
             /* @var $query ActiveQuery */
             $query->andWhere(['IN', 'calendar_entry_participant.participation_state', $state]);
         })->all();
@@ -287,7 +287,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             $user = Yii::$app->user->getIdentity();
         }
 
-        if(!$user) {
+        if (!$user) {
             return;
         }
 
@@ -317,7 +317,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
             $end = $endDateTime->format('Y-m-d');
         }
 
-        if(!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             Yii::$app->formatter->timeZone = Yii::$app->user->getIdentity()->time_zone;
         }
 
@@ -461,7 +461,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
      */
     public function getContentName()
     {
-        return Yii::t('CalendarModule.base', "Event");
+        return Yii::t('CalendarModule.base', 'Event');
     }
 
     /**
@@ -479,12 +479,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
     {
         $labels = [];
 
-        if($this->closed) {
+        if ($this->closed) {
             $labels[] = Label::danger('closed')->sortOrder(15);
         }
 
         $type = $this->getType();
-        if($type) {
+        if ($type) {
             $labels[] = Label::asColor($type->color, $type->name)->sortOrder(310);
         }
 
@@ -512,7 +512,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
 
     public function getParticipantCount($state = null)
     {
-        if($state) {
+        if ($state) {
             return $this->getParticipants()->where(['participation_state' => $state])->count();
         } else {
             return $this->getParticipants()->count();

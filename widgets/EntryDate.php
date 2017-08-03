@@ -14,7 +14,7 @@ class EntryDate extends Widget
 {
 
     /**
-     * @var \humhub\modules\calendar\models\CalendarEntry 
+     * @var \humhub\modules\calendar\models\CalendarEntry
      */
     public $entry;
 
@@ -33,5 +33,4 @@ class EntryDate extends Widget
                     'end' => $end,
         ]);
     }
-
 }

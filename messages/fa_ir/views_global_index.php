@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Filter</strong> events' => '<strong>فیلتر کردن</strong> رویدادها',
   '<strong>Select</strong> calendars' => '<strong>انتخاب</strong> تقویم‌ها',
   'Already responded' => 'پاسخ قبلا داده‌شده‌است',
@@ -10,4 +10,4 @@ return array (
   'My profile' => 'پروفایل من',
   'My spaces' => 'انجمن‌های من',
   'Not responded yet' => 'هنوز پاسخ داده‌نشده‌است',
-);
+];

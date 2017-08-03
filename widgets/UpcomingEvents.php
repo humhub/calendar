@@ -44,5 +44,4 @@ class UpcomingEvents extends Widget
 
         return $this->render('upcomingEvents', ['calendarEntries' => $calendarEntries, 'calendarUrl' => $calendarUrl]);
     }
-
 }

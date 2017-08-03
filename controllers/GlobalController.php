@@ -13,7 +13,6 @@ use yii\web\HttpException;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 
-
 /**
  * GlobalController provides a global view.
  *
@@ -36,7 +35,7 @@ class GlobalController extends Controller
 
     public function actionIndex()
     {
-        if(!Yii::$app->user->isGuest){
+        if (!Yii::$app->user->isGuest) {
             $configureUrl = Yii::$app->user->getIdentity()->createUrl('/calendar/container-config');
             $moduleEnabled = Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
         } else {
@@ -60,16 +59,16 @@ class GlobalController extends Controller
      */
     private function getSelectorSettings()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return [];
         }
 
         $lastSelectorsJson = Yii::$app->user->getIdentity()->getSetting('lastSelectors', 'calendar');
-        if ($lastSelectorsJson != "") {
+        if ($lastSelectorsJson != '') {
             $selectors = Json::decode($lastSelectorsJson);
         }
 
-        if(empty($lastSelectorsJson)) {
+        if (empty($lastSelectorsJson)) {
             $selectors = [
                 ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE,
                 ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
@@ -84,16 +83,16 @@ class GlobalController extends Controller
      */
     private function getFilterSettings()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return [];
         }
 
         $lastFilterJson = Yii::$app->user->getIdentity()->getSetting('lastFilters', 'calendar');
-        if ($lastFilterJson != "") {
+        if ($lastFilterJson != '') {
             $filters = Json::decode($lastFilterJson);
         }
 
-        if(empty($filters)) {
+        if (empty($filters)) {
             $filters = [];
         }
 
@@ -104,7 +103,7 @@ class GlobalController extends Controller
     {
         $output = [];
 
-        if(!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             $selectors = Yii::$app->request->get('selectors', []);
             $filters = Yii::$app->request->get('filters', []);
 
@@ -127,14 +126,14 @@ class GlobalController extends Controller
     {
         $user = Yii::$app->user->getIdentity();
 
-        $cancelButton = '<button data-modal-close class="btn btn-default">'.Yii::t('base' ,'Cancel').'</button>';
-        $enableButton = '<button data-action-click="content.container.enableModule" data-action-url="'.$user->createUrl('/user/account/enable-module', ['moduleId' => 'calendar']).'" data-ui-loader class="btn btn-primary">'. Yii::t('CalendarModule.base' ,'Enable').'</button>';
-        $nextButton = '<button data-action-click="calendar.enabled" class="btn btn-primary disable" style="display:none" data-ui-loader>'.Yii::t('CalendarModule.base' ,'Next').'</button>';
+        $cancelButton = '<button data-modal-close class="btn btn-default">' . Yii::t('base', 'Cancel') . '</button>';
+        $enableButton = '<button data-action-click="content.container.enableModule" data-action-url="' . $user->createUrl('/user/account/enable-module', ['moduleId' => 'calendar']) . '" data-ui-loader class="btn btn-primary">' . Yii::t('CalendarModule.base', 'Enable') . '</button>';
+        $nextButton = '<button data-action-click="calendar.enabled" class="btn btn-primary disable" style="display:none" data-ui-loader>' . Yii::t('CalendarModule.base', 'Next') . '</button>';
 
         return ModalDialog::widget([
             'header' => Yii::t('CalendarModule.base', '<strong>Add</strong> profile calendar'),
             'body' => Yii::t('CalendarModule.base', 'In order to add events to your profile, you have to enable the calendar module first.'),
-            'footer' => $enableButton.$nextButton.$cancelButton,
+            'footer' => $enableButton . $nextButton . $cancelButton,
             'centerText' => true
         ]);
     }
