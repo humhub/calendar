@@ -17,6 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Participant information:' => '',
+    'Read full description...' => '',
+    'Read full participation info...' => '',
     'Attend' => 'Chci se zúčastnit',
     'Decline' => 'Nechci se zúčastnit',
     'Maybe' => 'Možná',

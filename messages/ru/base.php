@@ -18,15 +18,20 @@
  */
 return [
     '<strong>Add</strong> profile calendar' => '',
-    'Are you sure you want to delete this event?' => '',
+    'Allow participation state \'decline\'' => '',
+    'Allow participation state \'maybe\'' => '',
     'Attending' => '',
     'Close' => '',
     'Edit' => '',
     'Enable' => '',
+    'Event Type' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Interested' => '',
+    'Invalid event type id selected.' => '',
     'Invited' => '',
+    'Maximum number of participants' => '',
     'Next' => '',
+    'Time Zone' => '',
     'Adds an calendar for private or public events to your profile and mainmenu.' => 'Добавляет календарь для лчиных или публичных событий в ваш профиль или в главное меню.',
     'Adds an event calendar to this space.' => 'Добавляет календарь к этому Пространству',
     'All Day' => 'Весь день',
@@ -47,5 +52,4 @@ return [
     'Start Time' => 'Время начала',
     'Title' => 'Наименование',
     'You don\'t have permission to delete this event!' => 'У вас нет доступа для удаления этого события!',
-    'You don\'t have permission to edit this event!' => 'У вас нет доступа для редактирования этого события!',
 ];

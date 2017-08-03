@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Basic' => '',
+    'Files' => '',
+    'Participation' => '',
+    'Select event type...' => '',
     '<strong>Create</strong> event' => 'buat acara',
     '<strong>Edit</strong> event' => 'Ubah acara',
-    '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => 'Catatan: acara ini akan dibuat di profil kamu. Untuk membuat acara di ruang kamu bisa membuka kalender di ruang kamu',
-    'Delete' => 'Hapus',
-    'Description' => 'Deskripsi',
-    'End Date/Time' => 'Tanggal/Waktu berakhir',
     'Everybody can participate' => 'Semua orang dapat berpartisipasi',
     'No participants' => 'Tidak berpartisipasi',
     'Title' => 'Judul',

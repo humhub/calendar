@@ -19,5 +19,8 @@
 return [
     'Attend' => '',
     'Maybe' => '',
+    'Participant information:' => '',
+    'Read full description...' => '',
+    'Read full participation info...' => '',
     'Decline' => 'رفض',
 ];

@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Basic' => '',
+    'Files' => '',
+    'Participation' => '',
+    'Select event type...' => '',
     '<strong>Create</strong> event' => '<strong>Criar</strong> evento',
     '<strong>Edit</strong> event' => '<strong>Editar</strong> evento',
-    '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>Obs:</strong>Este evento será criado no seu perfil. Para criar um evento em um espaço, abra o calendário do espaço desejado.',
-    'Delete' => 'Excluir',
-    'Description' => 'Descrição',
-    'End Date/Time' => 'Data/Hora Final',
     'Everybody can participate' => 'Todos podem participar',
     'No participants' => 'Sem participantes',
     'Title' => 'Título',

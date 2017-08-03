@@ -18,16 +18,21 @@
  */
 return [
     '<strong>Add</strong> profile calendar' => '',
-    'Are you sure you want to delete this event?' => '',
+    'Allow participation state \'decline\'' => '',
+    'Allow participation state \'maybe\'' => '',
     'Attending' => '',
     'Close' => '',
     'Edit' => '',
     'Enable' => '',
+    'Event Type' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Interested' => '',
+    'Invalid event type id selected.' => '',
     'Invited' => '',
+    'Maximum number of participants' => '',
     'Next' => '',
     'Public' => '',
+    'Time Zone' => '',
     'Adds an calendar for private or public events to your profile and mainmenu.' => 'Afegeix un calendari per esdeveniments públics o privats al teu perfil i al menú principal',
     'Adds an event calendar to this space.' => 'Afegeix un calendari a aquest espai.',
     'All Day' => 'Tot el dia',
@@ -47,5 +52,4 @@ return [
     'Start Time' => 'Hora d\'inici',
     'Title' => 'Títol',
     'You don\'t have permission to delete this event!' => 'No tens permisos per eliminar aquest esdeveniment!',
-    'You don\'t have permission to edit this event!' => 'No tens permisos per editar aquest esdeveniment!',
 ];

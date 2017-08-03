@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Basic' => '',
+    'Files' => '',
+    'Participation' => '',
+    'Select event type...' => '',
     '<strong>Create</strong> event' => '<strong>创建</strong> 事件',
     '<strong>Edit</strong> event' => '<strong>编辑</strong> 事件',
-    '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>提示：</strong>此事件将在您的属性页面创建。若要创建一个版块日历事件，请在所需版块打开日历来创建。',
-    'Delete' => '删除',
-    'Description' => '描述',
-    'End Date/Time' => '结束日期/时间',
     'Everybody can participate' => '所有人能参加',
     'No participants' => '没有参与者',
     'Title' => '标题',

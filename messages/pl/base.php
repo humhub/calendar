@@ -18,16 +18,21 @@
  */
 return [
     '<strong>Add</strong> profile calendar' => '',
-    'Are you sure you want to delete this event?' => '',
+    'Allow participation state \'decline\'' => '',
+    'Allow participation state \'maybe\'' => '',
     'Attending' => '',
     'Close' => '',
     'Edit' => '',
     'Enable' => '',
+    'Event Type' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Interested' => '',
+    'Invalid event type id selected.' => '',
     'Invited' => '',
+    'Maximum number of participants' => '',
     'Next' => '',
     'Public' => '',
+    'Time Zone' => '',
     'Adds an calendar for private or public events to your profile and mainmenu.' => 'Dodaje kalendarz dla wydarzeń prywatnych lub publicznych do twojego profilu i głównego menu.',
     'Adds an event calendar to this space.' => 'Dodaje kalendarz wydarzeń do tej strefy.',
     'All Day' => 'Wszystkie dni',
@@ -47,5 +52,4 @@ return [
     'Start Time' => 'Początek',
     'Title' => 'Tytuł',
     'You don\'t have permission to delete this event!' => 'Nie masz uprawnień aby usunąć to wydarzenie!',
-    'You don\'t have permission to edit this event!' => 'Nie masz uprawnień aby edytować to wydarzenie! ',
 ];

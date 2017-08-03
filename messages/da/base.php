@@ -18,16 +18,21 @@
  */
 return [
     '<strong>Add</strong> profile calendar' => '',
-    'Are you sure you want to delete this event?' => '',
+    'Allow participation state \'decline\'' => '',
+    'Allow participation state \'maybe\'' => '',
     'Attending' => '',
     'Close' => '',
     'Edit' => '',
     'Enable' => '',
+    'Event Type' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Interested' => '',
+    'Invalid event type id selected.' => '',
     'Invited' => '',
+    'Maximum number of participants' => '',
     'Next' => '',
     'Public' => '',
+    'Time Zone' => '',
     'Adds an calendar for private or public events to your profile and mainmenu.' => 'Tilføjer en kalender for private eller offentlige events til din profil og mainmenu.',
     'Adds an event calendar to this space.' => 'Tilføjer en event kalender til denne side',
     'All Day' => 'Hele dagen',
@@ -47,5 +52,4 @@ return [
     'Start Time' => 'Start Tidspunkt',
     'Title' => 'Titel',
     'You don\'t have permission to delete this event!' => 'Du har ikke adgang til at slette dette event!',
-    'You don\'t have permission to edit this event!' => 'Du har ikke adgang til at redigere dette event!',
 ];

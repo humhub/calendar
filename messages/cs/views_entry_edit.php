@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Basic' => '',
+    'Files' => '',
+    'Participation' => '',
+    'Select event type...' => '',
     '<strong>Create</strong> event' => '<strong>Vytvořit</strong> událost',
     '<strong>Edit</strong> event' => '<strong>Upravit</strong> událost',
-    '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>Poznámka:</strong> Tato událost bude vytvořena ve vašem profilu. Pokud chcete vytvořit událost v některém prostoru, otevřete kalendář v něm.',
-    'Delete' => 'Smazat',
-    'Description' => 'Popis',
-    'End Date/Time' => 'Datum a čas konce',
     'Everybody can participate' => 'Každý se může zúčastnit',
     'No participants' => 'Nikdo se nemůže zúčastnit',
     'Title' => 'Nadpis',

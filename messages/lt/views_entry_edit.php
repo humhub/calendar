@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Basic' => '',
+    'Files' => '',
+    'Participation' => '',
+    'Select event type...' => '',
     '<strong>Create</strong> event' => '<strong>Sukurti</strong> įvykį',
     '<strong>Edit</strong> event' => '<strong>Redaguoti</strong> įvykį',
-    '<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.' => '<strong>Note:</strong> Šis renginys bus sukurtas Jūsų profilyje. Norint sukurti erdvės renginį, atidarykite kalendorių norimoje erdvėje.',
-    'Delete' => 'Ištrinti',
-    'Description' => 'Apibūdinimas',
-    'End Date/Time' => 'Pabaigos data/laikas',
     'Everybody can participate' => 'Dalyvauti gali visi',
     'No participants' => 'Nėra dalyvių',
     'Title' => 'Pavadinimas',

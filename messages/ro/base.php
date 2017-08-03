@@ -18,16 +18,21 @@
  */
 return [
     '<strong>Add</strong> profile calendar' => '',
-    'Are you sure you want to delete this event?' => '',
+    'Allow participation state \'decline\'' => '',
+    'Allow participation state \'maybe\'' => '',
     'Attending' => '',
     'Close' => '',
     'Edit' => '',
     'Enable' => '',
+    'Event Type' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Interested' => '',
+    'Invalid event type id selected.' => '',
     'Invited' => '',
+    'Maximum number of participants' => '',
     'Next' => '',
     'Public' => '',
+    'Time Zone' => '',
     'Adds an calendar for private or public events to your profile and mainmenu.' => 'Se adaugă un calendar pentru evenimente private sau publice pe profilul tău și pe meniul principal.',
     'Adds an event calendar to this space.' => 'Se adaugă un calendar de evenimente pe acest spațiu.',
     'All Day' => 'Toată Ziua',
@@ -47,5 +52,4 @@ return [
     'Start Time' => 'Inceput',
     'Title' => 'Titlul',
     'You don\'t have permission to delete this event!' => 'Nu ai permisiunea să ștergi acest eveniment!',
-    'You don\'t have permission to edit this event!' => 'Nu ai permisiunea să editezi acest eveniment!',
 ];
