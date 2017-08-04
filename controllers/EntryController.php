@@ -89,7 +89,7 @@ class EntryController extends ContentContainerController
             $calendarEntryForm->createNew($this->contentContainer, $start, $end);
         } else {
             $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
-            if(!$calendarEntryForm->entry->content->canEdit()) {
+            if (!$calendarEntryForm->entry->content->canEdit()) {
                 throw new HttpException(403);
             }
         }
@@ -99,7 +99,7 @@ class EntryController extends ContentContainerController
         }
 
         if ($calendarEntryForm->load(Yii::$app->request->post()) && $calendarEntryForm->save()) {
-            if(empty($cal)) {
+            if (empty($cal)) {
                 return ModalClose::widget(['saved' => true]);
             } else {
                 return $this->renderModal($calendarEntryForm->entry, 1);
@@ -117,11 +117,11 @@ class EntryController extends ContentContainerController
     {
         $entry = $this->getCalendarEntry($id);
 
-        if(!$entry) {
+        if (!$entry) {
             throw new HttpException(404);
         }
 
-        if(!$entry->content->canEdit()) {
+        if (!$entry->content->canEdit()) {
             throw new HttpException(403);
         }
 
@@ -150,7 +150,7 @@ class EntryController extends ContentContainerController
             return $this->asJson(['success' => true]);
         }
 
-        throw new HttpException(400, "Could not save! " . print_r($entry->getErrors()));
+        throw new HttpException(400, 'Could not save! ' . print_r($entry->getErrors()));
     }
 
     public function actionUserList()
@@ -158,7 +158,7 @@ class EntryController extends ContentContainerController
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
 
         if ($calendarEntry == null) {
-            throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
+            throw new HttpException('404', Yii::t('CalendarModule.base', 'Event not found!'));
         }
         $state = Yii::$app->request->get('state');
 
@@ -169,7 +169,7 @@ class EntryController extends ContentContainerController
         ]);
         $query->where('calendar_entry_participant.id IS NOT NULL');
 
-        $title = "";
+        $title = '';
         if ($state == CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED) {
             $title = Yii::t('CalendarModule.base', 'Attending users');
         } elseif ($state == CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED) {
@@ -187,7 +187,7 @@ class EntryController extends ContentContainerController
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
 
         if ($calendarEntry == null) {
-            throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
+            throw new HttpException('404', Yii::t('CalendarModule.base', 'Event not found!'));
         }
 
         if (!($this->canManageEntries() ||  $calendarEntry->content->canEdit())) {

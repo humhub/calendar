@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\models;
 
-
 use humhub\modules\content\models\ContentTag;
 
 class CalendarEntryType extends ContentTag
@@ -28,5 +27,4 @@ class CalendarEntryType extends ContentTag
         $this->color = '#59D6E4';
         parent::init();
     }
-
 }

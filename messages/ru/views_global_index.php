@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Filter</strong> events' => '<strong>Фильтровать</strong> события',
   '<strong>Select</strong> calendars' => '<strong>Выбор</strong> календаря',
   'Already responded' => 'Уже отвечено',
@@ -10,4 +10,4 @@ return array (
   'My profile' => 'Мой профиль',
   'My spaces' => 'Мои пространства',
   'Not responded yet' => 'Пока без ответа',
-);
+];

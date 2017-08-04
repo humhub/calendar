@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\widgets;
 
-
 use humhub\widgets\SettingsTabs;
 use Yii;
 use humhub\widgets\BaseMenu;
@@ -43,5 +42,4 @@ class GlobalConfigMenu extends SettingsTabs
         ];
         parent::init();
     }
-
 }

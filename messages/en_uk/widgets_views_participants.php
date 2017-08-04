@@ -16,9 +16,9 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   ':count attending' => '',
   ':count declined' => '',
   ':count maybe' => '',
   'Participants:' => '',
-);
+];

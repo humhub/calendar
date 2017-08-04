@@ -15,7 +15,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 class EntryBadge extends Widget
 {
     /**
-     * @var \humhub\modules\calendar\models\CalendarEntry 
+     * @var \humhub\modules\calendar\models\CalendarEntry
      */
     public $entry;
 
@@ -27,8 +27,8 @@ class EntryBadge extends Widget
         $participant = $this->entry->findParticipant();
         
         $result = '';
-        if($participant) {
-            switch($participant->participation_state) {
+        if ($participant) {
+            switch ($participant->participation_state) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
                     return Html::tag('span', Yii::t('CalendarModule.base', 'Attending'), ['class' => 'label label-success pull-right']);
                 case CalendarEntryParticipant::PARTICIPATION_STATE_INVITED:
@@ -38,5 +38,4 @@ class EntryBadge extends Widget
             }
         }
     }
-
 }

@@ -15,9 +15,9 @@ $deleteUrl = $contentContainer->createUrl('/calendar/entry/delete', ['id' => $en
         <?= $content ?>
     </div>
     <div class="modal-footer">
-        <?php if($canManageEntries): ?>
+        <?php if ($canManageEntries) : ?>
             <?= Button::primary(Yii::t('CalendarModule.base', 'Edit'))
-                ->action('calendar.editModal', $editUrl, "[data-content-key=".$entry->content->id ."]" )?>
+                ->action('calendar.editModal', $editUrl, '[data-content-key=' . $entry->content->id . ']')?>
         <?php endif; ?>
         <button data-modal-close class="btn btn-default"><?= Yii::t('CalendarModule.base', 'Close'); ?></button>
     </div>

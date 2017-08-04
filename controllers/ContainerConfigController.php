@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\controllers;
 
-
 use humhub\modules\calendar\models\CalendarEntryType;
 use Yii;
 use humhub\modules\calendar\models\DefaultSettings;
@@ -65,17 +64,17 @@ class ContainerConfigController extends ContentContainerController
 
     public function actionEditType($id = null)
     {
-        if($id) {
+        if ($id) {
             $entryType = CalendarEntryType::find()->where(['id' => $id])->andWhere(['contentcontainer_id' => $this->contentContainer->contentcontainer_id])->one();
         } else {
             $entryType = new CalendarEntryType($this->contentContainer);
         }
 
-        if(!$entryType) {
+        if (!$entryType) {
             throw new HttpException(404);
         }
 
-        if($entryType->load(Yii::$app->request->post()) && $entryType->save()) {
+        if ($entryType->load(Yii::$app->request->post()) && $entryType->save()) {
             $this->view->saved();
             return $this->htmlRedirect($this->contentContainer->createUrl('/calendar/container-config/types'));
         }
@@ -89,7 +88,7 @@ class ContainerConfigController extends ContentContainerController
 
         $entryType = CalendarEntryType::find()->where(['id' => $id])->andWhere(['contentcontainer_id' => $this->contentContainer->contentcontainer_id])->one();
 
-        if(!$entryType) {
+        if (!$entryType) {
             throw new HttpException(404);
         }
 
@@ -97,5 +96,4 @@ class ContainerConfigController extends ContentContainerController
 
         return $this->htmlRedirect($this->contentContainer->createUrl('/calendar/container-config/types'));
     }
-
 }

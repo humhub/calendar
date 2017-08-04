@@ -12,7 +12,7 @@ use Yii;
 use \yii\base\Model;
 
 /**
- * 
+ *
  */
 class SnippetModuleSettings extends Model
 {
@@ -40,7 +40,7 @@ class SnippetModuleSettings extends Model
     public $upcomingEventsSnippetMaxItems = 5;
     
     /**
-     * @var int defines the snippet widgets sort order 
+     * @var int defines the snippet widgets sort order
      */
     public $upcomingEventsSnippetSortOrder = 0;
     /**
@@ -97,7 +97,7 @@ class SnippetModuleSettings extends Model
     public function attributeLabels()
     {
         return [
-            'upcomingEventsSnippetShow' => Yii::t('CalendarModule.config', "Show snippet"),
+            'upcomingEventsSnippetShow' => Yii::t('CalendarModule.config', 'Show snippet'),
             'upcomingEventsSnippetDuration' => Yii::t('CalendarModule.config', 'Interval of upcoming events'),
             'upcomingEventsSnippetSortOrder' => Yii::t('CalendarModule.config', 'Sort order'),
             'upcomingEventsSnippetMaxItems' => Yii::t('CalendarModule.config', 'Max event items'),
@@ -117,7 +117,7 @@ class SnippetModuleSettings extends Model
     
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
         

@@ -17,8 +17,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     '%displayName% attends to %contentTitle%.' => '%displayName% hat für %contentTitle% zugesagt.',
     '%displayName% maybe attends to %contentTitle%.' => '%displayName% 参加了 %contentTitle% teil.',
     '%displayName% not attends to %contentTitle%.' => '%displayName% 没有参加 %contentTitle% teil.',
-);
+];

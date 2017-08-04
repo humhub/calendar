@@ -21,7 +21,7 @@ class EntryParticipants extends Widget
 
     public function run()
     {
-        if($this->calendarEntry->closed) {
+        if ($this->calendarEntry->closed) {
             return;
         }
 
@@ -39,11 +39,10 @@ class EntryParticipants extends Widget
 
     private function getParticipantStateCount($state, $condition)
     {
-        if(!$condition) {
+        if (!$condition) {
             return null;
         }
 
         return  $this->calendarEntry->getParticipantCount($state);
     }
-
 }

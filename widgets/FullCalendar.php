@@ -31,19 +31,19 @@ class FullCalendar extends JsWidget
     {
         \humhub\modules\calendar\assets\Assets::register($this->getView());
 
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             $this->canWrite = false;
             $this->enabled = false;
             parent::init();
             return;
         }
 
-        if(!$this->contentContainer) {
+        if (!$this->contentContainer) {
             $this->contentContainer = Yii::$app->user->getIdentity();
         }
 
         // Used by the global calendar if the module is not enabled for the given user.
-        if($this->contentContainer && !$this->contentContainer->isModuleEnabled('calendar')) {
+        if ($this->contentContainer && !$this->contentContainer->isModuleEnabled('calendar')) {
             $this->enabled = false;
         }
 
@@ -77,9 +77,9 @@ class FullCalendar extends JsWidget
 
     private function canCreate()
     {
-        if($this->contentContainer && !Yii::$app->user->isGuest) {
+        if ($this->contentContainer && !Yii::$app->user->isGuest) {
             return $this->contentContainer->can(CreateEntry::class);
-        } else if(!Yii::$app->user->isGuest) {
+        } elseif (!Yii::$app->user->isGuest) {
             return Yii::$app->user->getIdentity()->isCurrentUser();
         }
 

@@ -20,5 +20,4 @@ class ResponseAttend extends BaseActivity
 
     public $viewName = 'response_attend';
     public $moduleId = 'calendar';
-
 }

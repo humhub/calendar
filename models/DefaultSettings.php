@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\models;
 
-
 use humhub\components\SettingsManager;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -77,7 +76,7 @@ class DefaultSettings extends Model
 
     private function getSettings()
     {
-        if(!$this->settings) {
+        if (!$this->settings) {
             $module = Yii::$app->getModule('calendar');
             $this->settings = ($this->contentContainer) ? $module->settings->contentContainer($this->contentContainer) : $module->settings;
         }

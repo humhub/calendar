@@ -20,5 +20,4 @@ class ResponseMaybe extends BaseActivity
 
     public $viewName = 'response_maybe';
     public $moduleId = 'calendar';
-
 }

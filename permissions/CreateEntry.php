@@ -53,5 +53,4 @@ class CreateEntry extends \humhub\libs\BasePermission
     {
         return Yii::t('CalendarModule.permissions', 'Allows the user to create new calendar entries');
     }
-
 }

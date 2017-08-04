@@ -33,11 +33,10 @@ class DeleteLink extends WallEntryControlLink
 
         $this->options = [
             'data-action-click' => 'calendar.deleteEvent',
-            'data-action-target' =>"[data-content-key='".$this->entry->content->id."']",
+            'data-action-target' =>"[data-content-key='" . $this->entry->content->id . "']",
             'data-action-url' => $this->entry->content->container->createUrl('/calendar/entry/delete', ['id' => $this->entry->id, 'cal' => 1])
         ];
 
         parent::init();
     }
-
 }

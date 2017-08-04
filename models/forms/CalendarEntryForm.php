@@ -88,13 +88,13 @@ class CalendarEntryForm extends Model
     {
         $this->timeZone = empty($this->timeZone) ? Yii::$app->formatter->timeZone : $this->timeZone;
 
-        if($this->entry) {
+        if ($this->entry) {
             // Translate time/date from app (db) timeZone to user (or configured) timeZone
             $this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
             $this->is_public = $this->entry->content->visibility;
 
             $type = $this->entry->getType();
-            if(!empty($type)) {
+            if (!empty($type)) {
                 $this->type_id = $type->id;
             }
 
@@ -129,11 +129,11 @@ class CalendarEntryForm extends Model
 
     public function checkAllDay()
     {
-        if($this->entry->all_day) {
+        if ($this->entry->all_day) {
             $date = new DateTime('now', new DateTimeZone($this->timeZone));
-            $date->setTime(0,0);
+            $date->setTime(0, 0);
             $this->start_time = Yii::$app->formatter->asTime($date, 'short');
-            $date->setTime(23,59);
+            $date->setTime(23, 59);
             $this->end_time = Yii::$app->formatter->asTime($date, 'short');
         }
     }
@@ -148,20 +148,20 @@ class CalendarEntryForm extends Model
     public function validateEndTime($attribute, $params)
     {
         if (new DateTime($this->start_date) >= new DateTime($this->end_date)) {
-            $this->addError($attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
+            $this->addError($attribute, Yii::t('CalendarModule.base', 'End time must be after start time!'));
         }
     }
 
     public function validateType($attribute, $params)
     {
-        if(!$this->type_id) {
+        if (!$this->type_id) {
             return;
         }
 
         $type = CalendarEntryType::findOne($this->type_id);
 
-        if($type->contentcontainer_id !== $this->entry->content->contentcontainer_id) {
-            $this->addError($attribute,Yii::t('CalendarModule.base', "Invalid event type id selected."));
+        if ($type->contentcontainer_id !== $this->entry->content->contentcontainer_id) {
+            $this->addError($attribute, Yii::t('CalendarModule.base', 'Invalid event type id selected.'));
         }
     }
 
@@ -196,7 +196,7 @@ class CalendarEntryForm extends Model
 
     public function load($data, $formName = null)
     {
-        if(parent::load($data) && !empty($this->timeZone)) {
+        if (parent::load($data) && !empty($this->timeZone)) {
             $this->entry->time_zone = $this->timeZone;
         }
 
@@ -204,12 +204,12 @@ class CalendarEntryForm extends Model
 
         $this->entry->content->visibility = $this->is_public;
 
-        if(!$this->entry->load($data)) {
+        if (!$this->entry->load($data)) {
             return false;
         }
 
         // change 0, '' etc to null
-        if(empty($this->type_id)) {
+        if (empty($this->type_id)) {
             $this->type_id = null;
         }
 
@@ -218,7 +218,7 @@ class CalendarEntryForm extends Model
 
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -229,9 +229,9 @@ class CalendarEntryForm extends Model
         // The form expects user time zone, so we translate back from app to user timezone
         $this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
-        if($this->entry->save()) {
+        if ($this->entry->save()) {
             $this->entry->fileManager->attach($this->files);
-            if(!empty($this->type_id)) {
+            if (!empty($this->type_id)) {
                 $this->entry->setType($this->type_id);
             }
             return true;
@@ -255,7 +255,7 @@ class CalendarEntryForm extends Model
 
     public function getTimeZoneItems()
     {
-        if(empty($this->timeZoneItems)) {
+        if (empty($this->timeZoneItems)) {
             $this->timeZoneItems = TimezoneHelper::generateList();
         }
 
@@ -287,7 +287,7 @@ class CalendarEntryForm extends Model
      */
     public function translateDateTimes($start = null, $end = null, $sourceTimeZone = null, $targetTimeZone = null)
     {
-        if(!$start) {
+        if (!$start) {
             return;
         }
 
@@ -305,7 +305,7 @@ class CalendarEntryForm extends Model
         if (CalendarUtils::isFullDaySpan($startTime, $endTime, true)) {
             // In Fullcalendar the EndTime is the moment AFTER the event
 
-            $endTime->sub(new DateInterval("PT1S")); // one second
+            $endTime->sub(new DateInterval('PT1S')); // one second
             $this->entry->all_day = 1;
         }
 

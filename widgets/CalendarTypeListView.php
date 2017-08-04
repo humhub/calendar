@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\widgets;
 
-
 use humhub\components\Widget;
 use yii\data\ActiveDataProvider;
 
@@ -23,6 +22,5 @@ class CalendarTypeListView extends Widget
 {
     public function run()
     {
-
     }
 }

@@ -11,45 +11,45 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * CalendarEntryQuery class can be used for creating filter queries for [[CalendarEntry]] models.
- * 
+ *
  * The class follows the builder pattern and can be used as follows:
- * 
+ *
  *  ```php
- * // Find all CalendarEntries of user profile of $user1 
+ * // Find all CalendarEntries of user profile of $user1
  * CalendarEntryQuery::find()->container($user1)->limit(20)->all();
- * 
+ *
  * // Find all entries from 3 days in the past till three days in the future
  * CalendarEntryQuery::find()->from(-3)->to(3)->all();
- * 
+ *
  * // Find all entries within today at 00:00 till three days in the future at 23:59
  * CalendarEntryQuery::find()->days(3)->all();
- * 
+ *
  * // Filter entries where the current user is participating
  * CalendarEntryQuery::find()->participate();
- * 
+ *
  * // Filter entries where $user1 is invited
  * CalendarEntryQuery::find($user1)->invited()->all();
- * 
+ *
  * // Only build the query of the last example
  * $query = CalendarEntryQuery::find($user1)->invited()->query(true);
  * ```
- * 
+ *
  * > Note: If [[from()]] and [[to()]] is set, the query will use an open range query by default, which
  * means either the start time or the end time of the [[CalendarEntry]] has to be within the searched interval.
  * This behaviour can be changed by using the [[openRange()]]-method. If the openRange behaviour is deactivated
  * only entries with start and end time within the search interval will be included.
- * 
+ *
  * > Note: By default we are searching in whole day intervals and get rid of the time information of from/to boundaries by setting
  * the time of the from date to 00:00:00 and the time of the end date to 23:59:59. This behaviour can be deactivated by using the [[withTime()]]-method.
- * 
+ *
  * The following filters are available:
- * 
+ *
  *  - [[from()]]: Date filter interval start
  *  - [[to()]]: Date filter interval end
  *  - [[days()]]: Filter by future or past day interval
  *  - [[months()]]: Filter by future or past month interval
  *  - [[years()]]: Filter by future or past year interval
- * 
+ *
  *  - [[container()]]: Filter by container
  *  - [[userRelated()]]: Adds a user relation by the given or default scope (e.g: Following Spaces, Member Spaces, Own Profile, etc.)
  *  - [[invited()]]: Given user is invited
@@ -93,7 +93,7 @@ class CalendarEntryQuery extends \yii\base\Model
     private $_to;
 
     /**
-     * @var boolean flag to enable/disable the openRange behaviour (default true) 
+     * @var boolean flag to enable/disable the openRange behaviour (default true)
      */
     private $_openRange = true;
 
@@ -103,7 +103,7 @@ class CalendarEntryQuery extends \yii\base\Model
     private $_orderBy = 'start_datetime ASC';
 
     /**
-     * @var int query limit 
+     * @var int query limit
      */
     private $_limit = 0;
 
@@ -113,7 +113,7 @@ class CalendarEntryQuery extends \yii\base\Model
     private $_container;
 
     /**
-     * @var \humhub\modules\user\models\User user instance used for some of the filters e.g. mine() filter 
+     * @var \humhub\modules\user\models\User user instance used for some of the filters e.g. mine() filter
      */
     private $_user;
 
@@ -123,7 +123,7 @@ class CalendarEntryQuery extends \yii\base\Model
     private $_userScopes;
 
     /**
-     * @var boolean if set to false (default) will ignore time information in date filter intervals 
+     * @var boolean if set to false (default) will ignore time information in date filter intervals
      */
     private $_withTime = false;
 
@@ -152,10 +152,10 @@ class CalendarEntryQuery extends \yii\base\Model
     /**
      * Filters user related entries by means of the given scope as.
      * If no scope is given this method will fitler entries with the following scope:
-     * 
+     *
      *  - ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE
      *  - ActiveQueryContent::USER_RELATED_SCOPE_SPACES
-     * 
+     *
      * @param int|array $scopes user related filter scopes
      * @return $this
      * @see ActiveQueryContent::userRelated()
@@ -174,7 +174,7 @@ class CalendarEntryQuery extends \yii\base\Model
      * Used to respect time settings of [[from()]] and [[to()]] filters.
      * Note: This method has to be called before the [[from()]] and [[to()]] or any other
      * date interval filter in order to affect the query.
-     * 
+     *
      * @param type $withTime
      * @return $this
      */
@@ -186,7 +186,7 @@ class CalendarEntryQuery extends \yii\base\Model
 
     /**
      * Sets the filter array.
-     * 
+     *
      * @param array $filters
      * @return $this
      */
@@ -270,10 +270,10 @@ class CalendarEntryQuery extends \yii\base\Model
     /**
      * Used to deactivate the openRange behaviour, which includes entries if
      * either the start or end date is within the given date filter interval.
-     * 
+     *
      * If this behaviour is deactivated, only entries where the start and end date
      * is within the date filter interval will be included.
-     * 
+     *
      * @param boolean $openRange false to deactivate the openRange behaviour else ture (default)
      * @return $this
      */
@@ -285,9 +285,9 @@ class CalendarEntryQuery extends \yii\base\Model
 
     /**
      * Sets the query order string.
-     * 
+     *
      * By default `start_datetime ASC`
-     * 
+     *
      * @param string $order sql order string
      * @return $this
      */
@@ -299,7 +299,7 @@ class CalendarEntryQuery extends \yii\base\Model
 
     /**
      * Sets the result limit.
-     * 
+     *
      * @param int $limit
      * @return $this
      */
@@ -311,31 +311,31 @@ class CalendarEntryQuery extends \yii\base\Model
 
     /**
      * Sets the date filter interval end date.
-     * 
+     *
      * Note: If the [[withTime()]] behaviour is deactivated (default) the time of the
      * end date will be set to 23:59:59 by default.
-     * 
+     *
      * This method accepts either an DateTime instance or an int value:
-     * 
+     *
      * ```php
      * // Set the current date as end date
      * CalendarEntryQuery::find()->to();
-     * 
+     *
      * // Set a specific date as end date
      * CalendarEntryQuery::find()->to($someDate);
-     * 
+     *
      * // Set date three days in the future as end date
      * CalendarEntryQuery::find()->to(3)->all();
-     * 
+     *
      * // Set date three days in the past as end date
      * CalendarEntryQuery::find()->to(-3)->all();
-     * 
+     *
      *  // Set date three month in the future as end date
      * CalendarEntryQuery::find()->to(3, 'M')->all();
      * ```
      * The dateUnit added or substracted to the current date if using an int value can
      * be managed by the second $dateUnit parameter.
-     * 
+     *
      * @param int|DateTime $to specifies the actual end date either by an interval (int) or an actual DateTime instance
      * @return $this
      */
@@ -364,31 +364,31 @@ class CalendarEntryQuery extends \yii\base\Model
 
     /**
      * Sets the date filter interval start date.
-     * 
+     *
      * Note: If the [[withTime()]] behaviour is deactivated (default) the time of the
      * start date will be set to 00:00:00 by default.
-     * 
+     *
      * This method accepts either an DateTime instance or an int value:
-     * 
+     *
      * ```php
      * // Set the current date as start date
      * CalendarEntryQuery::find()->from();
-     * 
+     *
      * // Set a specific date as start date
      * CalendarEntryQuery::find()->from($someDate);
-     * 
+     *
      * // Set date three days in the future as start date
      * CalendarEntryQuery::find()->from(3)->all();
-     * 
+     *
      * // Set date three days in the past as start date
      * CalendarEntryQuery::find()->from(-3)->all();
-     * 
+     *
      *  // Set date three month in the future as start date
      * CalendarEntryQuery::find()->from(3, 'M')->all();
      * ```
      * The dateUnit added or substracted to the current date if using an int value can
      * be managed by the second $dateUnit parameter.
-     * 
+     *
      * @param int|DateTime $to specifies the actual end date either by an interval (int) or an actual DateTime instance
      * @return $this
      */
@@ -417,17 +417,17 @@ class CalendarEntryQuery extends \yii\base\Model
 
     /**
      * Used to set the date filter interval in days.
-     * 
+     *
      * ```php
      * // Include all entries from $someDate to $someDate + 3 days
      * CalendarEntryQuery::find()->from($someDate)->days(3)->all();
-     * 
+     *
      * // Include all entries from $someDate -3 to $someDate
      * CalendarEntryQuery::find()->to($someDate)->days(-3)->all();
-     * 
+     *
      * // Find all entries from today till 3 days in the future
      * CalendarEntryQuery::find()->days(3)->all();
-     * 
+     *
      * // Find all entries from 3 days in the past until today
      * CalendarEntryQuery::find()->days(-3)->all();
      * ```
@@ -442,17 +442,17 @@ class CalendarEntryQuery extends \yii\base\Model
 
     /**
      * Used to set the date filter interval in months.
-     * 
+     *
      * ```php
      * // Include all entries from $someDate to $someDate + 3 months
      * CalendarEntryQuery::find()->from($someDate)->months(3)->all();
-     * 
+     *
      * // Include all entries from $someDate -3 months to $someDate
      * CalendarEntryQuery::find()->to($someDate)->months(-3)->all();
-     * 
+     *
      * // Find all entries from today till 3 months in the future
      * CalendarEntryQuery::find()->months(3)->all();
-     * 
+     *
      * // Find all entries from 3 months in the past until today
      * CalendarEntryQuery::find()->months(-3)->all();
      * ```
@@ -467,17 +467,17 @@ class CalendarEntryQuery extends \yii\base\Model
 
     /**
      * Used to set the date filter interval in years.
-     * 
+     *
      * ```php
      * // Include all entries from $someDate to $someDate + 3 years
      * CalendarEntryQuery::find()->from($someDate)->years(3)->all();
-     * 
+     *
      * // Include all entries from $someDate -3 to $someDate
      * CalendarEntryQuery::find()->to($someDate)->years(-3)->all();
-     * 
+     *
      * // Find all entries from today till 3 years in the future
      * CalendarEntryQuery::find()->years(3)->all();
-     * 
+     *
      * // Find all entries from 3 years in the past until today
      * CalendarEntryQuery::find()->years(-3)->all();
      * ```
@@ -493,12 +493,12 @@ class CalendarEntryQuery extends \yii\base\Model
     /**
      * Used to either add the given $interval to the start date (end date = start date + interval)
      * or substract the given $interval  from the end date (start date = end date - interval).
-     * 
+     *
      * @param type $dayRange
      * @param type $dateUnit
      * @return $this
      */
-    public function interval($interval, $dateUnit = "D")
+    public function interval($interval, $dateUnit = 'D')
     {
         if ($interval >= 0) {
             if (!$this->_from) {
@@ -506,7 +506,7 @@ class CalendarEntryQuery extends \yii\base\Model
             }
 
             $to = clone $this->_from;
-            $to->add(new DateInterval("P" . $interval . $dateUnit));
+            $to->add(new DateInterval('P' . $interval . $dateUnit));
             $this->to($to);
             return $this;
         } else {
@@ -515,7 +515,7 @@ class CalendarEntryQuery extends \yii\base\Model
             }
 
             $from = clone $this->_to;
-            $from->sub(new DateInterval("P" . abs($interval) . $dateUnit));
+            $from->sub(new DateInterval('P' . abs($interval) . $dateUnit));
             $this->from($from);
             return $this;
         }
@@ -524,7 +524,7 @@ class CalendarEntryQuery extends \yii\base\Model
     /**
      * Returns the actual \yii\db\ActiveQuery instance.
      * If $build is set to true, this method will build the filter query before.
-     * 
+     *
      * @param type $build if ture this method will build the filter query before returning
      * @return \yii\db\ActiveQuery
      */
@@ -585,7 +585,7 @@ class CalendarEntryQuery extends \yii\base\Model
         }
 
         // Patches a guest mode related bug in ActiveQueryContent
-        if(!$this->_user && version_compare(Yii::$app->version, '1.2.1', 'lt')) {
+        if (!$this->_user && version_compare(Yii::$app->version, '1.2.1', 'lt')) {
             $this->_query->leftJoin('space sp', 'contentcontainer.pk=sp.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
         }
 
@@ -600,7 +600,7 @@ class CalendarEntryQuery extends \yii\base\Model
         if ($this->_openRange && $this->_from && $this->_to) {
             //Search for all dates with start and/or end within the given range
             $this->_query->andFilterWhere(
-                    ['or',
+                ['or',
                         ['and',
                             $this->getStartCriteria($this->_from, '>='),
                             $this->getStartCriteria($this->_to, '<=')

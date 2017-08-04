@@ -33,11 +33,10 @@ class EditLink extends WallEntryControlLink
 
         $this->options = [
             'data-action-click' => 'calendar.editModal',
-            'data-action-target' =>"[data-content-key='".$this->entry->content->id."']",
+            'data-action-target' =>"[data-content-key='" . $this->entry->content->id . "']",
             'data-action-url' => $this->entry->content->container->createUrl('/calendar/entry/edit', ['id' => $this->entry->id, 'cal' => 1])
         ];
 
         parent::init();
     }
-
 }
