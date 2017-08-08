@@ -1,6 +1,6 @@
 Changelog
 =========
-0.5.1
+0.5.2 08.08.2017
 - Enh: Added global Event Type setting
 - Enh: Toggle participation state
 - Fix: Rename close to canceled
