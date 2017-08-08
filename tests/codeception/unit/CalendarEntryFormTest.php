@@ -82,9 +82,9 @@ class CalendarEntryFormTest extends HumHubDbTestCase
         Yii::$app->formatter->timeZone = 'Europe/Berlin';
 
         $calendarForm = new CalendarEntryForm(['entry' => $entry]);
-        $this->assertEquals('2017-06-27 14:00:00', $calendarForm->start_date);
+        $this->assertEquals('2017-06-27 14:00:00 Europe/Berlin', $calendarForm->start_date);
         $this->assertEquals('2:00 PM', $calendarForm->start_time);
-        $this->assertEquals('2017-06-28 15:00:00', $calendarForm->end_date);
+        $this->assertEquals('2017-06-28 15:00:00 Europe/Berlin', $calendarForm->end_date);
         $this->assertEquals('3:00 PM', $calendarForm->end_time);
 
         // Load same time data, but with user timeZone
@@ -119,9 +119,89 @@ class CalendarEntryFormTest extends HumHubDbTestCase
 
         // Reload form with UTC timeZone and make sure the time values are valid
         $calendarForm = new CalendarEntryForm(['entry' => $entry]);
-        $this->assertEquals('2017-06-27 12:00:00', $calendarForm->start_date);
+        $this->assertEquals('2017-06-27 12:00:00 UTC', $calendarForm->start_date);
         $this->assertEquals('12:00', $calendarForm->start_time);
-        $this->assertEquals('2017-06-28 13:00:00', $calendarForm->end_date);
+        $this->assertEquals('2017-06-28 13:00:00 UTC', $calendarForm->end_date);
         $this->assertEquals('13:00', $calendarForm->end_time);
+    }
+
+    public function testAllDayTimeZone()
+    {
+        $this->becomeUser('Admin');
+        Yii::$app->user->getIdentity()->time_zone = 'Europe/Berlin';
+        Yii::$app->formatter->timeZone = 'Europe/Berlin';
+
+        $space1 = Space::findOne(['id' => 1]);
+
+        $calendarForm = new CalendarEntryForm();
+        $this->assertEquals('Europe/Berlin', $calendarForm->timeZone);
+        $calendarForm->createNew($space1);
+
+        $this->assertTrue($calendarForm->load([
+            'CalendarEntry' => [
+                'all_day' => '1',
+                'title' => 'Test title',
+                'description' => 'TestDescription',
+                'participation_mode' => 2
+            ],
+            'CalendarEntryForm' => [
+                'is_public' => '1',
+                'start_date' => '6/27/17',
+                'end_date' => '6/27/17',
+            ]
+        ]));
+
+        $this->assertTrue($calendarForm->save());
+
+        $entry = CalendarEntry::findOne(['id' => $calendarForm->entry->id]);
+        $calendarForm = new CalendarEntryForm(['entry' => $entry]);
+        $this->assertEquals('Europe/Berlin', $calendarForm->timeZone);
+        $this->assertEquals('2017-06-27 00:00:00 Europe/Berlin', $calendarForm->start_date);
+        $this->assertEquals('12:00 AM', $calendarForm->start_time);
+        $this->assertEquals('2017-06-27 23:59:00 Europe/Berlin', $calendarForm->end_date);
+        $this->assertEquals('11:59 PM', $calendarForm->end_time);
+    }
+
+    public function testCreateAllDayTimeZone()
+    {
+        $this->becomeUser('Admin');
+        Yii::$app->user->getIdentity()->time_zone = 'Europe/Berlin';
+        Yii::$app->formatter->timeZone = 'Europe/Berlin';
+
+        $space1 = Space::findOne(['id' => 1]);
+
+        $calendarForm = new CalendarEntryForm();
+        $this->assertEquals('Europe/Berlin', $calendarForm->timeZone);
+        // This is how a full day is given in fullcalendar
+        $calendarForm->createNew($space1, '2017-08-16 00:00:00', '2017-08-17 00:00:00');
+        $this->assertEquals('Europe/Berlin', $calendarForm->timeZone);
+        $this->assertEquals('2017-08-16 00:00:00 Europe/Berlin', $calendarForm->start_date);
+        $this->assertEquals('12:00 AM', $calendarForm->start_time);
+        $this->assertEquals('2017-08-16 23:59:59 Europe/Berlin', $calendarForm->end_date);
+        $this->assertEquals('11:59 PM', $calendarForm->end_time);
+
+        $this->assertTrue($calendarForm->load([
+            'CalendarEntry' => [
+                'all_day' => '1',
+                'title' => 'Test title',
+                'description' => 'TestDescription',
+                'participation_mode' => 2
+            ],
+            'CalendarEntryForm' => [
+                'is_public' => '1',
+                'start_date' => '8/16/17',
+                'end_date' => '8/16/17',
+            ]
+        ]));
+
+        $this->assertTrue($calendarForm->save());
+
+        $entry = CalendarEntry::findOne(['id' => $calendarForm->entry->id]);
+        $calendarForm = new CalendarEntryForm(['entry' => $entry]);
+        $this->assertEquals('Europe/Berlin', $calendarForm->timeZone);
+        $this->assertEquals('2017-08-16 00:00:00 Europe/Berlin', $calendarForm->start_date);
+        $this->assertEquals('12:00 AM', $calendarForm->start_time);
+        $this->assertEquals('2017-08-16 23:59:00 Europe/Berlin', $calendarForm->end_date);
+        $this->assertEquals('11:59 PM', $calendarForm->end_time);
     }
 }

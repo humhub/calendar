@@ -627,7 +627,7 @@ class CalendarEntryQuery extends \yii\base\Model
      * Helper function to get the start_datetime query filter.
      * @param DateTime $date
      * @param string $eq
-     * @return type
+     * @return array
      */
     private function getStartCriteria(DateTime $date, $eq = '>=')
     {
@@ -638,7 +638,7 @@ class CalendarEntryQuery extends \yii\base\Model
      * Helper function to get the end_datetime query filter.
      * @param DateTime $date
      * @param string $eq
-     * @return type
+     * @return array
      */
     private function getEndCriteria(DateTime $date, $eq = '<=')
     {

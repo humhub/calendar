@@ -1,9 +1,9 @@
 {
     "id": "calendar",
-    "name": "Calendar - Beta",
+    "name": "Calendar",
     "description": "Calendar for spaces or user profiles.",
     "keywords": ["calendar"],
-    "version": "0.5",
+    "version": "0.5.1",
     "humhub": {
         "minVersion": "1.2.2"
     },

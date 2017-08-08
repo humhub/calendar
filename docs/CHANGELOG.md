@@ -1,6 +1,15 @@
 Changelog
 =========
-0.4.6 
+0.5.1
+- Enh: Added global Event Type setting
+- Enh: Toggle participation state
+- Fix: Rename close to canceled
+- Enh: Send update participant info mail
+- Fix: Change event type js error
+- Fix: TimeZone edit not working correctly
+- Fix: word break issue in wall entry
+
+0.5 
 - Enh: Added timeZone setting in edit form
 - Enh: Added TimePicker with locale based time format
 - Enh: Seperation of CalendarEntryForm and CalendarEntry model

@@ -32,8 +32,14 @@ use yii\jui\DatePicker;
 
     <?= $form->field($calendarEntryForm, 'type_id')->widget(ContentTagDropDown::class, [
         'tagClass' => CalendarEntryType::class,
-        'contentContainer' => $contentContainer,
+        // TODO: replace query with the this line after core v1.2.3
+        #'contentContainer' => $contentContainer,
+        #'includeGlobal' => true,
         'prompt' => Yii::t('CalendarModule.views_entry_edit', 'Select event type...'),
+        'query' => CalendarEntryType::find()->andWhere(['or',
+            ['content_tag.contentcontainer_id' => $contentContainer->contentcontainer_id],
+            'content_tag.contentcontainer_id IS NULL',
+        ]),
         'options' => [
             'data-action-change' => 'changeEventType'
         ]
@@ -44,15 +50,18 @@ use yii\jui\DatePicker;
     <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
     <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
 
+    <?php Yii::$app->formatter->timeZone = $calendarEntryForm->timeZone ?>
+
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($calendarEntryForm, 'start_date')->widget(DatePicker::className(), ['dateFormat' => Yii::$app->params['formatter']['defaultDateFormat'], 'clientOptions' => [], 'options' => ['class' => 'form-control']]) ?>
         </div>
         <div class="col-md-6 timeField" <?= !$calendarEntryForm->showTimeFields() ? 'style="opacity:0.2"' : '' ?>>
-
             <?= $form->field($calendarEntryForm, 'start_time')->widget(TimePicker::class, ['disabled' => $calendarEntryForm->entry->all_day]); ?>
         </div>
     </div>
+
+
 
     <div class="row">
         <div class="col-md-6">
@@ -62,6 +71,8 @@ use yii\jui\DatePicker;
             <?= $form->field($calendarEntryForm, 'end_time')->widget(TimePicker::class, ['disabled' => $calendarEntryForm->entry->all_day]); ?>
         </div>
     </div>
+
+    <?php Yii::$app->i18n->autosetLocale(); ?>
 
     <div class="row">
         <div class="col-md-6"></div>

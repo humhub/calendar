@@ -22,5 +22,6 @@ use humhub\widgets\MarkdownField;
         <?= $form->field($calendarEntryForm->entry, 'allow_decline')->checkbox() ?>
         <?= $form->field($calendarEntryForm->entry, 'allow_maybe')->checkbox() ?>
         <?= $form->field($calendarEntryForm->entry, 'participant_info')->widget(MarkdownField::class, ['fileModel' => $calendarEntryForm, 'fileAttribute' => 'files'])->label(false) ?>
+        <?= $form->field($calendarEntryForm, 'sendUpdateNotification')->checkbox() ?>
     </div>
 </div>

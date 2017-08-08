@@ -4,6 +4,7 @@ namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\notifications\CanceledEvent;
+use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\calendar\notifications\ReopenedEvent;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\calendar\widgets\EntryParticipants;
@@ -201,6 +202,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         } else {
             ReopenedEvent::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
         }
+    }
+
+    public function sendUpdateNotification()
+    {
+        $participants = $this->getParticipantUsersByState([
+            CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
+            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
+            CalendarEntryParticipant::PARTICIPATION_STATE_INVITED]);
+
+        EventUpdated::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
     }
 
     /**
@@ -480,7 +491,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable
         $labels = [];
 
         if($this->closed) {
-            $labels[] = Label::danger('closed')->sortOrder(15);
+            $labels[] = Label::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
         }
 
         $type = $this->getType();

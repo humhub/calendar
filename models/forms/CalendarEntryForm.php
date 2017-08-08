@@ -17,6 +17,7 @@ use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\DefaultSettings;
+use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -77,7 +78,15 @@ class CalendarEntryForm extends Model
      */
     public $markdownFiles = [];
 
+    /**
+     * @var array
+     */
     public $files = [];
+
+    /**
+     * @var bool
+     */
+    public $sendUpdateNotification = 0;
 
     /**
      * @var CalendarEntry
@@ -89,6 +98,10 @@ class CalendarEntryForm extends Model
         $this->timeZone = empty($this->timeZone) ? Yii::$app->formatter->timeZone : $this->timeZone;
 
         if($this->entry) {
+            if($this->entry->all_day) {
+                $this->timeZone = $this->entry->time_zone;
+            }
+
             // Translate time/date from app (db) timeZone to user (or configured) timeZone
             $this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
             $this->is_public = $this->entry->content->visibility;
@@ -98,9 +111,7 @@ class CalendarEntryForm extends Model
                 $this->type_id = $type->id;
             }
 
-            /*if(!empty($this->entry->time_zone)) {
-                $this->timeZone = $this->entry->time_zone;
-            }*/
+
         }
     }
 
@@ -112,7 +123,7 @@ class CalendarEntryForm extends Model
         return [
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
             [['files'], 'safe'],
-            [['is_public', 'type_id'], 'integer'],
+            [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => 'short'],
             [['start_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time', 'timeZone' => $this->timeZone],
             [['end_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'end_time', 'timeZone' => $this->timeZone],
@@ -129,6 +140,7 @@ class CalendarEntryForm extends Model
 
     public function checkAllDay()
     {
+        Yii::$app->formatter->timeZone = $this->timeZone;
         if($this->entry->all_day) {
             $date = new DateTime('now', new DateTimeZone($this->timeZone));
             $date->setTime(0,0);
@@ -136,6 +148,7 @@ class CalendarEntryForm extends Model
             $date->setTime(23,59);
             $this->end_time = Yii::$app->formatter->asTime($date, 'short');
         }
+        Yii::$app->i18n->autosetLocale();
     }
 
     /**
@@ -160,7 +173,7 @@ class CalendarEntryForm extends Model
 
         $type = CalendarEntryType::findOne($this->type_id);
 
-        if($type->contentcontainer_id !== $this->entry->content->contentcontainer_id) {
+        if($type->contentcontainer_id != null && $type->contentcontainer_id !== $this->entry->content->contentcontainer_id) {
             $this->addError($attribute,Yii::t('CalendarModule.base', "Invalid event type id selected."));
         }
     }
@@ -175,6 +188,7 @@ class CalendarEntryForm extends Model
             'end_time' => Yii::t('CalendarModule.base', 'End Time'),
             'timeZone' => Yii::t('CalendarModule.base', 'Time Zone'),
             'is_public' => Yii::t('CalendarModule.base', 'Public'),
+            'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Send update notification'),
         ];
     }
 
@@ -190,15 +204,21 @@ class CalendarEntryForm extends Model
         $this->entry->allow_decline = $defaultSettings->allow_decline;
         $this->entry->allow_maybe = $defaultSettings->allow_maybe;
 
-        // Translate from user timeZone to app timeZone
-        $this->translateDateTimes($start, $end);
+        // Translate from user timeZone to system timeZone note the datepicker expects app timezone
+        $this->translateDateTimes($start, $end, $this->timeZone, $this->timeZone);
     }
 
     public function load($data, $formName = null)
     {
+        // Make sure we load the timezone beforehand so its available in validators etc..
+        if($data && isset($data[$this->formName()]) && isset($data[$this->formName()]['timeZone']) && !empty($data[$this->formName()]['timeZone'])) {
+            $this->timeZone = $data[$this->formName()]['timeZone'];
+        }
         if(parent::load($data) && !empty($this->timeZone)) {
             $this->entry->time_zone = $this->timeZone;
         }
+
+
 
         //$this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
@@ -234,6 +254,11 @@ class CalendarEntryForm extends Model
             if(!empty($this->type_id)) {
                 $this->entry->setType($this->type_id);
             }
+
+            if($this->sendUpdateNotification && !$this->entry->isNewRecord) {
+                $this->entry->sendUpdateNotification();
+            }
+
             return true;
         }
 
@@ -298,18 +323,17 @@ class CalendarEntryForm extends Model
         $endTime = new DateTime($end, new DateTimeZone($sourceTimeZone));
 
         Yii::$app->formatter->timeZone = $targetTimeZone;
-        $this->start_date = Yii::$app->formatter->asDateTime($startTime, 'php:Y-m-d H:i:s');
-        $this->start_time = Yii::$app->formatter->asTime($startTime, 'short');
-
         // Fix FullCalendar EndTime
         if (CalendarUtils::isFullDaySpan($startTime, $endTime, true)) {
-            // In Fullcalendar the EndTime is the moment AFTER the event
-
-            $endTime->sub(new DateInterval("PT1S")); // one second
+            // In Fullcalendar the EndTime is the moment AFTER the event so we substract one second
+            $endTime->sub(new DateInterval("PT1S"));
             $this->entry->all_day = 1;
         }
 
-        $this->end_date = Yii::$app->formatter->asDateTime($endTime, 'php:Y-m-d H:i:s');
+        $this->start_date = Yii::$app->formatter->asDateTime($startTime, 'php:Y-m-d H:i:s e');
+        $this->start_time = Yii::$app->formatter->asTime($startTime, 'short');
+
+        $this->end_date = Yii::$app->formatter->asDateTime($endTime, 'php:Y-m-d H:i:s e');
         $this->end_time = Yii::$app->formatter->asTime($endTime, 'short');
 
         Yii::$app->i18n->autosetLocale();

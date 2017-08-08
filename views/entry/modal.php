@@ -6,6 +6,7 @@
  *
  */
 use humhub\widgets\Button;
+use humhub\widgets\ModalButton;
 
 $deleteUrl = $contentContainer->createUrl('/calendar/entry/delete', ['id' => $entry->id, 'cal' => 1]);
 ?>
@@ -19,6 +20,6 @@ $deleteUrl = $contentContainer->createUrl('/calendar/entry/delete', ['id' => $en
             <?= Button::primary(Yii::t('CalendarModule.base', 'Edit'))
                 ->action('calendar.editModal', $editUrl, "[data-content-key=".$entry->content->id ."]" )?>
         <?php endif; ?>
-        <button data-modal-close class="btn btn-default"><?= Yii::t('CalendarModule.base', 'Close'); ?></button>
+        <?= ModalButton::cancel(Yii::t('CalendarModule.base', 'Close')) ?>
     </div>
 <?php \humhub\widgets\ModalDialog::end(); ?>

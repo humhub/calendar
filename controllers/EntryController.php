@@ -75,8 +75,15 @@ class EntryController extends ContentContainerController
                     'calendar_entry_id' => $calendarEntry->id]);
             }
 
-            $calendarEntryParticipant->participation_state = (int) $type;
-            $calendarEntryParticipant->save();
+            // Either current state or set new state
+            if($calendarEntryParticipant->participation_state == (int) $type) {
+                $calendarEntryParticipant->delete();
+            } else {
+                $calendarEntryParticipant->participation_state = (int) $type;
+                $calendarEntryParticipant->save();
+            }
+
+
         }
 
         return $this->asJson(['success' => true]);

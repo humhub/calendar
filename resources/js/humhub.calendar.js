@@ -290,8 +290,10 @@ humhub.module('calendar', function (module, require, $) {
 
     Form.prototype.changeEventType = function(evt) {
         $selected = evt.$trigger.find(':selected');
-        $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('type-color'));
-        $('.colorpicker-element').data('colorpicker').update();
+        if($selected.data('type-color')) {
+            $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('type-color'));
+            $('.colorpicker-element').data('colorpicker').update();
+        }
     };
 
     var CalendarEntry = function (id) {

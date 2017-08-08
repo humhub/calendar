@@ -16,7 +16,9 @@
 namespace humhub\modules\calendar\controllers;
 
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\calendar\permissions\ManageEntry;
 use Yii;
 use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\content\components\ContentContainerController;
@@ -26,6 +28,13 @@ use yii\web\HttpException;
 class ContainerConfigController extends ContentContainerController
 {
     public $adminOnly = true;
+
+    public function getAccessRules()
+    {
+        return [
+          ['permission' => [ManageSpaces::class, ManageEntry::class]]
+        ];
+    }
 
     public function actionIndex()
     {
@@ -53,10 +62,14 @@ class ContainerConfigController extends ContentContainerController
     public function actionTypes()
     {
         $typeDataProvider = new ActiveDataProvider([
-            'query' => CalendarEntryType::findByContainer($this->contentContainer),
+            // TODO: replace with findByContainer with includeGlobal
+            'query' => CalendarEntryType::find()->andWhere(['or',
+                ['content_tag.contentcontainer_id' => $this->contentContainer->contentcontainer_id],
+                'content_tag.contentcontainer_id IS NULL',
+            ])
         ]);
 
-        return $this->render('typesConfig', [
+        return $this->render('@calendar/views/common/typesConfig', [
             'typeDataProvider' => $typeDataProvider,
             'createUrl' => $this->contentContainer->createUrl('/calendar/container-config/edit-type'),
             'contentContainer' => $this->contentContainer
@@ -80,7 +93,7 @@ class ContainerConfigController extends ContentContainerController
             return $this->htmlRedirect($this->contentContainer->createUrl('/calendar/container-config/types'));
         }
 
-        return $this->renderAjax('editTypeModal', ['model' => $entryType]);
+        return $this->renderAjax('/common/editTypeModal', ['model' => $entryType]);
     }
 
     public function actionDeleteType($id)

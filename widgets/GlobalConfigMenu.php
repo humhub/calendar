@@ -36,6 +36,11 @@ class GlobalConfigMenu extends SettingsTabs
                 'active' => $this->isCurrentRoute('calendar', 'config', 'index')
             ],
             [
+                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
+                'url' => Url::toRoute(['/calendar/config/types']),
+                'active' => $this->isCurrentRoute('calendar', 'config', 'types')
+            ],
+            [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Snippet'),
                 'url' => Url::toRoute(['/calendar/config/snippet']),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'snippet')

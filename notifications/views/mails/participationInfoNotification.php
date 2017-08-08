@@ -22,12 +22,15 @@
 ?>
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
-    <?= humhub\widgets\mails\MailContentEntry::widget([
+    <div style="overflow:hidden">
+        <?= humhub\widgets\mails\MailContentEntry::widget([
             'originator' => $originator,
-            'content' => $html,
+            'content' => $html.'<br><br>'.\humhub\widgets\MarkdownView::widget(['markdown' => $source->participant_info]),
             'date' => $date,
             'space' => $space
-    ]) ?>
+        ]) ?>
+    </div>
+
     <?= \humhub\widgets\mails\MailButtonList::widget([
         'buttons' => [
             humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')])
