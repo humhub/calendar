@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Filter</strong> events' => 'Termine <strong>filtern</strong>',
-  '<strong>Select</strong> calendars' => 'Kalender <strong>filtern</strong>',
+  '<strong>Select</strong> calendars' => 'Kalender <strong>auswählen</strong>',
   'Already responded' => 'Beantwortet',
   'Followed spaces' => 'Gefolgte Spaces',
   'Followed users' => 'Gefolgte Benutzer',
