@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '(global)' => '',
     '<strong>Calendar</strong> module configuration' => '',
     '<strong>Confirm</strong> Deletion' => '',
     'Adds an snippet with upcoming events to your users dashboard.' => '',
