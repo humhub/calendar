@@ -525,7 +525,7 @@ class CalendarEntryQuery extends \yii\base\Model
      * Returns the actual \yii\db\ActiveQuery instance.
      * If $build is set to true, this method will build the filter query before.
      * 
-     * @param type $build if ture this method will build the filter query before returning
+     * @param bool $build if ture this method will build the filter query before returning
      * @return \yii\db\ActiveQuery
      */
     public function query($build = false)

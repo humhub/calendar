@@ -120,11 +120,13 @@ class CalendarEntryForm extends Model
      */
     public function rules()
     {
+        $timeFormat = Yii::$app->formatter->isShowMeridiem() ? 'php:H:i a' : 'php:H:i';
+
         return [
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
             [['files'], 'safe'],
             [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
-            [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => 'short'],
+            [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => $timeFormat],
             [['start_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time', 'timeZone' => $this->timeZone],
             [['end_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'end_time', 'timeZone' => $this->timeZone],
             [['end_date'], 'validateEndTime'],
