@@ -1,6 +1,6 @@
 Changelog
 =========
-0.5.3 08.08.2017
+0.5.4 08.08.2017
 - Fix: ICU 57.1 compatibility for time format HH.mm
 
 0.5.2 08.08.2017
