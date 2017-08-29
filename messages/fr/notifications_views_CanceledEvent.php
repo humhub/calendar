@@ -17,8 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} canceled event \'{contentTitle}\' in space {spaceName}.' => '',
-    '{displayName} canceled event \'{contentTitle}\'.' => '',
-    '{displayName} reopened event {contentTitle} in space {spaceName}.' => '',
-    '{displayName} reopened event {contentTitle}.' => '',
+    '{displayName} just updated event {contentTitle} in space {spaceName}.' => '',
+    '{displayName} just updated event {contentTitle}.' => '',
+    '{displayName} canceled event \'{contentTitle}\' in space {spaceName}.' => '{displayName} à supprimer l\'événement \'{contentTitle}\' dans l\'espace {spaceName}.',
+    '{displayName} canceled event \'{contentTitle}\'.' => '{displayName} à supprimer l\'événement \'{contentTitle}\'.',
+    '{displayName} reopened event {contentTitle} in space {spaceName}.' => '{displayName} à ré-ouvert l\'événement {contentTitle} dans l\'espace {spaceName}.',
+    '{displayName} reopened event {contentTitle}.' => '{displayName} à ré-ouvert l\'événement {contentTitle}',
 ];

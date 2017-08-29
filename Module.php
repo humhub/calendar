@@ -54,6 +54,14 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
     /**
      * @inheritdoc
      */
+    public function getContentContainerName(ContentContainerActiveRecord $container)
+    {
+        return Yii::t('CalendarModule.base', 'Calendar');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getContentContainerDescription(ContentContainerActiveRecord $container)
     {
         if ($container instanceof Space) {
@@ -71,7 +79,7 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
     public function getConfigUrl()
     {
         return Url::to([
-            '/calendar/config'
+                    '/calendar/config'
         ]);
     }
 

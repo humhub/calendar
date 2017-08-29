@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Loading...' => 'lädt...',
+  'Loading...' => 'Lädt …',
 );
