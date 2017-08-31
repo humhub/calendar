@@ -1,13 +1,13 @@
 <?php
 return array (
-  '<strong>Filter</strong> events' => '',
-  '<strong>Select</strong> calendars' => '',
-  'Already responded' => '',
-  'Followed spaces' => '',
-  'Followed users' => '',
-  'I´m attending' => '',
-  'My events' => '',
+  '<strong>Filter</strong> events' => '<strong>Lọc</strong> sự kiện',
+  '<strong>Select</strong> calendars' => '<strong>Chọn</strong> lịch',
+  'Already responded' => 'Đã phản hồi',
+  'Followed spaces' => 'Các phòng được theo dõi',
+  'Followed users' => 'Các user được theo dõi',
+  'I´m attending' => 'Tôi đang tham gia',
+  'My events' => 'Sự kiện của tôi',
   'My profile' => 'Hồ sơ của tôi',
-  'My spaces' => '',
-  'Not responded yet' => '',
+  'My spaces' => 'Phòng làm việc của tôi',
+  'Not responded yet' => 'Chưa trả lời',
 );
