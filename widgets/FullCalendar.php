@@ -65,14 +65,27 @@ class FullCalendar extends JsWidget
             'can-create' => $this->canCreate(),
             'editable' => $this->canWrite,
             'selectable' => $this->canWrite,
-            'selectHelper' => $this->canWrite,
+            'select-helper' => $this->canWrite,
             'selectors' => $this->selectors,
             'filters' => $this->filters,
             'timezone' =>  Yii::$app->formatter->timeZone,
-            'locale' => Yii::$app->formatter->locale,
-            'lang' => Yii::$app->language,
-            'enabled' => $this->enabled
+            'locale' => $this->translateLocale(Yii::$app->formatter->locale),
         ];
+    }
+
+    const LOCALE_MAPPING = [
+        'nb-no' => 'nb',
+        'fa-ir' => 'fa',
+    ];
+
+    private function translateLocale($locale)
+    {
+        $locale = str_replace('_', '-', $locale);
+        if(array_key_exists($locale, self::LOCALE_MAPPING)) {
+            $locale = self::LOCALE_MAPPING[$locale];
+        }
+
+        return $locale;
     }
 
     private function canCreate()
@@ -85,4 +98,6 @@ class FullCalendar extends JsWidget
 
         return false;
     }
+
+
 }

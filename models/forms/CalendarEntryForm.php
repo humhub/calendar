@@ -9,6 +9,8 @@
 
 namespace humhub\modules\calendar\models\forms;
 
+use Yii;
+use yii\base\Model;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
@@ -17,12 +19,8 @@ use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\DefaultSettings;
-use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\content\models\Content;
-use humhub\modules\space\models\Space;
-use Yii;
 use humhub\modules\calendar\models\CalendarEntry;
-use yii\base\Model;
 
 /**
  * Created by PhpStorm.
@@ -120,18 +118,21 @@ class CalendarEntryForm extends Model
      */
     public function rules()
     {
-        $timeFormat = Yii::$app->formatter->isShowMeridiem() ? 'php:H:i a' : 'php:H:i';
-
         return [
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
             [['files'], 'safe'],
             [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
-            [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => $timeFormat],
+            [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => $this->getTimeFormat()],
             [['start_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time', 'timeZone' => $this->timeZone],
             [['end_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'end_time', 'timeZone' => $this->timeZone],
             [['end_date'], 'validateEndTime'],
             [['type_id'], 'validateType'],
         ];
+    }
+
+    public function getTimeFormat()
+    {
+        return Yii::$app->formatter->isShowMeridiem() ? 'h:mm a' : 'php:H:i';
     }
 
     public function beforeValidate()
@@ -146,9 +147,9 @@ class CalendarEntryForm extends Model
         if($this->entry->all_day) {
             $date = new DateTime('now', new DateTimeZone($this->timeZone));
             $date->setTime(0,0);
-            $this->start_time = Yii::$app->formatter->asTime($date, 'short');
+            $this->start_time = Yii::$app->formatter->asTime($date, $this->getTimeFormat());
             $date->setTime(23,59);
-            $this->end_time = Yii::$app->formatter->asTime($date, 'short');
+            $this->end_time = Yii::$app->formatter->asTime($date, $this->getTimeFormat());
         }
         Yii::$app->i18n->autosetLocale();
     }
@@ -297,7 +298,7 @@ class CalendarEntryForm extends Model
 
     public function updateTime($start = null, $end = null)
     {
-        $this->translateDateTimes($start, $end);
+        $this->translateDateTimes($start, $end, null, null, 'php:Y-m-d H:i:s');
         return $this->save();
     }
 
@@ -312,7 +313,7 @@ class CalendarEntryForm extends Model
      * @param string $sourceTimeZone
      * @param string $targetTimeZone
      */
-    public function translateDateTimes($start = null, $end = null, $sourceTimeZone = null, $targetTimeZone = null)
+    public function translateDateTimes($start = null, $end = null, $sourceTimeZone = null, $targetTimeZone = null, $dateFormat = 'php:Y-m-d H:i:s e')
     {
         if(!$start) {
             return;
@@ -332,11 +333,11 @@ class CalendarEntryForm extends Model
             $this->entry->all_day = 1;
         }
 
-        $this->start_date = Yii::$app->formatter->asDateTime($startTime, 'php:Y-m-d H:i:s e');
-        $this->start_time = Yii::$app->formatter->asTime($startTime, 'short');
+        $this->start_date = Yii::$app->formatter->asDateTime($startTime, $dateFormat);
+        $this->start_time = Yii::$app->formatter->asTime($startTime, $this->getTimeFormat());
 
-        $this->end_date = Yii::$app->formatter->asDateTime($endTime, 'php:Y-m-d H:i:s e');
-        $this->end_time = Yii::$app->formatter->asTime($endTime, 'short');
+        $this->end_date = Yii::$app->formatter->asDateTime($endTime, $dateFormat);
+        $this->end_time = Yii::$app->formatter->asTime($endTime, $this->getTimeFormat());
 
         Yii::$app->i18n->autosetLocale();
     }

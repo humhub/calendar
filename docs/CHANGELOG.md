@@ -1,5 +1,10 @@
 Changelog
 =========
+0.5.4 01.09.2017
+- Fix: ICU 57.1 compatibility for time format HH.mm with hole day setting
+- Fix: Drag updates in day/week view are not working
+- Fix: Locale mapping between humhub and moment.js
+
 0.5.4 08.08.2017
 - Fix: ICU 57.1 compatibility for time format HH.mm
 
