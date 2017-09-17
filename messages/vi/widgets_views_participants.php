@@ -1,7 +1,7 @@
 <?php
 return array (
-  ':count attending' => ':số tham dự',
-  ':count declined' => ':số từ chối',
-  ':count maybe' => ':số có thể sẽ tham gia',
+  ':count attending' => ':count tham dự',
+  ':count declined' => ':count từ chối',
+  ':count maybe' => ':count có thể',
   'Participants:' => 'Người tham dự:',
 );
