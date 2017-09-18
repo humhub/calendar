@@ -1,6 +1,6 @@
 # Calendar interface v0.6
 
-Since calendar module version 0.6 the it is possible to injecting meetin items into the calendar and snippet.
+Since calendar module version 0.6 it is possible to injecting meeting items into the calendar and snippet.
 
 All interface files reside within the `interface` directory of the calendar module.
 
