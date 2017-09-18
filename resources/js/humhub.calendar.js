@@ -128,17 +128,16 @@ humhub.module('calendar', function (module, require, $) {
 
         var that = this;
 
-        if(!this.options.enabled) {
-            this.lastStart = start;
-            this.lastEnd = end;
-            modal.global.load(this.options.enableUrl);
-        } else if(this.options.canCreate) {
-            modal.global.load(this.options.editUrl, options).then(function() {
-                modal.global.$.on('submitted', function() {
-                    that.fetch();
-                });
+        this.lastStart = start;
+        this.lastEnd = end;
+
+        $selectUrl = this.options.global ? this.options.globalCreateUrl : this.options.editUrl;
+
+        modal.global.load($selectUrl, options).then(function() {
+            modal.global.$.one('hidden.bs.modal submitted', function() {
+                that.fetch();
             });
-        }
+        });
 
         this.$.fullCalendar('unselect');
     };
@@ -173,7 +172,7 @@ humhub.module('calendar', function (module, require, $) {
         });
     };
 
-    Calendar.prototype.dropEvent = function (event, delta, revertFunc) { 
+    Calendar.prototype.dropEvent = function (event, delta, revertFunc) {
         var options = {
             data: {
                 id: encodeURIComponent(event.id),
@@ -185,7 +184,10 @@ humhub.module('calendar', function (module, require, $) {
 
         this.loader();
         var that = this;
-        client.post(this.options.dropUrl, options).then(function(response) {
+
+        var dropUrl = (event.updateUrl) ? event.updateUrl : this.options.dropUrl;
+
+        client.post(dropUrl, options).then(function(response) {
             if(response.success) {
                 module.log.success('saved');
             } else {
@@ -201,9 +203,17 @@ humhub.module('calendar', function (module, require, $) {
     };
 
     Calendar.prototype.clickEvent = function (event, delta, revertFunc) {
-        modal.global.load(event.viewUrl).then(function() {
-            modal.global.set({backdrop: true});
-        });
+        var that = this;
+        if(!event.viewMode || event.viewMode === 'modal') {
+            modal.global.load(event.viewUrl).then(function() {
+                modal.global.set({backdrop: true});
+                modal.global.$.one('hidden.bs.modal', function() {
+                    that.fetch();
+                });
+            });
+
+
+        }
     };
 
     Calendar.prototype.loader = function (show) {
@@ -388,12 +398,14 @@ humhub.module('calendar', function (module, require, $) {
     var deleteEvent = function(evt) {
         var streamEntry = Widget.closest(evt.$trigger);
         streamEntry.loader();
-        client.post(evt).then(function() {
-            modal.global.close();
-            getCalendar().fetch();
-        }).catch(function(e) {
-            module.log.error(e, true);
+        modal.confirm().then(function() {
+            client.post(evt).then(function() {
+                modal.global.close();
+            }).catch(function(e) {
+                module.log.error(e, true);
+            });
         });
+
     };
 
     module.export({

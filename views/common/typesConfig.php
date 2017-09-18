@@ -49,7 +49,7 @@ use yii\widgets\ListView;
         <div>
             <?= ListView::widget([
                 'dataProvider' => $typeDataProvider,
-                'itemView' => '_calendarTypeItem',
+                'itemView' => '_calendarEntryTypeItem',
                 'viewParams' => [
                         'contentContainer' => $contentContainer
                 ],

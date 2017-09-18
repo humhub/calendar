@@ -37,8 +37,10 @@ use \yii\helpers\Html;
         
         <hr>
 
-        <?= $form->field($model, 'showIfInstalled')->checkbox()
-                ->hint(Yii::t('CalendarModule.config', 'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.'));
+        <?= $form->field($model, 'showIfInstalled')
+            ->checkbox()
+            ->hint(Yii::t('CalendarModule.config',
+                'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.'));
         ?>
 
         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>

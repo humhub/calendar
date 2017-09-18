@@ -3,9 +3,11 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use Yii;
 use yii\helpers\Url;
 
 /**
@@ -33,8 +35,9 @@ class UpcomingEvents extends Widget
 
     public function run()
     {
-        $settings = SnippetModuleSettings::instance();
-        $calendarEntries = CalendarEntry::getUpcomingEntries($this->contentContainer, $settings->upcomingEventsSnippetDuration, $settings->upcomingEventsSnippetMaxItems);
+        $settings = SnippetModuleSettings::instantiate();
+        $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
+        $calendarEntries = $calendarService->getUpcomingEntries($this->contentContainer, $settings->upcomingEventsSnippetDuration, $settings->upcomingEventsSnippetMaxItems);
 
         if (empty($calendarEntries)) {
             return;

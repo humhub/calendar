@@ -7,13 +7,19 @@
  */
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
+use humhub\widgets\ModalDialog;
+
+/* @var $this \humhub\components\View */
+/* @var $entry \humhub\modules\calendar\models\CalendarEntry  */
+/* @var $canManageEntries boolean  */
+/* @var $editUrl string  */
 
 $deleteUrl = $contentContainer->createUrl('/calendar/entry/delete', ['id' => $entry->id, 'cal' => 1]);
 ?>
 
-<?php \humhub\widgets\ModalDialog::begin(['size' => 'large']); ?>
+<?php ModalDialog::begin(['size' => 'large', 'closable' => true]); ?>
     <div class="modal-body" style="padding-bottom:0px">
-        <?= $content ?>
+        <?= $this->renderAjax('view', ['entry' => $entry, 'stream' => false])?>
     </div>
     <div class="modal-footer">
         <?php if($canManageEntries): ?>
@@ -22,4 +28,4 @@ $deleteUrl = $contentContainer->createUrl('/calendar/entry/delete', ['id' => $en
         <?php endif; ?>
         <?= ModalButton::cancel(Yii::t('CalendarModule.base', 'Close')) ?>
     </div>
-<?php \humhub\widgets\ModalDialog::end(); ?>
+<?php ModalDialog::end(); ?>

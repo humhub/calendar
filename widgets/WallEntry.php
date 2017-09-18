@@ -70,7 +70,21 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
 
         return $result;
     }
-    
+
+    public function getWallEntryViewParams()
+    {
+        $params = parent::getWallEntryViewParams();
+        if($this->isInModal()) {
+            $params['showContentContainer'] = true;
+        }
+        return $params;
+    }
+
+    public function isInModal()
+    {
+        return Yii::$app->request->get('cal');
+    }
+
     /**
      * @inheritdoc
      */

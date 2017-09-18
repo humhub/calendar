@@ -77,22 +77,6 @@ use humhub\widgets\FadeIn;
                     </label>
                 </div>
             </div>
-            <div style="display:inline-block; float:left;">
-                <div class="checkbox">
-                    <label class="calendar_filter_not_responded">
-                        <input type="checkbox" name="filter" class="filterCheckbox" value="<?= CalendarEntry::FILTER_NOT_RESPONDED; ?>"
-                               <?php if (in_array(CalendarEntry::FILTER_NOT_RESPONDED, $filters)): ?>checked="checked"<?php endif; ?>>
-                        <?= Yii::t('CalendarModule.views_global_index', 'Not responded yet'); ?>
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label class="calendar_filter_responded">
-                        <input type="checkbox" name="filter" class="filterCheckbox" value="<?= CalendarEntry::FILTER_RESPONDED; ?>"
-                               <?php if (in_array(CalendarEntry::FILTER_RESPONDED, $filters)): ?>checked="checked"<?php endif; ?>>
-                        <?= Yii::t('CalendarModule.views_global_index', 'Already responded'); ?>
-                    </label>
-                </div>
-            </div>
         </div>
     </div>
     <?php endif ?>

@@ -50,7 +50,6 @@ class EntryController extends ContentContainerController
     private function renderModal($entry, $cal)
     {
         return $this->renderAjax('modal', [
-            'content' => $this->renderAjax('view', ['entry' => $entry, 'stream' => false]),
             'entry' => $entry,
             'editUrl' => $this->contentContainer->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal]),
             'canManageEntries' => $entry->content->canEdit() || $this->canManageEntries(),
@@ -82,8 +81,6 @@ class EntryController extends ContentContainerController
                 $calendarEntryParticipant->participation_state = (int) $type;
                 $calendarEntryParticipant->save();
             }
-
-
         }
 
         return $this->asJson(['success' => true]);
