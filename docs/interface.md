@@ -7,14 +7,13 @@ All interface files reside within the `interface` directory of the calendar modu
 ## Exporting calendar item types
 
 A calendar item type can be used to mark your exported calendar item. A meeting module for example
-can export `meeting` item type. An exported item type provides a config with the following options:
+can export a `meeting` item type. Exported item types provide a config with the following options:
 
  - `title`: A translatable title
  - `color`: A default color used for this item type, which can be overwritten in the calendar module config
  - `icon`: Icon related to this event type
 
-In order to export one or more item types, your Module has to implement an listener for the `humhub\modules\calendar\interfaces\CalendarService::getItemTypes`
-event as in the following example.
+In order to export one or more item types, your Module has to implement a listener for the `humhub\modules\calendar\interfaces\CalendarService::getItemTypes` event as in the following example.
 
 **config.php**:
 
@@ -47,7 +46,7 @@ public static function onGetCalendarItemTypes($event)
 }
 ```
 
-> Note: Don't forget to check if your module is enabled on the given `$event->contentContainer`. If no contentContainer is
+> Note: Don't forget to check if your module is enabled on the given `$event->contentContainer`. If no `contentContainer` is
 given it's meant to be a global search for all available calendar item types.
 
 ## Inject calendar items
