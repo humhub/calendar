@@ -1,4 +1,4 @@
-#Calendar interface v0.6
+# Calendar interface v0.6
 
 Since calendar module version 0.6 the it is possible to injecting meetin items into the calendar and snippet.
 
