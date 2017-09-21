@@ -1,7 +1,7 @@
 <?php
 return array (
-  ':count attending' => 'bisa menghadiri',
-  ':count declined' => 'tidak menghadiri',
-  ':count maybe' => 'mungkin',
+  ':count attending' => ':count bisa menghadiri',
+  ':count declined' => ':count tidak menghadiri',
+  ':count maybe' => ':count mungkin',
   'Participants:' => 'Partisipasi',
 );

@@ -1,7 +1,7 @@
 <?php
 return array (
-  ':count attending' => ':katılan',
-  ':count declined' => ':katılmayan',
-  ':count maybe' => ':belki katılan',
+  ':count attending' => ':count katılan',
+  ':count declined' => ':count katılmayan',
+  ':count maybe' => ':count belki katılan',
   'Participants:' => 'Katılımcılar',
 );

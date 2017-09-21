@@ -40,7 +40,11 @@ class GlobalCalendarCest
 
         $I->amGoingTo('activate the profile calendar module by creating a new event');
         $I->click('.fc-today');
-        $I->expectTo('see the activate profile calendar modal');
+        $I->expectTo('see the choose calendar modal');
+        $I->waitForText('Choose target calendar');
+        $I->click('Next', '#globalModal');
+
+
         $I->waitForText('Add profile calendar', null, '#globalModal');
         $I->click('Enable', '#globalModal');
         $I->waitForText('Next', null, '#globalModal');
@@ -51,10 +55,10 @@ class GlobalCalendarCest
         $I->fillField('CalendarEntry[description]', 'My Test Profile Entry Description');
         $I->click('Save', '#globalModal');
 
-        $I->waitForText('Close', null, '#globalModal');
-        $I->click('Close', '#globalModal');
+        //$I->waitForText('Close', null, '#globalModal');
+        //$I->click('Close', '#globalModal');
 
-        $I->wait(1);
+        //$I->wait(1);
         $I->waitForText('My Test Profile Entry',null, '.fc-event-container');
 
         $I->waitForElementVisible('.calendar_my_spaces');

@@ -109,9 +109,9 @@ For filtering out Items which do not match our `$event->filters` we simply have 
  `humhub\modules\calendar\interfaces\AbstractCalendarQuery`. The subclass of this helper should overwrite the follwoing fields:
  
  - `recordClass`: a `ActiveRecord` class string used for initializing the query.
- - `_startField`: the name of the database field for the start date
- - `_endField`: the name of the database field for the end date, if there is no explicit end field use the start field
- - `_dateFormat`: the database date format of your date fields 
+ - `startField`: the name of the database field for the start date
+ - `endField`: the name of the database field for the end date, if there is no explicit end field use the start field
+ - `dateFormat`: the database date format of your date fields 
  
  In case your model extends `ContentActiveRecord` the query class provides a default implementation for the following filter:
  
@@ -137,14 +137,14 @@ For filtering out Items which do not match our `$event->filters` we simply have 
 ```php
 class MeetingCalendarQuery extends AbstractCalendarQuery
 {
-    /**
-     * @inheritdoc
-     */
-    public static $recordClass = Meeting::class;
+   
+    protected static $recordClass = Meeting::class;
 
-    protected $_startField = 'date';
-    protected $_endField = 'date';
-    protected $_dateFormat = 'Y-m-d';
+    public $startField = 'date';
+    
+    public $endField = 'date';
+    
+    public $dateFormat = 'Y-m-d';
 
     /**
      * @inheritdoc
@@ -157,7 +157,7 @@ class MeetingCalendarQuery extends AbstractCalendarQuery
 }
 ```
 
-### Updatable calendar item
+### Allow Drag-Drop and Resize of calendar items
 
 If you provide a `updateUrl` and set the `editable` to true, you have to implement a update controller function as the following:
 

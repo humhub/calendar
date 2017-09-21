@@ -1,7 +1,7 @@
 <?php
 return array (
-  ':count attending' => ':numero partecipanti',
-  ':count declined' => ':numero rifiuti',
-  ':count maybe' => ':numero in forse',
+  ':count attending' => ':count partecipanti',
+  ':count declined' => ':count rifiuti',
+  ':count maybe' => ':count in forse',
   'Participants:' => 'Partecipanti:',
 );

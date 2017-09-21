@@ -4,6 +4,7 @@ Changelog
 - Fix: Timezone display issue for all day events
 - Enh: Added Calendar Interface for module interoperability
 - Enh: Added Calendar Picker if creating events in global calendar
+- Fix: Invalid translation keys
 
 0.5.6 01.09.2017
 - Fix: ICU 57.1 compatibility for time format HH.mm with whole day setting

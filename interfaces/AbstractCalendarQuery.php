@@ -32,6 +32,21 @@ abstract class AbstractCalendarQuery extends Object
     protected static $recordClass;
 
     /**
+     * @var string database field for start date
+     */
+    public $startField = 'start_datetime';
+
+    /**
+     * @var string database field for end date
+     */
+    public $endField = 'end_datetime';
+
+    /**
+     * @var string database date format
+     */
+    public $dateFormat = 'Y-m-d H:i:s';
+
+    /**
      * Available filters
      */
     const FILTER_PARTICIPATE = 1;
@@ -100,21 +115,6 @@ abstract class AbstractCalendarQuery extends Object
      * @var boolean determines if the query was already built
      */
     protected $_built = false;
-
-    /**
-     * @var string database field for start date
-     */
-    protected $_startField = 'start_datetime';
-
-    /**
-     * @var string database field for end date
-     */
-    protected $_endField = 'end_datetime';
-
-    /**
-     * @var string database date format
-     */
-    protected $_dateFormat = 'Y-m-d H:i:s';
 
     /**
      * @param DateTime $start
@@ -598,7 +598,7 @@ abstract class AbstractCalendarQuery extends Object
         $this->setupDateCriteria();
 
         if(!$this->_orderBy) {
-            $this->_query->orderBy($this->_startField.' ASC');
+            $this->_query->orderBy($this->startField.' ASC');
         } else {
             $this->_query->orderBy($this->_orderBy);
         }
@@ -649,7 +649,7 @@ abstract class AbstractCalendarQuery extends Object
      */
     protected function getStartCriteria(DateTime $date, $eq = '>=')
     {
-        return [$eq, $this->_startField, $date->format($this->_dateFormat)];
+        return [$eq, $this->startField, $date->format($this->dateFormat)];
     }
 
     /**
@@ -660,7 +660,7 @@ abstract class AbstractCalendarQuery extends Object
      */
     protected function getEndCriteria(DateTime $date, $eq = '<=')
     {
-        return [$eq, $this->_endField, $date->format($this->_dateFormat)];
+        return [$eq, $this->endField, $date->format($this->dateFormat)];
     }
 
     /**

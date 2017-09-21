@@ -110,7 +110,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         // Default participiation Mode
         $this->participation_mode = self::PARTICIPATION_MODE_ALL;
         $this->allow_maybe = 1;
-        $this->all_day = 1;
         $this->allow_decline = 1;
 
         $this->formatter = new CalendarDateFormatter(['calendarItem' => $this]);
