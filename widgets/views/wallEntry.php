@@ -1,6 +1,5 @@
 <?php
 
-use humhub\modules\calendar\widgets\EntryDate;
 use humhub\modules\calendar\widgets\EntryParticipants;
 use humhub\widgets\Button;
 use humhub\widgets\MarkdownView;
@@ -27,7 +26,7 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
                 </a>
             </h4>
             <h5>
-                <?= EntryDate::widget(['entry' => $calendarEntry]); ?>
+                <?= $calendarEntry->getFormattedTime() ?>
             </h5>
         </div>
         <?php if (!empty($calendarEntry->description)) : ?>

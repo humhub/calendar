@@ -17,7 +17,7 @@ class Events extends \yii\base\Object
 
     public static function onTopMenuInit($event)
     {
-        if (SnippetModuleSettings::instance()->showGlobalCalendarItems()) {
+        if (SnippetModuleSettings::instantiate()->showGlobalCalendarItems()) {
             $event->sender->addItem([
                 'label' => Yii::t('CalendarModule.base', 'Calendar'),
                 'url' => Url::to(['/calendar/global/index']),
@@ -63,7 +63,7 @@ class Events extends \yii\base\Object
         }
 
         $space = $event->sender->space;
-        $settings = SnippetModuleSettings::instance();
+        $settings = SnippetModuleSettings::instantiate();
 
         if ($space->isModuleEnabled('calendar')) {
             $event->sender->addWidget(UpcomingEvents::className(), ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
@@ -76,7 +76,7 @@ class Events extends \yii\base\Object
             return;
         }
 
-        $settings = SnippetModuleSettings::instance();
+        $settings = SnippetModuleSettings::instantiate();
 
         if ($settings->showUpcomingEventsSnippet()) {
             $event->sender->addWidget(UpcomingEvents::className(), [], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
@@ -91,7 +91,7 @@ class Events extends \yii\base\Object
 
         $user = $event->sender->user;
         if ($user != null) {
-            $settings = SnippetModuleSettings::instance();
+            $settings = SnippetModuleSettings::instantiate();
 
             if ($settings->showUpcomingEventsSnippet()) {
                 $event->sender->addWidget(UpcomingEvents::className(), ['contentContainer' => $user], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);

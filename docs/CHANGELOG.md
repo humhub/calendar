@@ -1,6 +1,12 @@
 Changelog
 =========
-0.5.4 01.09.2017
+0.6
+- Fix: Timezone display issue for all day events
+- Enh: Added Calendar Interface for module interoperability
+- Enh: Added Calendar Picker if creating events in global calendar
+- Fix: Invalid translation keys
+
+0.5.6 01.09.2017
 - Fix: ICU 57.1 compatibility for time format HH.mm with whole day setting
 - Fix: Drag updates in day/week view are not working
 - Fix: Locale mapping between humhub and moment.js

@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use DateTime;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\calendar\permissions\CreateEntry;
@@ -18,7 +19,24 @@ use humhub\modules\calendar\models\CalendarEntry;
 class ViewController extends ContentContainerController
 {
 
+    /**
+     * @inheritdoc
+     */
     public $hideSidebar = true;
+
+    /**
+     * @var CalendarService
+     */
+    public $calendarService;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->calendarService = $this->module->get(CalendarService::class);
+    }
 
     public function actionIndex()
     {
@@ -36,7 +54,7 @@ class ViewController extends ContentContainerController
 
         $filters = Yii::$app->request->get('filters', []);
 
-        foreach (CalendarEntry::getContainerEntriesByRange(new DateTime($start), new DateTime($end), $this->contentContainer, $filters) as $entry) {
+        foreach ($this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), $filters, $this->contentContainer) as $entry) {
             $result[] = $entry->getFullCalendarArray();
         }
 

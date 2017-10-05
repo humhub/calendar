@@ -36,7 +36,7 @@ class GlobalGuestCalendarCest
         $I->wait(1);
 
         // Workaround regarding Webdriver click issues...
-        $I->click('.calendar_filter_responded');
+        $I->click('.calendar_filter_participate');
 
         $I->wait(1);
 

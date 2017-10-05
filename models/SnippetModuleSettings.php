@@ -65,14 +65,14 @@ class SnippetModuleSettings extends Model
     
     public function showGlobalCalendarItems()
     {
-        return !self::instance()->showIfInstalled || Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
+        return !self::instantiate()->showIfInstalled || Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
     }
     
     /**
      * Static initializer
      * @return \self
      */
-    public static function instance()
+    public static function instantiate()
     {
         return new self;
     }

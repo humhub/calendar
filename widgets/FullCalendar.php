@@ -19,6 +19,7 @@ class FullCalendar extends JsWidget
     public $id = 'calendar';
     public $init = true;
     public $canWrite = false;
+    public $isGlobal = false;
     public $loadUrl;
     public $dropUrl;
     public $editUrl;
@@ -40,6 +41,7 @@ class FullCalendar extends JsWidget
 
         if(!$this->contentContainer) {
             $this->contentContainer = Yii::$app->user->getIdentity();
+            $this->isGlobal = true;
         }
 
         // Used by the global calendar if the module is not enabled for the given user.
@@ -48,8 +50,11 @@ class FullCalendar extends JsWidget
         }
 
 
-        $this->editUrl = $this->contentContainer->createUrl('/calendar/entry/edit', ['cal' => true]);
-        $this->dropUrl = $this->contentContainer->createUrl('/calendar/entry/edit-ajax');
+        if($this->contentContainer) {
+            $this->editUrl = $this->contentContainer->createUrl('/calendar/entry/edit', ['cal' => true]);
+            $this->dropUrl = $this->contentContainer->createUrl('/calendar/entry/edit-ajax');
+        }
+
         parent::init();
     }
     
@@ -59,8 +64,8 @@ class FullCalendar extends JsWidget
             'load-url' => $this->loadUrl,
             'edit-url' => $this->editUrl,
             'drop-url' => $this->dropUrl,
-            'enable-url' => Url::to(['/calendar/global/enable']),
-            'enabled' => $this->enabled,
+            'global-create-url' => Url::to(['/calendar/global/select']),
+            'global' => $this->isGlobal,
             'can-write' => $this->canWrite,
             'can-create' => $this->canCreate(),
             'editable' => $this->canWrite,

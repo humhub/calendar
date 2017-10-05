@@ -4,18 +4,29 @@ namespace humhub\modules\calendar;
 
 use Yii;
 use yii\helpers\Url;
+use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
-class Module extends \humhub\modules\content\components\ContentContainerModule
+class Module extends ContentContainerModule
 {
 
     /**
      * @inheritdoc
      */
     public $resourcesPath = 'resources';
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->set(CalendarService::class, ['class' => CalendarService::class]);
+    }
 
     /**
      * @inheritdoc

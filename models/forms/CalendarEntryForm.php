@@ -62,11 +62,6 @@ class CalendarEntryForm extends Model
     public $timeZone;
 
     /**
-     * @var array cached timeZone option items used for the form dropdown
-     */
-    public $timeZoneItems;
-
-    /**
      * @var int calendar event type id
      */
     public $type_id;
@@ -281,23 +276,9 @@ class CalendarEntryForm extends Model
         return !$this->entry->all_day;
     }
 
-    public function getTimeZoneItems()
-    {
-        if(empty($this->timeZoneItems)) {
-            $this->timeZoneItems = TimezoneHelper::generateList();
-        }
-
-        return $this->timeZoneItems;
-    }
-
-    public function getTimezoneLabel()
-    {
-        $entries = $this->getTimeZoneItems();
-        return $entries[$this->timeZone];
-    }
-
     public function updateTime($start = null, $end = null)
     {
+        $this->entry->time_zone = Yii::$app->formatter->timeZone;
         $this->translateDateTimes($start, $end, null, null, 'php:Y-m-d H:i:s');
         return $this->save();
     }
