@@ -2,6 +2,7 @@ Changelog
 =========
 0.6.2 20.10.2017
 - Fix #84: Files are not attached to new calendar entries
+- Fix #91: Participants can't change state if max participant number is reached
 
 0.6.1 21.09.2017
 - Fix: Timezone display issue for all day events
