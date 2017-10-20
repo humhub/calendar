@@ -332,11 +332,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         })->all();
     }
 
-    public function isParticipationAllowed()
-    {
-        return $this->participation_mode != self::PARTICIPATION_MODE_NONE;
-    }
-
     public function setParticipant($user, $state = CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED)
     {
         $participant = $this->findParticipant($user);
@@ -445,9 +440,15 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         return false;
     }
 
+    public function isParticipationAllowed()
+    {
+        return $this->participation_mode != self::PARTICIPATION_MODE_NONE;
+    }
+
     public function checkMaxParticipants()
     {
-        return empty($this->max_participants)
+        // Participants always can change/reset their state
+        return empty($this->max_participants) || $this->isParticipant()
             || ($this->getParticipantCount(CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED) < $this->max_participants);
     }
 
