@@ -1,6 +1,9 @@
 Changelog
 =========
-0.6
+0.6.2 20.10.2017
+- Fix #84: Files are not attached to new calendar entries
+
+0.6.1 21.09.2017
 - Fix: Timezone display issue for all day events
 - Enh: Added Calendar Interface for module interoperability
 - Enh: Added Calendar Picker if creating events in global calendar

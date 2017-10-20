@@ -79,6 +79,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     public $formatter;
 
     /**
+     * @var array attached files
+     */
+    public $files = [];
+
+    /**
      * Participation Modes
      */
     const PARTICIPATION_MODE_NONE = 0;
@@ -172,6 +177,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     public function rules()
     {
         return [
+            [['files'], 'safe'],
             [['title', 'start_datetime', 'end_datetime'], 'required'],
             ['color', 'string'],
             [['start_datetime'], DbDateValidator::className()],
@@ -235,12 +241,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         }
 
         return parent::beforeSave($insert);
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-        return;
     }
 
     public function beforeDelete()

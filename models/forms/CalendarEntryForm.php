@@ -72,11 +72,6 @@ class CalendarEntryForm extends Model
     public $markdownFiles = [];
 
     /**
-     * @var array
-     */
-    public $files = [];
-
-    /**
      * @var bool
      */
     public $sendUpdateNotification = 0;
@@ -115,7 +110,6 @@ class CalendarEntryForm extends Model
     {
         return [
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
-            [['files'], 'safe'],
             [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => $this->getTimeFormat()],
             [['start_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time', 'timeZone' => $this->timeZone],
@@ -248,7 +242,7 @@ class CalendarEntryForm extends Model
         $this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
         if($this->entry->save()) {
-            $this->entry->fileManager->attach($this->files);
+            $this->entry->fileManager->attach($this->entry->files);
             if(!empty($this->type_id)) {
                 $this->entry->setType($this->type_id);
             }
