@@ -6955,10 +6955,14 @@ DayGrid.mixin({
 				timeHtml = '<span class="fc-time">' + htmlEscape(timeText) + '</span>';
 			}
 		}
-
+		var parser = new DOMParser;
+		var dom = parser.parseFromString(
+		    '<!doctype html><body>' + event.title,
+		    'text/html');
+		var decodeTitle = dom.body.textContent;
 		titleHtml =
 			'<span class="fc-title">' +
-				(htmlEscape(event.title || '') || '&nbsp;') + // we always want one line of height
+				(htmlEscape(decodeTitle || '') || '&nbsp;') + // we always want one line of height
 			'</span>';
 		
 		return '<a class="' + classes.join(' ') + '"' +
