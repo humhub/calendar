@@ -3,6 +3,7 @@ Changelog
 0.6.3 27.10.2017
 - Fix: Delete of global calendar types not working
 - Fix #38: Added `calendar_entry_participant` user foreign key
+- Fix #66: Only show Participation Badge if participation is allowed
 
 0.6.2 20.10.2017
 - Fix #84: Files are not attached to new calendar entries

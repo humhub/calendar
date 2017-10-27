@@ -630,16 +630,19 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     {
         $participant = $this->findParticipant();
 
-        $result = '';
-        if($participant) {
+        if($participant && $this->isParticipationAllowed()) {
             switch($participant->participation_state) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
                     return Label::success(Yii::t('CalendarModule.base', 'Attending'))->right();
                 case CalendarEntryParticipant::PARTICIPATION_STATE_INVITED:
                     return Label::success(Yii::t('CalendarModule.base', 'Invited'))->right();
                 case CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE:
-                    return Label::success(Yii::t('CalendarModule.base', 'Interested'))->right();
+                    if($this->allow_maybe) {
+                        return Label::success(Yii::t('CalendarModule.base', 'Interested'))->right();
+                    }
             }
         }
+
+        return null;
     }
 }
