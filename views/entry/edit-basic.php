@@ -1,5 +1,6 @@
 <?php
 use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\topic\widgets\TopicPicker;
 use humhub\widgets\ColorPickerField;
 use humhub\widgets\ContentTagDropDown;
 use humhub\widgets\MarkdownField;
@@ -32,7 +33,7 @@ use yii\jui\DatePicker;
 
     <?= $form->field($calendarEntryForm, 'type_id')->widget(ContentTagDropDown::class, [
         'tagClass' => CalendarEntryType::class,
-        // TODO: replace query with the this line after core v1.2.3
+        // TODO: replace query with this lines after core v1.2.3
         #'contentContainer' => $contentContainer,
         #'includeGlobal' => true,
         'prompt' => Yii::t('CalendarModule.views_entry_edit', 'Select event type...'),
@@ -80,4 +81,6 @@ use yii\jui\DatePicker;
             <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
         </div>
     </div>
+
+    <?= $form->field($calendarEntryForm, 'topics')->widget(TopicPicker::class); ?>
 </div>

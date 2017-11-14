@@ -9,6 +9,7 @@
 
 namespace humhub\modules\calendar\models\forms;
 
+use humhub\modules\topic\models\Topic;
 use Yii;
 use yii\base\Model;
 use DateInterval;
@@ -66,6 +67,11 @@ class CalendarEntryForm extends Model
      */
     public $type_id;
 
+    /**
+     * @var
+     */
+    public $topics = [];
+
     /*
      * @var array
      */
@@ -99,7 +105,7 @@ class CalendarEntryForm extends Model
                 $this->type_id = $type->id;
             }
 
-
+            $this->topics = Topic::findByContent($this->entry->content)->all();
         }
     }
 
@@ -110,6 +116,7 @@ class CalendarEntryForm extends Model
     {
         return [
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
+            [['topics'], 'safe'],
             [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => $this->getTimeFormat()],
             [['start_date'], DbDateValidator::className(), 'format' => Yii::$app->params['formatter']['defaultDateFormat'], 'timeAttribute' => 'start_time', 'timeZone' => $this->timeZone],
@@ -243,6 +250,7 @@ class CalendarEntryForm extends Model
 
         if($this->entry->save()) {
             $this->entry->fileManager->attach($this->entry->files);
+            Topic::attach($this->entry->content, $this->topics);
             if(!empty($this->type_id)) {
                 $this->entry->setType($this->type_id);
             }
