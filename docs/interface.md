@@ -126,7 +126,6 @@ For filtering out Items which do not match our `$event->filters` we simply have 
  
  - `filterIsParticipant`: in case the item type supports an own participation logic, this filter is used to only include items
  in which the current logged in user participates (optional)
- - `filterIsInvited`: includes only events in which the current user is invited (optional)
  - `filterResponded`: legacy filter for filtering out items with no response yet (optional)
  - `filterNotResponded`: legacy filter for filtering out items with a response (optional)
  

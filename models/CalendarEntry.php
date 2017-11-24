@@ -103,7 +103,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
      * Filters
      */
     const FILTER_PARTICIPATE = 1;
-    const FILTER_INVITED = 2;
     const FILTER_NOT_RESPONDED = 3;
     const FILTER_RESPONDED = 4;
     const FILTER_MINE = 5;
@@ -259,8 +258,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
 
         $participants = $this->getParticipantUsersByState([
             CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
-            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
-            CalendarEntryParticipant::PARTICIPATION_STATE_INVITED]);
+            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
 
         if($this->closed) {
             CanceledEvent::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
@@ -273,8 +271,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     {
         $participants = $this->getParticipantUsersByState([
             CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
-            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
-            CalendarEntryParticipant::PARTICIPATION_STATE_INVITED]);
+            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
 
         EventUpdated::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
     }
@@ -492,7 +489,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
                 'calendar_entry_id' => $this->id]);
         }
 
-        if($type === CalendarEntryParticipant::PARTICIPATION_STATE_INVITED) {
+        if($type === CalendarEntryParticipant::PARTICIPATION_STATE_NONE) {
             // never explicitly store PARTICIPATION_STATE 0
             $calendarEntryParticipant->delete();
         } else {
@@ -519,7 +516,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             return $participant->participation_state;
         }
 
-        return CalendarEntryParticipant::PARTICIPATION_STATE_INVITED;
+        return CalendarEntryParticipant::PARTICIPATION_STATE_NONE;
     }
 
     /**
@@ -660,8 +657,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             switch($participant->participation_state) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
                     return Label::success(Yii::t('CalendarModule.base', 'Attending'))->right();
-                case CalendarEntryParticipant::PARTICIPATION_STATE_INVITED:
-                    return Label::success(Yii::t('CalendarModule.base', 'Invited'))->right();
                 case CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE:
                     if($this->allow_maybe) {
                         return Label::success(Yii::t('CalendarModule.base', 'Interested'))->right();

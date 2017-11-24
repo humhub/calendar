@@ -219,43 +219,7 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
         $this->assertEquals(1, count($entries));
         $this->assertEquals($entry4->title, $entries[0]->title);
         
-        $entry1->setParticipant($u1, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED);
-        
-        $entries = CalendarEntryQuery::find()->userRelated()->invited()->limit(20)->all();
-        $this->assertEquals(1, count($entries));
-        $this->assertEquals($entry1->title, $entries[0]->title);
     }
-
-    /*public function testFilterInvited()
-    {
-        $this->becomeUser('Admin');
-        $s1 = Space::findOne(['id' => 1]);
-        $s3 = Space::findOne(['id' => 3]);
-        
-        // User2 is member of both spaces
-        $u2 = User::findOne(['id' => 3]);
-        
-        $entry0 = $this->createEntry((new DateTime)->sub(new DateInterval('P30D')), 1, 'Past Entry', $s1);
-        
-        $entry1 = $this->createEntry((new DateTime)->sub(new DateInterval('P5D')), 1, 'Past Entry', $s1);
-        
-        $entry2 = $this->createEntry(null, 5, 'Entry 1', $s1);
-        
-        $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P3D')), 10, 'Entry 1', $s3);
-        
-        $entry4 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Future Entry', $s1);
-        
-        $entry5 = $this->createEntry((new DateTime)->add(new DateInterval('P20D')), 6, 'Future Entry', $s3);
-        
-        $entry1->setParticipant($u2, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED);
-        $entry3->inviteParticipant($u2);
-        $entry5->inviteParticipant($u2);
-        
-        $entries = CalendarEntryQuery::find($u2)->invited()->limit(20)->all();
-        $this->assertEquals(2, count($entries));
-        $this->assertEquals($entry3->title, $entries[0]->title);
-        $this->assertEquals($entry5->title, $entries[1]->title);
-    }*/
     
     public function testFilterParticipate()
     {
