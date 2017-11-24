@@ -69,7 +69,7 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
                                  ->icon($participantSate === $state ? 'fa-check' : null)
                                  ->action('calendar.respond',
                                           $contentContainer->createUrl('/calendar/entry/respond', [
-                                              'type' => $state,
+                                              'type' => ($participantSate == $state ? CalendarEntryParticipant::PARTICIPATION_STATE_INVITED : $state),
                                               'id' => $calendarEntry->id]));
                 }
                 ?>

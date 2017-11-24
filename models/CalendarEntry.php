@@ -492,7 +492,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
                 'calendar_entry_id' => $this->id]);
         }
 
-        if($calendarEntryParticipant->participation_state === $type) {
+        if($type === CalendarEntryParticipant::PARTICIPATION_STATE_INVITED) {
+            // never explicitly store PARTICIPATION_STATE 0
             $calendarEntryParticipant->delete();
         } else {
             $calendarEntryParticipant->participation_state = $type;
