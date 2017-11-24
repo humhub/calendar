@@ -493,7 +493,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             return $participant->participation_state;
         }
 
-        return 0;
+        return CalendarEntryParticipant::PARTICIPATION_STATE_INVITED;
     }
 
     /**
