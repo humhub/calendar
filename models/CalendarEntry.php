@@ -476,6 +476,31 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         return false;
     }
 
+    public function setParticipationState($type, User $user = null) {
+        if ($user == null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        // TODO return a calendarEntryParticipant with errors explaining why
+        if(!$this->canRespond()) return null;
+
+        $calendarEntryParticipant = $this->findParticipant($user);
+
+        if ($calendarEntryParticipant == null) {
+            $calendarEntryParticipant = new CalendarEntryParticipant([
+                'user_id' => $user->id,
+                'calendar_entry_id' => $this->id]);
+        }
+
+        if($calendarEntryParticipant->participation_state === $type) {
+            $calendarEntryParticipant->delete();
+        } else {
+            $calendarEntryParticipant->participation_state = $type;
+            $calendarEntryParticipant->save();
+        }
+        return $calendarEntryParticipant;
+    }
+
     public function getParticipationState(User $user = null)
     {
         if (Yii::$app->user->isGuest) {
