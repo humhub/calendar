@@ -62,21 +62,25 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
     <?php if ($calendarEntry->canRespond()): ?>
        <div class="row" style="padding-top:10px">
             <div class="col-md-12">
-                <?= Button::defaultType(Yii::t('CalendarModule.views_entry_view', "Attend"))->sm()
-                    ->icon($participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED ? 'fa-check' : null)
-                    ->action('calendar.respond', $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id]))?>
 
+                <?php
+                $pButton = function($state, $label) use ($calendarEntry, $participantSate, $contentContainer) {
+                    return Button::defaultType(Yii::t('CalendarModule.views_entry_view', $label))->sm()
+                                 ->icon($participantSate === $state ? 'fa-check' : null)
+                                 ->action('calendar.respond',
+                                          $contentContainer->createUrl('/calendar/entry/respond', [
+                                              'type' => $state,
+                                              'id' => $calendarEntry->id]));
+                }
+                ?>
+                <?= $pButton(CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, "Attend") ?>
 
                 <?php if($calendarEntry->allow_maybe) : ?>
-                    <?= Button::defaultType(Yii::t('CalendarModule.views_entry_view', "Maybe"))->sm()
-                        ->icon($participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE ? 'fa-check' : null)
-                        ->action('calendar.respond', $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id]))?>
+                  <?= $pButton(CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, "Maybe"); ?>
                 <?php endif; ?>
 
                 <?php if($calendarEntry->allow_decline) : ?>
-                    <?= Button::defaultType(Yii::t('CalendarModule.views_entry_view', "Decline"))->sm()
-                        ->icon($participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED ? 'fa-check' : null)
-                        ->action('calendar.respond', $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id]))?>
+                    <?= $pButton(CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, "Decline"); ?>
                 <?php endif;?>
             </div>
         </div>
