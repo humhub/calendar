@@ -70,7 +70,7 @@ Items are appended by means of `$event->addItems($itemTypeKey, $itemsArray)`. Th
  - `start`: DateTime instance of the start time ideally with timezone (otherwise we assume app timezone).
  - `end`: DateTime instance of the end time ideally with timezone (otherwise we assume app timezone).
  - `title`: The title of the given item, displayed in the calendar and snippet
- - `editable`: Weather or not this item is editable (resize/drag/drop) this will also require the updateUrl
+ - `editable`: Whether or not this item is editable (resize/drag/drop) this will also require the updateUrl
  - `viewUrl`: This link will be loaded into a modal once the item is selected in the calendar
  - `openUrl`: A link to the actual content (e.g Permalink) used in the snippet
  - `updateUrl`: A url used to directly update the start/end time in case `editable` is set to true
