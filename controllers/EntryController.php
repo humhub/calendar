@@ -65,9 +65,9 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
-        $ps = $calendarEntry->setParticipationState((int)$type);
-        if($ps->hasErrors()) {
-            return $this->asJson(['success' => false, 'errors' => $ps->getErrors()]);
+        $participationState = $calendarEntry->setParticipationState((int)$type);
+        if($participationState->hasErrors()) {
+            return $this->asJson(['success' => false, 'errors' => $participationState->getErrors()]);
         }
         return $this->asJson(['success' => true]);
     }
