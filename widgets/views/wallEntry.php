@@ -63,26 +63,9 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
        <div class="row" style="padding-top:10px">
             <div class="col-md-12">
 
-                <?php
-                $pButton = function($state, $label) use ($calendarEntry) {
-                    $participantSate = $calendarEntry->getParticipationState();
-                    return Button::defaultType(Yii::t('CalendarModule.views_entry_view', $label))->sm()
-                                 ->icon($participantSate === $state ? 'fa-check' : null)
-                                 ->action('calendar.respond',
-                                          $calendarEntry->content->container->createUrl('/calendar/entry/respond', [
-                                              'type' => ($participantSate == $state ? CalendarEntryParticipant::PARTICIPATION_STATE_NONE : $state),
-                                              'id' => $calendarEntry->id]));
-                }
-                ?>
-                <?= $pButton(CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, "Attend") ?>
-
-                <?php if($calendarEntry->allow_maybe) : ?>
-                  <?= $pButton(CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, "Maybe"); ?>
-                <?php endif; ?>
-
-                <?php if($calendarEntry->allow_decline) : ?>
-                    <?= $pButton(CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, "Decline"); ?>
-                <?php endif;?>
+              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', "Attend")); ?>
+              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,    Yii::t('CalendarModule.views_entry_view', "Maybe")); ?>
+              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views_entry_view', "Decline")); ?>
             </div>
         </div>
     <?php endif; ?>
