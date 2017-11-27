@@ -25,7 +25,6 @@ return array (
   'In order to add events to your profile, you have to enable the calendar module first.' => 'Hvis du vil opprette en aktivitet i din personlige kalender, må du aktivere kalender modulen på din profil først. ',
   'Interested' => 'Intressert',
   'Invalid event type id selected.' => 'Ugyldig aktiviteststype id valgt.',
-  'Invited' => 'Invitert',
   'Maximum number of participants' => 'Maks antall deltagere',
   'Maybe attending users' => 'Brukere som kanskje deltar',
   'Next' => 'Neste',
