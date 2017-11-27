@@ -479,7 +479,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         }
 
         // TODO return a calendarEntryParticipant with errors explaining why
-        if(!$this->canRespond()) return null;
+        if(!$this->canRespond()) {
+            return null;
+        }
 
         $calendarEntryParticipant = $this->findParticipant($user);
 
