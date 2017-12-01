@@ -17,8 +17,10 @@ use humhub\modules\calendar\models\CalendarEntry;
  */
 class CalendarEntryParticipant extends ActiveRecord
 {
-
-    const PARTICIPATION_STATE_INVITED = 0;
+    // NONE means user hasn't responded or removed a previous response.
+    // NONE is usually not stored explicitly, instead, no matches in
+    // calendar_entry_participant implies NONE.
+    const PARTICIPATION_STATE_NONE = 0;
     const PARTICIPATION_STATE_DECLINED = 1;
     const PARTICIPATION_STATE_MAYBE = 2;
     const PARTICIPATION_STATE_ACCEPTED = 3;
@@ -84,8 +86,8 @@ class CalendarEntryParticipant extends ActiveRecord
             $activity = new \humhub\modules\calendar\activities\ResponseMaybe();
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_DECLINED) {
             $activity = new \humhub\modules\calendar\activities\ResponseDeclined();
-        } else if(!$this->participation_state == self::PARTICIPATION_STATE_INVITED) {
-            throw new \yii\base\Exception("Invalid participation state!");
+        } else {
+            throw new \yii\base\Exception("Invalid participation state: " . $this->participation_state);
         }
 
         if($activity) {

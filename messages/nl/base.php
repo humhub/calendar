@@ -25,7 +25,6 @@ return array (
   'In order to add events to your profile, you have to enable the calendar module first.' => 'Om gebeurtenissen toe te voegen aan uw profiel, moet u eerst de agendamodule inschakelen.',
   'Interested' => 'Belangstelling',
   'Invalid event type id selected.' => 'Ongeldige gebeurtenistype-id geselecteerd.',
-  'Invited' => 'Uitnodiging',
   'Maximum number of participants' => 'Maximaal aantal deelnemers',
   'Maybe attending users' => 'Misschien',
   'Next' => 'Volgende',

@@ -65,24 +65,10 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
-        if ($calendarEntry->canRespond()) {
-            $calendarEntryParticipant = $calendarEntry->findParticipant(Yii::$app->user->getIdentity());
-
-            if ($calendarEntryParticipant == null) {
-                $calendarEntryParticipant = new CalendarEntryParticipant([
-                    'user_id' => Yii::$app->user->id,
-                    'calendar_entry_id' => $calendarEntry->id]);
-            }
-
-            // Either current state or set new state
-            if($calendarEntryParticipant->participation_state == (int) $type) {
-                $calendarEntryParticipant->delete();
-            } else {
-                $calendarEntryParticipant->participation_state = (int) $type;
-                $calendarEntryParticipant->save();
-            }
+        $participationState = $calendarEntry->setParticipationState((int)$type);
+        if($participationState->hasErrors()) {
+            return $this->asJson(['success' => false, 'errors' => $participationState->getErrors()]);
         }
-
         return $this->asJson(['success' => true]);
     }
 

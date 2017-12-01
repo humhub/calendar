@@ -46,7 +46,6 @@ return [
     'ID' => 'ID',
     'In order to add events to your profile, you have to enable the calendar module first.' => 'Musíte mít nejprve aktivní modul kalendáře, aby jej bylo možné přidat na profil.',
     'Interested' => 'Zajímá mě ',
-    'Invited' => 'Pozvánky',
     'Maybe attending users' => 'Možná se zúčastní',
     'Next' => 'Další',
     'Participation Mode' => 'Kdo se může zúčasnit?',

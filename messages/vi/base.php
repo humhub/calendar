@@ -25,7 +25,6 @@ return array (
   'In order to add events to your profile, you have to enable the calendar module first.' => 'Để thêm sự kiện vào trang hồ sơ của bạn, bạn phải kích hoạt module Lịch trước.',
   'Interested' => 'Hứng thú.',
   'Invalid event type id selected.' => 'Sai ID loại sự kiện',
-  'Invited' => 'Đã mời',
   'Maximum number of participants' => 'Số người tham dự tối đa',
   'Maybe attending users' => 'Số người "có thể" tham dự',
   'Next' => 'Tiếp theo',
