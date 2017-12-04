@@ -547,13 +547,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         return $this->formatter->getOffsetDays();
     }
 
-    public function getParticipantCount($state = null)
+    public function getParticipantCount($state)
     {
-        if($state) {
-            return $this->getParticipants()->where(['participation_state' => $state])->count();
-        } else {
-            return $this->getParticipants()->count();
-        }
+        return $this->getParticipants()->where(['participation_state' => $state])->count();
     }
 
     /**
