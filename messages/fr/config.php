@@ -6,7 +6,7 @@ return array (
   'Adds an snippet with upcoming events to your users dashboard.' => 'Ajoute un extrait avec les prochains événements à votre tableau des utilisateurs.',
   'Create new type' => 'Créer un nouveau type',
   'Default event settings' => 'Paramètres de l\'événement par défaut',
-  'Delete' => 'Suprimer',
+  'Delete' => 'Supprimer',
   'Do you really want to delte this event type?' => 'Voulez vous vraiment supprimer ce type d\'événement ?',
   'Event Type Configuration' => 'Configuration du type d\'événement',
   'Half a year' => 'Six mois',

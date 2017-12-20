@@ -1,7 +1,7 @@
 <?php
 return array (
-  ':count attending' => '',
-  ':count declined' => '',
-  ':count maybe' => '',
-  'Participants:' => '',
+  ':count attending' => ':broj prisustva',
+  ':count declined' => ':broj odbijenica',
+  ':count maybe' => ':broj možda',
+  'Participants:' => 'Sudionici:',
 );
