@@ -50,7 +50,6 @@ abstract class AbstractCalendarQuery extends Object
      * Available filters
      */
     const FILTER_PARTICIPATE = 1;
-    const FILTER_INVITED = 2;
     const FILTER_NOT_RESPONDED = 3;
     const FILTER_RESPONDED = 4;
     const FILTER_MINE = 5;
@@ -206,16 +205,6 @@ abstract class AbstractCalendarQuery extends Object
     {
         $this->_filters = $filters;
         return $this;
-    }
-
-
-    /**
-     * Filters entries the given user was invited to.
-     * @return $this
-     */
-    public function invited()
-    {
-        return $this->addFilter(self::FILTER_INVITED);
     }
 
     /**
@@ -676,10 +665,6 @@ abstract class AbstractCalendarQuery extends Object
             $this->filterIsParticipant();
         }
 
-        if ($this->hasFilter(self::FILTER_INVITED)) {
-            $this->filterIsInvited();
-        }
-
         if ($this->hasFilter(self::FILTER_RESPONDED)) {
             $this->filterResponded();
         }
@@ -745,8 +730,4 @@ abstract class AbstractCalendarQuery extends Object
         throw new FilterNotSupportedException('Participant filter not supported for this query');
     }
 
-    protected function filterIsInvited()
-    {
-        throw new FilterNotSupportedException('Invited filter not supported for this query');
-    }
 }

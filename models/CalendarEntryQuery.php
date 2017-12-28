@@ -27,12 +27,6 @@ use humhub\modules\content\components\ActiveQueryContent;
  * 
  * // Filter entries where the current user is participating
  * CalendarEntryQuery::find()->participate();
- * 
- * // Filter entries where $user1 is invited
- * CalendarEntryQuery::find($user1)->invited()->all();
- * 
- * // Only build the query of the last example
- * $query = CalendarEntryQuery::find($user1)->invited()->query(true);
  * ```
  * 
  * > Note: If [[from()]] and [[to()]] is set, the query will use an open range query by default, which
@@ -53,7 +47,6 @@ use humhub\modules\content\components\ActiveQueryContent;
  * 
  *  - [[container()]]: Filter by container
  *  - [[userRelated()]]: Adds a user relation by the given or default scope (e.g: Following Spaces, Member Spaces, Own Profile, etc.)
- *  - [[invited()]]: Given user is invited
  *  - [[participant()]]: Given user accepted invitation
  *  - [[mine()]]: Entries created by the given user
  *  - [[responded()]]: Entries where given user has given any response (accepted/declined...)
@@ -72,12 +65,6 @@ class CalendarEntryQuery extends AbstractCalendarQuery
      * @var bool true if the participant join has already been added else false
      */
     private $praticipantJoined = false;
-
-    protected function filterIsInvited()
-    {
-        $this->participantJoin();
-        $this->_query->andWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED]);
-    }
 
     public function filterResponded()
     {

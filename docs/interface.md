@@ -1,6 +1,6 @@
 # Calendar interface v0.6
 
-Since calendar module version 0.6 it is possible to injecting meeting items into the calendar and snippet.
+Since calendar module version 0.6 it is possible to injecting calendar items into the calendar and snippet.
 
 All interface files reside within the `interface` directory of the calendar module.
 
@@ -70,7 +70,7 @@ Items are appended by means of `$event->addItems($itemTypeKey, $itemsArray)`. Th
  - `start`: DateTime instance of the start time ideally with timezone (otherwise we assume app timezone).
  - `end`: DateTime instance of the end time ideally with timezone (otherwise we assume app timezone).
  - `title`: The title of the given item, displayed in the calendar and snippet
- - `editable`: Weather or not this item is editable (resize/drag/drop) this will also require the updateUrl
+ - `editable`: Whether or not this item is editable (resize/drag/drop) this will also require the updateUrl
  - `viewUrl`: This link will be loaded into a modal once the item is selected in the calendar
  - `openUrl`: A link to the actual content (e.g Permalink) used in the snippet
  - `updateUrl`: A url used to directly update the start/end time in case `editable` is set to true
@@ -126,7 +126,6 @@ For filtering out Items which do not match our `$event->filters` we simply have 
  
  - `filterIsParticipant`: in case the item type supports an own participation logic, this filter is used to only include items
  in which the current logged in user participates (optional)
- - `filterIsInvited`: includes only events in which the current user is invited (optional)
  - `filterResponded`: legacy filter for filtering out items with no response yet (optional)
  - `filterNotResponded`: legacy filter for filtering out items with a response (optional)
  

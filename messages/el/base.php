@@ -41,7 +41,6 @@ return [
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Interested' => '',
     'Invalid event type id selected.' => '',
-    'Invited' => '',
     'Maximum number of participants' => '',
     'Maybe attending users' => '',
     'Next' => '',

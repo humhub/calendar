@@ -76,6 +76,21 @@ class ConfigController extends Controller
         ]);
     }
 
+    public function actionDeleteType($id)
+    {
+        $this->forcePostRequest();
+
+        $entryType = CalendarEntryType::find()->where(['id' => $id])->andWhere('contentcontainer_id IS NULL')->one();
+
+        if(!$entryType) {
+            throw new HttpException(404);
+        }
+
+        $entryType->delete();
+
+        return $this->htmlRedirect(Url::to(['/calendar/config/types']));
+    }
+
     public function actionEditType($id = null)
     {
         if($id) {

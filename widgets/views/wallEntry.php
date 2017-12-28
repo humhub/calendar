@@ -62,22 +62,10 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
     <?php if ($calendarEntry->canRespond()): ?>
        <div class="row" style="padding-top:10px">
             <div class="col-md-12">
-                <?= Button::defaultType(Yii::t('CalendarModule.views_entry_view', "Attend"))->sm()
-                    ->icon($participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED ? 'fa-check' : null)
-                    ->action('calendar.respond', $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, 'id' => $calendarEntry->id]))?>
 
-
-                <?php if($calendarEntry->allow_maybe) : ?>
-                    <?= Button::defaultType(Yii::t('CalendarModule.views_entry_view', "Maybe"))->sm()
-                        ->icon($participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE ? 'fa-check' : null)
-                        ->action('calendar.respond', $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, 'id' => $calendarEntry->id]))?>
-                <?php endif; ?>
-
-                <?php if($calendarEntry->allow_decline) : ?>
-                    <?= Button::defaultType(Yii::t('CalendarModule.views_entry_view', "Decline"))->sm()
-                        ->icon($participantSate === CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED ? 'fa-check' : null)
-                        ->action('calendar.respond', $contentContainer->createUrl('/calendar/entry/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, 'id' => $calendarEntry->id]))?>
-                <?php endif;?>
+              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', "Attend")); ?>
+              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,    Yii::t('CalendarModule.views_entry_view', "Maybe")); ?>
+              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views_entry_view', "Decline")); ?>
             </div>
         </div>
     <?php endif; ?>

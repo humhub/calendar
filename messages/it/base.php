@@ -25,7 +25,6 @@ return array (
   'In order to add events to your profile, you have to enable the calendar module first.' => 'Per poter aggiungere degli eventi nel tuo profilo, devi aver prima abilitato il Modulo Calendario.',
   'Interested' => 'Interessante',
   'Invalid event type id selected.' => 'Tipologia di Evento non corretta',
-  'Invited' => 'Invitato',
   'Maximum number of participants' => 'Numero Massimo di Partecipanti',
   'Maybe attending users' => 'Utenti che forse parteciperanno',
   'Next' => 'Successivo',
