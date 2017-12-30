@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Add</strong> profile calendar' => '<strong>Añadir</strong> calendario del perfil',
-  'Adds an calendar for private or public events to your profile and mainmenu.' => 'Añade un calendario para eventos privados o publicos a tu perfil y menu principal.',
+  'Adds a calendar for private or public events to your profile and main menu.' => 'Añade un calendario para eventos privados o publicos a tu perfil y menu principal.',
   'Adds an event calendar to this space.' => 'Añade un calendario de eventos a este espacio.',
   'All Day' => 'Todo el día',
   'Allow participation state \'decline\'' => 'Permitir estado de participación “Declinar”',
