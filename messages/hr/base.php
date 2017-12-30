@@ -1,7 +1,7 @@
 <?php
-return array (
+return [
   '<strong>Add</strong> profile calendar' => '<strong>Dodaj</strong> profilni kalendar',
-  'Adds an calendar for private or public events to your profile and mainmenu.' => 'Dodavaje kalendar za privatne ili javne događaje na vaš profil i glavni izbornik.',
+  'Adds a calendar for private or public events to your profile and main menu.' => 'Dodavaje kalendar za privatne ili javne događaje na vaš profil i glavni izbornik.',
   'Adds an event calendar to this space.' => 'Dodaje kalendar događaja u ovaj prostor.',
   'All Day' => 'Cijeli dan',
   'Allow participation state \'decline\'' => 'Dopusti status sudjelovanja "odbij"',
@@ -38,4 +38,4 @@ return array (
   'Title' => 'Naziv',
   'You don\'t have permission to delete this event!' => 'Nemate dopuštenje da obrišete ovaj događaj!',
   'canceled' => 'otkazano',
-);
+];
