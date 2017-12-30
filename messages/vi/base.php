@@ -1,7 +1,7 @@
 <?php
-return array (
+return [
   '<strong>Add</strong> profile calendar' => '<strong>Thêm</strong> lịch riêng',
-  'Adds an calendar for private or public events to your profile and mainmenu.' => 'Thêm lịch cho sự kiện riêng tư hoặc công cộng vào Trang hồ sơ và Menu chính của bạn.',
+  'Adds a calendar for private or public events to your profile and main menu.' => 'Thêm lịch cho sự kiện riêng tư hoặc công cộng vào Trang hồ sơ và Menu chính của bạn.',
   'Adds an event calendar to this space.' => 'Thêm lịch sự kiện vào Phòng làm việc này',
   'All Day' => 'Cả ngày',
   'Allow participation state \'decline\'' => 'Cho phép người tham gia tuyên bố "từ chối"',
@@ -37,4 +37,4 @@ return array (
   'Title' => 'Tiêu đề',
   'You don\'t have permission to delete this event!' => 'Bạn không có quyền xóa sự kiện này!',
   'canceled' => 'đã hủy',
-);
+];
