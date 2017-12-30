@@ -98,8 +98,6 @@ class CalendarEntryForm extends Model
             if(!empty($type)) {
                 $this->type_id = $type->id;
             }
-
-
         }
     }
 
@@ -209,8 +207,6 @@ class CalendarEntryForm extends Model
         if(parent::load($data) && !empty($this->timeZone)) {
             $this->entry->time_zone = $this->timeZone;
         }
-
-
 
         //$this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
