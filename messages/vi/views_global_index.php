@@ -5,7 +5,7 @@ return array (
   'Already responded' => 'Đã phản hồi',
   'Followed spaces' => 'Các phòng đã theo dõi',
   'Followed users' => 'Các user đã theo dõi',
-  'I´m attending' => 'Tôi đang tham gia',
+  'I\'m attending' => 'Tôi đang tham gia',
   'My events' => 'Sự kiện của tôi',
   'My profile' => 'Hồ sơ của tôi',
   'My spaces' => 'Phòng làm việc của tôi',

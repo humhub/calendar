@@ -5,7 +5,7 @@ return array (
   'Already responded' => '',
   'Followed spaces' => '',
   'Followed users' => '',
-  'I´m attending' => '',
+  'I\'m attending' => '',
   'My events' => '',
   'My profile' => 'Моят Профил',
   'My spaces' => '',

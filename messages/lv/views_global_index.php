@@ -5,7 +5,7 @@ return array (
   'Already responded' => 'Jau atbildēja',
   'Followed spaces' => 'Sekotās vietas',
   'Followed users' => 'Sekotie lietotāji',
-  'I´m attending' => 'Es piedalos',
+  'I\'m attending' => 'Es piedalos',
   'My events' => 'Mani notikumi',
   'My profile' => 'Mans profils',
   'My spaces' => 'Manas vietas',

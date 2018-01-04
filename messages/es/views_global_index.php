@@ -5,7 +5,7 @@ return array (
   'Already responded' => 'Ya respondido',
   'Followed spaces' => 'Espacios seguidos',
   'Followed users' => 'Usuarios seguidos',
-  'I´m attending' => 'Asistiré',
+  'I\'m attending' => 'Asistiré',
   'My events' => 'Mis eventos',
   'My profile' => 'Mi perfil',
   'My spaces' => 'Mis espacios',

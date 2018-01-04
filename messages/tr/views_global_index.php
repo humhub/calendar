@@ -5,7 +5,7 @@ return array (
   'Already responded' => 'Cevaplananlar',
   'Followed spaces' => 'Mekan',
   'Followed users' => 'Kullanıcı',
-  'I´m attending' => 'Katılıyorum',
+  'I\'m attending' => 'Katılıyorum',
   'My events' => 'Etkinliklerim',
   'My profile' => 'Profilim',
   'My spaces' => 'Mekanım',

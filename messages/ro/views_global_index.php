@@ -5,7 +5,7 @@ return array (
   'Already responded' => 'Ai răspuns deja',
   'Followed spaces' => 'Spații urmărite',
   'Followed users' => 'Utilizatori urmăriți',
-  'I´m attending' => 'Particip',
+  'I\'m attending' => 'Particip',
   'My events' => 'Evenimentele mele',
   'My profile' => 'Profilul meu',
   'My spaces' => 'Spațiile mele',
