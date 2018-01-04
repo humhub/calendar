@@ -16,7 +16,7 @@ use humhub\widgets\FadeIn;
                 <strong style="padding-left:10px;">
                     <?= Yii::t('CalendarModule.views_global_index', '<strong>Select</strong> calendars'); ?>
                 </strong>
-                <br/>
+                <br>
                 <div style="display:inline-block; float:left;margin-right:10px;">
                     <div class="checkbox">
                         <label class="calendar_my_profile">
@@ -34,7 +34,7 @@ use humhub\widgets\FadeIn;
                     </div>
                 </div>
 
-                <?php if(!Yii::$app->getModule('user')->disableFollow) : ?>
+                <?php if (!Yii::$app->getModule('user')->disableFollow) : ?>
                     <div style="display:inline-block;">
                         <div class="checkbox">
                             <label class="calendar_followed_spaces">
@@ -59,14 +59,14 @@ use humhub\widgets\FadeIn;
             <strong style="padding-left:10px;">
                 <?= Yii::t('CalendarModule.views_global_index', '<strong>Filter</strong> events'); ?>
             </strong>
-            <br/>
+            <br>
 
             <div style="display:inline-block;margin-right:10px;">
                 <div class="checkbox">
                     <label class="calendar_filter_participate">
                         <input type="checkbox" name="filter" class="filterCheckbox" value="<?= CalendarEntry::FILTER_PARTICIPATE; ?>"
                                <?php if (in_array(CalendarEntry::FILTER_PARTICIPATE, $filters)): ?>checked="checked"<?php endif; ?>>
-                        <?= Yii::t('CalendarModule.views_global_index', 'I´m attending'); ?>
+                        <?= Yii::t('CalendarModule.views_global_index', 'I\'m attending'); ?>
                     </label>
                 </div>
                 <div class="checkbox">
