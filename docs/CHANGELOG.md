@@ -4,6 +4,7 @@ Changelog
 0.6.4 - Unreleased
 ------------------
 - Fix: Minor Grammar fixes (@Felli)
+- Enh: Cleanup, remove optional part of parameter (@kristianlm)
 
 
 0.6.3 - 27.10.2017
