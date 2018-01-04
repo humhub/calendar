@@ -1,29 +1,46 @@
 Changelog
 =========
-0.6.3 27.10.2017
+
+0.6.4 - Unreleased
+------------------
+- Fix: Minor Grammar fixes (@Felli)
+
+
+0.6.3 - 27.10.2017
+------------------
 - Fix: Delete of global calendar types not working
 - Fix #38: Added `calendar_entry_participant` user foreign key
 - Fix #66: Only show Participation Badge if participation is allowed
 
-0.6.2 20.10.2017
+
+0.6.2 - 20.10.2017
+------------------
 - Fix #84: Files are not attached to new calendar entries
 - Fix #91: Participants can't change state if max participant number is reached
 
-0.6.1 21.09.2017
+
+0.6.1 - 21.09.2017
+------------------
 - Fix: Timezone display issue for all day events
 - Enh: Added Calendar Interface for module interoperability
 - Enh: Added Calendar Picker if creating events in global calendar
 - Fix: Invalid translation keys
 
-0.5.6 01.09.2017
+
+0.5.6 - 01.09.2017
+------------------
 - Fix: ICU 57.1 compatibility for time format HH.mm with whole day setting
 - Fix: Drag updates in day/week view are not working
 - Fix: Locale mapping between humhub and moment.js
 
-0.5.4 08.08.2017
+
+0.5.4 - 08.08.2017
+------------------
 - Fix: ICU 57.1 compatibility for time format HH.mm
 
-0.5.2 08.08.2017
+
+0.5.2 - 08.08.2017
+------------------
 - Enh: Added global Event Type setting
 - Enh: Toggle participation state
 - Fix: Rename close to canceled
@@ -32,7 +49,9 @@ Changelog
 - Fix: TimeZone edit not working correctly
 - Fix: word break issue in wall entry
 
+
 0.5 
+----
 - Enh: Added timeZone setting in edit form
 - Enh: Added TimePicker with locale based time format
 - Enh: Seperation of CalendarEntryForm and CalendarEntry model
@@ -46,11 +65,13 @@ Changelog
 - Enh: Max attandee setting
 
 0.4.5 - 30.06.2017
+------------------
 - Enh: Enable global calendar for guests
 - Fix: Hide follow filter if user following is disabled
 
+
 0.4.4 - 06.06.2017
-----------------------
+------------------
 - Enh: Major refactoring
 - Enh: Usability enhancements
 - Enh: Modal based editing
