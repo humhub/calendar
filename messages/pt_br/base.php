@@ -1,7 +1,7 @@
 <?php
-return array (
+return [
   '<strong>Add</strong> profile calendar' => '<strong>Adicionar</strong> calendário de perfil',
-  'Adds an calendar for private or public events to your profile and mainmenu.' => 'Adicione um calendário para eventos privados ou públicos em seu perfil e menu principal.',
+  'Adds a calendar for private or public events to your profile and main menu.' => 'Adicione um calendário para eventos privados ou públicos em seu perfil e menu principal.',
   'Adds an event calendar to this space.' => 'Adicione um evento para este espaço.',
   'All Day' => 'Todo dia',
   'Allow participation state \'decline\'' => 'Permitir estado de participação \'negar\'',
@@ -38,4 +38,4 @@ return array (
   'Title' => 'Título',
   'You don\'t have permission to delete this event!' => 'Você não tem permissão para apagar este evento!',
   'canceled' => 'cancelado',
-);
+];

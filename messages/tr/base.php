@@ -1,7 +1,7 @@
 <?php
-return array (
+return [
   '<strong>Add</strong> profile calendar' => '',
-  'Adds an calendar for private or public events to your profile and mainmenu.' => 'Profilinize ve ana menünüze etkinlikler için bir takvim ekler.',
+  'Adds a calendar for private or public events to your profile and main menu.' => 'Profilinize ve ana menünüze etkinlikler için bir takvim ekler.',
   'Adds an event calendar to this space.' => 'Bu mekana bir etkinlik takvimi ekler.',
   'All Day' => 'Tüm günler',
   'Allow participation state \'decline\'' => '',
@@ -38,4 +38,4 @@ return array (
   'Title' => 'Başlık',
   'You don\'t have permission to delete this event!' => 'Bu etkinliği silmek için izniniz yok!',
   'canceled' => '',
-);
+];

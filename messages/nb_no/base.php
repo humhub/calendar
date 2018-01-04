@@ -1,7 +1,7 @@
 <?php
-return array (
+return [
   '<strong>Add</strong> profile calendar' => '<strong>Opprett</strong> profil kalender',
-  'Adds an calendar for private or public events to your profile and mainmenu.' => 'Legger til en kalender for private eller offentlige arrangement til din profil og hovedmeny.',
+  'Adds a calendar for private or public events to your profile and main menu.' => 'Legger til en kalender for private eller offentlige arrangement til din profil og hovedmeny.',
   'Adds an event calendar to this space.' => 'Legger til en kalender i denne gruppen.',
   'All Day' => 'Hele dagen',
   'Allow participation state \'decline\'' => 'Tillat svaralternativ "Avvis"',
@@ -37,4 +37,4 @@ return array (
   'Title' => 'Tittel',
   'You don\'t have permission to delete this event!' => 'Du har ikke tilgang til å slette denne aktiviteten.',
   'canceled' => 'avlyst',
-);
+];

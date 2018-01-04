@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Adds an calendar for private or public events to your profile and mainmenu.' => '',
-    'Adds an event calendar to this space.' => '',
+    'Adds a calendar for private or public events to your profile and main menu.' => '',
+    'Adds a event calendar to this space.' => '',
     'All Day' => '',
     'Attending users' => '',
     'Calendar' => '',

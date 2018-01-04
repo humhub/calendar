@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\models;
 
-
 use humhub\components\SettingsManager;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;

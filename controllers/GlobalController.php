@@ -19,7 +19,6 @@ use yii\web\HttpException;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 
-
 /**
  * GlobalController provides a global view.
  *
@@ -127,14 +126,13 @@ class GlobalController extends Controller
                 return Yii::$app->runAction('/calendar/global/enable', ['start' => $start, 'end' => $end]);
 
                 /**
-                 *
-                 TODO: automatically enable the calendar module in profile
-                $container->enableModule('calendar');
-
-                //TODO: should be handle by the core
-                Yii::$app->cache->get(\humhub\modules\user\models\Module::STATES_CACHE_ID_PREFIX . $container->id);
-                Yii::$app->user->getIdentity()->_enabledModules = null;
-                 * */
+                *TODO: automatically enable the calendar module in profile
+                * $container->enableModule('calendar');
+                *
+                *TODO: should be handle by the core
+                *Yii::$app->cache->get(\humhub\modules\user\models\Module::STATES_CACHE_ID_PREFIX . $container->id);
+                *Yii::$app->user->getIdentity()->_enabledModules = null;
+                **/
             }
         }
 

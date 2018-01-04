@@ -1,7 +1,7 @@
 <?php
-return array (
+return [
   '<strong>Add</strong> profile calendar' => '<Strong>Voeg</ strong>een profielagenda toe',
-  'Adds an calendar for private or public events to your profile and mainmenu.' => 'Voegt een agenda voor private of publieke evenementen toe aan uw profiel en hoofdmenu.',
+  'Adds a calendar for private or public events to your profile and main menu.' => 'Voegt een agenda voor private of publieke evenementen toe aan uw profiel en hoofdmenu.',
   'Adds an event calendar to this space.' => 'Voegt een agenda toe aan deze ruimte.',
   'All Day' => 'Volledige dag',
   'Allow participation state \'decline\'' => 'Sta deelnamestatus \'afwijzen\' toe',
@@ -37,4 +37,4 @@ return array (
   'Title' => 'Titel',
   'You don\'t have permission to delete this event!' => 'Je hebt geen toestemming om dit evenement te verwijderen!',
   'canceled' => 'geannuleerd',
-);
+];
