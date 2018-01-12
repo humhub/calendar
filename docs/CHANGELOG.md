@@ -6,6 +6,7 @@ Changelog
 - Fix: Minor Grammar fixes (@Felli)
 - Enh: Cleanup, remove optional part of parameter (@kristianlm)
 - Fix: Fixed typo (@acs-ferreira) 
+- Fix: Cancel event deletion not working
 
 
 0.6.3 - 27.10.2017

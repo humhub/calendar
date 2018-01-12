@@ -398,14 +398,20 @@ humhub.module('calendar', function (module, require, $) {
     var deleteEvent = function(evt) {
         var streamEntry = Widget.closest(evt.$trigger);
         streamEntry.loader();
-        modal.confirm().then(function() {
-            client.post(evt).then(function() {
-                modal.global.close();
-            }).catch(function(e) {
-                module.log.error(e, true);
-            });
+        modal.confirm().then(function(confirm) {
+            if(confirm) {
+                client.post(evt).then(function() {
+                    modal.global.close();
+                }).catch(function(e) {
+                    module.log.error(e, true);
+                });
+            } else {
+                var streamEntry = Widget.closest(evt.$trigger);
+                streamEntry.loader(false);
+            }
+        }).finally(function() {
+            evt.finish();
         });
-
     };
 
     module.export({
