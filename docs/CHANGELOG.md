@@ -7,6 +7,7 @@ Changelog
 - Enh: Cleanup, remove optional part of parameter (@kristianlm)
 - Fix: Fixed typo (@acs-ferreira) 
 - Fix: Cancel event deletion not working
+- Fix #114: Markdown file upload not attaching files
 
 
 0.6.3 - 27.10.2017

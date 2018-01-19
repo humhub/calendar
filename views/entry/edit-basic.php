@@ -45,7 +45,7 @@ use yii\jui\DatePicker;
         ]
     ])->label(false); ?>
 
-    <?= $form->field($calendarEntryForm->entry, 'description')->widget(MarkdownField::class, ['fileModel' => $calendarEntryForm, 'fileAttribute' => 'files'])->label(false) ?>
+    <?= $form->field($calendarEntryForm->entry, 'description')->widget(MarkdownField::class, ['fileModel' => $calendarEntryForm->entry, 'fileAttribute' => 'files'])->label(false) ?>
 
     <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
     <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>

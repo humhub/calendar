@@ -66,11 +66,6 @@ class CalendarEntryForm extends Model
      */
     public $type_id;
 
-    /*
-     * @var array
-     */
-    public $markdownFiles = [];
-
     /**
      * @var bool
      */
