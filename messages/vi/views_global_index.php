@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Filter</strong> events' => '<strong>Lọc</strong> sự kiện',
   '<strong>Select</strong> calendars' => '<strong>Chọn</strong> lịch',
   'Already responded' => 'Đã phản hồi',
@@ -10,4 +10,4 @@ return array (
   'My profile' => 'Hồ sơ của tôi',
   'My spaces' => 'Phòng làm việc của tôi',
   'Not responded yet' => 'Chưa trả lời',
-);
+];

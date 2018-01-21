@@ -25,7 +25,7 @@
     <div style="overflow:hidden">
         <?= humhub\widgets\mails\MailContentEntry::widget([
             'originator' => $originator,
-            'content' => $html.'<br><br>'.\humhub\widgets\MarkdownView::widget(['markdown' => $source->participant_info]),
+            'content' => $html . '<br><br>' . \humhub\widgets\MarkdownView::widget(['markdown' => $source->participant_info]),
             'date' => $date,
             'space' => $space
         ]) ?>

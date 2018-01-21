@@ -8,7 +8,6 @@
 
 namespace humhub\modules\calendar\widgets;
 
-
 use humhub\components\Widget;
 use Yii;
 
@@ -25,7 +24,7 @@ class CalendarFilterBar extends Widget
 
     public function run()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return;
         }
 

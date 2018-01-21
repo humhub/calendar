@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '(global)' => '(globalno)',
   '<strong>Calendar</strong> module configuration' => '<strong>Kalendar</strong> postavke modula',
   '<strong>Confirm</strong> Deletion' => '<strong>Potvrdi</strong> brisanje',
@@ -26,4 +26,4 @@ return array (
   'Sort order' => 'Poredaj redoslijed',
   'There are currently no event types available.' => 'Trenutačno nema dostupnih vrsta događaja.',
   'Upcoming events snippet' => 'Isječak nadolazećih događaja',
-);
+];

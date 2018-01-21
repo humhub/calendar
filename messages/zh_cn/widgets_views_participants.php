@@ -17,9 +17,9 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     ':count attending' => ':count 参加',
     ':count declined' => ':count 拒绝',
     ':count maybe' => ':count 可能',
     'Participants:' => '参与者:',
-);
+];

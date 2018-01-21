@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces;
 
-
 use DateTime;
 
 class CalendarItemsEvent extends CalendarEvent
@@ -50,7 +49,7 @@ class CalendarItemsEvent extends CalendarEvent
      */
     public function addItems($itemType, $items)
     {
-        if(!isset($this->items[$itemType])) {
+        if (!isset($this->items[$itemType])) {
             $this->items[$itemType] = $items;
         } else {
             $this->items[$itemType] = array_merge($this->items[$itemType], $items);
@@ -64,5 +63,4 @@ class CalendarItemsEvent extends CalendarEvent
     {
         return $this->items;
     }
-
 }

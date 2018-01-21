@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces;
 
-
 use humhub\widgets\Label;
 use Yii;
 use \DateTime;
@@ -115,7 +114,7 @@ class CalendarItemWrapper extends Object implements CalendarItem
 
     public function isAllDay()
     {
-        if($this->getOption(static::OPTION_ALL_DAY, $this->itemType->isAllDay())) {
+        if ($this->getOption(static::OPTION_ALL_DAY, $this->itemType->isAllDay())) {
             return true;
         } else {
             return false;

@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\widgets;
 
-
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -53,7 +52,7 @@ class GlobalConfigMenu extends SettingsTabs
             ],
         ];
 
-        if(!empty($calendarService->getCalendarItemTypes())) {
+        if (!empty($calendarService->getCalendarItemTypes())) {
             $this->items[] = [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Other Calendars'),
                 'url' => Url::toRoute(['/calendar/config/calendars']),
@@ -64,5 +63,4 @@ class GlobalConfigMenu extends SettingsTabs
 
         parent::init();
     }
-
 }

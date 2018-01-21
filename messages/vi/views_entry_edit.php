@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Create</strong> event' => '<strong>Tạo</strong> sự kiện',
   '<strong>Edit</strong> event' => '<strong>Chỉnh sửa</strong> sự kiện',
   'Basic' => 'Cơ bản',
@@ -9,4 +9,4 @@ return array (
   'Participation' => 'Tham gia',
   'Select event type...' => 'Chọn loại sự kiện...',
   'Title' => 'Tiêu đề',
-);
+];

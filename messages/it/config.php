@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '(global)' => '(globale)',
   '<strong>Calendar</strong> module configuration' => 'Configurazione del modulo <strong>Calendario</strong> ',
   '<strong>Confirm</strong> Deletion' => '<strong>Conferma</strong> Cancellazione',
@@ -26,4 +26,4 @@ return array (
   'Sort order' => 'Ordina per',
   'There are currently no event types available.' => 'Attualmente non sono disponibili tipi di eventi.',
   'Upcoming events snippet' => 'snippet Eventi Imminenti',
-);
+];

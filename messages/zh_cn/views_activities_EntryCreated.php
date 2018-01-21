@@ -17,6 +17,6 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     '%displayName% created a new %contentTitle%.' => '%displayName% 创建了一个新事件 %contentTitle%.',
-);
+];

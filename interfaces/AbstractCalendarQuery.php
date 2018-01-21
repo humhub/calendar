@@ -154,7 +154,7 @@ abstract class AbstractCalendarQuery extends Object
         }
 
         $instance = new static();
-        $instance->_query = call_user_func(static::$recordClass .'::find');
+        $instance->_query = call_user_func(static::$recordClass . '::find');
         $instance->_user = $user;
 
         return $instance;
@@ -499,7 +499,7 @@ abstract class AbstractCalendarQuery extends Object
      * @param string $dateUnit
      * @return $this
      */
-    public function interval($interval, $dateUnit = "D")
+    public function interval($interval, $dateUnit = 'D')
     {
         if ($interval >= 0) {
             if (!$this->_from) {
@@ -507,7 +507,7 @@ abstract class AbstractCalendarQuery extends Object
             }
 
             $to = clone $this->_from;
-            $to->add(new DateInterval("P" . $interval . $dateUnit));
+            $to->add(new DateInterval('P' . $interval . $dateUnit));
             $this->to($to);
             return $this;
         } else {
@@ -516,7 +516,7 @@ abstract class AbstractCalendarQuery extends Object
             }
 
             $from = clone $this->_to;
-            $from->sub(new DateInterval("P" . abs($interval) . $dateUnit));
+            $from->sub(new DateInterval('P' . abs($interval) . $dateUnit));
             $this->from($from);
             return $this;
         }
@@ -552,7 +552,7 @@ abstract class AbstractCalendarQuery extends Object
             }
 
             return $this->_query->all();
-        } catch(FilterNotSupportedException $e) {
+        } catch (FilterNotSupportedException $e) {
             return [];
         }
     }
@@ -576,7 +576,7 @@ abstract class AbstractCalendarQuery extends Object
             $this->filterContentContainer();
         }
 
-        if($this->hasFilter(self::FILTER_USERRELATED)) {
+        if ($this->hasFilter(self::FILTER_USERRELATED)) {
             $this->_userScopes = $this->_filters[self::FILTER_USERRELATED];
         }
 
@@ -586,8 +586,8 @@ abstract class AbstractCalendarQuery extends Object
 
         $this->setupDateCriteria();
 
-        if(!$this->_orderBy) {
-            $this->_query->orderBy($this->startField.' ASC');
+        if (!$this->_orderBy) {
+            $this->_query->orderBy($this->startField . ' ASC');
         } else {
             $this->_query->orderBy($this->_orderBy);
         }
@@ -677,20 +677,21 @@ abstract class AbstractCalendarQuery extends Object
         }
     }
 
-    protected function hasFilter($filter) {
+    protected function hasFilter($filter)
+    {
         return in_array($filter, $this->_filters) || array_key_exists($filter, $this->_filters);
     }
 
     protected function filterReadable()
     {
-        if($this->_query instanceof ActiveQueryContent) {
+        if ($this->_query instanceof ActiveQueryContent) {
             $this->_query->readable();
         }
     }
 
     protected function filterContentContainer()
     {
-        if($this->_query instanceof ActiveQueryContent) {
+        if ($this->_query instanceof ActiveQueryContent) {
             $this->_query->contentContainer($this->_container);
         } else {
             throw new FilterNotSupportedException('Contentcontainer filter not supported for this query');
@@ -699,7 +700,7 @@ abstract class AbstractCalendarQuery extends Object
 
     protected function filterUserRelated()
     {
-        if($this->_query instanceof ActiveQueryContent) {
+        if ($this->_query instanceof ActiveQueryContent) {
             $this->_query->userRelated($this->_userScopes);
         } else {
             throw new FilterNotSupportedException('User related filter not supported for this query');
@@ -708,7 +709,7 @@ abstract class AbstractCalendarQuery extends Object
 
     public function filterMine()
     {
-        if($this->_query instanceof ActiveQueryContent) {
+        if ($this->_query instanceof ActiveQueryContent) {
             $this->_query->andWhere(['content.created_by' => $this->_user->contentcontainer_id]);
         } else {
             throw new FilterNotSupportedException('Mine filter not supported for this query');
@@ -729,5 +730,4 @@ abstract class AbstractCalendarQuery extends Object
     {
         throw new FilterNotSupportedException('Participant filter not supported for this query');
     }
-
 }

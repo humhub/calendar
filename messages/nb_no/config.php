@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '(global)' => '(global)',
   '<strong>Calendar</strong> module configuration' => 'Konfigurasjon <strong>Kalender</strong>modul',
   '<strong>Confirm</strong> Deletion' => '<strong>Bekreft</strong> sletting',
@@ -26,4 +26,4 @@ return array (
   'Sort order' => 'Sorteringsrekkefølge',
   'There are currently no event types available.' => 'Det er ingen aktivitetstyper tilgjengelig',
   'Upcoming events snippet' => 'Snippet for kommende aktiviteter',
-);
+];

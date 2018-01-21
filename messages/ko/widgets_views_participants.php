@@ -1,7 +1,7 @@
 <?php
-return array (
+return  [
   ':count attending' => '',
   ':count declined' => '',
   ':count maybe' => '',
   'Participants:' => '',
-);
+];

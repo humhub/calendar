@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Defaults' => 'Standard innstillinger',
   'Event Types' => 'Aktivitetstyper',
   'Snippet' => 'Snippet',
-);
+];

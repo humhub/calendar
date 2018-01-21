@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Create</strong> event' => 'Termin <strong>erstellen</strong>',
   '<strong>Edit</strong> event' => 'Termin <strong>bearbeiten</strong>',
   'Basic' => 'Allgemein',
@@ -9,4 +9,4 @@ return array (
   'Participation' => 'Teilnahmemodus',
   'Select event type...' => 'Wähle Kategorie',
   'Title' => 'Titel',
-);
+];

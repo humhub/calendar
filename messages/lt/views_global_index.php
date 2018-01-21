@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Filter</strong> events' => '<strong>Filtruoti</strong> renginius',
   '<strong>Select</strong> calendars' => '<strong>Pasirinkti</strong> kalendorių',
   'Already responded' => 'Jau atsakyta',
@@ -10,4 +10,4 @@ return array (
   'My profile' => 'Mano profilis',
   'My spaces' => 'Mano erdvės',
   'Not responded yet' => 'Kol kas neatsakyta',
-);
+];

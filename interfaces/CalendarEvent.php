@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces;
 
-
 use yii\base\Event;
 
 class CalendarEvent extends Event

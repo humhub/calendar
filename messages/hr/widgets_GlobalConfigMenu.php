@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Defaults' => 'Zadano',
   'Event Types' => 'Vrste događaja',
   'Snippet' => 'Isječak',
-);
+];
