@@ -19,7 +19,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     /**
      * @inheritdoc
      */
-    public $editRoute = "/calendar/entry/edit";
+    public $editRoute = '/calendar/entry/edit';
     
     /**
      * @inheritdoc
@@ -48,7 +48,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     public function getContextMenu()
     {
         $canEdit = $this->contentObject->content->canEdit();
-        if($canEdit) {
+        if ($canEdit) {
             $this->controlsOptions = [
                 'add' => [
                     [CloseLink::class, ['entry' => $this->contentObject], ['sortOrder' => 210]]
@@ -56,14 +56,14 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
             ];
         }
 
-        if($this->stream) {
+        if ($this->stream) {
             return parent::getContextMenu();
         }
 
         $this->controlsOptions['prevent'] = [\humhub\modules\content\widgets\EditLink::class , \humhub\modules\content\widgets\DeleteLink::class];
         $result = parent::getContextMenu();
 
-        if($canEdit) {
+        if ($canEdit) {
             $this->addControl($result, [DeleteLink::class, ['entry' => $this->contentObject], ['sortOrder' => 100]]);
             $this->addControl($result, [EditLink::class, ['entry' => $this->contentObject], ['sortOrder' => 200]]);
         }
@@ -74,7 +74,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     public function getWallEntryViewParams()
     {
         $params = parent::getWallEntryViewParams();
-        if($this->isInModal()) {
+        if ($this->isInModal()) {
             $params['showContentContainer'] = true;
         }
         return $params;
@@ -101,5 +101,3 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
         ]);
     }
 }
-
-?>

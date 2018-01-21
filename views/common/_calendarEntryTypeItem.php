@@ -14,7 +14,7 @@ use yii\helpers\Url;
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 
 
-if($contentContainer) {
+if ($contentContainer) {
     $editUrl = $contentContainer->createUrl('/calendar/container-config/edit-type', ['id' => $model->id]);
     $deleteUrl = $contentContainer->createUrl('/calendar/container-config/delete-type', ['id' => $model->id]);
 } else {
@@ -24,4 +24,4 @@ if($contentContainer) {
 
 ?>
 
-<?= $this->render('_calendarTypeItem', ['editUrl' => $editUrl, 'color' => $model->color, 'deleteUrl' => $deleteUrl, 'title' => $model->name, 'disabled' => false])?>
+<?= $this->render('_calendarTypeItem', ['editUrl' => $editUrl, 'color' => $model->color, 'deleteUrl' => $deleteUrl, 'title' => $model->name, 'disabled' => false]);

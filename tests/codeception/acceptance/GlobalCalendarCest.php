@@ -30,7 +30,7 @@ class GlobalCalendarCest
         $I->amOnRoute(['/calendar/global/index']);
         $I->expectTo('see my space calendar entry');
         $I->see('Select calendars');
-        $I->waitForText('Space Event',null, '.fc-event-container');
+        $I->waitForText('Space Event', null, '.fc-event-container');
 
         $I->wantToTest('the global calendar filters');
         $I->amGoingTo('deselect the space clalendar filter');
@@ -59,7 +59,7 @@ class GlobalCalendarCest
         //$I->click('Close', '#globalModal');
 
         //$I->wait(1);
-        $I->waitForText('My Test Profile Entry',null, '.fc-event-container');
+        $I->waitForText('My Test Profile Entry', null, '.fc-event-container');
 
         $I->waitForElementVisible('.calendar_my_spaces');
         $I->click('.calendar_my_spaces');

@@ -20,9 +20,9 @@ use humhub\modules\calendar\widgets\GlobalConfigMenu;
 
     <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
 
-<?php if($contentContainer === null) : ?>
+<?php if ($contentContainer === null) : ?>
     <?= GlobalConfigMenu::widget() ?>
-<?php else: ?>
+<?php else : ?>
     <?= ContainerConfigMenu::widget()?>
 <?php endif; ?>
 
@@ -41,7 +41,7 @@ use humhub\modules\calendar\widgets\GlobalConfigMenu;
     <br>
 
     <div>
-        <?php foreach($calendars as $itemType) : ?>
+        <?php foreach ($calendars as $itemType) : ?>
             <?= $this->render('_calendarTypeItem', [
                 'editUrl' => $itemType->getEditUrl(),
                 'color' => $itemType->getColor($contentContainer),

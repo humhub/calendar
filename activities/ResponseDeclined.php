@@ -20,5 +20,4 @@ class ResponseDeclined extends BaseActivity
 
     public $viewName = 'response_declined';
     public $moduleId = 'calendar';
-
 }

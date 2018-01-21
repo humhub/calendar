@@ -22,7 +22,7 @@ class EntryParticipants extends Widget
 
     public function run()
     {
-        if($this->calendarEntry->closed) {
+        if ($this->calendarEntry->closed) {
             return;
         }
 
@@ -40,7 +40,7 @@ class EntryParticipants extends Widget
 
     private function getParticipantStateCount($state, $condition)
     {
-        if(!$condition) {
+        if (!$condition) {
             return null;
         }
 
@@ -49,11 +49,11 @@ class EntryParticipants extends Widget
 
     public static function participateButton($calendarEntry, $state, $label)
     {
-        if($state == CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE
+        if ($state == CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE
            && !$calendarEntry->allow_maybe) {
             return null;
         }
-        if($state == CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED
+        if ($state == CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED
             && !$calendarEntry->allow_decline) {
             return null;
         }
@@ -61,9 +61,11 @@ class EntryParticipants extends Widget
         $participantSate = $calendarEntry->getParticipationState();
         return Button::defaultType($label)->sm()
                      ->icon($participantSate === $state ? 'fa-check' : null)
-                     ->action('calendar.respond',
-                              $calendarEntry->content->container->createUrl('/calendar/entry/respond', [
+                     ->action(
+                         'calendar.respond',
+                         $calendarEntry->content->container->createUrl('/calendar/entry/respond', [
                                   'type' => ($participantSate == $state ? CalendarEntryParticipant::PARTICIPATION_STATE_NONE : $state),
-                                  'id' => $calendarEntry->id]));
+                         'id' => $calendarEntry->id])
+                     );
     }
 }

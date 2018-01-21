@@ -151,5 +151,4 @@ class CalendarFormatTest extends HumHubDbTestCase
         $this->assertEquals('11. September 2017, 22:00 - 13. September 2017, 10:59', $entry->getFormattedTime());
         $this->assertEquals('11.09.2017, 22:00 - 13.09.2017, 10:59', $entry->getFormattedTime('medium'));
     }
-
 }

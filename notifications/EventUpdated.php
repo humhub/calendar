@@ -45,7 +45,7 @@ class EventUpdated extends BaseNotification
      */
     public function html()
     {
-        if($this->source->content->container instanceof Space) {
+        if ($this->source->content->container instanceof Space) {
             return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} just updated event {contentTitle} in space {spaceName}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                 'contentTitle' => $this->getContentInfo($this->source, false),

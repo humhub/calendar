@@ -32,25 +32,25 @@ class FullCalendar extends JsWidget
     {
         \humhub\modules\calendar\assets\Assets::register($this->getView());
 
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             $this->canWrite = false;
             $this->enabled = false;
             parent::init();
             return;
         }
 
-        if(!$this->contentContainer) {
+        if (!$this->contentContainer) {
             $this->contentContainer = Yii::$app->user->getIdentity();
             $this->isGlobal = true;
         }
 
         // Used by the global calendar if the module is not enabled for the given user.
-        if($this->contentContainer && !$this->contentContainer->isModuleEnabled('calendar')) {
+        if ($this->contentContainer && !$this->contentContainer->isModuleEnabled('calendar')) {
             $this->enabled = false;
         }
 
 
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             $this->editUrl = $this->contentContainer->createUrl('/calendar/entry/edit', ['cal' => true]);
             $this->dropUrl = $this->contentContainer->createUrl('/calendar/entry/edit-ajax');
         }
@@ -86,7 +86,7 @@ class FullCalendar extends JsWidget
     private function translateLocale($locale)
     {
         $locale = str_replace('_', '-', $locale);
-        if(array_key_exists($locale, self::LOCALE_MAPPING)) {
+        if (array_key_exists($locale, self::LOCALE_MAPPING)) {
             $locale = self::LOCALE_MAPPING[$locale];
         }
 
@@ -95,14 +95,12 @@ class FullCalendar extends JsWidget
 
     private function canCreate()
     {
-        if($this->contentContainer && !Yii::$app->user->isGuest) {
+        if ($this->contentContainer && !Yii::$app->user->isGuest) {
             return $this->contentContainer->can(CreateEntry::class);
-        } else if(!Yii::$app->user->isGuest) {
+        } elseif (!Yii::$app->user->isGuest) {
             return Yii::$app->user->getIdentity()->isCurrentUser();
         }
 
         return false;
     }
-
-
 }

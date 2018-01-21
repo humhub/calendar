@@ -17,7 +17,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array(
+return [
     '<strong>Filter</strong> events' => '<strong>筛选</strong> 事件',
     '<strong>Select</strong> calendars' => '<strong>选择</strong> 日历',
     'Already responded' => '已经回应',
@@ -28,4 +28,4 @@ return array(
     'My profile' => '我的属性',
     'My spaces' => '我的版块',
     'Not responded yet' => '还没有回应',
-);
+];

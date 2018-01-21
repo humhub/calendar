@@ -28,7 +28,7 @@ class CloseLink extends WallEntryControlLink
 
     public function init()
     {
-        if($this->entry->closed) {
+        if ($this->entry->closed) {
             $this->label = Yii::t('ContentModule.widgets_views_editLink', 'Reopen Event');
             $this->icon = 'fa-check';
         } else {
@@ -38,11 +38,10 @@ class CloseLink extends WallEntryControlLink
 
         $this->options = [
             'data-action-click' => 'toggleClose',
-            'data-action-target' =>"[data-calendar-entry='".$this->entry->id."']",
+            'data-action-target' =>"[data-calendar-entry='" . $this->entry->id . "']",
             'data-action-url' => $this->entry->content->container->createUrl('/calendar/entry/toggle-close', ['id' => $this->entry->id])
         ];
 
         parent::init();
     }
-
 }

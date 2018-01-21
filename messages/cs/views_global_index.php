@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Filter</strong> events' => '<strong>Filtrovat</strong> události',
   '<strong>Select</strong> calendars' => '<strong>Vybrat</strong> kalendáře',
   'Already responded' => 'Již jste odpověl(a)',
@@ -10,4 +10,4 @@ return array (
   'My profile' => 'Můj profil',
   'My spaces' => 'Moje prostory',
   'Not responded yet' => 'Zatím jste neodpověl(a)',
-);
+];

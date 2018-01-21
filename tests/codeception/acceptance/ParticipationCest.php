@@ -41,13 +41,13 @@ class ParticipationCest
 
         $I->click('[type="submit"]');
         $I->wait(1);
-        $I->waitForText('Participant Description',null,'#globalModal');
+        $I->waitForText('Participant Description', null, '#globalModal');
         $I->dontSee('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
         $I->dontSee('Decline', '#globalModal button');
 
         $I->click('.btn-primary', '#globalModal');
-        $I->waitForText('Edit event',null, '#globalModal');
+        $I->waitForText('Edit event', null, '#globalModal');
         $I->click('.tab-participation');
 
         $I->selectOption('#calendarentry-participation_mode', 2);
@@ -56,20 +56,20 @@ class ParticipationCest
         $I->fillField('CalendarEntry[participant_info]', 'My Test Event');
 
         $I->click('[type="submit"]');
-        $I->waitForText('Participant Description',null, '#globalModal');
+        $I->waitForText('Participant Description', null, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->see('Maybe', '#globalModal button');
         $I->see('Decline', '#globalModal button');
 
         $I->click('.btn-primary', '#globalModal');
-        $I->waitForText('Edit event',null, '#globalModal');
+        $I->waitForText('Edit event', null, '#globalModal');
         $I->click('.tab-participation');
         $I->click('[for="calendarentry-allow_decline"]', '#globalModal');
         $I->click('[for="calendarentry-allow_maybe"]', '#globalModal');
         $I->click('[type="submit"]');
         $I->wait(1);
 
-        $I->waitForText('Participant Description',null, '#globalModal');
+        $I->waitForText('Participant Description', null, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
         $I->dontSee('Decline', '#globalModal button');

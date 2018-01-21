@@ -15,20 +15,22 @@
 
 namespace humhub\modules\calendar\interfaces;
 
-
 class CalendarItemTypesEvent extends CalendarEvent
 {
     private $result = [];
 
-    public function addType($key, $options) {
+    public function addType($key, $options)
+    {
         $this->result[$key] = $options;
     }
 
-    public function hasType($key) {
+    public function hasType($key)
+    {
         return array_key_exists($key, $this->result);
     }
 
-    public function getTypes() {
+    public function getTypes()
+    {
         return $this->result;
     }
 }

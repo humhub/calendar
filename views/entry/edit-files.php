@@ -8,7 +8,6 @@
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 
-
 /* @var $form \humhub\widgets\ActiveForm */
 /* @var $calendarEntryForm \humhub\modules\calendar\models\forms\CalendarEntryForm */
 ?>

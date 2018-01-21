@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Filter</strong> events' => '<strong>Etkinlik</strong> filtresi',
   '<strong>Select</strong> calendars' => '<strong>Takvim</strong> seç',
   'Already responded' => 'Cevaplananlar',
@@ -10,4 +10,4 @@ return array (
   'My profile' => 'Profilim',
   'My spaces' => 'Mekanım',
   'Not responded yet' => 'Cevaplanmadı',
-);
+];

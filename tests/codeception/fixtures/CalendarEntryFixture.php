@@ -15,7 +15,7 @@ class CalendarEntryFixture extends ActiveFixture
     public $modelClass = 'humhub\modules\calendar\models\CalendarEntry';
     public $dataFile = '@calendar/tests/codeception/fixtures/data/calendarEntry.php';
     
-     public $depends = [
-        'humhub\modules\calendar\tests\codeception\fixtures\CalendarEntryParticipantFixture'   
+    public $depends = [
+        'humhub\modules\calendar\tests\codeception\fixtures\CalendarEntryParticipantFixture'
     ];
 }

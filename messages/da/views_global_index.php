@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Filter</strong> events' => '<strong>Filter</strong> events',
   '<strong>Select</strong> calendars' => '<strong>Vælg</strong> Kalendere',
   'Already responded' => 'Allerede svaret',
@@ -10,4 +10,4 @@ return array (
   'My profile' => 'Min profil',
   'My spaces' => 'Mine Sider',
   'Not responded yet' => 'Ikke svaret endnu',
-);
+];

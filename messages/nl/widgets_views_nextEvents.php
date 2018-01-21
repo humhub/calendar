@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Upcoming</strong> events ' => '<strong>Aankomende</strong> gebeurtenissen ',
   'Open Calendar' => 'Open agenda',
-);
+];

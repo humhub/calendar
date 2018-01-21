@@ -60,7 +60,7 @@ class CreateSpaceEntryCest
         $I->amGoingTo('Save my new calendar entry');
         $I->click('Save', '#globalModal');
         $I->expectTo('see my event loaded into my modal');
-        $I->waitForText('My Test Entry',null, '#globalModal');
+        $I->waitForText('My Test Entry', null, '#globalModal');
 
         $I->click('Close', '#globalModal');
 

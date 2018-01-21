@@ -50,13 +50,13 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
         $s1 = Space::findOne(['id' => 1]);
         
         // Whole day yesterday should be excluded
-        $entry1 = $this->createEntry((new DateTime)->sub(new DateInterval('P1D'))->setTime(0,0,0), (new DateTime)->sub(new DateInterval('P1D'))->setTime(23,59,59), 'Yesterday', $s1);
+        $entry1 = $this->createEntry((new DateTime)->sub(new DateInterval('P1D'))->setTime(0, 0, 0), (new DateTime)->sub(new DateInterval('P1D'))->setTime(23, 59, 59), 'Yesterday', $s1);
         
         // Today
-        $entry2 = $this->createEntry(null, (new DateTime)->setTime(23,59,59), 'Today', $s1);
+        $entry2 = $this->createEntry(null, (new DateTime)->setTime(23, 59, 59), 'Today', $s1);
         
         // Tomorrow
-        $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P1D'))->setTime(0,0,0), (new DateTime)->add(new DateInterval('P1D'))->setTime(23,59,59), 'Tomorrow', $s1);
+        $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P1D'))->setTime(0, 0, 0), (new DateTime)->add(new DateInterval('P1D'))->setTime(23, 59, 59), 'Tomorrow', $s1);
         
         // Get all entries from today by open range query
         $entries = CalendarEntryQuery::find()->days(0)->all();
@@ -218,7 +218,6 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
         $entries = CalendarEntryQuery::find()->userRelated([ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES])->limit(20)->all();
         $this->assertEquals(1, count($entries));
         $this->assertEquals($entry4->title, $entries[0]->title);
-        
     }
     
     public function testFilterParticipate()
@@ -255,11 +254,11 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
     
     /**
      * Test find dates within a 1 day range (not open range).
-     * 
+     *
      * E1: [Today - 5D] -> [Today - 4D]
      * E2: [Today]      -> [Today + 1D]
      * E3: [Today + 1D] -> [Today - 7D]
-     * 
+     *
      * T: [[Today] -> [Today + 1D]] --> Start and end date within interval
      */
     public function testSimpleRange()
@@ -283,20 +282,20 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
             $from = new DateTime();
         }
 
-        if(is_int($days)) {
+        if (is_int($days)) {
             $to = clone $from;
-            $to->add(new DateInterval("P" . $days . "D"));
+            $to->add(new DateInterval('P' . $days . 'D'));
         } else {
             $to = $days;
         }
         
         $entry = new CalendarEntry();
         $entry->title = $title;
-        $entry->start_datetime = Yii::$app->formatter->asDateTime($from, 'php:Y-m-d') . " 00:00:00";
-        $entry->end_datetime = Yii::$app->formatter->asDateTime($to, 'php:Y-m-d') . " 23:59:59";
+        $entry->start_datetime = Yii::$app->formatter->asDateTime($from, 'php:Y-m-d') . ' 00:00:00';
+        $entry->end_datetime = Yii::$app->formatter->asDateTime($to, 'php:Y-m-d') . ' 23:59:59';
         $entry->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
 
-        if($container) {
+        if ($container) {
             $entry->content->container = $container;
         }
 

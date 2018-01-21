@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '(global)' => '(generell)',
   '<strong>Calendar</strong> module configuration' => '<strong>Kalender</strong> Modul-Einstellungen',
   '<strong>Confirm</strong> Deletion' => 'Löschen <strong>bestätigen</strong>',
@@ -26,4 +26,4 @@ return array (
   'Sort order' => 'Sortierung',
   'There are currently no event types available.' => 'Im Moment stehen keine Kategorien zur Verfügung.',
   'Upcoming events snippet' => 'Widget „Nächste Termine“',
-);
+];

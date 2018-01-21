@@ -98,5 +98,4 @@ class Events extends \yii\base\Object
             }
         }
     }
-
 }

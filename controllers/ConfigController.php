@@ -20,7 +20,7 @@ use humhub\modules\calendar\models\SnippetModuleSettings;
 use yii\web\HttpException;
 
 /**
- * 
+ *
  */
 class ConfigController extends Controller
 {
@@ -82,7 +82,7 @@ class ConfigController extends Controller
 
         $entryType = CalendarEntryType::find()->where(['id' => $id])->andWhere('contentcontainer_id IS NULL')->one();
 
-        if(!$entryType) {
+        if (!$entryType) {
             throw new HttpException(404);
         }
 
@@ -93,17 +93,17 @@ class ConfigController extends Controller
 
     public function actionEditType($id = null)
     {
-        if($id) {
+        if ($id) {
             $entryType = CalendarEntryType::find()->where(['id' => $id])->andWhere('contentcontainer_id IS NULL')->one();
         } else {
             $entryType = new CalendarEntryType();
         }
 
-        if(!$entryType) {
+        if (!$entryType) {
             throw new HttpException(404);
         }
 
-        if($entryType->load(Yii::$app->request->post()) && $entryType->save()) {
+        if ($entryType->load(Yii::$app->request->post()) && $entryType->save()) {
             $this->view->saved();
             return $this->htmlRedirect(URL::to(['/calendar/config/types']));
         }
@@ -123,11 +123,11 @@ class ConfigController extends Controller
     {
         $item = $this->calendarService->getItemType($key);
 
-        if(!$item) {
+        if (!$item) {
             throw new HttpException(404);
         }
 
-        if($item->load(Yii::$app->request->post()) && $item->save()) {
+        if ($item->load(Yii::$app->request->post()) && $item->save()) {
             $this->view->saved();
             return $this->htmlRedirect(URL::to(['/calendar/config/calendars']));
         }

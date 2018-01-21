@@ -28,9 +28,9 @@ $helpBlock = $model->isGlobal()
 
     <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
 
-    <?php if($model->isGlobal()) : ?>
+    <?php if ($model->isGlobal()) : ?>
         <?= GlobalConfigMenu::widget() ?>
-    <?php else: ?>
+    <?php else : ?>
         <?= ContainerConfigMenu::widget()?>
     <?php endif; ?>
 
@@ -52,7 +52,7 @@ $helpBlock = $model->isGlobal()
 
             <?= Button::primary(Yii::t('base', 'Save'))->submit() ?>
 
-            <?php if($model->showResetButton()) : ?>
+            <?php if ($model->showResetButton()) : ?>
                 <a href="<?= $model->getResetButtonUrl(); ?>" class='btn btn-default pull-right' data-ui-loader><?= Yii::t('CalendarModule.config', 'Reset'); ?></a>
             <?php endif; ?>
         <?php ActiveForm::end(); ?>

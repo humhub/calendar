@@ -30,18 +30,18 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
             </h5>
         </div>
         <?php if (!empty($calendarEntry->description)) : ?>
-            <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full description...") ?>" style="overflow:hidden">
+            <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', 'Read full description...') ?>" style="overflow:hidden">
                 <?= MarkdownView::widget(['markdown' => $calendarEntry->description]); ?>
             </div>
         <?php endif; ?>
     </div>
 
     <?php if ($calendarEntry->isParticipationAllowed()) : ?>
-        <?php if(!empty($calendarEntry->participant_info) && $calendarEntry->isParticipant()) : ?>
+        <?php if (!empty($calendarEntry->participant_info) && $calendarEntry->isParticipant()) : ?>
             <br />
             <div class="row">
                 <div class="col-md-12">
-                    <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full participation info...") ?>">
+                    <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', 'Read full participation info...') ?>">
                         <strong><i class="fa fa-info-circle"></i> <?= Yii::t('CalendarModule.views_entry_view', 'Participant information:') ?></strong>
                         <?= MarkdownView::widget(['markdown' => $calendarEntry->participant_info]); ?>
                     </div>
@@ -49,7 +49,7 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
             </div>
         <?php endif; ?>
 
-        <?php if(!$calendarEntry->closed) : ?>
+        <?php if (!$calendarEntry->closed) : ?>
             <br>
             <div class="row">
                 <div class="col-md-12">
@@ -59,13 +59,13 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
         <?php endif; ?>
     <?php endif; ?>
 
-    <?php if ($calendarEntry->canRespond()): ?>
+    <?php if ($calendarEntry->canRespond()) : ?>
        <div class="row" style="padding-top:10px">
             <div class="col-md-12">
 
-              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', "Attend")); ?>
-              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,    Yii::t('CalendarModule.views_entry_view', "Maybe")); ?>
-              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views_entry_view', "Decline")); ?>
+                <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', 'Attend')); ?>
+                <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, Yii::t('CalendarModule.views_entry_view', 'Maybe')); ?>
+                <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views_entry_view', 'Decline')); ?>
             </div>
         </div>
     <?php endif; ?>

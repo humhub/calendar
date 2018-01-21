@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '(global)' => '(chung)',
   '<strong>Calendar</strong> module configuration' => 'Cấu hình module <strong>Lịch</strong>',
   '<strong>Confirm</strong> Deletion' => '<strong>Xác nhận</strong> Xóa',
@@ -26,4 +26,4 @@ return array (
   'Sort order' => 'Thứ tự sắp xếp',
   'There are currently no event types available.' => 'Hiện không có sự kiện nào',
   'Upcoming events snippet' => 'Block thông tin các sự kiện sắp tới',
-);
+];

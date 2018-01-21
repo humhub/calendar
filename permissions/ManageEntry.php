@@ -55,6 +55,4 @@ class ManageEntry extends \humhub\libs\BasePermission
     {
         return Yii::t('CalendarModule.permissions', 'Allows the user to edit/delete existing calendar entries');
     }
-
-
 }

@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces;
 
-
 use DateTime;
 use humhub\widgets\Label;
 

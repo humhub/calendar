@@ -36,5 +36,4 @@ class CalendarUtils
 
         return false;
     }
-
 }

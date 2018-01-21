@@ -125,5 +125,4 @@ class Module extends ContentContainerModule
         }
         return parent::beforeAction($action);
     }
-
 }

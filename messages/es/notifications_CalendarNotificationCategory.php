@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Calendar' => 'Calendario',
   'Receive Calendar related Notifications.' => 'Recibir notificaciones del Calendario.',
-);
+];

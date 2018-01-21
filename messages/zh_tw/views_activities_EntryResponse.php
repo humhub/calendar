@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '%displayName% attends to %contentTitle%.' => '',
   '%displayName% maybe attends to %contentTitle%.' => '',
   '%displayName% not attends to %contentTitle%.' => '',
-);
+];

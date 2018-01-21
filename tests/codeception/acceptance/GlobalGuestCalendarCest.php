@@ -30,7 +30,7 @@ class GlobalGuestCalendarCest
         $I->click('[for="calendarentryform-is_public"]');
         $I->click('Save', '#globalModal');
 
-        $I->waitForText('Public Event',null, '.fc-event-container');
+        $I->waitForText('Public Event', null, '.fc-event-container');
         $I->click('Close', '#globalModal');
 
         $I->wait(1);
@@ -41,15 +41,15 @@ class GlobalGuestCalendarCest
         $I->wait(1);
 
         $I->createEventToday('Private Event', 'Private Event Description');
-        $I->waitForText('Private Event', null,'#globalModal');
+        $I->waitForText('Private Event', null, '#globalModal');
         $I->click('Close', '#globalModal');
 
         $I->wait(1);
 
         $I->logout();
         $I->amOnRoute(['/calendar/global']);
-        $I->waitForText('Public Event',null, '.fc-event-container');
-        $I->dontSee('Private Event',null, '.fc-event-container');
+        $I->waitForText('Public Event', null, '.fc-event-container');
+        $I->dontSee('Private Event', null, '.fc-event-container');
 
         $I->wantToTest('if a guest can opent the event');
         $I->click('.fc-event-container');

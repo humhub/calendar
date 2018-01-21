@@ -70,7 +70,7 @@ class CalendarService extends Component
 
         $containerKey = ($contentContainer) ? $contentContainer->contentcontainer_id : 'global';
 
-        if($result === null) {
+        if ($result === null) {
             $result = [];
             $result[$containerKey] = [];
 
@@ -103,14 +103,13 @@ class CalendarService extends Component
 
         $event = new CalendarItemsEvent(['contentContainer' => $contentContainer, 'start' => $start, 'end' => $end, 'filters' => $filters, 'limit' => $limit]);
         $this->trigger(static::EVENT_FIND_ITEMS, $event);
-        foreach($event->getItems() as $itemTypeKey => $items) {
+        foreach ($event->getItems() as $itemTypeKey => $items) {
             $itemType = $this->getItemType($itemTypeKey, $contentContainer);
-            if($itemType && $itemType->isEnabled()) {
+            if ($itemType && $itemType->isEnabled()) {
                 foreach ($items as $item) {
                     $result[] = new CalendarItemWrapper(['itemType' => $itemType, 'options' => $item]);
                 }
             }
-
         }
 
         $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, $limit);
@@ -125,7 +124,7 @@ class CalendarService extends Component
         $start = new DateTime();
 
         $end = clone $start;
-        $end->add(new DateInterval('P'.$daysInFuture.'D'));
+        $end->add(new DateInterval('P' . $daysInFuture . 'D'));
 
         $filters = [];
 
@@ -144,12 +143,11 @@ class CalendarService extends Component
     {
         $itemTypes = $this->getCalendarItemTypes($contentContainer);
         foreach ($itemTypes as $itemType) {
-            if($itemType->key === $key) {
+            if ($itemType->key === $key) {
                 return $itemType;
             }
         }
 
         return null;
     }
-
 }

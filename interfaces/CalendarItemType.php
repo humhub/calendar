@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces;
 
-
 use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
@@ -97,8 +96,8 @@ class CalendarItemType extends Model
      */
     public function isEnabled()
     {
-        $settingKey = $this->key.'_item_enabled';
-        if($this->contentContainer) {
+        $settingKey = $this->key . '_item_enabled';
+        if ($this->contentContainer) {
             return (boolean) $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, true);
         } else {
             return (boolean) $this->getSettings()->get($settingKey, true);
@@ -115,8 +114,8 @@ class CalendarItemType extends Model
 
     public function updateEnabled($isEnabled)
     {
-        $settingKey = $this->key.'_item_enabled';
-        if($this->contentContainer) {
+        $settingKey = $this->key . '_item_enabled';
+        if ($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->set($settingKey, $isEnabled);
         } else {
             return $this->getSettings()->set($settingKey, $isEnabled);
@@ -128,7 +127,7 @@ class CalendarItemType extends Model
      */
     public function getDefaultColor()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_DEFAULT_COLOR])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_DEFAULT_COLOR])) {
             return $this->options[static::OPTION_DEFAULT_COLOR];
         }
 
@@ -140,7 +139,7 @@ class CalendarItemType extends Model
      */
     public function getTitle()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_TITLE])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_TITLE])) {
             return $this->options[static::OPTION_TITLE];
         }
 
@@ -152,8 +151,8 @@ class CalendarItemType extends Model
      */
     public function getColor()
     {
-        $settingKey = $this->key.'_item_color';
-        if($this->contentContainer) {
+        $settingKey = $this->key . '_item_color';
+        if ($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, $this->getDefaultColor());
         } else {
             return $this->getSettings()->get($settingKey, $this->getDefaultColor());
@@ -162,7 +161,7 @@ class CalendarItemType extends Model
 
     public function getIcon()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_ICON])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_ICON])) {
             return $this->options[static::OPTION_ICON];
         }
 
@@ -174,8 +173,8 @@ class CalendarItemType extends Model
      */
     public function updateColor($color)
     {
-        $settingKey = $this->key.'_item_color';
-        if($this->contentContainer) {
+        $settingKey = $this->key . '_item_color';
+        if ($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->set($settingKey, $color);
         } else {
             return $this->getSettings()->set($settingKey, $color);
@@ -184,7 +183,7 @@ class CalendarItemType extends Model
 
     public function save()
     {
-        if($this->validate()) {
+        if ($this->validate()) {
             $this->updateColor($this->color);
             $this->updateEnabled($this->enabled);
             return true;
@@ -198,7 +197,7 @@ class CalendarItemType extends Model
      */
     public function getEditUrl()
     {
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             return $this->contentContainer->createUrl('/calendar/container-config/edit-calendars', ['key' => $this->key]);
         } else {
             return Url::to(['/calendar/config/edit-calendars', 'key' => $this->key]);
@@ -207,7 +206,7 @@ class CalendarItemType extends Model
 
     public function isAllDay()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_ALL_DAY])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_ALL_DAY])) {
             return $this->options[static::OPTION_ALL_DAY];
         }
 

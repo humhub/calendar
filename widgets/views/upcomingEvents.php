@@ -8,7 +8,7 @@ use humhub\libs\Helpers;
 /* @var $calendarEntries \humhub\modules\calendar\interfaces\CalendarItem[] */
 /* @var $calendarUrl string */
 
-$extraMenus = '<li><a href="'.$calendarUrl.'"><i class="fa fa-arrow-circle-right"></i> '. Yii::t('CalendarModule.widgets_views_nextEvents', 'Open Calendar') .'</a></li>';
+$extraMenus = '<li><a href="' . $calendarUrl . '"><i class="fa fa-arrow-circle-right"></i> ' . Yii::t('CalendarModule.widgets_views_nextEvents', 'Open Calendar') . '</a></li>';
 ?>
 <div class="panel calendar-upcoming-snippet" id="calendar-upcoming-events-snippet">
 

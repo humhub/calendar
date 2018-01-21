@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Defaults' => 'Standaard instellingen',
   'Event Types' => 'Gebeurtenis-types',
   'Snippet' => 'Codefragment',
-);
+];

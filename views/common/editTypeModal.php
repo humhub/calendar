@@ -15,7 +15,7 @@ use humhub\widgets\ModalDialog;
 
 /* @var $model CalendarEntryType|CalendarItemType */
 
-if($model instanceof CalendarItemType) {
+if ($model instanceof CalendarItemType) {
     $title = Yii::t('CalendarModule.views_container-config_typesConfig', '<strong>Edit</strong> calendar');
     $titleAttribute = 'title';
     $titleDisabled = true;
@@ -45,7 +45,7 @@ if($model instanceof CalendarItemType) {
                                 {error}{hint}'
                 ])->textInput(['disabled' => $titleDisabled, 'placeholder' => Yii::t('CalendarModule.config', 'Name'), 'maxlength' => 100])->label(false) ?>
             </div>
-            <?php if($model instanceof CalendarItemType) : ?>
+            <?php if ($model instanceof CalendarItemType) : ?>
                 <?= $form->field($model, 'enabled')->checkbox() ?>
             <?php endif; ?>
         </div>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Create</strong> event' => '<strong>Kreiraj</strong> događaj',
   '<strong>Edit</strong> event' => '<strong>Uredi</strong> događaj',
   'Basic' => 'Osnovno',
@@ -9,4 +9,4 @@ return array (
   'Participation' => 'Sudjelovanje',
   'Select event type...' => 'Odaberite tip događaja...',
   'Title' => 'Naziv',
-);
+];
