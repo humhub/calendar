@@ -66,7 +66,9 @@ class Events extends \yii\base\Object
         $settings = SnippetModuleSettings::instantiate();
 
         if ($space->isModuleEnabled('calendar')) {
-            $event->sender->addWidget(UpcomingEvents::className(), ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+            if ($settings->showUpcomingEventsSnippet()) {
+                $event->sender->addWidget(UpcomingEvents::className(), ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+            }
         }
     }
 
