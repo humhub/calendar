@@ -1,16 +1,16 @@
 <?php
-return [
-  '<strong>Add</strong> profile calendar' => '<strong>Ajouter</strong> un calendrier de profil',
-  'Adds a calendar for private or public events to your profile and main menu.' => 'Ajoute un calendrier pour les événements privés ou publics à votre profil et au menu principal',
-  'Adds an event calendar to this space.' => 'Ajoute un calendrier à cet espace.',
+return array (
+  '<strong>Add</strong> profile calendar' => '<strong>Ajouter</strong> un calendrier au profil',
+  'Adds a calendar for private or public events to your profile and main menu.' => 'Ajouter un calendrier pour les événements privés ou publics à votre profil et au menu principal',
+  'Adds an event calendar to this space.' => 'Ajouter un calendrier à cet espace.',
   'All Day' => 'Toute la journée',
   'Allow participation state \'decline\'' => 'Autoriser le statut de participation "décline"',
-  'Allow participation state \'maybe\'' => 'autoriser le statut de participation "peut-être"',
-  'Attending' => 'Y assiste',
+  'Allow participation state \'maybe\'' => 'Autoriser le statut de participation "peut-être"',
+  'Attending' => 'Participe',
   'Attending users' => 'Participants',
   'Calendar' => 'Calendrier',
   'Close' => 'Fermer',
-  'Declining users' => 'Participants ayant décliné l\'invitation',
+  'Declining users' => 'Participants ayant déclinés l\'invitation',
   'Description' => 'Description',
   'Edit' => 'Modifier',
   'Enable' => 'Activer',
@@ -31,11 +31,11 @@ return [
   'Next' => 'Suivant',
   'Participation Mode' => 'Mode de participation',
   'Public' => 'Public',
-  'Send update notification' => 'Notification de mise à jour envoyée',
+  'Send update notification' => 'Envoyer une notification pour cette modification',
   'Start Date' => 'Date de début',
   'Start Time' => 'Heure de début',
-  'Time Zone' => 'Fuseau Horraire',
+  'Time Zone' => 'Fuseau Horaire',
   'Title' => 'Titre',
   'You don\'t have permission to delete this event!' => 'Vous n\'avez pas les permissions pour effacer cet événement.',
   'canceled' => 'annulé',
-];
+);

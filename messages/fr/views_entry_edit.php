@@ -5,8 +5,8 @@ return array (
   'Basic' => 'Général',
   'Everybody can participate' => 'Tout le monde peut participer',
   'Files' => 'Fichiers',
-  'No participants' => 'Pas de participant',
+  'No participants' => 'Pas de participants',
   'Participation' => 'Participation',
-  'Select event type...' => 'Sélectionner un type d\'événement...',
+  'Select event type...' => 'Sélectionner le type d\'événement...',
   'Title' => 'Titre',
 );
