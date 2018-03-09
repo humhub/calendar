@@ -664,4 +664,19 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
 
         return null;
     }
+
+    public function DownloadIcs()
+    {
+        header('Content-Type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename=invite.ics');
+        $ics = new \humhub\modules\calendar\models\ICS(array(
+            'location' => null,
+            'description' => $this->description,
+            'dtstart' => $this->start_datetime,
+            'dtend' => $this->end_datetime,
+            'summary' => $this->title,
+            'url' => null
+        ));
+        echo $ics->to_string();
+    }
 }
