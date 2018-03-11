@@ -22,6 +22,7 @@ use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\Component;
+use yii\helpers\ArrayHelper;
 
 /**
  * This service component supports integration functionality and is responsible for retrieving
@@ -116,6 +117,9 @@ class CalendarService extends Component
         $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, $limit);
 
         $result = array_merge($calendarEntries, $result);
+
+        // sort external entries
+        ArrayHelper::multisort($result, ['startDateTime', 'endDateTime'], [SORT_ASC, SORT_ASC]);
 
         return (count($result) > $limit) ? array_slice($result, 0, $limit) : $result;
     }
