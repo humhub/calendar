@@ -18,6 +18,6 @@
  */
 return [
     '<strong>Create</strong> new event type' => '',
-    '<strong>Create</strong> new type' => '',
+    '<strong>Edit</strong> calendar' => '',
     '<strong>Edit</strong> event type' => '',
 ];
