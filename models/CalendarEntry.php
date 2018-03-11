@@ -671,15 +671,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         $timezone = $module->settings->get('timeZone');
         header('Content-Type: text/calendar; charset=utf-8');
         header('Content-Disposition: attachment; filename=invite.ics');
-        /*$ics = new \humhub\modules\calendar\models\ICS(array(
-            'location' => null,
-            'description' => $this->description,
-            'dtstart' => $this->start_datetime,
-            'dtend' => $this->end_datetime,
-            'summary' => $this->title,
-            'url' => null
-        ), $timeZone);*/
-        $ics = new \humhub\modules\calendar\models\ICS($this->title, $this->description, $this->start_datetime, $this->end_datetime, null, null, $timezone);
+        $ics = new \humhub\modules\calendar\models\ICS($this->title, $this->description,
+        $this->start_datetime, $this->end_datetime, null, null, $timezone);
         echo $ics->to_string();
     }
 }
