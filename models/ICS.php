@@ -17,7 +17,8 @@ class ICS
     protected $url;
     protected $timezone;
 
-    public function __construct($summary, $description, $dtstart, $dtend, $location, $url, $timezone) {
+    public function __construct($summary, $description, $dtstart, $dtend, $location, $url, $timezone)
+    {
         $this->summary = $this->escapeString($summary);
         $this->description = $this->escapeString($description);
         $this->dtstart = $this->formatTimestamp($dtstart);
@@ -27,15 +28,15 @@ class ICS
         $this->timezone = $timezone;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $rows = $this->buildProps();
         $string =  implode("\r\n", $rows);
         return $string;
     }
 
-    private function buildProps() {
-
-        // Build ICS properties - add header
+    private function buildProps()
+    {
         $ics_props = array(
             'BEGIN:VCALENDAR',
             'VERSION:2.0',
@@ -56,12 +57,14 @@ class ICS
         return $ics_props;
     }
 
-    private function formatTimestamp($timestamp) {
+    private function formatTimestamp($timestamp)
+    {
         $dt = new \DateTime($timestamp);
         return $dt->format(self::DT_FORMAT);
     }
 
-    private function escapeString($str) {
+    private function escapeString($str)
+    {
         return preg_replace('/([\,;])/','\\\$1', $str);
     }
 }

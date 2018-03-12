@@ -228,6 +228,6 @@ class EntryController extends ContentContainerController
     public function actionDownloadics()
     {
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
-        return $calendarEntry->DownloadIcs();
+        return $calendarEntry->downloadIcs();
     }
 }
