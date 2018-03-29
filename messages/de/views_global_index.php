@@ -1,5 +1,6 @@
 <?php
 <<<<<<< HEAD
+<<<<<<< HEAD
 /**
  * Message translations.
  *
@@ -28,6 +29,8 @@ return [
     'My spaces' => 'Meine Spaces',
 ];
 =======
+=======
+>>>>>>> parent of 118339f... Fixed: translation issue I'm attending
 return array (
   '<strong>Filter</strong> events' => 'Termine <strong>filtern</strong>',
   '<strong>Select</strong> calendars' => 'Kalender <strong>auswählen</strong>',
@@ -40,4 +43,7 @@ return array (
   'My spaces' => 'Meine Spaces',
   'Not responded yet' => 'Nicht beantwortet',
 );
+<<<<<<< HEAD
+>>>>>>> parent of 118339f... Fixed: translation issue I'm attending
+=======
 >>>>>>> parent of 118339f... Fixed: translation issue I'm attending
