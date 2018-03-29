@@ -1,7 +1,6 @@
 <?php
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
 /**
  * Message translations.
  *
@@ -32,8 +31,6 @@ return [
 =======
 =======
 >>>>>>> parent of 118339f... Fixed: translation issue I'm attending
-=======
->>>>>>> parent of 118339f... Fixed: translation issue I'm attending
 return array (
   '<strong>Filter</strong> events' => '',
   '<strong>Select</strong> calendars' => '',
@@ -47,9 +44,6 @@ return array (
   'Not responded yet' => '',
 );
 <<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of 118339f... Fixed: translation issue I'm attending
-=======
 >>>>>>> parent of 118339f... Fixed: translation issue I'm attending
 =======
 >>>>>>> parent of 118339f... Fixed: translation issue I'm attending
