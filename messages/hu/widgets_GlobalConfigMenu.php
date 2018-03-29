@@ -17,14 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-<<<<<<< HEAD
     'Other Calendars' => '',
     'Defaults' => 'Alapértelmezett',
     'Event Types' => 'Esemény típus',
     'Snippet' => 'Töredék',
-=======
-    'Defaults' => '',
-    'Event Types' => '',
-    'Snippet' => '',
->>>>>>> parent of 118339f... Fixed: translation issue I'm attending
 ];

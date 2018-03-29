@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 /**
  * Message translations.
  *
@@ -27,17 +26,3 @@ return [
     'My profile' => 'Profilom',
     'My spaces' => 'Témaköreim',
 ];
-=======
-return array (
-  '<strong>Filter</strong> events' => '',
-  '<strong>Select</strong> calendars' => '',
-  'Already responded' => '',
-  'Followed spaces' => '',
-  'Followed users' => '',
-  'I\'m attending' => '',
-  'My events' => '',
-  'My profile' => 'Profilom',
-  'My spaces' => 'Témaköreim',
-  'Not responded yet' => '',
-);
->>>>>>> parent of 118339f... Fixed: translation issue I'm attending
