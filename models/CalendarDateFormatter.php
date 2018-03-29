@@ -131,7 +131,14 @@ class CalendarDateFormatter extends Object
 
     public function getDurationDays()
     {
-        $interval = $this->calendarItem->getStartDateTime()->diff($this->calendarItem->getEndDateTime(), true);
+        $end = $this->calendarItem->getEndDateTime();
+        if ($this->calendarItem->isAllDay()) {
+            if ($end === $this->calendarItem->getEndDateTime()->setTime('00', '00', '00'))
+                $end->modify('-1 day'); // revert modifications for all-day events integrated via interface
+        }
+
+        $interval = $this->calendarItem->getStartDateTime()->diff($end, true);
+
         return $interval->days + 1;
     }
 
