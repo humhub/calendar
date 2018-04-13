@@ -120,8 +120,6 @@ class CalendarService extends Component
                 foreach ($items as $item) {
                     $result[] = new CalendarItemWrapper(['itemType' => $itemType, 'options' => $item]);
                 }
-            } else {
-                print_r('asdf');
             }
         }
 
