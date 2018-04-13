@@ -26,10 +26,12 @@ return [
     'Allow participation state \'maybe\'' => '',
     'Attending' => '',
     'Attending users' => '',
+    'Birthday' => '',
     'Calendar' => '',
     'Close' => '',
     'Declining users' => '',
     'Description' => '',
+    'Download as ICS file' => '',
     'Edit' => '',
     'Enable' => '',
     'End Date' => '',
@@ -56,4 +58,5 @@ return [
     'Title' => '',
     'You don\'t have permission to delete this event!' => '',
     'canceled' => '',
+    '{displayName} Birthday' => '',
 ];
