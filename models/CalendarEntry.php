@@ -7,6 +7,7 @@ use humhub\libs\Html;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarItem;
+use humhub\modules\calendar\models\ICS;
 use humhub\modules\calendar\notifications\CanceledEvent;
 use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\calendar\notifications\ReopenedEvent;
@@ -663,5 +664,13 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         }
 
         return null;
+    }
+
+    public function generateIcs()
+    {
+        $module = Yii::$app;
+        $timezone = $module->settings->get('timeZone');
+        $ics = new ICS($this->title, $this->description,$this->start_datetime, $this->end_datetime, null, null, $timezone, $this->all_day);
+        return $ics;
     }
 }

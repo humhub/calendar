@@ -69,5 +69,9 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
             </div>
         </div>
     <?php endif; ?>
+    <div class="row" style="padding-top:10px">
+        <div class="col-md-12">
+            <button class='btn btn-info btn-xs' onclick='location.href="<?= $calendarEntry->content->container->createUrl('/calendar/entry/generateics', ['id' => $calendarEntry->id]);?>";'>Download ICS</button>
+        </div>
+    </div>
 </div>
-

@@ -224,4 +224,11 @@ class EntryController extends ContentContainerController
     {
         return $this->contentContainer->permissionManager->can(new ManageEntry);
     }
+
+    public function actionGenerateics()
+    {
+        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
+        $ics = $calendarEntry->generateIcs();
+        return Yii::$app->response->sendContentAsFile($ics, uniqid() . '.ics', ['mimeType' => 'text/calendar']);
+    }
 }
