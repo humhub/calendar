@@ -664,4 +664,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
 
         return null;
     }
+
+    public function generateIcs()
+    {
+        $module = Yii::$app;
+        $timezone = $module->settings->get('timeZone');
+        $ics = new \humhub\modules\calendar\models\ICS($this->title, $this->description,$this->start_datetime, $this->end_datetime, null, null, $timezone);
+        return $ics;
+    }
 }
