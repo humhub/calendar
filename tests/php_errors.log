@@ -1,1 +1,41 @@
 [17-Sep-2017 19:37:15 UTC] PHP Fatal error:  Class humhub\modules\calendar\models\CalendarEntry contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (humhub\modules\calendar\interfaces\CalendarItem::isAllDay) in E:\codebase\humhub\modules\calendar\models\CalendarEntry.php on line 54
+[28-Mar-2018 14:13:19 UTC] PHP Fatal error:  Trait '_generated\AcceptanceTesterActions' not found in E:\codebase\humhub\humhub\protected\humhub\tests\codeception\_support\AcceptanceTester.php on line 24
+[28-Mar-2018 14:13:36 UTC] PHP Fatal error:  Trait '_generated\AcceptanceTesterActions' not found in E:\codebase\humhub\humhub\protected\humhub\tests\codeception\_support\AcceptanceTester.php on line 24
+[28-Mar-2018 14:14:54 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[28-Mar-2018 14:17:11 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[28-Mar-2018 14:17:33 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[28-Mar-2018 14:30:27 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[28-Mar-2018 15:09:02 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[28-Mar-2018 16:14:38 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[28-Mar-2018 16:21:14 UTC] PHP Warning:  require_once(phar://codecept.phar/autoload.php): failed to open stream: phar error: invalid url or non-existent phar "phar://codecept.phar/autoload.php" in E:\codebase\tools\codeception\codecept.phar on line 5
+[28-Mar-2018 16:21:14 UTC] PHP Fatal error:  require_once(): Failed opening required 'phar://codecept.phar/autoload.php' (include_path='.;C:\php\pear') in E:\codebase\tools\codeception\codecept.phar on line 5
+[28-Mar-2018 16:27:29 UTC] PHP Warning:  require(E:\codebase\humhub\v1.3-clean/protected/humhub/tests/codeception/_loadConfig.php): failed to open stream: No such file or directory in E:\codebase\humhub\modules\humhub-modules-calendar\tests\codeception\_bootstrap.php on line 24
+[28-Mar-2018 16:27:29 UTC] PHP Fatal error:  require(): Failed opening required 'E:\codebase\humhub\v1.3-clean/protected/humhub/tests/codeception/_loadConfig.php' (include_path='.;C:\php\pear') in E:\codebase\humhub\modules\humhub-modules-calendar\tests\codeception\_bootstrap.php on line 24
+[28-Mar-2018 16:28:21 UTC] PHP Warning:  require(E:\codebase\humhub\v1.3-clean/protected/humhub/tests/codeception/_loadConfig.php): failed to open stream: No such file or directory in E:\codebase\humhub\modules\humhub-modules-calendar\tests\codeception\_bootstrap.php on line 24
+[28-Mar-2018 16:28:21 UTC] PHP Fatal error:  require(): Failed opening required 'E:\codebase\humhub\v1.3-clean/protected/humhub/tests/codeception/_loadConfig.php' (include_path='.;C:\php\pear') in E:\codebase\humhub\modules\humhub-modules-calendar\tests\codeception\_bootstrap.php on line 24
+[28-Mar-2018 16:28:46 UTC] PHP Warning:  require(E:\codebase\humhub\v1.3-clean/protected/humhub/tests/codeception/_loadConfig.php): failed to open stream: No such file or directory in E:\codebase\humhub\modules\humhub-modules-calendar\tests\codeception\_bootstrap.php on line 24
+[28-Mar-2018 16:28:46 UTC] PHP Fatal error:  require(): Failed opening required 'E:\codebase\humhub\v1.3-clean/protected/humhub/tests/codeception/_loadConfig.php' (include_path='.;C:\php\pear') in E:\codebase\humhub\modules\humhub-modules-calendar\tests\codeception\_bootstrap.php on line 24

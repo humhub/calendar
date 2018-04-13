@@ -21,6 +21,10 @@ use humhub\widgets\Label;
 
 interface CalendarItem
 {
+    const VIEW_MODE_MODAL = 'modal';
+    const VIEW_MODE_BLANK = 'blank';
+    const VIEW_MODE_REDIRECT = 'redirect';
+
     /**
      * Returns the array required for displaying in the fullCalendar frontend widget.
      *

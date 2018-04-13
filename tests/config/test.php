@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'humhub_root' => 'E:\codebase\humhub\master',
     'modules' => ['calendar'],
     'fixtures' => [
         'default',

@@ -17,11 +17,10 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateInterval;
 use DateTime;
-use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryQuery;
-use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\Component;
+use yii\helpers\ArrayHelper;
 
 /**
  * This service component supports integration functionality and is responsible for retrieving
@@ -46,6 +45,8 @@ class CalendarService extends Component
      */
     const EVENT_FIND_ITEMS = 'findItems';
 
+    private static $resultCache = [];
+
     /**
      * Searches for integrated calendars of other modules.
      * Modules can append their event types by calling CalendarItemTypeEvent::addType() and providing
@@ -66,24 +67,28 @@ class CalendarService extends Component
      */
     public function getCalendarItemTypes(ContentContainerActiveRecord $contentContainer = null)
     {
-        static $result = null;
-
         $containerKey = ($contentContainer) ? $contentContainer->contentcontainer_id : 'global';
 
-        if($result === null) {
-            $result = [];
-            $result[$containerKey] = [];
-
-            $event = new CalendarItemTypesEvent(['contentContainer' => $contentContainer]);
-            $this->trigger(self::EVENT_GET_ITEM_TYPES, $event);
-
-            foreach ($event->getTypes() as $key => $options) {
-                $result[$containerKey][] = new CalendarItemType(['key' => $key, 'options' => $options, 'contentContainer' => $contentContainer]);
-            }
+        if(isset(static::$resultCache[$containerKey])) {
+            return static::$resultCache[$containerKey];
         }
 
-        return (isset($result[$containerKey])) ? $result[$containerKey] : [];
+        $event = new CalendarItemTypesEvent(['contentContainer' => $contentContainer]);
+        $this->trigger(self::EVENT_GET_ITEM_TYPES, $event);
+
+        $result = [];
+        foreach ($event->getTypes() as $key => $options) {
+            $result[] = new CalendarItemType(['key' => $key, 'options' => $options, 'contentContainer' => $contentContainer]);
+        }
+
+
+        return static::$resultCache[$containerKey] = $result;
     }
+
+    public static function flushCache() {
+        static::$resultCache = [];
+    }
+
 
     /**
      * Merges all CalendarItems for a given ContentContainerActiveRecord filtered by $from, $to and $filters.
@@ -103,19 +108,28 @@ class CalendarService extends Component
 
         $event = new CalendarItemsEvent(['contentContainer' => $contentContainer, 'start' => $start, 'end' => $end, 'filters' => $filters, 'limit' => $limit]);
         $this->trigger(static::EVENT_FIND_ITEMS, $event);
+
+
+
+
         foreach($event->getItems() as $itemTypeKey => $items) {
             $itemType = $this->getItemType($itemTypeKey, $contentContainer);
+
+
             if($itemType && $itemType->isEnabled()) {
                 foreach ($items as $item) {
                     $result[] = new CalendarItemWrapper(['itemType' => $itemType, 'options' => $item]);
                 }
+            } else {
+                print_r('asdf');
             }
-
         }
 
         $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, $limit);
 
         $result = array_merge($calendarEntries, $result);
+
+        ArrayHelper::multisort($result, ['startDateTime', 'endDateTime'], [SORT_ASC, SORT_ASC]);
 
         return (count($result) > $limit) ? array_slice($result, 0, $limit) : $result;
     }
@@ -129,8 +143,8 @@ class CalendarService extends Component
 
         $filters = [];
 
-        if ($contentContainer) {
-            $filters['userRelated'] = [ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, ActiveQueryContent::USER_RELATED_SCOPE_SPACES];
+        if (!$contentContainer) {
+            $filters[] = AbstractCalendarQuery::FILTER_DASHBOARD;
         }
 
         return $this->getCalendarItems($start, $end, $filters, $contentContainer, $limit);
@@ -151,5 +165,4 @@ class CalendarService extends Component
 
         return null;
     }
-
 }

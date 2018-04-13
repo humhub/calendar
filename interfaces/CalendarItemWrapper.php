@@ -38,9 +38,6 @@ class CalendarItemWrapper extends Object implements CalendarItem
     const OPTION_EDITABLE = 'editable';
     const OPTION_TIMEZONE = 'timezone';
 
-    const VIEW_MODE_MODAL = 'modal';
-    const VIEW_MODE_BLANK = 'blank';
-
     /**
      * @var CalendarItemType
      */
@@ -64,8 +61,11 @@ class CalendarItemWrapper extends Object implements CalendarItem
             'updateUrl' => $this->getUpdateUrl(),
             'viewUrl' => $this->getViewUrl(),
             'viewMode' => $this->getViewMode(),
+            'icon' => $this->getIcon(),
             'start' => Yii::$app->formatter->asDatetime($this->getStartDateTime(), 'php:c'),
             'end' => Yii::$app->formatter->asDatetime($this->getEndDateTime(), 'php:c'),
+            'eventDurationEditable' => true,
+            'eventStartEditable' => true
         ];
     }
 

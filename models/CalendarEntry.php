@@ -394,7 +394,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             'title' => $title,
             'editable' => $this->content->canEdit(),
             'backgroundColor' => Html::encode($this->color),
-            'allDay' => $this->all_day,
+            'allDay' => (boolean) $this->all_day,
             'updateUrl' => $this->content->container->createUrl('/calendar/entry/edit-ajax', ['id' => $this->id]),
             'viewUrl' => $this->content->container->createUrl('/calendar/entry/view', ['id' => $this->id, 'cal' => '1']),
             'start' => Yii::$app->formatter->asDatetime($this->start_datetime, 'php:c'),

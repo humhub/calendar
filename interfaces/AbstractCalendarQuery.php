@@ -50,9 +50,18 @@ abstract class AbstractCalendarQuery extends Object
      * Available filters
      */
     const FILTER_PARTICIPATE = 1;
+
+    /**
+     * @deprecated This is a legacy filter which is not active anymore
+     */
     const FILTER_NOT_RESPONDED = 3;
+
+    /**
+     * @deprecated This is a legacy filter which is not active anymore
+     */
     const FILTER_RESPONDED = 4;
     const FILTER_MINE = 5;
+    const FILTER_DASHBOARD = 6;
     const FILTER_USERRELATED = 'userRelated';
 
     /**
@@ -156,6 +165,7 @@ abstract class AbstractCalendarQuery extends Object
         $instance = new static();
         $instance->_query = call_user_func(static::$recordClass .'::find');
         $instance->_user = $user;
+
 
         return $instance;
     }
@@ -542,7 +552,7 @@ abstract class AbstractCalendarQuery extends Object
     /**
      * Builds and executes the filter query.
      * This method will filter out entries not readable by the current logged in user.
-     * @return [] result
+     * @return array result
      */
     public function all()
     {
@@ -551,8 +561,9 @@ abstract class AbstractCalendarQuery extends Object
                 $this->setupQuery();
             }
 
-            return $this->_query->all();
+            return $this->preFilter($this->_query->all());
         } catch(FilterNotSupportedException $e) {
+            Yii::error($e);
             return [];
         }
     }
@@ -562,9 +573,18 @@ abstract class AbstractCalendarQuery extends Object
      */
     protected function setupQuery()
     {
+        $this->setUpRelations();
         $this->setupCriteria();
         $this->setupFilters();
         $this->_built = true;
+    }
+
+    /**
+     * Can be used for eager loading of relations etc
+     */
+    public function setUpRelations()
+    {
+        return $this;
     }
 
     /**
@@ -572,18 +592,6 @@ abstract class AbstractCalendarQuery extends Object
      */
     protected function setupCriteria()
     {
-        if ($this->_container) {
-            $this->filterContentContainer();
-        }
-
-        if($this->hasFilter(self::FILTER_USERRELATED)) {
-            $this->_userScopes = $this->_filters[self::FILTER_USERRELATED];
-        }
-
-        if (!empty($this->_userScopes)) {
-            $this->filterUserRelated();
-        }
-
         $this->setupDateCriteria();
 
         if(!$this->_orderBy) {
@@ -595,8 +603,6 @@ abstract class AbstractCalendarQuery extends Object
         if ($this->_limit) {
             $this->_query->limit($this->_limit);
         }
-
-        $this->filterReadable();
     }
 
     /**
@@ -657,23 +663,56 @@ abstract class AbstractCalendarQuery extends Object
      */
     protected function setupFilters()
     {
-        if (empty($this->_filters)) {
-            return;
+        if ($this->_container) {
+            $this->filterContentContainer();
         }
 
-        if ($this->hasFilter(self::FILTER_PARTICIPATE)) {
-            $this->filterIsParticipant();
+        if(Yii::$app->user->isGuest) {
+            $this->filterGuests($this->_container);
+        } else {
+            if($this->hasFilter(self::FILTER_USERRELATED)) {
+                $this->_userScopes = $this->_filters[self::FILTER_USERRELATED];
+            }
+
+            if (!empty($this->_userScopes)) {
+                $this->filterUserRelated();
+            }
+
+            if($this->hasFilter(self::FILTER_DASHBOARD)) {
+                $this->filterDashboard();
+            }
+
+            if (empty($this->_filters)) {
+                return;
+            }
+
+            if ($this->hasFilter(self::FILTER_PARTICIPATE)) {
+                $this->filterIsParticipant();
+            }
+
+            if ($this->hasFilter(self::FILTER_RESPONDED)) {
+                $this->filterResponded();
+            }
+
+            if ($this->hasFilter(self::FILTER_NOT_RESPONDED)) {
+                $this->filterNotResponded();
+            }
+
+            if ($this->hasFilter(self::FILTER_MINE)) {
+                $this->filterMine();
+            }
         }
 
-        if ($this->hasFilter(self::FILTER_RESPONDED)) {
-            $this->filterResponded();
-        }
-        if ($this->hasFilter(self::FILTER_NOT_RESPONDED)) {
-            $this->filterNotResponded();
-        }
+        $this->filterReadable();
+    }
 
-        if ($this->hasFilter(self::FILTER_MINE)) {
-            $this->filterMine();
+    /**
+     * @param ContentContainerActiveRecord|null $container
+     */
+    protected function filterGuests(ContentContainerActiveRecord $container = null)
+    {
+        if(!$this->_query instanceof ActiveQueryContent) {
+            throw new FilterNotSupportedException('Guest filter not supported for this query');
         }
     }
 
@@ -706,6 +745,18 @@ abstract class AbstractCalendarQuery extends Object
         }
     }
 
+    protected function filterDashboard()
+    {
+        if(Yii::$app->user->isGuest) {
+            throw new FilterNotSupportedException('User related filter not supported for this query');
+        }
+
+        if(empty($this->_userScopes)) {
+            $this->_userScopes = [ActiveQueryContent::USER_RELATED_SCOPE_SPACES, ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE];
+            $this->filterUserRelated();
+        }
+    }
+
     public function filterMine()
     {
         if($this->_query instanceof ActiveQueryContent) {
@@ -715,11 +766,17 @@ abstract class AbstractCalendarQuery extends Object
         }
     }
 
+    /**
+     * @deprecated This is a legacy filter which is not in use anymore.
+     */
     public function filterResponded()
     {
         throw new FilterNotSupportedException('Responded filter not supported for this query');
     }
 
+    /**
+     * @deprecated This is a legacy filter which is not in use anymore.
+     */
     public function filterNotResponded()
     {
         throw new FilterNotSupportedException('Not Responded filter not supported for this query');
@@ -730,4 +787,13 @@ abstract class AbstractCalendarQuery extends Object
         throw new FilterNotSupportedException('Participant filter not supported for this query');
     }
 
+    /**
+     * Can be used to pre filter the result list
+     * @param $result
+     * @return [] result
+     */
+    protected function preFilter($result = [])
+    {
+        return $result;
+    }
 }

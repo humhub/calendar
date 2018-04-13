@@ -1,7 +1,19 @@
 Changelog
 =========
 
-0.6.4 - Unreleased
+0.6.5 - (April 13, 2018)
+------------------
+- Fix: Calendar Interface `allDay` events not working (staxDB)
+- Fix: Show upcoming event snippet setting ignored (staxDB)
+- Fix: Upcoming event snippet sorting (staxDB)
+- Enh: Updated fullcalendar.js to v3.9.0
+- Enh: Added event icons
+- Enh: Added birthdays to calendar
+- Enh: Guest support for Upcoming events widget
+- Enh: Added `AbstractCalendarQuery::filterGuests()` to support a guest view of the upcoming events snippet
+- Enh: Added `AbstractCalendarQuery::filterDashboard()` to enable a custom filter for the upcoming events dashboard snippet
+
+0.6.4 
 ------------------
 - Fix: Minor Grammar fixes (@Felli)
 - Enh: Cleanup, remove optional part of parameter (@kristianlm)

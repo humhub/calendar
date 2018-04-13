@@ -30,13 +30,13 @@ class GlobalCalendarCest
         $I->amOnRoute(['/calendar/global/index']);
         $I->expectTo('see my space calendar entry');
         $I->see('Select calendars');
-        $I->waitForText('Space Event',null, '.fc-event-container');
+        $I->waitForText('Space Event',null, '#calendar');
 
         $I->wantToTest('the global calendar filters');
         $I->amGoingTo('deselect the space clalendar filter');
         $I->click('.calendar_my_spaces');
         $I->wait(2);
-        $I->cantSee('Space Event', '.fc-event-container');
+        $I->cantSee('Space Event', '#calendar');
 
         $I->amGoingTo('activate the profile calendar module by creating a new event');
         $I->click('.fc-today');

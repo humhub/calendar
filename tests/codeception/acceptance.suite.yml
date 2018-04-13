@@ -21,4 +21,4 @@ modules:
         WebDriver:
             url: http://localhost:8080/
             browser: firefox
-            restart: false
+            restart: true

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar;
 
+use humhub\modules\calendar\integration\BirthdayCalendar;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\calendar\widgets\UpcomingEvents;
@@ -14,6 +15,23 @@ use humhub\modules\calendar\models\SnippetModuleSettings;
  */
 class Events extends \yii\base\Object
 {
+
+    /**
+     * @param $event \humhub\modules\calendar\interfaces\CalendarItemTypesEvent
+     * @return mixed
+     */
+    public static function onGetCalendarItemTypes($event)
+    {
+        BirthdayCalendar::addItemTypes($event);
+    }
+
+    /**
+     * @param $event \humhub\modules\calendar\interfaces\CalendarItemsEvent;
+     */
+    public static function onFindCalendarItems($event)
+    {
+        BirthdayCalendar::addItems($event);
+    }
 
     public static function onTopMenuInit($event)
     {
@@ -58,28 +76,22 @@ class Events extends \yii\base\Object
 
     public static function onSpaceSidebarInit($event)
     {
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
-
         $space = $event->sender->space;
         $settings = SnippetModuleSettings::instantiate();
 
         if ($space->isModuleEnabled('calendar')) {
-            $event->sender->addWidget(UpcomingEvents::className(), ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+            if($settings->showUpcomingEventsSnippet()) {
+                $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+            }
         }
     }
 
     public static function onDashboardSidebarInit($event)
     {
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
-
         $settings = SnippetModuleSettings::instantiate();
 
         if ($settings->showUpcomingEventsSnippet()) {
-            $event->sender->addWidget(UpcomingEvents::className(), [], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+            $event->sender->addWidget(UpcomingEvents::class, [], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
         }
     }
 
@@ -94,7 +106,7 @@ class Events extends \yii\base\Object
             $settings = SnippetModuleSettings::instantiate();
 
             if ($settings->showUpcomingEventsSnippet()) {
-                $event->sender->addWidget(UpcomingEvents::className(), ['contentContainer' => $user], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+                $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $user], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
             }
         }
     }

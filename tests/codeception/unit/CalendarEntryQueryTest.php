@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit;
 
+use humhub\modules\content\models\Content;
 use Yii;
 use DateTime;
 use DateInterval;
@@ -71,54 +72,97 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
     }
     
     /**
-     * Test finding entries for spaces content container
-     */
+ * Test finding entries for spaces content container
+ */
     public function testSpaceContainerQuery()
     {
         $this->becomeUser('Admin');
         $s1 = Space::findOne(['id' => 1]);
         $s2 = Space::findOne(['id' => 2]);
-        
+
         // Some entry way in the past (not included)
         $this->createEntry((new DateTime)->sub(new DateInterval('P30D')), 1, 'Past Entry', $s1);
-        
+
         // Past but included for s1
         $entry1 = $this->createEntry((new DateTime)->sub(new DateInterval('P5D')), 1, 'Past Entry', $s1);
-        
+
         // From now till 5 days in future (included for s1)
         $entry2 = $this->createEntry(null, 5, 'Entry 1', $s1);
-        
+
         // From 3 days in future to 13 days in future (included for s2)
         $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P3D')), 10, 'Entry 1', $s2);
-        
+
         // Starts in 4 days (not included for s2)
         $entry4 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Future Entry', $s2);
-        
+
         // Entry way in the future (not included)
         $this->createEntry((new DateTime)->add(new DateInterval('P20D')), 6, 'Future Entry', $s2);
-        
+
         // Find all within -5 till 13 day range
         $entries = CalendarEntryQuery::find()->from(-5)->to(13)->all();
-        
+
         $this->assertEquals(4, count($entries));
         $this->assertEquals($entry1->title, $entries[0]->title);
         $this->assertEquals($entry2->title, $entries[1]->title);
         $this->assertEquals($entry3->title, $entries[2]->title);
         $this->assertEquals($entry4->title, $entries[3]->title);
-        
+
         // Find all s1 entries within -5 till 13 day range
         $entries = CalendarEntryQuery::find()->container($s1)->from(-5)->to(13)->all();
-        
+
         $this->assertEquals(2, count($entries));
         $this->assertEquals($entry1->title, $entries[0]->title);
         $this->assertEquals($entry2->title, $entries[1]->title);
-        
+
         // Find all s1 entries within -5 till 13 day range
         $entries = CalendarEntryQuery::find()->container($s2)->from(-5)->to(13)->all();
-        
+
         $this->assertEquals(2, count($entries));
         $this->assertEquals($entry3->title, $entries[0]->title);
         $this->assertEquals($entry4->title, $entries[1]->title);
+    }
+
+    /**
+     * Test finding entries for spaces content container
+     */
+    public function testGuestQuery()
+    {
+        $this->becomeUser('Admin');
+        $s1 = Space::findOne(['id' => 1]);
+        $s2 = Space::findOne(['id' => 2]);
+
+        // Create three included queries
+        $entry1 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Future Entry', $s2);
+        $entry2 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Future Entry1', $s2);
+        $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Future Entry2', $s2, Content::VISIBILITY_PRIVATE);
+        $entry4 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Future Entry3', $s1);
+
+        $this->allowGuestAccess();
+        $this->logout();
+
+        // Find all within -5 till 13 day range for Dashboard filter
+        $entries = CalendarEntryQuery::find()->from(-5)->to(13)->filter([CalendarEntryQuery::FILTER_DASHBOARD])->all();
+
+        $this->assertEquals(3, count($entries));
+        $this->assertEquals($entry1->title, $entries[0]->title);
+        $this->assertEquals($entry2->title, $entries[1]->title);
+        $this->assertEquals($entry4->title, $entries[2]->title);
+
+        // Find all within -5 till 13 day range for global calendar
+        $entries = CalendarEntryQuery::find()->from(-5)->to(13)->all();
+
+        $this->assertEquals(3, count($entries));
+        $this->assertEquals($entry1->title, $entries[0]->title);
+        $this->assertEquals($entry2->title, $entries[1]->title);
+        $this->assertEquals($entry4->title, $entries[2]->title);
+
+
+        // Find all within -5 till 13 day range for space 2
+        $entries = CalendarEntryQuery::find()->from(-5)->to(13)->container($s2)->all();
+
+        $this->assertEquals(2, count($entries));
+        $this->assertEquals($entry1->title, $entries[0]->title);
+        $this->assertEquals($entry2->title, $entries[1]->title);
     }
     
     /**
@@ -271,13 +315,12 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
         $entry2 = $this->createEntry(null, 1, 'Entry 1', $s1);
         $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), 6, 'Future Entry', $s1);
 
-
         $entries = CalendarEntryQuery::find()->days(1)->openRange(false)->all();
         $this->assertEquals(1, count($entries));
         $this->assertEquals('Entry 1', $entries[0]->title);
     }
 
-    private function createEntry($from, $days, $title, $container = null)
+    private function createEntry($from, $days, $title, $container = null, $visibility = Content::VISIBILITY_PUBLIC)
     {
         if (!$from) {
             $from = new DateTime();
@@ -294,7 +337,7 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
         $entry->title = $title;
         $entry->start_datetime = Yii::$app->formatter->asDateTime($from, 'php:Y-m-d') . " 00:00:00";
         $entry->end_datetime = Yii::$app->formatter->asDateTime($to, 'php:Y-m-d') . " 23:59:59";
-        $entry->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
+        $entry->content->visibility = $visibility;
 
         if($container) {
             $entry->content->container = $container;

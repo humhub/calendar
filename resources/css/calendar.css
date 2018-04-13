@@ -114,6 +114,10 @@ html .fc,
 	zoom: 1; /* for IE7, gives accurate coordinates for [un]freezeContentHeight */
 	}
 
+.fc-content .fa {
+	margin:0 2px;
+}
+
 .fc-view {
 	position: relative;
 	width: 100%;

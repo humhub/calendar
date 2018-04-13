@@ -69,11 +69,28 @@ Items are appended by means of `$event->addItems($itemTypeKey, $itemsArray)`. Th
 
  - `start`: DateTime instance of the start time ideally with timezone (otherwise we assume app timezone).
  - `end`: DateTime instance of the end time ideally with timezone (otherwise we assume app timezone).
+ - `allDay`: Boolean whether or not the events are all-day events.
  - `title`: The title of the given item, displayed in the calendar and snippet
  - `editable`: Whether or not this item is editable (resize/drag/drop) this will also require the updateUrl
  - `viewUrl`: This link will be loaded into a modal once the item is selected in the calendar
  - `openUrl`: A link to the actual content (e.g Permalink) used in the snippet
+ - `icon`: An font awesome icon class as for example `fa-bell`, used to prepended an icon to the event dom element
  - `updateUrl`: A url used to directly update the start/end time in case `editable` is set to true
+
+> Note: If you want to add full-day events, you must add a day to the end date and set the time to 00:00:00. 
+The following example demonstrates this:
+
+```php
+// Example 1: We want to add an one-day all-day event: 01.01.2018
+$start = new DateTime('2018-01-01 00:00:00')
+$end = new DateTime('2018-01-02 00:00:00')  // one day longer, but time set to 00:00:00!
+```
+
+```php
+// Example 2: We want to add a two-day all-day event: 01.01.2018 - 02.01.2018
+$start = new DateTime('2018-01-01 00:00:00')
+$end = new DateTime('2018-01-03 00:00:00')  // one day longer, but time set to 00:00:00!
+```
 
 **Event.php:**
 
@@ -115,21 +132,27 @@ For filtering out Items which do not match our `$event->filters` we simply have 
  
  In case your model extends `ContentActiveRecord` the query class provides a default implementation for the following filter:
  
- - `filterUserRelated`: used for user related queries e.g: 'Only content from following spaces' (see `ActiveQueryContent::userRelated`)
- - `filterContentContainer`: used to filter content of a specific ContentContainer (Space/User)
- - `filterReadable`: only include content readable by the  current user
- - `filterMine`: only include items created by me
- - `setupDateCriteria`: responsible for the date interval filter, this will only include items where either the start and/or the end date
+ - `filterDashboard()`: this special filter function is used for the dashboard upcoming events snippets, by default this filter will make use of the `USER_RELATED_SCOPE_SPACE` and `USER_RELATED_SCOPE_OWN_PROFILE`
+ - `filterGuests()`: used for guest users which are not able to use other filters
+ - `filterUserRelated()`: used for user related queries e.g: 'Only content from following spaces' (see `ActiveQueryContent::userRelated`)
+ - `filterContentContainer()`: used to filter content of a specific ContentContainer (Space/User)
+ - `filterReadable()`: only include content readable by the  current user
+ - `filterMine()`: only include items created by me
+ - `setupDateCriteria()`: responsible for the date interval filter, this will only include items where either the start and/or the end date
  is within a given time range.
  
  Some filter have to be implemented manually (in case they are supported):
  
- - `filterIsParticipant`: in case the item type supports an own participation logic, this filter is used to only include items
+ - `filterIsParticipant()`: in case the item type supports an own participation logic, this filter is used to only include items
  in which the current logged in user participates (optional)
- - `filterResponded`: legacy filter for filtering out items with no response yet (optional)
- - `filterNotResponded`: legacy filter for filtering out items with a response (optional)
+ - `filterResponded()`: **legacy** filter for filtering out items with no response yet (optional)
+ - `filterNotResponded()`: **legacy** filter for filtering out items with a response (optional)
  
  >Note: In case a given filter is not supported the whole event item query will be skipped and will return a empty result.
+ 
+ >Note: Guest users are not able to use other filters than the `filterGuests`
+ 
+ >Info: Modules can decide which events to include or exclude in the Dashboard snippet by using the `filterDashboard` filter
 
 **MeetingCalendarQuery:**
 

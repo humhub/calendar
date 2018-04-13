@@ -1,0 +1,23 @@
+{
+  "name": "humhub-modules-calendar",
+  "version": "0.6.5",
+  "description": "HumHub calendar module",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humhub/humhub-modules-calendar.git"
+  },
+  "dependencies": {
+    "fullcalendar": "*"
+  },
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/humhub/humhub-modules-calendar/issues"
+  },
+  "homepage": "https://github.com/humhub/humhub-modules-calendar#readme"
+}
