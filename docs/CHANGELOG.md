@@ -1,8 +1,13 @@
 Changelog
 =========
 
+
+0.6.6 - (April 13, 2018)
+------------------------
+- Enh: Updated translations
+
 0.6.5 - (April 13, 2018)
-------------------
+------------------------
 - Fix: Calendar Interface `allDay` events not working (staxDB)
 - Fix: Show upcoming event snippet setting ignored (staxDB)
 - Fix: Upcoming event snippet sorting (staxDB)
