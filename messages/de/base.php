@@ -9,10 +9,12 @@ return array (
   'Allow participation state \'maybe\'' => 'Erlaube den Teilnahmemodus „Vielleicht“',
   'Attending' => 'Du nimmst teil',
   'Attending users' => 'Zusagen',
+  'Birthday' => 'Geburtstag',
   'Calendar' => 'Kalender',
   'Close' => 'Schließen',
   'Declining users' => 'Absagen',
   'Description' => 'Beschreibung',
+  'Download as ICS file' => 'Herunterladen als ICS Datei',
   'Edit' => 'Bearbeiten',
   'Enable' => 'Aktivieren',
   'End Date' => 'Enddatum',
@@ -39,4 +41,5 @@ return array (
   'Title' => 'Titel',
   'You don\'t have permission to delete this event!' => 'Du hast nicht die Berechtigung diesen Termin zu löschen!',
   'canceled' => 'abgebrochen',
+  '{displayName} Birthday' => '{displayName} Geburtstag',
 );
