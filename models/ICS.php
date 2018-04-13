@@ -6,9 +6,14 @@
 
 namespace humhub\modules\calendar\models;
 
+use DateInterval;
+use DateTime;
+
 class ICS
 {
     const DT_FORMAT = 'Ymd\THis';
+    const DT_FORMAT_ALLDAY = 'Ymd';
+
     protected $summary;
     protected $description;
     protected $dtstart;
@@ -17,12 +22,27 @@ class ICS
     protected $url;
     protected $timezone;
 
-    public function __construct($summary, $description, $dtstart, $dtend, $location, $url, $timezone)
+    /**
+     * ICS constructor.
+     * @param string $summary
+     * @param string $description
+     * @param string $dtstart
+     * @param string $dtend
+     * @param string $location
+     * @param string $url
+     * @param string $timezone
+     * @param bool $allDay
+     */
+    public function __construct($summary, $description, $dtstart, $dtend, $location, $url, $timezone, $allDay = false)
     {
+        if($allDay) {
+            $dtend = (new DateTime($dtend))->add(new DateInterval('P1D'));
+        }
+
         $this->summary = $this->escapeString($summary);
         $this->description = $this->escapeString($description);
-        $this->dtstart = $this->formatTimestamp($dtstart);
-        $this->dtend = $this->formatTimestamp($dtend);
+        $this->dtstart = $this->formatTimestamp($dtstart, $allDay);
+        $this->dtend = $this->formatTimestamp($dtend, $allDay);
         $this->location = $this->escapeString($location);
         $this->url = $this->escapeString($url);
         $this->timezone = $timezone;
@@ -37,7 +57,7 @@ class ICS
 
     private function buildProps()
     {
-        $ics_props = array(
+        $ics_props = [
             'BEGIN:VCALENDAR',
             'VERSION:2.0',
             'PRODID:-//hacksw/handcal//NONSGML v1.0//EN',
@@ -53,14 +73,15 @@ class ICS
             'UID:' . uniqid(),
             'END:VEVENT',
             'END:VCALENDAR'
-        );
+        ];
         return $ics_props;
     }
 
-    private function formatTimestamp($timestamp)
+    private function formatTimestamp($timestamp, $allDay = false)
     {
-        $dt = new \DateTime($timestamp);
-        return $dt->format(self::DT_FORMAT);
+        $dt = ($timestamp instanceof DateTime) ? $timestamp : new DateTime($timestamp);
+        $format = $allDay ? self::DT_FORMAT_ALLDAY : self::DT_FORMAT;
+        return $dt->format($format);
     }
 
     private function escapeString($str)

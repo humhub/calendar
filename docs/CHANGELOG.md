@@ -12,6 +12,7 @@ Changelog
 - Enh: Guest support for Upcoming events widget
 - Enh: Added `AbstractCalendarQuery::filterGuests()` to support a guest view of the upcoming events snippet
 - Enh: Added `AbstractCalendarQuery::filterDashboard()` to enable a custom filter for the upcoming events dashboard snippet
+- Enh: Added ICS export of single events (ASBaj)
 
 0.6.4 
 ------------------
