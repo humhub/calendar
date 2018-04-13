@@ -3,10 +3,12 @@
 namespace humhub\modules\calendar;
 
 use humhub\modules\calendar\integration\BirthdayCalendar;
+use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\SnippetModuleSettings;
+use humhub\modules\calendar\widgets\DownloadIcsLink;
+use humhub\modules\calendar\widgets\UpcomingEvents;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\calendar\widgets\UpcomingEvents;
-use humhub\modules\calendar\models\SnippetModuleSettings;
 
 /**
  * Description of CalendarEvents
@@ -56,7 +58,7 @@ class Events extends \yii\base\Object
                 'url' => $space->createUrl('/calendar/view/index'),
                 'icon' => '<i class="fa fa-calendar"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
-            
+
             ]);
         }
     }
@@ -80,7 +82,7 @@ class Events extends \yii\base\Object
         $settings = SnippetModuleSettings::instantiate();
 
         if ($space->isModuleEnabled('calendar')) {
-            if($settings->showUpcomingEventsSnippet()) {
+            if ($settings->showUpcomingEventsSnippet()) {
                 $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
             }
         }
@@ -108,6 +110,13 @@ class Events extends \yii\base\Object
             if ($settings->showUpcomingEventsSnippet()) {
                 $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $user], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
             }
+        }
+    }
+
+    public static function onWallEntryLinks($event)
+    {
+        if ($event->sender->object instanceof CalendarEntry) {
+            $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $event->sender->object]);
         }
     }
 

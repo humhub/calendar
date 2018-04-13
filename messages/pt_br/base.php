@@ -18,7 +18,10 @@
  */
 return [
     '<strong>Choose</strong> target calendar' => '',
+    'Birthday' => '',
+    'Download as ICS file' => '',
     'Profile Calendar' => '',
+    '{displayName} Birthday' => '',
     '<strong>Add</strong> profile calendar' => '<strong>Adicionar</strong> calendário de perfil',
     'Adds a calendar for private or public events to your profile and main menu.' => 'Adicione um calendário para eventos privados ou públicos em seu perfil e menu principal.',
     'Adds an event calendar to this space.' => 'Adicione um evento para este espaço.',
