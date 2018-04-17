@@ -563,7 +563,9 @@ abstract class AbstractCalendarQuery extends Object
 
             return $this->preFilter($this->_query->all());
         } catch(FilterNotSupportedException $e) {
-            Yii::error($e);
+            if(YII_DEBUG) {
+                Yii::error($e);
+            }
             return [];
         }
     }
