@@ -10,14 +10,11 @@ namespace humhub\modules\calendar\integration;
 
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarItem;
-use humhub\modules\calendar\interfaces\CalendarItemWrapper;
 use humhub\modules\meeting\models\Meeting;
 use humhub\modules\user\models\Profile;
-use humhub\widgets\Label;
 use Yii;
 use yii\base\Object;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /**
  * Created by PhpStorm.
@@ -59,7 +56,7 @@ class BirthdayCalendar extends Object
         $items = [];
         foreach ($profiles as $profile) {
             /** @var $profile Profile **/
-            $upcomingBirthday = BirthdayCalendarQuery::toCurrentYear($profile->birthday);
+            $upcomingBirthday = new DateTime($profile->getAttribute('next_birthday'));
             $items[] = [
                 'start' => $upcomingBirthday,
                 'end' => $upcomingBirthday,
@@ -69,7 +66,7 @@ class BirthdayCalendar extends Object
                 'openUrl' => $profile->user->getUrl(),
                 'viewUrl' => $profile->user->getUrl(),
                 'viewMode' => CalendarItem::VIEW_MODE_REDIRECT,
-                'editable' => true,
+                'editable' => false,
             ];
         }
 

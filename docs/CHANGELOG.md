@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6.9  (April 17, 2018)
+-----------------------
+- Fix: Birthday calendar fixes
+- Enh: Added BirthdayQuery tests
+
+
 0.6.8  (April 17, 2018)
 -----------------------
 - Fix: Birthday calendar query

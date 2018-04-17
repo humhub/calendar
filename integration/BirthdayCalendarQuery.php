@@ -36,21 +36,33 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
     /**
      * @inheritdoc
      */
-    protected static $recordClass = Profile::class;
+    protected static $recordClass = BirthdayProfileModel::class;
 
     public $startField = 'birthday';
     public $endField = 'birthday';
     public $dateFormat = 'Y-m-d';
 
+    protected $_orderBy = 'next_birthday ASC';
+
     protected function setupDateCriteria()
     {
-        $nextBirthDaySql = "DATE_ADD(profile.birthday, INTERVAL YEAR(CURDATE())-YEAR(profile.birthday) + IF((CURDATE() > DATE_ADD(`profile`.birthday, INTERVAL (YEAR(CURDATE())-YEAR(profile.birthday)) YEAR)),1,0) YEAR)";
-        $this->_query->addSelect('profile.*');
-        $this->_query->addSelect(new Expression($nextBirthDaySql . ' AS next_birthday'));
-        $this->_query->addOrderBy(['next_birthday' => SORT_ASC]);
-        $this->_query->andWhere($nextBirthDaySql . ' BETWEEN :fromDate AND :toDate', [':fromDate' => $this->_from->format('Y-m-d'), ':toDate' => $this->_to->format('Y-m-d')]);
-    }
+        $toYear = (int)$this->_to->format('Y');
+        $fromYear = (int)$this->_from->format('Y');
 
+        // Check if fromDate and toDate years differs
+        if ($toYear == $fromYear) {
+            $toOrFromBirthday = "DATE_ADD(profile.birthday, INTERVAL {$fromYear}-YEAR(profile.birthday) YEAR)";
+        } else {
+            $fromDate = $this->_from->format('Y-m-d');
+            $fromDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$fromYear}-YEAR(profile.birthday) YEAR)";
+            $toDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$toYear}-YEAR(profile.birthday) YEAR)";
+            $toOrFromBirthday = "IF( $fromDateBirth > DATE('{$fromDate}'), {$fromDateBirth}, {$toDateBirth})";
+        }
+        $this->_query->addSelect('profile.*');
+        $this->_query->addSelect(new Expression($toOrFromBirthday . ' AS next_birthday'));
+        $this->_query->andWhere(new Expression($toOrFromBirthday . ' BETWEEN :fromDate AND :toDate'), [':fromDate' => $this->_from->format('Y-m-d'), ':toDate' => $this->_to->format('Y-m-d')]);
+
+    }
 
     protected function filterDashboard()
     {

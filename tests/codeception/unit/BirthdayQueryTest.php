@@ -12,8 +12,8 @@ use DateInterval;
 use DateTime;
 use humhub\modules\calendar\integration\BirthdayCalendarQuery;
 use humhub\modules\content\components\ActiveQueryContent;
+use humhub\modules\space\models\Space;
 use tests\codeception\_support\HumHubDbTestCase;
-use Yii;
 
 /**
  * Created by PhpStorm.
@@ -33,16 +33,16 @@ class BirthdayQueryTest extends HumHubDbTestCase
 
         $this->becomeUser('User1');
 
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')) , null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
         $this->assertEquals(0, count($result));
 
         $this->follow('Admin');
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')) , null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
 
         $this->assertEquals(1, count($result));
 
         $this->becomeFriendWith('User2');
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')) , null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
         $this->assertEquals(2, count($result));
     }
 
@@ -58,16 +58,54 @@ class BirthdayQueryTest extends HumHubDbTestCase
         $this->becomeFriendWith('User2');
         $this->enableFriendships(false);
 
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')) , null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
         $this->assertEquals(0, count($result));
 
         $this->enableFriendships();
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')) , null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
         $this->assertEquals(1, count($result));
 
         $this->becomeUser('User2');
         $this->becomeFriendWith('User1');
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')) , null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime)->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
         $this->assertEquals(2, count($result));
     }
+
+
+    public function testBirthdayEdges()
+    {
+
+        $this->becomeUser('Admin');
+
+        $testSpace = Space::findOne(['id' => 3]);
+
+        // Test Year Change Range:  1.11.2010 - 1.2.2011
+        $this->setProfileField('birthday', '1999-10-31', 'Admin');
+        $this->setProfileField('birthday', '1945-11-05', 'User2');
+        $this->setProfileField('birthday', '1956-01-03', 'User1');
+
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime("2010-11-01"), new DateTime("2011-02-01"), $testSpace);
+        $this->assertEquals(2, count($result));
+        $this->assertEquals($result[0]->user->username, 'User2');
+        $this->assertEquals($result[1]->user->username, 'User1');
+
+        // Test Range:  1.2.2010 - 1.4.2010
+        $this->setProfileField('birthday', '1960-04-02', 'Admin');
+        $this->setProfileField('birthday', '1905-02-01', 'User2');
+        $this->setProfileField('birthday', '1900-01-30', 'User1');
+
+        // Test Scope
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime("2010-02-01"), new DateTime("2010-03-01"), $testSpace);
+        $this->assertEquals(1, count($result));
+        $this->assertEquals($result[0]->user->username, 'User2');
+
+        // Test Order
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime("2010-01-01"), new DateTime("2010-04-04"), $testSpace);
+        $this->assertEquals(3, count($result));
+        $this->assertEquals($result[1]->user->username, 'User2');
+
+
+    }
+
+
 }
