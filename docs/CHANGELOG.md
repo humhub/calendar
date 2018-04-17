@@ -1,14 +1,15 @@
 Changelog
 =========
 
-0.6.7 - (Unreleased)
-------------------------
+0.6.8  (April 17, 2018)
+-----------------------
 - Fix: Birthday calendar query
 
 
-0.6.6 - (April 13, 2018)
-------------------------
+0.6.6  (April 13, 2018)
+-----------------------
 - Enh: Updated translations
+
 
 0.6.5 - (April 13, 2018)
 ------------------------
@@ -23,8 +24,9 @@ Changelog
 - Enh: Added `AbstractCalendarQuery::filterDashboard()` to enable a custom filter for the upcoming events dashboard snippet
 - Enh: Added ICS export of single events (ASBaj)
 
+
 0.6.4 
-------------------
+-----
 - Fix: Minor Grammar fixes (@Felli)
 - Enh: Cleanup, remove optional part of parameter (@kristianlm)
 - Fix: Fixed typo (@acs-ferreira) 
