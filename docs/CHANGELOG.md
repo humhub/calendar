@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.6.7 - (Unreleased)
+------------------------
+- Fix: Birthday calendar query
+
 
 0.6.6 - (April 13, 2018)
 ------------------------

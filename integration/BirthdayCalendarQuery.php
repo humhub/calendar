@@ -24,6 +24,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\Expression;
 use yii\db\Query;
 
 /**
@@ -43,24 +44,13 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     protected function setupDateCriteria()
     {
-        $this->_query->andWhere('MONTH(birthday) >= '.$this->_from->format('m'))->andWhere('MONTH(birthday) <= '.$this->_to->format('m'));
+        $nextBirthDaySql = "DATE_ADD(profile.birthday, INTERVAL YEAR(CURDATE())-YEAR(profile.birthday) + IF((CURDATE() > DATE_ADD(`profile`.birthday, INTERVAL (YEAR(CURDATE())-YEAR(profile.birthday)) YEAR)),1,0) YEAR)";
+        $this->_query->addSelect('profile.*');
+        $this->_query->addSelect(new Expression($nextBirthDaySql . ' AS next_birthday'));
+        $this->_query->addOrderBy(['next_birthday' => SORT_ASC]);
+        $this->_query->andWhere($nextBirthDaySql . ' BETWEEN :fromDate AND :toDate', [':fromDate' => $this->_from->format('Y-m-d'), ':toDate' => $this->_to->format('Y-m-d')]);
     }
 
-    protected function preFilter($result = [])
-    {
-        $filtered = [];
-
-        foreach ($result as $profile) {
-            /** @var $profile Profile **/
-            $birthdayThisYear = static::toCurrentYear($profile->birthday);
-
-            if($birthdayThisYear >= $this->_from && $birthdayThisYear <= $this->_to) {
-                $filtered[] = $profile;
-            }
-        }
-
-        return $filtered;
-    }
 
     protected function filterDashboard()
     {
@@ -73,7 +63,7 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     protected function filterUserRelated()
     {
-        if(!empty($this->_userScopes) && !(in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS, $this->_userScopes) || in_array(ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, $this->_userScopes))) {
+        if (!empty($this->_userScopes) && !(in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS, $this->_userScopes) || in_array(ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, $this->_userScopes))) {
             throw new FilterNotSupportedException('Non supported user related filters');
         }
 
@@ -81,10 +71,10 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
         foreach ($this->_userScopes as $userScope) {
             switch ($userScope) {
                 case ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS:
-                   $this->filterFollowedUsersCondition($conditions);
+                    $this->filterFollowedUsersCondition($conditions);
                     break;
                 case ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE:
-                    if(!$this->hasFilter(static::FILTER_MINE)) {
+                    if (!$this->hasFilter(static::FILTER_MINE)) {
                         $conditions[] = ['profile.user_id' => Yii::$app->user->id];
                     }
                     break;
@@ -100,16 +90,16 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
         $followerSubQuery = (new Query())->select('user_follow.object_id')->from('user_follow')->where(['user_follow.user_id' => Yii::$app->user->id])->andWhere(['object_model' => User::class]);
 
         if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->isEnabled) {
-            $conditions[] = ['in', 'profile.user_id', $friendshipSubQuery ];
-            $conditions[] =  ['in', 'profile.user_id', $followerSubQuery ];
+            $conditions[] = ['in', 'profile.user_id', $friendshipSubQuery];
+            $conditions[] = ['in', 'profile.user_id', $followerSubQuery];
         } else {
-            $conditions[] = ['in', 'profile.user_id', $followerSubQuery ];
+            $conditions[] = ['in', 'profile.user_id', $followerSubQuery];
         }
     }
 
     protected function filterContentContainer()
     {
-        if(!$this->_container instanceof Space) {
+        if (!$this->_container instanceof Space) {
             return parent::filterContentContainer();
         }
 
@@ -135,7 +125,8 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
         $this->_query->with('user');
     }
 
-    public static function toCurrentYear($birthday){
+    public static function toCurrentYear($birthday)
+    {
         $suppliedDate = new DateTime($birthday);
         $currentYear = (int)(new DateTime())->format('Y');
         return (new DateTime())->setDate($currentYear, (int)$suppliedDate->format('m'), (int)$suppliedDate->format('d'));
