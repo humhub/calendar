@@ -12,6 +12,7 @@ use DateTime;
 use humhub\modules\calendar\interfaces\CalendarItem;
 use humhub\modules\meeting\models\Meeting;
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Object;
 use yii\helpers\Html;
@@ -51,20 +52,20 @@ class BirthdayCalendar extends Object
     public static function addItems($event)
     {
         /* @var $meetings Meeting[] */
-        $profiles = BirthdayCalendarQuery::findForEvent($event);
+        $users = BirthdayCalendarQuery::findForEvent($event);
 
         $items = [];
-        foreach ($profiles as $profile) {
-            /** @var $profile Profile **/
-            $upcomingBirthday = new DateTime($profile->getAttribute('next_birthday'));
+        foreach ($users as $user) {
+            /** @var $user User **/
+            $upcomingBirthday = new DateTime($user->getAttribute('next_birthday'));
             $items[] = [
                 'start' => $upcomingBirthday,
                 'end' => $upcomingBirthday,
                 'allDay' => true,
-                'title' => static::getTitle($profile),
+                'title' => static::getTitle($user),
                 'icon' => 'fa-birthday-cake',
-                'openUrl' => $profile->user->getUrl(),
-                'viewUrl' => $profile->user->getUrl(),
+                'openUrl' => $user->getUrl(),
+                'viewUrl' => $user->getUrl(),
                 'viewMode' => CalendarItem::VIEW_MODE_REDIRECT,
                 'editable' => false,
             ];
@@ -75,9 +76,9 @@ class BirthdayCalendar extends Object
 
 
 
-    public static function getTitle($profile)
+    public static function getTitle(User $user)
     {
-        return Yii::t('CalendarModule.base', '{displayName} Birthday', ['displayName' => Html::encode($profile->user->getDisplayName())]);
+        return Yii::t('CalendarModule.base', '{displayName} Birthday', ['displayName' => Html::encode($user->getDisplayName())]);
     }
 
 }

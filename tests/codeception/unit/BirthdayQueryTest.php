@@ -86,8 +86,9 @@ class BirthdayQueryTest extends HumHubDbTestCase
 
         $result = BirthdayCalendarQuery::findForFilter(new DateTime("2010-11-01"), new DateTime("2011-02-01"), $testSpace);
         $this->assertEquals(2, count($result));
-        $this->assertEquals($result[0]->user->username, 'User2');
-        $this->assertEquals($result[1]->user->username, 'User1');
+
+        $this->assertEquals('User2', $result[0]->username);
+        $this->assertEquals('User1', $result[1]->username);
 
         // Test Range:  1.2.2010 - 1.4.2010
         $this->setProfileField('birthday', '1960-04-02', 'Admin');
@@ -97,15 +98,33 @@ class BirthdayQueryTest extends HumHubDbTestCase
         // Test Scope
         $result = BirthdayCalendarQuery::findForFilter(new DateTime("2010-02-01"), new DateTime("2010-03-01"), $testSpace);
         $this->assertEquals(1, count($result));
-        $this->assertEquals($result[0]->user->username, 'User2');
+        $this->assertEquals($result[0]->username, 'User2');
 
         // Test Order
         $result = BirthdayCalendarQuery::findForFilter(new DateTime("2010-01-01"), new DateTime("2010-04-04"), $testSpace);
         $this->assertEquals(3, count($result));
-        $this->assertEquals($result[1]->user->username, 'User2');
-
+        $this->assertEquals($result[1]->username, 'User2');
 
     }
 
+
+    public function testDisabledUsers()
+    {
+        $this->becomeUser('Admin');
+        $testSpace = Space::findOne(['id' => 3]);
+
+        $testSpace->addMember(5);
+        $testSpace->addMember(6);
+
+        $this->setProfileField('birthday', '1910-10-31', 'Admin');
+        $this->setProfileField('birthday', '1911-11-01', 'User2');
+        $this->setProfileField('birthday', '1912-12-01', 'User1');
+        $this->setProfileField('birthday', '1912-11-15', 'DisabledUser');
+        $this->setProfileField('birthday', '1912-11-16', 'UnapprovedUser');
+
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime("2020-10-01"), new DateTime("2020-12-01"), $testSpace);
+        $this->assertEquals(3, count($result));
+
+    }
 
 }

@@ -15,13 +15,11 @@
 
 namespace humhub\modules\calendar\integration;
 
-use DateTime;
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
 use humhub\modules\calendar\interfaces\FilterNotSupportedException;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\Expression;
@@ -36,10 +34,10 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
     /**
      * @inheritdoc
      */
-    protected static $recordClass = BirthdayProfileModel::class;
+    protected static $recordClass = BirthdayUserModel::class;
 
-    public $startField = 'birthday';
-    public $endField = 'birthday';
+    public $startField = 'profile.birthday';
+    public $endField = 'profile.birthday';
     public $dateFormat = 'Y-m-d';
 
     protected $_orderBy = 'next_birthday ASC';
@@ -58,7 +56,10 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
             $toDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$toYear}-YEAR(profile.birthday) YEAR)";
             $toOrFromBirthday = "IF( $fromDateBirth > DATE('{$fromDate}'), {$fromDateBirth}, {$toDateBirth})";
         }
-        $this->_query->addSelect('profile.*');
+
+        $this->_query->visible();
+        $this->_query->joinWith('profile');
+        $this->_query->addSelect(['profile.*', 'user.*']);
         $this->_query->addSelect(new Expression($toOrFromBirthday . ' AS next_birthday'));
         $this->_query->andWhere(new Expression($toOrFromBirthday . ' BETWEEN :fromDate AND :toDate'), [':fromDate' => $this->_from->format('Y-m-d'), ':toDate' => $this->_to->format('Y-m-d')]);
 
@@ -67,7 +68,7 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
     protected function filterDashboard()
     {
         if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->isEnabled) {
-            $this->_query->joinWith('user')->innerJoin('user_friendship', 'user.id=user_friendship.friend_user_id AND user_friendship.user_id=:userId', [':userId' => Yii::$app->user->id]);
+            $this->_query->innerJoin('user_friendship', 'user.id=user_friendship.friend_user_id AND user_friendship.user_id=:userId', [':userId' => Yii::$app->user->id]);
         } else {
             throw new FilterNotSupportedException('Global filter not supported for this query');
         }
@@ -124,23 +125,11 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
                 ':spaceId' => $this->_container->id
             ]);
 
-        $this->_query->joinWith('user')->andWhere(['exists', $spaceMemberships]);
+        $this->_query->andWhere(['exists', $spaceMemberships]);
     }
 
     public function filterMine()
     {
         $this->_query->andWhere(['profile.user_id' => Yii::$app->user->id]);
-    }
-
-    public function setUpRelations()
-    {
-        $this->_query->with('user');
-    }
-
-    public static function toCurrentYear($birthday)
-    {
-        $suppliedDate = new DateTime($birthday);
-        $currentYear = (int)(new DateTime())->format('Y');
-        return (new DateTime())->setDate($currentYear, (int)$suppliedDate->format('m'), (int)$suppliedDate->format('d'));
     }
 }

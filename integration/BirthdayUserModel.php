@@ -6,14 +6,14 @@
  */
 
 namespace humhub\modules\calendar\integration;
-use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 
 
 /**
  * Class BirthdayProfileModel
  * @package humhub\modules\calendar\integration
  */
-class BirthdayProfileModel extends Profile
+class BirthdayUserModel extends User
 {
     public $next_birthday;
 

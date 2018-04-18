@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.10  (April 18, 2018)
+-----------------------
+- Fix: Birthday calendar shows non visible users
+
+
 0.6.9  (April 17, 2018)
 -----------------------
 - Fix: Birthday calendar fixes
