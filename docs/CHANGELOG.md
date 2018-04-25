@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.6.11  (April 18, 2018)
+-----------------------
+- Fix: Calendar ics export timezone issue
+
 0.6.10  (April 18, 2018)
 -----------------------
 - Fix: Birthday calendar shows non visible users

@@ -8,11 +8,12 @@ namespace humhub\modules\calendar\models;
 
 use DateInterval;
 use DateTime;
+use Yii;
 
 class ICS
 {
-    const DT_FORMAT = 'Ymd\THis';
-    const DT_FORMAT_ALLDAY = 'Ymd';
+    const DT_FORMAT_TIME = 'php:His';
+    const DT_FORMAT_DAY = 'php:Ymd';
 
     protected $summary;
     protected $description;
@@ -65,8 +66,8 @@ class ICS
             'BEGIN:VEVENT',
             'LOCATION:' . $this->location,
             'DESCRIPTION:' . $this->description,
-            'DTSTART;TZID=' . $this->timezone . ':' . $this->dtstart,
-            'DTEND;TZID=' . $this->timezone . ':' . $this->dtend,
+            'DTSTART:' . $this->dtstart,
+            'DTEND:' . $this->dtend,
             'SUMMARY:' . $this->summary,
             'URL:' . $this->url,
             'DTSTAMP:' . $this->formatTimestamp('now'),
@@ -80,8 +81,13 @@ class ICS
     private function formatTimestamp($timestamp, $allDay = false)
     {
         $dt = ($timestamp instanceof DateTime) ? $timestamp : new DateTime($timestamp);
-        $format = $allDay ? self::DT_FORMAT_ALLDAY : self::DT_FORMAT;
-        return $dt->format($format);
+        $result =  Yii::$app->formatter->asDate($dt, self::DT_FORMAT_DAY);
+
+        if(!$allDay) {
+            $result .= "T".  Yii::$app->formatter->asTime($dt, self::DT_FORMAT_TIME);
+        }
+
+        return $result;
     }
 
     private function escapeString($str)
