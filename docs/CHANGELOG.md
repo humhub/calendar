@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.6.12  (April 27, 2018)
+-----------------------
+- Fix: Removed FilterNotSupported error log
+
 0.6.11  (April 18, 2018)
 -----------------------
 - Fix: Calendar ics export timezone issue
