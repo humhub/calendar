@@ -19,8 +19,10 @@
 return [
     '<strong>Choose</strong> target calendar' => '',
     'Birthday' => '',
+    'Cancel Event' => '',
     'Download as ICS file' => '',
     'Profile Calendar' => '',
+    'Reopen Event' => '',
     '{displayName} Birthday' => '',
     '<strong>Add</strong> profile calendar' => '<strong>Thêm</strong> lịch riêng',
     'Adds a calendar for private or public events to your profile and main menu.' => 'Thêm lịch cho sự kiện riêng tư hoặc công cộng vào Trang hồ sơ và Menu chính của bạn.',

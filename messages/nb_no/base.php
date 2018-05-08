@@ -18,7 +18,9 @@
  */
 return [
     'Birthday' => '',
+    'Cancel Event' => '',
     'Download as ICS file' => '',
+    'Reopen Event' => '',
     '{displayName} Birthday' => '',
     '<strong>Add</strong> profile calendar' => '<strong>Opprett</strong> profil kalender',
     '<strong>Choose</strong> target calendar' => '<strong>Velg</strong> mål kalender',

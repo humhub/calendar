@@ -19,8 +19,10 @@
 return [
     '<strong>Choose</strong> target calendar' => '',
     'Birthday' => '',
+    'Cancel Event' => '',
     'Download as ICS file' => '',
     'Profile Calendar' => '',
+    'Reopen Event' => '',
     '{displayName} Birthday' => '',
     '<strong>Add</strong> profile calendar' => '<strong>Aggiungi</strong> il calendario del profilo',
     'Adds a calendar for private or public events to your profile and main menu.' => 'Aggiunge un calendario per eventi privati e pubblici sul tuo profilo e sul tuo menù principale',
