@@ -14,7 +14,7 @@ return array (
   'Close' => 'Fermer',
   'Declining users' => 'Membres ayant déclinés leur participation',
   'Description' => 'Description',
-  'Download as ICS file' => 'Télécharger au format ICS',
+  'Download as ICS file' => 'Télécharger',
   'Edit' => 'Modifier',
   'Enable' => 'Activer',
   'End Date' => 'Date de fin',
