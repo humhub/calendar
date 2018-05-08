@@ -1,13 +1,22 @@
 Changelog
 =========
 
+
+0.6.13  (May 08, 2018)
+-----------------------
+- Fix: Wrong translation text category for "Cancel event"
+- Enh: Updated translations
+
+
 0.6.12  (April 27, 2018)
 -----------------------
 - Fix: Removed FilterNotSupported error log
 
+
 0.6.11  (April 18, 2018)
 -----------------------
 - Fix: Calendar ics export timezone issue
+
 
 0.6.10  (April 18, 2018)
 -----------------------
