@@ -29,10 +29,10 @@ class CloseLink extends WallEntryControlLink
     public function init()
     {
         if($this->entry->closed) {
-            $this->label = Yii::t('ContentModule.widgets_views_editLink', 'Reopen Event');
+            $this->label = Yii::t('CalendarModule.base', 'Reopen Event');
             $this->icon = 'fa-check';
         } else {
-            $this->label = Yii::t('ContentModule.widgets_views_editLink', 'Cancel Event');
+            $this->label = Yii::t('CalendarModule.base', 'Cancel Event');
             $this->icon = 'fa-times';
         }
 
