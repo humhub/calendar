@@ -21,7 +21,7 @@ php codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
 php codeception/bin/yii installer/auto
 php codeception/bin/yii search/rebuild
 
-php --server 127.0.0.1:8080 --docroot ${HUMHUB_PATH} &> /dev/null &
+php --server 127.0.0.1:8080 --docroot ${HUMHUB_PATH} &>/dev/null &
 sleep 5
 curl --fail --head http://127.0.0.1:8080/index-test.php
 
