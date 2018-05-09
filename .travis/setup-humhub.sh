@@ -25,6 +25,4 @@ php codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
 php codeception/bin/yii installer/auto
 php codeception/bin/yii search/rebuild
 
-
-
 php ${HUMHUB_PATH}/protected/vendor/bin/codecept build
