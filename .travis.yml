@@ -1,0 +1,29 @@
+language: php
+sudo: enabled
+
+services:
+  - mysql
+
+php:
+  - '5.6'
+  - '7.0'
+  - '7.1'
+
+#env:
+  - HUMHUB_PATU=/opt/humhub
+#  - HUMHUB_VERSION=master
+#  - HUMHUB_VERSION=v1.3-dev
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+install:
+  - /bin/sh .travis/install-dependencies.sh
+  - /bin/sh .travis/setup-humhub.sh
+
+script:
+  - composer install --prefer-dist --no-interaction
+  - cd tests
+  - php ${HUMHUB_PATH}/protected/vendor/bin/codecept build
+  - php ${HUMHUB_PATH}/protected/vendor/bin/codecept run
