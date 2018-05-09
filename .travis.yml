@@ -31,6 +31,9 @@ install:
   - /bin/sh .travis/setup-humhub.sh
 
 script:
+  - php --server 127.0.0.1:8080 --docroot ${HUMHUB_PATH} &>/dev/null &
+  - sleep 5
+  - curl --fail --head http://127.0.0.1:8080/index-test.php
   - cd tests
   - php ${HUMHUB_PATH}/protected/vendor/bin/codecept build
   - php ${HUMHUB_PATH}/protected/vendor/bin/codecept run
