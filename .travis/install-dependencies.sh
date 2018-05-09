@@ -7,8 +7,5 @@ set -ev
 curl -s -L -o chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip \
     && unzip -o -d $HOME chromedriver_linux64.zip
 
-# Start chomedriver
-$HOME/chromedriver --url-base=/wd/hub &
-
 # Install composer package
 composer global require fxp/composer-asset-plugin
