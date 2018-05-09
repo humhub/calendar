@@ -9,10 +9,12 @@ php:
   - '7.0'
   - '7.1'
 
-#env:
-  - HUMHUB_PATU=/opt/humhub
-#  - HUMHUB_VERSION=master
-#  - HUMHUB_VERSION=v1.3-dev
+env:
+  global:
+    - HUMHUB_PATU=/opt/humhub
+#  matrix:
+#    - HUMHUB_VERSION=master
+#    - HUMHUB_VERSION=v1.3-dev
 
 cache:
   directories:
