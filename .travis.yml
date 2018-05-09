@@ -4,6 +4,9 @@ sudo: enabled
 services:
   - mysql
 
+addons:
+  chrome: stable
+
 git:
   depth: 3
 
