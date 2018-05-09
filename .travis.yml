@@ -23,6 +23,7 @@ env:
     - HUMHUB_VERSION=v1.3-dev
 
 matrix:
+  fast_finish: true
   allow_failures:
     - HUMHUB_VERSION=v1.3-dev
 
