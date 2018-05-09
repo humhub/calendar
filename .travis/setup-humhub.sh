@@ -1,4 +1,7 @@
-#!/usr/bin/env sh -ev
+#!/usr/bin/env sh
+
+# -e = exit when one command returns != 0, -v print each command before executing
+set -ev
 
 old=$(pwd)
 

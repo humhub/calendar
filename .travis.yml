@@ -4,6 +4,9 @@ sudo: enabled
 services:
   - mysql
 
+git:
+  depth: 3
+
 php:
   - '5.6'
   - '7.0'
@@ -25,7 +28,6 @@ install:
   - /bin/sh .travis/setup-humhub.sh
 
 script:
-  - composer install --prefer-dist --no-interaction
   - cd tests
   - php ${HUMHUB_PATH}/protected/vendor/bin/codecept build
   - php ${HUMHUB_PATH}/protected/vendor/bin/codecept run
