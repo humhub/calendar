@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.6.14  (May 11, 2018)
+-----------------------
+- Fix: Wrong translation text category for "Delete" link
+
 
 0.6.13  (May 08, 2018)
 -----------------------
