@@ -46,7 +46,8 @@ install:
 before_script:
   - $HOME/chromedriver --url-base=/wd/hub &
   - php --server 127.0.0.1:8080 --docroot ${HUMHUB_PATH} &>/dev/null &
-  - sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
+  - sleep 5
+  - curl --fail --head http://127.0.0.1:8080/index-test.php
 
 script:
   - cd tests
