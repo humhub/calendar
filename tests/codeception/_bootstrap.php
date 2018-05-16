@@ -12,7 +12,7 @@
 $testRoot = dirname(__DIR__);
 
 \Codeception\Configuration::append(['test_root' => $testRoot]);
-echo 'Module root: ' . $testRoot . PHP_EOL;
+codecept_debug('Module root: ' . $testRoot);
 
 $humhubPath = getenv('HUMHUB_PATH');
 if ($humhubPath === false) {
@@ -26,7 +26,7 @@ if ($humhubPath === false) {
 }
 
 \Codeception\Configuration::append(['humhub_root' => $humhubPath]);
-echo 'HumHub Root: ' . $humhubPath . PHP_EOL;
+codecept_debug('HumHub Root: ' . $humhubPath);
 
 // Load test configuration (/config/test.php or /config/env/<environment>/test.php
 $globalConfig = require $humhubPath . '/protected/humhub/tests/codeception/_loadConfig.php';
