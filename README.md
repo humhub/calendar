@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/humhub/humhub-modules-calendar.svg?branch=master)](https://travis-ci.org/humhub/humhub-modules-calendar)
+
 ## Description
 Full featured calendar for your users and spaces.
 

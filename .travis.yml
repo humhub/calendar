@@ -14,6 +14,7 @@ php:
   - '5.6'
   - '7.0'
   - '7.1'
+  - '7.2'
 
 env:
   global:
@@ -23,9 +24,13 @@ env:
     - HUMHUB_VERSION=v1.3-dev
 
 matrix:
-  fast_finish: true
   allow_failures:
-    - HUMHUB_VERSION=v1.3-dev
+    - env: HUMHUB_VERSION=v1.3-dev
+  exclude:
+    - php: '7.2'
+      env: HUMHUB_VERSION=master
+  fast_finish: true
+
 
 cache:
   directories:
@@ -41,7 +46,8 @@ install:
 before_script:
   - $HOME/chromedriver --url-base=/wd/hub &
   - php --server 127.0.0.1:8080 --docroot ${HUMHUB_PATH} &>/dev/null &
-  - sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
+  - sleep 5
+  - curl --fail --head http://127.0.0.1:8080/index-test.php
 
 script:
   - cd tests
