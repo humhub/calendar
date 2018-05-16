@@ -18,7 +18,6 @@ use Yii;
 class CalendarWidgetCest
 {
     /**
-     * @skip Test is broken by environment issues
      * @param FunctionalTester $I
      */
     public function testTestTheFriendshipBirthdayOnDashboard(FunctionalTester $I)
