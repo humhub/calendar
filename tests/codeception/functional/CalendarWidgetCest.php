@@ -39,7 +39,7 @@ class CalendarWidgetCest
         $I->switchIdentity(User::findOne(['username' => 'Admin']));
         DashboardPage::openBy($I);
         $I->dontSeeElement('.calendar-upcoming-snippet');
-        
+
         $I->enableModule(3, 'calendar');
 
         $I->amOnSpace3();
