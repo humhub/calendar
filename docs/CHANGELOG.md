@@ -1,6 +1,12 @@
 Changelog
 =========
 
+
+0.6.15  (May 29, 2018)
+-----------------------
+- Fix: Added missing "readable" filter in calendar view
+
+
 0.6.14  (May 11, 2018)
 -----------------------
 - Fix: Wrong translation text category for "Delete" link

@@ -664,6 +664,7 @@ abstract class AbstractCalendarQuery extends Object
     {
         if ($this->_container) {
             $this->filterContentContainer();
+            $this->filterReadable();
         }
 
         if(Yii::$app->user->isGuest) {
@@ -702,7 +703,6 @@ abstract class AbstractCalendarQuery extends Object
             }
         }
 
-        $this->filterReadable();
     }
 
     /**
