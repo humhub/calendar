@@ -48,7 +48,7 @@ before_script:
 
 script:
   - cd tests
-  - sed -i -e "s|envs: ../../humhub/tests/config/env|envs: ${HUMHUB_PATH}/protected/humhub/tests/config/env|g" codeception.yml
+  - sed -i -e "s|../../humhub/tests/config/env|${HUMHUB_PATH}/protected/humhub/tests/config/env|g" codeception.yml
   - cat codeception.yml
   - php ${HUMHUB_PATH}/protected/vendor/bin/codecept build
   - php ${HUMHUB_PATH}/protected/vendor/bin/codecept run --env travis
