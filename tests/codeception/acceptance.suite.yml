@@ -19,5 +19,3 @@ modules:
       url: 'http://localhost:8080/'
       browser: chrome
       port: 4444
-
-
