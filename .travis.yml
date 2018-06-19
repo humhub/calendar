@@ -48,5 +48,7 @@ before_script:
 
 script:
   - cd tests
+  - ln -s ${HUMHUB_PATH}/protected/humhub/tests/config/env config/ # create symlink from /opt/humhub to config/
+  - sed -i -e "s|../../../humhub/tests/config/env|config/env|g" codeception.yml # fix relative path for codeception
   - php ${HUMHUB_PATH}/protected/vendor/bin/codecept build
-  - php ${HUMHUB_PATH}/protected/vendor/bin/codecept run
+  - php ${HUMHUB_PATH}/protected/vendor/bin/codecept run --env travis
