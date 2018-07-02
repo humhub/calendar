@@ -14,7 +14,7 @@ use humhub\modules\meeting\models\Meeting;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\Object;
+use yii\base\Component;
 use yii\helpers\Html;
 
 /**
@@ -22,9 +22,11 @@ use yii\helpers\Html;
  * User: buddha
  * Date: 14.09.2017
  * Time: 12:28
+ *
+ * @todo change base class back to BaseObject after v1.3 is stable
  */
 
-class BirthdayCalendar extends Object
+class BirthdayCalendar extends Component
 {
     /**
      * Default color of meeting type calendar items.

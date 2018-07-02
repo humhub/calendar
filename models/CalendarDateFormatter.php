@@ -11,6 +11,8 @@
  * User: buddha
  * Date: 17.09.2017
  * Time: 21:21
+ *
+ * @todo change base class back to BaseObject after v1.3 is stable
  */
 
 namespace humhub\modules\calendar\models;
@@ -20,9 +22,9 @@ use Yii;
 use DateTime;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\interfaces\CalendarItem;
-use yii\base\Object;
+use yii\base\Component;
 
-class CalendarDateFormatter extends Object
+class CalendarDateFormatter extends Component
 {
 
     /**

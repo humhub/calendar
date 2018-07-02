@@ -15,7 +15,7 @@ use yii\helpers\Url;
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events
 {
 
     /**

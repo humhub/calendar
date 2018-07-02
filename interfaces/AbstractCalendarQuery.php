@@ -15,16 +15,18 @@ use Yii;
 use DateTime;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ActiveQueryContent;
-use yii\base\Object;
+use yii\base\Component;
 
 /**
  * Created by PhpStorm.
  * User: buddha
  * Date: 14.09.2017
  * Time: 12:31
+ *
+ * @todo change base class back to BaseObject after v1.3 is stable
  */
 
-abstract class AbstractCalendarQuery extends Object
+abstract class AbstractCalendarQuery extends Component
 {
     /**
      * @var string Defines the ActiveRecord class used for this query
