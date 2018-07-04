@@ -21,14 +21,12 @@ env:
     - HUMHUB_PATH=/opt/humhub
   matrix:
     - HUMHUB_VERSION=master
-    - HUMHUB_VERSION=v1.3-dev
+    - HUMHUB_VERSION=v1.2
 
 matrix:
-  allow_failures:
-    - env: HUMHUB_VERSION=v1.3-dev
   exclude:
     - php: '7.2'
-      env: HUMHUB_VERSION=master
+      env: HUMHUB_VERSION=v1.2
   fast_finish: true
 
 
