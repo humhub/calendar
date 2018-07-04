@@ -3,9 +3,12 @@
 namespace humhub\modules\calendar\controllers;
 
 use DateTime;
+use humhub\components\Controller;
 use humhub\libs\Html;
 use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\permissions\CreateEntry;
+use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\User;
@@ -13,11 +16,8 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use Yii;
 use yii\helpers\Json;
-use humhub\components\Controller;
 use yii\helpers\Url;
 use yii\web\HttpException;
-use humhub\modules\content\components\ActiveQueryContent;
-use humhub\modules\calendar\models\SnippetModuleSettings;
 
 /**
  * GlobalController provides a global view.
@@ -64,7 +64,7 @@ class GlobalController extends Controller
 
     public function actionIndex()
     {
-        if(!Yii::$app->user->isGuest){
+        if (!Yii::$app->user->isGuest) {
             $configureUrl = Yii::$app->user->getIdentity()->createUrl('/calendar/container-config');
             $moduleEnabled = Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
         } else {
@@ -73,11 +73,11 @@ class GlobalController extends Controller
         }
 
         return $this->render('index', [
-                    'selectors' => $this->getSelectorSettings(),
-                    'filters' => $this->getFilterSettings(),
-                    'canConfigure' => $moduleEnabled,
-                    'configureUrl' => $configureUrl,
-                    'editUrl' => Url::to(['/calendar/entry/edit'])
+            'selectors' => $this->getSelectorSettings(),
+            'filters' => $this->getFilterSettings(),
+            'canConfigure' => $moduleEnabled,
+            'configureUrl' => $configureUrl,
+            'editUrl' => Url::to(['/calendar/entry/edit'])
         ]);
     }
 
@@ -89,19 +89,27 @@ class GlobalController extends Controller
 
         $contentContainerSelection[$user->contentcontainer_id] = Yii::t('CalendarModule.base', 'Profile Calendar');
 
-        $calendarMemberSpaces = Membership::getUserSpaceQuery(Yii::$app->user->getIdentity())
-            ->leftJoin('space_module', 'space_module.module_id = :calendar AND space_module.space_id = space.id', [':calendar' => 'calendar'])
-            ->andWhere('space_module.id IS NOT NULL')->all();
+        $calendarMemberSpaceQuery = Membership::getUserSpaceQuery(Yii::$app->user->getIdentity());
+        if (version_compare(Yii::$app->version, '1.3', '>')) {
+            $calendarMemberSpaceQuery->leftJoin('contentcontainer_module',
+                'contentcontainer_module.module_id = :calendar AND contentcontainer_module.contentcontainer_id = space.contentcontainer_id',
+                [':calendar' => 'calendar']
+            );
+            $calendarMemberSpaceQuery->andWhere('contentcontainer_module.module_id IS NOT NULL');
+        } else {
+            $calendarMemberSpaceQuery->leftJoin('space_module', 'space_module.module_id = :calendar AND space_module.space_id = space.id', [':calendar' => 'calendar']);
+            $calendarMemberSpaceQuery->andWhere('space_module.id IS NOT NULL');
+        }
 
-        foreach ($calendarMemberSpaces as $space) {
-            if($space->permissionManager->can(CreateEntry::class)) {
+        foreach ($calendarMemberSpaceQuery->all() as $space) {
+            if ($space->permissionManager->can(CreateEntry::class)) {
                 $contentContainerSelection[$space->contentcontainer_id] = Html::encode($space->displayName);
             }
         }
 
         return $this->renderAjax('selectContainerModal', [
             'contentContainerSelection' => $contentContainerSelection,
-            'submitUrl' => Url::to(['/calendar/global/select-submit','start' => $start, 'end' => $end]),
+            'submitUrl' => Url::to(['/calendar/global/select-submit', 'start' => $start, 'end' => $end]),
         ]);
     }
 
@@ -111,28 +119,28 @@ class GlobalController extends Controller
 
         $contentContainer = ContentContainer::findOne(Yii::$app->request->post('contentCotnainerId'));
 
-        if(empty($contentContainer)) {
+        if (empty($contentContainer)) {
             throw new HttpException(404);
         }
 
         $container = $contentContainer->getPolymorphicRelation();
 
-        if(!$container->permissionManager->can(CreateEntry::class)) {
+        if (!$container->permissionManager->can(CreateEntry::class)) {
             throw new HttpException(403);
         }
 
-        if($container instanceof User && $container->is(Yii::$app->user->getIdentity())) {
-            if(!$container->isModuleEnabled('calendar')) {
+        if ($container instanceof User && $container->is(Yii::$app->user->getIdentity())) {
+            if (!$container->isModuleEnabled('calendar')) {
                 return Yii::$app->runAction('/calendar/global/enable', ['start' => $start, 'end' => $end]);
 
                 /**
-                *TODO: automatically enable the calendar module in profile
-                * $container->enableModule('calendar');
-                *
-                *TODO: should be handle by the core
-                *Yii::$app->cache->get(\humhub\modules\user\models\Module::STATES_CACHE_ID_PREFIX . $container->id);
-                *Yii::$app->user->getIdentity()->_enabledModules = null;
-                **/
+                 *TODO: automatically enable the calendar module in profile
+                 * $container->enableModule('calendar');
+                 *
+                 *TODO: should be handle by the core
+                 *Yii::$app->cache->get(\humhub\modules\user\models\Module::STATES_CACHE_ID_PREFIX . $container->id);
+                 *Yii::$app->user->getIdentity()->_enabledModules = null;
+                 **/
             }
         }
 
@@ -151,7 +159,7 @@ class GlobalController extends Controller
      */
     private function getSelectorSettings()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return [];
         }
 
@@ -160,7 +168,7 @@ class GlobalController extends Controller
             $selectors = Json::decode($lastSelectorsJson);
         }
 
-        if(empty($lastSelectorsJson)) {
+        if (empty($lastSelectorsJson)) {
             $selectors = [
                 ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE,
                 ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
@@ -175,7 +183,7 @@ class GlobalController extends Controller
      */
     private function getFilterSettings()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return [];
         }
 
@@ -184,7 +192,7 @@ class GlobalController extends Controller
             $filters = Json::decode($lastFilterJson);
         }
 
-        if(empty($filters)) {
+        if (empty($filters)) {
             $filters = [];
         }
 
@@ -195,7 +203,7 @@ class GlobalController extends Controller
     {
         $output = [];
 
-        if(!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             $selectors = Yii::$app->request->get('selectors', []);
             $filters = Yii::$app->request->get('filters', []);
 
@@ -223,15 +231,15 @@ class GlobalController extends Controller
         $editUrl = $user->createUrl('/calendar/entry/edit', ['start' => $start, 'end' => $end]);
 
         $cancelButton = ModalButton::cancel();
-        $enableButton = ModalButton::primary(Yii::t('CalendarModule.base' ,'Enable'))
+        $enableButton = ModalButton::primary(Yii::t('CalendarModule.base', 'Enable'))
             ->action('content.container.enableModule', $user->createUrl('/user/account/enable-module', ['moduleId' => 'calendar']));
-        $nextButton = ModalButton::primary(Yii::t('CalendarModule.base' ,'Next'))->load($editUrl)->style('display:none')->cssClass('disable')->loader(true);
+        $nextButton = ModalButton::primary(Yii::t('CalendarModule.base', 'Next'))->load($editUrl)->style('display:none')->cssClass('disable')->loader(true);
 
 
         return ModalDialog::widget([
             'header' => Yii::t('CalendarModule.base', '<strong>Add</strong> profile calendar'),
             'body' => Yii::t('CalendarModule.base', 'In order to add events to your profile, you have to enable the calendar module first.'),
-            'footer' => $enableButton.$nextButton.$cancelButton,
+            'footer' => $enableButton . $nextButton . $cancelButton,
             'centerText' => true
         ]);
     }
