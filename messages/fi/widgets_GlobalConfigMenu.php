@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Defaults' => 'Oletukset',
-  'Event Types' => 'Taphtumatyypit',
-  'Snippet' => 'Pätkä',
-);
+
+return [
+    'Other Calendars' => '',
+    'Defaults' => 'Oletukset',
+    'Event Types' => 'Taphtumatyypit',
+    'Snippet' => 'Pätkä',
+];
