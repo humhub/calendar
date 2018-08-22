@@ -6,7 +6,6 @@ use Yii;
 use yii\web\HttpException;
 use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\modules\calendar\notifications\CanceledEventNotification;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\stream\actions\Stream;
 use humhub\widgets\ModalClose;
