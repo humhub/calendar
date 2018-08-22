@@ -4,19 +4,18 @@ namespace humhub\modules\calendar\models;
 
 use DateTimeZone;
 use humhub\libs\Html;
-use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarItem;
-use humhub\modules\calendar\models\ICS;
 use humhub\modules\calendar\notifications\CanceledEvent;
 use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\calendar\notifications\ReopenedEvent;
 use humhub\modules\calendar\permissions\ManageEntry;
-use humhub\modules\calendar\widgets\EntryParticipants;
 use humhub\modules\calendar\widgets\WallEntry;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\space\models\Space;
+use humhub\modules\calendar\jobs\ForceParticipation;
 use humhub\widgets\Label;
 use Yii;
 use DateTime;
@@ -25,7 +24,6 @@ use yii\base\Exception;
 use humhub\libs\DbDateValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\user\models\User;
 use yii\db\ActiveQuery;
 
@@ -180,8 +178,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             [['files'], 'safe'],
             [['title', 'start_datetime', 'end_datetime'], 'required'],
             ['color', 'string'],
-            [['start_datetime'], DbDateValidator::className()],
-            [['end_datetime'], DbDateValidator::className()],
+            [['start_datetime'], DbDateValidator::class],
+            [['end_datetime'], DbDateValidator::class],
             [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => self::$participationModes],
@@ -257,24 +255,37 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         $this->closed = ($this->closed) ? 0 : 1;
         $this->save();
 
-        $participants = $this->getParticipantUsersByState([
-            CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
-            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
-
         if($this->closed) {
-            CanceledEvent::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
+            $this->sendUpdateNotification(CanceledEvent::class);
         } else {
-            ReopenedEvent::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
+            $this->sendUpdateNotification(ReopenedEvent::class);
         }
     }
 
-    public function sendUpdateNotification()
+    /**
+     * @param string $notificationClass
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function sendUpdateNotification($notificationClass = EventUpdated::class)
     {
         $participants = $this->getParticipantUsersByState([
             CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
             CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
 
-        EventUpdated::instance()->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
+        Yii::createObject(['class' => $notificationClass])->from(Yii::$app->user->getIdentity())->about($this)->sendBulk($participants);
+    }
+
+    public function addAllUsers()
+    {
+        if($this->participation_mode == static::PARTICIPATION_MODE_ALL && $this->canAddAll()) {
+            Yii::$app->queue->push(new ForceParticipation(['entry_id' => $this->id, 'originator_id' => Yii::$app->user->getId()]));
+        }
+    }
+
+    public function canAddAll()
+    {
+        return  $this->content->container instanceof Space
+            && $this->content->container->can(ManageEntry::class);
     }
 
     /**
@@ -474,7 +485,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         return false;
     }
 
-    public function setParticipationState($type, User $user = null) {
+    public function respond($type, User $user = null) {
         if ($user == null && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
         }
@@ -499,6 +510,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             $calendarEntryParticipant->participation_state = $type;
             $calendarEntryParticipant->save();
         }
+
         return $calendarEntryParticipant;
     }
 

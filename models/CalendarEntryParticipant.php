@@ -51,12 +51,12 @@ class CalendarEntryParticipant extends ActiveRecord
 
     public function getCalendarEntry()
     {
-        return $this->hasOne(CalendarEntry::className(), ['id' => 'calendar_entry_id']);
+        return $this->hasOne(CalendarEntry::class, ['id' => 'calendar_entry_id']);
     }
 
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar;
 
+use humhub\modules\calendar\models\CalendarEntryType;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -34,8 +35,8 @@ class Module extends ContentContainerModule
     public function getContentContainerTypes()
     {
         return [
-            Space::className(),
-            User::className(),
+            Space::class,
+            User::class,
         ];
     }
 
@@ -48,6 +49,7 @@ class Module extends ContentContainerModule
             $entry->delete();
         }
 
+        CalendarEntryType::deleteByModule();
         parent::disable();
     }
 
@@ -60,6 +62,8 @@ class Module extends ContentContainerModule
         foreach (CalendarEntry::find()->contentContainer($container)->all() as $entry) {
             $entry->delete();
         }
+
+        CalendarEntryType::deleteByModule($container);
     }
 
     /**

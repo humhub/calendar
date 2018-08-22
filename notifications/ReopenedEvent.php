@@ -65,7 +65,7 @@ class ReopenedEvent extends BaseNotification
     public function getMailSubject()
     {
         return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} reopened event {contentTitle}.', [
-            'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            'displayName' => Html::encode($this->originator->displayName),
             'contentTitle' => $this->getContentInfo($this->source, false)
         ]);
     }

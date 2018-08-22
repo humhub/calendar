@@ -8,7 +8,6 @@ use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\calendar\models\CalendarEntry;
 
 /**
  * ViewController displays the calendar on spaces or user profiles.

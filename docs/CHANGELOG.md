@@ -1,10 +1,14 @@
 Changelog
 =========
 
+0.6.18
+-----------------------
+- Enh: Added topic picker to edit form
+- Enh: Added "Add all space members to event" feature
+
 0.6.17  (July 4, 2018)
 -----------------------
 - Chg: Added HumHub 1.3 compatibility (new space module handling)
-
 
 0.6.16  (July 2, 2018)
 -----------------------

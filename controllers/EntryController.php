@@ -57,6 +57,12 @@ class EntryController extends ContentContainerController
         ]);
     }
 
+    /**
+     * @param $id
+     * @param $type
+     * @return \yii\web\Response
+     * @throws HttpException
+     */
     public function actionRespond($id, $type)
     {
         $calendarEntry = $this->getCalendarEntry($id);
@@ -65,7 +71,7 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
-        $participationState = $calendarEntry->setParticipationState((int)$type);
+        $participationState = $calendarEntry->respond((int)$type);
         if($participationState->hasErrors()) {
             return $this->asJson(['success' => false, 'errors' => $participationState->getErrors()]);
         }

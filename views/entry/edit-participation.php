@@ -7,7 +7,7 @@
  */
 
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\widgets\MarkdownField;
+use humhub\modules\ui\form\widgets\Markdown;
 
 /* @var $form \humhub\widgets\ActiveForm */
 /* @var $calendarEntryForm \humhub\modules\calendar\models\forms\CalendarEntryForm */
@@ -21,7 +21,14 @@ use humhub\widgets\MarkdownField;
         <?= $form->field($calendarEntryForm->entry, 'max_participants')->textInput() ?>
         <?= $form->field($calendarEntryForm->entry, 'allow_decline')->checkbox() ?>
         <?= $form->field($calendarEntryForm->entry, 'allow_maybe')->checkbox() ?>
-        <?= $form->field($calendarEntryForm->entry, 'participant_info')->widget(MarkdownField::class, ['fileModel' => $calendarEntryForm, 'fileAttribute' => 'files'])->label(false) ?>
-        <?= $form->field($calendarEntryForm, 'sendUpdateNotification')->checkbox() ?>
+        <?= $form->field($calendarEntryForm->entry, 'participant_info')->widget(Markdown::class, ['fileModel' => $calendarEntryForm, 'fileAttribute' => 'files'])->label(false) ?>
+
+        <?php if(!$calendarEntryForm->entry->isNewRecord) : ?>
+            <?= $form->field($calendarEntryForm, 'sendUpdateNotification')->checkbox() ?>
+        <?php endif; ?>
+
+        <?php if($calendarEntryForm->entry->canAddAll()) : ?>
+            <?= $form->field($calendarEntryForm, 'forceJoin')->checkbox() ?>
+        <?php endif; ?>
     </div>
 </div>
