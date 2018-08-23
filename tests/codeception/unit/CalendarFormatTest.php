@@ -53,8 +53,8 @@ class CalendarFormatTest extends HumHubDbTestCase
             'time_zone' => 'Europe/Berlin'
         ]);
 
-        $this->assertEquals('12. September 2017 (UTC+02:00 - Europe/Berlin)', $entry->getFormattedTime());
-        $this->assertEquals('12.09.2017 (UTC+02:00 - Europe/Berlin)', $entry->getFormattedTime('medium'));
+        $this->assertEquals('12. September 2017 (UTC+01:00 - Europe/Berlin)', $entry->getFormattedTime());
+        $this->assertEquals('12.09.2017 (UTC+01:00 - Europe/Berlin)', $entry->getFormattedTime('medium'));
     }
 
     public function testAllDayOneDayFormatDifferentTimezone2()

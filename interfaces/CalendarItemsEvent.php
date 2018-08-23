@@ -57,13 +57,6 @@ class CalendarItemsEvent extends CalendarEvent
         }
     }
 
-    public static function addItemTypes($itemTypesDef)
-    {
-        foreach ($itemTypesDef as $calendar) {
-            $event->addType($calendar->getItemTypeKey(), $calendar->getFullCalendarArray());
-        }
-    }
-
     /**
      * @inheritdoc
      */

@@ -56,7 +56,7 @@ class CalendarItemWrapper extends Component implements CalendarItem
     public function getFullCalendarArray()
     {
         return [
-            'title' => Html::encode($this->getTitle()),
+            'title' => $this->getTitle(),
             'editable' => $this->isEditable(),
             'backgroundColor' => Html::encode($this->getColor()),
             'allDay' => $this->isAllDay(),

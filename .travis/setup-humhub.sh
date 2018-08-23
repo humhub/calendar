@@ -11,6 +11,9 @@ cd ${HUMHUB_PATH}
 git clone --branch ${HUMHUB_VERSION} --depth 1 https://github.com/humhub/humhub.git .
 composer install --prefer-dist --no-interaction
 
+npm install
+grunt build-assets
+
 cd ${HUMHUB_PATH}/protected/humhub/tests
 
 sed -i -e "s|'installed' => true,|'installed' => true,\n\t'moduleAutoloadPaths' => ['$(dirname $old)']|g" config/common.php

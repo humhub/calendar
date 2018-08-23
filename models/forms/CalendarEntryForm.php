@@ -9,7 +9,6 @@
 
 namespace humhub\modules\calendar\models\forms;
 
-use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
 use Yii;
 use yii\base\Model;
@@ -17,7 +16,6 @@ use DateInterval;
 use DateTime;
 use DateTimeZone;
 use humhub\libs\DbDateValidator;
-use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\DefaultSettings;

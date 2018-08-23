@@ -399,7 +399,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             Yii::$app->formatter->timeZone = Yii::$app->user->getIdentity()->time_zone;
         }
 
-        $title = Html::encode($this->title) . (($this->closed) ? ' ('.Yii::t('CalendarModule.base', 'canceled').')' : '');
+        $title = $this->title . (($this->closed) ? ' ('.Yii::t('CalendarModule.base', 'canceled').')' : '');
 
         return [
             'id' => $this->id,

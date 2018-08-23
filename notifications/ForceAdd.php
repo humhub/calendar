@@ -45,7 +45,7 @@ class ForceAdd extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('CalendarModule.base', '{displayName} just added you to event {contentTitle} in space {spaceName}.', [
+        return Yii::t('CalendarModule.base', '{displayName} just added you to event "{contentTitle}" in space {spaceName}.', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
             'contentTitle' => $this->getContentInfo($this->source, false),
             'spaceName' =>  Html::encode($this->source->content->container->displayName)
@@ -57,7 +57,7 @@ class ForceAdd extends BaseNotification
      */
     public function getMailSubject()
     {
-        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} just added you to event {contentTitle}.', [
+        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} just added you to event "{contentTitle}".', [
             'displayName' =>  Html::encode($this->originator->displayName),
             'contentTitle' => $this->getContentInfo($this->source, false)
         ]);

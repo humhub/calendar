@@ -121,6 +121,7 @@ humhub.module('calendar', function (module, require, $) {
     };
 
     Calendar.prototype.renderEvent = function(event, element) {
+        element.attr({title: element.text()});
         if(event.icon) {
             if(string.startsWith(event.icon, 'fa-')) {
                 element.find('.fc-content').prepend($('<i class="fa '+event.icon+'"></i>'));

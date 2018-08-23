@@ -10,7 +10,6 @@ namespace humhub\modules\calendar\jobs;
 
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\calendar\notifications\ForceAdd;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\space\models\Membership;

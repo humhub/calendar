@@ -109,9 +109,6 @@ class CalendarService extends Component
         $event = new CalendarItemsEvent(['contentContainer' => $contentContainer, 'start' => $start, 'end' => $end, 'filters' => $filters, 'limit' => $limit]);
         $this->trigger(static::EVENT_FIND_ITEMS, $event);
 
-
-
-
         foreach($event->getItems() as $itemTypeKey => $items) {
             $itemType = $this->getItemType($itemTypeKey, $contentContainer);
 
