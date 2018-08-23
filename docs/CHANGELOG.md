@@ -9,7 +9,7 @@ Changelog
 - Fix: encoding issue in calendar view
 - Chg: Min HumHub version 1.3
 - Fix: Canceled event missing event title
-
+- Enh: Added move feature for HumHub >= 1.3.2
 
 0.6.17  (July 4, 2018)
 -----------------------

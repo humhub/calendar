@@ -41,7 +41,6 @@ class ForceParticipation extends ActiveJob
             ->where(['calendar_entry_id' => $this->entry_id])
             ->andWhere('calendar_entry_participant.user_id = space_membership.user_id');
 
-
         $remainingMemberships = Membership::find()
             ->where(['space_id' => $entry->content->container->id])
             ->andWhere(['NOT EXISTS', $subQuery])->all();

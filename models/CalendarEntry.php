@@ -14,6 +14,7 @@ use humhub\modules\calendar\widgets\WallEntry;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\calendar\jobs\ForceParticipation;
 use humhub\widgets\Label;
@@ -83,6 +84,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     public $files = [];
 
     /**
+     * @inheritdoc
+     */
+    public $canMove = true;
+
+    /**
+     * @inheritdoc
+     */
+    public $moduleId = 'calendar';
+
+    /**
      * Participation Modes
      */
     const PARTICIPATION_MODE_NONE = 0;
@@ -109,6 +120,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     public function init()
     {
         parent::init();
+
+        // There was a problem in < 1.3.2 where the target container was available in $afterMove
+        $this->canMove = version_compare(Yii::$app->version, '1.3.2', '>=');
 
         // Default participiation Mode
         $this->participation_mode = self::PARTICIPATION_MODE_ALL;
@@ -680,9 +694,28 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
 
     public function generateIcs()
     {
-        $module = Yii::$app;
-        $timezone = $module->settings->get('timeZone');
+        $timezone = Yii::$app->settings->get('timeZone');
         $ics = new ICS($this->title, $this->description,$this->start_datetime, $this->end_datetime, null, null, $timezone, $this->all_day);
         return $ics;
+    }
+
+    public function afterMove(ContentContainerActiveRecord $container = null)
+    {
+        if($container) {
+            $spaceMemberQuery = Membership::find()
+                ->where('space_membership.user_id = calendar_entry_participant.user_id')
+                ->andWhere(['space_membership.space_id' => $container->id]);
+
+            $query = $this->getParticipants()->andWhere(['NOT EXISTS', $spaceMemberQuery]);
+
+            foreach ($query->all() as $nonSpaceMember) {
+                try {
+                    $nonSpaceMember->delete();
+                } catch (\Throwable $e) {
+                    Yii::error($e);
+                }
+            }
+        }
+
     }
 }
