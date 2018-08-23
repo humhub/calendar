@@ -10,9 +10,11 @@ Changelog
 - Chg: Min HumHub version 1.3
 - Fix: Canceled event missing event title
 
+
 0.6.17  (July 4, 2018)
 -----------------------
 - Chg: Added HumHub 1.3 compatibility (new space module handling)
+
 
 0.6.16  (July 2, 2018)
 -----------------------
