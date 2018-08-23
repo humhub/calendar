@@ -12,7 +12,7 @@ use humhub\widgets\ModalButton;
 /* @var $editUrl string */
 /* @var $deleteUrl string */
 /* @var $title string */
-/* @var $isGlobal */
+/* @var $isSpaceGlobal */
 /* @var $color */
 /* @var $disabled */
 
@@ -25,7 +25,7 @@ use humhub\widgets\ModalButton;
             </span>
             <input class="form-control" value="<?= Html::encode($title) ?><?= ($disabled ? ' - '.Yii::t('CalendarModule.config', '(disabled)') : '') ?>" title="<?= Yii::t('CalendarModule.base', 'Event type color');?>" type="text" readonly>
             <span class="input-group-addon">
-                <?php if(empty($editUrl)) : ?>
+                <?php if($isSpaceGlobal) : ?>
                     <small><?=  Yii::t('CalendarModule.config', '(global)') ?></small>
                 <?php else: ?>
                     <?= ModalButton::primary()->load($editUrl)->icon('fa-pencil')->xs() ?>

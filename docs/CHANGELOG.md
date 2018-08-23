@@ -10,6 +10,7 @@ Changelog
 - Chg: Min HumHub version 1.3
 - Fix: Canceled event missing event title
 - Enh: Added move feature for HumHub >= 1.3.2
+- Fix: Global calendar types in space in space edit view
 
 0.6.17  (July 4, 2018)
 -----------------------

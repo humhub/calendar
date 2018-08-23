@@ -22,6 +22,8 @@ if($contentContainer) {
     $deleteUrl = URL::to(['/calendar/config/delete-type', 'id' => $model->id]);
 }
 
+$isSpaceGlobal = ($contentContainer) && !$model->contentContainer;
+
 ?>
 
-<?= $this->render('_calendarTypeItem', ['editUrl' => $editUrl, 'color' => $model->color, 'deleteUrl' => $deleteUrl, 'title' => $model->name, 'disabled' => false])?>
+<?= $this->render('_calendarTypeItem', ['editUrl' => $editUrl, 'color' => $model->color, 'deleteUrl' => $deleteUrl, 'title' => $model->name, 'disabled' => false, 'isSpaceGlobal' => $isSpaceGlobal])?>
