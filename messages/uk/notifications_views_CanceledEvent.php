@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} canceled event \'{contentTitle}\' in space {spaceName}.' => '',
-    '{displayName} canceled event \'{contentTitle}\'.' => '',
-    '{displayName} just updated event {contentTitle} in space {spaceName}.' => '',
-    '{displayName} just updated event {contentTitle}.' => '',
-    '{displayName} reopened event {contentTitle} in space {spaceName}.' => '',
-    '{displayName} reopened event {contentTitle}.' => '',
+    '{displayName} canceled event "{contentTitle}" in space {spaceName}.' => '',
+    '{displayName} canceled event "{contentTitle}".' => '',
+    '{displayName} just updated event "{contentTitle}" in space {spaceName}.' => '',
+    '{displayName} just updated event "{contentTitle}".' => '',
+    '{displayName} reopened event "{contentTitle}" in space {spaceName}.' => '',
+    '{displayName} reopened event "{contentTitle}".' => '',
 ];
