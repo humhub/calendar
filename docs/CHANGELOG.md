@@ -6,8 +6,9 @@ Changelog
 - Enh: Added topic picker to edit form
 - Enh: Added "Add all space members to event" feature
 - Enh: Added calendar event title
-- Fixed: encoding issue in calendar view
+- Fix: encoding issue in calendar view
 - Chg: Min HumHub version 1.3
+- Fix: Canceled event missing event title
 
 0.6.17  (July 4, 2018)
 -----------------------
