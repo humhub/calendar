@@ -48,6 +48,7 @@ use humhub\modules\calendar\widgets\GlobalConfigMenu;
                 'deleteUrl' => null,
                 'title' => $itemType->getTitle(),
                 'disabled' => !$itemType->enabled,
+                'isSpaceGlobal' => ($contentContainer === null),
             ]);?>
         <?php endforeach; ?>
     </div>
