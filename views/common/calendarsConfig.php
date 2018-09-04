@@ -46,6 +46,7 @@ use humhub\modules\calendar\widgets\GlobalConfigMenu;
                 'editUrl' => $itemType->getEditUrl(),
                 'color' => $itemType->getColor($contentContainer),
                 'deleteUrl' => null,
+                'isSpaceGlobal' => false,
                 'title' => $itemType->getTitle(),
                 'disabled' => !$itemType->enabled,
             ]);?>

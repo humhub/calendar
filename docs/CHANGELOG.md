@@ -1,7 +1,11 @@
 Changelog
 =========
 
-0.6.18
+0.6.19 (September 04, 2018)
+-----------------------
+- Fix: Other calendar configuration view not working
+
+0.6.18 (August 23, 2018)
 -----------------------
 - Enh: Added topic picker to edit form
 - Enh: Added "Add all space members to event" feature
