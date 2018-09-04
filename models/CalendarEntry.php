@@ -122,7 +122,10 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         parent::init();
 
         // There was a problem in < 1.3.2 where the target container was available in $afterMove
-        $this->canMove = version_compare(Yii::$app->version, '1.3.2', '>=');
+        if(version_compare(Yii::$app->version, '1.3.2', '>=')) {
+            $this->canMove = true;
+        }
+
 
         // Default participiation Mode
         $this->participation_mode = self::PARTICIPATION_MODE_ALL;
