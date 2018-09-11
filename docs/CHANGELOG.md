@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.6.20
+-----------------------
+- Enh: Added time information to force participation mail
+
 0.6.19 (September 04, 2018)
 -----------------------
 - Fix: Other calendar configuration view not working

@@ -9,19 +9,21 @@
 namespace  humhub\modules\calendar\notifications;
 
 use humhub\libs\Html;
-use humhub\modules\content\notifications\ContentCreatedNotificationCategory;
+use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\space\models\Space;
 use Yii;
 
 /**
- * Created by PhpStorm.
- * User: buddha
- * Date: 21.07.2017
- * Time: 23:12
+ * @var $source CalendarEntry
  */
 class ForceAdd extends BaseNotification
 {
+
+    /**
+     * @var CalendarEntry
+     */
+    public $source;
+
     /**
      * @inheritdoc
      */
@@ -45,10 +47,11 @@ class ForceAdd extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('CalendarModule.base', '{displayName} just added you to event "{contentTitle}" in space {spaceName}.', [
+        return Yii::t('CalendarModule.base', '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
             'contentTitle' => $this->getContentInfo($this->source, false),
-            'spaceName' =>  Html::encode($this->source->content->container->displayName)
+            'spaceName' =>  Html::encode($this->source->content->container->displayName),
+            'time' => $this->source->getFormattedTime()
         ]);
     }
 
