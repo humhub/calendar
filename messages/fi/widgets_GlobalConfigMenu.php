@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Other Calendars' => '',
-    'Defaults' => 'Oletukset',
-    'Event Types' => 'Taphtumatyypit',
-    'Snippet' => 'Pätkä',
-];
+return array (
+  'Defaults' => 'Oletukset',
+  'Event Types' => 'Taphtumatyypit',
+  'Other Calendars' => 'Muiden Kalenterit',
+  'Snippet' => 'Pätkä',
+);
