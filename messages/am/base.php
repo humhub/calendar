@@ -3,6 +3,8 @@
 return [
     '<strong>Add</strong> profile calendar' => '',
     '<strong>Choose</strong> target calendar' => '',
+    'Add all space members to this event' => '',
+    'Add remaining space members to this event' => '',
     'Adds a calendar for private or public events to your profile and main menu.' => '',
     'Adds an event calendar to this space.' => '',
     'All Day' => '',
@@ -45,4 +47,5 @@ return [
     'You don\'t have permission to delete this event!' => '',
     'canceled' => '',
     '{displayName} Birthday' => '',
+    '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
 ];
