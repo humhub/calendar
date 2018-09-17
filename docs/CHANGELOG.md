@@ -1,9 +1,10 @@
 Changelog
 =========
 
-0.6.20
+0.6.20 (September 17, 2018)
 -----------------------
 - Enh: Added time information to force participation mail
+- Enh: Updated Translations
 
 0.6.19 (September 04, 2018)
 -----------------------
