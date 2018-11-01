@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Calendar' => '',
-    'Receive Calendar related Notifications.' => '',
+    'Calendar' => 'Календарь',
+    'Receive Calendar related Notifications.' => 'Получать уведомления о событиях',
 ];
