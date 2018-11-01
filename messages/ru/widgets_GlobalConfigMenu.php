@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Defaults' => '',
-    'Event Types' => '',
-    'Other Calendars' => '',
+    'Defaults' => 'По умолчанию',
+    'Event Types' => 'Типы событий',
+    'Other Calendars' => 'Ссылки на календарь',
     'Snippet' => '',
 ];
