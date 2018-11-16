@@ -104,7 +104,7 @@ class CalendarDateFormatter extends Component
     protected  function getFormattedNonAllDay($format = 'long')
     {
         $result = $this->getFormattedStartDate($format);
-        if($this->getDurationDays() > 1) {
+        if(!$this->isSameDay()) {
             $result .= ', '.$this->getFormattedStartTime().  ' - ';
             $result .= $this->getFormattedEndDate($format).', '.$this->getFormattedEndTime();
         } else {
@@ -112,6 +112,11 @@ class CalendarDateFormatter extends Component
         }
 
         return $result;
+    }
+
+    protected function isSameDay()
+    {
+        return $this->calendarItem->getStartDateTime()->format('Y-m-d') === $this->calendarItem->getEndDateTime()->format('Y-m-d');
     }
 
     protected  function getFormattedAllDay($format = 'long')

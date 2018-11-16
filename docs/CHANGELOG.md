@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.6.21 (November 14, 2018)
+-----------------------
+- Fix: Same day events displaying wrong output date format
+
 0.6.20 (September 17, 2018)
 -----------------------
 - Enh: Added time information to force participation mail
