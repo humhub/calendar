@@ -8,6 +8,7 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit;
 
+use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -53,8 +54,10 @@ class CalendarFormatTest extends HumHubDbTestCase
             'time_zone' => 'Europe/Berlin'
         ]);
 
-        $this->assertEquals('12. September 2017 (UTC+02:00 - Europe/Berlin)', $entry->getFormattedTime());
-        $this->assertEquals('12.09.2017 (UTC+02:00 - Europe/Berlin)', $entry->getFormattedTime('medium'));
+        $berlin_timezone = TimezoneHelper::generateList()['Europe/Berlin'];
+
+        $this->assertEquals("12. September 2017 ($berlin_timezone)", $entry->getFormattedTime());
+        $this->assertEquals("12.09.2017 ($berlin_timezone)", $entry->getFormattedTime('medium'));
     }
 
     public function testAllDayOneDayFormatDifferentTimezone2()
