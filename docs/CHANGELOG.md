@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.6.22 (November 27, 2018)
+-----------------------
+- Fix: Hide permissions for space guest role
+
 0.6.21 (November 14, 2018)
 -----------------------
 - Fix: Same day events displaying wrong output date format

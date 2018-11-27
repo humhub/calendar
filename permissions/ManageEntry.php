@@ -42,6 +42,7 @@ class ManageEntry extends \humhub\libs\BasePermission
         User::USERGROUP_GUEST,
         User::USERGROUP_USER,
         User::USERGROUP_FRIEND,
+        Space::USERGROUP_GUEST,
     ];
 
 
