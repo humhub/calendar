@@ -1,12 +1,12 @@
 <?php
 return array (
-  '<strong>Create</strong> event' => '<strong>Esemény</strong> létrehozása',
-  '<strong>Edit</strong> event' => '<strong>Esemény</strong> szerkesztése',
+  '<strong>Create</strong> event' => 'Esemény <strong>létrehozása</strong>',
+  '<strong>Edit</strong> event' => 'Esemény <strong>szerkesztése</strong>',
   'Basic' => 'Alap',
   'Everybody can participate' => 'Bárki részt vehet',
   'Files' => 'Fájlok',
-  'No participants' => 'Nincsenek részt vevők',
+  'No participants' => 'Nincsenek résztvevők',
   'Participation' => 'Részvétel',
-  'Select event type...' => 'Válassz esemény típust...',
-  'Title' => 'Tárgy',
+  'Select event type...' => 'Eseménytípus kiválasztása...',
+  'Title' => 'Cím',
 );

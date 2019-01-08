@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Upcoming</strong> events ' => '<strong>Következő</strong> események',
+  '<strong>Upcoming</strong> events ' => '<strong>Közelgő</strong> események',
   'Open Calendar' => 'Naptár megnyitása',
 );

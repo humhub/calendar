@@ -35,7 +35,7 @@ return array (
   'Maybe attending users' => 'Możliwi użytkownicy biorący udział',
   'Next' => 'Następny',
   'Participation Mode' => 'Tryb uczestnictwa',
-  'Profile Calendar' => '',
+  'Profile Calendar' => 'Kalendarz profilowy',
   'Public' => 'Publiczny',
   'Reopen Event' => 'Ponownie otwórz wydarzenie',
   'Send update notification' => 'Wyślij powiadomienia o aktualizacji',

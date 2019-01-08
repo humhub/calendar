@@ -1,7 +1,7 @@
 <?php
 return array (
   'Defaults' => 'Alapértelmezett',
-  'Event Types' => 'Esemény típus',
+  'Event Types' => 'Eseménytípusok',
   'Other Calendars' => 'Más naptárak',
-  'Snippet' => 'Oldalmenü',
+  'Snippet' => 'Kódrészlet (snippet)',
 );
