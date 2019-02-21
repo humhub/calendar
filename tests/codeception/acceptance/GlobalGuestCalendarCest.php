@@ -16,7 +16,7 @@ use calendar\AcceptanceTester;
  */
 class GlobalGuestCalendarCest
 {
-    public function testGlobalGuestView(AcceptanceTester $I)
+    public function testGlobalGuestViewProtectedSpace(AcceptanceTester $I)
     {
         $I->wantToTest('Guest access to calendar');
         $I->amAdmin();
@@ -26,6 +26,45 @@ class GlobalGuestCalendarCest
         $I->amGoingTo('create a public event');
 
         $I->amOnSpace1('/calendar/view');
+        $I->createEventToday('Public Event', 'Public Event Description', null, null, false);
+        $I->click('[for="calendarentryform-is_public"]');
+        $I->click('Save', '#globalModal');
+
+        $I->waitForText('Public Event',null, '.fc-event-container');
+        $I->click('Close', '#globalModal');
+
+        $I->wait(1);
+
+        // Workaround regarding Webdriver click issues...
+        $I->click('.calendar_filter_participate');
+
+        $I->wait(1);
+
+        $I->createEventToday('Private Event', 'Private Event Description');
+        $I->waitForText('Private Event', null,'#globalModal');
+        $I->click('Close', '#globalModal');
+
+        $I->wait(1);
+
+        $I->logout();
+        $I->amOnRoute(['/calendar/global']);
+        $I->wait(3);
+        $I->dontSee('Public Event',null, '.fc-event-container');
+        $I->dontSee('Private Event',null, '.fc-event-container');
+    }
+
+    public function testGlobalGuestViewPublicSpace(AcceptanceTester $I)
+    {
+        $I->wantToTest('Guest access to calendar');
+        $I->amAdmin();
+        $I->allowGuestAccess();
+
+        $I->amUser1(true);
+        $I->enableModule(2, 'calendar');
+
+        $I->amGoingTo('create a public event');
+
+        $I->amOnSpace2('/calendar/view');
         $I->createEventToday('Public Event', 'Public Event Description', null, null, false);
         $I->click('[for="calendarentryform-is_public"]');
         $I->click('Save', '#globalModal');

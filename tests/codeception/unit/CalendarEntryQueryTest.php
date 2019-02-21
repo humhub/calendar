@@ -129,6 +129,8 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
     {
         $this->becomeUser('Admin');
         $s1 = Space::findOne(['id' => 1]);
+        $s1->visibility = Space::VISIBILITY_ALL;
+        $s1->save();
         $s2 = Space::findOne(['id' => 2]);
 
         // Create three included queries
