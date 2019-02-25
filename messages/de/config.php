@@ -1,11 +1,11 @@
 <?php
 return array (
   '(disabled)' => '(deaktiviert)',
-  '(global)' => '(generell)',
+  '(global)' => '(allgemein)',
   '<strong>Calendar</strong> module configuration' => '<strong>Kalender</strong> Modul-Einstellungen',
   '<strong>Confirm</strong> Deletion' => 'Löschen <strong>bestätigen</strong>',
-  'Adds an snippet with upcoming events to your users dashboard.' => 'Zeige ein Widget mit den nächsten Terminen auf dem Dashboard deiner Nutzer.',
-  'Create new type' => 'Erstelle eine neue Kategorie',
+  'Adds an snippet with upcoming events to your users dashboard.' => 'Fügt ein Widget mit anstehenden Terminen zur Übersicht Deiner Benutzer hinzu.',
+  'Create new type' => 'Neue Kategorie erstellen',
   'Default event settings' => 'Standard Termin-Einstellungen',
   'Delete' => 'Löschen',
   'Do you really want to delte this event type?' => 'Möchtest du diese Kategorie wirklich löschen?',
@@ -16,7 +16,7 @@ return array (
   'Here you can manage calendar types provided by other modules.' => 'Hier können Sie die von anderen Modulen bereitgestellten Kalendertypen verwalten.',
   'Here you can manage your event types.' => 'Hier kannst du deine Kategorien bearbeiten.',
   'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => 'Wenn diese Option aktiviert ist werden der Menüeintrag „Kalender“ und das Widget „Nächste Termine“ nur dann angezeigt, wenn der Benutzer das Kalender-Modul in seinem Profil aktiviert hat.',
-  'Interval of upcoming events' => 'Zeitspanne für Termine die als „nächste Termine“ betrachtet werden',
+  'Interval of upcoming events' => 'Zeitintervall für anstehende Termine',
   'Max event items' => 'Maximale Anzahl angezeigter Termine',
   'Name' => 'Name',
   'One month' => 'Ein Monat',

@@ -7,6 +7,6 @@ return array (
   'Files' => 'Dateien',
   'No participants' => 'Keine Teilnehmer',
   'Participation' => 'Teilnahmemodus',
-  'Select event type...' => 'Wähle Kategorie',
+  'Select event type...' => 'Kategorie wählen',
   'Title' => 'Titel',
 );
