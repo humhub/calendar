@@ -9,6 +9,7 @@
 
 namespace humhub\modules\calendar\models\forms;
 
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
 use Yii;
 use yii\base\Model;
@@ -70,11 +71,6 @@ class CalendarEntryForm extends Model
      * @var
      */
     public $topics = [];
-
-    /*
-     * @var array
-     */
-    public $markdownFiles = [];
 
     /**
      * @var bool
@@ -160,6 +156,7 @@ class CalendarEntryForm extends Model
      *
      * @param string $attribute attribute name
      * @param [] $params parameters
+     * @throws \Exception
      */
     public function validateEndTime($attribute, $params)
     {
@@ -258,7 +255,8 @@ class CalendarEntryForm extends Model
 
         return CalendarEntry::getDb()->transaction(function($db) {
             if($this->entry->save()) {
-                $this->entry->fileManager->attach($this->entry->files);
+                RichText::postProcess($this->entry->description, $this->entry);
+                RichText::postProcess($this->entry->participant_info, $this->entry);
 
                 if(!empty($this->type_id)) {
                     $this->entry->setType($this->type_id);

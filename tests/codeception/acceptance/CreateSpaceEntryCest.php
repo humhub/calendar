@@ -31,7 +31,7 @@ class CreateSpaceEntryCest
         $I->waitForText('Create event', null, '#globalModal');
 
         $I->fillField('CalendarEntry[title]', 'My Test Entry');
-        $I->fillField('CalendarEntry[description]', 'My Test Entry Description');
+        $I->fillField('#calendarentry-description .humhub-ui-richtext', 'My Test Entry Description');
 
         $I->wantToTest('the hide/show functionality for time values (all day selection)');
         $I->seeElement('#calendarentryform-start_time:disabled');
@@ -61,6 +61,7 @@ class CreateSpaceEntryCest
         $I->click('Save', '#globalModal');
         $I->expectTo('see my event loaded into my modal');
         $I->waitForText('My Test Entry',null, '#globalModal');
+        $I->waitForText('Close',null, '#globalModal');
 
         $I->click('Close', '#globalModal');
 

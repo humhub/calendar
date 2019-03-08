@@ -647,3 +647,12 @@ table.fc-border-separate {
 #calendar-entry-form .tab-menu {
 	margin-bottom:0px;
 }
+
+#calendar-entry-form .ProseMirror-menubar-wrapper {
+
+	z-index: 8;
+}
+
+#calendar-entry-form .ProseMirror {
+	min-height: 150px !important;
+}

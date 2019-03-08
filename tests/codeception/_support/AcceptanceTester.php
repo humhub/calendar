@@ -30,7 +30,7 @@ class AcceptanceTester extends \AcceptanceTester
        $this->waitForText('Create event');
 
        $this->fillField('CalendarEntry[title]', $title);
-       $this->fillField('CalendarEntry[description]', $description);
+       $this->fillField('#calendarentry-description .humhub-ui-richtext'  , $description);
 
        if($startTime) {
            $this->click('[for="calendarentry-all_day"]');

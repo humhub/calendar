@@ -53,7 +53,7 @@ class ParticipationCest
         $I->selectOption('#calendarentry-participation_mode', 2);
 
         $I->fillField('#calendarentry-max_participants', 1);
-        $I->fillField('CalendarEntry[participant_info]', 'My Test Event');
+        $I->fillField('#calendarentry-participant_info .humhub-ui-richtext', 'My Test Event');
 
         $I->click('[type="submit"]');
         $I->waitForText('Participant Description',null, '#globalModal');

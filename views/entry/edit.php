@@ -1,18 +1,10 @@
 <?php
 
-use humhub\libs\Html;
-use humhub\libs\TimezoneHelper;
+
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\modules\file\widgets\FilePreview;
-use humhub\modules\file\widgets\UploadButton;
-use humhub\widgets\Button;
-use humhub\widgets\ColorPickerField;
-use humhub\widgets\MarkdownEditor;
 use humhub\widgets\ModalButton;
 use humhub\widgets\Tabs;
-use yii\jui\DatePicker;
-use humhub\widgets\ActiveForm;
-use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\ModalDialog;
 
 /* @var $this \humhub\components\View */

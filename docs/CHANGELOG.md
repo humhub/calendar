@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.23 (November 27, 2018)
+-----------------------
+- Enh: Use of new richtext
+- Fix: Participation info label not translatable
+
 0.6.22 (November 27, 2018)
 -----------------------
 - Fix: Hide permissions for space guest role

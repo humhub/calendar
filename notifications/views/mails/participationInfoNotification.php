@@ -6,6 +6,11 @@
  *
  */
 
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\widgets\mails\MailButtonList;
+use humhub\widgets\mails\MailButton;
+use humhub\widgets\mails\MailContentEntry;
+
 /* @var $this yii\web\View */
 /* @var $viewable humhub\modules\content\notifications\ContentCreated */
 /* @var $url string */
@@ -19,21 +24,22 @@
 /* @var $record \humhub\modules\notification\models\Notification */
 /* @var $html string */
 /* @var $text string */
+
 ?>
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
     <div style="overflow:hidden">
-        <?= humhub\widgets\mails\MailContentEntry::widget([
+        <?= MailContentEntry::widget([
             'originator' => $originator,
-            'content' => $html.'<br><br>'.\humhub\widgets\MarkdownView::widget(['markdown' => $source->participant_info]),
+            'content' => $html.'<br><br>'. RichText::preview($source->participant_info),
             'date' => $date,
             'space' => $space
         ]) ?>
     </div>
 
-    <?= \humhub\widgets\mails\MailButtonList::widget([
+    <?= MailButtonList::widget([
         'buttons' => [
-            humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')])
+            MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')])
         ]
     ]) ?>
 

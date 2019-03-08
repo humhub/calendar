@@ -7,7 +7,7 @@
  */
 
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\modules\ui\form\widgets\Markdown;
+use humhub\modules\content\widgets\richtext\RichTextField;
 
 /* @var $form \humhub\widgets\ActiveForm */
 /* @var $calendarEntryForm \humhub\modules\calendar\models\forms\CalendarEntryForm */
@@ -21,7 +21,7 @@ use humhub\modules\ui\form\widgets\Markdown;
         <?= $form->field($calendarEntryForm->entry, 'max_participants')->textInput() ?>
         <?= $form->field($calendarEntryForm->entry, 'allow_decline')->checkbox() ?>
         <?= $form->field($calendarEntryForm->entry, 'allow_maybe')->checkbox() ?>
-        <?= $form->field($calendarEntryForm->entry, 'participant_info')->widget(Markdown::class, ['fileModel' => $calendarEntryForm, 'fileAttribute' => 'files'])->label(false) ?>
+        <?= $form->field($calendarEntryForm->entry, 'participant_info')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Participation Info'), 'pluginOptions' => ['maxHeight' => '300px']])->label(false) ?>
 
         <?php if(!$calendarEntryForm->entry->isNewRecord) : ?>
             <?= $form->field($calendarEntryForm, 'sendUpdateNotification')->checkbox() ?>

@@ -211,6 +211,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
      *
      * @param string $attribute attribute name
      * @param array $params parameters
+     * @throws \Exception
      */
     public function validateEndTime($attribute, $params)
     {

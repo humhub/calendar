@@ -1,9 +1,10 @@
 <?php
+
 use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\form\widgets\ColorPicker;
 use humhub\modules\content\widgets\ContentTagDropDown;
-use humhub\modules\ui\form\widgets\Markdown;
 use humhub\modules\ui\form\widgets\TimePicker;
 use humhub\widgets\TimeZoneDropdownAddition;
 use yii\jui\DatePicker;
@@ -39,7 +40,7 @@ use yii\jui\DatePicker;
         'options' => ['data-action-change' => 'changeEventType']
     ])->label(false); ?>
 
-    <?= $form->field($calendarEntryForm->entry, 'description')->widget(Markdown::class, ['fileModel' => $calendarEntryForm->entry, 'fileAttribute' => 'files'])->label(false) ?>
+    <?= $form->field($calendarEntryForm->entry, 'description')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Description'), 'pluginOptions' => ['maxHeight' => '300px']])->label(false) ?>
 
     <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
     <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
