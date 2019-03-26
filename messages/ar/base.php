@@ -33,6 +33,7 @@ return [
     'Maximum number of participants' => '',
     'Maybe attending users' => '',
     'Next' => '',
+    'Participation Info' => '',
     'Participation Mode' => '',
     'Profile Calendar' => '',
     'Public' => '',

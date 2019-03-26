@@ -13,6 +13,7 @@ return [
     'Event type color' => '',
     'Invalid event type id selected.' => '',
     'Maximum number of participants' => '',
+    'Participation Info' => '',
     'Profile Calendar' => '',
     'Reopen Event' => '',
     'Send update notification' => '',

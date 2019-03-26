@@ -5,6 +5,7 @@ return [
     '<strong>Choose</strong> target calendar' => '',
     'Add all space members to this event' => '',
     'Add remaining space members to this event' => '',
+    'Participation Info' => '',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
     'Adds a calendar for private or public events to your profile and main menu.' => 'あなたのプロフィールやメインメニューに、プライベートまたは公開イベントカレンダーを追加します。',
     'Adds an event calendar to this space.' => 'このスペースにイベントカレンダーを追加します。',

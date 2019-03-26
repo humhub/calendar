@@ -7,6 +7,7 @@ return [
     'Birthday' => '',
     'Cancel Event' => '',
     'Download as ICS file' => '',
+    'Participation Info' => '',
     'Profile Calendar' => '',
     'Reopen Event' => '',
     '{displayName} Birthday' => '',

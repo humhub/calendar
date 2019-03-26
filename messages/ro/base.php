@@ -21,6 +21,7 @@ return [
     'Invalid event type id selected.' => '',
     'Maximum number of participants' => '',
     'Next' => '',
+    'Participation Info' => '',
     'Profile Calendar' => '',
     'Public' => '',
     'Reopen Event' => '',

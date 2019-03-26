@@ -3,6 +3,7 @@
 return [
     'Add all space members to this event' => '',
     'Add remaining space members to this event' => '',
+    'Participation Info' => '',
     '{displayName} Birthday' => '',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
     '<strong>Add</strong> profile calendar' => '<strong>Añadir</strong> calendario del perfil',
