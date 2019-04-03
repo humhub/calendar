@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.6.24 
+-----------------------
+- Enh: Added `humhub\modules\calendar\widgets\CalendarControls` stacked menu in full calendar view
+
 0.6.23 (November 27, 2018)
 -----------------------
 - Enh: Use of new richtext

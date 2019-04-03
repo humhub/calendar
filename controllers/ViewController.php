@@ -2,10 +2,9 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use Yii;
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\space\models\Space;
-use Yii;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentContainerController;
 
@@ -37,16 +36,25 @@ class ViewController extends ContentContainerController
         $this->calendarService = $this->module->get(CalendarService::class);
     }
 
+    /**
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionIndex()
     {
         return $this->render('index', [
             'contentContainer' => $this->contentContainer,
             'canAddEntries' => $this->contentContainer->permissionManager->can(new CreateEntry()),
-            'canConfigure' => $this->canConfigure(),
             'filters' => [],
         ]);
     }
 
+    /**
+     * @param $start
+     * @param $end
+     * @return \yii\web\Response
+     * @throws \Exception
+     */
     public function actionLoadAjax($start, $end)
     {
         $result = [];
@@ -59,14 +67,4 @@ class ViewController extends ContentContainerController
 
         return $this->asJson($result);
     }
-
-    public function canConfigure()
-    {
-        if($this->contentContainer instanceof Space) {
-            return $this->contentContainer->isAdmin();
-        } else {
-            return $this->contentContainer->isCurrentUser();
-        }
-    }
-
 }

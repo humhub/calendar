@@ -12,6 +12,10 @@ namespace humhub\modules\calendar\widgets;
 use humhub\components\Widget;
 use Yii;
 
+/**
+ * Class CalendarFilterBar
+ * @package humhub\modules\calendar\widgets
+ */
 class CalendarFilterBar extends Widget
 {
     public $filters = [];
@@ -21,7 +25,6 @@ class CalendarFilterBar extends Widget
     public $showSelectors = true;
 
     public $canConfigure = false;
-    public $configUrl;
 
     public function run()
     {
@@ -32,7 +35,6 @@ class CalendarFilterBar extends Widget
         return $this->render('calendarFilterBar', [
             'filters' => $this->filters,
             'canConfigure' => $this->canConfigure,
-            'configUrl' => $this->configUrl,
             'selectors' => $this->selectors,
             'showFilters' => $this->showFilter,
             'showSelectors' => $this->showSelectors
