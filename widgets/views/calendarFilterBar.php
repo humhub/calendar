@@ -21,7 +21,7 @@ use humhub\widgets\FadeIn;
         <div class="pull-right">
             <?= CalendarControls::widget([
                     'widgets' => [
-                        [ConfigureButton::class, []]
+                        [ConfigureButton::class, [], ['sortOrder' => 100]]
                     ]
             ])?>
         </div>

@@ -39,7 +39,7 @@ class ConfigureButton extends Widget
             return '';
         }
 
-        return Button::defaultType()->link($this->getConfigUrl())->right()->icon('fa-cog')->visible($this->canConfigure());
+        return Button::defaultType()->link($this->getConfigUrl())->icon('fa-cog')->visible($this->canConfigure());
     }
 
     private function getConfigUrl()
