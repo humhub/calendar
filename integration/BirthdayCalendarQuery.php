@@ -44,6 +44,10 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     protected function setupDateCriteria()
     {
+        if(!$this->_to || !$this->_from) {
+            throw new FilterNotSupportedException('Global filter not supported for this query');
+        }
+
         $toYear = (int)$this->_to->format('Y');
         $fromYear = (int)$this->_from->format('Y');
 

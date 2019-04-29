@@ -20,14 +20,6 @@ class Module extends ContentContainerModule
      */
     public $resourcesPath = 'resources';
 
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-        $this->set(CalendarService::class, ['class' => CalendarService::class]);
-    }
 
     /**
      * @inheritdoc

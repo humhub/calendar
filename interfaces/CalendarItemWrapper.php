@@ -39,6 +39,8 @@ class CalendarItemWrapper extends Component implements CalendarItem
     const OPTION_BADGE = 'badge';
     const OPTION_EDITABLE = 'editable';
     const OPTION_TIMEZONE = 'timezone';
+    const OPTION_UID = 'uid';
+    const OPTION_EXPORTABLE = 'exportable';
 
     /**
      * @var CalendarItemType
@@ -167,5 +169,21 @@ class CalendarItemWrapper extends Component implements CalendarItem
     public function getIcon()
     {
         return $this->getOption(static::OPTION_ICON, $this->itemType->getIcon());
+    }
+
+    /**
+     * @return string
+     */
+    public function getUid()
+    {
+        return $this->getOption(static::OPTION_UID, null);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isExportable()
+    {
+        return $this->getOption(static::OPTION_EXPORTABLE, true);
     }
 }

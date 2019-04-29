@@ -18,6 +18,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\calendar\jobs\ForceParticipation;
 use humhub\widgets\Label;
+use Sabre\VObject\UUIDUtil;
 use Yii;
 use DateTime;
 use DateInterval;
@@ -44,6 +45,7 @@ use yii\db\ActiveQuery;
  * @property integer $recur_interval
  * @property string $recur_end
  * @property string $color
+ * @property string $uid
  * @property integer $allow_decline
  * @property integer $allow_maybe
  * @property string $participant_info
@@ -256,7 +258,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             $this->all_day = 1;
         }
 
+        if($this->hasProperty('uid') && empty($this->uid)) {
+            $this->uid = static::createUUid();
+        }
+
         return parent::beforeSave($insert);
+    }
+
+    public static function createUUid($type = 'event')
+    {
+        return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
     }
 
     public function beforeDelete()
@@ -283,6 +294,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     /**
      * @param string $notificationClass
      * @throws \yii\base\InvalidConfigException
+     * @throws \Throwable
      */
     public function sendUpdateNotification($notificationClass = EventUpdated::class)
     {
@@ -442,6 +454,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
      *
      * @param User $user
      * @return boolean
+     * @throws \Throwable
      */
     public function canRespond(User $user = null)
     {
@@ -484,6 +497,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
      *
      * @param User $user
      * @return boolean
+     * @throws \Throwable
      */
     public function hasResponded(User $user = null)
     {
@@ -629,6 +643,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
      * @param int $limit
      * @return CalendarEntry[]
      * @throws Exception
+     * @throws \Throwable
      * @see CalendarEntryQuery
      */
     public static function getEntriesByRange(DateTime $start, DateTime $end, $includes = [], $filters = [], $limit = 50)
@@ -653,6 +668,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
      * @param int $daysInFuture
      * @param int $limit
      * @return CalendarEntry[]
+     * @throws \Throwable
      */
     public static function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5)
     {
@@ -721,5 +737,26 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             }
         }
 
+    }
+
+    /**
+     * @return string
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isExportable()
+    {
+        return true;
     }
 }

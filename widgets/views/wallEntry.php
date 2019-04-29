@@ -14,7 +14,7 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
 ?>
 
 <div class="media event" style="" data-action-component="calendar.CalendarEntry" data-calendar-entry="<?= $calendarEntry->id ?>">
-    <div class="y" style="padding-left:10px; border-left: 3px solid <?= $color ?>">
+    <div style="padding-left:10px; border-left: 3px solid <?= $color ?>">
         <div class="media-body clearfix">
             <a href="<?= $calendarEntry->getUrl(); ?>" class="pull-left" style="margin-right: 10px">
                 <i class="fa fa-calendar colorDefault" style="font-size: 35px;"></i>

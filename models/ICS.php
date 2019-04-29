@@ -10,6 +10,11 @@ use DateInterval;
 use DateTime;
 use Yii;
 
+/**
+ * Class ICS
+ * @package humhub\modules\calendar\models
+ * @deprecated since 0.7 use humhub\modules\calendar\interfaces\VCalendar instead
+ */
 class ICS
 {
     const DT_FORMAT_TIME = 'php:His';
@@ -33,6 +38,7 @@ class ICS
      * @param string $url
      * @param string $timezone
      * @param bool $allDay
+     * @throws \Exception
      */
     public function __construct($summary, $description, $dtstart, $dtend, $location, $url, $timezone, $allDay = false)
     {
