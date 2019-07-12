@@ -138,7 +138,9 @@ abstract class AbstractCalendarQuery extends Component
     {
         return static::find()
             ->container($container)
-            ->from($start)->to($end)
+            ->to($end)
+            ->withTime()
+            ->from($start)
             ->filter($filters)
             ->limit($limit)->all();
     }
