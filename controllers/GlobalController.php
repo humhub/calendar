@@ -103,7 +103,7 @@ class GlobalController extends Controller
 
         foreach ($calendarMemberSpaceQuery->all() as $space) {
             if ($space->permissionManager->can(CreateEntry::class)) {
-                $contentContainerSelection[$space->contentcontainer_id] = Html::encode($space->displayName);
+                $contentContainerSelection[$space->contentcontainer_id] = $space->displayName;
             }
         }
 
@@ -117,7 +117,7 @@ class GlobalController extends Controller
     {
         $this->forcePostRequest();
 
-        $contentContainer = ContentContainer::findOne(Yii::$app->request->post('contentCotnainerId'));
+        $contentContainer = ContentContainer::findOne(Yii::$app->request->post('contentContainerId'));
 
         if (empty($contentContainer)) {
             throw new HttpException(404);

@@ -19,7 +19,7 @@ use humhub\libs\Html;
 <?php ModalDialog::begin(['header' => Yii::t('CalendarModule.base', '<strong>Choose</strong> target calendar'), 'size' => 'small'])?>
     <?php $form = ActiveForm::begin()?>
         <div class="modal-body">
-            <?= Html::dropDownList('contentCotnainerId', null, $contentContainerSelection, ['class' => 'form-control', 'data-ui-select2' => ''])?>
+            <?= Html::dropDownList('contentContainerId', null, $contentContainerSelection, ['class' => 'form-control', 'data-ui-select2' => ''])?>
         </div>
         <div class="modal-footer">
             <?= ModalButton::submitModal($submitUrl, Yii::t('CalendarModule.base', 'Next'))?>
