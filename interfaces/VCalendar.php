@@ -17,11 +17,6 @@ class VCalendar extends Model
     const PRODID = '-//HumHub Org//HumHub Calendar 0.7//EN';
 
     /**
-     * @var CalendarItem[]
-     */
-    public $items = [];
-
-    /**
      * @var
      */
     public $name;
@@ -33,17 +28,12 @@ class VCalendar extends Model
      */
     private $vcalendar;
 
-    public function serialize()
+    public function init()
     {
+        parent::init();
         $this->initVObject();
-
-        foreach($this->items as $item)
-        {
-            $this->addVEvent($item);
-        }
-
-        return $this->vcalendar->serialize();
     }
+
 
     /**
      * @return VObject\Component\VCalendar
@@ -62,6 +52,16 @@ class VCalendar extends Model
         ]);
     }
 
+    public function getInstance()
+    {
+        return $this->vcalendar;
+    }
+
+    public function serialize()
+    {
+        return $this->vcalendar->serialize();
+    }
+
     /**
      * @param $item CalendarItem
      * @return array []
@@ -70,10 +70,6 @@ class VCalendar extends Model
     private function addVEvent(CalendarItem $item)
     {
         $dtend = $item->getEndDateTime();
-
-        if($item->isAllDay()) {
-            $dtend = $dtend->add(new \DateInterval('P1D'));
-        }
 
         $result = [
             'DTSTART' => $item->getStartDateTime(),
@@ -84,6 +80,18 @@ class VCalendar extends Model
         if(property_exists($item, 'location')) {
             $result['LOCATION'] = $item->location;
         }
+
+       if($item->getRRule()) {
+           $result['RRULE'] = $item->getRRule();
+       }
+
+       // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
+       if(!empty($item->getExdate())) {
+           $result['EXDATE'] = [];
+           foreach(explode(',', $item->getExdate()) as $exdate) {
+               $result['EXDATE'][] = $exdate;
+           }
+       }
 
         if(property_exists($item, 'description')) {
             $result['DESCRIPTION'] = $item->description;
@@ -109,7 +117,9 @@ class VCalendar extends Model
     }
 
     /**
-     * @param $items CalendarItem|CalendarItem[]
+     * @param $items CalendarItem|CalendarItem[]|array
+     * @return VCalendar
+     * @throws \Exception
      */
     public function add($items)
     {
@@ -117,7 +127,10 @@ class VCalendar extends Model
             $items = [$items];
         }
 
+        foreach ($items as $item) {
+            $this->addVEvent($item);
+        }
 
-        $this->items = array_merge($this->items, $items);
+        return $this;
     }
 }

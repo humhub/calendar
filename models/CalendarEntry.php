@@ -759,4 +759,17 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     {
         return true;
     }
+
+    /**
+     * @return string
+     */
+    public function getRRule()
+    {
+        return null;
+    }
+
+    public function getExdate()
+    {
+        return null;
+    }
 }

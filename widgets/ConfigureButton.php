@@ -44,13 +44,20 @@ class ConfigureButton extends Widget
 
     private function getConfigUrl()
     {
-        return  $this->container->createUrl('/calendar/container-config');
+        $menu = new ContainerConfigMenu();
+        $first = $menu->getFirstVisibleItem();
+        if(!$first) {
+            return '';
+        }
+
+        return  $first['url'];
     }
 
     public function canConfigure()
     {
         if($this->container instanceof Space) {
-            return $this->container->isAdmin();
+            $menu = new ContainerConfigMenu();
+            return !empty($menu->getFirstVisibleItem());
         } else {
             return $this->container->isCurrentUser();
         }

@@ -100,4 +100,11 @@ interface CalendarItem
      * @return boolean
      */
     public function isExportable();
+
+    /**
+     * @return string
+     */
+    public function getRRule();
+
+    public function getExdate();
 }

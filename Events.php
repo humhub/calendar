@@ -21,7 +21,7 @@ class Events
     /**
      * @inheritdoc
      */
-    public function onBeforeRequest()
+    public static function onBeforeRequest()
     {
         static::registerAutoloader();
         Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
