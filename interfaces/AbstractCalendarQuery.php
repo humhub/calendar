@@ -155,12 +155,13 @@ abstract class AbstractCalendarQuery extends Component
             ->filter($filters)
             ->limit($limit);
 
-        if($start) {
-            $query->from($start);
-        }
-
         if($end) {
             $query->to($end);
+        }
+
+        if($start) {
+            $query->withTime();
+            $query->from($start);
         }
 
         $result = $query->all();
