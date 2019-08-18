@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.6.24 
+-----------------------
+- Enh: Added `humhub\modules\calendar\widgets\CalendarControls` stacked menu in full calendar view
+- Chng: Added VObject dependency for ICS handling
+- Enh: Added `uid` field and auto UID creation in AbstractCalendarQuery
+- Fix: Fixed encoding issue in space selection dropdown
+- Fix: Space selection dropdown does not respect default module installation
+
 0.6.23 (November 27, 2018)
 -----------------------
 - Enh: Use of new richtext

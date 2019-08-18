@@ -7,4 +7,5 @@ nbproject
 node_modules
 
 tests/codeception/_support/_generated/*
+vendor/
 

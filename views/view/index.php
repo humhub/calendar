@@ -4,15 +4,16 @@ use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\widgets\Button;
 use humhub\widgets\FadeIn;
 
-$configUrl = $contentContainer->createUrl('/calendar/container-config');
 $loadAjaxUrl = $contentContainer->createUrl('/calendar/view/load-ajax');
+
+/* @var $filters array */
+/* @var $canConfigure bool */
+/* @var $canAddEntries bool */
 ?>
 <div class="panel panel-default">
     <div class="panel-body" style="background-color:<?= $this->theme->variable('background-color-secondary') ?>">
         <?= CalendarFilterBar::widget([
             'filters' => $filters,
-            'canConfigure' => $canConfigure,
-            'configUrl' => $configUrl,
             'showSelectors' => false
             ]) ?>
     </div>

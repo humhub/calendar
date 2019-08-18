@@ -3,6 +3,8 @@ namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
 use humhub\modules\cfiles\models\rows\AbstractFileSystemItemRow;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use Sabre\VObject\UUIDUtil;
 use Yii;
 use humhub\modules\space\models\Space;
 use DateTime;
@@ -65,6 +67,19 @@ class CalendarEntryQuery extends AbstractCalendarQuery
      * @var bool true if the participant join has already been added else false
      */
     private $praticipantJoined = false;
+
+    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50)
+    {
+        /* @var $event CalendarEntry */
+        $events = parent::findForFilter($start, $end, $container, $filters, $limit);
+        foreach ($events as $event) {
+            if(empty($event->uid)) {
+                $event->save();
+            }
+        }
+
+        return $events;
+    }
 
     public function filterResponded()
     {

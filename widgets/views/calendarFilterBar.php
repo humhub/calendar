@@ -1,16 +1,30 @@
 <?php
+
+use humhub\modules\calendar\widgets\CalendarControls;
+use humhub\modules\calendar\widgets\ConfigureButton;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\widgets\Button;
 use humhub\widgets\FadeIn;
 
+/* @var $canConfigure bool */
+/* @var $canAddEntries bool */
+/* @var $selectors array */
+/* @var $filters array */
+/* @var $showSelectors bool */
+/* @var $showFilters bool */
 ?>
 
 <?php FadeIn::begin() ?>
 <div class="row calendar-options">
     <div class="col-md-12">
         <div id="calendar-overview-loader" style="position: absolute;right: 10px;top: 60px;"></div>
-        <?= Button::defaultType()->link($configUrl)->right()->icon('fa-cog')->visible($canConfigure) ?>
+        <div class="pull-right">
+            <?= CalendarControls::widget([
+                    'widgets' => [
+                        [ConfigureButton::class, [], ['sortOrder' => 100]]
+                    ]
+            ])?>
+        </div>
         <?php if ($showSelectors) : ?>
             <div class="calendar-selectors">
                 <strong style="padding-left:10px;">

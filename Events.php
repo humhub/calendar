@@ -6,17 +6,38 @@ use humhub\modules\calendar\integration\BirthdayCalendar;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\DownloadIcsLink;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * Description of CalendarEvents
- *
+ *EE
  * @author luke
  */
 class Events
 {
+    /**
+     * @inheritdoc
+     */
+    public static function onBeforeRequest()
+    {
+        static::registerAutoloader();
+        Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
+    }
+
+    /**
+     * Register composer autoloader when Reader not found
+     */
+    public static function registerAutoloader()
+    {
+        if (class_exists('\Sabre\VObject')) {
+            return;
+        }
+
+        require Yii::getAlias('@calendar/vendor/autoload.php');
+    }
 
     /**
      * @param $event \humhub\modules\calendar\interfaces\CalendarItemTypesEvent

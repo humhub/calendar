@@ -39,6 +39,10 @@ class CalendarItemWrapper extends Component implements CalendarItem
     const OPTION_BADGE = 'badge';
     const OPTION_EDITABLE = 'editable';
     const OPTION_TIMEZONE = 'timezone';
+    const OPTION_UID = 'uid';
+    const OPTION_EXPORTABLE = 'exportable';
+    const OPTION_RRULE = 'rrule';
+    const OPTION_EXDATE = 'exdate';
 
     /**
      * @var CalendarItemType
@@ -56,6 +60,7 @@ class CalendarItemWrapper extends Component implements CalendarItem
     public function getFullCalendarArray()
     {
         return [
+            'uid' => $this->getUid(),
             'title' => $this->getTitle(),
             'editable' => $this->isEditable(),
             'backgroundColor' => Html::encode($this->getColor()),
@@ -63,6 +68,8 @@ class CalendarItemWrapper extends Component implements CalendarItem
             'updateUrl' => $this->getUpdateUrl(),
             'viewUrl' => $this->getViewUrl(),
             'viewMode' => $this->getViewMode(),
+            'rrule' => $this->getRrule(),
+            'exdate' => $this->getExdate(),
             'icon' => $this->getIcon(),
             'start' => Yii::$app->formatter->asDatetime($this->getStartDateTime(), 'php:c'),
             'end' => Yii::$app->formatter->asDatetime($this->getEndDateTime(), 'php:c'),
@@ -100,24 +107,29 @@ class CalendarItemWrapper extends Component implements CalendarItem
         return $this->getOption(static::OPTION_EDITABLE, false);
     }
 
-    public function getModelId()
-    {
-        return $this->getOption(static::OPTION_TITLE, $this->itemType->getTitle());
-    }
-
     public function getTitle()
     {
-        return $this->getOption(static::OPTION_TITLE, $this->itemType->getTitle());
+        return $this->getOption(static::OPTION_TITLE, $this->itemType ? $this->itemType->getTitle() : '');
+    }
+
+    public function getRrule()
+    {
+        return $this->getOption(static::OPTION_RRULE, null);
+    }
+
+    public function getExdate()
+    {
+        return $this->getOption(static::OPTION_EXDATE, null);
     }
 
     public function getColor()
     {
-        return $this->getOption(static::OPTION_COLOR, $this->itemType->getColor());
+        return $this->getOption(static::OPTION_COLOR, $this->itemType ? $this->itemType->getColor() : '');
     }
 
     public function isAllDay()
     {
-        if($this->getOption(static::OPTION_ALL_DAY, $this->itemType->isAllDay())) {
+        if($this->getOption(static::OPTION_ALL_DAY, $this->itemType ? $this->itemType->isAllDay() : null)) {
             return true;
         } else {
             return false;
@@ -158,7 +170,8 @@ class CalendarItemWrapper extends Component implements CalendarItem
      */
     public function getBadge()
     {
-        return $this->getOption(static::OPTION_BADGE, Label::asColor($this->getColor(), $this->itemType->getTitle())->icon($this->getIcon())->right());
+        $default = $this->itemType ? Label::asColor($this->getColor(), $this->itemType->getTitle())->icon($this->getIcon())->right() : '';
+        return $this->getOption(static::OPTION_BADGE, $default);
     }
 
     /**
@@ -166,6 +179,22 @@ class CalendarItemWrapper extends Component implements CalendarItem
      */
     public function getIcon()
     {
-        return $this->getOption(static::OPTION_ICON, $this->itemType->getIcon());
+        return $this->getOption(static::OPTION_ICON, $this->itemType ? $this->itemType->getIcon() : null);
+    }
+
+    /**
+     * @return string
+     */
+    public function getUid()
+    {
+        return $this->getOption(static::OPTION_UID, null);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isExportable()
+    {
+        return $this->getOption(static::OPTION_EXPORTABLE, true);
     }
 }

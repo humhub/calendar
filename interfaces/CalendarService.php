@@ -101,8 +101,9 @@ class CalendarService extends Component
      * @param ContentContainerActiveRecord $contentContainer
      * @param null $limit
      * @return CalendarItem[]
+     * @throws \Throwable
      */
-    public function getCalendarItems(DateTime $start, DateTime $end, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null)
+    public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null)
     {
         $result = [];
 

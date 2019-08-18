@@ -10,12 +10,14 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateInterval;
 use Exception;
+use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;
 use DateTime;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ActiveQueryContent;
 use yii\base\Component;
+use yii\db\ActiveRecord;
 
 /**
  * Created by PhpStorm.
@@ -127,25 +129,58 @@ abstract class AbstractCalendarQuery extends Component
     protected $_built = false;
 
     /**
+     * @var bool determines if the query logic should try to auto assign a uid for the resulting events
+     * @see $uidProperty
+     */
+    protected $autoAssignUid = true;
+
+    /**
+     * @var string This field has to exist on the record class in order for [[autoAssignUid]] to work.
+     */
+    protected $uidProperty = 'uid';
+
+    /**
      * @param DateTime $start
      * @param DateTime $end
      * @param ContentContainerActiveRecord $container
      * @param array $filters
      * @param int $limit
      * @return array|\yii\db\ActiveRecord[]
+     * @throws \Throwable
      */
-    public static function findForFilter(DateTime $start, DateTime $end, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50)
+    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50)
     {
-        return static::find()
+        $query = static::find()
             ->container($container)
-            ->from($start)->to($end)
             ->filter($filters)
-            ->limit($limit)->all();
+            ->limit($limit);
+
+        if($start) {
+            $query->from($start);
+        }
+
+        if($end) {
+            $query->to($end);
+        }
+
+        $result = $query->all();
+
+        if($query->autoAssignUid) {
+            foreach($result as $entry) {
+                /* @var $entry ActiveRecord */
+                if($entry->hasProperty($query->uidProperty) && empty($entry->{$query->uidProperty})) {
+                    $entry->updateAttributes([$query->uidProperty => CalendarEntry::createUUid()]);
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
      * @param CalendarItemsEvent $event
      * @return array|\yii\db\ActiveRecord[]
+     * @throws \Throwable
      */
     public static function findForEvent(CalendarItemsEvent $event)
     {
@@ -157,6 +192,7 @@ abstract class AbstractCalendarQuery extends Component
      * Static initializer.
      * @param User $user user instance used for some of the filter e.g. [[mine()]] by default current logged in user.
      * @return \self
+     * @throws \Throwable
      */
     public static function find(User $user = null)
     {
@@ -351,6 +387,7 @@ abstract class AbstractCalendarQuery extends Component
      *
      * @param int|DateTime $to specifies the actual end date either by an interval (int) or an actual DateTime instance
      * @return $this
+     * @throws Exception
      */
     public function to($to = null, $dateUnit = 'D')
     {
@@ -404,6 +441,7 @@ abstract class AbstractCalendarQuery extends Component
      *
      * @param int|DateTime $to specifies the actual end date either by an interval (int) or an actual DateTime instance
      * @return $this
+     * @throws Exception
      */
     public function from($from = null, $dateUnit = 'D')
     {
@@ -447,6 +485,7 @@ abstract class AbstractCalendarQuery extends Component
      * @param int $days interval either positive or negative
      * @return $this
      * @see interval()
+     * @throws Exception
      */
     public function days($days)
     {
@@ -510,6 +549,7 @@ abstract class AbstractCalendarQuery extends Component
      * @param integer $dayRange
      * @param string $dateUnit
      * @return $this
+     * @throws Exception
      */
     public function interval($interval, $dateUnit = "D")
     {
