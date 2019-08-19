@@ -13,6 +13,7 @@ composer install --prefer-dist --no-interaction
 
 npm install
 grunt build-assets
+compoer update
 
 cd ${HUMHUB_PATH}/protected/humhub/tests
 
