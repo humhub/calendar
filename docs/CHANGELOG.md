@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.6.24 
+0.7
 -----------------------
 - Enh: Added `humhub\modules\calendar\widgets\CalendarControls` stacked menu in full calendar view
 - Chng: Added VObject dependency for ICS handling

@@ -4,26 +4,21 @@
 Full featured calendar for your users and spaces.
 
 __Module website:__ <https://github.com/humhub/humhub-modules-calendar>    
-__Author:__ luke, andystrobel    
+__Author:__ luke, andystrobel, buddh4    
 __Author website:__ [humhub.org](http://humhub.org)    
+
+## Installation
+
+For a git based installation you'll need a `composer update` on the modules root in order to fetch dependencies.
 
 ## Changelog
 
-<https://github.com/humhub/humhub-modules-calendar/commits/master>
+See [Changelog](/docs/CHANGELOG.md)
 
 ## Bugtracker
 
 <https://github.com/humhub/humhub-modules-calendar/issues>
 
-## ToDos
-- Refresh Wall Entry on Buttons
-- Settings for Space/User Module (enable Widget, ...)
-- Allow invitation to Events
-- Allow modules to add entries to calendar
-- Recuring Events
-- Notifications before event starts
-- Download ICal 
-- WebDav?
-- Allow Google Calendar integration
+
 
 Calendar UI is based on FullCalendar (http://arshaw.com/fullcalendar/)
