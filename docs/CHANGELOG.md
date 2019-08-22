@@ -1,6 +1,11 @@
 Changelog
 =========
 
+
+0.7.2 (August 22, 2019)
+-----------------------
+- Fix: `VCalendar::withEvents()` broken
+
 0.7.1 (August 22, 2019)
 -----------------------
 - Fix: Issue with PHP < 7 use of incompatible sabre/xml version
