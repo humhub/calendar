@@ -20,6 +20,3 @@ modules:
       browser: chrome
       window_size: 1920x1200
       port: 4444
-      capabilities:
-        "goog:chromeOptions":
-          "w3c": false
