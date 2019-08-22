@@ -43,6 +43,8 @@ class CalendarItemWrapper extends Component implements CalendarItem
     const OPTION_EXPORTABLE = 'exportable';
     const OPTION_RRULE = 'rrule';
     const OPTION_EXDATE = 'exdate';
+    const OPTION_LOCATION = 'location';
+    const OPTION_DESCRIPTION = 'description';
 
     /**
      * @var CalendarItemType
@@ -196,5 +198,21 @@ class CalendarItemWrapper extends Component implements CalendarItem
     public function isExportable()
     {
         return $this->getOption(static::OPTION_EXPORTABLE, true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->getOption(static::OPTION_LOCATION, true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->getOption(static::OPTION_DESCRIPTION, true);
     }
 }

@@ -390,6 +390,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
      *
      * @param User $user
      * @return CalendarEntryParticipant
+     * @throws \Throwable
      */
     public function findParticipant(User $user = null)
     {
@@ -760,10 +761,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         return true;
     }
 
-    /**
-     * @return string
-     */
-    public function getRRule()
+    public function getRrule()
     {
         return null;
     }
@@ -771,5 +769,15 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     public function getExdate()
     {
         return null;
+    }
+
+    public function getLocation()
+    {
+        return null;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

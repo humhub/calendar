@@ -17,6 +17,7 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateInterval;
 use DateTime;
+use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\Component;
@@ -100,19 +101,19 @@ class CalendarService extends Component
      * @param array $filters
      * @param ContentContainerActiveRecord $contentContainer
      * @param null $limit
+     * @param bool $expand
      * @return CalendarItem[]
      * @throws \Throwable
      */
-    public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null)
+    public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null, $expand = true)
     {
         $result = [];
 
-        $event = new CalendarItemsEvent(['contentContainer' => $contentContainer, 'start' => $start, 'end' => $end, 'filters' => $filters, 'limit' => $limit]);
+        $event = new CalendarItemsEvent(['contentContainer' => $contentContainer, 'start' => $start, 'end' => $end, 'filters' => $filters, 'limit' => $limit, 'expand' => $expand]);
         $this->trigger(static::EVENT_FIND_ITEMS, $event);
 
         foreach($event->getItems() as $itemTypeKey => $items) {
             $itemType = $this->getItemType($itemTypeKey, $contentContainer);
-
 
             if($itemType && $itemType->isEnabled()) {
                 foreach ($items as $item) {
@@ -121,7 +122,7 @@ class CalendarService extends Component
             }
         }
 
-        $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, $limit);
+        $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, $limit, $expand);
 
         $result = array_merge($calendarEntries, $result);
 
@@ -132,10 +133,9 @@ class CalendarService extends Component
 
     public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5)
     {
-        $start = new DateTime();
-
-        $end = clone $start;
-        $end->add(new DateInterval('P'.$daysInFuture.'D'));
+        $start = new DateTime('now', CalendarUtils::getUserTimeZone());
+        $end =  (new DateTime('now', CalendarUtils::getUserTimeZone()))
+            ->add(new DateInterval('P'.$daysInFuture.'D'));
 
         $filters = [];
 

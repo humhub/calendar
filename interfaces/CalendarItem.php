@@ -104,7 +104,20 @@ interface CalendarItem
     /**
      * @return string
      */
-    public function getRRule();
+    public function getRrule();
 
+    /**
+     * @return string
+     */
     public function getExdate();
+
+    /**
+     * @return string
+     */
+    public function getLocation();
+
+    /**
+     * @return string
+     */
+    public function getDescription();
 }

@@ -3,6 +3,8 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
+use DateTimeZone;
+use Yii;
 
 /**
  * Description of CalendarUtils
@@ -11,6 +13,8 @@ use DateTime;
  */
 class CalendarUtils
 {
+
+    private static $userTimezone;
 
     /**
      *
@@ -37,4 +41,25 @@ class CalendarUtils
         return false;
     }
 
+    /**
+     * @return DateTimeZone
+     */
+    public static function getUserTimeZone()
+    {
+        if(!static::$userTimezone) {
+            $tz =  Yii::$app->user->isGuest
+                ? Yii::$app->timeZone
+                : Yii::$app->user->getTimeZone();
+
+            if(!$tz) {
+                $tz = Yii::$app->timeZone;
+            }
+
+            if($tz) {
+                static::$userTimezone = new DateTimeZone($tz);
+            }
+        }
+
+        return static::$userTimezone;
+    }
 }

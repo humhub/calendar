@@ -41,6 +41,11 @@ class CalendarItemsEvent extends CalendarEvent
     public $limit;
 
     /**
+     * @var boolean whether or not to expand recurring events
+     */
+    public $expand;
+
+    /**
      * @var []
      */
     public $items = [];
@@ -50,6 +55,7 @@ class CalendarItemsEvent extends CalendarEvent
      */
     public function addItems($itemType, $items)
     {
+        $items = is_array($items) ? $items : [$items];
         if(!isset($this->items[$itemType])) {
             $this->items[$itemType] = $items;
         } else {

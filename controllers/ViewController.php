@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\calendar\CalendarUtils;
 use Yii;
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -54,6 +55,7 @@ class ViewController extends ContentContainerController
      * @param $end
      * @return \yii\web\Response
      * @throws \Exception
+     * @throws \Throwable
      */
     public function actionLoadAjax($start, $end)
     {
@@ -61,7 +63,7 @@ class ViewController extends ContentContainerController
 
         $filters = Yii::$app->request->get('filters', []);
 
-        foreach ($this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), $filters, $this->contentContainer) as $entry) {
+        foreach ($this->calendarService->getCalendarItems(new DateTime($start, CalendarUtils::getUserTimeZone()), new DateTime($end, CalendarUtils::getUserTimeZone()), $filters, $this->contentContainer) as $entry) {
             $result[] = $entry->getFullCalendarArray();
         }
 

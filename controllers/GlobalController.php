@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\controllers;
 use DateTime;
 use humhub\components\Controller;
 use humhub\libs\Html;
+use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\permissions\CreateEntry;
@@ -209,9 +210,9 @@ class GlobalController extends Controller
 
             $filters['userRelated'] = $selectors;
 
-            $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), $filters);
+            $entries = $this->calendarService->getCalendarItems(new DateTime($start, CalendarUtils::getUserTimeZone()), new DateTime($end, CalendarUtils::getUserTimeZone()), $filters);
         } else {
-            $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end));
+            $entries = $this->calendarService->getCalendarItems(new DateTime($start, CalendarUtils::getUserTimeZone()), new DateTime($end, CalendarUtils::getUserTimeZone()));
         }
 
         foreach ($entries as $entry) {

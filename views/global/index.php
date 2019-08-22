@@ -10,7 +10,7 @@ use yii\helpers\Url;
 ?>
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-body" style="background-color:<?= $this->theme->variable('background-color-secondary') ?>">
+        <div class="panel-body" style="background-color:<?= $this->theme->variable('background-color-secondary'); ?>border-radius:4px;">
             <?= CalendarFilterBar::widget([
                     'selectors' => $selectors,
                     'filters' => $filters

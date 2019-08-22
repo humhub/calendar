@@ -68,10 +68,11 @@ class CalendarEntryQuery extends AbstractCalendarQuery
      */
     private $praticipantJoined = false;
 
-    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50)
+    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true)
     {
         /* @var $event CalendarEntry */
-        $events = parent::findForFilter($start, $end, $container, $filters, $limit);
+        $events = parent::findForFilter($start, $end, $container, $filters, $limit, $expand);
+
         foreach ($events as $event) {
             if(empty($event->uid)) {
                 $event->save();

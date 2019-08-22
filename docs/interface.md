@@ -154,7 +154,7 @@ For filtering out Items which do not match our `$event->filters` we simply have 
  
  >Info: Modules can decide which events to include or exclude in the Dashboard snippet by using the `filterDashboard` filter
 
-**MeetingCalendarQuery:**
+**MeetingCalendarQuery example:**
 
 ```php
 class MeetingCalendarQuery extends AbstractCalendarQuery
@@ -181,7 +181,7 @@ class MeetingCalendarQuery extends AbstractCalendarQuery
 
 ### Allow Drag-Drop and Resize of calendar items
 
-If you provide a `updateUrl` and set the `editable` to true, you have to implement a update controller function as the following:
+If you provide an `updateUrl` and set the `editable` to true, you have to implement a update controller function as the following:
 
 **IndexController.php**
 
