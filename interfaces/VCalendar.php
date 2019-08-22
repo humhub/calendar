@@ -38,6 +38,14 @@ class VCalendar extends Model
     {
         $instance = (new static());
         $instance->addTimeZone($tz);
+
+        foreach ($items as $item)
+        {
+            $instance->addVEvent($item);
+        }
+
+
+        return  $instance;
     }
 
     public function addTimeZone($tz)
