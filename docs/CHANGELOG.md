@@ -1,6 +1,9 @@
 Changelog
 =========
 
+0.7.3 (August 28, 2019)
+-----------------------
+- Fix: My events filter not working
 
 0.7.2 (August 22, 2019)
 -----------------------

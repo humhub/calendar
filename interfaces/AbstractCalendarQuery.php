@@ -833,7 +833,7 @@ abstract class AbstractCalendarQuery extends Component
     public function filterMine()
     {
         if ($this->_query instanceof ActiveQueryContent) {
-            $this->_query->andWhere(['content.created_by' => $this->_user->contentcontainer_id]);
+            $this->_query->andWhere(['content.created_by' => $this->_user->id]);
         } else {
             throw new FilterNotSupportedException('Mine filter not supported for this query');
         }
