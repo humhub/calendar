@@ -45,7 +45,7 @@ return array (
   'Time Zone' => 'Zeitzone',
   'Title' => 'Titel',
   'You don\'t have permission to delete this event!' => 'Du hast nicht die Berechtigung diesen Termin zu löschen!',
-  'canceled' => 'abgebrochen',
+  'canceled' => 'abgesagt',
   '{displayName} Birthday' => '{displayName} Geburtstag',
   '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} hat dich gerade zu Termin "{contentTitle}" beginnend {time} in Space {spaceName} hinzugefügt.',
 );
