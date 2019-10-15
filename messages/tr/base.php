@@ -42,7 +42,7 @@ return array (
   'Send update notification' => '',
   'Start Date' => 'Başlangıç tarihi',
   'Start Time' => 'Başlangıç Zamanı',
-  'Time Zone' => '',
+  'Time Zone' => 'Saat Dilimi',
   'Title' => 'Başlık',
   'You don\'t have permission to delete this event!' => 'Bu etkinliği silmek için izniniz yok!',
   'canceled' => 'iptal edildi',

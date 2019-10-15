@@ -9,7 +9,7 @@ return array (
   'All Day' => 'Wszystkie dni',
   'Allow participation state \'decline\'' => 'Zezwól na status uczestnictwa \'Odmowa\'',
   'Allow participation state \'maybe\'' => 'Zezwól na status uczestnictwa \'Może\'',
-  'Attending' => 'Uczestniczy',
+  'Attending' => 'Biorę udział',
   'Attending users' => 'Użytkownicy biorący udział',
   'Birthday' => 'Urodziny',
   'Calendar' => 'Kalendarz',

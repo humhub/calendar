@@ -18,7 +18,7 @@ return array (
   'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => '',
   'Interval of upcoming events' => '',
   'Max event items' => '',
-  'Name' => '',
+  'Name' => '名前',
   'One month' => '月',
   'One week' => '週',
   'One year' => '年',

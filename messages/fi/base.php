@@ -9,7 +9,7 @@ return array (
   'All Day' => 'Koko päivä',
   'Allow participation state \'decline\'' => 'Salli osallistumisen tila \'hylkää\'',
   'Allow participation state \'maybe\'' => 'salli osallistuminen asema \'ehkä\'',
-  'Attending' => 'Osallistuvat',
+  'Attending' => 'Osallistuu',
   'Attending users' => 'Osallistuvat käyttäjät',
   'Birthday' => 'Syntymäpäivä',
   'Calendar' => 'Kalenteri',
