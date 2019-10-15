@@ -20,6 +20,7 @@ class CalendarWidgetCest
     /**
      * @skip test broken on travis
      * @param FunctionalTester $I
+     * @throws \Exception
      */
     public function testTestTheFriendshipBirthdayOnDashboard(FunctionalTester $I)
     {
