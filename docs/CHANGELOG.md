@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.7.4 (October 16, 2019)
+-----------------------
+- Enh: Translation update
+
 0.7.3 (August 28, 2019)
 -----------------------
 - Fix: My events filter not working
