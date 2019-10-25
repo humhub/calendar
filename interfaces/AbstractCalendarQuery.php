@@ -68,6 +68,11 @@ abstract class AbstractCalendarQuery extends Component
     const FILTER_USERRELATED = 'userRelated';
 
     /**
+     * If this filter is set, non readable entries will be included
+     */
+    const FILTER_INCLUDE_NONREADABLE = 'includeNonReadable';
+
+    /**
      * @var array Activated query filters
      */
     protected $_filters = [];
@@ -214,7 +219,7 @@ abstract class AbstractCalendarQuery extends Component
      */
     public static function findForEvent(CalendarItemsEvent $event)
     {
-        return static::findForFilter($event->start, $event->end, $event->contentContainer, $event->filters, $event->limit, $event->expand);
+        return static::findForFilter($event->start, $event->end, $event->contentContainer, $event->filters, $event->limit, $event->expand, $event->readable);
     }
 
 
@@ -388,6 +393,16 @@ abstract class AbstractCalendarQuery extends Component
     }
 
     /**
+     * Sets the readable flag, which determines if the query only searches for user readable entries.
+     *
+     * @param $readable
+     */
+    public function readable($readable)
+    {
+        $this->readable = $readable;
+    }
+
+    /**
      * Sets the date filter interval end date.
      *
      * Note: If the [[withTime()]] behaviour is deactivated (default) the time of the
@@ -539,6 +554,7 @@ abstract class AbstractCalendarQuery extends Component
      * ```
      * @param int $months interval either positive or negative
      * @return $this
+     * @throws Exception
      * @see interval()
      */
     public function months($months)
@@ -564,6 +580,7 @@ abstract class AbstractCalendarQuery extends Component
      * ```
      * @param int $years interval either positive or negative
      * @return $this
+     * @throws Exception
      * @see interval()
      */
     public function years($years)
@@ -737,7 +754,10 @@ abstract class AbstractCalendarQuery extends Component
             $this->filterContentContainer();
         }
 
-        $this->filterReadable();
+
+        if(!$this->hasFilter(self::FILTER_INCLUDE_NONREADABLE)) {
+            $this->filterReadable();
+        }
 
         if (Yii::$app->user->isGuest) {
             $this->filterGuests($this->_container);
@@ -780,6 +800,7 @@ abstract class AbstractCalendarQuery extends Component
 
     /**
      * @param ContentContainerActiveRecord|null $container
+     * @throws FilterNotSupportedException
      */
     protected function filterGuests(ContentContainerActiveRecord $container = null)
     {

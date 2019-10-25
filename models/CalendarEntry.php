@@ -663,24 +663,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     }
 
     /**
-     * Returns a list of upcoming events for the given $contentContainer.
-     *
-     * @param ContentContainerActiveRecord|null $contentContainer
-     * @param int $daysInFuture
-     * @param int $limit
-     * @return CalendarEntry[]
-     * @throws \Throwable
-     */
-    public static function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5)
-    {
-        if ($contentContainer) {
-            return CalendarEntryQuery::find()->container($contentContainer)->days($daysInFuture)->limit($limit)->all();
-        } else {
-            return CalendarEntryQuery::find()->userRelated()->days($daysInFuture)->limit($limit)->all();
-        }
-    }
-
-    /**
      * Access url of the source content or other view
      *
      * @return string the timezone this item was originally saved, note this is
@@ -694,6 +676,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
      * Returns a badge for the snippet
      *
      * @return string the timezone this item was originally saved, note this is
+     * @throws \Throwable
      */
     public function getBadge()
     {

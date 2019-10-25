@@ -4,13 +4,7 @@ namespace humhub\modules\calendar\models;
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
 use humhub\modules\cfiles\models\rows\AbstractFileSystemItemRow;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use Sabre\VObject\UUIDUtil;
-use Yii;
-use humhub\modules\space\models\Space;
 use DateTime;
-use DateInterval;
-use humhub\modules\user\models\User;
-use humhub\modules\content\components\ActiveQueryContent;
 
 /**
  * CalendarEntryQuery class can be used for creating filter queries for [[CalendarEntry]] models.

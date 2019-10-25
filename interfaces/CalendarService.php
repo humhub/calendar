@@ -109,7 +109,15 @@ class CalendarService extends Component
     {
         $result = [];
 
-        $event = new CalendarItemsEvent(['contentContainer' => $contentContainer, 'start' => $start, 'end' => $end, 'filters' => $filters, 'limit' => $limit, 'expand' => $expand]);
+        $event = new CalendarItemsEvent([
+            'contentContainer' => $contentContainer,
+            'start' => $start,
+            'end' => $end,
+            'filters' => $filters,
+            'limit' => $limit,
+            'expand' => $expand
+        ]);
+
         $this->trigger(static::EVENT_FIND_ITEMS, $event);
 
         foreach($event->getItems() as $itemTypeKey => $items) {
@@ -131,17 +139,20 @@ class CalendarService extends Component
         return (count($result) > $limit) ? array_slice($result, 0, $limit) : $result;
     }
 
-    public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5)
+    /**
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @param int $daysInFuture
+     * @param int $limit
+     * @param array $filters
+     * @return CalendarItem[]
+     * @throws \Throwable
+     */
+    public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5, $filters = [])
     {
         $start = new DateTime('now', CalendarUtils::getUserTimeZone());
-        $end =  (new DateTime('now', CalendarUtils::getUserTimeZone()))
-            ->add(new DateInterval('P'.$daysInFuture.'D'));
+        $end = ($daysInFuture > 0) ? (new DateTime('now', CalendarUtils::getUserTimeZone()))
+                ->add(new DateInterval('P'.$daysInFuture.'D')) : null;
 
-        $filters = [];
-
-        if (!$contentContainer) {
-            $filters[] = AbstractCalendarQuery::FILTER_DASHBOARD;
-        }
 
         return $this->getCalendarItems($start, $end, $filters, $contentContainer, $limit);
     }

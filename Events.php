@@ -4,6 +4,7 @@ namespace humhub\modules\calendar;
 
 use humhub\modules\calendar\integration\BirthdayCalendar;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\DownloadIcsLink;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -138,6 +139,15 @@ class Events
     {
         if ($event->sender->object instanceof CalendarEntry) {
             $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $event->sender->object]);
+        }
+    }
+
+    public static function onHourlyCron()
+    {
+        /* @var $calendarService CalendarService */
+        $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
+        foreach ($calendarService->getUpcomingEntries(null, null, null, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]) as $entry) {
+
         }
     }
 

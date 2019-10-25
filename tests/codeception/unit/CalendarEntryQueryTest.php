@@ -2,19 +2,17 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit;
 
+use calendar\CalendarUnitTest;
 use humhub\modules\content\models\Content;
-use Yii;
 use DateTime;
 use DateInterval;
-use tests\codeception\_support\HumHubDbTestCase;
-use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ActiveQueryContent;
 
-class CalendarEntryQueryTest extends HumHubDbTestCase
+class CalendarEntryQueryTest extends CalendarUnitTest
 {
 
     /**
@@ -320,33 +318,5 @@ class CalendarEntryQueryTest extends HumHubDbTestCase
         $entries = CalendarEntryQuery::find()->days(1)->openRange(false)->all();
         $this->assertEquals(1, count($entries));
         $this->assertEquals('Entry 1', $entries[0]->title);
-    }
-
-    private function createEntry($from, $days, $title, $container = null, $visibility = Content::VISIBILITY_PUBLIC)
-    {
-        if (!$from) {
-            $from = new DateTime();
-        }
-
-        if(is_int($days)) {
-            $to = clone $from;
-            $to->add(new DateInterval("P" . $days . "D"));
-        } else {
-            $to = $days;
-        }
-        
-        $entry = new CalendarEntry();
-        $entry->title = $title;
-        $entry->start_datetime = Yii::$app->formatter->asDateTime($from, 'php:Y-m-d') . " 00:00:00";
-        $entry->end_datetime = Yii::$app->formatter->asDateTime($to, 'php:Y-m-d') . " 23:59:59";
-        $entry->content->visibility = $visibility;
-
-        if($container) {
-            $entry->content->container = $container;
-        }
-
-        $entry->save();
-
-        return $entry;
     }
 }

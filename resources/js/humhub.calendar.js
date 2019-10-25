@@ -15,17 +15,16 @@ humhub.module('calendar', function (module, require, $) {
     var action = require('action');
     var Content = require('content').Content;
 
-    var Calendar = function (node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(Calendar, Widget);
+    var Calendar = Widget.extend();
 
     Calendar.prototype.init = function () {
         // Initial events
         this.options.events = {
             url: this.options.loadUrl,
-            data: {selectors: this.options.selectors, filters: this.options.filters},
+            data: {
+                selectors: this.options.selectors,
+                filters: this.options.filters
+            },
             error: function (err) {
                 module.log.error(err, true);
             }
@@ -211,7 +210,7 @@ humhub.module('calendar', function (module, require, $) {
             revertFunc();
         }).finally(function() {
             that.loader(false);
-        })
+        });
     };
 
     Calendar.prototype.clickEvent = function (event, delta, revertFunc) {
@@ -247,11 +246,7 @@ humhub.module('calendar', function (module, require, $) {
         }
     };
 
-    var Form = function (node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(Form, Widget);
+    var Form = Widget.extend();
 
     Form.prototype.init = function() {
         modal.global.$.find('.tab-basic').on('shown.bs.tab', function (e) {
@@ -266,8 +261,8 @@ humhub.module('calendar', function (module, require, $) {
     };
 
     Form.prototype.initTimeInput = function(evt) {
-        $timeFields = modal.global.$.find('.timeField');
-        $timeInputs =  $timeFields.find('.form-control');
+        var $timeFields = modal.global.$.find('.timeField');
+        var $timeInputs =  $timeFields.find('.form-control');
         $timeInputs.each(function() {
             var $this = $(this);
             if($this.prop('disabled')) {
@@ -277,8 +272,8 @@ humhub.module('calendar', function (module, require, $) {
     };
 
     Form.prototype.toggleDateTime = function(evt) {
-        $timeFields = modal.global.$.find('.timeField');
-        $timeInputs =  $timeFields.find('.form-control');
+        var $timeFields = modal.global.$.find('.timeField');
+        var $timeInputs =  $timeFields.find('.form-control');
         if (evt.$trigger.prop('checked')) {
             $timeInputs.prop('disabled', true);
             $timeInputs.each(function() {
@@ -287,7 +282,7 @@ humhub.module('calendar', function (module, require, $) {
             $timeFields.css('opacity', '0.2');
         } else {
             $timeInputs.each(function() {
-                $this = $(this);
+                var $this = $(this);
                 if($this.data('oldVal')) {
                     $this.val($this.data('oldVal'));
                 }
@@ -298,7 +293,7 @@ humhub.module('calendar', function (module, require, $) {
     };
 
     Form.prototype.changeTimezone = function(evt) {
-        $dropDown = this.$.find('.timeZoneInput');
+        var $dropDown = this.$.find('.timeZoneInput');
         this.$.find('.calendar-timezone').text($dropDown.find('option:selected').text());
         $dropDown.hide();
     };
@@ -316,7 +311,7 @@ humhub.module('calendar', function (module, require, $) {
     };
 
     Form.prototype.changeEventType = function(evt) {
-        $selected = evt.$trigger.find(':selected');
+        var $selected = evt.$trigger.find(':selected');
         if($selected.data('type-color')) {
             $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('type-color'));
             $('.colorpicker-element').data('colorpicker').update();
@@ -431,6 +426,34 @@ humhub.module('calendar', function (module, require, $) {
         });
     };
 
+    var ReminderForm = Widget.extend();
+
+    ReminderForm.prototype.delete = function(evt) {
+        evt.$trigger.closest('.row').fadeOut('fast', function() {
+            $(this).remove();
+        });
+    };
+
+    ReminderForm.prototype.add = function(evt) {
+        var $triggerRow = evt.$trigger.closest('.row');
+        var $lastIndex = parseInt($triggerRow.attr('data-reminder-index'));
+        var $newRow = $triggerRow.clone().attr('data-reminder-index', ++$lastIndex);
+
+        $newRow.find('[name]').each(function() {
+           var name = $(this).attr('name').replace(/CalendarReminder\[[0-9]]/, 'CalendarReminder['+$lastIndex+']');
+            $(this).attr('name', name);
+        });
+
+        $newRow.insertAfter($triggerRow);
+
+        evt.$trigger.data('action-click', 'delete')
+            .removeClass('btn-primary')
+            .addClass('btn-danger')
+            .find('i')
+            .removeClass('fa-plus')
+            .addClass('fa-times');
+    };
+
     module.export({
         Calendar: Calendar,
         respond:respond,
@@ -438,6 +461,7 @@ humhub.module('calendar', function (module, require, $) {
         deleteEvent: deleteEvent,
         enabled: enabled,
         CalendarEntry: CalendarEntry,
+        ReminderForm: ReminderForm,
         Form: Form
     });
 });
