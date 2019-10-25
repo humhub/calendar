@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.7.5 (October, 10, 2019)
+-----------------------
+- Fix #163: Issue with sabre/uri and PHP < 7
+
 0.7.4 (October 16, 2019)
 -----------------------
 - Enh: Translation update
