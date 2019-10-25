@@ -65,7 +65,7 @@ class ReminderTest  extends CalendarUnitTest
         $reminder6 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 6, $entry, User::findOne(['id' => 2]));
         $this->assertTrue($reminder6->save());
 
-        $reminders = CalendarReminder::getByModel($entry);
+        $reminders = CalendarReminder::getByEntry($entry);
         $this->assertCount(4, $reminders);
 
         // Make sure the User level reminder sorted first

@@ -10,7 +10,9 @@ use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\calendar\interfaces\CalendarItem;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\User;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 
 /**
@@ -27,7 +29,7 @@ use yii\db\Expression;
  * - contentcontainer_id: null
  * - active: true
  *
- * # Space Default Reminder
+ * # Container Default Reminder
  *
  * - unit
  * - value
@@ -45,7 +47,7 @@ use yii\db\Expression;
  * - contentcontainer_id: null   // Note this is required for easy seperation of space level and user level exceptions
  * - active: true
  *
- * # Space Level Model Exception
+ * # User Level Model Exception
  *
  * - unit
  * - value
@@ -165,7 +167,35 @@ class CalendarReminder extends ActiveRecord
      */
     public function isUserLevelReminder()
     {
-        return $this->object_model !== null && $this->object_id !== null && $this->contentcontainer_id !== null;
+        return $this->isEntryLevelReminder() && $this->contentcontainer_id !== null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEntryLevelReminder()
+    {
+        return $this->object_model !== null && $this->object_id !== null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefaultReminder()
+    {
+        return !$this->isEntryLevelReminder();
+    }
+
+    /**
+     * @return ContentContainer[]
+     */
+    public static function getContainerWithDefaultReminder()
+    {
+        $subQuery = static::find()
+            ->where(['IS', 'object_model', new Expression('NULL')])
+            ->andWhere('calendar_reminder.contentcontainer_id = contentcontainer.id');
+
+        return ContentContainer::find()->where(['EXISTS',  $subQuery])->all();
     }
 
     /**
@@ -192,6 +222,21 @@ class CalendarReminder extends ActiveRecord
     }
 
     /**
+     * @param bool $filterNotSent
+     * @return ActiveQuery
+     */
+    public static function findEntryLevelReminder($filterNotSent = true)
+    {
+        $query = static::find()->where(['IS NOT', 'object_model', new Expression('NULL')]);
+
+        if($filterNotSent) {
+            $query->andWhere(['active' => 1]);
+        }
+
+        return $query;
+    }
+
+    /**
      * @param ContentContainerActiveRecord|null $container
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
@@ -209,9 +254,27 @@ class CalendarReminder extends ActiveRecord
      * @param ContentActiveRecord $model
      * @return CalendarReminder[]
      */
-    public static function getByModel(ContentActiveRecord $model)
+    public static function getByEntry(ContentActiveRecord $model)
     {
         return static::find()->where(['object_id' => $model->id, 'object_model' => get_class($model)])->orderBy('calendar_reminder.contentcontainer_id DESC')->all();
+    }
+
+    /**
+     * @param ContentActiveRecord $entry
+     * @return bool
+     */
+    public function isActive(ContentActiveRecord $entry)
+    {
+        // Non default reminder are deactivated after first sent
+        if (!$this->active) {
+            return false;
+        }
+
+        if($this->isDefaultReminder() && CalendarReminderSent::check($this, $entry)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -222,15 +285,8 @@ class CalendarReminder extends ActiveRecord
      */
     public function checkMaturity(CalendarItem $model)
     {
-        if (!$this->active) {
-            return false;
-        }
-
-        // TODO: Check if already sent ReminderSent (unit, value, object_model, object_id)
         $sentDate = $model->getStartDateTime()->modify($this->getModify());
-
         return $sentDate <= new DateTime();
-
     }
 
     private function getModify()
@@ -251,5 +307,14 @@ class CalendarReminder extends ActiveRecord
 
         // add tolerance for cron delay....
         return '-'.$this->value.' '.$modifyUnit;
+    }
+
+    public function acknowledge(CalendarEntry $entry)
+    {
+        if($this->isEntryLevelReminder()) {
+            $this->updateAttributes(['active' => 0]);
+        }
+
+        CalendarReminderSent::create($this, $entry);
     }
 }
