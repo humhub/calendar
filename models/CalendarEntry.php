@@ -359,7 +359,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         return $this->hasMany(User::class, ['id' => 'user_id'])->via('participants');
     }
 
-    public function getParticipantUsersByState($state)
+    /**
+     * @param $state
+     * @return ActiveQuery
+     */
+    public function findParticipantUsersByState($state)
     {
         if(is_int($state)) {
             $state = [$state];
@@ -368,7 +372,17 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         return $this->hasMany(User::class, ['id' => 'user_id'])->via('participants', function($query) use ($state) {
             /* @var $query ActiveQuery */
             $query->andWhere(['IN', 'calendar_entry_participant.participation_state', $state]);
-        })->all();
+        });
+    }
+
+
+    /**
+     * @param $state
+     * @return CalendarEntry[]
+     */
+    public function getParticipantUsersByState($state)
+    {
+        return $this->findParticipantUsersByState($state)->all();
     }
 
     public function setParticipant($user, $state = CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED)

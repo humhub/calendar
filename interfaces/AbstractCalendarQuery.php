@@ -219,7 +219,7 @@ abstract class AbstractCalendarQuery extends Component
      */
     public static function findForEvent(CalendarItemsEvent $event)
     {
-        return static::findForFilter($event->start, $event->end, $event->contentContainer, $event->filters, $event->limit, $event->expand, $event->readable);
+        return static::findForFilter($event->start, $event->end, $event->contentContainer, $event->filters, $event->limit, $event->expand);
     }
 
 
@@ -390,16 +390,6 @@ abstract class AbstractCalendarQuery extends Component
     {
         $this->_limit = $limit;
         return $this;
-    }
-
-    /**
-     * Sets the readable flag, which determines if the query only searches for user readable entries.
-     *
-     * @param $readable
-     */
-    public function readable($readable)
-    {
-        $this->readable = $readable;
     }
 
     /**

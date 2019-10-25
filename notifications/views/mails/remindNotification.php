@@ -23,6 +23,8 @@
 use humhub\widgets\mails\MailButtonList; ?>
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
+    asdffffffff
+
     <?= humhub\widgets\mails\MailContentEntry::widget([
             'originator' => $originator,
             'content' => $html,

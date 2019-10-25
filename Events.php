@@ -3,8 +3,11 @@
 namespace humhub\modules\calendar;
 
 use humhub\modules\calendar\integration\BirthdayCalendar;
+use humhub\modules\calendar\interfaces\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryQuery;
+use humhub\modules\calendar\models\CalendarReminder;
+use humhub\modules\calendar\models\forms\ReminderSettings;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\DownloadIcsLink;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -144,11 +147,7 @@ class Events
 
     public static function onHourlyCron()
     {
-        /* @var $calendarService CalendarService */
-        $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
-        foreach ($calendarService->getUpcomingEntries(null, null, null, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]) as $entry) {
-
-        }
+        (new ReminderService())->sendAllReminder();
     }
 
 }
