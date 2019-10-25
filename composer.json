@@ -5,7 +5,8 @@
   "require": {
     "php" : ">=5.6",
     "sabre/vobject": "dev-master as 4.2.1",
-    "sabre/xml": "1.5.1"
+    "sabre/xml": "1.5.1",
+    "sabre/uri": "1.2.1"
   },
   "minimum-stability": "dev"
 }
