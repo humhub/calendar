@@ -4,7 +4,7 @@ namespace humhub\modules\calendar\controllers;
 
 use Yii;
 use yii\web\HttpException;
-use humhub\modules\calendar\models\DefaultSettings;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\stream\actions\Stream;
@@ -50,8 +50,8 @@ class EntryController extends ContentContainerController
     {
         return $this->renderAjax('modal', [
             'entry' => $entry,
-            'editUrl' => $this->contentContainer->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal]),
-            'canManageEntries' => $entry->content->canEdit() || $this->canManageEntries(),
+            'editUrl' => Url::toEditEntry($entry, $cal, $this->contentContainer),
+            'canManageEntries' => $entry->content->canEdit(),
             'contentContainer' => $this->contentContainer,
         ]);
     }
@@ -61,6 +61,8 @@ class EntryController extends ContentContainerController
      * @param $type
      * @return \yii\web\Response
      * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
      */
     public function actionRespond($id, $type)
     {
@@ -104,7 +106,7 @@ class EntryController extends ContentContainerController
         return $this->renderAjax('edit', [
             'calendarEntryForm' => $calendarEntryForm,
             'contentContainer' => $this->contentContainer,
-            'editUrl' => $this->contentContainer->createUrl('/calendar/entry/edit', ['id' => $calendarEntryForm->entry->id, 'cal' => $cal])
+            'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer)
         ]);
     }
 
@@ -135,7 +137,7 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
-        if (!($this->canManageEntries() || $entry->content->canEdit())) {
+        if (!$entry->content->canEdit()) {
             throw new HttpException('403');
         }
 
@@ -175,27 +177,25 @@ class EntryController extends ContentContainerController
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
-    public function actionDelete()
+    public function actionDelete($id)
     {
         $this->forcePostRequest();
 
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
+        $calendarEntry = $this->getCalendarEntry($id);
 
-        if ($calendarEntry == null) {
+        if (!$calendarEntry) {
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        if (!($this->canManageEntries() ||  $calendarEntry->content->canEdit())) {
+        if (!$calendarEntry->content->canEdit()) {
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to delete this event!"));
         }
 
         $calendarEntry->delete();
 
-        if (Yii::$app->request->isAjax) {
-            $this->asJson(['success' => true]);
-        } else {
-            return $this->redirect($this->contentContainer->createUrl('/calendar/view/index'));
-        }
+        return Yii::$app->request->isAjax
+            ? $this->asJson(['success' => true])
+            : $this->redirect(Url::toCalendar($this->contentContainer));
     }
 
     /**
@@ -203,6 +203,8 @@ class EntryController extends ContentContainerController
      *
      * @param int $id
      * @return CalendarEntry
+     * @throws \Throwable
+     * @throws \yii\base\Exception
      */
     protected function getCalendarEntry($id)
     {
@@ -212,22 +214,11 @@ class EntryController extends ContentContainerController
     /**
      * Checks the CreatEntry permission for the given user on the given contentContainer.
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     private function canCreateEntries()
     {
         return $this->contentContainer->permissionManager->can(CreateEntry::class);
-    }
-
-    /**
-     * Checks the ManageEntry permission for the given user on the given contentContainer.
-     *
-     * Todo: After 1.2.1 use $entry->content->canEdit();
-     *
-     * @return bool
-     */
-    private function canManageEntries()
-    {
-        return $this->contentContainer->permissionManager->can(new ManageEntry);
     }
 
     public function actionGenerateics()

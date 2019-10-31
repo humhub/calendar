@@ -18,10 +18,9 @@ namespace humhub\modules\calendar\models;
 use humhub\components\SettingsManager;
 use humhub\modules\calendar\models\forms\ReminderSettings;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\components\ContentContainerSettingsManager;
 use Yii;
 use yii\base\Model;
-use yii\helpers\Url;
+use humhub\modules\calendar\helpers\Url;
 
 class DefaultSettings extends Model
 {
@@ -155,11 +154,11 @@ class DefaultSettings extends Model
 
     public function getResetButtonUrl()
     {
-        return ($this->isGlobal()) ? Url::to(['/calendar/config/reset-config']) : $this->contentContainer->createUrl('/calendar/container-config/reset-config');
+        return Url::toSettingsReset($this->contentContainer);
     }
 
     public function getSubmitUrl()
     {
-        return ($this->isGlobal()) ? Url::to(['/calendar/config']) : $this->contentContainer->createUrl('/calendar/container-config');
+        return Url::toConfig($this->contentContainer);
     }
 }

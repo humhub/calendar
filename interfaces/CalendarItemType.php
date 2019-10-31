@@ -18,7 +18,7 @@ namespace humhub\modules\calendar\interfaces;
 
 use Yii;
 use yii\base\Model;
-use yii\helpers\Url;
+use humhub\modules\calendar\helpers\Url;
 use humhub\components\SettingsManager;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
@@ -198,11 +198,7 @@ class CalendarItemType extends Model
      */
     public function getEditUrl()
     {
-        if($this->contentContainer) {
-            return $this->contentContainer->createUrl('/calendar/container-config/edit-calendars', ['key' => $this->key]);
-        } else {
-            return Url::to(['/calendar/config/edit-calendars', 'key' => $this->key]);
-        }
+        return Url::toEditItemType($this, $this->contentContainer);
     }
 
     public function isAllDay()

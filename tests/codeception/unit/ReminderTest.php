@@ -6,12 +6,32 @@ use calendar\CalendarUnitTest;
 use DateInterval;
 use DateTime;
 use humhub\modules\calendar\models\CalendarReminder;
+use humhub\modules\calendar\models\CalendarReminderSent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 
-class ReminderTest  extends CalendarUnitTest
+class ReminderTest extends CalendarUnitTest
 {
+    /**
+     * @throws \Exception
+     */
+    public function testDeleteReminder()
+    {
+        $this->becomeUser('admin');
+        $space = Space::findOne(['id' => 1]);
+        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), new DateInterval('PT1H'), 'Test', $space);
+        $reminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry);
+        $reminder->save();
+        $reminder->acknowledge($entry);
+
+        $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
+
+        $reminder->delete();
+
+        $this->assertEmpty(CalendarReminderSent::findByReminder($reminder, $entry)->all());
+    }
+
     /**
      * @throws \Exception
      */
@@ -22,20 +42,78 @@ class ReminderTest  extends CalendarUnitTest
         // Event starts in one hour and reminder is set to one hour -> should pass
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), new DateInterval('PT1H'), 'Test');
         $reminder = $this->createReminder(CalendarReminder::UNIT_HOUR, 1, $entry);
-        $this->assertTrue($reminder->checkModelState($entry));
+        $this->assertTrue($reminder->checkMaturity($entry));
 
         // Event starts in two hour and reminder is set to one hour -> should not pass
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT2H')), new DateInterval('PT1H'), 'Test');
         $reminder = $this->createReminder(CalendarReminder::UNIT_HOUR, 1, $entry);
-        $this->assertFalse($reminder->checkModelState($entry));
+        $this->assertFalse($reminder->checkMaturity($entry));
 
         // Event starts in one day and reminder is set to one hour -> should not pass
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), new DateInterval('PT1H'), 'Test');
         $reminder = $this->createReminder(CalendarReminder::UNIT_HOUR, 1, $entry);
-        $this->assertFalse($reminder->checkModelState($entry));
+        $this->assertFalse($reminder->checkMaturity($entry));
     }
 
-    public function testGetByModel()
+    public function testGlobalQueryOrder()
+    {
+        $reminder1 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 2);
+        $reminder2 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 2);
+        $reminder3 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 1);
+        $reminder4 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_WEEK, 1);
+        $reminder5 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
+        $reminder6 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_WEEK, 2);
+
+        $this->assertTrue($reminder1->save());
+        $this->assertTrue($reminder2->save());
+        $this->assertTrue($reminder3->save());
+        $this->assertTrue($reminder4->save());
+        $this->assertTrue($reminder5->save());
+        $this->assertTrue($reminder6->save());
+
+        $reminders = CalendarReminder::getDefaults();
+
+        $this->assertEquals($reminder3->id, $reminders[0]->id);
+        $this->assertEquals($reminder2->id, $reminders[1]->id);
+        $this->assertEquals($reminder5->id, $reminders[2]->id);
+        $this->assertEquals($reminder1->id, $reminders[3]->id);
+        $this->assertEquals($reminder4->id, $reminders[4]->id);
+        $this->assertEquals($reminder6->id, $reminders[5]->id);
+    }
+
+    public function testEntryLevelQueryOrder()
+    {
+        $this->becomeUser('admin');
+
+        $space = Space::findOne(['id' => 1]);
+        $user = User::findOne(['id' => 2]);
+        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), new DateInterval('PT1H'), 'Test', $space);
+
+        $reminder1 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 2, $entry, $user);
+        $reminder2 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry);
+        $reminder3 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 1, $entry);
+        $reminder4 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_WEEK, 1, $entry);
+        $reminder5 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry, $user);
+        $reminder6 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_WEEK, 2, $entry);
+
+        $this->assertTrue($reminder1->save());
+        $this->assertTrue($reminder2->save());
+        $this->assertTrue($reminder3->save());
+        $this->assertTrue($reminder4->save());
+        $this->assertTrue($reminder5->save());
+        $this->assertTrue($reminder6->save());
+
+        $reminders = CalendarReminder::getEntryLevelReminder($entry);
+
+        $this->assertEquals($reminder5->id, $reminders[0]->id);
+        $this->assertEquals($reminder1->id, $reminders[1]->id);
+        $this->assertEquals($reminder3->id, $reminders[2]->id);
+        $this->assertEquals($reminder2->id, $reminders[3]->id);
+        $this->assertEquals($reminder4->id, $reminders[4]->id);
+        $this->assertEquals($reminder6->id, $reminders[5]->id);
+    }
+
+    public function testGetEntryLevelReminder()
     {
         $this->becomeUser('admin');
         $space = Space::findOne(['id' => 1]);
@@ -65,7 +143,7 @@ class ReminderTest  extends CalendarUnitTest
         $reminder6 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 6, $entry, User::findOne(['id' => 2]));
         $this->assertTrue($reminder6->save());
 
-        $reminders = CalendarReminder::getByEntry($entry);
+        $reminders = CalendarReminder::getEntryLevelReminder($entry);
         $this->assertCount(4, $reminders);
 
         // Make sure the User level reminder sorted first

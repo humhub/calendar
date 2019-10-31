@@ -15,6 +15,7 @@
 
 namespace humhub\modules\calendar\widgets;
 
+use humhub\modules\calendar\helpers\Url;
 use Yii;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\widgets\WallEntryControlLink;
@@ -39,7 +40,7 @@ class CloseLink extends WallEntryControlLink
         $this->options = [
             'data-action-click' => 'toggleClose',
             'data-action-target' =>"[data-calendar-entry='".$this->entry->id."']",
-            'data-action-url' => $this->entry->content->container->createUrl('/calendar/entry/toggle-close', ['id' => $this->entry->id])
+            'data-action-url' => Url::toEntryToggleClose($this->entry)
         ];
 
         parent::init();

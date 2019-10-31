@@ -29,7 +29,41 @@ class ReminderProcessor extends Model
      * @throws InvalidConfigException
      * @throws \Throwable
      */
-    public function run(ContentContainerActiveRecord $container = null)
+    public function run()
+    {
+        /**
+         * We differ the following cases for optimization reasons.
+         *
+         * If global and container default reminders are given:
+         *
+         *  - Loop through all upcoming events
+         *  - Handle entry level reminder
+         *  - Handle remaining default reminder
+         *
+         * If no global default reminders are given:
+         *
+         *  - Loop through containers with given default settings
+         *  - Handle entry level reminder
+         *  - Handle container default reminder
+         *
+         *  => Skips upcoming entries without reminders
+         *
+         * If no global default and no container default reminders are given, we simply loop through the entry level reminder.
+         *
+         *  - Loop through and handle all entry level reminder
+         */
+        if(empty(CalendarReminder::getDefaults())) {
+            foreach (CalendarReminder::getContainerWithDefaultReminder() as $contentContainer) {
+                $this->runByUpcomingEvents($contentContainer->getPolymorphicRelation());
+            }
+
+            $this->runEntryLevelOnly();
+        } else {
+            $this->runByUpcomingEvents();
+        }
+    }
+
+    private function runByUpcomingEvents(ContentContainerActiveRecord $container = null)
     {
         foreach ($this->calendarService->getUpcomingEntries($container, null, null, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]) as $entry) {
             // We currently only support calendar entries
@@ -48,60 +82,100 @@ class ReminderProcessor extends Model
     }
 
     /**
+     * @throws \yii\db\IntegrityException
+     * @throws \Exception
+     */
+    private function runEntryLevelOnly()
+    {
+        $entryLevelReminder = CalendarReminder::findEntryLevelReminder()->andWhere(['NOT IN', 'calendar_reminder.id', $this->handledReminders]) ->all();
+
+        $entryHandled = [];
+        foreach ($entryLevelReminder as $reminder) {
+            $entry = $reminder->getPolymorphicRelation();
+            $entryKey = get_class($entry).':'.$entry->id;
+            if(!isset($entryHandled[$entryKey])) {
+                $this->handleEntryLevelReminder($reminder->getPolymorphicRelation());
+                $entryHandled[$entryKey] = true;
+            }
+        }
+    }
+
+    /**
+     * This function handles all entry level reminders for a given CalendarEntry.
+     *
+     * This function will return
+     *
+     *  - true in case there was an container wide default reminder for this entry
+     *  - an array of contentcontainer ids of users already handled in case there was no container wide default for this entry
+     *
      * @param CalendarEntry $entry
      * @return array|bool
      * @throws \Exception
      */
     private function handleEntryLevelReminder(CalendarEntry $entry)
     {
-        // We keep track of users already handled by entry level reminder
+        // We keep track of users which have an entry level reminder set for this entry
         $skipUsers = [];
 
-        // Note: User level reminder are sorted before container level reminder
-        foreach (CalendarReminder::getByEntry($entry) as $reminder) {
+        // We keep track of reminder blocks already sent for a container (or global)
+        $sentContainer = [];
+
+        // Note: User level reminder are sorted before container level reminder (see query order_by)
+        foreach (CalendarReminder::getEntryLevelReminder($entry) as $reminder) {
             if($reminder->isUserLevelReminder()) {
-                // We mark that there is an existing user level reminder, in order to exclude them from default reminders
                 $skipUsers[] = $reminder->contentcontainer_id;
             }
 
-            if(!$this->isReadyToSent($reminder, $entry)) {
+            // Skip reminder which do not match yet
+            if(!$reminder->checkMaturity($entry)) {
                 continue;
             }
 
-            $this->sendEntryLevelReminder($reminder, $entry);
-
-            if(!$reminder->isUserLevelReminder()) {
-                // This is a container wide entry level reminder, which means we have handled all reminder for this container
-                // TODO: make sure we invalidate other reminder which may match
-                return true;
+            // Check if reminder has already been sent
+            if(!$reminder->isActive($entry)) {
+                $sentContainer[$reminder->contentcontainer_id] = true;
+                continue;
             }
 
+            // Make sure no other reminder which is closer to the event has already been sent (see query order_by)
+            if(isset($sentContainer[$reminder->contentcontainer_id])) {
+                // If yes, invalidate the reminder
+                $reminder->acknowledge($entry);
+                continue;
+            }
 
+            if($this->sendEntryLevelReminder($reminder, $entry, $skipUsers)) {
+                $sentContainer[$reminder->contentcontainer_id] = true;
+            }
         }
 
-        return $skipUsers;
+        return isset($sentContainer[null]) ? true : $skipUsers;
     }
 
     /**
      * @param CalendarReminder $reminder
      * @param CalendarEntry $entry
+     * @param array $skipUsers
+     * @return bool
      * @throws InvalidConfigException
      */
-    public function sendEntryLevelReminder(CalendarReminder $reminder, CalendarEntry $entry = null)
+    public function sendEntryLevelReminder(CalendarReminder $reminder, CalendarEntry $entry = null, $skipUsers = [])
     {
         if(!$entry) {
             $entry = $reminder->getPolymorphicRelation();
         }
 
         if(!$entry) {
-            return;
+            return false;
         }
 
         if($reminder->isUserLevelReminder()) {
             $this->sendReminder($reminder, $entry, User::find()->where(['user.contentcontainer_id' => $reminder->contentcontainer_id]));
         } else {
-            $this->sendReminder($reminder, $entry, $this->getRecepientQuery($entry));
+            $this->sendReminder($reminder, $entry, $this->getRecipientQuery($entry, $skipUsers));
         }
+
+        return true;
     }
 
     /**
@@ -109,25 +183,42 @@ class ReminderProcessor extends Model
      * @param array $skipUsers
      * @return array|ActiveQueryUser|ActiveQuery
      */
-    protected function getRecepientQuery(CalendarEntry $entry, $skipUsers = [])
+    protected function getRecipientQuery(CalendarEntry $entry, $skipUsers = [])
     {
-        $query = [];
-        if($entry->content->container instanceof Space) { // Space level overwritten
-            $query = Membership::getSpaceMembersQuery($entry->content->container);
-            // TODO: Exclude non participating users
-            //->andWhere(['NOT IN', 'user.id', $entry->findParticipantUsersByState(CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED)->select('user.id')]);
-        } else if($entry->content->container instanceof  User) {
-            return $entry->findParticipantUsersByState([
-                CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
-                CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE]);
-        }
-
+        $query = $entry->findUsersByInterest();
 
         if(!empty($skipUsers)) {
             $query->andWhere(['NOT IN', 'user.contentcontainer_id', $skipUsers]);
         }
 
         return $query;
+    }
+
+    /**
+     * @param CalendarEntry $entry
+     * @param $skipUsers
+     * @throws InvalidConfigException
+     */
+    private function handleDefaultReminder(CalendarEntry $entry, $skipUsers = [])
+    {
+        $sent = false;
+        foreach (CalendarReminder::getDefaults($entry->content->container, true) as $reminder) {
+            if(!$reminder->checkMaturity($entry)) {
+                continue;
+            }
+
+            if(!$reminder->isActive($entry)) {
+                $sent = true;
+                continue;
+            }
+
+            if(!$sent) {
+                $sent = $this->sendReminder($reminder, $entry, $this->getRecipientQuery($entry, $skipUsers));
+            } else {
+                // Another reminder closer to the event start was already sent
+                $reminder->acknowledge($entry);
+            }
+        }
     }
 
     /**
@@ -142,21 +233,6 @@ class ReminderProcessor extends Model
         return $reminder->checkMaturity($entry) && $reminder->isActive($entry);
     }
 
-
-
-    /**
-     * @param CalendarEntry $entry
-     * @param $skipUsers
-     * @throws InvalidConfigException
-     */
-    private function handleDefaultReminder(CalendarEntry $entry, $skipUsers = [])
-    {
-        foreach (CalendarReminder::getDefaults($entry->content->container, true) as $reminder) {
-            if($this->isReadyToSent($reminder, $entry)) {
-                $this->sendReminder($reminder, $entry, $this->getRecepientQuery($entry, $skipUsers));
-            }
-        }
-    }
 
     /**
      * @param CalendarReminder $reminder

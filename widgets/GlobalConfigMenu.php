@@ -16,8 +16,8 @@
 namespace humhub\modules\calendar\widgets;
 
 
+use humhub\modules\calendar\helpers\Url;
 use Yii;
-use yii\helpers\Url;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\widgets\SettingsTabs;
 
@@ -35,19 +35,19 @@ class GlobalConfigMenu extends SettingsTabs
         $this->items = [
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Defaults'),
-                'url' => Url::toRoute(['/calendar/config/index']),
+                'url' => Url::toConfig(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'index'),
                 'sortOrder' => 10
             ],
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
-                'url' => Url::toRoute(['/calendar/config/types']),
+                'url' =>  Url::toConfigTypes(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'types'),
                 'sortOrder' => 20
             ],
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Snippet'),
-                'url' => Url::toRoute(['/calendar/config/snippet']),
+                'url' =>  Url::toConfigSnippets(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'snippet'),
                 'sortOrder' => 30
             ],
@@ -56,7 +56,7 @@ class GlobalConfigMenu extends SettingsTabs
         if(!empty($calendarService->getCalendarItemTypes())) {
             $this->items[] = [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Other Calendars'),
-                'url' => Url::toRoute(['/calendar/config/calendars']),
+                'url' => Url::toConfigCalendars(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'calendars'),
                 'sortOrder' => 25
             ];

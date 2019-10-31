@@ -14,7 +14,6 @@ use humhub\widgets\ModalDialog;
 /* @var $canManageEntries boolean  */
 /* @var $editUrl string  */
 
-$deleteUrl = $contentContainer->createUrl('/calendar/entry/delete', ['id' => $entry->id, 'cal' => 1]);
 ?>
 
 <?php ModalDialog::begin(['size' => 'large', 'closable' => true]); ?>

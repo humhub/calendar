@@ -7,13 +7,14 @@ use humhub\modules\calendar\interfaces\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\calendar\models\CalendarReminder;
+use humhub\modules\calendar\models\CalendarReminderSent;
 use humhub\modules\calendar\models\forms\ReminderSettings;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\DownloadIcsLink;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\calendar\helpers\Url;
 
 /**
  * Description of CalendarEvents
@@ -65,7 +66,7 @@ class Events
         if (SnippetModuleSettings::instantiate()->showGlobalCalendarItems()) {
             $event->sender->addItem([
                 'label' => Yii::t('CalendarModule.base', 'Calendar'),
-                'url' => Url::to(['/calendar/global/index']),
+                'url' => Url::toGlobalCalendar(),
                 'icon' => '<i class="fa fa-calendar"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar' && Yii::$app->controller->id == 'global'),
                 'sortOrder' => 300,
@@ -80,7 +81,7 @@ class Events
             $event->sender->addItem([
                 'label' => Yii::t('CalendarModule.base', 'Calendar'),
                 'group' => 'modules',
-                'url' => $space->createUrl('/calendar/view/index'),
+                'url' => Url::toCalendar($space),
                 'icon' => '<i class="fa fa-calendar"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
 
@@ -94,7 +95,7 @@ class Events
         if ($user->isModuleEnabled('calendar')) {
             $event->sender->addItem([
                 'label' => Yii::t('CalendarModule.base', 'Calendar'),
-                'url' => $user->createUrl('/calendar/view/index'),
+                'url' => Url::toCalendar($user),
                 'icon' => '<i class="fa fa-calendar"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
             ]);
@@ -142,6 +143,37 @@ class Events
     {
         if ($event->sender->object instanceof CalendarEntry) {
             $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $event->sender->object]);
+        }
+    }
+
+    public static function onContentDelete($event)
+    {
+        foreach(CalendarReminder::getEntryLevelReminder($event->sender) as $reminder) {
+            $reminder->delete();
+        }
+    }
+
+    public static function onIntegrityCheck($event)
+    {
+        $integrityController = $event->sender;
+        $integrityController->showTestHeadline("Calendar Module (" . CalendarReminder::find()->count() . " reminder entries)");
+
+        foreach (CalendarReminder::find()->all() as $reminder) {
+            if ($reminder->isEntryLevelReminder() && !$reminder->getPolymorphicRelation()) {
+                if ($integrityController->showFix("Delete calendar reminder " . $reminder->id . " without existing entry relation!")) {
+                    $reminder->delete();
+                }
+            }
+        }
+
+        $integrityController->showTestHeadline("Calendar Module (" . CalendarReminderSent::find()->count() . " reminder sent entries)");
+
+        foreach (CalendarReminderSent::find()->all() as $reminderSent) {
+            if(!$reminderSent->getPolymorphicRelation()) {
+                if ($integrityController->showFix("Delete calendar reminder sent" . $reminderSent->id . " without existing entry relation!")) {
+                    $reminderSent->delete();
+                }
+            }
         }
     }
 

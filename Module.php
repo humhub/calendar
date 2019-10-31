@@ -4,7 +4,7 @@ namespace humhub\modules\calendar;
 
 use humhub\modules\calendar\models\CalendarEntryType;
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\space\models\Space;
@@ -85,14 +85,12 @@ class Module extends ContentContainerModule
 
     public function getContentContainerConfigUrl(ContentContainerActiveRecord $container)
     {
-        return $container->createUrl('/calendar/container-config');
+        return Url::toConfig($container);
     }
 
     public function getConfigUrl()
     {
-        return Url::to([
-                    '/calendar/config'
-        ]);
+        return Url::toConfig();
     }
 
     /**

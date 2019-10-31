@@ -33,6 +33,11 @@ class Remind extends BaseNotification
     public $viewName = 'remindNotification';
 
     /**
+     * @var bool
+     */
+    public $suppressSendToOriginator = false;
+
+    /**
      * @inheritdoc
      */
     public function category()

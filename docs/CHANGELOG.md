@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.5 (October 16, 2019)
+-----------------------
+- Enh: Added reminder support
+- Fix: ExternalCalendarEntryQuery with either only start or only end not fails
+
 0.7.4 (October 16, 2019)
 -----------------------
 - Enh: Translation update

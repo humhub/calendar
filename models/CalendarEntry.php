@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\models;
 
+use humhub\modules\calendar\helpers\Url;
 use DateTimeZone;
 use humhub\libs\Html;
 use humhub\modules\calendar\CalendarUtils;
@@ -123,16 +124,18 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     {
         parent::init();
 
-        // There was a problem in < 1.3.2 where the target container was available in $afterMove
-        if(version_compare(Yii::$app->version, '1.3.2', '>=')) {
-            $this->canMove = true;
+        // Default participiation Mode
+        if($this->participation_mode === null) {
+            $this->participation_mode = self::PARTICIPATION_MODE_ALL;
         }
 
+        if($this->allow_maybe === null) {
+            $this->allow_maybe = 1;
+        }
 
-        // Default participiation Mode
-        $this->participation_mode = self::PARTICIPATION_MODE_ALL;
-        $this->allow_maybe = 1;
-        $this->allow_decline = 1;
+        if($this->allow_decline === null) {
+            $this->allow_decline = 1;
+        }
 
         $this->formatter = new CalendarDateFormatter(['calendarItem' => $this]);
     }
@@ -375,6 +378,54 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         });
     }
 
+    /**
+     * @return ActiveQuery
+     */
+    public function findUsersByInterest()
+    {
+        if($this->content->container instanceof Space) {
+            switch ($this->participation_mode) {
+                case static::PARTICIPATION_MODE_NONE:
+                    return Membership::getSpaceMembersQuery($this->content->container);
+                case static::PARTICIPATION_MODE_ALL:
+                    $userDeclinedQuery = CalendarEntryParticipant::find()
+                        ->where('calendar_entry_participant.user_id = user.id')
+                        ->andWhere(['=', 'calendar_entry_participant.calendar_entry_id', $this->id])
+                        ->andWhere(['IN', 'calendar_entry_participant.participation_state',
+                            [CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED]]);
+                    $participantQuery = CalendarEntryParticipant::find()
+                        ->where('calendar_entry_participant.user_id = user.id')
+                        ->andWhere(['=', 'calendar_entry_participant.calendar_entry_id', $this->id])
+                        ->andWhere(['IN', 'calendar_entry_participant.participation_state',
+                            [CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]]);
+
+                    return  Membership::getSpaceMembersQuery($this->content->container)
+                        ->andWhere(['NOT EXISTS', $userDeclinedQuery])
+                        ->orWhere(['EXISTS', $participantQuery]);
+
+                case static::PARTICIPATION_MODE_INVITE:
+                    return $this->findParticipantUsersByState([
+                        CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
+                        CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE]);
+            }
+        } elseif ($this->content->container instanceof User) {
+            switch ($this->participation_mode) {
+                case static::PARTICIPATION_MODE_NONE:
+                    return User::find()->where(['id' => $this->content->container->id]);
+                case static::PARTICIPATION_MODE_INVITE:
+                case static::PARTICIPATION_MODE_ALL:
+                    // TODO: remind all friends who did not decline for MODE_ALL
+                    return $this->findParticipantUsersByState([
+                        CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
+                        CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE])->orWhere(['user.id' => $this->content->container]);
+
+            }
+        }
+
+        // Fallback should only happen for global events, which are not supported
+        return User::find()->where(['id' => $this->content->createdBy->id]);
+    }
+
 
     /**
      * @param $state
@@ -390,11 +441,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
         $participant = $this->findParticipant($user);
 
         if (!$participant) {
-            $participant = new CalendarEntryParticipant;
+            $participant = new CalendarEntryParticipant([
+                'user_id' => $user->id,
+                'calendar_entry_id' => $this->id
+            ]);
         }
 
-        $participant->user_id = $user->id;
-        $participant->calendar_entry_id = $this->id;
         $participant->participation_state = $state;
         $participant->save();
     }
@@ -452,8 +504,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
             'editable' => $this->content->canEdit(),
             'backgroundColor' => Html::encode($this->color),
             'allDay' => (boolean) $this->all_day,
-            'updateUrl' => $this->content->container->createUrl('/calendar/entry/edit-ajax', ['id' => $this->id]),
-            'viewUrl' => $this->content->container->createUrl('/calendar/entry/view', ['id' => $this->id, 'cal' => '1']),
+            'updateUrl' => Url::toEditEntryAjax($this),
+            'viewUrl' => Url::toEntry($this, 1),
             'start' => Yii::$app->formatter->asDatetime($this->start_datetime, 'php:c'),
             'end' => $end,
         ];
@@ -461,7 +513,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
 
     public function getUrl()
     {
-        return $this->content->container->createUrl('/calendar/entry/view', ['id' => $this->id]);
+        return Url::toEntry($this);
     }
 
     /**

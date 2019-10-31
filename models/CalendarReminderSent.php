@@ -5,18 +5,30 @@ namespace humhub\modules\calendar\models;
 
 
 use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 
 /**
  * Class CalendarReminderSent
  * @package humhub\modules\calendar\interfaces
  *
+ * @property int $id
  * @property string $object_model
  * @property int $object_id
  * @property int $reminder_id
  */
 class CalendarReminderSent extends ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => PolymorphicRelation::class,
+                'mustBeInstanceOf' => [ContentActiveRecord::class]
+            ]
+        ];
+    }
+
     /**
      * @param CalendarReminder $reminder
      * @param ContentActiveRecord|null $entry

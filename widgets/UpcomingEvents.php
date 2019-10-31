@@ -2,14 +2,13 @@
 
 namespace humhub\modules\calendar\widgets;
 
+use Yii;
 use humhub\components\Widget;
 use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use Yii;
-use yii\helpers\Url;
+use humhub\modules\calendar\helpers\Url;
 
 /**
  * UpcomingEvents shows next events in sidebar.
@@ -52,9 +51,7 @@ class UpcomingEvents extends Widget
             return;
         }
 
-        $calendarUrl = ($this->contentContainer) ? $this->contentContainer->createUrl('/calendar/view') : Url::toRoute('/calendar/global');
-
-        return $this->render('upcomingEvents', ['calendarEntries' => $calendarEntries, 'calendarUrl' => $calendarUrl]);
+        return $this->render('upcomingEvents', ['calendarEntries' => $calendarEntries, 'calendarUrl' => Url::toCalendar($this->contentContainer)]);
     }
 
 }

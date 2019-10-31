@@ -2,11 +2,11 @@
 
 namespace humhub\modules\calendar\widgets;
 
-use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\assets\Assets;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\widgets\JsWidget;
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\calendar\helpers\Url;
 
 /**
  * Description of FullCalendarWidget
@@ -30,7 +30,7 @@ class FullCalendar extends JsWidget
 
     public function init()
     {
-        \humhub\modules\calendar\assets\Assets::register($this->getView());
+        Assets::register($this->getView());
 
         if(Yii::$app->user->isGuest) {
             $this->canWrite = false;
@@ -49,10 +49,9 @@ class FullCalendar extends JsWidget
             $this->enabled = false;
         }
 
-
         if($this->contentContainer) {
-            $this->editUrl = $this->contentContainer->createUrl('/calendar/entry/edit', ['cal' => true]);
-            $this->dropUrl = $this->contentContainer->createUrl('/calendar/entry/edit-ajax');
+            $this->editUrl = Url::toFullCalendarEdit($this->contentContainer);
+            $this->dropUrl = Url::toFullCalendarDrop($this->contentContainer);
         }
 
         parent::init();
@@ -64,7 +63,7 @@ class FullCalendar extends JsWidget
             'load-url' => $this->loadUrl,
             'edit-url' => $this->editUrl,
             'drop-url' => $this->dropUrl,
-            'global-create-url' => Url::to(['/calendar/global/select']),
+            'global-create-url' => Url::toGlobalCreate(),
             'global' => $this->isGlobal,
             'can-write' => $this->canWrite,
             'can-create' => $this->canCreate(),

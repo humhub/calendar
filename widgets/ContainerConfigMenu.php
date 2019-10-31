@@ -15,6 +15,7 @@
 
 namespace humhub\modules\calendar\widgets;
 
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use Yii;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -61,13 +62,13 @@ class ContainerConfigMenu extends SettingsTabs
         $this->items = [
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Defaults'),
-                'url' => $this->contentContainer->createUrl('/calendar/container-config/index'),
+                'url' => Url::toConfig($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'index'),
                 'visible' => Yii::$app->user->isAdmin()
             ],
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
-                'url' => $this->contentContainer->createUrl('/calendar/container-config/types'),
+                'url' => Url::toConfigTypes($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'types'),
                 'visible' => Yii::$app->user->isAdmin()
             ],
@@ -76,7 +77,7 @@ class ContainerConfigMenu extends SettingsTabs
         if(!empty($calendarService->getCalendarItemTypes($this->contentContainer))) {
             $this->items[] = [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Other Calendars'),
-                'url' => $this->contentContainer->createUrl('/calendar/container-config/calendars'),
+                'url' => Url::toConfigCalendars($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'calendars'),
                 'visible' => Yii::$app->user->isAdmin()
             ];

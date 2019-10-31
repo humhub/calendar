@@ -15,6 +15,7 @@
 
 namespace humhub\modules\calendar\widgets;
 
+use humhub\modules\calendar\helpers\Url;
 use Yii;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\widgets\WallEntryControlLink;
@@ -30,11 +31,10 @@ class EditLink extends WallEntryControlLink
     {
         $this->label = Yii::t('ContentModule.widgets_views_editLink', 'Edit');
         $this->icon = 'fa-pencil';
-
         $this->options = [
             'data-action-click' => 'calendar.editModal',
             'data-action-target' =>"[data-content-key='".$this->entry->content->id."']",
-            'data-action-url' => $this->entry->content->container->createUrl('/calendar/entry/edit', ['id' => $this->entry->id, 'cal' => 1])
+            'data-action-url' => Url::toEditEntry($this->entry, 1)
         ];
 
         parent::init();
