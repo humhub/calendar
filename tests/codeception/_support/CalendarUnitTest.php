@@ -29,7 +29,7 @@ class CalendarUnitTest extends HumHubDbTestCase
         }
 
         if ($model instanceof ContentActiveRecord) {
-            $reminder->setPolymorphicRelation($model);
+            $reminder->content_id = $model->id;
         }
 
         if($user) {

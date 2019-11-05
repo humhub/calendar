@@ -130,6 +130,7 @@ class DefaultSettings extends Model
         $settings->set(self::SETTING_PARTICIPATION_MODE, $this->participation_mode);
         $settings->set(self::SETTING_ALLOW_MAYBE, $this->allow_maybe);
         $settings->set(self::SETTING_ALLOW_DECLINE, $this->allow_decline);
+        $this->reminderSettings->save();
         return true;
     }
 

@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar;
 
 use humhub\modules\calendar\integration\BirthdayCalendar;
+use humhub\modules\calendar\interfaces\Remindable;
 use humhub\modules\calendar\interfaces\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryQuery;
@@ -12,7 +13,9 @@ use humhub\modules\calendar\models\forms\ReminderSettings;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\DownloadIcsLink;
 use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\widgets\ReminderLink;
 use humhub\modules\calendar\widgets\UpcomingEvents;
+use humhub\modules\content\models\Content;
 use Yii;
 use humhub\modules\calendar\helpers\Url;
 
@@ -144,10 +147,18 @@ class Events
         if ($event->sender->object instanceof CalendarEntry) {
             $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $event->sender->object]);
         }
+
+        if($event->sender->object instanceof Remindable) {
+            $event->sender->addWidget(ReminderLink::class, ['entry' => $event->sender->object]);
+        }
     }
 
     public static function onContentDelete($event)
     {
+        if(!($event->sender instanceof Remindable)) {
+            return;
+        }
+
         foreach(CalendarReminder::getEntryLevelReminder($event->sender) as $reminder) {
             $reminder->delete();
         }
@@ -159,7 +170,7 @@ class Events
         $integrityController->showTestHeadline("Calendar Module (" . CalendarReminder::find()->count() . " reminder entries)");
 
         foreach (CalendarReminder::find()->all() as $reminder) {
-            if ($reminder->isEntryLevelReminder() && !$reminder->getPolymorphicRelation()) {
+            if ($reminder->isEntryLevelReminder() && !Content::findOne(['id' => $reminder->content_id])) {
                 if ($integrityController->showFix("Delete calendar reminder " . $reminder->id . " without existing entry relation!")) {
                     $reminder->delete();
                 }
@@ -169,7 +180,7 @@ class Events
         $integrityController->showTestHeadline("Calendar Module (" . CalendarReminderSent::find()->count() . " reminder sent entries)");
 
         foreach (CalendarReminderSent::find()->all() as $reminderSent) {
-            if(!$reminderSent->getPolymorphicRelation()) {
+            if(!Content::findOne(['id' => $reminderSent->content_id])) {
                 if ($integrityController->showFix("Delete calendar reminder sent" . $reminderSent->id . " without existing entry relation!")) {
                     $reminderSent->delete();
                 }

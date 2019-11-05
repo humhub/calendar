@@ -6,6 +6,7 @@ use DateTime;
 use humhub\components\Controller;
 use humhub\modules\calendar\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\models\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ActiveQueryContent;
@@ -114,7 +115,7 @@ class GlobalController extends Controller
     {
         $this->forcePostRequest();
 
-        $contentContainer = ContentContainer::findOne(Yii::$app->request->post('contentContainerId'));
+        $contentContainer = ContentContainer::findOne(['id' => Yii::$app->request->post('contentContainerId')]);
 
         if (empty($contentContainer)) {
             throw new HttpException(404);
@@ -187,7 +188,7 @@ class GlobalController extends Controller
      */
     public function getUserSettings()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return null;
         }
 
@@ -217,7 +218,7 @@ class GlobalController extends Controller
         }
 
         foreach ($entries as $entry) {
-            $output[] = $entry->getFullCalendarArray();
+            $output[] = FullCalendar::getFullCalendarArray($entry);
         }
 
         return $this->asJson($output);

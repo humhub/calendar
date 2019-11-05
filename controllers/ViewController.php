@@ -64,7 +64,7 @@ class ViewController extends ContentContainerController
         $filters = Yii::$app->request->get('filters', []);
 
         foreach ($this->calendarService->getCalendarItems(new DateTime($start, CalendarUtils::getUserTimeZone()), new DateTime($end, CalendarUtils::getUserTimeZone()), $filters, $this->contentContainer) as $entry) {
-            $result[] = $entry->getFullCalendarArray();
+            $result[] = FullCalendar::getFullCalendarArray($entry);;
         }
 
         return $this->asJson($result);

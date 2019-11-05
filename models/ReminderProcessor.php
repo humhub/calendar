@@ -5,10 +5,9 @@ namespace humhub\modules\calendar\models;
 
 
 use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\interfaces\Remindable;
 use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Membership;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use yii\base\InvalidConfigException;
@@ -63,11 +62,16 @@ class ReminderProcessor extends Model
         }
     }
 
+    /**
+     * @param ContentContainerActiveRecord|null $container
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     */
     private function runByUpcomingEvents(ContentContainerActiveRecord $container = null)
     {
         foreach ($this->calendarService->getUpcomingEntries($container, null, null, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]) as $entry) {
-            // We currently only support calendar entries
-            if(!$entry instanceof  CalendarEntry) {
+
+            if(!$entry instanceof  Remindable) {
                 continue;
             }
 
@@ -91,10 +95,10 @@ class ReminderProcessor extends Model
 
         $entryHandled = [];
         foreach ($entryLevelReminder as $reminder) {
-            $entry = $reminder->getPolymorphicRelation();
+            $entry = $reminder->getEntry();
             $entryKey = get_class($entry).':'.$entry->id;
             if(!isset($entryHandled[$entryKey])) {
-                $this->handleEntryLevelReminder($reminder->getPolymorphicRelation());
+                $this->handleEntryLevelReminder($reminder->getEntry());
                 $entryHandled[$entryKey] = true;
             }
         }
@@ -108,11 +112,11 @@ class ReminderProcessor extends Model
      *  - true in case there was an container wide default reminder for this entry
      *  - an array of contentcontainer ids of users already handled in case there was no container wide default for this entry
      *
-     * @param CalendarEntry $entry
+     * @param Remindable $entry
      * @return array|bool
      * @throws \Exception
      */
-    private function handleEntryLevelReminder(CalendarEntry $entry)
+    private function handleEntryLevelReminder(Remindable $entry)
     {
         // We keep track of users which have an entry level reminder set for this entry
         $skipUsers = [];
@@ -154,15 +158,16 @@ class ReminderProcessor extends Model
 
     /**
      * @param CalendarReminder $reminder
-     * @param CalendarEntry $entry
+     * @param Remindable $entry
      * @param array $skipUsers
      * @return bool
      * @throws InvalidConfigException
+     * @throws \yii\db\IntegrityException
      */
-    public function sendEntryLevelReminder(CalendarReminder $reminder, CalendarEntry $entry = null, $skipUsers = [])
+    public function sendEntryLevelReminder(CalendarReminder $reminder, Remindable $entry = null, $skipUsers = [])
     {
         if(!$entry) {
-            $entry = $reminder->getPolymorphicRelation();
+            $entry = $reminder->getEntry();
         }
 
         if(!$entry) {
@@ -179,11 +184,11 @@ class ReminderProcessor extends Model
     }
 
     /**
-     * @param CalendarEntry $entry
+     * @param Remindable $entry
      * @param array $skipUsers
      * @return array|ActiveQueryUser|ActiveQuery
      */
-    protected function getRecipientQuery(CalendarEntry $entry, $skipUsers = [])
+    protected function getRecipientQuery(Remindable $entry, $skipUsers = [])
     {
         $query = $entry->findUsersByInterest();
 
@@ -199,7 +204,7 @@ class ReminderProcessor extends Model
      * @param $skipUsers
      * @throws InvalidConfigException
      */
-    private function handleDefaultReminder(CalendarEntry $entry, $skipUsers = [])
+    private function handleDefaultReminder(Remindable $entry, $skipUsers = [])
     {
         $sent = false;
         foreach (CalendarReminder::getDefaults($entry->content->container, true) as $reminder) {
@@ -223,11 +228,11 @@ class ReminderProcessor extends Model
 
     /**
      * @param CalendarReminder $reminder
-     * @param CalendarEntry $entry
+     * @param Remindable $entry
      * @return bool
      * @throws \Exception
      */
-    public function isReadyToSent(CalendarReminder $reminder, CalendarEntry $entry)
+    public function isReadyToSent(CalendarReminder $reminder, Remindable $entry)
     {
         $this->handledReminders[] = $reminder->id;
         return $reminder->checkMaturity($entry) && $reminder->isActive($entry);
@@ -236,15 +241,15 @@ class ReminderProcessor extends Model
 
     /**
      * @param CalendarReminder $reminder
-     * @param CalendarEntry $entry
+     * @param Remindable $entry
      * @param ActiveQueryUser|User[] $recipients
      * @return bool
      * @throws InvalidConfigException
      */
-    private function sendReminder(CalendarReminder $reminder, CalendarEntry $entry, $recipients)
+    private function sendReminder(CalendarReminder $reminder, Remindable $entry, $recipients)
     {
         // TODO: Clear old reminder notifications
-        Remind::instance()->from($entry->content->createdBy)->about($entry)->sendBulk($recipients);
+        Remind::instance()->from($entry->getContentRecord()->createdBy)->about($entry)->sendBulk($recipients);
         $reminder->acknowledge($entry);
         return true;
     }

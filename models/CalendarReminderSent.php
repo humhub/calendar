@@ -6,6 +6,8 @@ namespace humhub\modules\calendar\models;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\calendar\interfaces\CalendarEntryIF;
+use humhub\modules\calendar\interfaces\Remindable;
 use humhub\modules\content\components\ContentActiveRecord;
 
 /**
@@ -13,52 +15,40 @@ use humhub\modules\content\components\ContentActiveRecord;
  * @package humhub\modules\calendar\interfaces
  *
  * @property int $id
- * @property string $object_model
- * @property int $object_id
+ * @property int $content_id
  * @property int $reminder_id
  */
 class CalendarReminderSent extends ActiveRecord
 {
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => PolymorphicRelation::class,
-                'mustBeInstanceOf' => [ContentActiveRecord::class]
-            ]
-        ];
-    }
-
     /**
      * @param CalendarReminder $reminder
-     * @param ContentActiveRecord|null $entry
+     * @param Remindable $entry
      * @return CalendarReminderSent
      */
-    public static function create(CalendarReminder $reminder, ContentActiveRecord $entry = null)
+    public static function create(CalendarReminder $reminder, Remindable $entry = null)
     {
         $instance = new static(['reminder_id' => $reminder->id]);
-        $instance->setPolymorphicRelation($entry);
+        $instance->content_id = $entry->getContentRecord()->id;
         $instance->save();
 
         return $instance;
     }
 
-    public static function check(CalendarReminder $reminder, ContentActiveRecord $entry = null)
+    public static function check(CalendarReminder $reminder, Remindable $entry = null)
     {
         return !empty(static::findByReminder($reminder, $entry)->all());
     }
 
     /**
      * @param CalendarReminder $reminder
-     * @param ContentActiveRecord $entry
+     * @param Remindable $entry
      * @return \yii\db\ActiveQuery
      */
-    public static function findByReminder(CalendarReminder $reminder, ContentActiveRecord $entry = null)
+    public static function findByReminder(CalendarReminder $reminder, Remindable $entry = null)
     {
         $condition = ['reminder_id' => $reminder->id];
         if($entry) {
-            $condition['object_model'] = get_class($entry);
-            $condition['object_id'] =  $entry->getPrimaryKey();
+            $condition['content_id'] = $entry->getContentRecord()->id;
         }
 
         return static::find()->where($condition);

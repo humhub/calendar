@@ -102,7 +102,7 @@ class CalendarService extends Component
      * @param ContentContainerActiveRecord $contentContainer
      * @param null $limit
      * @param bool $expand
-     * @return CalendarItem[]
+     * @return CalendarEntryIF[]
      * @throws \Throwable
      */
     public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null, $expand = true)
@@ -125,7 +125,12 @@ class CalendarService extends Component
 
             if($itemType && $itemType->isEnabled()) {
                 foreach ($items as $item) {
-                    $result[] = new CalendarItemWrapper(['itemType' => $itemType, 'options' => $item]);
+                    if(is_array($item)) {
+                        $result[] = new CalendarEntryIFWrapper(['itemType' => $itemType, 'options' => $item]);
+                    } elseif($item instanceof CalendarEntryIF) {
+                        $result[] = $item;
+                    }
+
                 }
             }
         }
@@ -144,7 +149,7 @@ class CalendarService extends Component
      * @param int $daysInFuture
      * @param int $limit
      * @param array $filters
-     * @return CalendarItem[]
+     * @return CalendarEntryIF[]
      * @throws \Throwable
      */
     public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5, $filters = [])
@@ -159,6 +164,7 @@ class CalendarService extends Component
 
     /**
      * @param string $key item key
+     * @param ContentContainerActiveRecord|null $contentContainer
      * @return CalendarItemType|null
      */
     public function getItemType($key, ContentContainerActiveRecord $contentContainer = null)

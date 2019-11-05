@@ -41,17 +41,16 @@ class ReminderTest extends CalendarUnitTest
 
         // Event starts in one hour and reminder is set to one hour -> should pass
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), new DateInterval('PT1H'), 'Test');
-        $reminder = $this->createReminder(CalendarReminder::UNIT_HOUR, 1, $entry);
+        $reminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 1, $entry);
+        $reminder->save();
         $this->assertTrue($reminder->checkMaturity($entry));
 
         // Event starts in two hour and reminder is set to one hour -> should not pass
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT2H')), new DateInterval('PT1H'), 'Test');
-        $reminder = $this->createReminder(CalendarReminder::UNIT_HOUR, 1, $entry);
-        $this->assertFalse($reminder->checkMaturity($entry));
+        $reminder->save();
 
         // Event starts in one day and reminder is set to one hour -> should not pass
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), new DateInterval('PT1H'), 'Test');
-        $reminder = $this->createReminder(CalendarReminder::UNIT_HOUR, 1, $entry);
         $this->assertFalse($reminder->checkMaturity($entry));
     }
 

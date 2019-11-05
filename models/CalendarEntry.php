@@ -2,11 +2,16 @@
 
 namespace humhub\modules\calendar\models;
 
-use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\interfaces\Remindable;
+use humhub\modules\user\components\ActiveQueryUser;
+use Yii;
+use yii\base\Exception;
+use DateTime;
 use DateTimeZone;
-use humhub\libs\Html;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\CalendarUtils;
-use humhub\modules\calendar\interfaces\CalendarItem;
+use humhub\modules\calendar\interfaces\CalendarEntryIF;
+use humhub\modules\calendar\interfaces\CalendarEntryStatus;
 use humhub\modules\calendar\notifications\CanceledEvent;
 use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\calendar\notifications\ReopenedEvent;
@@ -20,10 +25,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\calendar\jobs\ForceParticipation;
 use humhub\widgets\Label;
 use Sabre\VObject\UUIDUtil;
-use Yii;
-use DateTime;
-use DateInterval;
-use yii\base\Exception;
 use humhub\libs\DbDateValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -54,7 +55,7 @@ use yii\db\ActiveQuery;
  * @property integer max_participants
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
-class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarItem
+class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarEntryIF, CalendarEntryStatus, Remindable
 {
     /**
      * @inheritdoc
@@ -364,7 +365,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
 
     /**
      * @param $state
-     * @return ActiveQuery
+     * @return ActiveQueryUser
      */
     public function findParticipantUsersByState($state)
     {
@@ -379,7 +380,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     }
 
     /**
-     * @return ActiveQuery
+     * @return ActiveQueryUser
      */
     public function findUsersByInterest()
     {
@@ -475,40 +476,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     {
         $participant = $this->findParticipant($user);
         return !empty($participant) && $participant->showParticipantInfo();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getFullCalendarArray()
-    {
-        $end = Yii::$app->formatter->asDatetime($this->end_datetime, 'php:c');
-
-        if ($this->all_day) {
-            // Note: In fullcalendar the end time is the moment AFTER the event.
-            // But we store the exact event time 00:00:00 - 23:59:59 so add some time to the full day event.
-            $endDateTime = new DateTime($this->end_datetime);
-            $endDateTime->add(new DateInterval('PT2H'));
-            $end = $endDateTime->format('Y-m-d');
-        }
-
-        if(!Yii::$app->user->isGuest) {
-            Yii::$app->formatter->timeZone = Yii::$app->user->getIdentity()->time_zone;
-        }
-
-        $title = $this->title . (($this->closed) ? ' ('.Yii::t('CalendarModule.base', 'canceled').')' : '');
-
-        return [
-            'id' => $this->id,
-            'title' => $title,
-            'editable' => $this->content->canEdit(),
-            'backgroundColor' => Html::encode($this->color),
-            'allDay' => (boolean) $this->all_day,
-            'updateUrl' => Url::toEditEntryAjax($this),
-            'viewUrl' => Url::toEntry($this, 1),
-            'start' => Yii::$app->formatter->asDatetime($this->start_datetime, 'php:c'),
-            'end' => $end,
-        ];
     }
 
     public function getUrl()
@@ -828,5 +795,71 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarI
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return string view mode 'modal', 'blank', 'redirect'
+     */
+    public function getViewMode()
+    {
+        return static::VIEW_MODE_MODAL;
+    }
+
+    /**
+     * Access url of the source content or other view
+     *
+     * @return string the timezone this item was originally saved, note this is
+     */
+    public function getUpdateUrl()
+    {
+        return Url::toEditEntryAjax($this);
+    }
+
+    /**
+     * Check if this calendar entry is editable, for example by checking `$this->content->isEditable()`.
+     *
+     * @return bool true if this entry is editable, false
+     */
+    public function isEditable()
+    {
+        return $this->content->canEdit();
+    }
+
+    /**
+     * @return string hex color string e.g: '#44B5F6'
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        if($this->closed) {
+            return CalendarEntryStatus::STATUS_CANCELLED;
+        }
+
+        return CalendarEntryStatus::STATUS_CONFIRMED;
+    }
+
+    /**
+     * @return Content
+     */
+    public function getContentRecord()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Access url of the source content or other view
+     *
+     * @return string the timezone this item was originally saved, note this is
+     */
+    public function getViewUrl()
+    {
+        return Url::toEntry($this, 1);
     }
 }

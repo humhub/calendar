@@ -20,23 +20,6 @@ $helpBlock = $model->isGlobal()
         <?= $helpBlock ?>
     </div>
 
-    <?php foreach ($model->reminderSettings->reminder as $index => $reminder): ?>
-        <div class="row" data-reminder-index="<?= $index ?>">
-            <div class="col-md-2">
-                <?= $form->field($reminder, "[$index]unit")->dropDownList(ReminderSettings::getUnitSelection())->label(false) ?>
-            </div>
-            <div class="col-md-2">
-                <?= $form->field($reminder, "[$index]value")->textInput(['type' => 'number'])->label(false) ?>
-            </div>
-            <div class="col-md-8">
-                <?= Button::danger()->action('delete')
-                    ->icon('fa-times')->xs()->visible(!$reminder->isNewRecord)
-                    ->style('margin: 7px 0')->loader(false) ?>
+    <?= $this->render('_reminder_config', ['reminders' => $model->reminderSettings->reminder, 'form' => $form])?>
 
-                <?= Button::primary()->action('add')
-                    ->icon('fa-plus')->xs()->visible($reminder->isNewRecord)
-                    ->style('margin: 7px 0')->loader(false) ?>
-            </div>
-        </div>
-    <?php endforeach; ?>
 </div>

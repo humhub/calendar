@@ -9,6 +9,7 @@
 
 namespace humhub\modules\calendar\models\forms;
 
+use humhub\modules\calendar\models\CalendarReminder;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
 use Yii;
@@ -87,8 +88,15 @@ class CalendarEntryForm extends Model
      */
     public $entry;
 
+    /**
+     * @var ReminderSettings
+     */
+    public $reminderSettings;
+
     public function init()
     {
+        parent::init();
+
         $this->timeZone = empty($this->timeZone) ? Yii::$app->formatter->timeZone : $this->timeZone;
 
         if($this->entry) {
@@ -106,6 +114,7 @@ class CalendarEntryForm extends Model
             }
 
             $this->topics = $this->entry->content->getTags(Topic::class);
+            $this->reminderSettings = new ReminderSettings(['entry' => $this->entry]);
         }
     }
 
@@ -171,7 +180,7 @@ class CalendarEntryForm extends Model
             return;
         }
 
-        $type = CalendarEntryType::findOne($this->type_id);
+        $type = CalendarEntryType::findOne(['id' => $this->type_id]);
 
         if($type->contentcontainer_id != null && $type->contentcontainer_id !== $this->entry->content->contentcontainer_id) {
             $this->addError($attribute,Yii::t('CalendarModule.base', "Invalid event type id selected."));
@@ -207,6 +216,8 @@ class CalendarEntryForm extends Model
         $this->entry->allow_decline = $defaultSettings->allow_decline;
         $this->entry->allow_maybe = $defaultSettings->allow_maybe;
 
+        $this->reminderSettings = new ReminderSettings(['entry' => $this->entry]);
+
         // Translate from user timeZone to system timeZone note the datepicker expects app timezone
         $this->translateDateTimes($start, $end, $this->timeZone, $this->timeZone);
     }
@@ -232,6 +243,8 @@ class CalendarEntryForm extends Model
         if(empty($this->type_id)) {
             $this->type_id = null;
         }
+
+        $this->reminderSettings->load($data);
 
         return true;
     }
@@ -272,7 +285,7 @@ class CalendarEntryForm extends Model
 
                 Topic::attach($this->entry->content, $this->topics);
 
-                return true;
+                return $this->reminderSettings->save();
             }
 
             return false;

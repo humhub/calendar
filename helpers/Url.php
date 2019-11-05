@@ -201,6 +201,15 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/generateics', ['id' => $entry->id]);
     }
 
+    public static function toUserLevelReminderConfig(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
+    {
+        if(!$container) {
+            $container = $entry->content->container;
+        }
+
+        return $container->createUrl('/calendar/reminder/set', ['id' => $entry->content->id]);
+    }
+
     public static function toEntryRespond(CalendarEntry $entry, $state, ContentContainerActiveRecord $container = null)
     {
         if(!$container) {

@@ -5,7 +5,7 @@ namespace humhub\modules\calendar\interfaces;
 
 
 use DateTime;
-use humhub\modules\calendar\interfaces\CalendarItem;
+use humhub\modules\calendar\interfaces\CalendarEntryIF;
 use yii\base\Model;
 use Sabre\VObject;
 
@@ -31,7 +31,7 @@ class VCalendar extends Model
 
 
     /**
-     * @param CalendarItem[] $items
+     * @param CalendarEntryIF[] $items
      * @return VCalendar
      */
     public static function withEvents($items, $tz = null)
@@ -91,11 +91,11 @@ class VCalendar extends Model
     }
 
     /**
-     * @param $item CalendarItem
+     * @param $item CalendarEntryIF
      * @return array []
      * @throws \Exception
      */
-    private function addVEvent(CalendarItem $item)
+    private function addVEvent(CalendarEntryIF $item)
     {
         $dtend = $item->getEndDateTime();
 
@@ -219,7 +219,7 @@ class VCalendar extends Model
 
 
     /**
-     * @param $items CalendarItem|CalendarItem[]|array
+     * @param $items CalendarEntryIF|CalendarEntryIF[]|array
      * @return VCalendar
      * @throws \Exception
      */
