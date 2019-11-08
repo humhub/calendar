@@ -10,6 +10,7 @@ namespace humhub\modules\calendar\integration;
 
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarEntryIF;
+use humhub\modules\calendar\interfaces\CalendarItemTypesEvent;
 use humhub\modules\meeting\models\Meeting;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
@@ -36,7 +37,7 @@ class BirthdayCalendar extends Component
     const ITEM_TYPE_KEY = 'birthday';
 
     /**
-     * @param $event \humhub\modules\calendar\interfaces\CalendarItemTypesEvent
+     * @param $event CalendarItemTypesEvent
      * @return mixed
      */
     public static function addItemTypes($event)
@@ -50,6 +51,7 @@ class BirthdayCalendar extends Component
 
     /**
      * @param $event \humhub\modules\calendar\interfaces\CalendarItemsEvent
+     * @throws \Throwable
      */
     public static function addItems($event)
     {

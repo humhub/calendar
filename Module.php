@@ -16,6 +16,11 @@ class Module extends ContentContainerModule
 {
 
     /**
+     * @var int Reminder process run interval in minutes
+     */
+    public $reminderProcessInterval = 15;
+
+    /**
      * @inheritdoc
      */
     public $resourcesPath = 'resources';
@@ -24,6 +29,11 @@ class Module extends ContentContainerModule
     {
         parent::init();
         require_once Yii::getAlias('@calendar/vendor/autoload.php');
+    }
+
+    public function getRemidnerProcessIntervalMS()
+    {
+        return $this->reminderProcessInterval * 60 * 1000;
     }
 
     /**

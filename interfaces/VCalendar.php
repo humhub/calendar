@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\interfaces;
 
 
 use DateTime;
+use Exception;
 use humhub\modules\calendar\interfaces\CalendarEntryIF;
 use yii\base\Model;
 use Sabre\VObject;
@@ -93,7 +94,7 @@ class VCalendar extends Model
     /**
      * @param $item CalendarEntryIF
      * @return array []
-     * @throws \Exception
+     * @throws Exception
      */
     private function addVEvent(CalendarEntryIF $item)
     {
@@ -161,7 +162,7 @@ class VCalendar extends Model
         if (!$to) $to = $from;
         try {
             $tz = new \DateTimeZone($tzid);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         // get all transitions for one year back/ahead
@@ -221,7 +222,7 @@ class VCalendar extends Model
     /**
      * @param $items CalendarEntryIF|CalendarEntryIF[]|array
      * @return VCalendar
-     * @throws \Exception
+     * @throws Exception
      */
     public function add($items)
     {

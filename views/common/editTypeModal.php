@@ -8,8 +8,8 @@
 
 use humhub\modules\calendar\interfaces\CalendarItemType;
 use humhub\modules\calendar\models\CalendarEntryType;
-use humhub\widgets\ActiveForm;
-use humhub\widgets\ColorPickerField;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ColorPicker;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
@@ -33,7 +33,7 @@ if($model instanceof CalendarItemType) {
     <?php $form = ActiveForm::begin()?>
         <div class="modal-body">
             <div id="event-type-color-field" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
-                <?= ColorPickerField::widget(['model' => $model, 'container' => 'event-type-color-field']); ?>
+                <?= ColorPicker::widget(['model' => $model, 'container' => 'event-type-color-field']); ?>
                 <?= $form->field($model, $titleAttribute, ['template' => '
                                 {label}
                                 <div class="input-group">

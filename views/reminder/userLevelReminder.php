@@ -18,7 +18,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     <?php $form = ActiveForm::begin() ?>
         <div class="modal-body">
 
-            <?= $this->render('@calendar/views/common/_reminder_config', ['reminders' => $reminderSettings->reminder, 'form' => $form])?>
+            <?= $this->render('@calendar/views/common/_reminder_config', ['reminders' => $reminderSettings->reminders, 'form' => $form])?>
 
 
         </div>

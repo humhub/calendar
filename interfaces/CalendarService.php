@@ -17,7 +17,7 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateInterval;
 use DateTime;
-use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\Component;

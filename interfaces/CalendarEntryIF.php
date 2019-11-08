@@ -59,16 +59,21 @@ interface CalendarEntryIF
     public function getTimezone();
 
     /**
+     * @return string
+     */
+    public function getUrl();
+
+    /**
      * Access url of the source content or other view
      *
      * @return string the timezone this item was originally saved, note this is
      */
-    public function getViewUrl();
+    public function getCalendarViewUrl();
 
     /**
      * @return string view mode 'modal', 'blank', 'redirect'
      */
-    public function getViewMode();
+    public function getCalendarViewMode();
 
     /**
      * Access url of the source content or other view
@@ -115,4 +120,10 @@ interface CalendarEntryIF
      * @return string|null
      */
     public function getIcon();
+
+    /**
+     * Additional configuration options
+     * @return array
+     */
+    public function getOptions();
 }

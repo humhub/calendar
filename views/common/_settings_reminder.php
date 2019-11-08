@@ -1,9 +1,6 @@
 <?php
 /* @var $this \humhub\components\View */
-/* @var $reminderSettings ReminderSettings */
-
-use humhub\modules\calendar\models\forms\ReminderSettings;
-use humhub\widgets\Button;
+/* @var $model \humhub\modules\calendar\models\DefaultSettings */
 
 $helpBlock = $model->isGlobal()
     ? Yii::t('CalendarModule.reminder', 'Here you can configure default reminder. These settings can be overwritten on space/profile level.')
@@ -20,6 +17,6 @@ $helpBlock = $model->isGlobal()
         <?= $helpBlock ?>
     </div>
 
-    <?= $this->render('_reminder_config', ['reminders' => $model->reminderSettings->reminder, 'form' => $form])?>
+    <?= $this->render('_reminder_config', ['reminders' => $model->reminderSettings->reminders, 'form' => $form])?>
 
 </div>

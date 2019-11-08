@@ -7,8 +7,8 @@
 
 namespace humhub\modules\calendar\controllers;
 
-
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\calendar\models\SnippetModuleSettings;
 use Yii;
 
 class ConfigController extends AbstractConfigController
@@ -28,6 +28,19 @@ class ConfigController extends AbstractConfigController
     public function getAccess()
     {
         return Yii::createObject($this->access);
+    }
+
+    public function actionSnippet()
+    {
+        $model = new SnippetModuleSettings();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('snippet', [
+            'model' => $model
+        ]);
     }
 
 }

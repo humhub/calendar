@@ -1,11 +1,13 @@
 <?php
 
 
-namespace humhub\modules\calendar\models;
+namespace humhub\modules\calendar\models\reminder;
 
 
+use Exception;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\Remindable;
+use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -13,6 +15,7 @@ use humhub\modules\user\models\User;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveQuery;
+use yii\db\IntegrityException;
 
 class ReminderProcessor extends Model
 {
@@ -24,7 +27,6 @@ class ReminderProcessor extends Model
     public $handledReminders = [];
 
     /**
-     * @param ContentContainerActiveRecord|null $container
      * @throws InvalidConfigException
      * @throws \Throwable
      */
@@ -71,7 +73,7 @@ class ReminderProcessor extends Model
     {
         foreach ($this->calendarService->getUpcomingEntries($container, null, null, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]) as $entry) {
 
-            if(!$entry instanceof  Remindable) {
+            if(!$entry instanceof Remindable) {
                 continue;
             }
 
@@ -86,8 +88,8 @@ class ReminderProcessor extends Model
     }
 
     /**
-     * @throws \yii\db\IntegrityException
-     * @throws \Exception
+     * @throws IntegrityException
+     * @throws Exception
      */
     private function runEntryLevelOnly()
     {
@@ -114,7 +116,7 @@ class ReminderProcessor extends Model
      *
      * @param Remindable $entry
      * @return array|bool
-     * @throws \Exception
+     * @throws Exception
      */
     private function handleEntryLevelReminder(Remindable $entry)
     {
@@ -162,7 +164,7 @@ class ReminderProcessor extends Model
      * @param array $skipUsers
      * @return bool
      * @throws InvalidConfigException
-     * @throws \yii\db\IntegrityException
+     * @throws IntegrityException
      */
     public function sendEntryLevelReminder(CalendarReminder $reminder, Remindable $entry = null, $skipUsers = [])
     {
@@ -200,14 +202,14 @@ class ReminderProcessor extends Model
     }
 
     /**
-     * @param CalendarEntry $entry
+     * @param Remindable $entry
      * @param $skipUsers
      * @throws InvalidConfigException
      */
     private function handleDefaultReminder(Remindable $entry, $skipUsers = [])
     {
         $sent = false;
-        foreach (CalendarReminder::getDefaults($entry->content->container, true) as $reminder) {
+        foreach (CalendarReminder::getDefaults($entry->getContentRecord()->container, true) as $reminder) {
             if(!$reminder->checkMaturity($entry)) {
                 continue;
             }
@@ -230,7 +232,7 @@ class ReminderProcessor extends Model
      * @param CalendarReminder $reminder
      * @param Remindable $entry
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function isReadyToSent(CalendarReminder $reminder, Remindable $entry)
     {

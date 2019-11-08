@@ -2,7 +2,8 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\models\FullCalendar;
 use Yii;
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarService;

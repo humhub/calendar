@@ -1,13 +1,11 @@
 <?php
 
 
-namespace humhub\modules\calendar\models;
+namespace humhub\modules\calendar\models\reminder;
 
 
 use DateTime;
 use humhub\components\ActiveRecord;
-use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\calendar\interfaces\CalendarEntryIF;
 use humhub\modules\calendar\interfaces\Remindable;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -94,7 +92,7 @@ class CalendarReminder extends ActiveRecord
     {
         $rules = [
             [['unit'], 'in', 'range' => [static::UNIT_HOUR, static::UNIT_DAY, static::UNIT_WEEK]],
-            [['value'], 'integer', 'min' => 1, 'max' => '30']
+            [['value'], 'integer', 'min' => 1, 'max' => '100']
         ];
 
         if ($this->active) {
@@ -353,6 +351,10 @@ class CalendarReminder extends ActiveRecord
      */
     public function checkMaturity(Remindable $model)
     {
+        if(!$this->active) {
+            return false;
+        }
+
         $sendDate = $model->getStartDateTime()->modify($this->getModify());
         return $sendDate <= new DateTime();
     }
@@ -387,5 +389,13 @@ class CalendarReminder extends ActiveRecord
         }
 
         CalendarReminderSent::create($this, $entry);
+    }
+
+    public function compare(CalendarReminder $reminder)
+    {
+        return $this->unit == $reminder->unit
+            && $this->value == $reminder->value
+            && $this->contentcontainer_id == $reminder->contentcontainer_id
+            && $this->content_id == $reminder->content_id;
     }
 }

@@ -12,7 +12,7 @@ use humhub\modules\calendar\interfaces\CalendarEntryStatus;
 use Yii;
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarEntryIF;
-use humhub\modules\calendar\interfaces\RecurrentCalendarEntryIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEntry;
 use humhub\libs\Html;
 
 class FullCalendar
@@ -34,7 +34,6 @@ class FullCalendar
             $endDateTime->add(new \DateInterval('PT2H'))->setTime(0,0,0);
         }
 
-
         $result = [
             'uid' => $entry->getUid(),
             'title' => static::getTitle($entry),
@@ -42,8 +41,8 @@ class FullCalendar
             'backgroundColor' => Html::encode($entry->getColor()),
             'allDay' => $entry->isAllDay(),
             'updateUrl' => $entry->getUpdateUrl(),
-            'viewUrl' => $entry->getViewUrl(),
-            'viewMode' => $entry->getViewMode(),
+            'viewUrl' => $entry->getCalendarViewUrl(),
+            'viewMode' => $entry->getCalendarViewMode(),
             'icon' => $entry->getIcon(),
             'start' => static::toFullCalendarFormat($entry->getStartDateTime()),
             'end' => static::toFullCalendarFormat(static::getEndDate($entry)),
@@ -51,7 +50,7 @@ class FullCalendar
             'eventStartEditable' => true
         ];
 
-        if($entry instanceof RecurrentCalendarEntryIF) {
+        if($entry instanceof RecurrentCalendarEntry) {
             $result['rrule'] = $entry->getRrule();
             $result['exdate'] = $entry->getExdate();
         }

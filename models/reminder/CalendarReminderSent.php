@@ -1,7 +1,7 @@
 <?php
 
 
-namespace humhub\modules\calendar\models;
+namespace humhub\modules\calendar\models\reminder;
 
 
 use humhub\components\ActiveRecord;
@@ -25,7 +25,7 @@ class CalendarReminderSent extends ActiveRecord
      * @param Remindable $entry
      * @return CalendarReminderSent
      */
-    public static function create(CalendarReminder $reminder, Remindable $entry = null)
+    public static function create(CalendarReminder $reminder, Remindable $entry)
     {
         $instance = new static(['reminder_id' => $reminder->id]);
         $instance->content_id = $entry->getContentRecord()->id;

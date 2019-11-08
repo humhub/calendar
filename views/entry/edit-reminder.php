@@ -16,6 +16,6 @@ use yii\jui\DatePicker;
 
 <div class="modal-body">
 
-    <?= $this->render('@calendar/views/common/_reminder_config', ['reminders' => $calendarEntryForm->reminderSettings->reminder, 'form' => $form])?>
+    <?= $this->render('@calendar/views/common/_reminder_config', ['reminders' => $calendarEntryForm->reminderSettings->reminders, 'form' => $form])?>
 
 </div>

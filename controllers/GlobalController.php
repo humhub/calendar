@@ -4,7 +4,7 @@ namespace humhub\modules\calendar\controllers;
 
 use DateTime;
 use humhub\components\Controller;
-use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;

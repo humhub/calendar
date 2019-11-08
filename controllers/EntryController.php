@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\calendar\interfaces\AbstractCalendarController;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\calendar\helpers\Url;
@@ -30,6 +31,14 @@ class EntryController extends ContentContainerController
      */
     public $hideSidebar = true;
 
+    /**
+     * @param $id
+     * @param null $cal
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
     public function actionView($id, $cal = null)
     {
         $entry = $this->getCalendarEntry($id);
@@ -46,7 +55,12 @@ class EntryController extends ContentContainerController
         return $this->render('view', ['entry' => $entry, 'stream' => true]);
     }
 
-    private function renderModal($entry, $cal)
+    /**
+     * @param $entry
+     * @param $cal
+     * @return string
+     */
+    protected function renderModal($entry, $cal)
     {
         return $this->renderAjax('modal', [
             'entry' => $entry,
@@ -79,6 +93,17 @@ class EntryController extends ContentContainerController
         return $this->asJson(['success' => true]);
     }
 
+    /**
+     * @param null $id
+     * @param null $start
+     * @param null $end
+     * @param null $cal
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionEdit($id = null, $start = null, $end = null, $cal = null)
     {
         if (empty($id) && $this->canCreateEntries()) {
@@ -110,6 +135,13 @@ class EntryController extends ContentContainerController
         ]);
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
     public function actionToggleClose($id)
     {
         $entry = $this->getCalendarEntry($id);
@@ -127,6 +159,12 @@ class EntryController extends ContentContainerController
         return $this->asJson(Stream::getContentResultEntry($entry->content));
     }
 
+    /**
+     * @return \yii\web\Response
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
     public function actionEditAjax()
     {
         $this->forcePostRequest();
@@ -150,6 +188,12 @@ class EntryController extends ContentContainerController
         throw new HttpException(400, "Could not save! " . print_r($entry->getErrors()));
     }
 
+    /**
+     * @return mixed
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
     public function actionUserList()
     {
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
@@ -177,6 +221,14 @@ class EntryController extends ContentContainerController
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
+    /**
+     * @param $id
+     * @return EntryController|\yii\console\Response|\yii\web\Response
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDelete($id)
     {
         $this->forcePostRequest();
@@ -221,6 +273,12 @@ class EntryController extends ContentContainerController
         return $this->contentContainer->permissionManager->can(CreateEntry::class);
     }
 
+    /**
+     * @return \yii\console\Response|\yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\web\RangeNotSatisfiableHttpException
+     */
     public function actionGenerateics()
     {
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));

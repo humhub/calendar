@@ -8,8 +8,8 @@
 
 namespace humhub\modules\calendar\tests\codeception\fixtures;
 
-use humhub\modules\calendar\models\CalendarReminder;
-use humhub\modules\calendar\models\CalendarReminderSent;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
+use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 use yii\test\ActiveFixture;
 
 class CalendarReminderSentFixture extends ActiveFixture

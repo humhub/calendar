@@ -9,16 +9,16 @@
 
 namespace humhub\modules\calendar\models\forms;
 
-use humhub\modules\calendar\models\CalendarReminder;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
 use humhub\libs\DbDateValidator;
-use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\content\models\Content;
@@ -220,6 +220,9 @@ class CalendarEntryForm extends Model
 
         // Translate from user timeZone to system timeZone note the datepicker expects app timezone
         $this->translateDateTimes($start, $end, $this->timeZone, $this->timeZone);
+
+        $this->entry->start_datetime = $this->start_date;
+        $this->entry->end_datetime = $this->end_date;
     }
 
     public function load($data, $formName = null)
@@ -322,6 +325,7 @@ class CalendarEntryForm extends Model
      * @param string $end end string date in $targetTimeZone
      * @param string $sourceTimeZone
      * @param string $targetTimeZone
+     * @throws InvalidConfigException
      */
     public function translateDateTimes($start = null, $end = null, $sourceTimeZone = null, $targetTimeZone = null, $dateFormat = 'php:Y-m-d H:i:s e')
     {

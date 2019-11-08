@@ -24,7 +24,7 @@ $extraMenus = '<li><a href="'.$calendarUrl.'"><i class="fa fa-arrow-circle-right
                 <?php /* @var $entry \humhub\modules\calendar\models\CalendarEntry */ ?>
                 <?php $formatter = new CalendarDateFormatter(['calendarItem' => $entry]); ?>
                 <?php $color = ($entry->color) ? $entry->color : $this->theme->variable('info')?>
-                <a href="<?= $entry->getUrl() ?>">
+                <a href="<?= $entry->get() ?>">
                     <li style="border-left: 3px solid <?= $color?>">
                         <div class="media">
                             <div class="media-body  text-break">

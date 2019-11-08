@@ -11,6 +11,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\calendar\Events;
 use humhub\modules\content\widgets\WallEntryLinks;
 use humhub\commands\IntegrityController;
+use humhub\commands\CronController;
 
 return [
     'id' => 'calendar',
@@ -29,6 +30,6 @@ return [
         ['class' => WallEntryLinks::class, 'event' => WallEntryLinks::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryLinks']],
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentDelete']],
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
-        ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
+        ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronRun']],
     ],
 ];

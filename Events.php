@@ -2,21 +2,19 @@
 
 namespace humhub\modules\calendar;
 
+use Yii;
 use humhub\modules\calendar\integration\BirthdayCalendar;
 use humhub\modules\calendar\interfaces\Remindable;
 use humhub\modules\calendar\interfaces\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\CalendarEntryQuery;
-use humhub\modules\calendar\models\CalendarReminder;
-use humhub\modules\calendar\models\CalendarReminderSent;
-use humhub\modules\calendar\models\forms\ReminderSettings;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
+use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\DownloadIcsLink;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\widgets\ReminderLink;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use humhub\modules\content\models\Content;
-use Yii;
 use humhub\modules\calendar\helpers\Url;
 
 /**
@@ -188,9 +186,16 @@ class Events
         }
     }
 
-    public static function onHourlyCron()
+    public static function onCronRun()
     {
-        (new ReminderService())->sendAllReminder();
-    }
+        /* @var $module Module */
+        $module = Yii::$app->module->getModule('calendar');
 
+        $lastRunTS = $module->settings->get('lastReminderRunTS');
+
+        if(!$lastRunTS || ((time() - $lastRunTS) >= $module->getRemidnerProcessIntervalMS())) {
+            (new ReminderService())->sendAllReminder();
+            $module->settings->set('lastReminderRunTS', time());
+        }
+    }
 }

@@ -9,7 +9,7 @@ use yii\base\Exception;
 use DateTime;
 use DateTimeZone;
 use humhub\modules\calendar\helpers\Url;
-use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarEntryIF;
 use humhub\modules\calendar\interfaces\CalendarEntryStatus;
 use humhub\modules\calendar\notifications\CanceledEvent;
@@ -39,13 +39,9 @@ use yii\db\ActiveQuery;
  * @property string $title
  * @property string $description
  * @property string $start_datetime
- * @property string $end_datetime It is the moment immediately after the event has ended. For example, if the last full day of an event is Thursday, the exclusive end of the event will be 00:00:00 on Friday!
+ * @property string $end_datetime
  * @property integer $all_day
  * @property integer $participation_mode
- * @property integer $recur
- * @property integer $recur_type
- * @property integer $recur_interval
- * @property string $recur_end
  * @property string $color
  * @property string $uid
  * @property integer $allow_decline
@@ -53,6 +49,9 @@ use yii\db\ActiveQuery;
  * @property string $participant_info
  * @property integer closed
  * @property integer max_participants
+ * @property string rrule
+ * @property string exdate
+ * @property string location
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarEntryIF, CalendarEntryStatus, Remindable
@@ -769,40 +768,24 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarE
         $this->uid = $uid;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isExportable()
-    {
-        return true;
-    }
-
     public function getRrule()
     {
-        return null;
+        return $this->rrule;
     }
 
     public function getExdate()
     {
-        return null;
+        return $this->exdate;
     }
 
     public function getLocation()
     {
-        return null;
+        return $this->location;
     }
 
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * @return string view mode 'modal', 'blank', 'redirect'
-     */
-    public function getViewMode()
-    {
-        return static::VIEW_MODE_MODAL;
     }
 
     /**
@@ -854,12 +837,29 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarE
     }
 
     /**
+     * Additional configuration options
+     * @return array
+     */
+    public function getOptions()
+    {
+        return null;
+    }
+
+    /**
      * Access url of the source content or other view
      *
      * @return string the timezone this item was originally saved, note this is
      */
-    public function getViewUrl()
+    public function getCalendarViewUrl()
     {
         return Url::toEntry($this, 1);
+    }
+
+    /**
+     * @return string view mode 'modal', 'blank', 'redirect'
+     */
+    public function getCalendarViewMode()
+    {
+        return static::VIEW_MODE_MODAL;
     }
 }

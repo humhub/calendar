@@ -14,8 +14,8 @@ use calendar\CalendarUnitTest;
 use DateInterval;
 use DateTime;
 use humhub\modules\calendar\Events;
-use humhub\modules\calendar\models\CalendarReminder;
-use humhub\modules\calendar\models\CalendarReminderSent;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
+use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 
 class ReminderProcessTest  extends CalendarUnitTest
 {

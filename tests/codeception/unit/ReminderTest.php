@@ -5,16 +5,67 @@ namespace humhub\modules\calendar\tests\codeception\unit;
 use calendar\CalendarUnitTest;
 use DateInterval;
 use DateTime;
-use humhub\modules\calendar\models\CalendarReminder;
-use humhub\modules\calendar\models\CalendarReminderSent;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
+use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 
 class ReminderTest extends CalendarUnitTest
 {
+    public function testClearContainerDefaultReminder()
+    {
+        $this->becomeUser('admin');
+        $global = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
+        $this->assertTrue($global->save());
+
+        $space = Space::findOne(['id' => 1]);
+        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_DAY, 1, $space);
+        $this->assertTrue($spaceReminder->save());
+
+        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), new DateInterval('PT1H'), 'Test', $space);
+        $entryContainerLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry);
+        $this->assertTrue($entryContainerLevelReminder->save());
+
+        $entryUserLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry, User::findOne(['id' => 1]));
+        $this->assertTrue($entryUserLevelReminder->save());
+
+        CalendarReminder::clearDefaults($space);
+
+        $this->assertNull(CalendarReminder::findOne(['id' => $global->id]));
+        $this->assertNotNull(CalendarReminder::findOne(['id' => $spaceReminder->id]));
+        $this->assertNotNull(CalendarReminder::findOne(['id' => $entryContainerLevelReminder->id]));
+        $this->assertNotNull(CalendarReminder::findOne(['id' => $entryUserLevelReminder->id]));
+    }
+
+    public function testClearGlobalReminder()
+    {
+        $this->becomeUser('admin');
+        $global = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
+        $this->assertTrue($global->save());
+
+        $space = Space::findOne(['id' => 1]);
+        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_DAY, 1, $space);
+        $this->assertTrue($spaceReminder->save());
+
+        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), new DateInterval('PT1H'), 'Test', $space);
+        $entryContainerLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry);
+        $this->assertTrue($entryContainerLevelReminder->save());
+
+        $entryUserLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry, User::findOne(['id' => 1]));
+        $this->assertTrue($entryUserLevelReminder->save());
+
+        CalendarReminder::clearDefaults();
+
+        $this->assertNull(CalendarReminder::findOne(['id' => $global->id]));
+        $this->assertNotNull(CalendarReminder::findOne(['id' => $spaceReminder->id]));
+        $this->assertNotNull(CalendarReminder::findOne(['id' => $entryContainerLevelReminder->id]));
+        $this->assertNotNull(CalendarReminder::findOne(['id' => $entryUserLevelReminder->id]));
+    }
+
     /**
      * @throws \Exception
+     * @throws \Throwable
      */
     public function testDeleteReminder()
     {
