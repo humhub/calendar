@@ -38,10 +38,6 @@ class Events
      */
     public static function registerAutoloader()
     {
-        if (class_exists('\Sabre\VObject')) {
-            return;
-        }
-
         require Yii::getAlias('@calendar/vendor/autoload.php');
     }
 

@@ -4,6 +4,7 @@
 namespace calendar;
 
 
+use humhub\modules\calendar\Events;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -17,6 +18,11 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class CalendarUnitTest extends HumHubDbTestCase
 {
+    public function _before()
+    {
+        Events::registerAutoloader();
+    }
+
     protected function createReminder($unit, $value, $model = null, User $user = null)
     {
         $reminder = new CalendarReminder([

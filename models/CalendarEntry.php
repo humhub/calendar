@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\models;
 
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEntry;
 use humhub\modules\calendar\interfaces\Remindable;
 use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
@@ -54,7 +55,7 @@ use yii\db\ActiveQuery;
  * @property string location
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
-class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarEntryIF, CalendarEntryStatus, Remindable
+class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarEntryIF, CalendarEntryStatus, Remindable, RecurrentCalendarEntry
 {
     /**
      * @inheritdoc
@@ -861,5 +862,47 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, CalendarE
     public function getCalendarViewMode()
     {
         return static::VIEW_MODE_MODAL;
+    }
+
+    public function setRrule($rrule)
+    {
+        $this->rrule = $rrule;
+    }
+
+    public function getRecurrenceId()
+    {
+        // TODO: Implement getRecurrenceId() method.
+    }
+
+    public function setRecurrenceId($recurrenceId)
+    {
+        // TODO: Implement setRecurrenceId() method.
+    }
+
+    /**
+     * @param $root
+     * @param $start
+     * @param $end
+     * @param $recurrenceId
+     * @return mixed
+     */
+    public function createRecurrence($start, $end, $recurrenceId)
+    {
+        // TODO: Implement createRecurrence() method.
+    }
+
+    public function getId()
+    {
+        // TODO: Implement getId() method.
+    }
+
+    public function getParentId()
+    {
+        // TODO: Implement getParentId() method.
+    }
+
+    public function getRecurrenceViewUrl($cal = false)
+    {
+        // TODO: Implement getRecurrenceViewUrl() method.
     }
 }

@@ -25,10 +25,24 @@ class Module extends ContentContainerModule
      */
     public $resourcesPath = 'resources';
 
-    public function init()
+    /**
+     * @inheritdoc
+     */
+    public static function onBeforeRequest()
     {
-        parent::init();
-        require_once Yii::getAlias('@calendar/vendor/autoload.php');
+        static::registerAutoloader();
+    }
+
+    /**
+     * Register composer autoloader when Reader not found
+     */
+    public static function registerAutoloader()
+    {
+        if (class_exists('\ICal\ICal')) {
+            return;
+        }
+
+        require Yii::getAlias('@external_calendar/vendor/autoload.php');
     }
 
     public function getRemidnerProcessIntervalMS()
