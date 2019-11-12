@@ -8,10 +8,10 @@ class uninstall extends Migration
 
     public function up()
     {
-        $this->safeDropTable('calendar_entry');
-        $this->safeDropTable('calendar_entry_participant');
-        $this->safeDropTable('calendar_reminder');
-        $this->safeDropTable('calendar_reminder_sent');
+        $this->dropTable('calendar_entry');
+        $this->dropTable('calendar_entry_participant');
+        $this->dropTable('calendar_reminder_sent');
+        $this->dropTable('calendar_reminder');
     }
 
     public function down()

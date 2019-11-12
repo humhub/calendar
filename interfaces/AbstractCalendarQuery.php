@@ -10,7 +10,10 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateInterval;
 use Exception;
+use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEntry;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;
 use DateTime;
@@ -43,6 +46,23 @@ abstract class AbstractCalendarQuery extends Component
      * @var string database field for end date
      */
     public $endField = 'end_datetime';
+
+    /**
+     * @var string database field for rrule (optional)
+     */
+    public $rruleField = 'rrule';
+
+    /**
+     * Defines if expanded recurrent instances should be safed after the query.
+     * Note: setting this to true may impacts the performance.
+     * @var bool
+     */
+    public $autoSaveRecurrentInstances = false;
+
+    /**
+     * @var string
+     */
+    public $parentEventIdField = 'parent_event_id';
 
     /**
      * @var string database date format
@@ -146,7 +166,7 @@ abstract class AbstractCalendarQuery extends Component
     /**
      * @var bool if set to true, the [[expand()]] function can be used to expand events e.g. recurrences
      */
-    protected $expand = false;
+    protected $expand = true;
 
     /**
      * @param DateTime $start
@@ -206,10 +226,25 @@ abstract class AbstractCalendarQuery extends Component
      *
      * @param $entry
      * @param $endResult
+     * @throws Exception
      */
     protected function expand($entry, &$expandResult)
     {
-        $expandResult[] = $entry;
+        if(!$this->isRecurrenceSupported()) {
+            $expandResult[] = $entry;
+            return;
+        }
+
+        $isRecurrenceRoot = $entry->getRrule() && $entry->getParentId() === null;
+
+        // Make sure we only expand recurrence roots
+        if($isRecurrenceRoot) {
+            $to = $this->_to ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->add(new \DateInterval('P1Y'));
+            $from = $this->_from ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->sub(new \DateInterval('P1Y'));
+            CalendarRecurrenceExpand::expand($entry, $from, $to, $expandResult, $this->autoSaveRecurrentInstances);
+        } else {
+            $expandResult[] = $entry;
+        }
     }
 
     /**
@@ -684,33 +719,51 @@ abstract class AbstractCalendarQuery extends Component
 
     /**
      * Sets up the date interval filter with respect to the openRange setting.
+     * This will also include all recurrent event roots if $expand is true and recurrence evets are supported
      */
     protected function setupDateCriteria()
     {
+        $where = ['or'];
+
         if ($this->_openRange && $this->_from && $this->_to) {
             //Search for all dates with start and/or end within the given range
-            $this->_query->andFilterWhere(
-                ['or',
-                    ['and',
-                        $this->getStartCriteria($this->_from, '>='),
-                        $this->getStartCriteria($this->_to, '<=')
-                    ],
-                    ['and',
-                        $this->getEndCriteria($this->_from, '>='),
-                        $this->getEndCriteria($this->_to, '<=')
-                    ]
-                ]
-            );
-            return;
+            $where[] = ['and',
+                $this->getStartCriteria($this->_from, '>='),
+                $this->getStartCriteria($this->_to, '<=')
+            ];
+
+            $where[] = ['and',
+                $this->getEndCriteria($this->_from, '>='),
+                $this->getEndCriteria($this->_to, '<=')
+            ];
+        } else {
+            if ($this->_from) {
+                $where[] = $this->getStartCriteria($this->_from);
+            }
+
+            if ($this->_to) {
+                $where[] = $this->getEndCriteria($this->_to);
+            }
         }
 
-        if ($this->_from) {
-            $this->_query->andWhere($this->getStartCriteria($this->_from));
+        if($this->isRecurrenceSupported()) {
+            $where[] = $this->getRruleRootQuery();
         }
 
-        if ($this->_to) {
-            $this->_query->andWhere($this->getEndCriteria($this->_to));
-        }
+        $this->_query->andFilterWhere($where);
+    }
+
+    public function isRecurrenceSupported()
+    {
+        return $this->expand && is_subclass_of(static::$recordClass, RecurrentCalendarEntry::class);
+    }
+
+    protected function getRruleRootQuery()
+    {
+        return ['and',
+            $this->rruleField.' IS NOT NULL',
+            $this->parentEventIdField.' IS NULL'
+        ];
     }
 
     /**
@@ -740,6 +793,11 @@ abstract class AbstractCalendarQuery extends Component
      */
     protected function setupFilters()
     {
+        if($this->isRecurrenceSupported()) {
+            // Do not include existing recurrence instances
+            $this->_query->andWhere($this->parentEventIdField.' IS NULL');
+        }
+
         if ($this->_container) {
             $this->filterContentContainer();
         }
@@ -784,8 +842,6 @@ abstract class AbstractCalendarQuery extends Component
                 $this->filterMine();
             }
         }
-
-
     }
 
     /**

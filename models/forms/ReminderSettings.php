@@ -75,14 +75,13 @@ class ReminderSettings extends Model
      * @param null $formName
      * @return bool
      * @throws Throwable
-     * @throws \yii\base\InvalidConfigException
-     * @throws StaleObjectException
      */
     public function load($data, $formName = null)
     {
-        if(isset($data[CalendarReminder::instance()->formName()])) {
+        $formName = $formName ?: CalendarReminder::instance()->formName();
+        if(isset($data[$formName])) {
             $this->newReminders = [];
-            foreach ($data[CalendarReminder::instance()->formName()] as $reminderData) {
+            foreach ($data[$formName] as $reminderData) {
                 $reminder = $this->initReminder();
                 $reminder->load($reminderData, '');
                 $this->newReminders[] = $reminder;

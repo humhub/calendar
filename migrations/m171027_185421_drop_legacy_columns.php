@@ -14,10 +14,10 @@ class m171027_185421_drop_legacy_columns extends Migration
 {
     public function safeUp()
     {
-        $this->safeDropColumn('calendar_entry', 'recur');
-        $this->safeDropColumn('calendar_entry', 'recur_type');
-        $this->safeDropColumn('calendar_entry', 'recur_interval');
-        $this->safeDropColumn('calendar_entry', 'recur_end');
+        $this->dropColumn('calendar_entry', 'recur');
+        $this->dropColumn('calendar_entry', 'recur_type');
+        $this->dropColumn('calendar_entry', 'recur_interval');
+        $this->dropColumn('calendar_entry', 'recur_end');
     }
 
     public function safeDown()

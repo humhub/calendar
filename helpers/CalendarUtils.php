@@ -92,7 +92,7 @@ class CalendarUtils
         return $datetime->setTimezone($timezone);
     }
 
-    public static function toDBDateFormat($date)
+    public static function toDBDateFormat($date, $fixed = false)
     {
         if(!$date) {
             return null;
@@ -102,7 +102,11 @@ class CalendarUtils
             $date = new DateTime($date);
         }
 
-        return $date->setTimezone(new DateTimeZone(Yii::$app->timeZone))->format(static::DB_DATE_FORMAT);
+        if(!$fixed) {
+            $date->setTimezone(new DateTimeZone(Yii::$app->timeZone));
+        }
+
+        return $date->format(static::DB_DATE_FORMAT);
     }
 
     public static function getFirstDayOfWeek()

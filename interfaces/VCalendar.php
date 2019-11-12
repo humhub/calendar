@@ -7,6 +7,7 @@ namespace humhub\modules\calendar\interfaces;
 use DateTime;
 use Exception;
 use humhub\modules\calendar\interfaces\CalendarEntryIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEntry;
 use yii\base\Model;
 use Sabre\VObject;
 
@@ -110,15 +111,15 @@ class VCalendar extends Model
             $result['LOCATION'] = $item->location;
         }
 
-        if ($item->getRRule()) {
+        if ($item instanceof RecurrentCalendarEntry) {
             $result['RRULE'] = $item->getRRule();
-        }
 
-        // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
-        if (!empty($item->getExdate())) {
-            $result['EXDATE'] = [];
-            foreach (explode(',', $item->getExdate()) as $exdate) {
-                $result['EXDATE'][] = $exdate;
+            // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
+            if (!empty($item->getExdate())) {
+                $result['EXDATE'] = [];
+                foreach (explode(',', $item->getExdate()) as $exdate) {
+                    $result['EXDATE'][] = $exdate;
+                }
             }
         }
 
@@ -155,6 +156,7 @@ class VCalendar extends Model
      *
      * @return mixed A Sabre\VObject\Component object representing a VTIMEZONE definition
      *               or false if no timezone information is available
+     * @throws Exception
      */
     function generate_vtimezone($tzid, $from = 0, $to = 0)
     {

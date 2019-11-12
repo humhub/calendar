@@ -166,6 +166,12 @@ class Url extends BaseUrl
             $params['cal'] = 1;
         }
 
+        if($entry->isRecurringInstance()) {
+            $params['parent_id'] = $entry->parent_event_id;
+            $params['recurrence_id'] = $entry->recurrence_id;
+            return $container->createUrl('/calendar/entry/view-recurrence', $params);
+        }
+
         return $container->createUrl('/calendar/entry/view', $params);
     }
 

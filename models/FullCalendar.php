@@ -25,15 +25,6 @@ class FullCalendar
      */
     public static function getFullCalendarArray(CalendarEntryIF $entry)
     {
-
-        $endDateTime = clone $entry->getEndDateTime();
-
-        if($entry->isAllDay()) {
-            // Note: In fullcalendar the end time is the moment AFTER the event.
-            // But we store the exact event time 00:00:00 - 23:59:59 so add some time to the full day event.
-            $endDateTime->add(new \DateInterval('PT2H'))->setTime(0,0,0);
-        }
-
         $result = [
             'uid' => $entry->getUid(),
             'title' => static::getTitle($entry),

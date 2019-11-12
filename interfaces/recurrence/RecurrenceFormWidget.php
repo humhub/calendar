@@ -28,19 +28,26 @@ class RecurrenceFormWidget extends JsWidget
     /**
      * @var RecurrentCalendarEntry
      */
-    public $model;
+    public $entry;
 
     /**
      * @var ActiveForm
      */
     public $form;
 
+    /**
+     * @var RecurrenceFormModel
+     */
+    public $model;
+
     public function run()
     {
         RecurrenceFormAssets::register($this->getView());
 
+        $model = $this->model ?: new RecurrenceFormModel(['entry' => $this->entry]);
+
         return $this->render('@calendar/views/common/recurrenceForm', [
-            'model' => new RecurrenceFormModel(['entry' => $this->model]),
+            'model' => $model,
             'form' => $this->form,
             'options' => $this->getOptions()
         ]);

@@ -3,11 +3,11 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarController;
+use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\stream\actions\Stream;
 use humhub\widgets\ModalClose;
 use humhub\modules\user\models\User;
@@ -16,6 +16,7 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use yii\web\NotFoundHttpException;
 
 /**
  * EntryController used to display, edit or delete calendar entries
@@ -47,12 +48,46 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
+        return $this->renderEntry($entry, $cal);
+    }
+
+    public function renderEntry(CalendarEntry $entry, $cal = null)
+    {
         // We need the $cal information, since the edit redirect in case of fullcalendar view is other than stream view
         if ($cal) {
             return $this->renderModal($entry, $cal);
         }
 
         return $this->render('view', ['entry' => $entry, 'stream' => true]);
+    }
+
+    /**
+     * @param $parent_id
+     * @param $recurrence_id
+     * @param null $cal
+     * @return mixed
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
+    public function actionViewRecurrence($parent_id, $recurrence_id, $cal = null)
+    {
+        $recurrenceRoot = $this->getCalendarEntry($parent_id);
+
+        if(!$recurrenceRoot) {
+            throw new NotFoundHttpException();
+        }
+
+        $recurrence = $recurrenceRoot->getRecurrenceInstance($recurrence_id);
+
+        if(!$recurrence) {
+            $recurrence = CalendarRecurrenceExpand::expandSingle($recurrenceRoot, $recurrence_id, true);
+        }
+
+        if(!$recurrence) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->renderEntry($recurrence, $cal);
     }
 
     /**

@@ -8,6 +8,7 @@
 namespace humhub\modules\calendar\interfaces\recurrence;
 
 
+use DateTime;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\interfaces\CalendarEntryIF;
 

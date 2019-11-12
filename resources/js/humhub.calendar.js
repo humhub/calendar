@@ -142,12 +142,15 @@ humhub.module('calendar', function (module, require, $) {
         this.lastStart = start;
         this.lastEnd = end;
 
-        $selectUrl = this.options.global ? this.options.globalCreateUrl : this.options.editUrl;
+        var selectUrl = this.options.global ? this.options.globalCreateUrl : this.options.editUrl;
 
-        modal.global.load($selectUrl, options).then(function() {
+        modal.global.load(selectUrl, options).then(function() {
             modal.global.$.one('hidden.bs.modal submitted', function() {
                 that.fetch();
             });
+        }).catch(function(e) {
+            modal.global.close();
+            module.log.error(e, true);
         });
 
         this.$.fullCalendar('unselect');
@@ -226,6 +229,9 @@ humhub.module('calendar', function (module, require, $) {
                 modal.global.$.one('hidden.bs.modal', function() {
                     that.fetch();
                 });
+            }).catch(function(e) {
+                module.log.error(e, true);
+                modal.global.close();
             });
         } else if(event.viewMode === 'redirect') {
             client.pjax.redirect(event.viewUrl);

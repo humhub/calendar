@@ -2,7 +2,6 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
-use humhub\modules\cfiles\models\rows\AbstractFileSystemItemRow;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use DateTime;
 
@@ -57,6 +56,8 @@ class CalendarEntryQuery extends AbstractCalendarQuery
      */
     protected static $recordClass = CalendarEntry::class;
 
+    public $expand = true;
+
     /**
      * @var bool true if the participant join has already been added else false
      */
@@ -66,13 +67,6 @@ class CalendarEntryQuery extends AbstractCalendarQuery
     {
         /* @var $event CalendarEntry */
         $events = parent::findForFilter($start, $end, $container, $filters, $limit, $expand);
-
-        foreach ($events as $event) {
-            if(empty($event->uid)) {
-                $event->save();
-            }
-        }
-
         return $events;
     }
 

@@ -12,10 +12,12 @@ humhub.module('calendar.recurrence.Form', function (module, require, $) {
     var WEEKDAY_SELECT = '#recurrenceformmodel-weekdays';
     var INTERVAL_TYPE_SELECT = '#recurrenceformmodel-frequency';
     var INTERVAL_VALUE_INPUT = '#recurrenceformmodel-interval';
+    var END_SELECT = '#recurrenceformmodel-end';
 
     Form.prototype.init = function() {
         this.updatedValue();
         this.updatedType();
+        this.updatedEnd();
 
         if(this.options.pickerSelector) {
             $(this.options.pickerSelector).on('change', function() {
@@ -39,15 +41,32 @@ humhub.module('calendar.recurrence.Form', function (module, require, $) {
     Form.prototype.updatedType = function () {
         var value = parseInt(this.$.find(INTERVAL_TYPE_SELECT).val(), 10);
 
-        if(value === 0) {
+        if(value === -1) {
             this.$.find('.hideIfNoRecurrence').hide();
         } else {
             this.$.find('.hideIfNoRecurrence').show();
             this.$.find('[data-recurrence-type]').hide();
             this.$.find('[data-recurrence-type="'+value+'"]').show();
         }
-
     };
+
+    Form.prototype.updatedEnd = function () {
+        var value = parseInt(this.$.find(END_SELECT).val(), 10);
+
+        switch (value) {
+            case 0:
+                $('.recurrence-end-date, .recurrence-end-occurrences').hide();
+                return;
+            case 1:
+                $('.recurrence-end-date').show();
+                $('.recurrence-end-occurrences').hide();
+                return;
+            case 2:
+                $('.recurrence-end-date').hide();
+                $('.recurrence-end-occurrences').show();
+                return;
+        }
+    }
 
 
     module.export = Form;

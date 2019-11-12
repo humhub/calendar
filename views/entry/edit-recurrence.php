@@ -11,7 +11,7 @@ use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormWidget;
 
     <?= RecurrenceFormWidget::widget([
             'form' => $form,
-            'model' => $calendarEntryForm->entry,
+            'model' => $calendarEntryForm->recurrenceForm,
             'picker' => '#calendarentryform-start_date'
     ])?>
 

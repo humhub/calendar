@@ -13,6 +13,7 @@ use DateTimeZone;
 use humhub\modules\calendar\interfaces\VCalendar;
 use Sabre\VObject\Component\VEvent;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 
 class CalendarRecurrenceExpand extends Model
@@ -106,14 +107,14 @@ class CalendarRecurrenceExpand extends Model
         }
 
         $tz = new \DateTimeZone($event->getTimezone());
-        $start = new DateTime($recurrenceId,$tz);
+        $start = (new DateTime($recurrenceId,$tz))->modify("-1 minute");
         $end = (new DateTime($recurrenceId, $tz))->modify("+1 minute");
 
         $instance = new static(['event' => $event, 'saveInstnace' => $save]);
         $result = $instance->expandEvent($start, $end);
 
         foreach ($result as $recurrence) {
-            if($recurrence->recurrence_id === CalendarUtils::cleanRecurrentId($start)) {
+            if($recurrence->recurrence_id === CalendarUtils::cleanRecurrentId(new DateTime($recurrenceId,$tz))) {
                 return $recurrence;
             }
         }
@@ -150,6 +151,16 @@ class CalendarRecurrenceExpand extends Model
             return [$this->event];
         }
 
+        $rootRecurrenceId = CalendarUtils::cleanRecurrentId($this->event->getStartDateTime());
+
+        // Make sure to set or update the recurrence id of root
+        if($this->event->getRecurrenceId() !== $rootRecurrenceId) {
+            $this->event->setRecurrenceId($rootRecurrenceId);
+            if($this->event instanceof ActiveRecord) {
+                $this->event->save();
+            }
+        }
+
         if(!$end) {
             $end = (new DateTime('now', $this->targetTimezone))->add(new \DateInterval('P2Y'));
         }
@@ -165,7 +176,7 @@ class CalendarRecurrenceExpand extends Model
     {
         /** @var ActiveQuery $query */
         $query = call_user_func(get_class($this->event) .'::find');
-        $query->where([$this->parentIdField => $this->event->getId()]);
+        $query->andWhere([$this->parentIdField => $this->event->getId()]);
 
         if($start && $end) {
         $query->andFilterWhere(
@@ -180,7 +191,6 @@ class CalendarRecurrenceExpand extends Model
                 ]
             ]);
         }
-
         return $query;
     }
 
@@ -209,13 +219,15 @@ class CalendarRecurrenceExpand extends Model
         foreach($recurrences as $vEvent) {
             try {
                 $model = null;
-                $vEventStart = $vEvent->DTSTART->getDateTime();
+                $vEventStart = clone $vEvent->DTSTART->getDateTime();
+                $vEventEnd = clone $vEvent->DTEND->getDateTime();
+
+                if($vEventStart == $vEventEnd && $this->event->isAllDay()) {
+                    $vEventEnd =  $vEventEnd->modify('+1 day')->modify('-1 second');
+                }
 
                 // Check if this recurrence is the first one
-                if ($this->event->getStartDateTime() == $vEventStart) {
-                    if (!$this->event->getRecurrenceId()) {
-                        $this->event->setRecurrenceId($this->getRecurrenceId($vEvent));
-                    }
+                if ($this->event->getRecurrenceId() === $this->getRecurrenceId($vEvent)) {
                     $model = $this->event;
                 }
 
@@ -224,8 +236,17 @@ class CalendarRecurrenceExpand extends Model
                 }
 
                 if (!$model) {
+
                     $model = $this->event->createRecurrence(
-                        $vEventStart, $vEvent->DTEND->getDateTime(), $this->getRecurrenceId($vEvent));
+                        CalendarUtils::toDBDateFormat($vEventStart, true), CalendarUtils::toDBDateFormat($vEventEnd, true),
+                        $this->getRecurrenceId($vEvent));
+
+                    if($this->saveInstnace && $model instanceof ActiveRecord) {
+                        if(!$model->save()) {
+                            $test = $model->getErrors();
+                            throw new \Exception('Could not safe recurrent event');
+                        }
+                    }
 
                 }
 
