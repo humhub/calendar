@@ -21,14 +21,14 @@ namespace humhub\modules\calendar\models;
 use Yii;
 use DateTime;
 use humhub\libs\TimezoneHelper;
-use humhub\modules\calendar\interfaces\CalendarEntryIF;
+use humhub\modules\calendar\interfaces\CalendarEventIF;
 use yii\base\Component;
 
 class CalendarDateFormatter extends Component
 {
 
     /**
-     * @var CalendarEntryIF
+     * @var CalendarEntry
      */
     public $calendarItem;
 

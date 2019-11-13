@@ -35,8 +35,8 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
         <?php endif; ?>
     </div>
 
-    <?php if ($calendarEntry->isParticipationAllowed()) : ?>
-        <?php if(!empty($calendarEntry->participant_info) && $calendarEntry->isParticipant()) : ?>
+    <?php if ($calendarEntry->participation->isEnabled()) : ?>
+        <?php if($calendarEntry->participation->isShowParticipationInfo(Yii::$app->user->identity)) : ?>
             <br />
             <div class="row">
                 <div class="col-md-12">
@@ -58,7 +58,7 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
         <?php endif; ?>
     <?php endif; ?>
 
-    <?php if ($calendarEntry->canRespond()): ?>
+    <?php if ($calendarEntry->participation->canRespond(Yii::$app->user->identity)): ?>
        <div class="row" style="padding-top:10px">
             <div class="col-md-12">
               <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', "Attend")); ?>

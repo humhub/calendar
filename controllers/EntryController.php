@@ -2,7 +2,6 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use humhub\modules\calendar\interfaces\AbstractCalendarController;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
 use Yii;
 use yii\web\HttpException;
@@ -117,14 +116,16 @@ class EntryController extends ContentContainerController
     {
         $calendarEntry = $this->getCalendarEntry($id);
 
-        if ($calendarEntry == null) {
+        if (!$calendarEntry) {
             throw new HttpException('404');
         }
 
-        $participationState = $calendarEntry->respond((int)$type);
-        if($participationState->hasErrors()) {
-            return $this->asJson(['success' => false, 'errors' => $participationState->getErrors()]);
+        if(!$calendarEntry->canRespond(Yii::$app->user->identity)) {
+            throw new HttpException(403);
         }
+
+        $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int) $type);
+
         return $this->asJson(['success' => true]);
     }
 
@@ -141,9 +142,9 @@ class EntryController extends ContentContainerController
      */
     public function actionEdit($id = null, $start = null, $end = null, $cal = null)
     {
+
         if (empty($id) && $this->canCreateEntries()) {
-            $calendarEntryForm = new CalendarEntryForm();
-            $calendarEntryForm->createNew($this->contentContainer, $start, $end);
+            $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end);
         } else {
             $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
             if(!$calendarEntryForm->entry->content->canEdit()) {
@@ -200,11 +201,11 @@ class EntryController extends ContentContainerController
      * @throws \Throwable
      * @throws \yii\base\Exception
      */
-    public function actionEditAjax()
+    public function actionEditAjax($id)
     {
         $this->forcePostRequest();
 
-        $entry = $this->getCalendarEntry(Yii::$app->request->post('id'));
+        $entry = $this->getCalendarEntry($id);
 
         if (!$entry) {
             throw new HttpException('404');
@@ -216,7 +217,7 @@ class EntryController extends ContentContainerController
 
         $entryForm = new CalendarEntryForm(['entry' => $entry]);
 
-        if ($entryForm->updateTime(Yii::$app->request->post('start'), Yii::$app->request->post('end'))) {
+        if ($entryForm->updateDateRangeFromCalendar(Yii::$app->request->post('start'), Yii::$app->request->post('end'), true)) {
             return $this->asJson(['success' => true]);
         }
 

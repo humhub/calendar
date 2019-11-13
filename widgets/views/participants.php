@@ -12,7 +12,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 
 ?>
 
-<?php if ($calendarEntry->isParticipationAllowed()) : ?>
+<?php if ($calendarEntry->participation->isEnabled()) : ?>
     <strong><i class="fa fa-users"></i> <?= Yii::t('CalendarModule.widgets_views_participants', 'Participants:'); ?></strong><br>
 
     <?php $title = Yii::t('CalendarModule.widgets_views_participants', ":count attending", [':count' => $countAttending]); ?>

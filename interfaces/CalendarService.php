@@ -102,7 +102,7 @@ class CalendarService extends Component
      * @param ContentContainerActiveRecord $contentContainer
      * @param null $limit
      * @param bool $expand
-     * @return CalendarEntryIF[]
+     * @return CalendarEventIF[]
      * @throws \Throwable
      */
     public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null, $expand = true)
@@ -126,8 +126,8 @@ class CalendarService extends Component
             if($itemType && $itemType->isEnabled()) {
                 foreach ($items as $item) {
                     if(is_array($item)) {
-                        $result[] = new CalendarEntryIFWrapper(['itemType' => $itemType, 'options' => $item]);
-                    } elseif($item instanceof CalendarEntryIF) {
+                        $result[] = new CalendarEventIFWrapper(['itemType' => $itemType, 'options' => $item]);
+                    } elseif($item instanceof CalendarEventIF) {
                         $result[] = $item;
                     }
 
@@ -149,7 +149,7 @@ class CalendarService extends Component
      * @param int $daysInFuture
      * @param int $limit
      * @param array $filters
-     * @return CalendarEntryIF[]
+     * @return CalendarEventIF[]
      * @throws \Throwable
      */
     public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5, $filters = [])
@@ -157,7 +157,6 @@ class CalendarService extends Component
         $start = new DateTime('now', CalendarUtils::getUserTimeZone());
         $end = ($daysInFuture > 0) ? (new DateTime('now', CalendarUtils::getUserTimeZone()))
                 ->add(new DateInterval('P'.$daysInFuture.'D')) : null;
-
 
         return $this->getCalendarItems($start, $end, $filters, $contentContainer, $limit);
     }

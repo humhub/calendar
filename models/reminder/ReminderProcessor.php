@@ -6,7 +6,7 @@ namespace humhub\modules\calendar\models\reminder;
 
 use Exception;
 use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\interfaces\Remindable;
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -73,7 +73,7 @@ class ReminderProcessor extends Model
     {
         foreach ($this->calendarService->getUpcomingEntries($container, null, null, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]) as $entry) {
 
-            if(!$entry instanceof Remindable) {
+            if(!$entry instanceof CalendarEventReminderIF) {
                 continue;
             }
 
@@ -114,11 +114,11 @@ class ReminderProcessor extends Model
      *  - true in case there was an container wide default reminder for this entry
      *  - an array of contentcontainer ids of users already handled in case there was no container wide default for this entry
      *
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @return array|bool
      * @throws Exception
      */
-    private function handleEntryLevelReminder(Remindable $entry)
+    private function handleEntryLevelReminder(CalendarEventReminderIF $entry)
     {
         // We keep track of users which have an entry level reminder set for this entry
         $skipUsers = [];
@@ -160,13 +160,13 @@ class ReminderProcessor extends Model
 
     /**
      * @param CalendarReminder $reminder
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @param array $skipUsers
      * @return bool
      * @throws InvalidConfigException
      * @throws IntegrityException
      */
-    public function sendEntryLevelReminder(CalendarReminder $reminder, Remindable $entry = null, $skipUsers = [])
+    public function sendEntryLevelReminder(CalendarReminder $reminder, CalendarEventReminderIF $entry = null, $skipUsers = [])
     {
         if(!$entry) {
             $entry = $reminder->getEntry();
@@ -186,11 +186,11 @@ class ReminderProcessor extends Model
     }
 
     /**
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @param array $skipUsers
      * @return array|ActiveQueryUser|ActiveQuery
      */
-    protected function getRecipientQuery(Remindable $entry, $skipUsers = [])
+    protected function getRecipientQuery(CalendarEventReminderIF $entry, $skipUsers = [])
     {
         $query = $entry->findUsersByInterest();
 
@@ -202,11 +202,11 @@ class ReminderProcessor extends Model
     }
 
     /**
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @param $skipUsers
      * @throws InvalidConfigException
      */
-    private function handleDefaultReminder(Remindable $entry, $skipUsers = [])
+    private function handleDefaultReminder(CalendarEventReminderIF $entry, $skipUsers = [])
     {
         $sent = false;
         foreach (CalendarReminder::getDefaults($entry->getContentRecord()->container, true) as $reminder) {
@@ -230,11 +230,11 @@ class ReminderProcessor extends Model
 
     /**
      * @param CalendarReminder $reminder
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @return bool
      * @throws Exception
      */
-    public function isReadyToSent(CalendarReminder $reminder, Remindable $entry)
+    public function isReadyToSent(CalendarReminder $reminder, CalendarEventReminderIF $entry)
     {
         $this->handledReminders[] = $reminder->id;
         return $reminder->checkMaturity($entry) && $reminder->isActive($entry);
@@ -243,12 +243,12 @@ class ReminderProcessor extends Model
 
     /**
      * @param CalendarReminder $reminder
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @param ActiveQueryUser|User[] $recipients
      * @return bool
      * @throws InvalidConfigException
      */
-    private function sendReminder(CalendarReminder $reminder, Remindable $entry, $recipients)
+    private function sendReminder(CalendarReminder $reminder, CalendarEventReminderIF $entry, $recipients)
     {
         // TODO: Clear old reminder notifications
         Remind::instance()->from($entry->getContentRecord()->createdBy)->about($entry)->sendBulk($recipients);

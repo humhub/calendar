@@ -199,6 +199,7 @@ humhub.module('calendar', function (module, require, $) {
         this.loader();
         var that = this;
 
+        debugger;
         var dropUrl = (event.updateUrl) ? event.updateUrl : this.options.dropUrl;
 
         client.post(dropUrl, options).then(function(response) {

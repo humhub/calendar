@@ -11,7 +11,7 @@ namespace humhub\modules\calendar\interfaces;
 use DateInterval;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEntry;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEvent;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -755,7 +755,7 @@ abstract class AbstractCalendarQuery extends Component
 
     public function isRecurrenceSupported()
     {
-        return $this->expand && is_subclass_of(static::$recordClass, RecurrentCalendarEntry::class);
+        return $this->expand && is_subclass_of(static::$recordClass, RecurrentCalendarEvent::class);
     }
 
     protected function getRruleRootQuery()

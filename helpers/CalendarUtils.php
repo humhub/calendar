@@ -3,7 +3,9 @@
 namespace humhub\modules\calendar\helpers;
 
 use DateTime;
+use DateTimeInterface;
 use DateTimeZone;
+use humhub\libs\DateHelper;
 use Yii;
 
 /**
@@ -15,27 +17,80 @@ class CalendarUtils
 {
 
     private static $userTimezone;
+    private static $userTimezoneString;
 
     const DB_DATE_FORMAT = 'Y-m-d H:i:s';
+    const DATE_FORMAT_SHORT = 'Y-m-d';
+    const TIME_FORMAT_SHORT = 'php:H:i';
+    const TIME_FORMAT_SHORT_MERIDIEM = 'php:h:i a';
     const ICAL_TIME_FORMAT        = 'Ymd\THis';
 
-    const DOW_SUNDAY = 1 ;
-    const DOW_MONDAY = 2 ;
-    const DOW_TUESDAY = 3 ;
-    const DOW_WEDNESDAY = 4 ;
-    const DOW_THURSDAY = 5 ;
-    const DOW_FRIDAY = 6 ;
-    const DOW_SATURDAY = 7 ;
+    const DOW_SUNDAY = 1;
+    const DOW_MONDAY = 2;
+    const DOW_TUESDAY = 3;
+    const DOW_WEDNESDAY = 4;
+    const DOW_THURSDAY = 5;
+    const DOW_FRIDAY = 6;
+    const DOW_SATURDAY = 7;
+
+    public static function parseDateTimeString($value, $timeValue = null, $timeFormat = null, $timeZone = 'UTC')
+    {
+        $ts = DateHelper::parseDateTimeToTimestamp($value);
+
+        if($timeValue) {
+            $ts += static::parseTime($timeValue, $timeFormat);
+        }
+
+        $date = new DateTime(null, static::getDateTimeZone($timeZone));
+        $date->setTimestamp($ts);
+        return $date;
+    }
+
+    /**
+     * @param $value
+     * @param $format
+     * @return bool|false|int
+     */
+    public static function parseTime($value, $format)
+    {
+        $result = false;
+
+        if($format) {
+            try {
+                $dt = DateTime::createFromFormat(static::parseFormat($format), $value);
+                if($dt === false) {
+                    return false;
+                }
+                $result = $dt->getTimestamp() - strtotime('TODAY');
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+
+        if(!$format && !$result) {
+            $result = static::parseTime($value, static::TIME_FORMAT_SHORT);
+        }
+
+        if(!$format && !$result) {
+            $result = static::parseTime($value, static::TIME_FORMAT_SHORT_MERIDIEM);
+        }
+
+        return $result;
+    }
 
     /**
      *
-     * @param DateTime $date1
-     * @param DateTime $date2
+     * @param DateTimeInterface|string $date1
+     * @param DateTimeInterface|DateTime $date2
      * @param bool $endDateMomentAfter
      * @return boolean
+     * @throws \Exception
      */
-    public static function isFullDaySpan(DateTime $date1, DateTime $date2, $endDateMomentAfter = false)
+    public static function isFullDaySpan($date1, $date2, $endDateMomentAfter = false)
     {
+        $date1 = $date1 instanceof DateTimeInterface ? $date1 : new DateTime($date1);
+        $date2 = $date2 instanceof DateTimeInterface ? $date2 : new DateTime($date2);
+
         $dateInterval = $date1->diff($date2, true);
 
         if ($endDateMomentAfter) {
@@ -52,6 +107,86 @@ class CalendarUtils
         return false;
     }
 
+    /**
+     * Checks if the date spans over a whole day if $end is after $start and $start time is 00:00 and $end time is:
+     *
+     * - 00:00 or 23:59 if $endDateMomentAfter is null (non strict)
+     * - 00:00 if $endDateMomentAfter is true
+     * - 23:59 if $endDateMomentAfter is false
+     *
+     * @param $start
+     * @param $end
+     * @param null $endDateMomentAfter
+     * @return bool
+     * @throws \Exception
+     */
+    public static function isAllDay($start, $end, $endDateMomentAfter = null)
+    {
+        $start = static::getDateTime($start);
+        $end = static::getDateTime($end);
+
+        if($start >= $end) {
+            return false;
+        }
+
+        $startCondition = static::getTime($start) === '00:00';
+
+        if(!$startCondition) {
+            return false;
+        }
+
+        $endTime = static::getTime($end);
+
+        if($endDateMomentAfter === null) {
+            return $endTime === '00:00' || $endTime === '23:59';
+        }
+
+        if($endDateMomentAfter ) {
+            return $endTime === '00:00';
+        }
+
+        return $endTime === '23:59';
+    }
+
+    /**
+     * @param $date
+     * @param string $format
+     * @return string
+     * @throws \Exception
+     */
+    public static function getTime($date, $format = self::TIME_FORMAT_SHORT)
+    {
+        return static::getDateTime($date)->format(static::parseFormat($format));
+    }
+
+    public static function getDate($date, $format = self::DATE_FORMAT_SHORT)
+    {
+        return static::getDateTime($date)->format(static::parseFormat($format));
+    }
+
+    /**
+     * @param $date
+     * @return DateTime|DateTimeInterface
+     * @throws \Exception
+     */
+    public static function getDateTime($date)
+    {
+        return  $date instanceof DateTimeInterface ? clone $date : new DateTime($date);
+    }
+
+    /**
+     * @param $tz
+     * @return DateTimeZone
+     */
+    public static function getDateTimeZone($tz = null)
+    {
+        if(!$tz) {
+            return null;
+        }
+
+        return $tz instanceof DateTimeZone ? $tz : new DateTimeZone($tz);
+    }
+
     public static function cleanRecurrentId($recurrentId, $targetTZ = null)
     {
         $date = ($recurrentId instanceof \DateTimeInterface) ? $recurrentId : new DateTime($recurrentId, new DateTimeZone('UTC'));
@@ -63,10 +198,16 @@ class CalendarUtils
         return $date->format(static::ICAL_TIME_FORMAT);
     }
 
+    public static function flush()
+    {
+        static::$userTimezoneString = null;
+        static::$userTimezone = null;
+    }
+
     /**
      * @return DateTimeZone
      */
-    public static function getUserTimeZone()
+    public static function getUserTimeZone($asString = false)
     {
         if(!static::$userTimezone) {
             $tz =  Yii::$app->user->isGuest
@@ -78,31 +219,24 @@ class CalendarUtils
             }
 
             if($tz) {
+                static::$userTimezoneString = $tz;
                 static::$userTimezone = new DateTimeZone($tz);
             }
         }
 
-        return static::$userTimezone;
+        return  $asString ? static::$userTimezoneString : static::$userTimezone;
     }
 
-    public static function formatDateTimeToAppTime($string)
+    public static function getSystemTimeZone($asString = true)
     {
-        $timezone = new DateTimeZone(Yii::$app->timeZone);
-        $datetime = new DateTime($string);
-        return $datetime->setTimezone($timezone);
+        return $asString ? Yii::$app->timeZone : new DateTimeZone(Yii::$app->timeZone);
     }
 
-    public static function toDBDateFormat($date, $fixed = false)
+    public static function toDBDateFormat($date, $fixedTZ = true)
     {
-        if(!$date) {
-            return null;
-        }
+        $date = static::getDateTime($date);
 
-        if(is_string($date)) {
-            $date = new DateTime($date);
-        }
-
-        if(!$fixed) {
+        if(!$fixedTZ) {
             $date->setTimezone(new DateTimeZone(Yii::$app->timeZone));
         }
 
@@ -140,5 +274,59 @@ class CalendarUtils
         if(isset($dow, $dows)) {
             return $dows[$dow];
         }
+    }
+
+    public static function translateToUserTimezone($date, $fromTZ = null, $format = self::DB_DATE_FORMAT)
+    {
+        if(!$fromTZ) {
+            $fromTZ = static::getSystemTimeZone();
+        }
+        return static::translateTimezone($date, $fromTZ, static::getUserTimeZone(), $format);
+    }
+
+    public static function translateToSystemTimezone($date, $fromTZ = null, $format = self::DB_DATE_FORMAT)
+    {
+        if(!$fromTZ) {
+            $fromTZ = static::getUserTimeZone();
+        }
+
+        return static::translateTimezone($date, $fromTZ, Yii::$app->timeZone, $format);
+    }
+
+    public static function translateTimezone($date, $fromTZ, $toTZ, $format = self::DB_DATE_FORMAT)
+    {
+        $date = static::getDateTime($date);
+
+        $fromTZ = static::getDateTimeZone($fromTZ);
+        $toTZ = static::getDateTimeZone($toTZ);
+
+        // Get rid of any old timezone information and set new from timezone, then translate to to timezone
+        $date = static::clearTimezone($date, $fromTZ);
+        $date->setTimezone($toTZ);
+
+        return $format === false ? $date : $date->format(static::parseFormat($format));
+    }
+
+    private static function clearTimezone($date, $newTZ = null)
+    {
+        if($newTZ) {
+            $newTZ = static::getDateTimeZone($newTZ);
+        }
+
+        $date = static::getDateTime($date);
+        return new DateTime($date->format(self::DB_DATE_FORMAT), $newTZ);
+    }
+
+    private static function parseFormat($format = null)
+    {
+        if(!$format) {
+            return null;
+        }
+
+        if (strncmp($format, 'php:', 4) === 0) {
+            return substr($format, 4);
+        }
+
+        return $format;
     }
 }

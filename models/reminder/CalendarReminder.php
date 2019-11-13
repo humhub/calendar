@@ -6,7 +6,7 @@ namespace humhub\modules\calendar\models\reminder;
 
 use DateTime;
 use humhub\components\ActiveRecord;
-use humhub\modules\calendar\interfaces\Remindable;
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
@@ -135,7 +135,7 @@ class CalendarReminder extends ActiveRecord
      * @param User|null $user
      * @return CalendarReminder
      */
-    public static function initEntryLevel($unit, $value, Remindable $model, User $user = null)
+    public static function initEntryLevel($unit, $value, CalendarEventReminderIF $model, User $user = null)
     {
         $instance = new static(['unit' => $unit, 'value' => $value, 'active' => 1, 'content_id' => $model->content->id]);
 
@@ -184,7 +184,7 @@ class CalendarReminder extends ActiveRecord
     }
 
     /**
-     * @return Remindable
+     * @return CalendarEventReminderIF
      * @throws \yii\db\IntegrityException
      */
     public function getEntry()
@@ -281,7 +281,7 @@ class CalendarReminder extends ActiveRecord
         }
     }
 
-    public static function clearEntryLevelReminder(Remindable $entry, $user = true)
+    public static function clearEntryLevelReminder(CalendarEventReminderIF $entry, $user = true)
     {
         foreach (static::getEntryLevelReminder($entry, $user) as $reminder) {
             $reminder->delete();
@@ -296,10 +296,10 @@ class CalendarReminder extends ActiveRecord
      *  - Sort User level reminder first, ordered by the container id of the user
      *  - Sort reminder close to the event first
      *
-     * @param Remindable $model
+     * @param CalendarEventReminderIF $model
      * @return CalendarReminder[]
      */
-    public static function getEntryLevelReminder(Remindable $model, $user = true,  $defaultFallback = false)
+    public static function getEntryLevelReminder(CalendarEventReminderIF $model, $user = true, $defaultFallback = false)
     {
         $query = static::find()
             ->where(['content_id' => $model->getContentRecord()->id])
@@ -326,10 +326,10 @@ class CalendarReminder extends ActiveRecord
     }
 
     /**
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @return bool
      */
-    public function isActive(Remindable $entry)
+    public function isActive(CalendarEventReminderIF $entry)
     {
         // Non default reminder are deactivated after first sent
         if (!$this->active) {
@@ -345,11 +345,11 @@ class CalendarReminder extends ActiveRecord
 
     /**
      * Checks the due date of the reminder message.
-     * @param Remindable $model
+     * @param CalendarEventReminderIF $model
      * @return bool
      * @throws \Exception
      */
-    public function checkMaturity(Remindable $model)
+    public function checkMaturity(CalendarEventReminderIF $model)
     {
         if(!$this->active) {
             return false;
@@ -380,9 +380,9 @@ class CalendarReminder extends ActiveRecord
     }
 
     /**
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      */
-    public function acknowledge(Remindable $entry)
+    public function acknowledge(CalendarEventReminderIF $entry)
     {
         if($this->isEntryLevelReminder()) {
             $this->updateAttributes(['active' => 0]);

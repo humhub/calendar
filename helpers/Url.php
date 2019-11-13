@@ -8,6 +8,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\helpers\Url as BaseUrl;
 
 class Url extends BaseUrl
@@ -222,7 +223,7 @@ class Url extends BaseUrl
             $container = $entry->content->container;
         }
 
-        $participantSate = $entry->getParticipationState();
+        $participantSate = $entry->participation->getParticipationStatus(Yii::$app->user->getidentity());
 
         return $container->createUrl('/calendar/entry/respond', [
             'type' => $participantSate == $state ? CalendarEntryParticipant::PARTICIPATION_STATE_NONE : $state,

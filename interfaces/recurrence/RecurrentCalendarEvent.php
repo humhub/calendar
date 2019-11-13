@@ -10,9 +10,9 @@ namespace humhub\modules\calendar\interfaces\recurrence;
 
 use DateTime;
 use humhub\modules\content\models\Content;
-use humhub\modules\calendar\interfaces\CalendarEntryIF;
+use humhub\modules\calendar\interfaces\CalendarEventIF;
 
-interface RecurrentCalendarEntry extends CalendarEntryIF
+interface RecurrentCalendarEvent extends CalendarEventIF
 {
     /**
      * @return string

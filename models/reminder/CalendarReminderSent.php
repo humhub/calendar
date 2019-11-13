@@ -6,8 +6,8 @@ namespace humhub\modules\calendar\models\reminder;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\calendar\interfaces\CalendarEntryIF;
-use humhub\modules\calendar\interfaces\Remindable;
+use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\content\components\ContentActiveRecord;
 
 /**
@@ -22,10 +22,10 @@ class CalendarReminderSent extends ActiveRecord
 {
     /**
      * @param CalendarReminder $reminder
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @return CalendarReminderSent
      */
-    public static function create(CalendarReminder $reminder, Remindable $entry)
+    public static function create(CalendarReminder $reminder, CalendarEventReminderIF $entry)
     {
         $instance = new static(['reminder_id' => $reminder->id]);
         $instance->content_id = $entry->getContentRecord()->id;
@@ -34,17 +34,17 @@ class CalendarReminderSent extends ActiveRecord
         return $instance;
     }
 
-    public static function check(CalendarReminder $reminder, Remindable $entry = null)
+    public static function check(CalendarReminder $reminder, CalendarEventReminderIF $entry = null)
     {
         return !empty(static::findByReminder($reminder, $entry)->all());
     }
 
     /**
      * @param CalendarReminder $reminder
-     * @param Remindable $entry
+     * @param CalendarEventReminderIF $entry
      * @return \yii\db\ActiveQuery
      */
-    public static function findByReminder(CalendarReminder $reminder, Remindable $entry = null)
+    public static function findByReminder(CalendarReminder $reminder, CalendarEventReminderIF $entry = null)
     {
         $condition = ['reminder_id' => $reminder->id];
         if($entry) {

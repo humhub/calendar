@@ -19,7 +19,7 @@ namespace humhub\modules\calendar\interfaces;
 use DateTime;
 use humhub\widgets\Label;
 
-interface CalendarEntryIF
+interface CalendarEventIF
 {
     const VIEW_MODE_MODAL = 'modal';
     const VIEW_MODE_BLANK = 'blank';
@@ -125,5 +125,5 @@ interface CalendarEntryIF
      * Additional configuration options
      * @return array
      */
-    public function getOptions();
+    public function getCalendarOptions();
 }

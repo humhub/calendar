@@ -9,7 +9,7 @@ namespace humhub\modules\calendar\controllers;
 
 
 use humhub\components\access\ControllerAccess;
-use humhub\modules\calendar\interfaces\Remindable;
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\models\forms\ReminderSettings;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\Content;
@@ -46,7 +46,7 @@ class ReminderController extends ContentContainerController
             throw new HttpException(403);
         }
 
-        if(!($content->getModel() instanceof Remindable)) {
+        if(!($content->getModel() instanceof CalendarEventReminderIF)) {
             throw new HttpException(400);
         }
 

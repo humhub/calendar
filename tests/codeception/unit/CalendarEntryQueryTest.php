@@ -264,7 +264,10 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         $this->assertEquals($entry4->title, $entries[0]->title);
         
     }
-    
+
+    /**
+     * @throws \Throwable
+     */
     public function testFilterParticipate()
     {
         $this->becomeUser('Admin');
@@ -290,7 +293,7 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         $this->becomeUser('User2');
         $entry6 = $this->createEntry((new DateTime)->add(new DateInterval('P20D')), 6, 'Future Entry2', $s3);
         
-        $entry1->setParticipant($u2, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED);
+        $entry1->setParticipationStatus($u2, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED);
         
         $entries = CalendarEntryQuery::find($u2)->participate()->limit(20)->all();
         $this->assertEquals(1, count($entries));

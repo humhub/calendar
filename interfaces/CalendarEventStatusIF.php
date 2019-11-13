@@ -8,7 +8,7 @@
 namespace humhub\modules\calendar\interfaces;
 
 
-interface CalendarEntryStatus
+interface CalendarEventStatusIF
 {
     const STATUS_TENTATIVE = 'TENTATIVE';
     const STATUS_CONFIRMED = 'CONFIRMED';
@@ -17,6 +17,6 @@ interface CalendarEntryStatus
     /**
      * @return mixed
      */
-    public function getStatus();
+    public function getEventStatus();
 
 }

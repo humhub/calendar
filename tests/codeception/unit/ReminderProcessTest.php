@@ -342,7 +342,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
         $entry->save();
 
-        $entry->setParticipant(User::findOne(['id' => 4]));
+        $entry->setParticipationStatus(User::findOne(['id' => 4]));
 
         // Check Only sent to not declined user
         (new ReminderService())->sendAllReminder();
@@ -415,7 +415,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $entry->save();
 
         // User2 declines
-        $entry->setParticipant(User::findOne(['id' => 3]), CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED);
+        $entry->setParticipationStatus(User::findOne(['id' => 3]), CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED);
 
         (new ReminderService())->sendAllReminder();
 

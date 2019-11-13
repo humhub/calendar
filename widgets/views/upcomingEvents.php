@@ -5,7 +5,7 @@ use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 use humhub\libs\Helpers;
 
-/* @var $calendarEntries \humhub\modules\calendar\interfaces\CalendarEntryIF[] */
+/* @var $calendarEntries \humhub\modules\calendar\interfaces\CalendarEventIF[] */
 /* @var $calendarUrl string */
 
 $extraMenus = '<li><a href="'.$calendarUrl.'"><i class="fa fa-arrow-circle-right"></i> '. Yii::t('CalendarModule.widgets_views_nextEvents', 'Open Calendar') .'</a></li>';

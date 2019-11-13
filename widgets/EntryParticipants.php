@@ -7,6 +7,7 @@ use humhub\modules\calendar\helpers\Url;
 use humhub\widgets\Button;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use Yii;
 
 /**
  * Description of EntryParticipants
@@ -48,7 +49,7 @@ class EntryParticipants extends Widget
         return  $this->calendarEntry->getParticipantCount($state);
     }
 
-    public static function participateButton($calendarEntry, $state, $label)
+    public static function participateButton(CalendarEntry $calendarEntry, $state, $label)
     {
         if($state == CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE && !$calendarEntry->allow_maybe) {
             return null;
@@ -57,7 +58,7 @@ class EntryParticipants extends Widget
             return null;
         }
 
-        $participantSate = $calendarEntry->getParticipationState();
+        $participantSate = $calendarEntry->getParticipationStatus(Yii::$app->user->identity);
         return Button::defaultType($label)->sm()
                      ->icon($participantSate === $state ? 'fa-check' : null)
                      ->action('calendar.respond', Url::toEntryRespond($calendarEntry, $state));

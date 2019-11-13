@@ -4,7 +4,7 @@ namespace humhub\modules\calendar;
 
 use Yii;
 use humhub\modules\calendar\integration\BirthdayCalendar;
-use humhub\modules\calendar\interfaces\Remindable;
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
@@ -142,14 +142,14 @@ class Events
             $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $event->sender->object]);
         }
 
-        if($event->sender->object instanceof Remindable) {
+        if($event->sender->object instanceof CalendarEventReminderIF) {
             $event->sender->addWidget(ReminderLink::class, ['entry' => $event->sender->object]);
         }
     }
 
     public static function onContentDelete($event)
     {
-        if(!($event->sender instanceof Remindable)) {
+        if(!($event->sender instanceof CalendarEventReminderIF)) {
             return;
         }
 

@@ -19,6 +19,11 @@ namespace humhub\modules\calendar\interfaces;
 use DateTime;
 use humhub\widgets\Label;
 
+/**
+ * Interface CalendarItem
+ * @package humhub\modules\calendar\interfaces
+ * @deprecated
+ */
 interface CalendarItem
 {
     const VIEW_MODE_MODAL = 'modal';

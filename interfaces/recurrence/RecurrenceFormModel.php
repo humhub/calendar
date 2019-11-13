@@ -24,7 +24,7 @@ class RecurrenceFormModel extends Model
     const ENDS_AFTER_OCCURRENCES = 2;
 
     /**
-     * @var RecurrentCalendarEntry
+     * @var RecurrentCalendarEvent
      */
     public $entry;
 
@@ -155,7 +155,7 @@ class RecurrenceFormModel extends Model
 
     public function validateModel($attribute, $params)
     {
-        if (!($this->entry instanceof RecurrentCalendarEntry)) {
+        if (!($this->entry instanceof RecurrentCalendarEvent)) {
             $this->addError('frequency', Yii::t('CalendarModule.recurrence', 'This event does not support recurrent events'));
         }
     }
@@ -168,7 +168,7 @@ class RecurrenceFormModel extends Model
      */
     public function validateFrequency($attribute, $params)
     {
-        if ($this->frequency === static::FREQUENCY_NEVER) {
+        if ($this->frequency == static::FREQUENCY_NEVER) {
             return null;
         }
 
@@ -237,7 +237,7 @@ class RecurrenceFormModel extends Model
      */
     public function buildRRuleString()
     {
-        if ($this->frequency === static::FREQUENCY_NEVER) {
+        if ($this->frequency == static::FREQUENCY_NEVER) {
             return null;
         }
 

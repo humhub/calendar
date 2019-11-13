@@ -8,7 +8,7 @@ use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\Model;
-use humhub\modules\calendar\interfaces\Remindable;
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\db\StaleObjectException;
@@ -21,7 +21,7 @@ class ReminderSettings extends Model
     public $container;
 
     /**
-     * @var Remindable
+     * @var CalendarEventReminderIF
      */
     public $entry;
 

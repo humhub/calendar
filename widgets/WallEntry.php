@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\assets\Assets;
+use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\file\widgets\ShowFiles;
 use Solarium\QueryType\Update\Query\Command\Delete;
@@ -91,12 +92,13 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     public function run()
     {
         Assets::register($this->getView());
+        /* @var $entry CalendarEntry */
         $entry = $this->contentObject;
 
         return $this->render('wallEntry', [
             'calendarEntry' => $entry,
             'collapse' => $this->collapse,
-            'participantSate' => $entry->getParticipationState(),
+            'participantSate' => $entry->getParticipationStatus(Yii::$app->user->identity),
             'contentContainer' => $entry->content->container
         ]);
     }

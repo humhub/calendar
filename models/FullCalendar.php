@@ -8,11 +8,11 @@
 namespace humhub\modules\calendar\models;
 
 
-use humhub\modules\calendar\interfaces\CalendarEntryStatus;
+use humhub\modules\calendar\interfaces\CalendarEventStatusIF;
 use Yii;
 use DateTime;
-use humhub\modules\calendar\interfaces\CalendarEntryIF;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEntry;
+use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEvent;
 use humhub\libs\Html;
 
 class FullCalendar
@@ -23,7 +23,7 @@ class FullCalendar
      * @throws \yii\base\InvalidConfigException
      * @throws \Exception
      */
-    public static function getFullCalendarArray(CalendarEntryIF $entry)
+    public static function getFullCalendarArray(CalendarEventIF $entry)
     {
         $result = [
             'uid' => $entry->getUid(),
@@ -41,7 +41,7 @@ class FullCalendar
             'eventStartEditable' => true
         ];
 
-        if($entry instanceof RecurrentCalendarEntry) {
+        if($entry instanceof RecurrentCalendarEvent) {
             $result['rrule'] = $entry->getRrule();
             $result['exdate'] = $entry->getExdate();
         }
@@ -49,7 +49,7 @@ class FullCalendar
         return $result;
     }
 
-    private static function getEndDate(CalendarEntryIF $entry)
+    private static function getEndDate(CalendarEventIF $entry)
     {
         $endDateTime = clone $entry->getEndDateTime();
 
@@ -62,11 +62,11 @@ class FullCalendar
         return $endDateTime;
     }
 
-    private static function getTitle(CalendarEntryIF $entry)
+    private static function getTitle(CalendarEventIF $entry)
     {
         $title = $entry->getTitle();
 
-        if($entry instanceof CalendarEntryStatus && $entry->getStatus() === CalendarEntryStatus::STATUS_CANCELLED) {
+        if($entry instanceof CalendarEventStatusIF && $entry->getEventStatus() === CalendarEventStatusIF::STATUS_CANCELLED) {
             $title .= ' ('.Yii::t('CalendarModule.base', 'canceled').')';
         }
 

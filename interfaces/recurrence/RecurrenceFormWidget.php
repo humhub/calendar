@@ -26,7 +26,7 @@ class RecurrenceFormWidget extends JsWidget
     public $picker;
 
     /**
-     * @var RecurrentCalendarEntry
+     * @var RecurrentCalendarEvent
      */
     public $entry;
 

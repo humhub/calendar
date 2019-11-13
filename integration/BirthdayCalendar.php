@@ -9,7 +9,7 @@
 namespace humhub\modules\calendar\integration;
 
 use DateTime;
-use humhub\modules\calendar\interfaces\CalendarEntryIF;
+use humhub\modules\calendar\interfaces\CalendarEventIF;
 use humhub\modules\calendar\interfaces\CalendarItemTypesEvent;
 use humhub\modules\meeting\models\Meeting;
 use humhub\modules\user\models\Profile;
@@ -70,7 +70,7 @@ class BirthdayCalendar extends Component
                 'icon' => 'fa-birthday-cake',
                 'openUrl' => $user->getUrl(),
                 'viewUrl' => $user->getUrl(),
-                'viewMode' => CalendarEntryIF::VIEW_MODE_REDIRECT,
+                'viewMode' => CalendarEventIF::VIEW_MODE_REDIRECT,
                 'editable' => false,
             ];
         }

@@ -6,7 +6,7 @@ namespace humhub\modules\calendar\models\recurrence;
 use humhub\modules\content\components\ActiveQueryContent;
 use Yii;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEntry;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEvent;
 use yii\base\Model;
 use DateTime;
 use DateTimeZone;
@@ -19,7 +19,7 @@ use yii\db\ActiveRecord;
 class CalendarRecurrenceExpand extends Model
 {
     /**
-     * @var RecurrentCalendarEntry
+     * @var RecurrentCalendarEvent
      */
     public $event;
 
@@ -75,14 +75,14 @@ class CalendarRecurrenceExpand extends Model
 
     /**
      * Expands all recurrences between $start and $end
-     * @param RecurrentCalendarEntry $event
+     * @param RecurrentCalendarEvent $event
      * @param DateTime $start
      * @param DateTime $end
      * @param array $endResult
      * @param bool $save weather or not to automatically save the instances
-     * @return RecurrentCalendarEntry[]
+     * @return RecurrentCalendarEvent[]
      */
-    public static function expand(RecurrentCalendarEntry $event, DateTime $start, DateTime $end, array &$endResult = [], $save = false)
+    public static function expand(RecurrentCalendarEvent $event, DateTime $start, DateTime $end, array &$endResult = [], $save = false)
     {
         $instance = new static(['event' => $event, 'saveInstnace' => $save]);
         return $instance->expandEvent($start, $end, $endResult);
@@ -91,13 +91,13 @@ class CalendarRecurrenceExpand extends Model
     /**
      * Expands a single recurrence with by recurrence id
      *
-     * @param RecurrentCalendarEntry $event
+     * @param RecurrentCalendarEvent $event
      * @param $recurrenceId
      * @param bool $save
-     * @return RecurrentCalendarEntry|null
+     * @return RecurrentCalendarEvent|null
      * @throws \Exception
      */
-    public static function expandSingle(RecurrentCalendarEntry $event, $recurrenceId,  $save = true)
+    public static function expandSingle(RecurrentCalendarEvent $event, $recurrenceId, $save = true)
     {
         $instance = new static(['event' => $event, 'saveInstnace' => $save]);
         $recurrence = $instance->getRecurrence($recurrenceId);
@@ -142,7 +142,7 @@ class CalendarRecurrenceExpand extends Model
      * @param DateTime $start
      * @param DateTime $end
      * @param array $endResult
-     * @return RecurrentCalendarEntry[]
+     * @return RecurrentCalendarEvent[]
      * @throws \Throwable
      */
     public function expandEvent(DateTime $start, DateTime $end, array &$endResult = [])
@@ -210,7 +210,7 @@ class CalendarRecurrenceExpand extends Model
     }
 
     /**
-     * @param RecurrentCalendarEntry[] $existingModels
+     * @param RecurrentCalendarEvent[] $existingModels
      * @param VEvent[] $recurrences
      * @param $endResult
      */
@@ -273,7 +273,7 @@ class CalendarRecurrenceExpand extends Model
     }
 
     /**
-     * @param RecurrentCalendarEntry[] $existingModels
+     * @param RecurrentCalendarEvent[] $existingModels
      * @param VEvent $vEvent
      * @return mixed|null
      */

@@ -11,7 +11,7 @@ namespace humhub\modules\calendar\interfaces;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\components\ActiveQueryUser;
 
-interface Remindable extends CalendarEntryIF
+interface CalendarEventReminderIF extends CalendarEventIF
 {
     /**
      * @return Content

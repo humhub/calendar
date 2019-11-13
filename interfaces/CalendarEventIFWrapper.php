@@ -24,7 +24,12 @@ use \DateTime;
 use yii\base\Component;
 use yii\helpers\Html;
 
-class CalendarEntryIFWrapper extends Component implements CalendarEntryIF
+/**
+ * Class CalendarEventIFWrapper
+ * @package humhub\modules\calendar\interfaces
+ * @deprecated
+ */
+class CalendarEventIFWrapper extends Component implements CalendarEventIF
 {
     const OPTION_START = 'start';
     const OPTION_END = 'end';
@@ -206,5 +211,32 @@ class CalendarEntryIFWrapper extends Component implements CalendarEntryIF
     public function getDescription()
     {
         return $this->getOption(static::OPTION_DESCRIPTION, true);
+    }
+
+    /**
+     * Access url of the source content or other view
+     *
+     * @return string the timezone this item was originally saved, note this is
+     */
+    public function getCalendarViewUrl()
+    {
+        return $this->getUrl();
+    }
+
+    /**
+     * @return string view mode 'modal', 'blank', 'redirect'
+     */
+    public function getCalendarViewMode()
+    {
+        return $this->getViewMode();
+    }
+
+    /**
+     * Additional configuration options
+     * @return array
+     */
+    public function getCalendarOptions()
+    {
+        return [];
     }
 }
