@@ -14,7 +14,7 @@ return array (
   'Here you can configure default settings for new calendar events.' => '',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => '',
   'Here you can manage calendar types provided by other modules.' => '',
-  'Here you can manage your event types.' => '',
+  'Here you can manage your event types.' => 'Här kan du hantera dina aktivitetstyper',
   'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => '',
   'Interval of upcoming events' => '',
   'Max event items' => 'Max antal händelser',
@@ -27,6 +27,6 @@ return array (
   'Reset' => 'Återställ',
   'Show snippet' => 'Visa snippet',
   'Sort order' => 'Sorteringsordning',
-  'There are currently no event types available.' => '',
+  'There are currently no event types available.' => 'Det finns inga aktivitetstyper',
   'Upcoming events snippet' => '',
 );
