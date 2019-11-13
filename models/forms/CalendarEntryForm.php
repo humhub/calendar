@@ -247,12 +247,12 @@ class CalendarEntryForm extends Model
 
     public function getStartDateTime()
     {
-        return CalendarUtils::parseDateTimeString($this->start_date, $this->start_time, $this->getTimeFormat());
+        return CalendarUtils::parseDateTimeString($this->start_date, $this->start_time, $this->getTimeFormat(), $this->timeZone);
     }
 
     public function getEndDateTime()
     {
-        return CalendarUtils::parseDateTimeString($this->end_date, $this->end_time, $this->getTimeFormat());
+        return CalendarUtils::parseDateTimeString($this->end_date, $this->end_time, $this->getTimeFormat(), $this->timeZone);
     }
 
     public function validateType($attribute, $params)
@@ -326,7 +326,7 @@ class CalendarEntryForm extends Model
             // Translate from moment after to non moment after
             $endDt->modify('- 1 second');
             $this->entry->start_datetime = CalendarUtils::toDBDateFormat($startDt);
-            $this->entry->end_datetime =CalendarUtils::toDBDateFormat($endDt);
+            $this->entry->end_datetime = CalendarUtils::toDBDateFormat($endDt);
         } else {
             $this->entry->start_datetime = CalendarUtils::translateToSystemTimezone($startDt, $this->timeZone);
             $this->entry->end_datetime = CalendarUtils::translateToSystemTimezone($endDt, $this->timeZone);

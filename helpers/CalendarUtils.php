@@ -16,6 +16,12 @@ use Yii;
 class CalendarUtils
 {
 
+    /**
+     * Database Field - Validators
+     */
+    const REGEX_DBFORMAT_DATE = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
+    const REGEX_DBFORMAT_DATETIME = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';
+
     private static $userTimezone;
     private static $userTimezoneString;
 
@@ -35,15 +41,31 @@ class CalendarUtils
 
     public static function parseDateTimeString($value, $timeValue = null, $timeFormat = null, $timeZone = 'UTC')
     {
-        $ts = DateHelper::parseDateTimeToTimestamp($value);
+        if(static::isInDbFormat($value)) {
+            $date = DateTime::createFromFormat(static::DB_DATE_FORMAT, $value, static::getDateTimeZone($timeZone));
+        } else {
+            $ts = DateHelper::parseDateTimeToTimestamp($value);
 
-        if($timeValue) {
-            $ts += static::parseTime($timeValue, $timeFormat);
+            if($timeValue) {
+                $ts += static::parseTime($timeValue, $timeFormat);
+            }
+
+            $date = new DateTime(null, new DateTimeZone('UTC'));
+            $date->setTimestamp($ts);
         }
 
-        $date = new DateTime(null, static::getDateTimeZone($timeZone));
-        $date->setTimestamp($ts);
-        return $date;
+        return DateTime::createFromFormat(static::DB_DATE_FORMAT, static::toDBDateFormat($date), static::getDateTimeZone($timeZone));
+    }
+
+    /**
+     * Checks whether the given value is a db date format or not.
+     *
+     * @param string $value the date value
+     * @return boolean
+     */
+    protected static function isInDbFormat($value)
+    {
+        return (preg_match(self::REGEX_DBFORMAT_DATE, $value) || preg_match(self::REGEX_DBFORMAT_DATETIME, $value));
     }
 
     /**
