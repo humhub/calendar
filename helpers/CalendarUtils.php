@@ -27,8 +27,9 @@ class CalendarUtils
 
     const DB_DATE_FORMAT = 'Y-m-d H:i:s';
     const DATE_FORMAT_SHORT = 'Y-m-d';
+    const DATE_FORMAT_SHORT_NO_TIME = '!Y-m-d';
     const TIME_FORMAT_SHORT = 'php:H:i';
-    const TIME_FORMAT_SHORT_MERIDIEM = 'php:h:i a';
+    const TIME_FORMAT_SHORT_MERIDIEM = 'php:h:i A';
     const ICAL_TIME_FORMAT        = 'Ymd\THis';
 
     const DOW_SUNDAY = 1;
@@ -42,17 +43,18 @@ class CalendarUtils
     public static function parseDateTimeString($value, $timeValue = null, $timeFormat = null, $timeZone = 'UTC')
     {
         if(static::isInDbFormat($value)) {
-            $date = DateTime::createFromFormat(static::DB_DATE_FORMAT, $value, static::getDateTimeZone($timeZone));
+            $date = DateTime::createFromFormat(static::DATE_FORMAT_SHORT_NO_TIME, $value, static::getDateTimeZone('UTC'));
+            $ts = $date->getTimestamp();
         } else {
             $ts = DateHelper::parseDateTimeToTimestamp($value);
-
-            if($timeValue) {
-                $ts += static::parseTime($timeValue, $timeFormat);
-            }
-
-            $date = new DateTime(null, new DateTimeZone('UTC'));
-            $date->setTimestamp($ts);
         }
+
+        if($timeValue) {
+            $ts += static::parseTime($timeValue, $timeFormat);
+        }
+
+        $date = new DateTime(null, new DateTimeZone('UTC'));
+        $date->setTimestamp($ts);
 
         return DateTime::createFromFormat(static::DB_DATE_FORMAT, static::toDBDateFormat($date), static::getDateTimeZone($timeZone));
     }
@@ -163,7 +165,7 @@ class CalendarUtils
             return $endTime === '00:00' || $endTime === '23:59';
         }
 
-        if($endDateMomentAfter ) {
+        if($endDateMomentAfter) {
             return $endTime === '00:00';
         }
 
@@ -350,5 +352,16 @@ class CalendarUtils
         }
 
         return $format;
+    }
+
+    public static function ensureAllDay(DateTime $startDt, DateTime $endDt)
+    {
+        if($endDt == $startDt) {
+            $endDt->setTime(23,59,59);
+        } else if($endDt->format(static::parseFormat(static::TIME_FORMAT_SHORT)) === '00:00') {
+            $endDt->modify('-1 second');
+        }
+
+        $startDt->setTime(0,0,0);
     }
 }

@@ -20,37 +20,70 @@ use yii\db\Expression;
  *
  * Types of reminder:
  *
- * # Global Default Reminder
+ * # Global Default Reminder (global)
  *
  * - unit
  * - value
  * - content_id: null
  * - contentcontainer_id: null
- * - active: true
+ * - active: 1
+ * - disabled: 0
  *
- * # Container Default Reminder
+ * # Container Default Reminder (container level)
  *
  * - unit
  * - value
  * - content_id: null
  * - contentcontainer_id: space container id
- * - active: true
+ * - active: 1
+ * - disabled: 0
  *
- * # Space Level Model Exception
+ * # Space Level Exception for an entry (container wide entry level)
  *
  * - unit
  * - value
  * - content_id Model id
  * - contentcontainer_id: null   // Note this is required for easy seperation of space level and user level exceptions
- * - active: true
+ * - active: 1
+ * - disabled: 0
  *
- * # User Level Model Exception
+ * # User Level Model Exception (user wide entry level)
  *
  * - unit
  * - value
  * - content_id: Model id
  * - contentcontainer_id: User container id
- * - active: true
+ * - active: 1
+ * - disabled: 0
+ *
+ *
+ * The following cases are used to disable a reminder in order to ignore defaults
+ *
+ * # Disabled container level reminder
+ *
+ * - unit: null
+ * - value: null
+ * - content_id: null
+ * - contentcontainer_id: Space/User container Id
+ * - active: 1
+ * - disabled: 1
+ *
+ * # Disabled container entry level reminder
+ *
+ * - unit: null
+ * - value: null
+ * - content_id: entry content id
+ * - contentcontainer_id: Space/User container Id
+ * - active: 1
+ * - disabled: 1
+ *
+ * # Disabled user entry level reminder
+ *
+ * - unit: null
+ * - value: null
+ * - content_id: entry content id
+ * - contentcontainer_id: User id
+ * - active: 1
  *
  * @package humhub\modules\calendar\models
  *
@@ -60,6 +93,7 @@ use yii\db\Expression;
  * @property string $content_id
  * @property integer $contentcontainer_id
  * @property integer $active
+ * @property integer $disabled
  * @property-read Content $entryContent
  */
 class CalendarReminder extends ActiveRecord
@@ -67,6 +101,16 @@ class CalendarReminder extends ActiveRecord
     const UNIT_HOUR = 1;
     const UNIT_DAY = 2;
     const UNIT_WEEK = 3;
+
+    /**
+     * @var CalendarReminder[]
+     */
+    private static $globalDefaults;
+
+    /**
+     * @var array
+     */
+    private static $containerDefaults = [];
 
     /**
      * @inheritdoc
@@ -86,6 +130,10 @@ class CalendarReminder extends ActiveRecord
         if ($this->active === null) {
             $this->active = 1;
         }
+
+        if($this->disabled === null) {
+            $this->disabled = 0;
+        }
     }
 
     public function rules()
@@ -95,7 +143,7 @@ class CalendarReminder extends ActiveRecord
             [['value'], 'integer', 'min' => 1, 'max' => '100']
         ];
 
-        if ($this->active) {
+        if ($this->active && !$this->disabled) {
             $rules[] = [['unit', 'value'], 'required'];
         }
 
@@ -109,7 +157,7 @@ class CalendarReminder extends ActiveRecord
      */
     public static function initGlobalDefault($unit, $value)
     {
-        return new static(['unit' => $unit, 'value' => $value, 'active' => 1]);
+        return new static(['unit' => $unit, 'value' => $value, 'active' => 1, 'disabled' => 0]);
     }
 
     /**
@@ -124,25 +172,52 @@ class CalendarReminder extends ActiveRecord
             'unit' => $unit,
             'value' => $value,
             'contentcontainer_id' => $container->contentcontainer_id,
-            'active' => 1
+            'active' => 1,
+            'disabled' => 0
         ]);
+    }
+
+    /**
+     * Initializes an inactive reminder for the given container, this is used in order to ignore global defaults.
+     *
+     * @param ContentContainerActiveRecord $container
+     * @return CalendarReminder
+     */
+    public static function initDisableContainerDefaults(ContentContainerActiveRecord $container)
+    {
+        $instance = static::initContainerDefault(null, null, $container);
+        $instance->disabled = 1;
+        return $instance;
     }
 
     /**
      * @param $unit
      * @param $value
-     * @param ContentActiveRecord $model
+     * @param CalendarEventReminderIF $model
      * @param User|null $user
      * @return CalendarReminder
      */
     public static function initEntryLevel($unit, $value, CalendarEventReminderIF $model, User $user = null)
     {
-        $instance = new static(['unit' => $unit, 'value' => $value, 'active' => 1, 'content_id' => $model->content->id]);
+        $instance = new static(['unit' => $unit, 'value' => $value, 'active' => 1, 'content_id' => $model->getContentRecord()->id,  'disabled' => 0]);
 
         if($user) {
             $instance->contentcontainer_id = $user->contentcontainer_id;
         }
 
+        return $instance;
+    }
+
+    /**
+     * Initializes an inactive entry level reminder, this is used in order to ignore global and container defaults.
+     *
+     * @param ContentContainerActiveRecord $container
+     * @return CalendarReminder
+     */
+    public static function initDisableEntryLevelDefaults(CalendarEventReminderIF $model, User $user = null)
+    {
+        $instance = static::initEntryLevel(null, null, $model, $user);
+        $instance->disabled = 1;
         return $instance;
     }
 
@@ -202,7 +277,7 @@ class CalendarReminder extends ActiveRecord
      */
     public function isEntryLevelReminder()
     {
-        return $this->content_id;
+        return $this->content_id !== null;
     }
 
     /**
@@ -211,6 +286,14 @@ class CalendarReminder extends ActiveRecord
     public function isDefaultReminder()
     {
         return !$this->isEntryLevelReminder();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isContainerLevelReminder()
+    {
+        return !$this->isEntryLevelReminder() && $this->contentcontainer_id !== null;
     }
 
     /**
@@ -231,6 +314,12 @@ class CalendarReminder extends ActiveRecord
      */
     public static function getDefaults(ContentContainerActiveRecord $container = null, $globalFallback = false)
     {
+        $result = static::getDefaultFromCache($container, $globalFallback);
+
+        if($result !== null) {
+            return $result;
+        }
+
         $query = static::find();
 
         if ($container) {
@@ -240,16 +329,52 @@ class CalendarReminder extends ActiveRecord
         }
 
         $query->andWhere(['IS', 'content_id', new Expression('NULL')]);
-
         $query->orderBy('unit ASC, value ASC');
 
         $result = $query->all();
 
-        if (empty($result) && $container && $globalFallback) {
-            return static::getDefaults();
+        static::setDefaultResult($container, $result);
+
+        if ($container && empty($result) && $globalFallback) {
+            $result = static::getDefaults();
         }
 
         return $result;
+    }
+
+    private static function setDefaultResult(ContentContainerActiveRecord $container = null, $result)
+    {
+        if($container) {
+            static::$containerDefaults[$container->contentcontainer_id] = $result;
+        } else {
+            static::$globalDefaults = $result;
+        }
+    }
+
+    public static function flushDefautlts()
+    {
+        static::$containerDefaults = [];
+        static::$globalDefaults  = null;
+    }
+
+    private static function getDefaultFromCache(ContentContainerActiveRecord $container = null, $globalFallback = false)
+    {
+        if($container && !isset(static::$containerDefaults[$container->contentcontainer_id])) {
+            return null; // No cached results
+        }
+
+        if($container) {
+            $result = static::$containerDefaults[$container->contentcontainer_id];
+            if(!empty($result) || !$globalFallback) {
+                return $result;
+            }
+        }
+
+        if(static::$globalDefaults !== null) {
+            return static::$globalDefaults;
+        }
+
+        return null;
     }
 
     /**
@@ -270,25 +395,6 @@ class CalendarReminder extends ActiveRecord
     }
 
     /**
-     * @param ContentContainerActiveRecord|null $container
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public static function clearDefaults(ContentContainerActiveRecord $container = null)
-    {
-        foreach (static::getDefaults($container) as $reminder) {
-            $reminder->delete();
-        }
-    }
-
-    public static function clearEntryLevelReminder(CalendarEventReminderIF $entry, $user = true)
-    {
-        foreach (static::getEntryLevelReminder($entry, $user) as $reminder) {
-            $reminder->delete();
-        }
-    }
-
-    /**
      * Finds reminder by model, this does not include default reminders.
      *
      * This function returns the reminder in the following order:
@@ -301,10 +407,14 @@ class CalendarReminder extends ActiveRecord
      */
     public static function getEntryLevelReminder(CalendarEventReminderIF $model, $user = true, $defaultFallback = false)
     {
+        if($model->getContentRecord()->isNewRecord) {
+            return $defaultFallback ?  static::getEntryLevelDefaults($model, $user) : [];
+        }
+
         $query = static::find()
             ->where(['content_id' => $model->getContentRecord()->id])
             // We want user entry level first with given contentcontainer_id, then sort by interval
-            ->orderBy('calendar_reminder.contentcontainer_id DESC, unit ASC, value ASC');
+            ->orderBy('calendar_reminder.contentcontainer_id DESC, disabled DESC, unit ASC, value ASC');
 
         if($user === false) {
             $query->andWhere(['IS' ,'contentcontainer_id', new Expression('NULL')]);
@@ -314,11 +424,18 @@ class CalendarReminder extends ActiveRecord
 
         $result = $query->all();
 
-        if($defaultFallback && empty($result) && $user instanceof User) {
+        return empty($result) && $defaultFallback ? static::getEntryLevelDefaults($model, $user) : $result;
+    }
+
+    public static function getEntryLevelDefaults(CalendarEventReminderIF $model, $user = true)
+    {
+        $result = [];
+
+        if($user instanceof User) {
             $result = static::getEntryLevelReminder($model, false, true);
         }
 
-        if($defaultFallback && empty($result)) {
+        if(empty($result)) {
             $result = static::getDefaults($model->getContentRecord()->container, true);
         }
 
@@ -332,7 +449,7 @@ class CalendarReminder extends ActiveRecord
     public function isActive(CalendarEventReminderIF $entry)
     {
         // Non default reminder are deactivated after first sent
-        if (!$this->active) {
+        if (!$this->active || $this->disabled) {
             return false;
         }
 
@@ -351,7 +468,7 @@ class CalendarReminder extends ActiveRecord
      */
     public function checkMaturity(CalendarEventReminderIF $model)
     {
-        if(!$this->active) {
+        if(!$this->active || $this->isDisabled()) {
             return false;
         }
 
@@ -359,8 +476,17 @@ class CalendarReminder extends ActiveRecord
         return $sendDate <= new DateTime();
     }
 
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
+
     private function getModify()
     {
+        if(!$this->unit || ! $this->value) {
+            return '-0 hours';
+        }
+
         switch ($this->unit) {
             case static::UNIT_HOUR:
                 $modifyUnit = 'hours';

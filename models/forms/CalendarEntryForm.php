@@ -128,14 +128,13 @@ class CalendarEntryForm extends Model
 
             $this->topics = $this->entry->content->getTags(Topic::class);
 
-            $this->updateDateRange($this->entry->getStartDateTime(), $this->entry->getEndDateTimeMomentAfter(), !$this->entry->isAllDay());
+            $this->updateDateRange($this->entry->getStartDateTime(), $this->entry->getEndDateTime(), !$this->entry->isAllDay());
         } else {
             $this->entry->setDefaults();
         }
 
         $this->reminderSettings = new ReminderSettings(['entry' => $this->entry]);
         $this->recurrenceForm = new RecurrenceFormModel(['entry' => $this->entry]);
-
     }
 
     public function updateDateRangeFromCalendar($start, $end, $save = false)
@@ -195,7 +194,7 @@ class CalendarEntryForm extends Model
         $timeValue = $this->$timeField;
 
         try {
-            $parsed = CalendarUtils::parseDateTimeString($value, $timeValue, $this->getTimeFormat());
+            $parsed = CalendarUtils::parseDateTimeString($value, $timeValue);
             if (empty($parsed)) {
                 throw new \Exception('Invalid date time format: ' . $value . 'with time: ' . $timeValue);
             }
@@ -208,7 +207,7 @@ class CalendarEntryForm extends Model
 
     public function getTimeFormat()
     {
-        return Yii::$app->formatter->isShowMeridiem() ? 'php:h:i a' : 'php:H:i';
+        return Yii::$app->formatter->isShowMeridiem() ? CalendarUtils::TIME_FORMAT_SHORT_MERIDIEM : CalendarUtils::TIME_FORMAT_SHORT;
     }
 
     public function beforeValidate()
@@ -245,14 +244,24 @@ class CalendarEntryForm extends Model
         }
     }
 
-    public function getStartDateTime()
+    public function getStartDateTime($timeZone = null)
     {
-        return CalendarUtils::parseDateTimeString($this->start_date, $this->start_time, $this->getTimeFormat(), $this->timeZone);
+        if($timeZone === false) {
+            $timeZone = 'UTC';
+        } else {
+            $timeZone = $timeZone ? $timeZone : $this->timeZone;
+        }
+        return CalendarUtils::parseDateTimeString($this->start_date, $this->start_time, null, $timeZone);
     }
 
-    public function getEndDateTime()
+    public function getEndDateTime($timeZone = null)
     {
-        return CalendarUtils::parseDateTimeString($this->end_date, $this->end_time, $this->getTimeFormat(), $this->timeZone);
+        if($timeZone === false) {
+            $timeZone = 'UTC';
+        } else {
+            $timeZone = $timeZone ? $timeZone : $this->timeZone;
+        }
+        return CalendarUtils::parseDateTimeString($this->end_date, $this->end_time, null, $timeZone);
     }
 
     public function validateType($attribute, $params)
@@ -287,32 +296,24 @@ class CalendarEntryForm extends Model
 
     public function load($data, $formName = null)
     {
-        // Make sure we load the timezone beforehand so its available in validators etc..
-        if ($data && isset($data[$this->formName()]) && isset($data[$this->formName()]['timeZone']) && !empty($data[$this->formName()]['timeZone'])) {
-            $this->timeZone = $data[$this->formName()]['timeZone'];
-        }
-
         if (parent::load($data) && !empty($this->timeZone)) {
             $this->entry->time_zone = $this->timeZone;
         }
 
         $this->entry->content->visibility = $this->is_public;
 
-        if (!$this->entry->load($data)) {
-            return false;
-        }
+        $result = $this->entry->load($data);
 
-        // change 0, '' etc to null
         if (empty($this->type_id)) {
             $this->type_id = null;
         }
 
-        $this->reminderSettings->load($data);
-        $this->recurrenceForm->load($data);
+        $result |= $this->reminderSettings->load($data);
+        $result |= $this->recurrenceForm->load($data);
 
         $this->updateEntryDates();
 
-        return true;
+        return (bool) $result;
     }
 
     private function updateEntryDates()
@@ -320,17 +321,21 @@ class CalendarEntryForm extends Model
         $startDt = $this->getStartDateTime();
         $endDt =  $this->getEndDateTime();
 
-        $this->entry->all_day = (int) CalendarUtils::isAllDay($startDt, $endDt);
+        // For all day events the time value is not submitted so we handle startDate = endDate as all day event
+        $this->entry->all_day = (int) ($startDt == $endDt || CalendarUtils::isAllDay($startDt, $endDt));
 
         if($this->entry->isAllDay()) {
             // Translate from moment after to non moment after
-            $endDt->modify('- 1 second');
+            CalendarUtils::ensureAllDay($startDt, $endDt);
+
             $this->entry->start_datetime = CalendarUtils::toDBDateFormat($startDt);
             $this->entry->end_datetime = CalendarUtils::toDBDateFormat($endDt);
         } else {
             $this->entry->start_datetime = CalendarUtils::translateToSystemTimezone($startDt, $this->timeZone);
             $this->entry->end_datetime = CalendarUtils::translateToSystemTimezone($endDt, $this->timeZone);
         }
+
+        $this->updateDateRange($this->entry->start_datetime, $this->entry->end_datetime);
     }
 
     /**

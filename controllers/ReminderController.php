@@ -9,13 +9,17 @@ namespace humhub\modules\calendar\controllers;
 
 
 use humhub\components\access\ControllerAccess;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\models\forms\ReminderSettings;
+use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\Content;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\ModalClose;
 use Yii;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 class ReminderController extends ContentContainerController
 {
@@ -24,7 +28,9 @@ class ReminderController extends ContentContainerController
      */
     public function getAccessRules()
     {
-        return [[ControllerAccess::RULE_LOGGED_IN_ONLY]];
+        return [
+            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+        ];
     }
 
     /**

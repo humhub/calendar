@@ -8,10 +8,10 @@ humhub.module('calendar.recurrence.Form', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
 
     var Form = Widget.extend();
-
     var WEEKDAY_SELECT = '#recurrenceformmodel-weekdays';
     var INTERVAL_TYPE_SELECT = '#recurrenceformmodel-frequency';
     var INTERVAL_VALUE_INPUT = '#recurrenceformmodel-interval';
+
     var END_SELECT = '#recurrenceformmodel-end';
 
     Form.prototype.init = function() {
@@ -66,7 +66,7 @@ humhub.module('calendar.recurrence.Form', function (module, require, $) {
                 $('.recurrence-end-occurrences').show();
                 return;
         }
-    }
+    };
 
 
     module.export = Form;

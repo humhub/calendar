@@ -12,6 +12,7 @@ use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveQuery;
@@ -120,16 +121,22 @@ class ReminderProcessor extends Model
      */
     private function handleEntryLevelReminder(CalendarEventReminderIF $entry)
     {
-        // We keep track of users which have an entry level reminder set for this entry
+        // We keep track of users which have an entry level reminder set for this entry, in order to ignore defaults
         $skipUsers = [];
 
-        // We keep track of reminder blocks already sent for a container (or global)
+        // We keep track of reminder already sent for a container in order to ignore global defaults
         $sentContainer = [];
 
-        // Note: User level reminder are sorted before container level reminder (see query order_by)
+        // User level reminder are sorted before container level reminder (see query order_by)
         foreach (CalendarReminder::getEntryLevelReminder($entry) as $reminder) {
+            // User has own reminder settings for this specific event, so ignore this user when handling defaults
             if($reminder->isUserLevelReminder()) {
                 $skipUsers[] = $reminder->contentcontainer_id;
+            }
+
+            // Space level reminder were disabled for this specific event, so ignore global defaults
+            if($reminder->isDisabled() && !$reminder->isUserLevelReminder()) {
+                $sentContainer[$reminder->contentcontainer_id] = true;
             }
 
             // Skip reminder which do not match yet
@@ -143,9 +150,8 @@ class ReminderProcessor extends Model
                 continue;
             }
 
-            // Make sure no other reminder which is closer to the event has already been sent (see query order_by)
+            // Make sure no other reminder which is closer to the event has already been sent or is disabled (see query order_by)
             if(isset($sentContainer[$reminder->contentcontainer_id])) {
-                // If yes, invalidate the reminder
                 $reminder->acknowledge($entry);
                 continue;
             }
@@ -228,18 +234,6 @@ class ReminderProcessor extends Model
         }
     }
 
-    /**
-     * @param CalendarReminder $reminder
-     * @param CalendarEventReminderIF $entry
-     * @return bool
-     * @throws Exception
-     */
-    public function isReadyToSent(CalendarReminder $reminder, CalendarEventReminderIF $entry)
-    {
-        $this->handledReminders[] = $reminder->id;
-        return $reminder->checkMaturity($entry) && $reminder->isActive($entry);
-    }
-
 
     /**
      * @param CalendarReminder $reminder
@@ -250,8 +244,12 @@ class ReminderProcessor extends Model
      */
     private function sendReminder(CalendarReminder $reminder, CalendarEventReminderIF $entry, $recipients)
     {
-        // TODO: Clear old reminder notifications
-        Remind::instance()->from($entry->getContentRecord()->createdBy)->about($entry)->sendBulk($recipients);
+        if($entry->getStartDateTime() >= new \DateTime()) {
+            Remind::instance()->from($entry->getContentRecord()->createdBy)->about($entry)->sendBulk($recipients);
+        } else {
+            Yii::warning('Calendar reminder for past event detected with id: '.$reminder->id.' reminder not sent and disabled.');
+        }
+
         $reminder->acknowledge($entry);
         return true;
     }

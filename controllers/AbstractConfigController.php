@@ -8,6 +8,7 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\calendar\models\participation\ParticipationSettings;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use yii\data\ActiveDataProvider;
@@ -128,14 +129,13 @@ abstract class AbstractConfigController extends ContentContainerController
         return $this->renderAjax(static::VIEW_CONFIG_EDIT_TYPE_MODAL, ['model' => $item]);
     }
 
-    public function actionResetConfig()
+    public function actionResetParticipationConfig()
     {
-        $model = new DefaultSettings();
+        $this->forcePostRequest();
+        $model = new ParticipationSettings(['contentContainer' => $this->contentContainer]);
         $model->reset();
         $this->view->saved();
-        return $this->render(static::VIEW_CONFIG_DEFAULT, [
-            'model' => $model
-        ]);
+        $this->redirect(Url::toConfig($this->contentContainer));
     }
 
     protected function validateEntry(CalendarEntryType $type = null)

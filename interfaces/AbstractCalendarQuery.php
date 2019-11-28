@@ -230,7 +230,7 @@ abstract class AbstractCalendarQuery extends Component
      */
     protected function expand($entry, &$expandResult)
     {
-        if(!$this->isRecurrenceSupported()) {
+        if (!$this->isRecurrenceSupported()) {
             $expandResult[] = $entry;
             return;
         }
@@ -238,7 +238,7 @@ abstract class AbstractCalendarQuery extends Component
         $isRecurrenceRoot = $entry->getRrule() && $entry->getParentId() === null;
 
         // Make sure we only expand recurrence roots
-        if($isRecurrenceRoot) {
+        if ($isRecurrenceRoot) {
             $to = $this->_to ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->add(new \DateInterval('P1Y'));
             $from = $this->_from ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->sub(new \DateInterval('P1Y'));
             CalendarRecurrenceExpand::expand($entry, $from, $to, $expandResult, $this->autoSaveRecurrentInstances);
@@ -673,7 +673,7 @@ abstract class AbstractCalendarQuery extends Component
             if (!$this->_built) {
                 $this->setupQuery();
             }
-
+            $test = $this->_query->createCommand()->rawSql;
             return $this->preFilter($this->_query->all());
         } catch (FilterNotSupportedException $e) {
             return [];
@@ -723,34 +723,28 @@ abstract class AbstractCalendarQuery extends Component
      */
     protected function setupDateCriteria()
     {
-        $where = ['or'];
-
         if ($this->_openRange && $this->_from && $this->_to) {
             //Search for all dates with start and/or end within the given range
-            $where[] = ['and',
-                $this->getStartCriteria($this->_from, '>='),
-                $this->getStartCriteria($this->_to, '<=')
-            ];
-
-            $where[] = ['and',
-                $this->getEndCriteria($this->_from, '>='),
-                $this->getEndCriteria($this->_to, '<=')
-            ];
+            $this->_query->andFilterWhere(['or',
+                ['and',
+                    $this->getStartCriteria($this->_from, '>='),
+                    $this->getStartCriteria($this->_to, '<=')
+                ],
+                ['and',
+                    $this->getEndCriteria($this->_from, '>='),
+                    $this->getEndCriteria($this->_to, '<=')
+                ],
+                $this->getRruleRootQuery()
+            ]);
         } else {
             if ($this->_from) {
-                $where[] = $this->getStartCriteria($this->_from);
+                $this->_query->andWhere(['or', $this->getStartCriteria($this->_from, '>='), $this->getRruleRootQuery()]);
             }
 
             if ($this->_to) {
-                $where[] = $this->getEndCriteria($this->_to);
+                $this->_query->andWhere(['or', $this->getEndCriteria($this->_to, '<='), $this->getRruleRootQuery()]);
             }
         }
-
-        if($this->isRecurrenceSupported()) {
-            $where[] = $this->getRruleRootQuery();
-        }
-
-        $this->_query->andFilterWhere($where);
     }
 
     public function isRecurrenceSupported()
@@ -760,10 +754,14 @@ abstract class AbstractCalendarQuery extends Component
 
     protected function getRruleRootQuery()
     {
-        return ['and',
-            $this->rruleField.' IS NOT NULL',
-            $this->parentEventIdField.' IS NULL'
-        ];
+        if($this->isRecurrenceSupported()) {
+            return ['and',
+                $this->rruleField . ' IS NOT NULL',
+                $this->parentEventIdField . ' IS NULL'
+            ];
+        }
+
+        return '';
     }
 
     /**
@@ -793,9 +791,9 @@ abstract class AbstractCalendarQuery extends Component
      */
     protected function setupFilters()
     {
-        if($this->isRecurrenceSupported()) {
+        if ($this->isRecurrenceSupported()) {
             // Do not include existing recurrence instances
-            $this->_query->andWhere($this->parentEventIdField.' IS NULL');
+            $this->_query->andWhere($this->parentEventIdField . ' IS NULL');
         }
 
         if ($this->_container) {
@@ -803,7 +801,7 @@ abstract class AbstractCalendarQuery extends Component
         }
 
 
-        if(!$this->hasFilter(self::FILTER_INCLUDE_NONREADABLE)) {
+        if (!$this->hasFilter(self::FILTER_INCLUDE_NONREADABLE)) {
             $this->filterReadable();
         }
 

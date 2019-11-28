@@ -8,6 +8,7 @@
  */
 
 use humhub\modules\calendar\assets\Assets;
+use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -15,7 +16,7 @@ use humhub\widgets\Button;
 use humhub\widgets\Tabs;
 
 /* @var $this yii\web\View */
-/* @var $model \humhub\modules\calendar\models\DefaultSettings */
+/* @var $model DefaultSettings */
 
 Assets::register($this);
 
@@ -36,7 +37,7 @@ Assets::register($this);
 
     <?= Tabs::widget([
         'viewPath' => '@calendar/views/common',
-        'params' => ['form' => $form, 'model' => $model, 'reminderSettings' => $model->reminderSettings],
+        'params' => ['form' => $form, 'participationSettings' => $model->participationSettings, 'reminderSettings' => $model->reminderSettings],
         'items' => [
             ['label' => Yii::t('CalendarModule.settings', 'Participation'), 'view' => '_settings_participation', 'linkOptions' => ['class' => 'tab-basic']],
             ['label' => Yii::t('CalendarModule.settings', 'Reminder'), 'view' => '_settings_reminder', 'linkOptions' => ['class' => 'tab-participation']],
@@ -47,10 +48,6 @@ Assets::register($this);
 
     <div class="panel-body">
         <?= Button::primary(Yii::t('base', 'Save'))->submit() ?>
-
-        <?php if ($model->showResetButton()) : ?>
-            <?= Button::defaultType(Yii::t('CalendarModule.config', 'Reset'))->loader()->link($model->getResetButtonUrl())->right()?>
-        <?php endif; ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

@@ -41,7 +41,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
 
     public function setDefautls()
     {
-        $defaultSettings = new DefaultSettings(['contentContainer' => $this->entry->content->container]);
+        $defaultSettings = new ParticipationSettings(['contentContainer' => $this->entry->content->container]);
 
         // Default participiation Mode
         if($this->entry->participation_mode === null) {
@@ -86,7 +86,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
     {
         $participant = $this->findParticipant($user);
 
-        if($participant && $status = self::PARTICIPATION_STATUS_NONE) {
+        if($participant && $status == self::PARTICIPATION_STATUS_NONE) {
             $participant->delete();
             return;
         }
@@ -94,7 +94,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         if (!$participant) {
             $participant = new CalendarEntryParticipant([
                 'user_id' => $user->id,
-                'calendar_entry_id' => $this->id
+                'calendar_entry_id' => $this->entry->id
             ]);
         }
 
@@ -197,7 +197,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public function addAllUsers()
     {
-        if($this->event->participation_mode == static::PARTICIPATION_MODE_ALL && $this->canAddAll()) {
+        if($this->entry->participation_mode == static::PARTICIPATION_MODE_ALL && $this->canAddAll()) {
             Yii::$app->queue->push(new ForceParticipation(['entry_id' => $this->entry->id, 'originator_id' => Yii::$app->user->getId()]));
         }
     }

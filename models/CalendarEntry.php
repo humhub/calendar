@@ -15,7 +15,6 @@ use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarEventStatusIF;
 use humhub\modules\calendar\notifications\CanceledEvent;
-use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\calendar\notifications\ReopenedEvent;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\calendar\widgets\WallEntry;
@@ -24,13 +23,10 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\calendar\jobs\ForceParticipation;
 use humhub\widgets\Label;
 use Sabre\VObject\UUIDUtil;
-use humhub\libs\DbDateValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
-use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "calendar_entry".
@@ -50,7 +46,6 @@ use yii\db\ActiveQuery;
  * @property string $participant_info
  * @property integer closed
  * @property integer max_participants
- * @property string location
  * @property string rrule
  * @property string recurrence_id
  * @property int parent_event_id
@@ -131,6 +126,8 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
         if(!$this->time_zone) {
             $this->time_zone = CalendarUtils::getUserTimeZone(true);
         }
+
+        $this->isAllDay(); // initialize all day
 
         $this->participation = new CalendarEntryParticipation(['entry' => $this]);
         $this->formatter = new CalendarDateFormatter(['calendarItem' => $this]);
@@ -348,7 +345,9 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
      */
     public function getType()
     {
-        return CalendarEntryType::findByContent($this->content)->one();
+        $type = CalendarEntryType::findByContent($this->content)->one();
+
+        return $type ? $type : new CalendarEntryType();
     }
 
     /**
@@ -446,7 +445,7 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
     public function getEndDateTimeMomentAfter()
     {
         if($this->isAllDay()) {
-            return $this->getEndDateTime()->modify('+ 2 hours')->setTime(0,0,0);
+            return $this->getEndDateTime()->modify('+2 hours')->setTime(0,0,0);
         }
 
         return $this->getEndDateTime();
@@ -487,10 +486,9 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
      */
     public function getBadge()
     {
-        $participant = $this->getParticipationStatus(Yii::$app->user->identity);
-
-        if($participant && $this->participation->isEnabled()) {
-            switch($participant->participation_state) {
+        if($this->participation->isEnabled()) {
+            $status = $this->getParticipationStatus(Yii::$app->user->identity);
+            switch($status) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
                     return Label::success(Yii::t('CalendarModule.base', 'Attending'))->right();
                 case CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE:
@@ -530,7 +528,7 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
 
     public function getLocation()
     {
-        return $this->location;
+        return null;
     }
 
     public function getDescription()

@@ -5,6 +5,7 @@ namespace calendar;
 
 
 use humhub\modules\calendar\Events;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -20,7 +21,11 @@ class CalendarUnitTest extends HumHubDbTestCase
 {
     public function _before()
     {
+        Yii::$app->timeZone = 'Europe/Berlin';
+        parent::_before();
         Events::registerAutoloader();
+        CalendarReminder::flushDefautlts();
+        Yii::$app->getModule('calendar')->maxReminder = 100;
     }
 
     protected function createReminder($unit, $value, $model = null, User $user = null)
@@ -74,13 +79,16 @@ class CalendarUnitTest extends HumHubDbTestCase
         $entry->title = $title;
 
         if($fullDay) {
+            $entry->all_day = 1;
             $from->setTime(0,0,0);
             $to->setTime(23,59,59);
+        } else {
+            $entry->all_day = 0;
         }
 
 
-        $entry->start_datetime = Yii::$app->formatter->asDateTime($from, 'php:Y-m-d H:i:s');
-        $entry->end_datetime = Yii::$app->formatter->asDateTime($to, 'php:Y-m-d H:i:s');
+        $entry->start_datetime = $from->format(CalendarUtils::DB_DATE_FORMAT);
+        $entry->end_datetime = $to->format(CalendarUtils::DB_DATE_FORMAT);
         $entry->content->visibility = $visibility;
 
         if ($container) {
@@ -88,7 +96,6 @@ class CalendarUnitTest extends HumHubDbTestCase
         }
 
         $this->assertTrue($entry->save());
-
         return $entry;
     }
 }

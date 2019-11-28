@@ -5,7 +5,6 @@ namespace humhub\modules\calendar;
 use humhub\modules\calendar\models\CalendarEntryType;
 use Yii;
 use humhub\modules\calendar\helpers\Url;
-use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -14,6 +13,10 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 class Module extends ContentContainerModule
 {
+    /**
+     * @var bool feature switch for recurrence events
+     */
+    public $recurrenceActive = true;
 
     /**
      * @var int Reminder process run interval in minutes
@@ -21,9 +24,24 @@ class Module extends ContentContainerModule
     public $reminderProcessInterval = 15;
 
     /**
+     * @var int max amount of reminder allowed in the reminder settings
+     */
+    public $maxReminder = 3;
+
+    /**
      * @inheritdoc
      */
     public $resourcesPath = 'resources';
+
+    /**
+     * @return bool
+     */
+    public static function isRecurrenceActive()
+    {
+        /* @var $module static */
+        $module = Yii::$app->getModule('calendar');
+        return $module ? $module->recurrenceActive : true;
+    }
 
     /**
      * @inheritdoc

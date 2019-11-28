@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\calendar\tests\codeception\unit;
+namespace humhub\modules\calendar\tests\codeception\unit\reminder;
 
 use calendar\CalendarUnitTest;
 use DateInterval;
@@ -13,56 +13,6 @@ use Yii;
 
 class ReminderTest extends CalendarUnitTest
 {
-    public function testClearContainerDefaultReminder()
-    {
-        $this->becomeUser('admin');
-        $global = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
-        $this->assertTrue($global->save());
-
-        $space = Space::findOne(['id' => 1]);
-        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_DAY, 1, $space);
-        $this->assertTrue($spaceReminder->save());
-
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), new DateInterval('PT1H'), 'Test', $space);
-        $entryContainerLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry);
-        $this->assertTrue($entryContainerLevelReminder->save());
-
-        $entryUserLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry, User::findOne(['id' => 1]));
-        $this->assertTrue($entryUserLevelReminder->save());
-
-        CalendarReminder::clearDefaults($space);
-
-        $this->assertNull(CalendarReminder::findOne(['id' => $global->id]));
-        $this->assertNotNull(CalendarReminder::findOne(['id' => $spaceReminder->id]));
-        $this->assertNotNull(CalendarReminder::findOne(['id' => $entryContainerLevelReminder->id]));
-        $this->assertNotNull(CalendarReminder::findOne(['id' => $entryUserLevelReminder->id]));
-    }
-
-    public function testClearGlobalReminder()
-    {
-        $this->becomeUser('admin');
-        $global = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
-        $this->assertTrue($global->save());
-
-        $space = Space::findOne(['id' => 1]);
-        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_DAY, 1, $space);
-        $this->assertTrue($spaceReminder->save());
-
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), new DateInterval('PT1H'), 'Test', $space);
-        $entryContainerLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry);
-        $this->assertTrue($entryContainerLevelReminder->save());
-
-        $entryUserLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry, User::findOne(['id' => 1]));
-        $this->assertTrue($entryUserLevelReminder->save());
-
-        CalendarReminder::clearDefaults();
-
-        $this->assertNull(CalendarReminder::findOne(['id' => $global->id]));
-        $this->assertNotNull(CalendarReminder::findOne(['id' => $spaceReminder->id]));
-        $this->assertNotNull(CalendarReminder::findOne(['id' => $entryContainerLevelReminder->id]));
-        $this->assertNotNull(CalendarReminder::findOne(['id' => $entryUserLevelReminder->id]));
-    }
-
     /**
      * @throws \Exception
      * @throws \Throwable
@@ -145,6 +95,8 @@ class ReminderTest extends CalendarUnitTest
         $reminder4 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_WEEK, 1, $entry);
         $reminder5 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 1, $entry, $user);
         $reminder6 = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_WEEK, 2, $entry);
+        $reminder7 = CalendarReminder::initDisableEntryLevelDefaults($entry);
+        $reminder8 = CalendarReminder::initDisableEntryLevelDefaults($entry, $user);
 
         $this->assertTrue($reminder1->save());
         $this->assertTrue($reminder2->save());
@@ -152,15 +104,19 @@ class ReminderTest extends CalendarUnitTest
         $this->assertTrue($reminder4->save());
         $this->assertTrue($reminder5->save());
         $this->assertTrue($reminder6->save());
+        $this->assertTrue($reminder7->save());
+        $this->assertTrue($reminder8->save());
 
         $reminders = CalendarReminder::getEntryLevelReminder($entry);
 
-        $this->assertEquals($reminder5->id, $reminders[0]->id);
-        $this->assertEquals($reminder1->id, $reminders[1]->id);
-        $this->assertEquals($reminder3->id, $reminders[2]->id);
-        $this->assertEquals($reminder2->id, $reminders[3]->id);
-        $this->assertEquals($reminder4->id, $reminders[4]->id);
-        $this->assertEquals($reminder6->id, $reminders[5]->id);
+        $this->assertEquals($reminder8->id, $reminders[0]->id);
+        $this->assertEquals($reminder5->id, $reminders[1]->id);
+        $this->assertEquals($reminder1->id, $reminders[2]->id);
+        $this->assertEquals($reminder7->id, $reminders[3]->id);
+        $this->assertEquals($reminder3->id, $reminders[4]->id);
+        $this->assertEquals($reminder2->id, $reminders[5]->id);
+        $this->assertEquals($reminder4->id, $reminders[6]->id);
+        $this->assertEquals($reminder6->id, $reminders[7]->id);
     }
 
     public function testGetEntryLevelReminder()

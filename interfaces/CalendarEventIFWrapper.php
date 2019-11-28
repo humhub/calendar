@@ -11,8 +11,6 @@
  * User: buddha
  * Date: 14.09.2017
  * Time: 17:16
- *
- * @todo change base class back to BaseObject after v1.3 is stable
  */
 
 namespace humhub\modules\calendar\interfaces;
@@ -21,15 +19,14 @@ namespace humhub\modules\calendar\interfaces;
 use humhub\widgets\Label;
 use Yii;
 use \DateTime;
-use yii\base\Component;
-use yii\helpers\Html;
+use yii\base\Model;
 
 /**
  * Class CalendarEventIFWrapper
  * @package humhub\modules\calendar\interfaces
- * @deprecated
+ * @deprecated Used for deprecated array based calendar interface (prior to v1.0.0)
  */
-class CalendarEventIFWrapper extends Component implements CalendarEventIF
+class CalendarEventIFWrapper extends Model implements CalendarEventIF
 {
     const OPTION_START = 'start';
     const OPTION_END = 'end';
@@ -45,14 +42,13 @@ class CalendarEventIFWrapper extends Component implements CalendarEventIF
     const OPTION_EDITABLE = 'editable';
     const OPTION_TIMEZONE = 'timezone';
     const OPTION_UID = 'uid';
-    const OPTION_EXPORTABLE = 'exportable';
     const OPTION_RRULE = 'rrule';
     const OPTION_EXDATE = 'exdate';
     const OPTION_LOCATION = 'location';
     const OPTION_DESCRIPTION = 'description';
 
     /**
-     * @var CalendarItemType
+     * @var CalendarTypeIF
      */
     public $itemType;
 
@@ -60,30 +56,6 @@ class CalendarEventIFWrapper extends Component implements CalendarEventIF
      * @var array
      */
     public $options = [];
-
-    /**
-     * @inheritdoc
-     */
-    public function getFullCalendarArray()
-    {
-        return [
-            'uid' => $this->getUid(),
-            'title' => $this->getTitle(),
-            'editable' => $this->isEditable(),
-            'backgroundColor' => Html::encode($this->getColor()),
-            'allDay' => $this->isAllDay(),
-            'updateUrl' => $this->getUpdateUrl(),
-            'viewUrl' => $this->getViewUrl(),
-            'viewMode' => $this->getViewMode(),
-            'rrule' => $this->getRrule(),
-            'exdate' => $this->getExdate(),
-            'icon' => $this->getIcon(),
-            'start' => Yii::$app->formatter->asDatetime($this->getStartDateTime(), 'php:c'),
-            'end' => Yii::$app->formatter->asDatetime($this->getEndDateTime(), 'php:c'),
-            'eventDurationEditable' => true,
-            'eventStartEditable' => true
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -136,11 +108,7 @@ class CalendarEventIFWrapper extends Component implements CalendarEventIF
 
     public function isAllDay()
     {
-        if($this->getOption(static::OPTION_ALL_DAY, $this->itemType ? $this->itemType->isAllDay() : null)) {
-            return true;
-        } else {
-            return false;
-        }
+        $this->getOption(static::OPTION_ALL_DAY,  false);
     }
 
     public function getUpdateUrl()
@@ -160,7 +128,7 @@ class CalendarEventIFWrapper extends Component implements CalendarEventIF
 
     protected function getOption($key, $default, $options = null)
     {
-        $options = (empty($options)) ? $this->options : $options;
+        $options = empty($options) ? $this->options : $options;
         return isset($options[$key]) ? $options[$key] : $default;
     }
 
@@ -238,5 +206,13 @@ class CalendarEventIFWrapper extends Component implements CalendarEventIF
     public function getCalendarOptions()
     {
         return [];
+    }
+
+    /**
+     * @return CalendarTypeIF
+     */
+    public function getType()
+    {
+        return $this->itemType;
     }
 }

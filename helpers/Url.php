@@ -2,7 +2,7 @@
 
 namespace humhub\modules\calendar\helpers;
 
-use humhub\modules\calendar\interfaces\CalendarItemType;
+use humhub\modules\calendar\interfaces\CalendarTypeIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntryType;
@@ -86,22 +86,22 @@ class Url extends BaseUrl
         return static::to(['/calendar/global/index']);
     }
 
-    public static function toEditItemType(CalendarItemType $type, ContentContainerActiveRecord $container = null)
+    public static function toEditItemType(CalendarTypeIF $type, ContentContainerActiveRecord $container = null)
     {
         if($container) {
-            return $container->createUrl('/calendar/container-config/edit-calendars', ['key' => $type->key]);
+            return $container->createUrl('/calendar/container-config/edit-calendars', ['key' => $type->getKey()]);
         }
 
-        return static::to(['/calendar/config/edit-calendars', 'key' => $type->key]);
+        return static::to(['/calendar/config/edit-calendars', 'key' => $type->getKey()]);
     }
 
-    public static function toSettingsReset(ContentContainerActiveRecord $container = null)
+    public static function toParticipationSettingsReset(ContentContainerActiveRecord $container = null)
     {
         if($container) {
-            return $container->createUrl('/calendar/container-config/reset-config');
+            return $container->createUrl('/calendar/container-config/reset-participation-config');
         }
 
-        return static::to(['/calendar/config/reset-config']);
+        return static::to(['/calendar/config/reset-participation-config']);
     }
 
     public static function toAjaxLoad(ContentContainerActiveRecord $container = null)
@@ -238,5 +238,4 @@ class Url extends BaseUrl
 
         return $container->createUrl('/calendar/entry/user-list', ['id' => $entry->id, 'state' => $state]);
     }
-
 }

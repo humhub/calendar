@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\calendar\tests\codeception\unit;
+namespace humhub\modules\calendar\tests\codeception\unit\reminder;
 
 use humhub\modules\calendar\interfaces\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -25,6 +25,97 @@ class ReminderProcessTest  extends CalendarUnitTest
         Events::onBeforeRequest();
         // Make sure we don't receive content created notifications
         Membership::updateAll(['send_notifications' => 0]);
+    }
+
+    public function testDisableReminderSpaceLevel()
+    {
+        $space = Space::findOne(['id' => 3]);
+        $this->becomeUser('admin');
+        $user = User::findOne(['id' => 1]);
+
+        // Entry begins exactly in one hour
+        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+
+        // Set a global reminder
+        $globalReminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 1);
+        $this->assertTrue($globalReminder->save());
+
+        // Disable reminder on entry level
+        $disabledReminder = CalendarReminder::initDisableContainerDefaults($space);
+        $this->assertTrue($disabledReminder->save());
+
+        (new ReminderService())->sendAllReminder();
+
+        // Make sure both reminder got invalidated
+        $this->assertFalse(CalendarReminderSent::check($globalReminder, $entry));
+        $this->assertFalse(CalendarReminderSent::check($disabledReminder, $entry));
+        $this->assertMailSent(0);
+        $this->assertHasNoNotification(Remind::class, $entry, $entry->content->createdBy->id, 1);
+    }
+
+    public function testDisableEntryLevelReminderLevel()
+    {
+        $space = Space::findOne(['id' => 3]);
+        $this->becomeUser('admin');
+        $user = User::findOne(['id' => 1]);
+
+        // Entry begins exactly in one hour
+        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+
+        // Set a global reminder
+        $globalReminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 1);
+        $this->assertTrue($globalReminder->save());
+
+        // Set container reminder
+        $containerReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 1, $space);
+        $this->assertTrue($containerReminder->save());
+
+        $entryLevelReminder = CalendarReminder::initDisableEntryLevelDefaults($entry);
+        $this->assertTrue($entryLevelReminder->save());
+
+        (new ReminderService())->sendAllReminder();
+
+        // Make sure both reminder got invalidated
+        $this->assertFalse(CalendarReminderSent::check($globalReminder, $entry));
+        $this->assertFalse(CalendarReminderSent::check($containerReminder, $entry));
+        $this->assertFalse(CalendarReminderSent::check($entryLevelReminder, $entry));
+        $this->assertMailSent(0);
+        $this->assertHasNoNotification(Remind::class, $entry, $entry->content->createdBy->id, 1);
+    }
+
+    public function testDisableUserEntryLevelReminderLevel()
+    {
+        $space = Space::findOne(['id' => 3]);
+        $this->becomeUser('admin');
+        $user = User::findOne(['id' => 1]);
+
+        // Entry begins exactly in one hour
+        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+
+        // Set a global reminder
+        $globalReminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 1);
+        $this->assertTrue($globalReminder->save());
+
+        // Set container reminder
+        $containerReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 1, $space);
+        $this->assertTrue($containerReminder->save());
+
+        // Set entry level reminder
+        $entryLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry);
+        $this->assertTrue($entryLevelReminder->save());
+
+        $userEntrylevelReminder = CalendarReminder::initDisableEntryLevelDefaults($entry, User::findOne(['id' => 1]));
+        $this->assertTrue($userEntrylevelReminder->save());
+
+        (new ReminderService())->sendAllReminder();
+
+        // Make sure both reminder got invalidated
+        $this->assertFalse(CalendarReminderSent::check($globalReminder, $entry));
+        $this->assertFalse(CalendarReminderSent::check($containerReminder, $entry));
+        $this->assertTrue(CalendarReminderSent::check($entryLevelReminder, $entry));
+        $this->assertFalse(CalendarReminderSent::check($userEntrylevelReminder, $entry));
+        $this->assertMailSent(2);
+        $this->assertHasNoNotification(Remind::class, $entry, $entry->content->createdBy->id, 1);
     }
 
     /**

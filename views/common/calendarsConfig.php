@@ -10,7 +10,7 @@ use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
 
 /* @var $this \humhub\components\View */
-/* @var $calendars \humhub\modules\calendar\interfaces\CalendarItemType[] */
+/* @var $calendars \humhub\modules\calendar\interfaces\CalendarTypeSetting[] */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 ?>
 

@@ -433,34 +433,6 @@ humhub.module('calendar', function (module, require, $) {
         });
     };
 
-    var ReminderForm = Widget.extend();
-
-    ReminderForm.prototype.delete = function(evt) {
-        evt.$trigger.closest('.row').fadeOut('fast', function() {
-            $(this).remove();
-        });
-    };
-
-    ReminderForm.prototype.add = function(evt) {
-        var $triggerRow = evt.$trigger.closest('.row');
-        var $lastIndex = parseInt($triggerRow.attr('data-reminder-index'));
-        var $newRow = $triggerRow.clone().attr('data-reminder-index', ++$lastIndex);
-
-        $newRow.find('[name]').each(function() {
-           var name = $(this).attr('name').replace(/CalendarReminder\[[0-9]]/, 'CalendarReminder['+$lastIndex+']');
-            $(this).attr('name', name);
-        });
-
-        $newRow.insertAfter($triggerRow);
-
-        evt.$trigger.data('action-click', 'delete')
-            .removeClass('btn-primary')
-            .addClass('btn-danger')
-            .find('i')
-            .removeClass('fa-plus')
-            .addClass('fa-times');
-    };
-
     module.export({
         Calendar: Calendar,
         respond:respond,
@@ -468,7 +440,6 @@ humhub.module('calendar', function (module, require, $) {
         deleteEvent: deleteEvent,
         enabled: enabled,
         CalendarEntry: CalendarEntry,
-        ReminderForm: ReminderForm,
         Form: Form
     });
 });

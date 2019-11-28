@@ -16,14 +16,8 @@
 namespace humhub\modules\calendar\controllers;
 
 
-use Yii;
-use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\admin\permissions\ManageSpaces;
-use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\permissions\ManageEntry;
-use humhub\modules\calendar\models\DefaultSettings;
-use yii\data\ActiveDataProvider;
-use yii\web\HttpException;
 
 class ContainerConfigController extends AbstractConfigController
 {

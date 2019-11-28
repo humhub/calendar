@@ -28,7 +28,7 @@ class CalendarDateFormatter extends Component
 {
 
     /**
-     * @var CalendarEntry
+     * @var CalendarEventIF
      */
     public $calendarItem;
 

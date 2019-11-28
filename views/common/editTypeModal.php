@@ -6,16 +6,16 @@
  *
  */
 
-use humhub\modules\calendar\interfaces\CalendarItemType;
+use humhub\modules\calendar\interfaces\CalendarTypeSetting;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\ColorPicker;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
-/* @var $model CalendarEntryType|CalendarItemType */
+/* @var $model CalendarEntryType|CalendarTypeSetting */
 
-if($model instanceof CalendarItemType) {
+if($model instanceof CalendarTypeSetting) {
     $title = Yii::t('CalendarModule.views_container-config_typesConfig', '<strong>Edit</strong> calendar');
     $titleAttribute = 'title';
     $titleDisabled = true;
@@ -45,7 +45,7 @@ if($model instanceof CalendarItemType) {
                                 {error}{hint}'
                 ])->textInput(['disabled' => $titleDisabled, 'placeholder' => Yii::t('CalendarModule.config', 'Name'), 'maxlength' => 100])->label(false) ?>
             </div>
-            <?php if($model instanceof CalendarItemType) : ?>
+            <?php if($model instanceof CalendarTypeSetting) : ?>
                 <?= $form->field($model, 'enabled')->checkbox() ?>
             <?php endif; ?>
         </div>

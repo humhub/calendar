@@ -16,6 +16,7 @@ use humhub\modules\calendar\widgets\ReminderLink;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\helpers\Url;
+use yii\helpers\Console;
 
 /**
  * Description of CalendarEvents
@@ -182,15 +183,26 @@ class Events
         }
     }
 
-    public static function onCronRun()
+    public static function onCronRun($event)
     {
+        static::onBeforeRequest();
+
         /* @var $module Module */
-        $module = Yii::$app->module->getModule('calendar');
+        $module = Yii::$app->getModule('calendar');
 
         $lastRunTS = $module->settings->get('lastReminderRunTS');
 
         if(!$lastRunTS || ((time() - $lastRunTS) >= $module->getRemidnerProcessIntervalMS())) {
-            (new ReminderService())->sendAllReminder();
+            try {
+                $controller = $event->sender;
+                $controller->stdout("Running reminder process... ");
+                (new ReminderService())->sendAllReminder();
+                $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+            } catch (\Throwable $e) {
+                Yii::error($e);
+                $controller->stdout('error.' . PHP_EOL, Console::FG_RED);
+                $controller->stderr("\n".$e->getTraceAsString()."\n", Console::BOLD);
+            }
             $module->settings->set('lastReminderRunTS', time());
         }
     }

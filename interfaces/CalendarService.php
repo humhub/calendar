@@ -78,8 +78,9 @@ class CalendarService extends Component
         $this->trigger(self::EVENT_GET_ITEM_TYPES, $event);
 
         $result = [];
-        foreach ($event->getTypes() as $key => $options) {
-            $result[] = new CalendarItemType(['key' => $key, 'options' => $options, 'contentContainer' => $contentContainer]);
+        foreach ($event->getTypes() as $key => $type) {
+            $type = is_array($type) ? new CalendarTypeArrayWrapper(['key' => $key, 'options' => $type]) : $type;
+            $result[] = new CalendarTypeSetting(['type' => $type, 'contentContainer' => $contentContainer]);
         }
 
 
@@ -164,7 +165,7 @@ class CalendarService extends Component
     /**
      * @param string $key item key
      * @param ContentContainerActiveRecord|null $contentContainer
-     * @return CalendarItemType|null
+     * @return CalendarTypeSetting|null
      */
     public function getItemType($key, ContentContainerActiveRecord $contentContainer = null)
     {

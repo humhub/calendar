@@ -9,7 +9,9 @@
 namespace  humhub\modules\calendar\notifications;
 
 use humhub\libs\Html;
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\content\notifications\ContentCreatedNotificationCategory;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -50,7 +52,27 @@ class Remind extends BaseNotification
      */
     public function html()
     {
-        return '<b>Reminder!!</b>';
+        /* @var $record CalendarEventReminderIF */
+        if($this->source instanceof CalendarEventReminderIF) {
+            return Yii::t('CalendarModule.reminder', 'You have an <strong>{type}</strong> coming up: {title}', [
+                'type' => Html::encode($this->getEventType()),
+                'title' => RichText::preview($this->source->getTitle(), 25)
+            ]);
+        }
+
+        return Yii::t('CalendarModule.reminder', 'You have an <strong>{type}</strong> coming up', ['type' => $this->getEventType()]);
+    }
+
+    public function getEventType()
+    {
+        if($this->source instanceof CalendarEventReminderIF) {
+            $type = $this->source->getType();
+            if($type) {
+                return $type->getTitle();
+            }
+        }
+
+        return Yii::t('CalendarModule.base', 'Event');
     }
 
     /**
@@ -58,6 +80,13 @@ class Remind extends BaseNotification
      */
     public function getMailSubject()
     {
-        return Yii::t('CalendarModule.notifications_views_CanceledEvent', 'Reminder', []);
+        if($this->source instanceof CalendarEventReminderIF) {
+            return Yii::t('CalendarModule.reminder', 'Upcoming {type}: {title}', [
+                'type' => $this->getEventType(),
+                'title' => $this->source->getTitle()
+            ]);
+        }
+
+        return Yii::t('CalendarModule.reminder', 'Upcoming {type}', ['type' => $this->getEventType()]);
     }
 }

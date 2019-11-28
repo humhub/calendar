@@ -11,14 +11,12 @@ use yii\base\Component;
 
 class ReminderService extends Component
 {
+    /**
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
     public function sendAllReminder() {
-        try {
-            $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
-            (new ReminderProcessor(['calendarService' => $calendarService]))->run();
-        } catch (\Exception $e) {
-            Yii::error($e);
-        } catch (\Throwable $e) {
-            Yii::error($e);
-        }
+        $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
+        (new ReminderProcessor(['calendarService' => $calendarService]))->run();
     }
 }

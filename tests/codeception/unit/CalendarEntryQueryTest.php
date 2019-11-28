@@ -225,19 +225,19 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         $u2 = User::findOne(['id' => 2]);
         
         // User related (include)
-        $entry0 = $this->createEntry((new DateTime)->sub(new DateInterval('P30D')), 1, 'Past Entry', $u1);
+        $entry0 = $this->createEntry((new DateTime)->sub(new DateInterval('P30D')), 1, 'Past Entry From User', $u1);
         
         // User related (include)
-        $entry1 = $this->createEntry((new DateTime)->sub(new DateInterval('P5D')), 1, 'Past Entry', $u1);
+        $entry1 = $this->createEntry((new DateTime)->sub(new DateInterval('P5D')), 1, 'Past Entry From User2', $u1);
         
         // Other user (do not include)
-        $entry2 = $this->createEntry(null, 5, 'Entry 1', $u2);
+        $entry2 = $this->createEntry(null, 5, 'Entry from other user', $u2);
         
         // Member Space related (include)
-        $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P3D')), 10, 'Entry 1', $s1);
+        $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P3D')), 10, 'Entry in member space', $s1);
         
         // Non member space (do not include)
-        $entry4 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Future Entry', $s2);
+        $entry4 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Entry in non member space', $s2);
         
         // By default select all user space and user profile related
         $entries = CalendarEntryQuery::find()->userRelated()->limit(20)->all();

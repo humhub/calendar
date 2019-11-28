@@ -30,6 +30,11 @@ interface CalendarEventIF
      */
     public function getUid();
 
+    /**
+     * @return CalendarTypeIF
+     */
+    public function getType();
+
 
     /**
      * @return boolean weather or not this item spans exactly over a whole day

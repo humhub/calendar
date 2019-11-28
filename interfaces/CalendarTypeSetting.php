@@ -22,42 +22,24 @@ use humhub\modules\calendar\helpers\Url;
 use humhub\components\SettingsManager;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
-class CalendarItemType extends Model
+/**
+ * Instances of this class represent an event type of a specific container and can be used
+ * to overwrite default values of the related CalendarType as color or enable/disable this type on
+ * the container.
+ *
+ * If no container is given, this
+ */
+class CalendarTypeSetting extends Model implements CalendarTypeIF
 {
-    /**
-     * @var string Color option key
-     */
-    const OPTION_DEFAULT_COLOR = 'color';
-
-    /**
-     * @var string Icon option key
-     */
-    const OPTION_ICON = 'icon';
-
-    /**
-     * @var string Title option key
-     */
-    const OPTION_TITLE = 'title';
-
-    /**
-     * @var string
-     */
-    const OPTION_ALL_DAY = 'allDay';
-
     /**
      * Fallback color used in case no default color was provided
      */
     const COLOR_FALLBACK = '#44B5F6';
 
     /**
-     * @var array item options
+     * @var CalendarTypeIF
      */
-    public $options = [];
-
-    /**
-     * @var string calendar item key defined by the related module
-     */
-    public $key;
+    public $type;
 
     /**
      * @var ContentContainerActiveRecord
@@ -97,13 +79,15 @@ class CalendarItemType extends Model
      */
     public function isEnabled()
     {
-        $settingKey = $this->key.'_item_enabled';
+        $settingKey = $this->getKey().'_item_enabled';
         if($this->contentContainer) {
             return (boolean) $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, true);
-        } else {
-            return (boolean) $this->getSettings()->get($settingKey, true);
         }
+
+        return (boolean) $this->getSettings()->get($settingKey, true);
     }
+
+
 
     /**
      * @return SettingsManager
@@ -115,12 +99,12 @@ class CalendarItemType extends Model
 
     public function updateEnabled($isEnabled)
     {
-        $settingKey = $this->key.'_item_enabled';
+        $settingKey = $this->getKey().'_item_enabled';
         if($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->set($settingKey, $isEnabled);
-        } else {
-            return $this->getSettings()->set($settingKey, $isEnabled);
         }
+
+        return $this->getSettings()->set($settingKey, $isEnabled);
     }
 
     /**
@@ -128,8 +112,8 @@ class CalendarItemType extends Model
      */
     public function getDefaultColor()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_DEFAULT_COLOR])) {
-            return $this->options[static::OPTION_DEFAULT_COLOR];
+        if($this->type->getDefaultColor()) {
+            return $this->type->getDefaultColor();
         }
 
         return static::COLOR_FALLBACK;
@@ -140,11 +124,12 @@ class CalendarItemType extends Model
      */
     public function getTitle()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_TITLE])) {
-            return $this->options[static::OPTION_TITLE];
-        }
+        return $this->type->getTitle();
+    }
 
-        return $this->key;
+    public function getIcon()
+    {
+        return $this->type->getIcon();
     }
 
     /**
@@ -152,21 +137,12 @@ class CalendarItemType extends Model
      */
     public function getColor()
     {
-        $settingKey = $this->key.'_item_color';
+        $settingKey = $this->getKey().'_item_color';
         if($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, $this->getDefaultColor());
-        } else {
-            return $this->getSettings()->get($settingKey, $this->getDefaultColor());
-        }
-    }
-
-    public function getIcon()
-    {
-        if(!empty($this->options) && isset($this->options[static::OPTION_ICON])) {
-            return $this->options[static::OPTION_ICON];
         }
 
-        return null;
+        return $this->getSettings()->get($settingKey, $this->getDefaultColor());
     }
 
     /**
@@ -174,7 +150,7 @@ class CalendarItemType extends Model
      */
     public function updateColor($color)
     {
-        $settingKey = $this->key.'_item_color';
+        $settingKey = $this->getKey().'_item_color';
         if($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->set($settingKey, $color);
         } else {
@@ -201,12 +177,13 @@ class CalendarItemType extends Model
         return Url::toEditItemType($this, $this->contentContainer);
     }
 
-    public function isAllDay()
+    public function getKey()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_ALL_DAY])) {
-            return $this->options[static::OPTION_ALL_DAY];
-        }
+        return $this->type->getKey();
+    }
 
-        return false;
+    public function getDescription()
+    {
+        return $this->type->getDescription();
     }
 }
