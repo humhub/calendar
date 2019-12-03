@@ -12,7 +12,7 @@ use DateTime;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\interfaces\CalendarEventIF;
 
-interface RecurrentCalendarEvent extends CalendarEventIF
+interface RecurrentCalendarEventIF extends CalendarEventIF
 {
     /**
      * @return string
@@ -42,6 +42,11 @@ interface RecurrentCalendarEvent extends CalendarEventIF
     public function getId();
 
     public function getParentId();
+
+    /**
+     * @return RecurrentCalendarEventIF
+     */
+    public function getParent();
 
     public function getRecurrenceViewUrl($cal = false);
 

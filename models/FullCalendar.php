@@ -12,7 +12,7 @@ use humhub\modules\calendar\interfaces\CalendarEventStatusIF;
 use Yii;
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarEventIF;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEvent;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
 use humhub\libs\Html;
 
 class FullCalendar
@@ -41,7 +41,7 @@ class FullCalendar
             'eventStartEditable' => true
         ];
 
-        if($entry instanceof RecurrentCalendarEvent) {
+        if($entry instanceof RecurrentCalendarEventIF) {
             $result['rrule'] = $entry->getRrule();
             $result['exdate'] = $entry->getExdate();
         }

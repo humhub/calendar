@@ -111,8 +111,8 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $calendarForm = new CalendarEntryForm(['entry' => $entry]);
         $this->assertEquals('2019-11-13', $calendarForm->start_date);
         $this->assertEquals('00:00', $calendarForm->start_time);
-        $this->assertEquals('2019-11-14', $calendarForm->end_date);
-        $this->assertEquals('00:00', $calendarForm->end_time);
+        $this->assertEquals('2019-11-13', $calendarForm->end_date);
+        $this->assertEquals('23:59', $calendarForm->end_time);
         $this->assertEquals('2019-11-13 00:00:00', $calendarForm->entry->start_datetime);
         $this->assertEquals('2019-11-13 23:59:59', $calendarForm->entry->end_datetime);
 
@@ -139,8 +139,8 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertEquals(CalendarEntryParticipation::PARTICIPATION_MODE_ALL, $calendarForm->entry->participation_mode);
         $this->assertEquals('2019-11-13', $calendarForm->start_date);
         $this->assertEquals('00:00', $calendarForm->start_time);
-        $this->assertEquals('2019-11-14', $calendarForm->end_date);
-        $this->assertEquals('00:00', $calendarForm->end_time);
+        $this->assertEquals('2019-11-13', $calendarForm->end_date);
+        $this->assertEquals('23:59', $calendarForm->end_time);
         $this->assertEquals(CalendarUtils::getUserTimeZone(true), $entry->time_zone);
     }
 

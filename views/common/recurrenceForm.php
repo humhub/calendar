@@ -25,20 +25,19 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-4">
             <?= $form->field($model, 'frequency')->dropDownList($model->getIntervalTypesSelection(), [
-                    'options' => $model->getIntervalTypesSelectionData(),
-                    'data-action-change' => 'updatedType'
+                'options' => $model->getIntervalTypesSelectionData(),
+                'data-action-change' => 'updatedType'
             ])->label(false) ?>
         </div>
         <div class="col-md-6">
         </div>
     </div>
 
-
     <div class="rrule-weekly hideIfNoRecurrence" data-recurrence-type="<?= Frequency::WEEKLY ?>">
         <?= $form->field($model, 'weekDays')->widget(MultiSelect::class, ['items' => CalendarUtils::getDaysOfWeek()]) ?>
     </div>
 
-    <div class="rrule-monthly hideIfNoRecurrence"  data-recurrence-type="<?=  Frequency::MONTHLY ?>">
+    <div class="rrule-monthly hideIfNoRecurrence" data-recurrence-type="<?= Frequency::MONTHLY ?>">
         <?= $form->field($model, 'monthDaySelection')->dropDownList($model->getMonthDaySelection())->label(false) ?>
     </div>
 
@@ -52,8 +51,6 @@ use yii\widgets\ActiveForm;
         <div class="recurrence-end-occurrences" style="width:130px">
             <?= $form->field($model, 'endOccurrences')->input('number')->label(false) ?>
         </div>
-
-
 
     </div>
 

@@ -10,8 +10,10 @@
 namespace humhub\modules\calendar\models\forms;
 
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
+use humhub\modules\calendar\models\recurrence\RecurrenceHelper;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
+use Recurr\Rule;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
@@ -33,7 +35,6 @@ use humhub\modules\calendar\models\CalendarEntry;
  */
 class CalendarEntryForm extends Model
 {
-
     /**
      * @var integer Content visibility
      */
@@ -352,6 +353,8 @@ class CalendarEntryForm extends Model
         //$this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
         return CalendarEntry::getDb()->transaction(function ($db) {
+            $eventsToUpdate = $this->saveEntry();
+
             if ($this->entry->save()) {
                 RichText::postProcess($this->entry->description, $this->entry);
                 RichText::postProcess($this->entry->participant_info, $this->entry);
@@ -370,11 +373,22 @@ class CalendarEntryForm extends Model
 
                 Topic::attach($this->entry->content, $this->topics);
 
-                return $this->recurrenceForm->save() && $this->reminderSettings->save();
+                return $this->reminderSettings->save() && $this->recurrenceForm->save($this->dateChanged(), $this->recurrenceChanged());
             }
 
             return false;
         });
+    }
+
+    public function recurrenceChanged()
+    {
+        return $this->entry->getRrule() !== $this->entry->getOldAttribute('rrule');
+    }
+
+    private function dateChanged()
+    {
+        return $this->entry->start_datetime !== $this->entry->getOldAttribute('start_datetime')
+            || $this->entry->end_datetime !== $this->entry->getOldAttribute('end_datetime');
     }
 
     public static function getParticipationModeItems()
@@ -389,4 +403,6 @@ class CalendarEntryForm extends Model
     {
         return !$this->entry->all_day;
     }
+
+
 }

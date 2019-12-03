@@ -189,10 +189,9 @@ class Events
 
         /* @var $module Module */
         $module = Yii::$app->getModule('calendar');
-
         $lastRunTS = $module->settings->get('lastReminderRunTS');
 
-        if(!$lastRunTS || ((time() - $lastRunTS) >= $module->getRemidnerProcessIntervalMS())) {
+        if(!$lastRunTS || ((time() - $lastRunTS) >= $module->getRemidnerProcessIntervalS())) {
             try {
                 $controller = $event->sender;
                 $controller->stdout("Running reminder process... ");

@@ -325,6 +325,18 @@ humhub.module('calendar', function (module, require, $) {
         }
     };
 
+    Form.prototype.submit = function(evt) {
+        if(!this.options.isRecurrent) {
+            modal.submit(evt);
+        } else if(object.isDefined(evt.$trigger.data('editMode'))) {
+            this.$.find('#recurrenceEditMode').val(evt.$trigger.data('editMode'));
+            modal.submit(evt);
+        } else {
+            this.$.find('.calendar-entry-form-tabs, .modal-footer').hide();
+            this.$.find('.recurrence-edit-type').show();
+        }
+    };
+
     var CalendarEntry = function (id) {
         Content.call(this, id);
     };

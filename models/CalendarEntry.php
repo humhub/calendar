@@ -2,7 +2,7 @@
 
 namespace humhub\modules\calendar\models;
 
-use humhub\modules\calendar\interfaces\AbstractRecurrentEvent;
+use humhub\modules\calendar\interfaces\AbstractRecurrentEventIF;
 use humhub\modules\calendar\interfaces\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
@@ -53,7 +53,7 @@ use humhub\modules\user\models\User;
  * @property CalendarEntryParticipant[] participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
-class CalendarEntry extends AbstractRecurrentEvent implements Searchable, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
+class CalendarEntry extends AbstractRecurrentEventIF implements Searchable, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
 {
     /**
      * @inheritdoc
@@ -293,12 +293,11 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
             $this->uid = static::createUUid();
         }
 
+        if($this->participation_mode === null) {
+            $this->participation->setDefautls();
+        }
+
         return parent::beforeSave($insert);
-    }
-
-    public function updateDate($start = null, $end = null)
-    {
-
     }
 
     public static function createUUid($type = 'event')
@@ -652,6 +651,14 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
     public function getRecurrenceViewUrl($cal = false)
     {
         return '';
+    }
+
+    /**
+     * @return CalendarEntry|null
+     */
+    public function getParent()
+    {
+        return $this->hasOne(static::class, ['id' => 'parent_event_id'])->one();
     }
 
     /**

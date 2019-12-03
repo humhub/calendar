@@ -15,7 +15,7 @@ class ParticipationTest extends CalendarUnitTest
         $this->becomeUser('admin');
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  Space::findOne(['id' => 1]));
         $this->assertNotEmpty($entry->participation);
-        $this->assertEquals($entry->participation_mode, CalendarEntryParticipation::PARTICIPATION_MODE_ALL);
+        $this->assertEquals(CalendarEntryParticipation::PARTICIPATION_MODE_ALL, $entry->participation_mode);
     }
 
     public function testGetGuestParticipation()

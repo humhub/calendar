@@ -4,7 +4,7 @@
 namespace humhub\modules\calendar\interfaces;
 
 
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEvent;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
 use humhub\modules\content\components\ContentActiveRecord;
 
 /**
@@ -16,7 +16,7 @@ use humhub\modules\content\components\ContentActiveRecord;
  * @property string exdate
  * @property integer parent_event_id
  */
-abstract class AbstractRecurrentEvent extends ContentActiveRecord implements RecurrentCalendarEvent
+abstract class AbstractRecurrentEventIF extends ContentActiveRecord implements RecurrentCalendarEventIF
 {
     public function setRrule($rrule)
     {

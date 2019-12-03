@@ -7,7 +7,7 @@ namespace humhub\modules\calendar\interfaces;
 use DateTime;
 use Exception;
 use humhub\modules\calendar\interfaces\CalendarEventIF;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEvent;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
 use yii\base\Model;
 use Sabre\VObject;
 
@@ -111,7 +111,7 @@ class VCalendar extends Model
             $result['LOCATION'] = $item->location;
         }
 
-        if ($item instanceof RecurrentCalendarEvent) {
+        if ($item instanceof RecurrentCalendarEventIF) {
             $result['RRULE'] = $item->getRRule();
 
             // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties

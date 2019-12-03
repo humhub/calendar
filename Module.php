@@ -21,7 +21,7 @@ class Module extends ContentContainerModule
     /**
      * @var int Reminder process run interval in minutes
      */
-    public $reminderProcessInterval = 15;
+    public $reminderProcessInterval = 10;
 
     /**
      * @var int max amount of reminder allowed in the reminder settings
@@ -63,9 +63,9 @@ class Module extends ContentContainerModule
         require Yii::getAlias('@external_calendar/vendor/autoload.php');
     }
 
-    public function getRemidnerProcessIntervalMS()
+    public function getRemidnerProcessIntervalS()
     {
-        return $this->reminderProcessInterval * 60 * 1000;
+        return $this->reminderProcessInterval * 60;
     }
 
     /**

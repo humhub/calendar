@@ -6,6 +6,8 @@ namespace humhub\modules\calendar\interfaces\recurrence;
 use humhub\libs\DbDateValidator;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use DateTime;
+use humhub\modules\calendar\models\forms\CalendarEntryForm;
+use humhub\modules\calendar\models\recurrence\RecurrenceHelper;
 use Recurr\Frequency;
 use Recurr\Rule;
 use Yii;
@@ -14,6 +16,10 @@ use yii\db\ActiveRecord;
 
 class RecurrenceFormModel extends Model
 {
+    const RECUR_EDIT_MODE_THIS = 0;
+    const RECUR_EDIT_MODE_FOLLOWING = 1;
+    const RECUR_EDIT_MODE_ALL = 2;
+
     const FREQUENCY_NEVER = -1;
 
     const MONTHLY_BY_DAY_OF_MONTH = 1;
@@ -24,7 +30,7 @@ class RecurrenceFormModel extends Model
     const ENDS_AFTER_OCCURRENCES = 2;
 
     /**
-     * @var RecurrentCalendarEvent
+     * @var RecurrentCalendarEventIF
      */
     public $entry;
 
@@ -41,6 +47,11 @@ class RecurrenceFormModel extends Model
     public $endDate;
 
     public $endOccurrences = 10;
+
+    /**
+     * @var integer
+     */
+    public $recurrenceEditMode;
 
     private $dayOfWeekMap = [
         CalendarUtils::DOW_SUNDAY => 'SU',
@@ -101,7 +112,9 @@ class RecurrenceFormModel extends Model
 
             if ($this->rrule->getUntil()) {
                 $this->end = static::ENDS_ON_DATE;
-                $this->setEndDate($this->rrule->getUntil());
+                $endDate = $this->rrule->getUntil();
+                $endDate->setTimeZone(new \DateTimeZone('UTC'));
+                $this->setEndDate($endDate);
             } else if ($this->rrule->getCount()) {
                 $this->end = static::ENDS_AFTER_OCCURRENCES;
                 $this->endOccurrences = $this->rrule->getCount();
@@ -140,7 +153,8 @@ class RecurrenceFormModel extends Model
             ['frequency', 'validateModel'],
             ['end', 'integer', 'min' => static::ENDS_NEVER, 'max' => static::ENDS_AFTER_OCCURRENCES],
             ['endOccurrences', 'integer'],
-            ['endDate', DbDateValidator::class]
+            ['endDate', DbDateValidator::class, 'timeZone' => new \DateTimeZone('UTC')],
+            ['recurrenceEditMode', 'integer', 'min'  => static::RECUR_EDIT_MODE_THIS, 'max' => static::RECUR_EDIT_MODE_ALL],
         ];
     }
 
@@ -155,7 +169,7 @@ class RecurrenceFormModel extends Model
 
     public function validateModel($attribute, $params)
     {
-        if (!($this->entry instanceof RecurrentCalendarEvent)) {
+        if (!($this->entry instanceof RecurrentCalendarEventIF)) {
             $this->addError('frequency', Yii::t('CalendarModule.recurrence', 'This event does not support recurrent events'));
         }
     }
@@ -202,7 +216,7 @@ class RecurrenceFormModel extends Model
         }
     }
 
-    public function save()
+    public function save($dateChanged = false, $recurrenceChanged = false)
     {
         if (!$this->validate()) {
             return false;
@@ -224,10 +238,66 @@ class RecurrenceFormModel extends Model
         }
 
         if ($this->entry instanceof ActiveRecord) {
-            return $this->entry->save();
+            return $this->entry->save() && $this->handleRecurrentUpdate($dateChanged, $recurrenceChanged);
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     * @throws \Recurr\Exception\InvalidRRule
+     */
+    private function handleRecurrentUpdate($dateChanged = false, $recurrenceChanged = false)
+    {
+        // TODO: put into recurrenceForm
+        if(!RecurrenceHelper::isRecurrent($this->entry)) {
+            return true;
+        }
+
+        switch ($this->recurrenceEditMode) {
+            case static::RECUR_EDIT_MODE_FOLLOWING:
+                if($recurrenceChanged || $dateChanged) {
+                    $root = $this->entry->getParent();
+                    $rule = new Rule($root->getRrule());
+                    $rule->setUntil($this->entry->getStartDateTime()->modify('-1 hour'));
+
+                    if($root instanceof ActiveRecord) {
+                        $root->updateAttributes(['rrule' => $this->rrule->getString(Rule::TZ_FIXED)]);
+                    } else {
+                        $root->setRrule($this->rrule->getString(Rule::TZ_FIXED));
+                    }
+                }
+                // if recurrence was changed || date was changed
+                // get parent and set until = $this->entry->start (check google)
+                // delete all instances after until
+                // save this entry as new recurrence root
+                // else
+                // update all following instances
+                break;
+            case static::RECUR_EDIT_MODE_ALL:
+                // if recurrence was changed
+                // update parent
+                // delete all instances
+                // else
+                // update all following instances
+                break;
+            default:
+                // TODO: mark as exception in case of recurrence
+                // IGNORE RECURRENCE
+                return $this->entry->save() ? [$this->entry] : false;
+        }
+    }
+
+    public function recurrenceChanged()
+    {
+        return $this->entry->getRrule() !== $this->entry->getOldAttribute('rrule');
+    }
+
+    private function dateChanged()
+    {
+        return $this->entry->start_datetime !== $this->entry->getOldAttribute('start_datetime')
+            || $this->entry->end_datetime !== $this->entry->getOldAttribute('end_datetime');
     }
 
     /**
@@ -259,7 +329,7 @@ class RecurrenceFormModel extends Model
         if ($this->end == static::ENDS_ON_DATE) {
             $until = $this->endDate instanceof \DateTimeInterface
                 ? $this->endDate
-                : new DateTime($this->endDate);
+                : new DateTime($this->endDate, new \DateTimeZone('UTC'));
             $this->rrule->setUntil($until);
         } else if ($this->end == static::ENDS_AFTER_OCCURRENCES) {
             $this->rrule->setCount($this->endOccurrences);
