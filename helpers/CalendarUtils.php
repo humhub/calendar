@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use humhub\libs\DateHelper;
+use Sabre\VObject\UUIDUtil;
 use Yii;
 
 /**
@@ -363,5 +364,9 @@ class CalendarUtils
         }
 
         $startDt->setTime(0,0,0);
+    }
+
+    public static function generateUUid($type = 'event') {
+        return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
     }
 }

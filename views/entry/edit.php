@@ -2,9 +2,8 @@
 
 
 use humhub\modules\calendar\assets\Assets;
-use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\modules\calendar\models\recurrence\RecurrenceHelper;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\Module;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
@@ -36,7 +35,9 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
 
         <div id="calendar-entry-form" data-ui-widget="calendar.Form" data-ui-init data-is-recurrent="<?= RecurrenceHelper::isRecurrent($calendarEntryForm->entry)?>">
 
-            <div class="calendar-entry-form-tabs">
+            <?= $this->render('edit-recurrence-mode', ['form' => $form, 'model' => $calendarEntryForm]) ?>
+
+            <div class="calendar-entry-form-tabs"<?= RecurrenceHelper::isRecurrent($calendarEntryForm->entry) ? ' hidden' : ''  ?>>
                 <?= Tabs::widget([
                     'viewPath' => '@calendar/views/entry',
                     'params' => ['form' => $form, 'calendarEntryForm' => $calendarEntryForm, 'contentContainer' => $contentContainer],
@@ -50,55 +51,13 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
                 ]); ?>
             </div>
 
-            <div class="recurrence-edit-type" style="display: none">
-
-                <?= $form->field($calendarEntryForm->recurrenceForm, 'recurrenceEditMode')->hiddenInput(['id' => 'recurrenceEditMode'])->label(false) ?>
-
-                <br>
-                <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                        <?= Button::primary(Yii::t('CalendarModule.recurrence', 'Update this event'))
-                            ->action('submit', $editUrl)->options(['data-edit-mode' => RecurrenceFormModel::RECUR_EDIT_MODE_THIS ])->style('width:100%')?>
-                    </div>
-                    <div class="col-md-3"></div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                        <?= Button::primary(Yii::t('CalendarModule.recurrence', 'Update this and following events'))
-                            ->action('submit', $editUrl)->options(['data-edit-mode' => RecurrenceFormModel::RECUR_EDIT_MODE_FOLLOWING ])->style('width:100%')?>
-                    </div>
-                    <div class="col-md-3"></div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                        <?= Button::primary(Yii::t('CalendarModule.recurrence', 'Update all events'))
-                            ->action('submit', $editUrl)->options(['data-edit-mode' => RecurrenceFormModel::RECUR_EDIT_MODE_ALL ])->style('width:100%') ?>
-                    </div>
-                    <div class="col-md-3"></div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                        <?= ModalButton::cancel()->style('width:100%'); ?>
-                    </div>
-                    <div class="col-md-3"></div>
-                </div>
-                <br>
-            </div>
-
             <hr>
 
             <div class="modal-footer">
-                <?= Button::save()->action('submit', $editUrl); ?>
+                <?= Button::back('#')->action('showEditModes')->cssClass('calendar-edit-mode-back')->left()->style('display:none;')->loader(false); ?>
+                <?= ModalButton::submitModal($editUrl); ?>
                 <?= ModalButton::cancel(); ?>
             </div>
-
         </div>
     <?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>

@@ -14,6 +14,7 @@ use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;
 use DateTime;
@@ -205,7 +206,7 @@ abstract class AbstractCalendarQuery extends Component
             /* @var $entry ActiveRecord */
 
             if ($query->autoAssignUid && $entry->hasProperty($query->uidProperty) && empty($entry->{$query->uidProperty})) {
-                $entry->updateAttributes([$query->uidProperty => CalendarEntry::createUUid()]);
+                $entry->updateAttributes([$query->uidProperty => CalendarUtils::generateUUid()]);
             }
 
 
@@ -235,10 +236,10 @@ abstract class AbstractCalendarQuery extends Component
             return;
         }
 
-        $isRecurrenceRoot = $entry->getRrule() && $entry->getParentId() === null;
+        /* @var $entry RecurrentCalendarEventIF */
 
         // Make sure we only expand recurrence roots
-        if ($isRecurrenceRoot) {
+        if (RecurrenceHelper::isRecurrentRoot($entry)) {
             $to = $this->_to ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->add(new \DateInterval('P1Y'));
             $from = $this->_from ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->sub(new \DateInterval('P1Y'));
             CalendarRecurrenceExpand::expand($entry, $from, $to, $expandResult, $this->autoSaveRecurrentInstances);
@@ -747,11 +748,6 @@ abstract class AbstractCalendarQuery extends Component
         }
     }
 
-    public function isRecurrenceSupported()
-    {
-        return $this->expand && is_subclass_of(static::$recordClass, RecurrentCalendarEventIF::class);
-    }
-
     protected function getRruleRootQuery()
     {
         if($this->isRecurrenceSupported()) {
@@ -762,6 +758,11 @@ abstract class AbstractCalendarQuery extends Component
         }
 
         return '';
+    }
+
+    public function isRecurrenceSupported()
+    {
+        return $this->expand && is_subclass_of(static::$recordClass, RecurrentCalendarEventIF::class);
     }
 
     /**

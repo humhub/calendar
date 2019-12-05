@@ -10,7 +10,7 @@
 namespace humhub\modules\calendar\models\forms;
 
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
-use humhub\modules\calendar\models\recurrence\RecurrenceHelper;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
 use Recurr\Rule;
@@ -301,6 +301,10 @@ class CalendarEntryForm extends Model
             $this->entry->time_zone = $this->timeZone;
         }
 
+       // $result = $this->recurrenceForm->load();
+
+       // if(RecurrenceHelper::isRecurrent($this->entry) && $this->recurrenceForm->)
+
         $this->entry->content->visibility = $this->is_public;
 
         $result = $this->entry->load($data);
@@ -353,7 +357,6 @@ class CalendarEntryForm extends Model
         //$this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
         return CalendarEntry::getDb()->transaction(function ($db) {
-            $eventsToUpdate = $this->saveEntry();
 
             if ($this->entry->save()) {
                 RichText::postProcess($this->entry->description, $this->entry);
@@ -373,16 +376,11 @@ class CalendarEntryForm extends Model
 
                 Topic::attach($this->entry->content, $this->topics);
 
-                return $this->reminderSettings->save() && $this->recurrenceForm->save($this->dateChanged(), $this->recurrenceChanged());
+                return $this->reminderSettings->save() && $this->recurrenceForm->save($this->dateChanged());
             }
 
             return false;
         });
-    }
-
-    public function recurrenceChanged()
-    {
-        return $this->entry->getRrule() !== $this->entry->getOldAttribute('rrule');
     }
 
     private function dateChanged()

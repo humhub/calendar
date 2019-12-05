@@ -255,6 +255,11 @@ humhub.module('calendar', function (module, require, $) {
 
     var Form = Widget.extend();
 
+    Form.RECUR_EDIT_MODE_CREATE = 0;
+    Form.RECUR_EDIT_MODE_THIS = 1;
+    Form.RECUR_EDIT_MODE_FOLLOWING = 2;
+    Form.RECUR_EDIT_MODE_ALL = 3;
+
     Form.prototype.init = function() {
         modal.global.$.find('.tab-basic').on('shown.bs.tab', function (e) {
             $('#calendarentry-title').focus();
@@ -265,6 +270,31 @@ humhub.module('calendar', function (module, require, $) {
         });
 
         this.initTimeInput();
+    };
+
+    Form.prototype.setEditMode = function(evt) {
+        var mode = evt.$trigger.data('editMode');
+
+        debugger;
+        if(mode == Form.RECUR_EDIT_MODE_THIS) {
+            $('.tab-recurrence').hide();
+            $('.field-calendarentryform-is_public').hide();
+        } else  {
+            $('.tab-recurrence').show();
+            $('.field-calendarentryform-is_public').show();
+        }
+
+        this.$.find('.calendar-edit-mode-back').show();
+        this.$.find('.recurrence-edit-type').hide();
+        this.$.find('.calendar-entry-form-tabs').show();
+        this.$.find('#recurrenceEditMode').val(mode);
+    };
+
+    Form.prototype.showEditModes = function(evt) {
+        debugger;
+        this.$.find('.calendar-edit-mode-back').hide();
+        this.$.find('.recurrence-edit-type').show();
+        this.$.find('.calendar-entry-form-tabs').hide();
     };
 
     Form.prototype.initTimeInput = function(evt) {
@@ -322,18 +352,6 @@ humhub.module('calendar', function (module, require, $) {
         if($selected.data('type-color')) {
             $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('type-color'));
             $('.colorpicker-element').data('colorpicker').update();
-        }
-    };
-
-    Form.prototype.submit = function(evt) {
-        if(!this.options.isRecurrent) {
-            modal.submit(evt);
-        } else if(object.isDefined(evt.$trigger.data('editMode'))) {
-            this.$.find('#recurrenceEditMode').val(evt.$trigger.data('editMode'));
-            modal.submit(evt);
-        } else {
-            this.$.find('.calendar-entry-form-tabs, .modal-footer').hide();
-            this.$.find('.recurrence-edit-type').show();
         }
     };
 

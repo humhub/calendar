@@ -7,6 +7,17 @@ use Recurr\Rule;
 class RRuleHelper
 {
 
+    /**
+     * @param $rrule
+     * @param $until
+     * @return string
+     * @throws \Recurr\Exception\InvalidRRule
+     */
+    public static function setUntil($rrule, $until)
+    {
+        return (new Rule($rrule))->setUntil($until)->getString(Rule::TZ_FIXED);
+    }
+
     public static function compare($oldRrule, $newRrule, $ignoreUntil = false)
     {
         if($oldRrule === $newRrule) {

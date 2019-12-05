@@ -25,6 +25,13 @@ interface RecurrentCalendarEventIF extends CalendarEventIF
 
     public function setRecurrenceId($recurrenceId);
 
+    public function setUid($uid);
+
+    /**
+     * @return static[]
+     */
+    public function getFollowingInstances();
+
     /**
      * @param $root
      * @param $start
@@ -34,6 +41,16 @@ interface RecurrentCalendarEventIF extends CalendarEventIF
      */
     public function createRecurrence($start, $end, $recurrenceId);
 
+    public function saveRecurrenceInstance();
+
+    public function deleteRecurrenceInstance();
+
+    /**
+     * @param $event static
+     * @return mixed
+     */
+    public function syncFromRecurrentRoot($event);
+
     /**
      * @return string|null
      */
@@ -41,12 +58,13 @@ interface RecurrentCalendarEventIF extends CalendarEventIF
 
     public function getId();
 
-    public function getParentId();
+    public function getRecurrenceRootId();
+    public function setRecurrenceRootId($rootId);
 
     /**
      * @return RecurrentCalendarEventIF
      */
-    public function getParent();
+    public function getRecurrenceRoot();
 
     public function getRecurrenceViewUrl($cal = false);
 

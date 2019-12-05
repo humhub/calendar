@@ -3,6 +3,7 @@
 
 namespace humhub\modules\calendar\models\recurrence;
 
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\content\components\ActiveQueryContent;
 use Yii;
 use humhub\modules\calendar\helpers\CalendarUtils;
@@ -62,7 +63,9 @@ class CalendarRecurrenceExpand extends Model
     {
         parent::init();
 
-        if(!$this->targetTimezone) {
+        if($this->event->isAllDay()) {
+            $this->targetTimezone = new DateTimeZone('UTC');
+        } else if(!$this->targetTimezone) {
             $this->targetTimezone = CalendarUtils::getUserTimeZone();
         } else if(is_string($this->targetTimezone)) {
             $this->targetTimezone = new DateTimeZone($this->targetTimezone);
@@ -114,7 +117,7 @@ class CalendarRecurrenceExpand extends Model
         $result = $instance->expandEvent($start, $end);
 
         foreach ($result as $recurrence) {
-            if($recurrence->recurrence_id === CalendarUtils::cleanRecurrentId(new DateTime($recurrenceId,$tz))) {
+            if($recurrence->getRecurrenceId() === CalendarUtils::cleanRecurrentId(new DateTime($recurrenceId,$tz))) {
                 return $recurrence;
             }
         }
@@ -151,15 +154,15 @@ class CalendarRecurrenceExpand extends Model
             return [$this->event];
         }
 
-        $rootRecurrenceId = CalendarUtils::cleanRecurrentId($this->event->getStartDateTime());
+        //$rootRecurrenceId = RecurrenceHelper::cleanRecurrentId($this->event->getStartDateTime());
 
-        // Make sure to set or update the recurrence id of root
+       /* // Make sure to set or update the recurrence id of root
         if($this->event->getRecurrenceId() !== $rootRecurrenceId) {
             $this->event->setRecurrenceId($rootRecurrenceId);
             if($this->event instanceof ActiveRecord) {
                 $this->event->save();
             }
-        }
+        }*/
 
         if(!$end) {
             $end = (new DateTime('now', $this->targetTimezone))->add(new \DateInterval('P2Y'));
@@ -227,19 +230,18 @@ class CalendarRecurrenceExpand extends Model
                 }
 
                 // Check if this recurrence is the first one
-                if ($this->event->getRecurrenceId() === $this->getRecurrenceId($vEvent)) {
+                /*if ($this->event->getRecurrenceId() === RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone())) {
                     $model = $this->event;
-                }
+                }*/
 
                 if (!$model) {
                     $model = $this->findRecurrenceModel($existingModels, $vEvent);
                 }
 
                 if (!$model) {
-
                     $model = $this->event->createRecurrence(
                         CalendarUtils::toDBDateFormat($vEventStart, true), CalendarUtils::toDBDateFormat($vEventEnd, true),
-                        $this->getRecurrenceId($vEvent));
+                        RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone()));
 
                     if($this->saveInstnace && $model instanceof ActiveRecord) {
                         if(!$model->save()) {
@@ -257,21 +259,6 @@ class CalendarRecurrenceExpand extends Model
     }
 
     /**
-     * Translates the recurrence-id from the given $vEvent into our format.
-     *
-     * Note VCalendar expand will translate all dates ot UTC
-     * @param VEvent $vEvent
-     * @return string
-     */
-    private function getRecurrenceId(VEvent $vEvent)
-    {
-        $recurrence_id = $vEvent->{'RECURRENCE-ID'}->getValue();
-        // We only need to translate from UTC to event timezone for non all day events
-        $tz = (strrpos($recurrence_id, 'T') === false) ? null : $this->event->getTimezone();
-        return  CalendarUtils::cleanRecurrentId($vEvent->{'RECURRENCE-ID'}->getValue(), $tz);
-    }
-
-    /**
      * @param RecurrentCalendarEventIF[] $existingModels
      * @param VEvent $vEvent
      * @return mixed|null
@@ -279,7 +266,7 @@ class CalendarRecurrenceExpand extends Model
     private function findRecurrenceModel(array $existingModels, VEvent $vEvent)
     {
         foreach ($existingModels as $existingModel) {
-            if($existingModel->getRecurrenceId() === $this->getRecurrenceId($vEvent)) {
+            if($existingModel->getRecurrenceId() === RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone())) {
                 return $existingModel;
             }
         }
@@ -288,9 +275,9 @@ class CalendarRecurrenceExpand extends Model
     }
 
     public function getRecurrence($recurrenceId) {
-        if ($this->event->getRecurrenceId() === $recurrenceId) {
+        /*if ($this->event->getRecurrenceId() === $recurrenceId) {
             return $this->event;
-        }
+        }*/
         return $this->findExistingRecurrences()->andWhere(['recurrence_id' => CalendarUtils::cleanRecurrentId($recurrenceId)])->one();
     }
 
