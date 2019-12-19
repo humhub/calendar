@@ -35,7 +35,7 @@ class RecurrenceHelper
         $recurrence_id = $vEvent->{'RECURRENCE-ID'}->getValue();
         // We only need to translate from UTC to event timezone for non all day events
         $tz = (strrpos($recurrence_id, 'T') === false) ? null : $eventTZ;
-        return  static::cleanRecurrentId($vEvent->{'RECURRENCE-ID'}->getValue(), $tz);
+        return  static::getRecurrentId($vEvent->{'RECURRENCE-ID'}->getValue(), $tz);
     }
 
     public static function calculateRecurrenceInstances(CalendarEventIF $event, DateTime $start, DateTime $end)
@@ -50,8 +50,18 @@ class RecurrenceHelper
         return $expandedVCalendar->select('VEVENT');
     }
 
-    public static function cleanRecurrentId($recurrentId, $targetTZ = null)
+    /**
+     * @param $recurrentId
+     * @param null $targetTZ
+     * @return string
+     * @throws \Exception
+     */
+    public static function getRecurrentId($recurrentId, $targetTZ = null)
     {
+        if($recurrentId instanceof CalendarEventIF) {
+            $recurrentId = $recurrentId->getStartDateTime();
+        }
+
         $date = ($recurrentId instanceof \DateTimeInterface) ? $recurrentId : new DateTime($recurrentId, new DateTimeZone('UTC'));
 
         if($targetTZ) {
@@ -86,6 +96,16 @@ class RecurrenceHelper
         }
 
         return static::isRecurrent($evt) && !$evt->getRecurrenceRootId();
+    }
+
+    public static function recurrenceIdToDate($recurrenceId, $format = CalendarUtils::DB_DATE_FORMAT)
+    {
+        $date = DateTime::createFromFormat(static::ICAL_TIME_FORMAT, $recurrenceId);
+        if($format) {
+            return $date->format($format);
+        }
+
+        return $date;
     }
 
 }

@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\tests\codeception\unit;
 use calendar\CalendarUnitTest;
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -26,7 +27,7 @@ class RecurrenceEditTest extends CalendarUnitTest
     /**
      * @var CalendarEntry
      */
-    protected $entry;
+    protected $rootEvent;
 
     /**
      * @var CalendarEntry[]
@@ -39,9 +40,9 @@ class RecurrenceEditTest extends CalendarUnitTest
         $this->becomeUser('Admin');
         $this->space = Space::findOne(['id' => 1]);
         $startDate = $startDate ?: $this->getEntryDate();
-        $this->entry = $this->createEntry($startDate, 1, 'Past Entry', $this->space);
-        $this->setDefaults($this->entry, $rrule);
-        $this->assertTrue($this->entry->save());
+        $this->rootEvent = $this->createEntry($startDate, 1, 'Past Entry', $this->space);
+        $this->setDefaults($this->rootEvent, $rrule);
+        $this->assertTrue($this->rootEvent->save());
         $this->recurrences = $this->expand(true);
     }
 
@@ -53,13 +54,14 @@ class RecurrenceEditTest extends CalendarUnitTest
         $entry->setRrule($rrule);
     }
 
-    private function expand( $save = false, $entry = null, &$result = [], $fromDay = 1, $toDay = 7)
+    private function expand( $save = false, $entry = null,  $fromDay = 1, $toDay = 7)
     {
         if(!$entry) {
-            $entry = $this->entry;
+            $entry = $this->rootEvent;
         }
         $expandStart = (new DateTime)->setDate(2019, 12, $fromDay);
         $expandEnd = (new DateTime)->setDate(2019, 12,  $toDay);
+        $result = [];
         return CalendarRecurrenceExpand::expand($entry, $expandStart, $expandEnd, $result, $save);
     }
 
@@ -203,13 +205,101 @@ class RecurrenceEditTest extends CalendarUnitTest
         ]));
 
         $this->assertTrue($form->save());
-        $this->entry->refresh();
+        $this->rootEvent->refresh();
         $newRecurrences = $this->expand();
         $this->assertCount(2, $newRecurrences);
         $this->assertEquals('2019-12-01 00:00:00', $newRecurrences[0]->start_datetime);
         $this->assertEquals('2019-12-02 00:00:00', $newRecurrences[1]->start_datetime);
 
         // Test other instances
+    }
+
+    public function testEditFollowingEventsOnRootChangeRecurrence()
+    {
+        $this->initRecurrentEvents();
+        $form = new CalendarEntryForm(['entry' => $this->recurrences[0]]);
+        $this->assertTrue($form->load([
+            'CalendarEntry' => [
+                'title' => 'Overwritten title',
+                'description' => 'Overwritten description',
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE
+            ],
+            'CalendarEntryForm' => [
+                'is_public' => '0',
+                'all_day' => '1',
+                'start_date' => '12/4/19',
+                'end_date' => '12/4/19'
+            ],
+            'RecurrenceFormModel' => [
+                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING
+            ]
+        ]));
+
+        $this->assertTrue($form->save());
+
+        // The old root should be deleted
+        $this->assertNull(CalendarEntry::findOne(['id' => $this->rootEvent->id]));
+        $this->assertTrue(RecurrenceHelper::isRecurrent($form->entry));
+        $this->assertTrue(RecurrenceHelper::isRecurrentRoot($form->entry));
+        $this->assertFalse(RecurrenceHelper::isRecurrentInstance($form->entry));
+
+        $newRecurrences = $this->expand(false, $form->entry, 1, 7);
+        $this->assertCount(4, $newRecurrences);
+        $this->assertEquals('2019-12-04 00:00:00', $newRecurrences[0]->start_datetime);
+        $this->assertEquals('2019-12-05 00:00:00', $newRecurrences[1]->start_datetime);
+    }
+
+    public function testEditAllEvents()
+    {
+        $this->initRecurrentEvents();
+        $form = new CalendarEntryForm(['entry' => $this->rootEvent]);
+        $this->assertTrue($form->load([
+            'CalendarEntry' => [
+                'title' => 'Overwritten title',
+                'description' => 'Overwritten description',
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE
+            ],
+            'CalendarEntryForm' => [
+                'is_public' => '0',
+                'all_day' => '1',
+                'start_date' => '12/4/19',
+                'end_date' => '12/4/19'
+            ],
+            'RecurrenceFormModel' => [
+                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_ALL,
+                'frequency' => Frequency::DAILY,
+                'interval' => 2
+            ]
+        ]));
+
+        $form->save();
+
+        $this->assertTrue($form->save());
+
+        $this->assertNotNull(CalendarEntry::findOne(['id' => $this->rootEvent->id]));
+
+        // Check old recurrences (just for clarity)
+        $this->assertEquals('2019-12-01 00:00:00', $this->recurrences[0]->start_datetime);
+        $this->assertEquals('2019-12-02 00:00:00', $this->recurrences[1]->start_datetime);
+        $this->assertEquals('2019-12-03 00:00:00', $this->recurrences[2]->start_datetime);
+        $this->assertEquals('2019-12-04 00:00:00', $this->recurrences[3]->start_datetime);
+        $this->assertEquals('2019-12-05 00:00:00', $this->recurrences[4]->start_datetime);
+        $this->assertEquals('2019-12-06 00:00:00', $this->recurrences[5]->start_datetime);
+        $this->assertEquals('2019-12-07 00:00:00', $this->recurrences[6]->start_datetime);
+
+        // Make sure recurrences which are still valid were not deleted
+        $this->assertNull(CalendarEntry::findOne(['id' => $this->recurrences[0]->id]));
+        $this->assertNull(CalendarEntry::findOne(['id' => $this->recurrences[1]->id]));
+        $this->assertNull(CalendarEntry::findOne(['id' => $this->recurrences[2]->id]));
+        $this->assertNotNull(CalendarEntry::findOne(['id' => $this->recurrences[3]->id]));
+        $this->assertNull(CalendarEntry::findOne(['id' => $this->recurrences[4]->id]));
+        $this->assertNotNull(CalendarEntry::findOne(['id' => $this->recurrences[5]->id]));
+        $this->assertNull(CalendarEntry::findOne(['id' => $this->recurrences[6]->id]));
+
+        $newRecurrences = $this->expand();
+        $this->assertCount(2, $newRecurrences);
+        $this->assertEquals('2019-12-04 00:00:00', $newRecurrences[0]->start_datetime);
+        $this->assertEquals('2019-12-06 00:00:00', $newRecurrences[1]->start_datetime);
     }
 
 

@@ -91,6 +91,11 @@ class CalendarEntryForm extends Model
     public $entry;
 
     /**
+     * @var CalendarEntry
+     */
+    public $original;
+
+    /**
      * @var ReminderSettings
      */
     public $reminderSettings;
@@ -130,6 +135,7 @@ class CalendarEntryForm extends Model
             $this->topics = $this->entry->content->getTags(Topic::class);
 
             $this->updateDateRange($this->entry->getStartDateTime(), $this->entry->getEndDateTime(), !$this->entry->isAllDay());
+            $this->original = CalendarEntry::findOne(['id' => $this->entry->id]);
         } else {
             $this->entry->setDefaults();
         }
@@ -376,7 +382,7 @@ class CalendarEntryForm extends Model
 
                 Topic::attach($this->entry->content, $this->topics);
 
-                return $this->reminderSettings->save() && $this->recurrenceForm->save($this->dateChanged());
+                return $this->reminderSettings->save() && $this->recurrenceForm->save($this->original);
             }
 
             return false;

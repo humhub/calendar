@@ -14,6 +14,7 @@ use Recurr\Rule;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
+use yii\web\HttpException;
 
 class RecurrenceFormModel extends Model
 {
@@ -171,6 +172,11 @@ class RecurrenceFormModel extends Model
 
     public function validateModel($attribute, $params)
     {
+        if($this->recurrenceEditMode === static::EDIT_MODE_ALL && !RecurrenceHelper::isRecurrentRoot($this->entry)) {
+            // Currently the edit mode all is only valid if the root event itself is given due to load complexity...
+            throw new HttpException(400, 'No root event given for edit mode all!');
+        }
+
         if (!($this->entry instanceof RecurrentCalendarEventIF)) {
             $this->addError('frequency', Yii::t('CalendarModule.recurrence', 'This event does not support recurrent events'));
         }
@@ -218,7 +224,7 @@ class RecurrenceFormModel extends Model
         }
     }
 
-    public function save($dateChanged = false)
+    public function save(RecurrentCalendarEventIF $original = null)
     {
         if (!$this->validate()) {
             return false;
@@ -228,29 +234,27 @@ class RecurrenceFormModel extends Model
             case static::EDIT_MODE_CREATE:
                 return $this->saveCreate();
             case static::EDIT_MODE_THIS:
-                // We only want to save this instance, so we ignore rrules
+                // We only want to save this instance, so we ignore rrule changes
                 return true;
             case static::EDIT_MODE_FOLLOWING:
-                return $this->saveSplit();
+                return $original ? $this->saveSplit($original) : false;
+            case static::EDIT_MODE_ALL:
+                return $original ? $this->saveAll($original) : false;
         }
 
         return true;
     }
 
-    protected function saveSplit()
+    protected function saveSplit(RecurrentCalendarEventIF $original)
     {
         if(RecurrenceHelper::isRecurrentRoot($this->entry)) {
-            return $this->saveAll();
+            return $this->saveAll($original);
         }
 
         try {
-
-            $followingEvents = $this->entry->getFollowingInstances();
-
             // Update until of old root
             $root = $this->entry->getRecurrenceRoot();
-            $root->setRrule(RRuleHelper::setUntil($root->getRrule(), $this->entry->getStartDateTime()->modify('-1 hour')));
-            $root->saveRecurrenceInstance();
+            $isFirstInstanceEdit = RecurrenceHelper::getRecurrentId($root) === $this->entry->getRecurrenceId();
 
             // Generate new UID
             $this->entry->setUid(CalendarUtils::generateUUid());
@@ -260,7 +264,18 @@ class RecurrenceFormModel extends Model
             $this->entry->setRecurrenceRootId(null);
             $this->saveCreate();
 
-            $this->syncFollowingInstances($followingEvents);
+            $this->syncFollowingInstances($original);
+
+            if($isFirstInstanceEdit) {
+                // We are editing the first instance, so we do not need the old root anymore
+                // TODO: what about attached files?
+                $root->delete();
+            } else {
+                $root->setRrule(RRuleHelper::setUntil($root->getRrule(), $this->entry->getStartDateTime()->modify('-1 hour')));
+                $root->saveRecurrenceInstance();
+            }
+
+
         } catch (\Exception $e) {
             Yii::error($e);
             return false;
@@ -269,36 +284,12 @@ class RecurrenceFormModel extends Model
         return true;
     }
 
-    protected function saveAll()
+    protected function saveAll(RecurrentCalendarEventIF $original)
     {
-        //If recurr
         $this->saveCreate();
-        $this->syncFollowingInstances();
+        $this->syncFollowingInstances($original);
+        return true;
     }
-
-    protected function syncFollowingInstances($followingInstances)
-    {
-        // Sync following events
-        if (!empty($followingInstances)) {
-            $lastInstance = end($followingInstances);
-
-            // If not recurrent, we delete all following instances
-            $remainingRecurrenceIds = ($this->interval === static::FREQUENCY_NEVER)
-                ? []
-                : RecurrenceHelper::getRecurrenceIds($this->entry, $this->entry->getEndDateTime(), $lastInstance->getEndDateTime());
-
-            foreach ($followingInstances as $followingInstance) {
-                if (!in_array($followingInstance->getRecurrenceId(), $remainingRecurrenceIds)) {
-                    $followingInstance->deleteRecurrenceInstance();
-                } else {
-                    $followingInstance->syncFromRecurrentRoot($this->entry);
-                    $followingInstance->saveRecurrenceInstance();
-                }
-            }
-        }
-    }
-
-
 
     protected function saveCreate()
     {
@@ -319,6 +310,37 @@ class RecurrenceFormModel extends Model
         }
 
         return true;
+    }
+
+    protected function syncFollowingInstances(RecurrentCalendarEventIF $original)
+    {
+        $followingInstances = $original->getFollowingInstances();
+
+        // Sync following events
+        if (!empty($followingInstances)) {
+            $lastInstance = end($followingInstances);
+
+            /**
+             * If editMode = all $original is the root node and we want to sync all existing recurrence instances
+             * If editMode = following $original is an old recurrent instance which itself should be excluded from sync
+             */
+            $searchStartDate = $this->recurrenceEditMode == static::EDIT_MODE_ALL
+                ? $original->getStartDateTime() : $original->getEndDateTime();
+
+            // If not recurrent, we delete all following instances
+            $remainingRecurrenceIds = ($this->interval === static::FREQUENCY_NEVER)
+                ? []
+                : RecurrenceHelper::getRecurrenceIds($this->entry, $searchStartDate, $lastInstance->getEndDateTime());
+
+            foreach ($followingInstances as $followingInstance) {
+                if (!in_array($followingInstance->getRecurrenceId(), $remainingRecurrenceIds)) {
+                    $followingInstance->deleteRecurrenceInstance();
+                } else {
+                    $followingInstance->syncFromRecurrentRoot($this->entry);
+                    $followingInstance->saveRecurrenceInstance();
+                }
+            }
+        }
     }
 
     private function rruleChanged($ignoreUntil = false, $rruleToCompare = null)

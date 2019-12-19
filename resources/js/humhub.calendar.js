@@ -275,7 +275,6 @@ humhub.module('calendar', function (module, require, $) {
     Form.prototype.setEditMode = function(evt) {
         var mode = evt.$trigger.data('editMode');
 
-        debugger;
         if(mode == Form.RECUR_EDIT_MODE_THIS) {
             $('.tab-recurrence').hide();
             $('.field-calendarentryform-is_public').hide();
@@ -291,7 +290,6 @@ humhub.module('calendar', function (module, require, $) {
     };
 
     Form.prototype.showEditModes = function(evt) {
-        debugger;
         this.$.find('.calendar-edit-mode-back').hide();
         this.$.find('.recurrence-edit-type').show();
         this.$.find('.calendar-entry-form-tabs').hide();

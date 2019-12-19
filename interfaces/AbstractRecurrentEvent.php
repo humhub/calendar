@@ -4,6 +4,7 @@
 namespace humhub\modules\calendar\interfaces;
 
 
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
 use humhub\modules\content\components\ContentActiveRecord;
 
@@ -52,10 +53,17 @@ abstract class AbstractRecurrentEvent extends ContentActiveRecord implements Rec
         $this->rrule = $rrule;
     }
 
-    public function getFollowingInstances()
+    public function getFollowingInstances($fromDate = null)
     {
-        $parent_event_id = $this->isRecurringRoot() ? $this->id : $this->parent_event_id;
-        return static::find()->where(['parent_event_id' => $parent_event_id])->andWhere(['>', 'start_datetime', $this->start_datetime])->orderBy('start_datetime')->all();
+        if($this->isRecurringRoot()) {
+            $query = static::find()->where(['parent_event_id' => $this->id]);
+        } else {
+            // Make sure we use the original date, the start_date may have been overwritten
+            $start_datetime = RecurrenceHelper::recurrenceIdToDate($this);
+            $query = static::find()->where(['parent_event_id' => $this->parent_event_id])->andWhere(['>', 'start_datetime', $start_datetime]);
+        }
+
+        return $query->orderBy('start_datetime')->all();
     }
 
     /**

@@ -35,9 +35,11 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
 
         <div id="calendar-entry-form" data-ui-widget="calendar.Form" data-ui-init data-is-recurrent="<?= RecurrenceHelper::isRecurrent($calendarEntryForm->entry)?>">
 
-            <?= $this->render('edit-recurrence-mode', ['form' => $form, 'model' => $calendarEntryForm]) ?>
+            <?php if(RecurrenceHelper::isRecurrentInstance($calendarEntryForm->entry)) : ?>
+                <?= $this->render('edit-recurrence-mode', ['form' => $form, 'model' => $calendarEntryForm]) ?>
+            <?php endif; ?>
 
-            <div class="calendar-entry-form-tabs"<?= RecurrenceHelper::isRecurrent($calendarEntryForm->entry) ? ' hidden' : ''  ?>>
+            <div class="calendar-entry-form-tabs"<?= RecurrenceHelper::isRecurrentInstance($calendarEntryForm->entry) ? ' hidden' : ''  ?>>
                 <?= Tabs::widget([
                     'viewPath' => '@calendar/views/entry',
                     'params' => ['form' => $form, 'calendarEntryForm' => $calendarEntryForm, 'contentContainer' => $contentContainer],
