@@ -7,7 +7,7 @@ namespace humhub\modules\calendar\helpers;
 use DateTime;
 use DateTimeZone;
 use humhub\modules\calendar\interfaces\CalendarEventIF;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\VCalendar;
 use Sabre\VObject\Component\VEvent;
 
@@ -73,7 +73,7 @@ class RecurrenceHelper
 
     public static function isRecurrent(CalendarEventIF $evt)
     {
-        if(!$evt instanceof RecurrentCalendarEventIF) {
+        if(!$evt instanceof RecurrentEventIF) {
             return false;
         }
 
@@ -82,7 +82,7 @@ class RecurrenceHelper
 
     public static function isRecurrentInstance(CalendarEventIF $evt)
     {
-        if(!$evt instanceof RecurrentCalendarEventIF) {
+        if(!$evt instanceof RecurrentEventIF) {
             return false;
         }
 
@@ -91,7 +91,7 @@ class RecurrenceHelper
 
     public static function isRecurrentRoot(CalendarEventIF $evt)
     {
-        if(!$evt instanceof RecurrentCalendarEventIF) {
+        if(!$evt instanceof RecurrentEventIF) {
             return false;
         }
 
@@ -106,6 +106,28 @@ class RecurrenceHelper
         }
 
         return $date;
+    }
+
+    /**
+     * @param RecurrentEventIF $root
+     * @param RecurrentEventIF $exdate
+     * @return string
+     */
+    public static function addExdates(RecurrentEventIF $root, RecurrentEventIF $exdate)
+    {
+        $exdateStr = $root->getExdate();
+        if(empty($exdateStr)) {
+            return $exdate->getRecurrenceId();
+        }
+
+        $exdateArr = explode(',', $exdateStr);
+
+        if(!in_array($exdate->getRecurrenceId(), $exdateArr)) {
+            $exdateArr[] = $exdate->getRecurrenceId();
+        }
+
+        return implode(',', $exdateArr);
+
     }
 
 }

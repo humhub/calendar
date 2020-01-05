@@ -20,8 +20,16 @@ class CalendarItemTypesEvent extends CalendarEvent
 {
     private $result = [];
 
+    /**
+     * @param $key string|CalendarTypeIF
+     * @param $options CalendarTypeIF
+     */
     public function addType($key, $options) {
-        $this->result[$key] = $options;
+        if($key instanceof CalendarTypeIF) {
+            $this->result[$key->getKey()] = $key;
+        } else {
+            $this->result[$key] = $options;
+        }
     }
 
     public function hasType($key) {

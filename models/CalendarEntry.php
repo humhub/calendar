@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\models;
 
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\AbstractRecurrentEvent;
 use humhub\modules\calendar\interfaces\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
@@ -309,11 +310,24 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
     {
         $this->participation->deleteAll();
 
-        foreach($this->recurrenceInstances as $recurrence) {
-            $recurrence->delete();
+        if($this->isRecurringRoot()) {
+            foreach($this->recurrenceInstances as $recurrence) {
+                $recurrence->delete();
+            }
+        } elseif($this->isRecurringInstance()) {
+            $root = $this->getRecurrenceRoot();
+            if($root) {
+                $root->setExdate(RecurrenceHelper::addExdates($root, $this));
+                $root->saveRecurrenceInstance();
+            }
         }
 
         return parent::beforeDelete();
+    }
+
+    public function setExdate($exdateStr)
+    {
+        $this->exdate = $exdateStr;
     }
 
     public function getRecurrenceInstances()
@@ -556,7 +570,7 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
      */
     public function isEditable()
     {
-        return $this->content->canEdit();
+        return !$this->isRecurring() && $this->content->canEdit();
     }
 
     /**

@@ -7,8 +7,8 @@ use humhub\modules\calendar\models\forms\ReminderSettings;
 /* @var $reminderSettings ReminderSettings */
 
 $helpBlock = $reminderSettings->isGlobalSettings()
-    ? Yii::t('CalendarModule.reminder', 'Here you can configure default reminder. These settings can be overwritten on space/profile level.')
-    : Yii::t('CalendarModule.reminder', 'Here you can configure default settings for new calendar events.') ;
+    ? Yii::t('CalendarModule.reminder', 'Here you can configure global default reminders. These settings can be overwritten on space/profile level.')
+    : Yii::t('CalendarModule.reminder', 'Here you can configure default settings for all calendar events.') ;
 
 
 ?>

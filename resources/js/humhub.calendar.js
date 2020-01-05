@@ -309,12 +309,15 @@ humhub.module('calendar', function (module, require, $) {
     Form.prototype.toggleDateTime = function(evt) {
         var $timeFields = modal.global.$.find('.timeField');
         var $timeInputs =  $timeFields.find('.form-control');
+        var $timeZoneInput = modal.global.$.find('.timeZoneField');
         if (evt.$trigger.prop('checked')) {
             $timeInputs.prop('disabled', true);
             $timeInputs.each(function() {
                 $(this).data('oldVal', $(this).val()).val('');
             });
             $timeFields.css('opacity', '0.2');
+            $timeZoneInput.hide();
+
         } else {
             $timeInputs.each(function() {
                 var $this = $(this);
@@ -324,6 +327,7 @@ humhub.module('calendar', function (module, require, $) {
             });
             $timeInputs.prop('disabled', false);
             $timeFields.css('opacity', '1.0');
+            $timeZoneInput.show();
         }
     };
 

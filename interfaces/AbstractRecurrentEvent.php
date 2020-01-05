@@ -5,7 +5,7 @@ namespace humhub\modules\calendar\interfaces;
 
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\content\components\ContentActiveRecord;
 
 /**
@@ -19,7 +19,7 @@ use humhub\modules\content\components\ContentActiveRecord;
  * @property string end_datetime
  * @property integer parent_event_id
  */
-abstract class AbstractRecurrentEvent extends ContentActiveRecord implements RecurrentCalendarEventIF
+abstract class AbstractRecurrentEvent extends ContentActiveRecord implements RecurrentEventIF
 {
     public function createRecurrence($start, $end, $recurrenceId)
     {

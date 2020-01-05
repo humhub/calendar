@@ -7,7 +7,7 @@ use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;

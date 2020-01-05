@@ -33,7 +33,7 @@ class RecurrenceFormModel extends Model
     const ENDS_AFTER_OCCURRENCES = 2;
 
     /**
-     * @var RecurrentCalendarEventIF
+     * @var RecurrentEventIF
      */
     public $entry;
 
@@ -177,7 +177,7 @@ class RecurrenceFormModel extends Model
             throw new HttpException(400, 'No root event given for edit mode all!');
         }
 
-        if (!($this->entry instanceof RecurrentCalendarEventIF)) {
+        if (!($this->entry instanceof RecurrentEventIF)) {
             $this->addError('frequency', Yii::t('CalendarModule.recurrence', 'This event does not support recurrent events'));
         }
     }
@@ -224,7 +224,7 @@ class RecurrenceFormModel extends Model
         }
     }
 
-    public function save(RecurrentCalendarEventIF $original = null)
+    public function save(RecurrentEventIF $original = null)
     {
         if (!$this->validate()) {
             return false;
@@ -245,7 +245,7 @@ class RecurrenceFormModel extends Model
         return true;
     }
 
-    protected function saveSplit(RecurrentCalendarEventIF $original)
+    protected function saveSplit(RecurrentEventIF $original)
     {
         if(RecurrenceHelper::isRecurrentRoot($this->entry)) {
             return $this->saveAll($original);
@@ -284,7 +284,7 @@ class RecurrenceFormModel extends Model
         return true;
     }
 
-    protected function saveAll(RecurrentCalendarEventIF $original)
+    protected function saveAll(RecurrentEventIF $original)
     {
         $this->saveCreate();
         $this->syncFollowingInstances($original);
@@ -312,7 +312,7 @@ class RecurrenceFormModel extends Model
         return true;
     }
 
-    protected function syncFollowingInstances(RecurrentCalendarEventIF $original)
+    protected function syncFollowingInstances(RecurrentEventIF $original)
     {
         $followingInstances = $original->getFollowingInstances();
 

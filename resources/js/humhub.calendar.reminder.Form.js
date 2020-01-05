@@ -9,14 +9,20 @@ humhub.module('calendar.reminder.Form', function (module, require, $) {
     var client = require('client');
 
     var SELECTOR_ITEMS = '.calendar-reminder-items';
+    var SELECTOR_DEFAULT_ITEMS = '.calendar-reminder-item-defaults';
     var SELECTOR_USE_DEFAULT_CHECKBOX = '#remindersettings-usedefaults';
+    var SELECTOR_REMINDER_TYPE_DROPDOWN = '#remindersettings-remindertype';
     var SELECTOR_ADD_BUTTON = '.btn-primary[data-action-click="add"]';
+
+    var REMINDER_TYPE_NONE = 0;
+    var REMINDER_TYPE_DEFAULTS = 1;
+    var REMINDER_TYPE_CUSTOM = 2;
 
     var Form = Widget.extend();
 
     Form.prototype.init = function(evt) {
         this.checkMaxReminder();
-        this.checkUseDefaults();
+        this.checkRemidnerType();
     };
 
     Form.prototype.checkMaxReminder = function() {
@@ -28,17 +34,18 @@ humhub.module('calendar.reminder.Form', function (module, require, $) {
         }
     };
 
-    Form.prototype.checkUseDefaults = function() {
-        var $checkbox = this.$.find(SELECTOR_USE_DEFAULT_CHECKBOX);
+    Form.prototype.checkRemidnerType = function() {
+        var $reminderType = $(SELECTOR_REMINDER_TYPE_DROPDOWN).val();
 
-        if(!$checkbox.length) {
-            return;
-        }
-
-        if(this.$.find(SELECTOR_USE_DEFAULT_CHECKBOX).is(':checked')) {
-            this.$.find(SELECTOR_ITEMS).hide();
-        } else {
-            this.$.find(SELECTOR_ITEMS).show();
+        if($reminderType == REMINDER_TYPE_NONE) {
+            $(SELECTOR_ITEMS).hide();
+            $(SELECTOR_DEFAULT_ITEMS).hide();
+        } else if($reminderType == REMINDER_TYPE_CUSTOM) {
+            $(SELECTOR_ITEMS).show();
+            $(SELECTOR_DEFAULT_ITEMS).hide();
+        } else if($reminderType == REMINDER_TYPE_DEFAULTS) {
+            $(SELECTOR_ITEMS).hide();
+            $(SELECTOR_DEFAULT_ITEMS).show();
         }
     };
 

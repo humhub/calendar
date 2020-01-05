@@ -34,10 +34,7 @@ ReminderFormAssets::register($this);
 
 <?= Html::beginTag('div', $options) ?>
 
-    <?php if($settings->hasDefaults()) : ?>
-        <?= $form->field($settings, 'useDefaults')->checkbox(['data-action-change' => 'checkUseDefaults']) ?>
-        <br>
-    <?php endif; ?>
+    <?= $form->field($settings, 'reminderType')->dropDownList($settings->getReminderTypeOptions(), ['data-action-change' => 'checkRemidnerType'])->label(false) ?>
 
     <div class="calendar-reminder-items">
 
@@ -65,7 +62,26 @@ ReminderFormAssets::register($this);
             </div>
         <?php endforeach; ?>
 
-
     </div>
+
+
+    <?php if($settings->hasDefaults()) : ?>
+        <div class="calendar-reminder-item-defaults">
+             <?php foreach ($settings->getDefaults() as $index => $reminder): ?>
+                <?php if($reminder->isNewRecord) : ?>
+                     <?php continue; ?>
+                <?php endif; ?>
+                <div class="row">
+                    <div class="col-md-3">
+                        <?= $form->field($reminder, "[$index]unit")->dropDownList(ReminderSettings::getUnitSelection(), ['disabled' => true])->label(false) ?>
+                    </div>
+                    <div class="col-md-2">
+                        <?= $form->field($reminder, "[$index]value")->textInput(['type' => 'number', 'min' => 1, 'max' => 100, 'disabled' => true])->label(false) ?>
+                    </div>
+                </div>
+             <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
 
 <?= Html::endTag('div') ?>

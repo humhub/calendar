@@ -35,14 +35,14 @@ use humhub\modules\calendar\helpers\Url;
     <br>
     <br>
 
-    <?= ModalButton::info(Yii::t('CalendarModule.recurrence', 'Edit recurrent event'))
+    <?= ModalButton::info(Yii::t('CalendarModule.recurrence', 'Edit all events'))
         ->load(Url::toEditEntry($model->entry->getRecurrenceRoot()))
         ->style('width:100%')->lg()->loader() ?>
 
     <br>
     <br>
 
-    <?= ModalButton::danger(Yii::t('CalendarModule.recurrence', 'Delete recurrent event'))
+    <?= ModalButton::danger(Yii::t('CalendarModule.recurrence', 'Delete all events'))
         ->post(Url::toEntryDelete($model->entry->getRecurrenceRoot()))->confirm()
         ->style('width:100%')->lg()->loader() ?>
 

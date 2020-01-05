@@ -34,6 +34,6 @@ class ReminderLink extends Widget
             return;
         }
 
-        return ModalButton::asLink(Yii::t('CalendarModule.base', 'Set reminder'))->load(Url::toUserLevelReminderConfig($this->entry));
+        return ModalButton::asLink(Yii::t('CalendarModule.base', 'Set reminder'))->load(Url::toUserLevelReminderConfig($this->entry))->loader(true);
     }
 }

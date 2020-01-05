@@ -18,10 +18,9 @@ use yii\jui\DatePicker;
 
 
     <div id="event-color-field" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
-        <?= $form->field($calendarEntryForm->entry, 'color')->widget(ColorPicker::class, ['container' => 'event-color-field']) ?>
+        <?= $form->field($calendarEntryForm->entry, 'color')->widget(ColorPicker::class, ['container' => 'event-color-field'])->label(false) ?>
 
         <?= $form->field($calendarEntryForm->entry, 'title', ['template' => '
-                                {label}
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i></i>
@@ -71,7 +70,7 @@ use yii\jui\DatePicker;
 
     <div class="row">
         <div class="col-md-6"></div>
-        <div class="col-md-6 timeZoneField" >
+        <div class="col-md-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
             <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
         </div>
     </div>

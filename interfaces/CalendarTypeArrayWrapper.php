@@ -25,6 +25,11 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
     const OPTION_ICON = 'icon';
 
     /**
+     * @var string description
+     */
+    const OPTION_DESCRIPTION = 'description';
+
+    /**
      * @var string Icon type key
      */
     const OPTION_KEY = 'key';
@@ -71,16 +76,12 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
         return null;
     }
 
-    /**
-     * @return SettingsManager
-     */
-    protected function getSettings()
-    {
-        return Yii::$app->getModule('calendar')->settings;
-    }
-
     public function getDescription()
     {
+        if(!empty($this->options) && isset($this->options[static::OPTION_DESCRIPTION])) {
+            return $this->options[static::OPTION_DESCRIPTION];
+        }
+
         return null;
     }
 

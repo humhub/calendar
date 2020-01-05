@@ -120,6 +120,14 @@ class CalendarEntryForm extends Model
         return $instance;
     }
 
+    public function setDefaultTime()
+    {
+        if($this->entry->isAllDay()) {
+            $this->start_time = '10:00';
+            $this->end_time = '12:00';
+        }
+    }
+
     public function init()
     {
         parent::init();
@@ -134,7 +142,7 @@ class CalendarEntryForm extends Model
 
             $this->topics = $this->entry->content->getTags(Topic::class);
 
-            $this->updateDateRange($this->entry->getStartDateTime(), $this->entry->getEndDateTime(), !$this->entry->isAllDay());
+            $this->setFormDates($this->entry->getStartDateTime(), $this->entry->getEndDateTime(), !$this->entry->isAllDay());
             $this->original = CalendarEntry::findOne(['id' => $this->entry->id]);
         } else {
             $this->entry->setDefaults();
@@ -150,8 +158,12 @@ class CalendarEntryForm extends Model
             return;
         }
 
-        $this->updateDateRange($start, $end);
-        $this->updateEntryDates();
+        $this->setFormDates($start, $end);
+        $this->updateModelDates();
+
+        // We update again since updateModelDates may changed the end_date due to different handling of all_day events
+        $this->setFormDates($this->entry->start_datetime, $this->entry->end_datetime);
+
         if($save) {
             return $this->save();
         }
@@ -159,7 +171,7 @@ class CalendarEntryForm extends Model
         return true;
     }
 
-    public function updateDateRange($start, $end, $translateTimeZone = false)
+    public function setFormDates($start, $end, $translateTimeZone = false)
     {
         if (!$start || !$end) {
             return;
@@ -215,25 +227,6 @@ class CalendarEntryForm extends Model
     public function getTimeFormat()
     {
         return Yii::$app->formatter->isShowMeridiem() ? CalendarUtils::TIME_FORMAT_SHORT_MERIDIEM : CalendarUtils::TIME_FORMAT_SHORT;
-    }
-
-    public function beforeValidate()
-    {
-        //$this->checkAllDay();
-        return parent::beforeValidate();
-    }
-
-    public function checkAllDay()
-    {
-        Yii::$app->formatter->timeZone = $this->timeZone;
-        if ($this->entry->all_day) {
-            $date = new DateTime('now', new DateTimeZone($this->timeZone));
-            $date->setTime(0, 0);
-            $this->start_time = Yii::$app->formatter->asTime($date, $this->getTimeFormat());
-            $date->setTime(23, 59, 59);
-            $this->end_time = Yii::$app->formatter->asTime($date, $this->getTimeFormat());
-        }
-        Yii::$app->i18n->autosetLocale();
     }
 
     /**
@@ -303,13 +296,13 @@ class CalendarEntryForm extends Model
 
     public function load($data, $formName = null)
     {
+        if(empty($data)) {
+            return false;
+        }
+
         if (parent::load($data) && !empty($this->timeZone)) {
             $this->entry->time_zone = $this->timeZone;
         }
-
-       // $result = $this->recurrenceForm->load();
-
-       // if(RecurrenceHelper::isRecurrent($this->entry) && $this->recurrenceForm->)
 
         $this->entry->content->visibility = $this->is_public;
 
@@ -322,12 +315,12 @@ class CalendarEntryForm extends Model
         $result |= $this->reminderSettings->load($data);
         $result |= $this->recurrenceForm->load($data);
 
-        $this->updateEntryDates();
+        $this->updateModelDates();
 
         return (bool) $result;
     }
 
-    private function updateEntryDates()
+    private function updateModelDates()
     {
         $startDt = $this->getStartDateTime();
         $endDt =  $this->getEndDateTime();
@@ -345,8 +338,6 @@ class CalendarEntryForm extends Model
             $this->entry->start_datetime = CalendarUtils::translateToSystemTimezone($startDt, $this->timeZone);
             $this->entry->end_datetime = CalendarUtils::translateToSystemTimezone($endDt, $this->timeZone);
         }
-
-        $this->updateDateRange($this->entry->start_datetime, $this->entry->end_datetime);
     }
 
     /**

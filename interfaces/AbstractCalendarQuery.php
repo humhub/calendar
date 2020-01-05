@@ -11,7 +11,7 @@ namespace humhub\modules\calendar\interfaces;
 use DateInterval;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentCalendarEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
@@ -21,6 +21,7 @@ use DateTime;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ActiveQueryContent;
 use yii\base\Component;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -33,6 +34,29 @@ use yii\db\ActiveRecord;
  */
 abstract class AbstractCalendarQuery extends Component
 {
+    /**
+     * Available filters
+     */
+    const FILTER_PARTICIPATE = 1;
+
+    /**
+     * @deprecated This is a legacy filter which is not active anymore
+     */
+    const FILTER_NOT_RESPONDED = 3;
+
+    /**
+     * @deprecated This is a legacy filter which is not active anymore
+     */
+    const FILTER_RESPONDED = 4;
+    const FILTER_MINE = 5;
+    const FILTER_DASHBOARD = 6;
+    const FILTER_USERRELATED = 'userRelated';
+
+    /**
+     * If this filter is set, non readable entries will be included
+     */
+    const FILTER_INCLUDE_NONREADABLE = 'includeNonReadable';
+
     /**
      * @var string Defines the ActiveRecord class used for this query
      */
@@ -71,40 +95,17 @@ abstract class AbstractCalendarQuery extends Component
     public $dateFormat = 'Y-m-d H:i:s';
 
     /**
-     * Available filters
-     */
-    const FILTER_PARTICIPATE = 1;
-
-    /**
-     * @deprecated This is a legacy filter which is not active anymore
-     */
-    const FILTER_NOT_RESPONDED = 3;
-
-    /**
-     * @deprecated This is a legacy filter which is not active anymore
-     */
-    const FILTER_RESPONDED = 4;
-    const FILTER_MINE = 5;
-    const FILTER_DASHBOARD = 6;
-    const FILTER_USERRELATED = 'userRelated';
-
-    /**
-     * If this filter is set, non readable entries will be included
-     */
-    const FILTER_INCLUDE_NONREADABLE = 'includeNonReadable';
-
-    /**
      * @var array Activated query filters
      */
     protected $_filters = [];
 
     /**
-     * @var \yii\db\ActiveQuery the actual query instance
+     * @var ActiveQuery the actual query instance
      */
     protected $_query;
 
     /**
-     * @var \humhub\modules\user\models\User user instance used for some of the filters e.g. mine() filter
+     * @var User user instance used for some of the filters e.g. mine() filter
      */
     protected $_user;
 
@@ -155,14 +156,14 @@ abstract class AbstractCalendarQuery extends Component
 
     /**
      * @var bool determines if the query logic should try to auto assign a uid for the resulting events
-     * @see $uidProperty
+     * @see $uidField
      */
     protected $autoAssignUid = true;
 
     /**
      * @var string This field has to exist on the record class in order for [[autoAssignUid]] to work.
      */
-    protected $uidProperty = 'uid';
+    protected $uidField = 'uid';
 
     /**
      * @var bool if set to true, the [[expand()]] function can be used to expand events e.g. recurrences
@@ -205,8 +206,8 @@ abstract class AbstractCalendarQuery extends Component
         foreach ($result as $index => $entry) {
             /* @var $entry ActiveRecord */
 
-            if ($query->autoAssignUid && $entry->hasProperty($query->uidProperty) && empty($entry->{$query->uidProperty})) {
-                $entry->updateAttributes([$query->uidProperty => CalendarUtils::generateUUid()]);
+            if ($query->autoAssignUid && $entry->hasProperty($query->uidField) && empty($entry->{$query->uidField})) {
+                $entry->updateAttributes([$query->uidField => CalendarUtils::generateUUid()]);
             }
 
 
@@ -236,7 +237,7 @@ abstract class AbstractCalendarQuery extends Component
             return;
         }
 
-        /* @var $entry RecurrentCalendarEventIF */
+        /* @var $entry RecurrentEventIF */
 
         // Make sure we only expand recurrence roots
         if (RecurrenceHelper::isRecurrentRoot($entry)) {
@@ -652,7 +653,7 @@ abstract class AbstractCalendarQuery extends Component
      * If $build is set to true, this method will build the filter query before.
      *
      * @param bool $build if ture this method will build the filter query before returning
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function query($build = false)
     {
@@ -762,7 +763,7 @@ abstract class AbstractCalendarQuery extends Component
 
     public function isRecurrenceSupported()
     {
-        return $this->expand && is_subclass_of(static::$recordClass, RecurrentCalendarEventIF::class);
+        return $this->expand && is_subclass_of(static::$recordClass, RecurrentEventIF::class);
     }
 
     /**

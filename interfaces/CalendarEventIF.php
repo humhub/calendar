@@ -18,20 +18,33 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateTime;
 use humhub\widgets\Label;
+use DateTimeInterface;
 
 interface CalendarEventIF
 {
+    /**
+     * Used when the detail view should be opened within a modal
+     */
     const VIEW_MODE_MODAL = 'modal';
+
+    /**
+     * Used when the detail view should be opened within a new tab
+     */
     const VIEW_MODE_BLANK = 'blank';
+
+    /**
+     * Used when the detail view should be opened by redirect link
+     */
     const VIEW_MODE_REDIRECT = 'redirect';
 
     /**
-     * @return string
+     * @return string a unique id for this event, used e.g. for ICal exports. Can be automatically created when using [AbstractCalendarQuery].
+     * @see AbstractCalendarQuery::$autoAssignUid
      */
     public function getUid();
 
     /**
-     * @return CalendarTypeIF
+     * @return CalendarTypeIF instance of the related calendar type
      */
     public function getType();
 
@@ -42,24 +55,17 @@ interface CalendarEventIF
     public function isAllDay();
 
     /**
-     * @return DateTime start datetime object of this calendar item, ideally with timezone information
+     * @return DateTimeInterface start datetime object of this calendar item, ideally with timezone information
      */
     public function getStartDateTime();
 
     /**
-     * @return DateTime end datetime object of this calendar item, ideally with timezone information
+     * @return DateTimeInterface end datetime object of this calendar item, ideally with timezone information
      */
     public function getEndDateTime();
 
     /**
-     * The timezone this item was originally saved. Note this has not to be the same timezone as getStartDateTime/getEndDateTime,
-     * and is merely used for rendering the original date of all_day dates with timeZone information.
-     *
-     * For example, $item1 was saved with all_day = 1 and a timezone field UTC+02:00, but the dates within the database fields are translated to app timezone.
-     *
-     * When rendering the date information of $item1 we translate the date back to UTC+02:00 and render startDate - endDate (UTC+02:00)
-     *
-     * @return string the timezone this item was originally saved, note this is
+     * @return string  The timezone string of this item.
      */
     public function getTimezone();
 

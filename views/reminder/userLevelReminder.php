@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\libs\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -13,11 +14,16 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('CalendarModule.base', '<strong>Set</strong> reminder')]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('CalendarModule.base', '<strong>Reminder</strong> settings')]) ?>
 
     <?php $form = ActiveForm::begin() ?>
         <div class="modal-body">
-
+            <div class="help-block">
+                <?= Yii::t('CalendarModule.reminder', 'Your reminder settings for event: <strong>\'{title}\'</strong>', [
+                        'title' => Html::encode($reminderSettings->entry->getTitle())
+                ])?>
+            </div>
+            <hr>
             <?= $this->render('@calendar/views/common/_reminder_config', ['settings' => $reminderSettings, 'form' => $form])?>
 
         </div>

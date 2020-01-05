@@ -6,6 +6,7 @@ namespace calendar;
 
 use humhub\modules\calendar\Events;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -25,6 +26,7 @@ class CalendarUnitTest extends HumHubDbTestCase
         parent::_before();
         Events::registerAutoloader();
         CalendarReminder::flushDefautlts();
+        CalendarService::flushCache();
         Yii::$app->getModule('calendar')->maxReminder = 100;
     }
 

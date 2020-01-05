@@ -420,6 +420,8 @@ class CalendarReminder extends ActiveRecord
             $query->andWhere(['IS' ,'contentcontainer_id', new Expression('NULL')]);
         } else if($user instanceof User) {
             $query->andWhere(['contentcontainer_id' => $user->contentcontainer_id]);
+        } else {
+            $query->andWhere(['contentcontainer_id' => $model->getContentRecord()->contentcontainer_id]);
         }
 
         $result = $query->all();

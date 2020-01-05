@@ -1,30 +1,73 @@
-# Calendar interface v0.6
+# Calendar interface v1.0
 
-Since calendar module version 0.6 it is possible to injecting calendar items into the calendar and snippet.
+This guide describes how to facilitate the calendar interface in your own custom module in order to inject own
+event types into the calendar.
 
-All interface files reside within the `interface` directory of the calendar module.
+All interface files reside within the `interface` directory of the calendar module. Calendar interface implementations
+should reside within the  `integration/calendar` directory of your custom module.
 
-## Exporting calendar item types
+> Note: Calendar v1.0 switched from an array type interface to real class level interfaces. The old array type interface is still
+>supported but deprecated.
 
-A calendar item type can be used to mark your exported calendar item. A meeting module for example
-can export a `meeting` item type. Exported item types provide a config with the following options:
+## Calendar item types
+
+A calendar item type is used to provide some meta data of your custom event type as for example:
 
  - `title`: A translatable title
- - `color`: A default color used for this item type, which can be overwritten in the calendar module config
- - `icon`: Icon related to this event type
+ - `description`: Short translatable description of your item type
+ - `default color` (optional): A default color used for this item type, which can be overwritten in the calendar module config
+ - `icon` (optional): Icon related to this event type e.g. `fa-calendar`
+ 
+Add your own custom calendar item type by implementing the `humhub\modules\calendar\interfaces\CalendarTypeIF`:
 
-In order to export one or more item types, your Module has to implement a listener for the `humhub\modules\calendar\interfaces\CalendarService::getItemTypes` event as in the following example.
+**MeetingItemType.php:**
+
+```php
+use humhub\modules\calendar\interfaces\CalendarTypeIF;
+
+class CustomItemType implements CalendarTypeIF
+{
+    const ITEM_TYPE = 'customEvent';
+
+    public function getKey()
+    {
+        static::ITEM_TYPE;
+    }
+
+    public function getDefaultColor()
+    {
+        return '#ffffff';
+    }
+
+    public function getTitle()
+    {
+        return Yii::t('MymoduleModule.integration', 'CustomEvent');
+    }
+
+    public function getDescription()
+    {
+        return Yii::t('MymoduleModule.integration', 'A custom calendar event');
+    }
+
+    public function getIcon()
+    {
+        return 'fa-calendar-o';
+    }
+}
+```
+
+Then configure a event listener for the `getItemTypes` of `humhub\modules\calendar\interfaces\CalendarService`:
 
 **config.php**:
 
 ```php
 return [
-    'id' => 'meeting',
-    'class' => 'humhub\modules\meeting\Module',
-    'namespace' => 'humhub\modules\meeting',
+    'id' => 'mymodule',
+    'class' => 'mymodule\Module',
+    'namespace' => 'mymodule',
     'events' => [
         //...
-        ['class' => 'humhub\modules\calendar\interfaces\CalendarService', 'event' => 'getItemTypes', 'callback' => ['humhub\modules\meeting\Events', 'onGetCalendarItemTypes']],
+        ['class' => 'humhub\modules\calendar\interfaces\CalendarService', 'event' => 'getItemTypes', 'callback' => ['mymodule\Events', 'onGetCalendarItemTypes']],
     ],
 ];
 ```
@@ -32,103 +75,115 @@ return [
 **Event.php:**
 
 ```php
-public static function onGetCalendarItemTypes($event)
+public static function onGetCalendarItemTypes(CalendarItemTypesEvent $event)
 {
     $contentContainer = $event->contentContainer;
 
-    if(!$contentContainer || $contentContainer->isModuleEnabled('meeting')) {
-        $event->addType('meeting', [
-            'title' => Yii::t('MeetingModule.base', 'Meeting'),
-            'color' => static::DEFAULT_COLOR,
-            'icon' => 'fa-calendar-o'
-        ]);
+    if(!$contentContainer || $contentContainer->isModuleEnabled('mymodule')) {
+        $event->addType(CustomItemType::ITEM_TYPE, new CustomItemType());
     }
 }
 ```
+
+Your custom item type should now be listed within the `Other calendars` section of your global and space calendar module settings (in case the module is enabled).
 
 > Note: Don't forget to check if your module is enabled on the given `$event->contentContainer`. If no `contentContainer` is
 given it's meant to be a global search for all available calendar item types.
 
-## Inject calendar items
+## Calendar Events
 
-In order to inject calendar items into a calendar you have to implement a listener for `humhub\modules\calendar\interfaces\CalendarService::findItems` as in the following example.
+Custom calendar event models have to implement the `humhub\modules\calendar\interfaces\CalendarEventIF`.
+In case you are implementing a `ActiveRecord` based event model, your record table should ideally contain the following fields:
 
-**config.php**:
+ - `uid`: A unique id, the uid can also be created automatically by the calendar interface when using the `AbstractCalendarQuery`
+ - `start_datetime`: start date time (usually saved in system timezone for non all day events)
+ - `end_datetime`: end date time (usually saved in system timezone for non all day events)
 
-```php
-return [
-    //...
-    'events' => [
-        //...
-        ['class' => 'humhub\modules\calendar\interfaces\CalendarService', 'event' => 'findItems', 'callback' => ['humhub\modules\meeting\Events', 'onFindCalendarItems']],
-    ],
-];
-``` 
+> Note: In most cases want to keep the dependency of your module to the calendar module optional. Therefore you should not directly
+>implement the `CalendarEventIF` on the model class and instead implement a integration class within your `integration/calendar`
+>directory as in the following example.
 
-Items are appended by means of `$event->addItems($itemTypeKey, $itemsArray)`. The item array can contain the following values:
+### CalendarEventIF implementation
+ 
+The following example shows a calendar integration by means of a `ContentActiveRecord`.
+ 
+First implement your custom `ContentActiveRecord` class:
 
- - `start`: DateTime instance of the start time ideally with timezone (otherwise we assume app timezone).
- - `end`: DateTime instance of the end time ideally with timezone (otherwise we assume app timezone).
- - `allDay`: Boolean whether or not the events are all-day events.
- - `title`: The title of the given item, displayed in the calendar and snippet
- - `editable`: Whether or not this item is editable (resize/drag/drop) this will also require the updateUrl
- - `viewUrl`: This link will be loaded into a modal once the item is selected in the calendar
- - `openUrl`: A link to the actual content (e.g Permalink) used in the snippet
- - `icon`: An font awesome icon class as for example `fa-bell`, used to prepended an icon to the event dom element
- - `updateUrl`: A url used to directly update the start/end time in case `editable` is set to true
-
-> Note: If you want to add full-day events, you must add a day to the end date and set the time to 00:00:00. 
-The following example demonstrates this:
+**mymodule/models/CustomEvent.php**:
 
 ```php
-// Example 1: We want to add an one-day all-day event: 01.01.2018
-$start = new DateTime('2018-01-01 00:00:00')
-$end = new DateTime('2018-01-02 00:00:00')  // one day longer, but time set to 00:00:00!
-```
+namespace mymodule/models;
 
-```php
-// Example 2: We want to add a two-day all-day event: 01.01.2018 - 02.01.2018
-$start = new DateTime('2018-01-01 00:00:00')
-$end = new DateTime('2018-01-03 00:00:00')  // one day longer, but time set to 00:00:00!
-```
-
-**Event.php:**
-
-```php
-public static function onFindCalendarItems($event)
-{
-    $contentContainer = $event->contentContainer;
-
-    if(!$contentContainer || $contentContainer->isModuleEnabled('meeting')) {
-        /* @var $meetings Meeting[] */
-        $meetings = MeetingCalendarQuery::findForEvent($event);
-
-        $items = [];
-        foreach ($meetings as $meeting) {
-            $items[] = [
-                'start' => $meeting->getBeginDateTime(),
-                'end' => $meeting->getEndDateTime(),
-                'title' => $meeting->title,
-                'editable' => true,
-                'icon' => 'fa-calendar-o',
-                'viewUrl' => $meeting->content->container->createUrl('/meeting/index/modal', ['id' => $meeting->id, 'cal' => true]),
-                'openUrl' => $meeting->content->getUrl(),
-                'updateUrl' => $meeting->content->container->createUrl('/meeting/index/calendar-update', ['id' => $meeting->id]),
-            ];
-        }
-
-        $event->addItems(static::ITEM_TYPE_KEY, $items);
-    }
+class CustomEvent extends ConentActiveRecord {
+    // Model logic of your module
 }
 ```
 
-For filtering out Items which do not match our `$event->filters` we simply have to extend
- `humhub\modules\calendar\interfaces\AbstractCalendarQuery`. The subclass of this helper should overwrite the follwoing fields:
+Then implement the integration class:
+
+**mymodule/integration/calendar/CustomCalendarEvent.php**:
+
+```
+namespace mymodule/integration/calendar;
+
+class CustomCalendarEvent extends CustomEvent implements CalendarEventIF {
+  // Implement all missing CalendarEventIF functions not alrady defined in your base model class
+
+  public static function getObjectModel() {
+    return CustomEvent::class;
+  }
+}
+```
+
+Your integration needs to implement the following functions:
+
+ - `getUid()`: returns a uid for this event. This is besides others used for ICal exports and can be automatically be created when using the `AbstractCalendarQuery` with active `$autoAssignUid`
+ - `getType()`: returns an instance of the related calendar type
+ - `isAllDay()`: weather or not this event is an all day event
+ - `getStartDateTime()`: start datetime object of this calendar item, ideally with timezone information
+ - `getEndDateTime()`: end datetime object of this calendar item, ideally with timezone information
+ - `getTimezone()`: string the timezone string
+ - `getUrl()`: An url to the detail view of this event, e.g. used in the sidebar snippet
+ - `getCalendarViewUrl()`: an url to the view used when clicking on a calendar entry in the calendar view, used in combination with `getCalendarViewMode()`
+ - `getCalendarViewMode()`: One of the following view modes: `modal`, `blank`, `redirect`. Used when clicking on a calendar entry within the calendar view.
+ - `getUpdateUrl()`: An action url used to update the start/end of the event when dragging the event within the calendar only required when `isEditable()` return true
+ - `isEditable()`: Weather or not the calendar entry can be directly edited within the calendar view by drag/drop, should make use of `$model->content->canEdit()` when working with ContentActiveRecords
+ - `getColor()`: A color used within the calendar view and sidebar snippet
+ - `getTitle()`: A event title, e.g. used for ICal export and the sidebar snippet
+ - `getDescription()`: A event description e.g. used for ICal export and the sidebar snippet
+ - `getLocation()`: (optional) a event location string
+ - `getBadge()`: (optional) a label used in the sidebar snippet
+ - `getIcon()`: (optional) a icon used in the sidebar snippet e.g. 'fa-calendar'
+ - `getCalendarOptions()`: (optional) additional configuration for future use
+ 
+### AbstractCalendarQuery implementation
+
+You should implement a custom `AbstractCalendarQuery` when using `ActiveRecord` based calendar models. 
+The `AbstractCalendarQuery` will be responsible for querying your events and automatically supports some calendar filters
+by default. A very simple `AbstractCalendarQuery` is shown in the following example:
+
+**mymodule/integration/calendar/CustomCalendarEventQuery**:
+
+```php
+class CustomCalendarEventQuery extends AbstractCalendarQuery
+{
+    protected static $recordClass = CustomCalendarEvent::class;
+}
+```
+
+The previous example implies that our CustomCalendarEvent model uses the default database fields for `start_datetime` and `end_datetime`
+and the default date time format. For more complex scenarios, please refer to:
+ 
+ Subclasses of AbstractCalendarQuery may overwrite:
  
  - `recordClass`: a `ActiveRecord` class string used for initializing the query.
  - `startField`: the name of the database field for the start date
  - `endField`: the name of the database field for the end date, if there is no explicit end field use the start field
  - `dateFormat`: the database date format of your date fields 
+ - `rruleField`, `parentEventIdField`: used when handling recurrent events see the [Recurrent Event Guide](recurrence.md) for more information
+ - `autoAssignUid`: weather or not a uid should automatically assigned after querying a model, only set this to false when you manually assign a uid. If no uid field
+ available this step will be skipped by default.
+ - `uidField`: (optional) the name of the uid field
  
  In case your model extends `ContentActiveRecord` the query class provides a default implementation for the following filter:
  
@@ -153,6 +208,9 @@ For filtering out Items which do not match our `$event->filters` we simply have 
  >Note: Guest users are not able to use other filters than the `filterGuests`
  
  >Info: Modules can decide which events to include or exclude in the Dashboard snippet by using the `filterDashboard` filter
+
+The following example shows the implementation of a more complex AbstractCalendarQuery with custom start and end date field name
+, custom date format and custom participation filter. 
 
 **MeetingCalendarQuery example:**
 
@@ -179,9 +237,40 @@ class MeetingCalendarQuery extends AbstractCalendarQuery
 }
 ```
 
+### Inject calendar entries
+
+The actual calendar event integration is handled by the `findItems` event of `humhub\modules\calendar\interfaces\CalendarService`.
+
+**config.php**:
+
+```php
+return [
+    'events' => [
+        ['class' => 'humhub\modules\calendar\interfaces\CalendarService', 'event' => 'findItems', 'callback' => ['mymodule\Events', 'onFindCalendarItems']],
+    ],
+];
+``` 
+
+**Event.php:**
+
+```php
+public static function onFindCalendarItems(CalendarItemsEvent $event)
+{
+    $contentContainer = $event->contentContainer;
+
+    if(!$contentContainer || $contentContainer->isModuleEnabled('mymodule')) {
+        $event->addItems(static::ITEM_TYPE_KEY, CustomCalendarEventQuery::findForEvent($event));
+    }
+}
+```
+
+> Note: The handlers `CalendarItemsEvent` either contains a `$contentContainer` for Space or user Profile related events or no 
+`$contentContainer` for global search events.
+
 ### Allow Drag-Drop and Resize of calendar items
 
-If you provide an `updateUrl` and set the `editable` to true, you have to implement a update controller function as the following:
+If you return an url in `getUpdateUrl()` and set the `isEditable()` of your event model to true, 
+you have to implement a update controller function as the following:
 
 **IndexController.php**
 

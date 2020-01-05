@@ -12,7 +12,7 @@ use DateTime;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\interfaces\CalendarEventIF;
 
-interface RecurrentCalendarEventIF extends CalendarEventIF
+interface RecurrentEventIF extends CalendarEventIF
 {
     /**
      * @return string
@@ -56,13 +56,15 @@ interface RecurrentCalendarEventIF extends CalendarEventIF
      */
     public function getExdate();
 
+    public function setExdate($exdateStr);
+
     public function getId();
 
     public function getRecurrenceRootId();
     public function setRecurrenceRootId($rootId);
 
     /**
-     * @return RecurrentCalendarEventIF
+     * @return RecurrentEventIF
      */
     public function getRecurrenceRoot();
 

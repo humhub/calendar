@@ -145,6 +145,9 @@ class EntryController extends ContentContainerController
 
         if (empty($id) && $this->canCreateEntries()) {
             $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end);
+            if(!Yii::$app->request->post()) { // Set default time for all day events creation other than 00:00, 23:59
+                $calendarEntryForm->setDefaultTime();
+            }
         } else {
             $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
             if(!$calendarEntryForm->entry->content->canEdit()) {
