@@ -2,8 +2,12 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
+use Throwable;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
@@ -36,8 +40,8 @@ class EntryController extends ContentContainerController
      * @param null $cal
      * @return string
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function actionView($id, $cal = null)
     {
@@ -65,8 +69,8 @@ class EntryController extends ContentContainerController
      * @param $recurrence_id
      * @param null $cal
      * @return mixed
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function actionViewRecurrence($parent_id, $recurrence_id, $cal = null)
     {
@@ -109,8 +113,8 @@ class EntryController extends ContentContainerController
      * @param $type
      * @return \yii\web\Response
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function actionRespond($id, $type)
     {
@@ -130,24 +134,21 @@ class EntryController extends ContentContainerController
     }
 
     /**
-     * @param null $id
-     * @param null $start
-     * @param null $end
-     * @param null $cal
+     *
+     * @param null $id calendar entry id
+     * @param null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
+     * @param null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
+     * @param null $cal whether or not the edit event came from the calendar view
      * @return string
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function actionEdit($id = null, $start = null, $end = null, $cal = null)
     {
-
         if (empty($id) && $this->canCreateEntries()) {
             $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end);
-            if(!Yii::$app->request->post()) { // Set default time for all day events creation other than 00:00, 23:59
-                $calendarEntryForm->setDefaultTime();
-            }
         } else {
             $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
             if(!$calendarEntryForm->entry->content->canEdit()) {
@@ -165,6 +166,8 @@ class EntryController extends ContentContainerController
             } else {
                 return $this->renderModal($calendarEntryForm->entry, 1);
             }
+        } elseif(!Yii::$app->request->post()) { // Set default time for all day events creation other than 00:00, 23:59
+            $calendarEntryForm->setDefaultTime();
         }
 
         return $this->renderAjax('edit', [
@@ -178,8 +181,8 @@ class EntryController extends ContentContainerController
      * @param $id
      * @return \yii\web\Response
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function actionToggleClose($id)
     {
@@ -201,8 +204,8 @@ class EntryController extends ContentContainerController
     /**
      * @return \yii\web\Response
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function actionEditAjax($id)
     {
@@ -230,8 +233,8 @@ class EntryController extends ContentContainerController
     /**
      * @return mixed
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function actionUserList()
     {
@@ -264,8 +267,8 @@ class EntryController extends ContentContainerController
      * @param $id
      * @return EntryController|\yii\console\Response|\yii\web\Response
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
@@ -294,8 +297,8 @@ class EntryController extends ContentContainerController
      *
      * @param int $id
      * @return CalendarEntry
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     protected function getCalendarEntry($id)
     {
@@ -305,7 +308,7 @@ class EntryController extends ContentContainerController
     /**
      * Checks the CreatEntry permission for the given user on the given contentContainer.
      * @return bool
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     private function canCreateEntries()
     {
@@ -314,8 +317,8 @@ class EntryController extends ContentContainerController
 
     /**
      * @return \yii\console\Response|\yii\web\Response
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      * @throws \yii\web\RangeNotSatisfiableHttpException
      */
     public function actionGenerateics()

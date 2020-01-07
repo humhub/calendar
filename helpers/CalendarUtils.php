@@ -154,13 +154,13 @@ class CalendarUtils
             return false;
         }
 
-        $startCondition = static::getTime($start) === '00:00';
+        $startCondition = static::getTimeString($start) === '00:00';
 
         if(!$startCondition) {
             return false;
         }
 
-        $endTime = static::getTime($end);
+        $endTime = static::getTimeString($end);
 
         if($endDateMomentAfter === null) {
             return $endTime === '00:00' || $endTime === '23:59';
@@ -179,12 +179,12 @@ class CalendarUtils
      * @return string
      * @throws \Exception
      */
-    public static function getTime($date, $format = self::TIME_FORMAT_SHORT)
+    public static function getTimeString($date, $format = self::TIME_FORMAT_SHORT)
     {
         return static::getDateTime($date)->format(static::parseFormat($format));
     }
 
-    public static function getDate($date, $format = self::DATE_FORMAT_SHORT)
+    public static function getDateString($date, $format = self::DATE_FORMAT_SHORT)
     {
         return static::getDateTime($date)->format(static::parseFormat($format));
     }
@@ -315,7 +315,7 @@ class CalendarUtils
             $fromTZ = static::getUserTimeZone();
         }
 
-        return static::translateTimezone($date, $fromTZ, Yii::$app->timeZone, $format);
+        return static::translateTimezone($date, $fromTZ, static::getSystemTimeZone(), $format);
     }
 
     public static function translateTimezone($date, $fromTZ, $toTZ, $format = self::DB_DATE_FORMAT)

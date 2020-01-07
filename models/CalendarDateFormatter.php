@@ -18,6 +18,7 @@
 namespace humhub\modules\calendar\models;
 
 
+use humhub\modules\calendar\helpers\CalendarUtils;
 use Yii;
 use DateTime;
 use humhub\libs\TimezoneHelper;
@@ -41,15 +42,16 @@ class CalendarDateFormatter extends Component
         }
     }
 
-    public function getFormattedStartDate($format = 'long', $timeZone = null)
+    public function getFormattedStartDate($format = 'long')
     {
-        if($timeZone) {
-            Yii::$app->formatter->timeZone = $timeZone;
+        // Ignore timezone for all_day events
+        if($this->calendarItem->isAllDay()) {
+            Yii::$app->formatter->timeZone = CalendarUtils::getSystemTimeZone();
         }
 
         $result = Yii::$app->formatter->asDate($this->calendarItem->getStartDateTime(), $format);
 
-        if($timeZone) {
+        if($this->calendarItem->isAllDay()) {
             Yii::$app->i18n->autosetLocale();
         }
 
@@ -71,15 +73,15 @@ class CalendarDateFormatter extends Component
         return $result;
     }
 
-    public function getFormattedEndDate($format = 'long', $timeZone = null)
+    public function getFormattedEndDate($format = 'long')
     {
-        if($timeZone) {
-            Yii::$app->formatter->timeZone = $timeZone;
+        if($this->calendarItem->isAllDay()) {
+            Yii::$app->formatter->timeZone = CalendarUtils::getSystemTimeZone();
         }
 
         $result = Yii::$app->formatter->asDate($this->calendarItem->getEndDateTime(), $format);
 
-        if($timeZone) {
+        if($this->calendarItem->isAllDay()) {
             Yii::$app->i18n->autosetLocale();
         }
 
@@ -121,16 +123,10 @@ class CalendarDateFormatter extends Component
 
     protected  function getFormattedAllDay($format = 'long')
     {
-        $userTimeZone = Yii::$app->formatter->timeZone;
-        $resultTimeZone = empty($this->calendarItem->getTimezone()) ? Yii::$app->timeZone : $this->calendarItem->getTimezone();
-        $result = $result = $this->getFormattedStartDate($format, $resultTimeZone);
+        $result = $this->getFormattedStartDate($format);
 
         if($this->getDurationDays() > 1) {
-            $result .= ' - ' . $this->getFormattedEndDate($format, $resultTimeZone);
-        }
-
-        if($resultTimeZone !== $userTimeZone) {
-            $result .= ' ('.  self::getTimezoneLabel($resultTimeZone) .')';
+            $result .= ' - ' . $this->getFormattedEndDate($format);
         }
 
         return $result;

@@ -445,25 +445,28 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
         return ($this->isAllDay()) ? 'UTC' : $this->time_zone;
     }
 
+    /**
+     * @return DateTime|\DateTimeInterface
+     * @throws \Exception
+     */
     public function getStartDateTime()
     {
-        return new DateTime($this->start_datetime, new DateTimeZone(Yii::$app->timeZone));
+        return new DateTime($this->start_datetime, CalendarUtils::getSystemTimeZone(false));
     }
 
+    /**
+     * @return DateTime|\DateTimeInterface
+     * @throws \Exception
+     */
     public function getEndDateTime()
     {
-        return new DateTime($this->end_datetime, new DateTimeZone(Yii::$app->timeZone));
+        return new DateTime($this->end_datetime, CalendarUtils::getSystemTimeZone(false));
     }
 
-    public function getEndDateTimeMomentAfter()
-    {
-        if($this->isAllDay()) {
-            return $this->getEndDateTime()->modify('+2 hours')->setTime(0,0,0);
-        }
-
-        return $this->getEndDateTime();
-    }
-
+    /**
+     * @param string $format
+     * @return string
+     */
     public function getFormattedTime($format = 'long')
     {
         return $this->formatter->getFormattedTime($format);
