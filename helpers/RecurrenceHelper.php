@@ -65,7 +65,7 @@ class RecurrenceHelper
         $date = ($recurrentId instanceof \DateTimeInterface) ? $recurrentId : new DateTime($recurrentId, new DateTimeZone('UTC'));
 
         if($targetTZ) {
-            $date->setTimezone(new DateTimeZone($targetTZ));
+            $date->setTimezone(CalendarUtils::getDateTimeZone($targetTZ));
         }
 
         return $date->format(static::ICAL_TIME_FORMAT);
@@ -129,5 +129,4 @@ class RecurrenceHelper
         return implode(',', $exdateArr);
 
     }
-
 }

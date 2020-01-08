@@ -14,23 +14,34 @@ use humhub\modules\calendar\interfaces\CalendarEventIF;
 
 interface RecurrentEventIF extends CalendarEventIF
 {
-    /**
-     * @return string
-     */
-    public function getRrule();
+    public function getId();
 
+    public function getRrule();
     public function setRrule($rrule);
 
-    public function getRecurrenceId();
+    public function getRecurrenceRootId();
+    public function setRecurrenceRootId($rootId);
 
+    public function getRecurrenceId();
     public function setRecurrenceId($recurrenceId);
 
-    public function setUid($uid);
+    /**
+     * @return string|null
+     */
+    public function getExdate();
+
+    public function setExdate($exdateStr);
 
     /**
-     * @return static[]
+     * @return AbstractRecurrenceQuery
      */
-    public function getFollowingInstances();
+    public function getRecurrenceQuery();
+
+    /**
+     * @param $event static
+     * @return mixed
+     */
+    public function syncEventData($event);
 
     /**
      * @param $root
@@ -40,38 +51,4 @@ interface RecurrentEventIF extends CalendarEventIF
      * @return mixed
      */
     public function createRecurrence($start, $end, $recurrenceId);
-
-    public function saveRecurrenceInstance();
-
-    public function deleteRecurrenceInstance();
-
-    /**
-     * @param $event static
-     * @return mixed
-     */
-    public function syncFromRecurrentRoot($event);
-
-    /**
-     * @return string|null
-     */
-    public function getExdate();
-
-    public function setExdate($exdateStr);
-
-    public function getId();
-
-    public function getRecurrenceRootId();
-    public function setRecurrenceRootId($rootId);
-
-    /**
-     * @return RecurrentEventIF
-     */
-    public function getRecurrenceRoot();
-
-    public function getRecurrenceViewUrl($cal = false);
-
-    /**
-     * @return Content
-     */
-    public function getContentRecord();
 }

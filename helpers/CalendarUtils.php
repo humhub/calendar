@@ -6,6 +6,8 @@ use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use humhub\libs\DateHelper;
+use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\content\models\Content;
 use Sabre\VObject\UUIDUtil;
 use Yii;
 
@@ -318,6 +320,14 @@ class CalendarUtils
         return static::translateTimezone($date, $fromTZ, static::getSystemTimeZone(), $format);
     }
 
+    /**
+     * @param DateTimeInterface|string $date
+     * @param DateTimeZone| string $fromTZ
+     * @param DateTimeZone| string $toTZ
+     * @param string $format
+     * @return DateTime|string
+     * @throws \Exception
+     */
     public static function translateTimezone($date, $fromTZ, $toTZ, $format = self::DB_DATE_FORMAT)
     {
         $date = static::getDateTime($date);
@@ -357,16 +367,31 @@ class CalendarUtils
 
     public static function ensureAllDay(DateTime $startDt, DateTime $endDt)
     {
-        if($endDt == $startDt) {
-            $endDt->setTime(23,59,59);
-        } else if($endDt->format(static::parseFormat(static::TIME_FORMAT_SHORT)) === '00:00') {
-            $endDt->modify('-1 second');
-        }
-
+        $endDt->setTime(23,59,59);
         $startDt->setTime(0,0,0);
     }
 
     public static function generateUUid($type = 'event') {
         return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
+    }
+
+    public static function getCalendarEvent($model)
+    {
+        if($model instanceof Content) {
+            $model = $model->getModel();
+        }
+
+        if($model instanceof CalendarEventIF) {
+            return $model;
+        }
+
+        if(method_exists($model, 'getCalendarEvent')) {
+            $event = $model->getCalendarEvent();
+            if($event instanceof CalendarEventIF) {
+                return $event;
+            }
+        }
+
+        return null;
     }
 }

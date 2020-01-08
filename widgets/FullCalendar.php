@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\assets\Assets;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\widgets\JsWidget;
 use Yii;
@@ -72,7 +73,7 @@ class FullCalendar extends JsWidget
             'select-helper' => $this->canWrite,
             'selectors' => $this->selectors,
             'filters' => $this->filters,
-            'timezone' =>  Yii::$app->formatter->timeZone,
+            'timezone' =>  CalendarUtils::getUserTimeZone(true),
             'locale' => $this->translateLocale(Yii::$app->formatter->locale),
         ];
     }

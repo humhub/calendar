@@ -26,9 +26,14 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
             </h4>
             <h5>
                 <?= $calendarEntry->getFormattedTime() ?>
+                <?php if($calendarEntry->isAllDay()) : ?>
+                        <small>(<?= Yii::t('CalendarModule.base', 'All Day') ?>)</small>
+                <?php endif; ?>
             </h5>
+
         </div>
         <?php if (!empty($calendarEntry->description)) : ?>
+            <hr>
             <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full description...") ?>" style="overflow:hidden">
                 <?= RichText::output($calendarEntry->description); ?>
             </div>

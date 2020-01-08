@@ -3,12 +3,14 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\ReminderService;
 use humhub\modules\calendar\models\FullCalendar;
 use Yii;
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentContainerController;
+use yii\base\InvalidConfigException;
 
 /**
  * ViewController displays the calendar on spaces or user profiles.
@@ -40,7 +42,8 @@ class ViewController extends ContentContainerController
 
     /**
      * @return string
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
+     * @throws \Throwable
      */
     public function actionIndex()
     {

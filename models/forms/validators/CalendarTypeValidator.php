@@ -33,7 +33,7 @@ class CalendarTypeValidator extends Validator
 
         $type = CalendarEntryType::findOne(['id' => $model->type_id]);
 
-        if (!empty($type->contentcontainer_id) && $type->contentcontainer_id !== $this->entry->content->contentcontainer_id) {
+        if (!empty($type->contentcontainer_id) && $type->contentcontainer_id !== $model->entry->content->contentcontainer_id) {
             $this->addError($model, $attribute, Yii::t('CalendarModule.base', "Invalid event type id selected."));
         }
     }

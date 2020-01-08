@@ -28,11 +28,6 @@ interface CalendarEventIF
     const VIEW_MODE_MODAL = 'modal';
 
     /**
-     * Used when the detail view should be opened within a new tab
-     */
-    const VIEW_MODE_BLANK = 'blank';
-
-    /**
      * Used when the detail view should be opened by redirect link
      */
     const VIEW_MODE_REDIRECT = 'redirect';
@@ -42,6 +37,12 @@ interface CalendarEventIF
      * @see AbstractCalendarQuery::$autoAssignUid
      */
     public function getUid();
+
+    /**
+     * @param $uid
+     * @return mixed
+     */
+    public function setUid($uid);
 
     /**
      * @return CalendarTypeIF instance of the related calendar type
@@ -118,7 +119,7 @@ interface CalendarEventIF
     public function getLocation();
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDescription();
 
@@ -134,7 +135,7 @@ interface CalendarEventIF
 
     /**
      * Additional configuration options
-     * @return array
+     * @return array|null
      */
     public function getCalendarOptions();
 }

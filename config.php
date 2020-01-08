@@ -28,7 +28,7 @@ return [
         ['class' => 'humhub\modules\calendar\interfaces\CalendarService', 'event' => 'getItemTypes', 'callback' => [Events::class, 'onGetCalendarItemTypes']],
         ['class' => 'humhub\modules\calendar\interfaces\CalendarService', 'event' => 'findItems', 'callback' => [Events::class, 'onFindCalendarItems']],
         ['class' => WallEntryLinks::class, 'event' => WallEntryLinks::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryLinks']],
-        ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentDelete']],
+        ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onContentDelete']],
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronRun']],
     ],

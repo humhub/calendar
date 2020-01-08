@@ -8,9 +8,11 @@
 namespace humhub\modules\calendar\models;
 
 
-use humhub\modules\calendar\interfaces\CalendarEventStatusIF;
 use Yii;
 use DateTime;
+use Exception;
+use humhub\modules\calendar\interfaces\CalendarEventStatusIF;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\CalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\libs\Html;
@@ -20,16 +22,17 @@ class FullCalendar
     /**
      * @param CalendarEntry $entry
      * @return array
-     * @throws \yii\base\InvalidConfigException
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getFullCalendarArray(CalendarEventIF $entry)
     {
+        $calendarService = new CalendarService();
+
         $result = [
             'uid' => $entry->getUid(),
             'title' => static::getTitle($entry),
             'editable' => $entry->isEditable(),
-            'backgroundColor' => Html::encode($entry->getColor()),
+            'backgroundColor' => Html::encode($calendarService->getEventColor($entry)),
             'allDay' => $entry->isAllDay(),
             'updateUrl' => $entry->getUpdateUrl(),
             'viewUrl' => $entry->getCalendarViewUrl(),

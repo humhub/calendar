@@ -6,8 +6,8 @@ namespace humhub\modules\calendar\models\reminder;
 
 use DateTime;
 use humhub\components\ActiveRecord;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
@@ -197,7 +197,7 @@ class CalendarReminder extends ActiveRecord
      * @param User|null $user
      * @return CalendarReminder
      */
-    public static function initEntryLevel($unit, $value, CalendarEventReminderIF $model, User $user = null)
+    public static function initEntryLevel($unit, $value, CalendarEventReminderIF $model, $user = null)
     {
         $instance = new static(['unit' => $unit, 'value' => $value, 'active' => 1, 'content_id' => $model->getContentRecord()->id,  'disabled' => 0]);
 
@@ -214,7 +214,7 @@ class CalendarReminder extends ActiveRecord
      * @param ContentContainerActiveRecord $container
      * @return CalendarReminder
      */
-    public static function initDisableEntryLevelDefaults(CalendarEventReminderIF $model, User $user = null)
+    public static function initDisableEntryLevelDefaults(CalendarEventReminderIF $model, $user = null)
     {
         $instance = static::initEntryLevel(null, null, $model, $user);
         $instance->disabled = 1;
@@ -266,7 +266,7 @@ class CalendarReminder extends ActiveRecord
     {
         $content = $this->entryContent;
         if($content) {
-            return $content->getPolymorphicRelation();
+            return CalendarUtils::getCalendarEvent($content);
         }
 
         return null;
@@ -421,7 +421,7 @@ class CalendarReminder extends ActiveRecord
         } else if($user instanceof User) {
             $query->andWhere(['contentcontainer_id' => $user->contentcontainer_id]);
         } else {
-            $query->andWhere(['contentcontainer_id' => $model->getContentRecord()->contentcontainer_id]);
+            //$query->andWhere(['contentcontainer_id' => $model->getContentRecord()->contentcontainer_id]);
         }
 
         $result = $query->all();

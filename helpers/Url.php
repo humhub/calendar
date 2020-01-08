@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\helpers;
 
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\CalendarTypeIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
@@ -167,7 +168,7 @@ class Url extends BaseUrl
             $params['cal'] = 1;
         }
 
-        if($entry->isRecurringInstance()) {
+        if(RecurrenceHelper::isRecurrentInstance($entry)) {
             $params['parent_id'] = $entry->parent_event_id;
             $params['recurrence_id'] = $entry->recurrence_id;
             return $container->createUrl('/calendar/entry/view-recurrence', $params);
@@ -208,13 +209,13 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/generateics', ['id' => $entry->id]);
     }
 
-    public static function toUserLevelReminderConfig(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
+    public static function toUserLevelReminderConfig(CalendarEventReminderIF $entry, ContentContainerActiveRecord $container = null)
     {
         if(!$container) {
-            $container = $entry->content->container;
+            $container = $entry->getContentRecord()->container;
         }
 
-        return $container->createUrl('/calendar/reminder/set', ['id' => $entry->content->id]);
+        return $container->createUrl('/calendar/reminder/set', ['id' => $entry->getContentRecord()->id]);
     }
 
     public static function toEntryRespond(CalendarEntry $entry, $state, ContentContainerActiveRecord $container = null)

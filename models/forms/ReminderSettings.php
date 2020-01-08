@@ -6,7 +6,6 @@ namespace humhub\modules\calendar\models\forms;
 
 use Yii;
 use Throwable;
-use humhub\modules\calendar\helpers\Url;
 use humhub\modules\user\models\User;
 use yii\base\Model;
 use humhub\modules\calendar\interfaces\CalendarEventReminderIF;

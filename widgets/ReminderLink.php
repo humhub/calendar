@@ -10,6 +10,7 @@ namespace humhub\modules\calendar\widgets;
 use humhub\components\Widget;
 use humhub\libs\Html;
 use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\interfaces\CalendarEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
@@ -24,7 +25,7 @@ class ReminderLink extends Widget
 {
 
     /**
-     * @var CalendarEntry
+     * @var CalendarEventIF
      */
     public $entry = null;
 

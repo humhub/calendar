@@ -9,6 +9,8 @@ use DateTime;
 use humhub\modules\calendar\helpers\RRuleHelper;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
+use Recurr\Exception\InvalidArgument;
+use Recurr\Exception\InvalidRRule;
 use Recurr\Frequency;
 use Recurr\Rule;
 use Yii;
@@ -52,6 +54,11 @@ class RecurrenceFormModel extends Model
     public $endOccurrences = 10;
 
     /**
+     * @var RecurrenceService
+     */
+    public $recurrenceService;
+
+    /**
      * @var integer
      */
     public $recurrenceEditMode;
@@ -72,18 +79,20 @@ class RecurrenceFormModel extends Model
     private $rrule;
 
     /**
-     * @throws \Recurr\Exception\InvalidRRule
+     * @throws InvalidRRule
      */
     public function init()
     {
         parent::init();
         $this->initRrule($this->entry->getRrule());
+        $this->recurrenceService = new RecurrenceService();
     }
 
     /**
      * @param null $rruleStr
      * @return $this
-     * @throws \Recurr\Exception\InvalidRRule
+     * @throws InvalidRRule
+     * @throws \Exception
      */
     private function initRrule($rruleStr = null)
     {
@@ -186,7 +195,7 @@ class RecurrenceFormModel extends Model
      * @param $attribute
      * @param $params
      * @return |null
-     * @throws \Recurr\Exception\InvalidRRule
+     * @throws InvalidRRule
      */
     public function validateFrequency($attribute, $params)
     {
@@ -230,188 +239,27 @@ class RecurrenceFormModel extends Model
             return false;
         }
 
+        $this->entry->setRrule($this->buildRRuleString());
+
         switch($this->recurrenceEditMode) {
-            case static::EDIT_MODE_CREATE:
-                return $this->saveCreate();
             case static::EDIT_MODE_THIS:
                 // We only want to save this instance, so we ignore rrule changes
                 return true;
+            case static::EDIT_MODE_CREATE:
+                return $this->entry->getRecurrenceQuery()->save();
             case static::EDIT_MODE_FOLLOWING:
-                return $original ? $this->saveSplit($original) : false;
+                return $original ? $this->recurrenceService->splitRecurrentEvent($original, $this->entry) : false;
             case static::EDIT_MODE_ALL:
-                return $original ? $this->saveAll($original) : false;
+                return  $original ?  $this->recurrenceService->updateAll($original, $this->entry) : false;
         }
 
         return true;
-    }
-
-    protected function saveSplit(RecurrentEventIF $original)
-    {
-        if(RecurrenceHelper::isRecurrentRoot($this->entry)) {
-            return $this->saveAll($original);
-        }
-
-        try {
-            // Update until of old root
-            $root = $this->entry->getRecurrenceRoot();
-            $isFirstInstanceEdit = RecurrenceHelper::getRecurrentId($root) === $this->entry->getRecurrenceId();
-
-            // Generate new UID
-            $this->entry->setUid(CalendarUtils::generateUUid());
-            $this->entry->setRecurrenceId(null);
-
-            // Save this instance as a new recurrence root
-            $this->entry->setRecurrenceRootId(null);
-            $this->saveCreate();
-
-            $this->syncFollowingInstances($original);
-
-            if($isFirstInstanceEdit) {
-                // We are editing the first instance, so we do not need the old root anymore
-                // TODO: what about attached files?
-                $root->delete();
-            } else {
-                $root->setRrule(RRuleHelper::setUntil($root->getRrule(), $this->entry->getStartDateTime()->modify('-1 hour')));
-                $root->saveRecurrenceInstance();
-            }
-
-
-        } catch (\Exception $e) {
-            Yii::error($e);
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function saveAll(RecurrentEventIF $original)
-    {
-        $this->saveCreate();
-        $this->syncFollowingInstances($original);
-        return true;
-    }
-
-    protected function saveCreate()
-    {
-        try {
-            if ($this->interval === static::FREQUENCY_NEVER) {
-                $this->entry->setRrule(null);
-            } else {
-                $this->entry->setRrule($this->buildRRuleString());
-
-                if ($this->entry instanceof ActiveRecord) {
-                    return $this->entry->save();
-                }
-            }
-        } catch (\Exception $e) {
-            $this->addError('frequency', 'Could not save recurrent rule');
-            Yii::error($e);
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function syncFollowingInstances(RecurrentEventIF $original)
-    {
-        $followingInstances = $original->getFollowingInstances();
-
-        // Sync following events
-        if (!empty($followingInstances)) {
-            $lastInstance = end($followingInstances);
-
-            /**
-             * If editMode = all $original is the root node and we want to sync all existing recurrence instances
-             * If editMode = following $original is an old recurrent instance which itself should be excluded from sync
-             */
-            $searchStartDate = $this->recurrenceEditMode == static::EDIT_MODE_ALL
-                ? $original->getStartDateTime() : $original->getEndDateTime();
-
-            // If not recurrent, we delete all following instances
-            $remainingRecurrenceIds = ($this->interval === static::FREQUENCY_NEVER)
-                ? []
-                : RecurrenceHelper::getRecurrenceIds($this->entry, $searchStartDate, $lastInstance->getEndDateTime());
-
-            foreach ($followingInstances as $followingInstance) {
-                if (!in_array($followingInstance->getRecurrenceId(), $remainingRecurrenceIds)) {
-                    $followingInstance->deleteRecurrenceInstance();
-                } else {
-                    $followingInstance->syncFromRecurrentRoot($this->entry);
-                    $followingInstance->saveRecurrenceInstance();
-                }
-            }
-        }
-    }
-
-    private function rruleChanged($ignoreUntil = false, $rruleToCompare = null)
-    {
-        if(!$rruleToCompare) {
-            $rruleToCompare = $this->buildRRuleString();
-        }
-
-        return RRuleHelper::compare($this->entry->getRrule(), $rruleToCompare);
-    }
-
-    /**
-     * @return bool
-     * @throws \Recurr\Exception\InvalidRRule
-     */
-    private function handleRecurrentUpdate($dateChanged = false, $recurrenceChanged = false)
-    {
-        // TODO: put into recurrenceForm
-        if(!RecurrenceHelper::isRecurrent($this->entry)) {
-            return true;
-        }
-
-        switch ($this->recurrenceEditMode) {
-            case static::EDIT_MODE_FOLLOWING:
-                if($recurrenceChanged || $dateChanged) {
-                    $root = $this->entry->getRoot();
-                    $rule = new Rule($root->getRrule());
-                    $rule->setUntil($this->entry->getStartDateTime()->modify('-1 hour'));
-
-                    if($root instanceof ActiveRecord) {
-                        $root->updateAttributes(['rrule' => $this->rrule->getString(Rule::TZ_FIXED)]);
-                    } else {
-                        $root->setRrule($this->rrule->getString(Rule::TZ_FIXED));
-                    }
-                }
-                // if recurrence was changed || date was changed
-                // get parent and set until = $this->entry->start (check google)
-                // delete all instances after until
-                // save this entry as new recurrence root
-                // else
-                // update all following instances
-                break;
-            case static::EDIT_MODE_ALL:
-                // if recurrence was changed
-                // update parent
-                // delete all instances
-                // else
-                // update all following instances
-                break;
-            default:
-                // TODO: mark as exception in case of recurrence
-                // IGNORE RECURRENCE
-                return $this->entry->save() ? [$this->entry] : false;
-        }
-    }
-
-    public function recurrenceChanged()
-    {
-        return $this->entry->getRrule() !== $this->entry->getOldAttribute('rrule');
-    }
-
-    private function dateChanged()
-    {
-        return $this->entry->start_datetime !== $this->entry->getOldAttribute('start_datetime')
-            || $this->entry->end_datetime !== $this->entry->getOldAttribute('end_datetime');
     }
 
     /**
      * @return string|null
-     * @throws \Recurr\Exception\InvalidArgument
-     * @throws \Recurr\Exception\InvalidRRule
+     * @throws InvalidArgument
+     * @throws InvalidRRule
      */
     public function buildRRuleString()
     {
@@ -449,7 +297,7 @@ class RecurrenceFormModel extends Model
     /**
      * @param Rule $rrule
      * @return RecurrenceFormModel
-     * @throws \Recurr\Exception\InvalidArgument
+     * @throws InvalidArgument
      */
     private function setRuleInterval()
     {
@@ -460,7 +308,7 @@ class RecurrenceFormModel extends Model
     /**
      * @param Rule $rrule
      * @return RecurrenceFormModel
-     * @throws \Recurr\Exception\InvalidArgument
+     * @throws InvalidArgument
      */
     private function setRuleFrequency()
     {
@@ -479,7 +327,7 @@ class RecurrenceFormModel extends Model
     /**
      * @param Rule $rrule
      * @return RecurrenceFormModel
-     * @throws \Recurr\Exception\InvalidRRule
+     * @throws InvalidRRule
      */
     private function setRuleDay()
     {

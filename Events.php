@@ -2,7 +2,12 @@
 
 namespace humhub\modules\calendar;
 
+use humhub\modules\calendar\interfaces\CalendarItemTypesEvent;
+use humhub\modules\calendar\interfaces\recurrence\RecurrenceService;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use Yii;
+use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\CalendarEventIF;
 use humhub\modules\calendar\integration\BirthdayCalendar;
 use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\ReminderService;
@@ -16,6 +21,7 @@ use humhub\modules\calendar\widgets\ReminderLink;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\helpers\Url;
+use yii\db\StaleObjectException;
 use yii\helpers\Console;
 
 /**
@@ -43,7 +49,7 @@ class Events
     }
 
     /**
-     * @param $event \humhub\modules\calendar\interfaces\CalendarItemTypesEvent
+     * @param $event CalendarItemTypesEvent
      * @return mixed
      */
     public static function onGetCalendarItemTypes($event)
@@ -53,6 +59,7 @@ class Events
 
     /**
      * @param $event \humhub\modules\calendar\interfaces\CalendarItemsEvent;
+     * @throws \Throwable
      */
     public static function onFindCalendarItems($event)
     {
@@ -139,26 +146,64 @@ class Events
 
     public static function onWallEntryLinks($event)
     {
-        if ($event->sender->object instanceof CalendarEntry) {
-            $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $event->sender->object]);
-        }
+        $eventModel = static::getCalendarEvent($event->sender->object);
 
-        if($event->sender->object instanceof CalendarEventReminderIF) {
-            $event->sender->addWidget(ReminderLink::class, ['entry' => $event->sender->object]);
-        }
-    }
-
-    public static function onContentDelete($event)
-    {
-        if(!($event->sender instanceof CalendarEventReminderIF)) {
+        if(!$eventModel) {
             return;
         }
 
-        foreach(CalendarReminder::getEntryLevelReminder($event->sender) as $reminder) {
-            $reminder->delete();
+        if ($eventModel instanceof CalendarEntry) {
+            $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $eventModel]);
+        }
+
+        if($eventModel instanceof CalendarEventReminderIF) {
+            $event->sender->addWidget(ReminderLink::class, ['entry' => $eventModel]);
         }
     }
 
+    private static function getCalendarEvent($model)
+    {
+        if($model instanceof CalendarEventIF) {
+            return $model;
+        }
+
+        if(method_exists($model, 'getCalendarEvent')) {
+            $event = $model->getCalendarEvent();
+            if($event instanceof CalendarEventIF) {
+                return $event;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $event
+     * @throws \Throwable
+     * @throws StaleObjectException
+     */
+    public static function onContentDelete($event)
+    {
+        $model = CalendarUtils::getCalendarEvent($event->sender);
+
+        if(!$model || !($model instanceof CalendarEventReminderIF)) {
+            return;
+        }
+
+        foreach(CalendarReminder::getEntryLevelReminder($model) as $reminder) {
+            $reminder->delete();
+        }
+
+        if($model instanceof RecurrentEventIF) {
+           (new RecurrenceService())->onDelete($model);
+        }
+    }
+
+    /**
+     * @param $event
+     * @throws \Throwable
+     * @throws StaleObjectException
+     */
     public static function onIntegrityCheck($event)
     {
         $integrityController = $event->sender;

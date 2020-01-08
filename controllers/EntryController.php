@@ -80,7 +80,7 @@ class EntryController extends ContentContainerController
             throw new NotFoundHttpException();
         }
 
-        $recurrence = $recurrenceRoot->getRecurrenceInstance($recurrence_id);
+        $recurrence = $recurrenceRoot->getRecurrenceQuery()->getRecurrenceInstance($recurrence_id);
 
         if(!$recurrence) {
             $recurrence = CalendarRecurrenceExpand::expandSingle($recurrenceRoot, $recurrence_id, true);
@@ -221,9 +221,11 @@ class EntryController extends ContentContainerController
             throw new HttpException('403');
         }
 
-        $entryForm = new CalendarEntryForm(['entry' => $entry]);
+        $entryForm = new CalendarEntryForm(['entry' => $entry, 'timeZone' => CalendarUtils::getUserTimeZone(true)]);
+        $start = Yii::$app->request->post('start');
+        $end = Yii::$app->request->post('end');
 
-        if ($entryForm->updateDateRangeFromCalendar(Yii::$app->request->post('start'), Yii::$app->request->post('end'), true)) {
+        if ($entryForm->updateDateRangeFromCalendar($start, $end, CalendarUtils::getUserTimeZone(), true)) {
             return $this->asJson(['success' => true]);
         }
 

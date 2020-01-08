@@ -44,18 +44,7 @@ class CalendarDateFormatter extends Component
 
     public function getFormattedStartDate($format = 'long')
     {
-        // Ignore timezone for all_day events
-        if($this->calendarItem->isAllDay()) {
-            Yii::$app->formatter->timeZone = CalendarUtils::getSystemTimeZone();
-        }
-
-        $result = Yii::$app->formatter->asDate($this->calendarItem->getStartDateTime(), $format);
-
-        if($this->calendarItem->isAllDay()) {
-            Yii::$app->i18n->autosetLocale();
-        }
-
-        return $result;
+        return $this->getFormattedDate($this->calendarItem->getStartDateTime(), $format);
     }
 
     public function getFormattedStartTime($format = 'short', $timeZone = null)
@@ -75,11 +64,17 @@ class CalendarDateFormatter extends Component
 
     public function getFormattedEndDate($format = 'long')
     {
+        return $this->getFormattedDate($this->calendarItem->getEndDateTime(), $format);
+    }
+
+    private function getFormattedDate(\DateTimeInterface $date, $format = 'long')
+    {
+        // Make sure to do no timezone translation on all day events
         if($this->calendarItem->isAllDay()) {
-            Yii::$app->formatter->timeZone = CalendarUtils::getSystemTimeZone();
+            Yii::$app->formatter->timeZone = $date->getTimezone()->getName();
         }
 
-        $result = Yii::$app->formatter->asDate($this->calendarItem->getEndDateTime(), $format);
+        $result = Yii::$app->formatter->asDate($date, $format);
 
         if($this->calendarItem->isAllDay()) {
             Yii::$app->i18n->autosetLocale();

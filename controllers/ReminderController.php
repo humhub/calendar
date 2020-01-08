@@ -7,19 +7,15 @@
 
 namespace humhub\modules\calendar\controllers;
 
-
-use humhub\components\access\ControllerAccess;
-use humhub\modules\admin\permissions\ManageSpaces;
-use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
-use humhub\modules\calendar\models\forms\ReminderSettings;
-use humhub\modules\calendar\permissions\ManageEntry;
-use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\content\models\Content;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\ModalClose;
 use Yii;
 use yii\web\HttpException;
-use yii\web\NotFoundHttpException;
+use humhub\components\access\ControllerAccess;
+use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
+use humhub\modules\calendar\models\forms\ReminderSettings;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\models\Content;
+use humhub\widgets\ModalClose;
 
 class ReminderController extends ContentContainerController
 {
@@ -52,11 +48,13 @@ class ReminderController extends ContentContainerController
             throw new HttpException(403);
         }
 
-        if(!($content->getModel() instanceof CalendarEventReminderIF)) {
+        $model = CalendarUtils::getCalendarEvent($content);
+
+        if(!$model || !($model instanceof CalendarEventReminderIF)) {
             throw new HttpException(400);
         }
 
-        $reminderSettings = new ReminderSettings(['entry' => $content->getModel(), 'user' => Yii::$app->user->getIdentity()]);
+        $reminderSettings = new ReminderSettings(['entry' =>$model, 'user' => Yii::$app->user->getIdentity()]);
 
         if($reminderSettings->load(Yii::$app->request->post()) && $reminderSettings->save()) {
             return ModalClose::widget(['saved' => true]);

@@ -19,7 +19,7 @@ class m171027_185422_recurrence extends Migration
         $this->addColumn('calendar_entry', 'recurrence_id', $this->string()->null());
         $this->addColumn('calendar_entry', 'exdate', $this->string()->null());
 
-        $this->addForeignKey('fk_calendar_entry_parent_event', 'calendar_entry', 'parent_event_id', 'calendar_entry', 'id', 'CASCADE');
+        $this->addForeignKey('fk_calendar_entry_parent_event', 'calendar_entry', 'parent_event_id', 'calendar_entry', 'id', 'SET NULL');
         $this->createIndex('idx_unique_calendar_entry_recurrence', 'calendar_entry', ['parent_event_id', 'recurrence_id']);
     }
 

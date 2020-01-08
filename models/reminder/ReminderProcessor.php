@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\models\reminder;
 
 
 use Exception;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
 use humhub\modules\calendar\models\CalendarEntryQuery;
@@ -73,6 +74,7 @@ class ReminderProcessor extends Model
     private function runByUpcomingEvents(ContentContainerActiveRecord $container = null)
     {
         foreach ($this->calendarService->getUpcomingEntries($container, null, null, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]) as $entry) {
+            $entry = CalendarUtils::getCalendarEvent($entry);
 
             if(!$entry instanceof CalendarEventReminderIF) {
                 continue;
@@ -91,6 +93,7 @@ class ReminderProcessor extends Model
     /**
      * @throws IntegrityException
      * @throws Exception
+     * @throws \Throwable
      */
     private function runEntryLevelOnly()
     {
@@ -99,9 +102,15 @@ class ReminderProcessor extends Model
         $entryHandled = [];
         foreach ($entryLevelReminder as $reminder) {
             $entry = $reminder->getEntry();
+
+            if(!$entry instanceof CalendarEventReminderIF) {
+                $reminder->delete();
+                continue;
+            }
+
             $entryKey = get_class($entry).':'.$entry->id;
             if(!isset($entryHandled[$entryKey])) {
-                $this->handleEntryLevelReminder($reminder->getEntry());
+                $this->handleEntryLevelReminder($entry);
                 $entryHandled[$entryKey] = true;
             }
         }

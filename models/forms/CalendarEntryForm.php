@@ -9,18 +9,17 @@
 
 namespace humhub\modules\calendar\models\forms;
 
+use Yii;
+use yii\base\Exception;
+use yii\base\Model;
+use DateTimeZone;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\forms\validators\CalendarDateFormatValidator;
 use humhub\modules\calendar\models\forms\validators\CalendarEndDateValidator;
 use humhub\modules\calendar\models\forms\validators\CalendarTypeValidator;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
-use Yii;
-use yii\base\Exception;
-use yii\base\Model;
-use DateTimeZone;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\CalendarEntry;
 
 /**
@@ -102,6 +101,8 @@ class CalendarEntryForm extends Model
     public $recurrenceForm;
 
     /**
+     * Will create a new CalendarEntryForm instance with new CalendarEntry model.
+     *
      * @param $contentContainer
      * @param string|null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
      * @param string|null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
@@ -116,19 +117,39 @@ class CalendarEntryForm extends Model
     }
 
     /**
+     * Updates the form date range from calendar date strings.
+     * This function will update the $start_date, $end_date, $start_time, $end_time and the model dates.
+     *
+     * In order to translate the given date times to the entry timezone, the $timeZone parameter can be used, which
+     * defines the timezone of $start and $end date string. This allows calendar updates from users in another timezone
+     * than the entries timezone.
+     *
      * @param string|null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
      * @param string|null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
+     * @param null $timeZone the timezone of $start/$end, if null $this->timeZone is assumed
      * @param bool $save
      * @return bool|void
      * @throws \Throwable
      */
-    public function updateDateRangeFromCalendar($start = null, $end = null, $save = false)
+    public function updateDateRangeFromCalendar($start = null, $end = null, $timeZone = null, $save = false)
     {
         if(!$start || !$end) {
             return;
         }
 
-        $this->setFormDates($start, $end);
+        $startDT = CalendarUtils::getDateTime($start);
+        $endDT = CalendarUtils::getDateTime($end);
+
+
+        if(CalendarUtils::isAllDay($startDT, $endDT)) {
+            // Calendar calculates in moment after format, but we need 23:59 on end date
+            $endDT->modify('-1 second');
+        } else if(!empty($timeZone)) {
+            $startDT = CalendarUtils::translateTimezone($startDT, $timeZone, $this->timeZone);
+            $endDT =  CalendarUtils::translateTimezone($endDT, $timeZone, $this->timeZone);
+        }
+
+        $this->setFormDates($startDT, $endDT);
 
         if($save) {
             return $this->save();
@@ -251,9 +272,6 @@ class CalendarEntryForm extends Model
         $startDt = $this->getStartDateTime();
         $endDt =  $this->getEndDateTime();
 
-        // For all day events the time value is not submitted so we handle startDate = endDate as all day event
-        $this->entry->all_day = (int) ($startDt == $endDt || CalendarUtils::isAllDay($startDt, $endDt));
-
         if($this->entry->isAllDay()) {
             $this->entry->start_datetime = CalendarUtils::toDBDateFormat($startDt);
             $this->entry->end_datetime = CalendarUtils::toDBDateFormat($endDt);
@@ -287,11 +305,16 @@ class CalendarEntryForm extends Model
             $this->type_id = null;
         }
 
-        // Single day events are submitted as start = end without time
+        if($this->isAllDay()) {
+            $this->start_time = null;
+            $this->end_time = null;
+        }
+
         $startDT = $this->getStartDateTime();
         $endDt = $this->getEndDateTime();
 
-        if($this->entry->isAllDay() && $startDT == $endDt) {
+        // Single day events are submitted as start = end without time
+        if($this->isAllDay() || $startDT == $endDt) {
             CalendarUtils::ensureAllDay($startDT, $endDt);
         }
 

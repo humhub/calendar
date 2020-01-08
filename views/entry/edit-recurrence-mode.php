@@ -13,6 +13,8 @@ use humhub\modules\calendar\helpers\Url;
 /* @var $model CalendarEntryForm */
 /* @var $form ActiveForm */
 
+$root = $model->entry->getRecurrenceQuery()->getRecurrenceRoot();
+
 ?>
 
 <div class="modal-body recurrence-edit-type">
@@ -36,14 +38,14 @@ use humhub\modules\calendar\helpers\Url;
     <br>
 
     <?= ModalButton::info(Yii::t('CalendarModule.recurrence', 'Edit all events'))
-        ->load(Url::toEditEntry($model->entry->getRecurrenceRoot()))
+        ->load(Url::toEditEntry($root))
         ->style('width:100%')->lg()->loader() ?>
 
     <br>
     <br>
 
     <?= ModalButton::danger(Yii::t('CalendarModule.recurrence', 'Delete all events'))
-        ->post(Url::toEntryDelete($model->entry->getRecurrenceRoot()))->confirm()
+        ->post(Url::toEntryDelete($root))->confirm()
         ->style('width:100%')->lg()->loader() ?>
 
     <br>

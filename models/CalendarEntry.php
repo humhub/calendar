@@ -3,15 +3,16 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\interfaces\AbstractRecurrentEvent;
 use humhub\modules\calendar\interfaces\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
+use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
+use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
-use yii\base\Exception;
 use DateTime;
-use DateTimeZone;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarEventStatusIF;
@@ -54,7 +55,7 @@ use humhub\modules\user\models\User;
  * @property CalendarEntryParticipant[] participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
-class CalendarEntry extends AbstractRecurrentEvent implements Searchable, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
+class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
 {
     /**
      * @inheritdoc
@@ -85,6 +86,11 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
      * @inheritdoc
      */
     public $canMove = true;
+
+    /**
+     * @var CalendarEntryRecurrenceQuery
+     */
+    private $query;
 
     /**
      * @inheritdoc
@@ -306,22 +312,14 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
         return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
     }
 
+    /**
+     * @return mixed
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function beforeDelete()
     {
         $this->participation->deleteAll();
-
-        if($this->isRecurringRoot()) {
-            foreach($this->recurrenceInstances as $recurrence) {
-                $recurrence->delete();
-            }
-        } elseif($this->isRecurringInstance()) {
-            $root = $this->getRecurrenceRoot();
-            if($root) {
-                $root->setExdate(RecurrenceHelper::addExdates($root, $this));
-                $root->saveRecurrenceInstance();
-            }
-        }
-
         return parent::beforeDelete();
     }
 
@@ -559,7 +557,7 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
      */
     public function getUpdateUrl()
     {
-        if($this->isRecurringInstance()) {
+        if(RecurrenceHelper::isRecurrentInstance($this)) {
             return null;
         }
 
@@ -573,7 +571,7 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
      */
     public function isEditable()
     {
-        return !$this->isRecurring() && $this->content->canEdit();
+        return !RecurrenceHelper::isRecurrent($this) && $this->content->canEdit();
     }
 
     /**
@@ -629,34 +627,6 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
     public function getCalendarViewMode()
     {
         return static::VIEW_MODE_MODAL;
-    }
-
-    /**
-     * @param $event static
-     * @return mixed
-     */
-    public function syncFromRecurrentRoot($event)
-    {
-        parent::syncFromRecurrentRoot($event);
-        $this->title = $event->title;
-        $this->description = $event->description;
-        $this->color = $event->color;
-        $this->time_zone = $event->time_zone;
-        $this->participant_info = $event->participant_info;
-        $this->participation_mode = $event->participation_mode;
-        $this->all_day = $event->all_day;
-        $this->allow_decline = $event->allow_decline;
-        $this->allow_maybe = $event->allow_maybe;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getRecurrenceViewUrl($cal = false)
-    {
-        return '';
     }
 
     /**
@@ -722,4 +692,95 @@ class CalendarEntry extends AbstractRecurrentEvent implements Searchable, Calend
     {
         return $this->participation->canRespond($user);
     }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param $event static
+     * @return mixed
+     */
+    public function syncEventData($event)
+    {
+        $this->setUid($event->getUid());
+        $this->setRecurrenceRootId($event->getId());
+        $this->setRrule($event->getRrule());
+        $this->content->created_by = $event->content->created_by;
+        $this->title = $event->title;
+        $this->description = $event->description;
+        $this->color = $event->color;
+        $this->time_zone = $event->time_zone;
+        $this->participant_info = $event->participant_info;
+        $this->participation_mode = $event->participation_mode;
+        $this->all_day = $event->all_day;
+        $this->allow_decline = $event->allow_decline;
+        $this->allow_maybe = $event->allow_maybe;
+    }
+
+    public function getRecurrenceId()
+    {
+        return $this->recurrence_id;
+    }
+
+    public function setRecurrenceId($recurrenceId)
+    {
+        $this->recurrence_id = $recurrenceId;
+    }
+
+    public function setRecurrenceRootId($rootId)
+    {
+        $this->parent_event_id = $rootId;
+    }
+
+    public function getRrule() {
+        return $this->rrule;
+    }
+
+    public function setRrule($rrule)
+    {
+        $this->rrule = $rrule;
+    }
+
+    public function getExdate()
+    {
+        return $this->exdate;
+    }
+
+    public function getRecurrenceRootId()
+    {
+        return $this->parent_event_id;
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @param $recurrenceId
+     * @return Content|mixed
+     * @throws \yii\base\Exception
+     */
+    public function createRecurrence($start, $end, $recurrenceId)
+    {
+        $instance = new self($this->content->container, $this->content->visibility);
+        $instance->start_datetime = $start;
+        $instance->end_datetime = $end;
+        $instance->setRecurrenceId($recurrenceId);
+        $instance->syncEventData($this);
+        return $instance;
+    }
+
+    /**
+     * @return AbstractRecurrenceQuery
+     */
+    public function getRecurrenceQuery()
+    {
+        if(!$this->query) {
+            $this->query = new CalendarEntryRecurrenceQuery(['event' => $this]);
+        }
+
+        return $this->query;
+    }
+
+
 }

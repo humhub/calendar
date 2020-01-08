@@ -19,7 +19,10 @@ use DateInterval;
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntryQuery;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\models\Content;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
 
@@ -143,6 +146,37 @@ class CalendarService extends Component
         ArrayHelper::multisort($result, ['startDateTime', 'endDateTime'], [SORT_ASC, SORT_ASC]);
 
         return (count($result) > $limit) ? array_slice($result, 0, $limit) : $result;
+    }
+
+    public static $containerCache = [];
+
+    public function getEventColor(CalendarEventIF $event)
+    {
+        if($event->getColor()) {
+            return $event->getColor();
+        }
+
+        $type = $event->getType();
+
+        if(!$type) {
+            return null;
+        }
+
+        $typeSettings = null;
+
+        if($event instanceof ContentActiveRecord) {
+            /* @var $content Content */
+            $content = $event->content;
+            if($content->contentcontainer_id === null) {
+                $typeSettings = $this->getItemType($type->getKey());
+            } else {
+                $container = isset(static::$containerCache[$content->contentcontainer_id])
+                    ? static::$containerCache[$content->contentcontainer_id] : $content->container;
+                $typeSettings = $this->getItemType($type->getKey(), $container);
+            }
+        }
+
+        return $typeSettings ? $typeSettings->getColor() : $type->getDefaultColor();
     }
 
     /**
