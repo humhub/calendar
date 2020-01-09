@@ -142,7 +142,7 @@ interface CalendarEventIF
      * > Note: Ideally the underlying database field should have the name `start_datetime` otherwise the [[AbstractCalendarQuery::$startField]]
      * > needs to be overwritten.
      *
-     * @return DateTimeInterface start datetime
+     * @return DateTime start datetime
      * @see AbstractCalendarQuery::$startField
      */
     public function getStartDateTime();
@@ -167,7 +167,7 @@ interface CalendarEventIF
      * > Note: Ideally the underlying database field should have the name `end_datetime`, otherwise the [[AbstractCalendarQuery::$endField]]
      * > needs to be overwritten.
      *
-     * @return DateTimeInterface start datetime
+     * @return DateTime start datetime
      * @see AbstractCalendarQuery::$endField
      */
     public function getEndDateTime();

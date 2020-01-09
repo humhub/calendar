@@ -2,17 +2,15 @@
 
 namespace humhub\modules\calendar;
 
-use  humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
-use humhub\modules\calendar\interfaces\recurrence\RecurrenceService;
+use Yii;
+use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\content\components\ContentActiveRecord;
-use Yii;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\integration\BirthdayCalendar;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\models\reminder\ReminderService;
-use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 use humhub\modules\calendar\models\SnippetModuleSettings;
@@ -196,7 +194,7 @@ class Events
         }
 
         if($model instanceof RecurrentEventIF) {
-           (new RecurrenceService())->onDelete($model);
+            $model->getEventQuery()->onDelete($model);
         }
     }
 

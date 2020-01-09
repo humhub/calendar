@@ -54,11 +54,6 @@ class RecurrenceFormModel extends Model
     public $endOccurrences = 10;
 
     /**
-     * @var RecurrenceService
-     */
-    public $recurrenceService;
-
-    /**
      * @var integer
      */
     public $recurrenceEditMode;
@@ -85,7 +80,6 @@ class RecurrenceFormModel extends Model
     {
         parent::init();
         $this->initRrule($this->entry->getRrule());
-        $this->recurrenceService = new RecurrenceService();
     }
 
     /**
@@ -233,6 +227,13 @@ class RecurrenceFormModel extends Model
         }
     }
 
+    /**
+     * @param RecurrentEventIF|null $original
+     * @return bool|void
+     * @throws InvalidArgument
+     * @throws InvalidRRule
+     * @throws \Throwable
+     */
     public function save(RecurrentEventIF $original = null)
     {
         if (!$this->validate()) {
@@ -253,9 +254,9 @@ class RecurrenceFormModel extends Model
             case static::EDIT_MODE_CREATE:
                 return $this->entry->getEventQuery()->save();
             case static::EDIT_MODE_FOLLOWING:
-                return $original ? $this->recurrenceService->splitRecurrentEvent($original, $this->entry) : false;
+                return $original ? $this->entry->getEventQuery()->splitRecurrentEvent($original): false;
             case static::EDIT_MODE_ALL:
-                return  $original ?  $this->recurrenceService->updateAll($original, $this->entry) : false;
+                return  $original ? $this->entry->getEventQuery()->updateAll($original) : false;
         }
 
         return true;

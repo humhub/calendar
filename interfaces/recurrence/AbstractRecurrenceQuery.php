@@ -6,9 +6,12 @@ namespace humhub\modules\calendar\interfaces\recurrence;
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\helpers\RRuleHelper;
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
+use Yii;
 use yii\db\ActiveQuery;
+use yii\db\StaleObjectException;
 
 class AbstractRecurrenceQuery extends AbstractCalendarQuery
 {
@@ -204,5 +207,121 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
     public function getRecurrenceInstance($recurrent_id)
     {
         return $this->findRecurrenceInstances()->andWhere([$this->recurrenceIdField => $recurrent_id])->one();
+    }
+
+    private static $deletedRoot = [];
+
+    /**
+     * @param RecurrentEventIF $event
+     * @throws \Throwable
+     * @throws StaleObjectException
+     */
+    public function onDelete()
+    {
+        if(RecurrenceHelper::isRecurrentRoot($this->event)) {
+            static::$deletedRoot[] = $this->event->getUid();
+            foreach($this->getFollowingInstances() as $recurrence) {
+                $recurrence->getEventQuery()->delete();
+            }
+        } elseif(RecurrenceHelper::isRecurrentInstance($this->event)) {
+            $root = $this->getRecurrenceRoot();
+            if($root && !in_array($root->getUid(), static::$deletedRoot, true)) {
+                $root->setExdate(RecurrenceHelper::addExdates($root, $this->event));
+                $root->getEventQuery()->save();
+            }
+        }
+
+        static::$deletedRoot = [];
+    }
+
+    /**
+     * @param RecurrentEventIF $original
+     * @param RecurrentEventIF $event
+     * @return bool|void
+     * @throws \Throwable
+     */
+    public function splitRecurrentEvent(RecurrentEventIF $original)
+    {
+        if(RecurrenceHelper::isRecurrentRoot($this->event)) {
+            return $this->updateAll($original);
+        }
+
+        try {
+            // Update until of old root
+            $root = $this->getRecurrenceRoot();
+
+            $isFirstInstanceEdit = RecurrenceHelper::getRecurrentId($root) === $this->event->getRecurrenceId();
+
+            // Generate new UID
+            $this->event->setUid(CalendarUtils::generateUUid());
+            $this->event->setRecurrenceId(null);
+
+            // Save this instance as a new recurrence root
+            $this->event->setRecurrenceRootId(null);
+            $this->event->getEventQuery()->save();
+
+            $this->syncFollowingInstances($original, true);
+
+            if($isFirstInstanceEdit) {
+                // We are editing the first instance, so we do not need the old root anymore
+                // TODO: what about attached files?
+                $root->getEventQuery()->delete();
+            } else {
+                $splitDate = $this->event->getStartDateTime()->modify('-1 hour');
+                $root->setRrule(RRuleHelper::setUntil($root->getRrule(), $splitDate));
+                $root->getEventQuery()->save();
+            }
+        } catch (\Exception $e) {
+            Yii::error($e);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param RecurrentEventIF $original
+     * @throws \Throwable
+     */
+    public function updateAll(RecurrentEventIF $original)
+    {
+        $this->save();
+        $this->syncFollowingInstances($original, false);
+    }
+
+    /**
+     * @param RecurrentEventIF $original
+     * @param $isSplit
+     * @throws \Throwable
+     */
+    protected function syncFollowingInstances(RecurrentEventIF $original, $isSplit)
+    {
+        $followingInstances = $original->getEventQuery()->getFollowingInstances();
+
+        // Sync following events
+        if (!empty($followingInstances)) {
+            $lastInstance = end($followingInstances);
+
+            /**
+             * If editMode = all -> $original is the root node and we want to sync all existing recurrence instances
+             * If editMode = following -> $original is an old recurrent instance which itself should be excluded from sync
+             */
+            $searchStartDate = $isSplit ?  $original->getStartDateTime() : $original->getEndDateTime();
+
+            // If not recurrent, we delete all following instances
+            $remainingRecurrenceIds = !RecurrenceHelper::isRecurrent($this->event)
+                ? []
+                : RecurrenceHelper::getRecurrenceIds($this->event, $searchStartDate, $lastInstance->getEndDateTime());
+
+            foreach ($followingInstances as $followingInstance) {
+                if (!in_array($followingInstance->getRecurrenceId(), $remainingRecurrenceIds)) {
+                    $followingInstance->getEventQuery()->delete();
+                } else {
+                    RecurrenceHelper::syncRecurrentEventData($this->event, $followingInstance);
+                    $followingInstance->syncEventData($this->event);
+                    $followingInstance->getEventQuery()->save();
+                }
+            }
+        }
     }
 }
