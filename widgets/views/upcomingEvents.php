@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Html;

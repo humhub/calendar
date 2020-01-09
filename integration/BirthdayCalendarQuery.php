@@ -16,7 +16,7 @@
 namespace humhub\modules\calendar\integration;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
-use humhub\modules\calendar\interfaces\FilterNotSupportedException;
+use humhub\modules\calendar\interfaces\event\FilterNotSupportedException;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;

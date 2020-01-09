@@ -7,7 +7,7 @@ namespace humhub\modules\calendar\models\reminder;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
+use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\components\ContentContainerActiveRecord;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace humhub\modules\calendar\interfaces;
+namespace humhub\modules\calendar\interfaces\event;
 
 /**
  * A CalendarTypeIF is used to provide some metadata for a type of event.

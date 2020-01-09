@@ -13,13 +13,20 @@
  * Time: 17:17
  */
 
-namespace humhub\modules\calendar\interfaces;
+namespace humhub\modules\calendar\interfaces\event;
 
 
 use DateTime;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\base\Event;
 
-class CalendarItemsEvent extends CalendarEvent
+class CalendarItemsEvent extends Event
 {
+    /**
+     * @var ContentContainerActiveRecord
+     */
+    public $contentContainer;
+
     /**
      * @var array
      */

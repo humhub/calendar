@@ -11,7 +11,7 @@ use Yii;
 use yii\web\HttpException;
 use humhub\components\access\ControllerAccess;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
+use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\models\forms\ReminderSettings;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\Content;

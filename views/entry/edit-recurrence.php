@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormWidget;
+use humhub\modules\calendar\interfaces\recurrence\widgets\RecurrenceFormWidget;
 
 /* @var $form \humhub\widgets\ActiveForm */
 /* @var $calendarEntryForm \humhub\modules\calendar\models\forms\CalendarEntryForm */

@@ -13,7 +13,7 @@
  * Time: 14:51
  */
 
-namespace humhub\modules\calendar\interfaces;
+namespace humhub\modules\calendar\interfaces\event;
 
 
 use Yii;

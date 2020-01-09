@@ -18,10 +18,15 @@ namespace humhub\modules\calendar\interfaces;
 use DateInterval;
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarItemsEvent;
+use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
+use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
+use humhub\modules\calendar\interfaces\event\CalendarTypeArrayWrapper;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\calendar\interfaces\event\CalendarEventIFWrapper;
 use humhub\modules\content\models\Content;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
@@ -49,6 +54,9 @@ class CalendarService extends Component
      */
     const EVENT_FIND_ITEMS = 'findItems';
 
+    /**
+     * @var array
+     */
     private static $resultCache = [];
 
     /**

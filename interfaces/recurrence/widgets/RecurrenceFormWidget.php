@@ -1,7 +1,7 @@
 <?php
 
 
-namespace humhub\modules\calendar\interfaces\recurrence;
+namespace humhub\modules\calendar\interfaces\recurrence\widgets;
 
 
 use humhub\modules\calendar\assets\RecurrenceFormAssets;

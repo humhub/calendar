@@ -6,7 +6,7 @@
  *
  */
 
-use humhub\modules\calendar\interfaces\CalendarTypeSetting;
+use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\ColorPicker;

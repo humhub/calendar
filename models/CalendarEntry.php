@@ -3,8 +3,9 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\interfaces\CalendarEventParticipationIF;
-use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
+use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
+use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
@@ -15,7 +16,7 @@ use Yii;
 use DateTime;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\CalendarEventStatusIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
 use humhub\modules\calendar\notifications\CanceledEvent;
 use humhub\modules\calendar\notifications\ReopenedEvent;
 use humhub\modules\calendar\permissions\ManageEntry;
@@ -52,10 +53,12 @@ use humhub\modules\user\models\User;
  * @property string recurrence_id
  * @property int parent_event_id
  * @property string exdate
+ * @property string sequence
  * @property CalendarEntryParticipant[] participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
-class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
+class CalendarEntry extends ContentActiveRecord implements Searchable,
+    RecurrentEventIF, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF, CalendarEventSequenceIF
 {
     /**
      * @inheritdoc
@@ -130,8 +133,14 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         parent::init();
 
+        $this->query = new CalendarEntryRecurrenceQuery(['event' => $this]);
+
         if(!$this->time_zone) {
             $this->time_zone = CalendarUtils::getUserTimeZone(true);
+        }
+
+        if($this->sequence === null) {
+            $this->sequence = 0;
         }
 
         $this->isAllDay(); // initialize all day
@@ -698,26 +707,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         return $this->id;
     }
 
-    /**
-     * @param $event static
-     * @return mixed
-     */
-    public function syncEventData($event)
-    {
-        $this->setUid($event->getUid());
-        $this->setRecurrenceRootId($event->getId());
-        $this->setRrule($event->getRrule());
-        $this->content->created_by = $event->content->created_by;
-        $this->title = $event->title;
-        $this->description = $event->description;
-        $this->color = $event->color;
-        $this->time_zone = $event->time_zone;
-        $this->participant_info = $event->participant_info;
-        $this->participation_mode = $event->participation_mode;
-        $this->all_day = $event->all_day;
-        $this->allow_decline = $event->allow_decline;
-        $this->allow_maybe = $event->allow_maybe;
-    }
+
 
     public function getRecurrenceId()
     {
@@ -760,26 +750,79 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      * @return Content|mixed
      * @throws \yii\base\Exception
      */
-    public function createRecurrence($start, $end, $recurrenceId)
+    public function createRecurrence($start, $end)
     {
         $instance = new self($this->content->container, $this->content->visibility);
         $instance->start_datetime = $start;
         $instance->end_datetime = $end;
-        $instance->setRecurrenceId($recurrenceId);
         $instance->syncEventData($this);
         return $instance;
     }
 
     /**
+     * @param $event static
+     * @return mixed
+     */
+    public function syncEventData($event)
+    {
+        $this->content->created_by = $event->content->created_by;
+        $this->title = $event->title;
+        $this->description = $event->description;
+        $this->color = $event->color;
+        $this->time_zone = $event->time_zone;
+        $this->participant_info = $event->participant_info;
+        $this->participation_mode = $event->participation_mode;
+        $this->all_day = $event->all_day;
+        $this->allow_decline = $event->allow_decline;
+        $this->allow_maybe = $event->allow_maybe;
+    }
+
+    /**
      * @return AbstractRecurrenceQuery
      */
-    public function getRecurrenceQuery()
+    public function getEventQuery()
     {
-        if(!$this->query) {
-            $this->query = new CalendarEntryRecurrenceQuery(['event' => $this]);
+        return $this->query;
+    }
+
+    public function getSequence()
+    {
+        return $this->sequence;
+    }
+
+    public function setSequence($sequence)
+    {
+        $this->sequence = $sequence;
+    }
+
+    /**
+     * @param array $status
+     * @return ActiveQueryUser
+     */
+    public function findParticipants($status = [])
+    {
+        return $this->participation->findParticipants($status);
+    }
+
+    /**
+     * @return User
+     */
+    public function getOrganizer()
+    {
+        return $this->participation->getOrganizer();
+    }
+
+    /**
+     * @return DateTime|null
+     * @throws \Exception
+     */
+    public function getLastModified()
+    {
+        if(is_string($this->content->updated_at)) {
+            return new DateTime($this->content->updated_at);
         }
 
-        return $this->query;
+        return null;
     }
 
 

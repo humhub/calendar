@@ -13,7 +13,7 @@
  * Time: 17:16
  */
 
-namespace humhub\modules\calendar\interfaces;
+namespace humhub\modules\calendar\interfaces\event;
 
 
 use humhub\widgets\Label;
@@ -214,5 +214,14 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF
     public function getType()
     {
         return $this->itemType;
+    }
+
+    /**
+     * @param $uid
+     * @return mixed
+     */
+    public function setUid($uid)
+    {
+        // TODO: Implement setUid() method.
     }
 }

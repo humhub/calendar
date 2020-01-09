@@ -5,9 +5,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\calendar\interfaces;
+namespace humhub\modules\calendar\interfaces\reminder;
 
 
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\components\ActiveQueryUser;
 

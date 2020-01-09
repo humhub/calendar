@@ -4,7 +4,7 @@
 namespace humhub\modules\calendar\tests\codeception\unit\models;
 
 
-use humhub\modules\calendar\interfaces\CalendarTypeIF;
+use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 
 class OtherTestEventType implements CalendarTypeIF
 {

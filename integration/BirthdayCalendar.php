@@ -8,15 +8,15 @@
 
 namespace humhub\modules\calendar\integration;
 
-use DateTime;
-use humhub\modules\calendar\interfaces\CalendarEventIF;
-use humhub\modules\calendar\interfaces\CalendarItemTypesEvent;
-use humhub\modules\meeting\models\Meeting;
-use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Component;
 use yii\helpers\Html;
+use DateTime;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use  humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
+use humhub\modules\meeting\models\Meeting;
+use humhub\modules\user\models\User;
+
 
 /**
  * Created by PhpStorm.
@@ -50,7 +50,7 @@ class BirthdayCalendar extends Component
     }
 
     /**
-     * @param $event \humhub\modules\calendar\interfaces\CalendarItemsEvent
+     * @param $event \humhub\modules\calendar\interfaces\event\CalendarItemsEvent
      * @throws \Throwable
      */
     public static function addItems($event)

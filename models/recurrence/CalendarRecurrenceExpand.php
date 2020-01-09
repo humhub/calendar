@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\models\recurrence;
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\content\components\ActiveQueryContent;
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -15,6 +16,7 @@ use humhub\modules\calendar\interfaces\VCalendar;
 use Sabre\VObject\Component\VEvent;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\web\NotFoundHttpException;
 
 
 class CalendarRecurrenceExpand extends Model
@@ -38,26 +40,6 @@ class CalendarRecurrenceExpand extends Model
      * @var \DateTimeZone
      */
     public $eventTimeZone;
-
-    /**
-     * @var string database field for start date
-     */
-    public $startField = 'start_datetime';
-
-    /**
-     * @var string database field for start date
-     */
-    public $parentIdField = 'parent_event_id';
-
-    /**
-     * @var string database field for recurrence id
-     */
-    public $recurrenceIdField = 'recurrence_id';
-
-    /**
-     * @var string database field for end date
-     */
-    public $endField = 'end_datetime';
 
     public function init()
     {
@@ -99,11 +81,11 @@ class CalendarRecurrenceExpand extends Model
      * @param bool $save
      * @return RecurrentEventIF|null
      * @throws \Exception
+     * @throws \Throwable
      */
     public static function expandSingle(RecurrentEventIF $event, $recurrenceId, $save = true)
     {
-        $instance = new static(['event' => $event, 'saveInstnace' => $save]);
-        $recurrence = $instance->getRecurrence($recurrenceId);
+        $recurrence = $event->getEventQuery()->getRecurrenceInstance($recurrenceId);
 
         if($recurrence) {
             return $recurrence;
@@ -125,22 +107,6 @@ class CalendarRecurrenceExpand extends Model
         return null;
     }
 
-    protected function getRecurrenceEntry($root, $id)
-    {
-        /* @var ActiveQueryContent $query */
-        $query = call_user_func(get_class($root).'::find');
-
-        /** @var ContentActiveRecord $instance */
-        $tableName = call_user_func($this->entryClass.'::tableName');
-        $entry = $query->contentContainer($this->contentContainer)->readable()->where([$tableName.'.id' => $id])->one();
-
-        if(!$entry) {
-            throw new NotFoundHttpException();
-        }
-
-        return $entry;
-    }
-
     /**
      * @param DateTime $start
      * @param DateTime $end
@@ -154,47 +120,15 @@ class CalendarRecurrenceExpand extends Model
             return [$this->event];
         }
 
-        //$rootRecurrenceId = RecurrenceHelper::cleanRecurrentId($this->event->getStartDateTime());
-
-       /* // Make sure to set or update the recurrence id of root
-        if($this->event->getRecurrenceId() !== $rootRecurrenceId) {
-            $this->event->setRecurrenceId($rootRecurrenceId);
-            if($this->event instanceof ActiveRecord) {
-                $this->event->save();
-            }
-        }*/
-
         if(!$end) {
             $end = (new DateTime('now', $this->targetTimezone))->add(new \DateInterval('P2Y'));
         }
 
-        $existingModels = $this->findExistingRecurrences($start, $end)->all();
+        $existingModels = $this->event->getEventQuery()->getExistingRecurrences($start, $end);
         $recurrences = $this->calculateRecurrenceInstances($start, $end);
         $this->syncRecurrences($existingModels, $recurrences, $endResult);
 
         return $endResult;
-    }
-
-    public function findExistingRecurrences(DateTime $start = null, DateTime $end = null)
-    {
-        /** @var ActiveQuery $query */
-        $query = call_user_func(get_class($this->event) .'::find');
-        $query->andWhere([$this->parentIdField => $this->event->getId()]);
-
-        if($start && $end) {
-        $query->andFilterWhere(
-            ['or',
-                ['and',
-                    ['>=', $this->startField, $start->format('Y-m-d H:i:s')],
-                    ['<=', $this->startField, $end->format('Y-m-d H:i:s')]
-                ],
-                ['and',
-                    ['>=', $this->endField, $start->format('Y-m-d H:i:s')],
-                    ['<=', $this->endField, $end->format('Y-m-d H:i:s')]
-                ]
-            ]);
-        }
-        return $query;
     }
 
     /**
@@ -221,6 +155,7 @@ class CalendarRecurrenceExpand extends Model
     {
         foreach($recurrences as $vEvent) {
             try {
+                /* @var $model RecurrentEventIF */
                 $model = null;
                 $vEventStart = clone $vEvent->DTSTART->getDateTime();
                 $vEventEnd = clone $vEvent->DTEND->getDateTime();
@@ -229,26 +164,28 @@ class CalendarRecurrenceExpand extends Model
                     $vEventEnd =  $vEventEnd->modify('+1 day')->modify('-1 second');
                 }
 
-                // Check if this recurrence is the first one
-                /*if ($this->event->getRecurrenceId() === RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone())) {
-                    $model = $this->event;
-                }*/
 
+                // Check if recurrence model exists
                 if (!$model) {
                     $model = $this->findRecurrenceModel($existingModels, $vEvent);
                 }
 
                 if (!$model) {
                     $model = $this->event->createRecurrence(
-                        CalendarUtils::toDBDateFormat($vEventStart, true), CalendarUtils::toDBDateFormat($vEventEnd, true),
-                        RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone()));
+                        CalendarUtils::toDBDateFormat($vEventStart, true),
+                        CalendarUtils::toDBDateFormat($vEventEnd, true)
+                    );
 
-                    if($this->saveInstnace && $model instanceof ActiveRecord) {
-                        if(!$model->save()) {
+                    RecurrenceHelper::syncRecurrentEventData(
+                        $this->event, $model,
+                        RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone())
+                    );
+
+                    if($this->saveInstnace) {
+                        if(!$model->getEventQuery()->save()) {
                             throw new \Exception('Could not safe recurrent event');
                         }
                     }
-
                 }
 
                 $endResult[] = $model;
@@ -273,12 +210,4 @@ class CalendarRecurrenceExpand extends Model
 
         return null;
     }
-
-    public function getRecurrence($recurrenceId) {
-        /*if ($this->event->getRecurrenceId() === $recurrenceId) {
-            return $this->event;
-        }*/
-        return $this->findExistingRecurrences()->andWhere(['recurrence_id' => CalendarUtils::cleanRecurrentId($recurrenceId)])->one();
-    }
-
 }

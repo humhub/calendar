@@ -17,12 +17,10 @@
 
 namespace humhub\modules\calendar\models;
 
-
-use humhub\modules\calendar\helpers\CalendarUtils;
 use Yii;
 use DateTime;
 use humhub\libs\TimezoneHelper;
-use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use yii\base\Component;
 
 class CalendarDateFormatter extends Component
@@ -44,7 +42,7 @@ class CalendarDateFormatter extends Component
 
     public function getFormattedStartDate($format = 'long')
     {
-        return $this->getFormattedDate($this->calendarItem->getStartDateTime(), $format);
+        return static::formatDate($this->calendarItem->getStartDateTime(), $format, $this->calendarItem->isAllDay());
     }
 
     public function getFormattedStartTime($format = 'short', $timeZone = null)
@@ -64,19 +62,25 @@ class CalendarDateFormatter extends Component
 
     public function getFormattedEndDate($format = 'long')
     {
-        return $this->getFormattedDate($this->calendarItem->getEndDateTime(), $format);
+        return static::formatDate($this->calendarItem->getEndDateTime(), $format, $this->calendarItem->isAllDay());
     }
 
-    private function getFormattedDate(\DateTimeInterface $date, $format = 'long')
+    /**
+     * @param \DateTimeInterface $date
+     * @param string $format
+     * @param bool $allDay
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
+    public static function formatDate(\DateTimeInterface $date, $format = 'long', $allDay = false)
     {
-        // Make sure to do no timezone translation on all day events
-        if($this->calendarItem->isAllDay()) {
+        if($allDay) {
             Yii::$app->formatter->timeZone = $date->getTimezone()->getName();
         }
 
         $result = Yii::$app->formatter->asDate($date, $format);
 
-        if($this->calendarItem->isAllDay()) {
+        if($allDay) {
             Yii::$app->i18n->autosetLocale();
         }
 

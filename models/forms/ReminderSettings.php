@@ -8,7 +8,7 @@ use Yii;
 use Throwable;
 use humhub\modules\user\models\User;
 use yii\base\Model;
-use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
+use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\db\StaleObjectException;
@@ -216,7 +216,7 @@ class ReminderSettings extends Model
         $this->reminders = $result;
 
         // Check for disabled reminder if not global settings
-        if(empty($this->reminders) && !$this->isReminderTypeUseDefault() && !$this->isGlobalSettings()) {
+        if(empty($this->reminders) && $this->hasDefaults && !$this->isReminderTypeUseDefault() && !$this->isGlobalSettings()) {
             $this->initReminder(1)->save();
         }
 

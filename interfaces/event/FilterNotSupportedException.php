@@ -13,7 +13,7 @@
  * Time: 19:21
  */
 
-namespace humhub\modules\calendar\interfaces;
+namespace humhub\modules\calendar\interfaces\event;
 
 
 use yii\base\Exception;

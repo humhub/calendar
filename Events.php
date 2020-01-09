@@ -2,15 +2,16 @@
 
 namespace humhub\modules\calendar;
 
-use humhub\modules\calendar\interfaces\CalendarItemTypesEvent;
+use  humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceService;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\integration\BirthdayCalendar;
-use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
-use humhub\modules\calendar\interfaces\ReminderService;
+use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
+use humhub\modules\calendar\models\reminder\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\calendar\models\reminder\CalendarReminderSent;
@@ -58,7 +59,7 @@ class Events
     }
 
     /**
-     * @param $event \humhub\modules\calendar\interfaces\CalendarItemsEvent;
+     * @param $event \humhub\modules\calendar\interfaces\event\CalendarItemsEvent;
      * @throws \Throwable
      */
     public static function onFindCalendarItems($event)
@@ -152,7 +153,7 @@ class Events
             return;
         }
 
-        if ($eventModel instanceof CalendarEntry) {
+        if ($eventModel instanceof ContentActiveRecord && $eventModel instanceof CalendarEventIF) {
             $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $eventModel]);
         }
 

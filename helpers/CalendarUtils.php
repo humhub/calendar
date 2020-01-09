@@ -6,7 +6,8 @@ use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use humhub\libs\DateHelper;
-use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
 use humhub\modules\content\models\Content;
 use Sabre\VObject\UUIDUtil;
 use Yii;
@@ -393,5 +394,13 @@ class CalendarUtils
         }
 
         return null;
+    }
+
+    public static function incrementSequence(CalendarEventIF $entry)
+    {
+        if($entry instanceof CalendarEventSequenceIF) {
+            $sequence = $entry->getSequence();
+            $entry->setSequence( ($sequence === null) ? 0 : ++$sequence);
+        }
     }
 }

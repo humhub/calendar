@@ -2,11 +2,12 @@
 
 namespace humhub\modules\calendar\helpers;
 
-use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
-use humhub\modules\calendar\interfaces\CalendarTypeIF;
+use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
+use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
 use Yii;
@@ -200,13 +201,13 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/toggle-close', ['id' => $entry->id]);
     }
 
-    public static function toEntryDownloadICS(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
+    public static function toEntryDownloadICS(ContentActiveRecord $entry, ContentContainerActiveRecord $container = null)
     {
         if(!$container) {
             $container = $entry->content->container;
         }
 
-        return $container->createUrl('/calendar/entry/generateics', ['id' => $entry->id]);
+        return $container->createUrl('/calendar/ical/export', ['id' => $entry->content->id]);
     }
 
     public static function toUserLevelReminderConfig(CalendarEventReminderIF $entry, ContentContainerActiveRecord $container = null)

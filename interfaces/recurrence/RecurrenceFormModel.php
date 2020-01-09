@@ -239,6 +239,11 @@ class RecurrenceFormModel extends Model
             return false;
         }
 
+        if(!$this->entry->getUid()) {
+            $this->entry->setUid(CalendarUtils::generateUUid());
+            $this->entry->getEventQuery()->save();
+        }
+
         $this->entry->setRrule($this->buildRRuleString());
 
         switch($this->recurrenceEditMode) {
@@ -246,7 +251,7 @@ class RecurrenceFormModel extends Model
                 // We only want to save this instance, so we ignore rrule changes
                 return true;
             case static::EDIT_MODE_CREATE:
-                return $this->entry->getRecurrenceQuery()->save();
+                return $this->entry->getEventQuery()->save();
             case static::EDIT_MODE_FOLLOWING:
                 return $original ? $this->recurrenceService->splitRecurrentEvent($original, $this->entry) : false;
             case static::EDIT_MODE_ALL:

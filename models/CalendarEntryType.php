@@ -16,7 +16,7 @@
 namespace humhub\modules\calendar\models;
 
 
-use humhub\modules\calendar\interfaces\CalendarTypeIF;
+use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\content\models\ContentTag;
 use Yii;
 

@@ -19,7 +19,7 @@ use yii\helpers\Html;
 /* @var $isNew boolean */
 /* @var $isNew boolean */
 /* @var $originator \humhub\modules\user\models\User */
-/* @var $source \humhub\modules\calendar\interfaces\CalendarEventReminderIF */
+/* @var $source \humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $space humhub\modules\space\models\Space */
 /* @var $record \humhub\modules\notification\models\Notification */

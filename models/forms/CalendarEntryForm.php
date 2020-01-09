@@ -342,29 +342,51 @@ class CalendarEntryForm extends Model
 
         return CalendarEntry::getDb()->transaction(function ($db) {
 
-            if ($this->entry->save()) {
-                RichText::postProcess($this->entry->description, $this->entry);
-                RichText::postProcess($this->entry->participant_info, $this->entry);
-
-                if ($this->type_id !== null) {
-                    $this->entry->setType($this->type_id);
-                }
-
-                if ($this->sendUpdateNotification && !$this->entry->isNewRecord) {
-                    $this->entry->participation->sendUpdateNotification();
-                }
-
-                if ($this->forceJoin) {
-                    $this->entry->participation->addAllUsers();
-                }
-
-                Topic::attach($this->entry->content, $this->topics);
-
-                return $this->reminderSettings->save() && $this->recurrenceForm->save($this->original);
+            if(!$this->entry->save()) {
+                return false;
             }
 
-            return false;
+            RichText::postProcess($this->entry->description, $this->entry);
+            RichText::postProcess($this->entry->participant_info, $this->entry);
+
+            if ($this->type_id !== null) {
+                $this->entry->setType($this->type_id);
+            }
+
+            if ($this->sendUpdateNotification && !$this->entry->isNewRecord) {
+                $this->entry->participation->sendUpdateNotification();
+            }
+
+            if ($this->forceJoin) {
+                $this->entry->participation->addAllUsers();
+            }
+
+            Topic::attach($this->entry->content, $this->topics);
+
+            $result = $this->reminderSettings->save() && $this->recurrenceForm->save($this->original);
+
+            $this->sequenceCheck();
+
+            return $result;
         });
+    }
+
+    public function sequenceCheck()
+    {
+        if(!$this->original) {
+            return;
+        }
+
+        $incrementSequence = $this->original->getStartDateTime() != $this->entry->getStartDateTime();
+        $incrementSequence = $incrementSequence || $this->original->getEndDateTime() != $this->entry->getEndDateTime();
+        $incrementSequence = $incrementSequence || $this->original->getRrule() !== $this->entry->getRrule();
+        $incrementSequence = $incrementSequence || $this->original->getExdate() !== $this->entry->getExdate();
+        $incrementSequence = $incrementSequence || $this->original->getEventStatus() !== $this->entry->getEventStatus();
+
+        if($incrementSequence) {
+            CalendarUtils::incrementSequence($this->entry);
+            $this->entry->getEventQuery()->save();
+        }
     }
 
     public static function getParticipationModeItems()

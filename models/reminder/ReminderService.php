@@ -1,12 +1,12 @@
 <?php
 
 
-namespace humhub\modules\calendar\interfaces;
+namespace humhub\modules\calendar\models\reminder;
 
 
 
 use Yii;
-use humhub\modules\calendar\models\reminder\ReminderProcessor;
+use humhub\modules\calendar\interfaces\CalendarService;
 use yii\base\Component;
 
 class ReminderService extends Component

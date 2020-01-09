@@ -2,11 +2,10 @@
 
 namespace humhub\modules\calendar\models\participation;
 
-use humhub\modules\calendar\interfaces\CalendarEventParticipationIF;
+use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\jobs\ForceParticipation;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -288,5 +287,13 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         }
 
         return $this->isParticipant($user);
+    }
+
+    /**
+     * @return User
+     */
+    public function getOrganizer()
+    {
+        return $this->entry->getOwner();
     }
 }

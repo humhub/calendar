@@ -1,7 +1,7 @@
 <?php
 
 
-namespace humhub\modules\calendar\interfaces;
+namespace humhub\modules\calendar\interfaces\event;
 
 
 use humhub\components\SettingsManager;

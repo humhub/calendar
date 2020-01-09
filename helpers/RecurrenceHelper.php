@@ -6,7 +6,8 @@ namespace humhub\modules\calendar\helpers;
 
 use DateTime;
 use DateTimeZone;
-use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\VCalendar;
 use Sabre\VObject\Component\VEvent;
@@ -109,6 +110,21 @@ class RecurrenceHelper
     }
 
     /**
+     * @param $root RecurrentEventIF
+     * @param $instance RecurrentEventIF
+     * @param null $recurrence_id
+     */
+    public static function syncRecurrentEventData($root, $instance, $recurrence_id = null)
+    {
+        $instance->setUid($root->getUid());
+        $instance->setRecurrenceRootId($root->getId());
+        $instance->setRrule($root->getRrule());
+        if($recurrence_id) {
+            $instance->setRecurrenceId($recurrence_id);
+        }
+    }
+
+    /**
      * @param RecurrentEventIF $root
      * @param RecurrentEventIF $exdate
      * @return string
@@ -125,6 +141,8 @@ class RecurrenceHelper
         if(!in_array($exdate->getRecurrenceId(), $exdateArr)) {
             $exdateArr[] = $exdate->getRecurrenceId();
         }
+
+        CalendarUtils::incrementSequence($root);
 
         return implode(',', $exdateArr);
 

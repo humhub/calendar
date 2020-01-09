@@ -5,7 +5,7 @@ namespace humhub\modules\calendar\models\reminder;
 
 
 use humhub\components\ActiveRecord;
-use humhub\modules\calendar\interfaces\CalendarEventReminderIF;
+use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 
 /**
  * Class CalendarReminderSent

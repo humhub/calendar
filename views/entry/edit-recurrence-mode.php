@@ -3,7 +3,6 @@
 use humhub\modules\ui\view\components\View;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
@@ -13,7 +12,7 @@ use humhub\modules\calendar\helpers\Url;
 /* @var $model CalendarEntryForm */
 /* @var $form ActiveForm */
 
-$root = $model->entry->getRecurrenceQuery()->getRecurrenceRoot();
+$root = $model->entry->getEventQuery()->getRecurrenceRoot();
 
 ?>
 

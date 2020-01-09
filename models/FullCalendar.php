@@ -11,11 +11,12 @@ namespace humhub\modules\calendar\models;
 use Yii;
 use DateTime;
 use Exception;
-use humhub\modules\calendar\interfaces\CalendarEventStatusIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
 use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\libs\Html;
+use yii\base\InvalidConfigException;
 
 class FullCalendar
 {
@@ -38,8 +39,8 @@ class FullCalendar
             'viewUrl' => $entry->getCalendarViewUrl(),
             'viewMode' => $entry->getCalendarViewMode(),
             'icon' => $entry->getIcon(),
-            'start' => static::toFullCalendarFormat($entry->getStartDateTime()),
-            'end' => static::toFullCalendarFormat(static::getEndDate($entry)),
+            'start' => static::toFullCalendarFormat($entry->getStartDateTime(), $entry->isAllDay()),
+            'end' => static::toFullCalendarFormat(static::getEndDate($entry), $entry->isAllDay()),
             'eventDurationEditable' => true,
             'eventStartEditable' => true
         ];
@@ -76,8 +77,14 @@ class FullCalendar
         return $title;
     }
 
-    public static function toFullCalendarFormat(DateTime $dt)
+    /**
+     * @param DateTime $dt
+     * @param bool $allDay
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public static function toFullCalendarFormat(DateTime $dt, $allDay = false)
     {
-        return Yii::$app->formatter->asDatetime($dt, 'php:c');
+        return CalendarDateFormatter::formatDate($dt, 'php:c', $allDay);
     }
 }

@@ -6,8 +6,12 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateTime;
 use Exception;
-use humhub\modules\calendar\interfaces\CalendarEventIF;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
+use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\user\models\User;
 use yii\base\Model;
 use Sabre\VObject;
 
@@ -18,6 +22,9 @@ use Sabre\VObject;
 class VCalendar extends Model
 {
     const PRODID = '-//HumHub Org//HumHub Calendar 0.7//EN';
+    const PARTICIPATION_STATUS_ACCEPTED = 'ACCEPTED';
+    const PARTICIPATION_STATUS_DECLINED = 'DECLINED';
+    const PARTICIPATION_STATUS_TENTATIVE = 'TENTATIVE';
 
     /**
      * @var
@@ -40,6 +47,10 @@ class VCalendar extends Model
     {
         $instance = (new static());
         $instance->addTimeZone($tz);
+
+        if(!is_array($items)) {
+            $items = [$items];
+        }
 
         foreach ($items as $item)
         {
@@ -66,7 +77,7 @@ class VCalendar extends Model
 
 
     /**
-     * @return VObject\Component\VCalendar
+     * @return void
      */
     private function initVObject()
     {
@@ -94,7 +105,7 @@ class VCalendar extends Model
 
     /**
      * @param $item CalendarEventIF
-     * @return array []
+     * @return static
      * @throws Exception
      */
     private function addVEvent(CalendarEventIF $item)
@@ -102,16 +113,21 @@ class VCalendar extends Model
         $dtend = $item->getEndDateTime();
 
         $result = [
+            'UID' => $item->getUid(),
             'DTSTART' => $item->getStartDateTime(),
             'DTEND' => $dtend,
-            'SUMMARY' => $item->getTitle()
+            'SUMMARY' => $item->getTitle(),
         ];
 
-        if (property_exists($item, 'location')) {
-            $result['LOCATION'] = $item->location;
+        if(!empty($item->getLocation())) {
+            $result['LOCATION'] = $item->getLocation();
         }
 
-        if ($item instanceof RecurrentEventIF) {
+        if(!empty($item->getDescription())) {
+            $result['DESCRIPTION'] = $item->getDescription();
+        }
+
+        if ($item instanceof RecurrentEventIF && RecurrenceHelper::isRecurrent($item)) {
             $result['RRULE'] = $item->getRRule();
 
             // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
@@ -123,15 +139,16 @@ class VCalendar extends Model
             }
         }
 
-        if (property_exists($item, 'description')) {
-            $result['DESCRIPTION'] = $item->description;
+        if ($item instanceof CalendarEventSequenceIF) {
+            $result['SEQUENCE'] = $item->getSequence();
+        }
+        $lastModified = $item->getLastModified();
+        if($lastModified) {
+            $result['LAST-MODIFIED'] = $lastModified;
         }
 
         $evt = $this->vcalendar->add('VEVENT', $result);
 
-        if (!empty($item->getUid())) {
-            $evt->UID = $item->getUid();
-        }
 
         if ($item->isAllDay()) {
             if (isset($evt->DTSTART)) {
@@ -141,6 +158,35 @@ class VCalendar extends Model
             if (isset($evt->DTEND)) {
                 $evt->DTEND['VALUE'] = 'DATE';
             }
+        }
+
+        if($item instanceof CalendarEventParticipationIF) {
+            $organizer = $item->getOrganizer();
+            if($organizer instanceof User) {
+                $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
+            }
+
+            foreach ($item->findParticipants([CalendarEventParticipationIF::PARTICIPATION_STATUS_ACCEPTED])->limit(20)->all() as $user) {
+                /* @var $user User*/
+                $evt->add('ATTENDEE', $this->getCN($user));
+            }
+
+            if(!empty($item->getExternalParticipants())) {
+                foreach ($item->getExternalParticipants() as $email) {
+                    $evt->add('ATTENDEE', 'MAILTO:'.$email);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    private function getCN(User $user)
+    {
+        $result = $user->getDisplayName();
+
+        if($user->email) {
+            $result .= ':MAILTO:'.$user->email;
         }
 
         return $result;

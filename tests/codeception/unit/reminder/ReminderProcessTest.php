@@ -2,7 +2,7 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit\reminder;
 
-use humhub\modules\calendar\interfaces\ReminderService;
+use humhub\modules\calendar\models\reminder\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\notifications\Remind;

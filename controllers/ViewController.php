@@ -3,7 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\ReminderService;
+use humhub\modules\calendar\models\reminder\ReminderService;
 use humhub\modules\calendar\models\FullCalendar;
 use Yii;
 use DateTime;
