@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar;
 
+use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use Yii;
 use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -25,7 +26,7 @@ use yii\helpers\Console;
 
 /**
  * Description of CalendarEvents
- *EE
+ *
  * @author luke
  */
 class Events
@@ -176,12 +177,29 @@ class Events
         return null;
     }
 
+    public static function onRecordBeforeInsert($event)
+    {
+        static::onRecordBeforeUpdate($event);
+    }
+
+    public static function onRecordBeforeUpdate($event)
+    {
+        $model = CalendarUtils::getCalendarEvent($event->sender);
+        if($model && ($model instanceof EditableEventIF)) {
+            /** @var $model EditableEventIF **/
+            if(empty($model->getUid())) {
+                $model->setUid(CalendarUtils::generateEventUid($model));
+                $model->save();
+            }
+        }
+    }
+
     /**
      * @param $event
      * @throws \Throwable
      * @throws StaleObjectException
      */
-    public static function onContentDelete($event)
+    public static function onRecordBeforeDelete($event)
     {
         $model = CalendarUtils::getCalendarEvent($event->sender);
 
@@ -194,7 +212,7 @@ class Events
         }
 
         if($model instanceof RecurrentEventIF) {
-            $model->getEventQuery()->onDelete($model);
+            $model->getRecurrenceQuery()->onDelete();
         }
     }
 

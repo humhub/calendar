@@ -7,9 +7,9 @@
 
 namespace humhub\modules\calendar\interfaces\recurrence;
 
-
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\EditableEventIF;
 
 /**
  * This interface is used for event types supporting recurrent events.
@@ -86,7 +86,7 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
  *
  * @package humhub\modules\calendar\interfaces\recurrence
  */
-interface RecurrentEventIF extends CalendarEventIF
+interface RecurrentEventIF extends EditableEventIF
 {
     /**
      * @return int the id of this event
@@ -166,11 +166,54 @@ interface RecurrentEventIF extends CalendarEventIF
     public function setExdate($exdateStr);
 
     /**
-     * @return AbstractRecurrenceQuery
+     * This function is called while expanding a recurrent root event.
+     * Usually the implementation of this event sets the `start_datetime` and `end_datetime` and doing some other
+     * initialization tasks. Note you won't
+     *
+     * Example:
+     *
+     * ```php
+     * public function createRecurrence($start, $end)
+     * {
+     *   $instance = new self($this->content->container, $this->content->visibility);
+     *   $instance->start_datetime = $start;
+     *   $instance->end_datetime = $end;
+     *   $instance->syncEventData($this);
+     *   return $instance;
+     * }
+     * ```
+     *
+     * @param string $start start of the event in db format
+     * @param string $end end of the event in db format
+     * @return static
      */
-    public function getEventQuery();
+    public function createRecurrence($start, $end);
 
     /**
+     * This function is called in order to synchronize a recurrent instance with a given root event.
+     * An implementation of this function should copy all relevant data as for example description and title
+     * from the root event.
+     *
+     * This function is called on recurrence instances after they were expanded. In this case the $original parameter is
+     * null and the this instance is not persisted.
+     *
+     * Furthermore, this function is called on existing recurrent events once a root event is saved. In this case the
+     * $original parameter points to the original root before the update. The function may skip some synchronizations in
+     * this case, for example if the recurrent instance description was changed before the root edit:
+     *
+     * ```
+     * public function syncEventData($root, $original = null) {
+     *     // Only change title if we did not overwrite the original title already
+     *     if(!$original || $original->title === $this->title) {
+     *         $this->title = $root->title;
+     *     }
+     * }
+     * ```
+     *
+     *
+     * This function is called by the recurrent interface once when expanding an recurrent instance and when editing
+     * the root event. This function may behave differently when the $create parameter is set
+     *
      * This function should synchronize the data of this event with the given $root event, by copying all data and
      * content as title description texts and additional model data.
      *
@@ -188,39 +231,21 @@ interface RecurrentEventIF extends CalendarEventIF
      * - recurrence root id
      * - rrule
      *
-     * The following data should not be copied:
+     * The following data should not be touched:
      *
-     *  - id
+     *  - uid
      *  - start_datetime
      *  - end_datetime
      *  - recurrence_id
      *
      * @param $root static
+     * @param $create
      * @return mixed
      */
-    public function syncEventData($root);
+    public function syncEventData($root, $original = null);
 
     /**
-     * This function is called while expanding a recurrent root event.
-     * Usually the implementation of this event sets the `start_datetime` and `end_datetime` and
-     * calls [[syncEventData()]].
-     *
-     * Example:
-     *
-     * ```php
-     * public function createRecurrence($start, $end)
-     * {
-     *   $instance = new self($this->content->container, $this->content->visibility);
-     *   $instance->start_datetime = $start;
-     *   $instance->end_datetime = $end;
-     *   $instance->syncEventData($this);
-     *   return $instance;
-     * }
-     * ```
-     *
-     * @param string $start start of the event in db format
-     * @param string $end end of the event in db format
-     * @return mixed
+     * @return RecurrenceQueryIF
      */
-    public function createRecurrence($start, $end);
+    public function getRecurrenceQuery();
 }

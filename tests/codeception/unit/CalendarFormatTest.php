@@ -56,8 +56,8 @@ class CalendarFormatTest extends HumHubDbTestCase
 
         $berlin_timezone = TimezoneHelper::generateList()['Europe/Berlin'];
 
-        $this->assertEquals("12. September 2017 ($berlin_timezone)", $entry->getFormattedTime());
-        $this->assertEquals("12.09.2017 ($berlin_timezone)", $entry->getFormattedTime('medium'));
+        $this->assertEquals("12. September 2017", $entry->getFormattedTime());
+        $this->assertEquals("12.09.2017", $entry->getFormattedTime('medium'));
     }
 
     public function testAllDayOneDayFormatDifferentTimezone2()
@@ -75,8 +75,8 @@ class CalendarFormatTest extends HumHubDbTestCase
         ]);
 
         // Date is not trnaslated since we use all_day = 1
-        $this->assertEquals('12. September 2017 (UTC)', $entry->getFormattedTime());
-        $this->assertEquals('12.09.2017 (UTC)', $entry->getFormattedTime('medium'));
+        $this->assertEquals('12. September 2017', $entry->getFormattedTime());
+        $this->assertEquals('12.09.2017', $entry->getFormattedTime('medium'));
     }
 
     public function testAllDayMultipleDayFormat()
@@ -113,8 +113,8 @@ class CalendarFormatTest extends HumHubDbTestCase
         ]);
 
         // Date is not trnaslated since we use all_day = 1
-        $this->assertEquals('12. September 2017 - 13. September 2017 (UTC)', $entry->getFormattedTime());
-        $this->assertEquals('12.09.2017 - 13.09.2017 (UTC)', $entry->getFormattedTime('medium'));
+        $this->assertEquals('12. September 2017 - 13. September 2017', $entry->getFormattedTime());
+        $this->assertEquals('12.09.2017 - 13.09.2017', $entry->getFormattedTime('medium'));
     }
 
     public function testNonAllDayOneDayFormatDifferentTimezone()

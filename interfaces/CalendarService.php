@@ -26,7 +26,7 @@ use humhub\modules\calendar\interfaces\event\CalendarTypeArrayWrapper;
 use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\calendar\interfaces\event\CalendarEventIFWrapper;
+use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\content\models\Content;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
@@ -164,7 +164,7 @@ class CalendarService extends Component
             return $event->getColor();
         }
 
-        $type = $event->getType();
+        $type = $event->getEventType();
 
         if(!$type) {
             return null;

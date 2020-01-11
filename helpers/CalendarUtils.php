@@ -29,6 +29,7 @@ class CalendarUtils
     private static $userTimezone;
     private static $userTimezoneString;
 
+    const DATE_FORMAT_ATOM = 'Y-m-d\TH:i:sP';
     const DB_DATE_FORMAT = 'Y-m-d H:i:s';
     const DATE_FORMAT_SHORT = 'Y-m-d';
     const DATE_FORMAT_SHORT_NO_TIME = '!Y-m-d';
@@ -176,6 +177,13 @@ class CalendarUtils
         return $endTime === '23:59';
     }
 
+    public static function ensureAllDay(DateTime $startDt, DateTime $endDt)
+    {
+
+        $endDt->setTime(23,59,59);
+        $startDt->setTime(0,0,0);
+    }
+
     /**
      * @param $date
      * @param string $format
@@ -199,7 +207,14 @@ class CalendarUtils
      */
     public static function getDateTime($date)
     {
-        return  $date instanceof DateTimeInterface ? clone $date : new DateTime($date);
+        if($date instanceof \DateTimeImmutable) {
+            return DateTime::createFromFormat(
+                static::DATE_FORMAT_ATOM,
+                $date->format(static::DATE_FORMAT_ATOM)
+            );
+        }
+
+        return $date instanceof DateTime ? clone $date : new DateTime($date);
     }
 
     /**
@@ -355,7 +370,7 @@ class CalendarUtils
 
     private static function parseFormat($format = null)
     {
-        if(!$format) {
+        if (!$format) {
             return null;
         }
 
@@ -366,10 +381,8 @@ class CalendarUtils
         return $format;
     }
 
-    public static function ensureAllDay(DateTime $startDt, DateTime $endDt)
-    {
-        $endDt->setTime(23,59,59);
-        $startDt->setTime(0,0,0);
+    public static function generateEventUid(CalendarEventIF $event, $type = 'event') {
+        return static::generateUUid($event->getEventType()->getKey());
     }
 
     public static function generateUUid($type = 'event') {

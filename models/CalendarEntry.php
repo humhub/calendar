@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\models;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
+use humhub\modules\calendar\interfaces\recurrence\EditableRecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -58,7 +59,7 @@ use humhub\modules\user\models\User;
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable,
-    RecurrentEventIF, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF, CalendarEventSequenceIF
+    EditableRecurrentEventIF, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF, CalendarEventSequenceIF
 {
     /**
      * @inheritdoc
@@ -198,7 +199,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable,
             $labels[] = Label::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
         }
 
-        $type = $this->getType();
+        $type = $this->getEventType();
         if($type) {
             $labels[] = Label::asColor($type->color, $type->name)->sortOrder(310);
         }
@@ -305,20 +306,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable,
             $this->end_datetime = CalendarUtils::toDBDateFormat($end->setTime(23,59, 59));
         }
 
-        if(empty($this->uid)) {
-            $this->uid = CalendarUtils::generateUUid();
-        }
-
         if($this->participation_mode === null) {
             $this->participation->setDefautls();
         }
 
         return parent::beforeSave($insert);
-    }
-
-    public static function createUUid($type = 'event')
-    {
-        return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
     }
 
     /**
@@ -363,7 +355,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable,
      *
      * @return CalendarEntryType
      */
-    public function getType()
+    public function getEventType()
     {
         $type = CalendarEntryType::findByContent($this->content)->one();
 
@@ -755,32 +747,39 @@ class CalendarEntry extends ContentActiveRecord implements Searchable,
         $instance = new self($this->content->container, $this->content->visibility);
         $instance->start_datetime = $start;
         $instance->end_datetime = $end;
-        $instance->syncEventData($this);
         return $instance;
     }
 
     /**
-     * @param $event static
+     * @param static $root
+     * @param static $original
      * @return mixed
      */
-    public function syncEventData($event)
+    public function syncEventData($root, $original = null)
     {
-        $this->content->created_by = $event->content->created_by;
-        $this->title = $event->title;
-        $this->description = $event->description;
-        $this->color = $event->color;
-        $this->time_zone = $event->time_zone;
-        $this->participant_info = $event->participant_info;
-        $this->participation_mode = $event->participation_mode;
-        $this->all_day = $event->all_day;
-        $this->allow_decline = $event->allow_decline;
-        $this->allow_maybe = $event->allow_maybe;
+        $this->content->created_by = $root->content->created_by;
+
+        if(!$original || empty($this->description) || $original->description === $this->description) {
+            $this->description = $root->description;
+        }
+
+        if(!$original || empty($this->participant_info) || $original->participant_info === $this->participant_info) {
+            $this->participant_info = $root->participant_info;
+        }
+
+        $this->title = $root->title;
+        $this->color = $root->color;
+        $this->time_zone = $root->time_zone;
+        $this->participation_mode = $root->participation_mode;
+        $this->all_day = $root->all_day;
+        $this->allow_decline = $root->allow_decline;
+        $this->allow_maybe = $root->allow_maybe;
     }
 
     /**
      * @return AbstractRecurrenceQuery
      */
-    public function getEventQuery()
+    public function getRecurrenceQuery()
     {
         return $this->query;
     }

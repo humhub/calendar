@@ -64,7 +64,7 @@ class Remind extends BaseNotification
     public function getEventType()
     {
         if($this->source instanceof CalendarEventReminderIF) {
-            $type = $this->source->getType();
+            $type = $this->source->getEventType();
             if($type) {
                 return $type->getTitle();
             }

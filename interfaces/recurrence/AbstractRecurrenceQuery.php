@@ -3,17 +3,20 @@
 
 namespace humhub\modules\calendar\interfaces\recurrence;
 
+use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
+use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\helpers\RRuleHelper;
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
-use Yii;
-use yii\db\ActiveQuery;
-use yii\db\StaleObjectException;
 
-class AbstractRecurrenceQuery extends AbstractCalendarQuery
+class AbstractRecurrenceQuery extends AbstractCalendarQuery implements RecurrenceQueryIF
 {
     public $recurrenceIdField = 'recurrence_id';
 
@@ -36,7 +39,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
      */
     public $event;
 
-    public function setupFilters()
+    protected function setupFilters()
     {
         if ($this->isRecurrenceSupported()) {
             // Do not include existing recurrence instances
@@ -46,7 +49,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
         return parent::setupFilters();
     }
 
-    public function isRecurrenceSupported()
+    protected function isRecurrenceSupported()
     {
         return $this->expand && is_subclass_of(static::$recordClass, RecurrentEventIF::class);
     }
@@ -128,14 +131,20 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
         return '';
     }
 
-    /*public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null)
-    {
-        if($this->event instanceof CalendarEventSequenceIF) {
-            return $this->findRecurrenceInstances($start, $end)->andWhere(['>', $this->sequenceField, 0])->all();
-        }
 
-        return [];
-    }*/
+    /**
+     * @param DateTime|null $start
+     * @param DateTime|null $end
+     * @return array|CalendarReminder[]|CalendarReminderSent[]|ActiveRecord[]
+     */
+     public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null)
+     {
+            if($this->event instanceof CalendarEventSequenceIF) {
+                return $this->findRecurrenceInstances($start, $end)->andWhere(['>', $this->sequenceField, 0])->all();
+            }
+
+            return [];
+     }
 
     /**
      * This function can be used for subclasses to expand e.g. recurrent events by adding all expanded events to the
@@ -159,7 +168,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
 
         // Make sure we only expand recurrence roots
         if (RecurrenceHelper::isRecurrentRoot($entry)) {
-            $entry->getEventQuery()->expandRoot($this->_from, $this->_to, $this->autoSaveRecurrentInstances, $expandResult);
+            $entry->getRecurrenceQuery()->expandEvent($this->_from, $this->_to, $this->autoSaveRecurrentInstances, $expandResult);
         } else {
             $expandResult[] = $entry;
         }
@@ -173,21 +182,27 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
      * @return array
      * @throws \Throwable
      */
-    public function expandRoot($from = null, $to = null, $saveInstances = false, &$expandResult = [])
+    public function expandEvent($from = null, $to = null, $save = false, &$expandResult = [])
     {
         if(!RecurrenceHelper::isRecurrent($this->event)) {
             return $expandResult;
         }
 
-        $event = $this->event;
-
-        if (!RecurrenceHelper::isRecurrentRoot($this->event)) {
-            $event = $this->event->getEventQuery()->getRecurrenceRoot();
-        }
-
         $to = $to ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->add(new \DateInterval('P1Y'));
         $from = $from ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->sub(new \DateInterval('P1Y'));
-        return CalendarRecurrenceExpand::expand($event, $from, $to, $expandResult, $saveInstances);
+        return CalendarRecurrenceExpand::expand($this->event, $from, $to, $expandResult, $save);
+    }
+
+    /**
+     * @param null $from
+     * @param int $count
+     * @param bool $save
+     * @return RecurrentEventIF[]
+     * @throws \Exception
+     */
+    public function expandUpcoming($count = 1, $from = null, $save = true)
+    {
+        return CalendarRecurrenceExpand::expandUpcoming($this->event, $count, $from, $save);
     }
 
     /**
@@ -219,31 +234,31 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
     public function onDelete()
     {
         if(RecurrenceHelper::isRecurrentRoot($this->event)) {
-            static::$deletedRoot[] = $this->event->getUid();
+            self::$deletedRoot[] = $this->event->getUid();
             foreach($this->getFollowingInstances() as $recurrence) {
-                $recurrence->getEventQuery()->delete();
+                $recurrence->delete();
             }
         } elseif(RecurrenceHelper::isRecurrentInstance($this->event)) {
             $root = $this->getRecurrenceRoot();
-            if($root && !in_array($root->getUid(), static::$deletedRoot, true)) {
+            if($root && !in_array($root->getUid(), self::$deletedRoot, true)) {
                 $root->setExdate(RecurrenceHelper::addExdates($root, $this->event));
-                $root->getEventQuery()->save();
+                $root->save();
             }
         }
 
-        static::$deletedRoot = [];
+        self::$deletedRoot = [];
     }
 
     /**
      * @param RecurrentEventIF $original
      * @param RecurrentEventIF $event
-     * @return bool|void
+     * @return bool
      * @throws \Throwable
      */
-    public function splitRecurrentEvent(RecurrentEventIF $original)
+    public function saveThisAndFollowing(RecurrentEventIF $original)
     {
         if(RecurrenceHelper::isRecurrentRoot($this->event)) {
-            return $this->updateAll($original);
+            return $this->saveAll($original);
         }
 
         try {
@@ -253,23 +268,23 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
             $isFirstInstanceEdit = RecurrenceHelper::getRecurrentId($root) === $this->event->getRecurrenceId();
 
             // Generate new UID
-            $this->event->setUid(CalendarUtils::generateUUid());
+            $this->event->setUid(CalendarUtils::generateEventUid($this->event));
             $this->event->setRecurrenceId(null);
 
             // Save this instance as a new recurrence root
             $this->event->setRecurrenceRootId(null);
-            $this->event->getEventQuery()->save();
+            $this->event->save();
 
             $this->syncFollowingInstances($original, true);
 
             if($isFirstInstanceEdit) {
                 // We are editing the first instance, so we do not need the old root anymore
                 // TODO: what about attached files?
-                $root->getEventQuery()->delete();
+                $root->delete();
             } else {
                 $splitDate = $this->event->getStartDateTime()->modify('-1 hour');
                 $root->setRrule(RRuleHelper::setUntil($root->getRrule(), $splitDate));
-                $root->getEventQuery()->save();
+                $root->save();
             }
         } catch (\Exception $e) {
             Yii::error($e);
@@ -281,12 +296,17 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
 
     /**
      * @param RecurrentEventIF $original
+     * @return bool
      * @throws \Throwable
      */
-    public function updateAll(RecurrentEventIF $original)
+    public function saveAll(RecurrentEventIF $original)
     {
-        $this->save();
+        if(!$this->save()) {
+            return false;
+        }
+
         $this->syncFollowingInstances($original, false);
+        return true;
     }
 
     /**
@@ -296,7 +316,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
      */
     protected function syncFollowingInstances(RecurrentEventIF $original, $isSplit)
     {
-        $followingInstances = $original->getEventQuery()->getFollowingInstances();
+        $followingInstances = $original->getRecurrenceQuery()->getFollowingInstances();
 
         // Sync following events
         if (!empty($followingInstances)) {
@@ -315,11 +335,11 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery
 
             foreach ($followingInstances as $followingInstance) {
                 if (!in_array($followingInstance->getRecurrenceId(), $remainingRecurrenceIds)) {
-                    $followingInstance->getEventQuery()->delete();
+                    $followingInstance->delete();
                 } else {
                     RecurrenceHelper::syncRecurrentEventData($this->event, $followingInstance);
-                    $followingInstance->syncEventData($this->event);
-                    $followingInstance->getEventQuery()->save();
+                    $followingInstance->syncEventData($this->event, $original);
+                    $followingInstance->save();
                 }
             }
         }

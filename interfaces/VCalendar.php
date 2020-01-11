@@ -110,7 +110,12 @@ class VCalendar extends Model
      */
     private function addVEvent(CalendarEventIF $item)
     {
-        $dtend = $item->getEndDateTime();
+        $dtend = clone $item->getEndDateTime();
+
+        if($item->isAllDay()) {
+            // Translate from exact end to moment after
+            $dtend->modify('+1 hour')->setTime(0,0,0);
+        }
 
         $result = [
             'UID' => $item->getUid(),

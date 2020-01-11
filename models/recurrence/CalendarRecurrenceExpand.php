@@ -3,9 +3,12 @@
 
 namespace humhub\modules\calendar\models\recurrence;
 
+use Exception;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\content\components\ActiveQueryContent;
-use humhub\modules\content\components\ContentActiveRecord;
+use Sabre\VObject\Component;
+use Sabre\VObject\Recur\EventIterator;
+use Sabre\VObject\Recur\MaxInstancesExceededException;
+use Sabre\VObject\Recur\NoInstancesException;
 use Yii;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -14,9 +17,6 @@ use DateTime;
 use DateTimeZone;
 use humhub\modules\calendar\interfaces\VCalendar;
 use Sabre\VObject\Component\VEvent;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
-use yii\web\NotFoundHttpException;
 
 
 class CalendarRecurrenceExpand extends Model
@@ -45,15 +45,15 @@ class CalendarRecurrenceExpand extends Model
     {
         parent::init();
 
-        if($this->event->isAllDay()) {
+        if ($this->event->isAllDay()) {
             $this->targetTimezone = new DateTimeZone('UTC');
-        } else if(!$this->targetTimezone) {
+        } else if (!$this->targetTimezone) {
             $this->targetTimezone = CalendarUtils::getUserTimeZone();
-        } else if(is_string($this->targetTimezone)) {
+        } else if (is_string($this->targetTimezone)) {
             $this->targetTimezone = new DateTimeZone($this->targetTimezone);
         }
 
-        if($this->event) {
+        if ($this->event) {
             $this->eventTimeZone = new DateTimeZone($this->event->getTimezone());
         }
     }
@@ -69,6 +69,11 @@ class CalendarRecurrenceExpand extends Model
      */
     public static function expand(RecurrentEventIF $event, DateTime $start, DateTime $end, array &$endResult = [], $save = false)
     {
+        if (!RecurrenceHelper::isRecurrent($event)) {
+            return [];
+        }
+
+        $event = static::assureRootEvent($event);
         $instance = new static(['event' => $event, 'saveInstnace' => $save]);
         return $instance->expandEvent($start, $end, $endResult);
     }
@@ -80,31 +85,115 @@ class CalendarRecurrenceExpand extends Model
      * @param $recurrenceId
      * @param bool $save
      * @return RecurrentEventIF|null
-     * @throws \Exception
+     * @throws Exception
      * @throws \Throwable
      */
     public static function expandSingle(RecurrentEventIF $event, $recurrenceId, $save = true)
     {
-        $recurrence = $event->getEventQuery()->getRecurrenceInstance($recurrenceId);
+        if (!RecurrenceHelper::isRecurrent($event)) {
+            return null;
+        }
 
-        if($recurrence) {
+        $event = static::assureRootEvent($event);
+        $recurrence = $event->getRecurrenceQuery()->getRecurrenceInstance($recurrenceId);
+
+        if ($recurrence) {
             return $recurrence;
         }
 
         $tz = new \DateTimeZone($event->getTimezone());
-        $start = (new DateTime($recurrenceId,$tz))->modify("-1 minute");
+        $start = (new DateTime($recurrenceId, $tz))->modify("-1 minute");
         $end = (new DateTime($recurrenceId, $tz))->modify("+1 minute");
 
         $instance = new static(['event' => $event, 'saveInstnace' => $save]);
         $result = $instance->expandEvent($start, $end);
 
         foreach ($result as $recurrence) {
-            if($recurrence->getRecurrenceId() === CalendarUtils::cleanRecurrentId(new DateTime($recurrenceId,$tz))) {
+            if ($recurrence->getRecurrenceId() === CalendarUtils::cleanRecurrentId(new DateTime($recurrenceId, $tz))) {
                 return $recurrence;
             }
         }
 
         return null;
+    }
+
+    /**
+     * @param RecurrentEventIF $event
+     * @param null $start
+     * @param int $count
+     * @param bool $save
+     * @return RecurrentEventIF[]
+     * @throws Exception
+     */
+    public static function expandUpcoming(RecurrentEventIF $event, $count = 1, $start = null , $save = true)
+    {
+        if(is_bool($start)) {
+            $save = $start;
+            $start = null;
+        }
+
+
+        if (!RecurrenceHelper::isRecurrent($event)) {
+            return [];
+        }
+
+        $event = static::assureRootEvent($event);
+
+        if (!$start) {
+            $start = new DateTime();
+        }
+
+        $vCalendar = (new VCalendar())->add($event);
+        $eventTimeZone = CalendarUtils::getDateTimeZone($event->getTimezone());
+
+        try {
+            $it = new EventIterator([$vCalendar->getInstance()->VEVENT], null, $eventTimeZone);
+        } catch (NoInstancesException $e) {
+            return [];
+        }
+
+        $it->fastForward($start);
+
+        $result = [];
+
+        try {
+            for ($i = 0; $i < $count && $it->valid(); $i++) {
+                $vEvent = static::stripTimezones($it->getEventObject(), $eventTimeZone);
+                $recurrenceId = RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $event->getTimezone());
+                $existingModel = $event->getRecurrenceQuery()->getRecurrenceInstance($recurrenceId);
+                $existingModel = $existingModel ?: static::createRecurrenceInstanceModel($event, $vEvent, $save);
+                $result[] = $existingModel;
+                $it->next();
+            }
+        } catch (MaxInstancesExceededException $me) {
+            Yii::warning($me);
+        }
+
+        return $result;
+    }
+
+    private static function assureRootEvent(RecurrentEventIF $event)
+    {
+        return RecurrenceHelper::isRecurrentRoot($event) ?  $event : $event->getRecurrenceQuery()->getRecurrenceRoot();
+    }
+
+    private static function stripTimezones(Component $component, $timeZone)
+    {
+        foreach ($component->children() as $componentChild) {
+            if ($componentChild instanceof DateTime && $componentChild->hasTime()) {
+                $dt = $componentChild->getDateTimes($timeZone);
+                // We only need to update the first timezone, because
+                // setDateTimes will match all other timezones to the
+                // first.
+                $dt[0] = $dt[0]->setTimeZone(new DateTimeZone('UTC'));
+                $componentChild->setDateTimes($dt);
+            } elseif
+            ($componentChild instanceof Component) {
+                static::stripTimezones($componentChild);
+            }
+        }
+
+        return $component;
     }
 
     /**
@@ -116,15 +205,15 @@ class CalendarRecurrenceExpand extends Model
      */
     public function expandEvent(DateTime $start, DateTime $end, array &$endResult = [])
     {
-        if(empty($this->event->getRrule())) {
+        if (!RecurrenceHelper::isRecurrent($this->event)) {
             return [$this->event];
         }
 
-        if(!$end) {
+        if (!$end) {
             $end = (new DateTime('now', $this->targetTimezone))->add(new \DateInterval('P2Y'));
         }
 
-        $existingModels = $this->event->getEventQuery()->getExistingRecurrences($start, $end);
+        $existingModels = $this->event->getRecurrenceQuery()->getExistingRecurrences($start, $end);
         $recurrences = $this->calculateRecurrenceInstances($start, $end);
         $this->syncRecurrences($existingModels, $recurrences, $endResult);
 
@@ -135,7 +224,7 @@ class CalendarRecurrenceExpand extends Model
      * @param DateTime $start
      * @param DateTime $end
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private function calculateRecurrenceInstances(DateTime $start, DateTime $end)
     {
@@ -153,15 +242,15 @@ class CalendarRecurrenceExpand extends Model
      */
     private function syncRecurrences(array $existingModels, array $recurrences, &$endResult)
     {
-        foreach($recurrences as $vEvent) {
+        foreach ($recurrences as $vEvent) {
             try {
                 /* @var $model RecurrentEventIF */
                 $model = null;
                 $vEventStart = clone $vEvent->DTSTART->getDateTime();
                 $vEventEnd = clone $vEvent->DTEND->getDateTime();
 
-                if($vEventStart == $vEventEnd && $this->event->isAllDay()) {
-                    $vEventEnd =  $vEventEnd->modify('+1 day')->modify('-1 second');
+                if ($vEventStart == $vEventEnd && $this->event->isAllDay()) {
+                    $vEventEnd = $vEventEnd->modify('+1 day')->modify('-1 second');
                 }
 
 
@@ -171,28 +260,52 @@ class CalendarRecurrenceExpand extends Model
                 }
 
                 if (!$model) {
-                    $model = $this->event->createRecurrence(
-                        CalendarUtils::toDBDateFormat($vEventStart, true),
-                        CalendarUtils::toDBDateFormat($vEventEnd, true)
-                    );
-
-                    RecurrenceHelper::syncRecurrentEventData(
-                        $this->event, $model,
-                        RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone())
-                    );
-
-                    if($this->saveInstnace) {
-                        if(!$model->getEventQuery()->save()) {
-                            throw new \Exception('Could not safe recurrent event');
-                        }
-                    }
+                    $model = static::createRecurrenceInstanceModel($this->event, $vEvent, $this->saveInstnace);
                 }
 
                 $endResult[] = $model;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Yii::error($e);
             }
         }
+    }
+
+    /**
+     * @param RecurrentEventIF $root
+     * @param VEvent $vEvent
+     * @param bool $save
+     * @return RecurrentEventIF
+     * @throws Exception
+     */
+    private static function createRecurrenceInstanceModel(RecurrentEventIf $root, VEvent $vEvent, $save = false)
+    {
+        // Note VEvent uses datetime immutables
+        $dtStart = CalendarUtils::getDateTime($vEvent->DTSTART->getDateTime());
+        $dtEnd = CalendarUtils::getDateTime($vEvent->DTEND->getDateTime());
+
+        if($root->isAllDay()) {
+            $dtEnd->modify('-1 second');
+            CalendarUtils::ensureAllDay($dtStart, $dtEnd);
+        }
+
+        $model = $root->createRecurrence(
+            CalendarUtils::toDBDateFormat($dtStart, true),
+            CalendarUtils::toDBDateFormat($dtEnd, true)
+        );
+
+        $model->syncEventData($root, null);
+
+        RecurrenceHelper::syncRecurrentEventData($root, $model,
+            RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $root->getTimezone())
+        );
+
+        if ($save) {
+            if (!$model->save()) {
+                throw new Exception('Could not safe recurrent event');
+            }
+        }
+
+        return $model;
     }
 
     /**
@@ -203,7 +316,7 @@ class CalendarRecurrenceExpand extends Model
     private function findRecurrenceModel(array $existingModels, VEvent $vEvent)
     {
         foreach ($existingModels as $existingModel) {
-            if($existingModel->getRecurrenceId() === RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone())) {
+            if ($existingModel->getRecurrenceId() === RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone())) {
                 return $existingModel;
             }
         }

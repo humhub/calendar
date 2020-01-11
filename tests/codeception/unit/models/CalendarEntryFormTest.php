@@ -15,6 +15,7 @@ use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
+use Recurr\Frequency;
 use Yii;
 
 /**
@@ -25,7 +26,8 @@ use Yii;
  */
 class CalendarEntryFormTest extends CalendarUnitTest
 {
-    public function _createCalendarForm() {
+    public function _createCalendarForm()
+    {
 
         $space1 = Space::findOne(['id' => 1]);
 
@@ -33,13 +35,13 @@ class CalendarEntryFormTest extends CalendarUnitTest
 
         $this->assertTrue($calendarForm->load([
             'CalendarEntry' => [
+                'all_day' => '0',
                 'title' => 'Test title',
                 'description' => 'TestDescription',
                 'participation_mode' => 2
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
-                'all_day' => '0',
                 'start_date' => '6/27/17',
                 'start_time' => '12:00 PM',
                 'end_date' => '6/28/17',
@@ -185,12 +187,12 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $loaded = $calendarForm->load([
             'CalendarEntry' => [
                 'title' => 'Test title',
+                'all_day' => '0',
                 'description' => 'TestDescription',
                 'participation_mode' => 2
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
-                'all_day' => '0',
                 'start_date' => '2019-11-13',
                 'start_time' => '12:00',
                 'end_date' => '2019-11-13',
@@ -216,12 +218,12 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $loaded = $calendarForm->load([
             'CalendarEntry' => [
                 'title' => 'Test title',
+                'all_day' => '0',
                 'description' => 'TestDescription',
                 'participation_mode' => 2
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
-                'all_day' => '0',
                 'start_date' => '11/11/19',
                 'start_time' => '12:00 AM',
                 'end_date' => '11/11/19',
@@ -283,10 +285,11 @@ class CalendarEntryFormTest extends CalendarUnitTest
 
         // Change timezone of event to Europe/Sofia -> UTC +3
         $this->assertTrue($calendarForm->load([
-            'CalendarEntry' => [],
+            'CalendarEntry' => [
+                'all_day' => '0'
+            ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
-                'all_day' => '0',
                 'timeZone' => 'Europe/Sofia',
                 'start_date' => '6/27/17',
                 'start_time' => '12:00 PM',
@@ -395,5 +398,76 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertEquals('00:00', $calendarForm->start_time);
         $this->assertEquals('2017-08-16', $calendarForm->end_date);
         $this->assertEquals('23:59', $calendarForm->end_time);
+    }
+
+    public function testSequenceIncrementDate()
+    {
+        $form = $this->_createCalendarForm();
+        $this->assertEquals(0, $form->entry->sequence);
+        $calendarForm = new CalendarEntryForm(['entry' => $form->entry]);
+        $calendarForm->load([
+            'CalendarEntry' => [
+                'all_day' => '1'
+            ],
+            'CalendarEntryForm' => [
+                'start_date' => '7/16/17',
+                'end_date' => '8/16/17'
+            ]
+        ]);
+
+        $this->assertTrue($calendarForm->save());
+        $this->assertEquals(1, $form->entry->sequence);
+    }
+
+    public function testSequenceIncrementEndDate()
+    {
+        $form = $this->_createCalendarForm();
+        $this->assertEquals(0, $form->entry->sequence);
+        $calendarForm = new CalendarEntryForm(['entry' => $form->entry]);
+        $calendarForm->load([
+            'CalendarEntry' => [
+                'all_day' => '1'
+            ],
+            'CalendarEntryForm' => [
+                'end_date' => '8/16/17'
+            ]
+        ]);
+
+        $this->assertTrue($calendarForm->save());
+        $this->assertEquals(1, $form->entry->sequence);
+    }
+
+    public function testSequenceIncrementRRule()
+    {
+        $form = $this->_createCalendarForm();
+        $this->assertEquals(0, $form->entry->sequence);
+        $calendarForm = new CalendarEntryForm(['entry' => $form->entry]);
+        $calendarForm->load([
+            'CalendarEntry' => [],
+            'CalendarEntryForm' => [],
+            'RecurrenceFormModel' => [
+                'frequency' => Frequency::DAILY,
+                'interval' => 1
+            ]
+        ]);
+
+        $this->assertTrue($calendarForm->save());
+        $this->assertEquals(1, $form->entry->sequence);
+    }
+
+    public function testSequenceNotIncremented()
+    {
+        $form = $this->_createCalendarForm();
+        $this->assertEquals(0, $form->entry->sequence);
+        $calendarForm = new CalendarEntryForm(['entry' => $form->entry]);
+        $calendarForm->load([
+            'CalendarEntry' => [],
+            'CalendarEntryForm' => [
+                'is_public' => '0'
+            ],
+        ]);
+
+        $this->assertTrue($calendarForm->save());
+        $this->assertEquals(0, $form->entry->sequence);
     }
 }

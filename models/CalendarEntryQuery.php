@@ -2,6 +2,7 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
+use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use DateTime;
 
@@ -49,7 +50,7 @@ use DateTime;
  *
  * @author buddha
  */
-class CalendarEntryQuery extends AbstractCalendarQuery
+class CalendarEntryQuery extends AbstractRecurrenceQuery
 {
     /**
      * @inheritdocs

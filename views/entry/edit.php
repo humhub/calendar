@@ -35,9 +35,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
 
         <div id="calendar-entry-form" data-ui-widget="calendar.Form" data-ui-init data-is-recurrent="<?= RecurrenceHelper::isRecurrent($calendarEntryForm->entry)?>">
 
-            <?php if(RecurrenceHelper::isRecurrentInstance($calendarEntryForm->entry)) : ?>
-                <?= $this->render('edit-recurrence-mode', ['form' => $form, 'model' => $calendarEntryForm]) ?>
-            <?php endif; ?>
+            <?= $this->render('edit-recurrence-mode', ['form' => $form, 'model' => $calendarEntryForm->recurrenceForm]) ?>
 
             <div class="calendar-entry-form-tabs"<?= RecurrenceHelper::isRecurrentInstance($calendarEntryForm->entry) ? ' hidden' : ''  ?>>
                 <?= Tabs::widget([
@@ -56,7 +54,6 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
             <hr>
 
             <div class="modal-footer">
-                <?= Button::back('#')->action('showEditModes')->cssClass('calendar-edit-mode-back')->left()->style('display:none;')->loader(false); ?>
                 <?= ModalButton::submitModal($editUrl); ?>
                 <?= ModalButton::cancel(); ?>
             </div>

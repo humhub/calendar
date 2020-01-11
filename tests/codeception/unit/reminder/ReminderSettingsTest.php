@@ -23,6 +23,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -34,7 +37,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         $form = new ReminderSettings(['container' => $space]);
         $this->assertTrue($form->load([
             'ReminderSettings' => [
-                'useDefaults' => 0
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
             ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => null]
@@ -68,6 +71,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -81,7 +87,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         $form = new ReminderSettings(['entry' => $entry]);
         $this->assertTrue($form->load([
             'ReminderSettings' => [
-                'useDefaults' => 0
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
             ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => null]
@@ -109,6 +115,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -122,7 +131,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         $form = new ReminderSettings(['entry' => $entry, 'user' => User::findOne(['id' => 1])]);
         $this->assertTrue($form->load([
             'ReminderSettings' => [
-                'useDefaults' => 0
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
             ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => null]
@@ -149,6 +158,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -185,6 +197,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -200,6 +215,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -235,6 +253,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -250,6 +271,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -266,6 +290,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -296,6 +323,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -311,6 +341,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -328,6 +361,9 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         // Save global
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -342,6 +378,9 @@ class ReminderSettingsTest extends CalendarUnitTest
         $form = new ReminderSettings(['entry' => $entry, 'user' => User::findOne(['id' => 1])]);
 
         $this->assertTrue($form->load([
+            'ReminderSettings' => [
+                'reminderType' => ReminderSettings::REMINDER_TYPE_CUSTOM
+            ],
             'CalendarReminder' => [
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 2],
@@ -365,7 +404,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 1, $space)->save();
         CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 2, $space)->save();
         $form = new ReminderSettings();
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_NONE, $form->reminderType);
         $this->assertFalse($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertTrue($form->isGlobalSettings());
@@ -382,7 +421,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 2, $space)->save();
 
         $form = new ReminderSettings(['container' => $space]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_CUSTOM, $form->reminderType);
         $this->assertFalse($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -403,7 +442,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 2, $space)->save();
 
         $form = new ReminderSettings(['container' => $space]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_CUSTOM, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -421,7 +460,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 2)->save();
 
         $form = new ReminderSettings(['container' => $space]);
-        $this->assertTrue($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_DEFAULT, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertTrue($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -441,7 +480,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry)->save();
 
         $form = new ReminderSettings(['entry' => $entry]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_CUSTOM, $form->reminderType);
         $this->assertFalse($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -464,7 +503,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry)->save();
 
         $form = new ReminderSettings(['entry' => $entry]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_CUSTOM, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -487,7 +526,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry)->save();
 
         $form = new ReminderSettings(['entry' => $entry]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_CUSTOM, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -507,7 +546,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
 
         $form = new ReminderSettings(['entry' => $entry]);
-        $this->assertTrue($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_DEFAULT, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertTrue($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -528,7 +567,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
 
         $form = new ReminderSettings(['entry' => $entry]);
-        $this->assertTrue($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_DEFAULT, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertTrue($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -546,7 +585,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
 
         $form = new ReminderSettings(['entry' => $entry, 'user' => $user]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_NONE, $form->reminderType);
         $this->assertFalse($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -570,7 +609,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry, $user)->save();
 
         $form = new ReminderSettings(['entry' => $entry, 'user' => $user]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_CUSTOM, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -594,7 +633,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry, $user)->save();
 
         $form = new ReminderSettings(['entry' => $entry, 'user' => $user]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_CUSTOM, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -618,7 +657,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry, $user)->save();
 
         $form = new ReminderSettings(['entry' => $entry, 'user' => $user]);
-        $this->assertFalse($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_CUSTOM, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertFalse($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -639,7 +678,7 @@ class ReminderSettingsTest extends CalendarUnitTest
         CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry)->save();
 
         $form = new ReminderSettings(['entry' => $entry, 'user' => $user]);
-        $this->assertTrue($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_DEFAULT, $form->reminderType);
         $this->assertTrue($form->hasDefaults());
         $this->assertTrue($form->isDefaultsLoaded());
         $this->assertFalse($form->isGlobalSettings());
@@ -661,7 +700,7 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         $this->assertTrue($form->load([
             'ReminderSettings' => [
-                'useDefaults' => 1
+                'reminderType' => ReminderSettings::REMINDER_TYPE_DEFAULT
             ],
             'CalendarReminder' => [ // Will be irgnored
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
@@ -676,7 +715,7 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         //Reload
         $form = new ReminderSettings(['container' => $space]);
-        $this->assertTrue($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_DEFAULT, $form->reminderType);
         $this->assertTrue($form->isDefaultsLoaded());
         $this->assertCount(3, $form->reminders);
     }
@@ -699,7 +738,7 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         $this->assertTrue($form->load([
             'ReminderSettings' => [
-                'useDefaults' => 1
+                'reminderType' => ReminderSettings::REMINDER_TYPE_DEFAULT
             ],
             'CalendarReminder' => [  // Will be irgnored
                 ['unit' => CalendarReminder::UNIT_HOUR, 'value' => 1],
@@ -714,7 +753,7 @@ class ReminderSettingsTest extends CalendarUnitTest
 
         //Reload
         $form = new ReminderSettings(['container' => $space]);
-        $this->assertTrue($form->useDefaults);
+        $this->assertEquals(ReminderSettings::REMINDER_TYPE_DEFAULT, $form->reminderType);
         $this->assertTrue($form->isDefaultsLoaded());
         $this->assertCount(3, $form->reminders);
     }

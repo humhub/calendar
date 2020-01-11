@@ -30,37 +30,17 @@ class CalendarUnitTest extends HumHubDbTestCase
         Yii::$app->getModule('calendar')->maxReminder = 100;
     }
 
-    protected function createReminder($unit, $value, $model = null, User $user = null)
-    {
-        $reminder = new CalendarReminder([
-            'unit' => $unit,
-            'value' => $value
-        ]);
-
-        if ($model instanceof ContentContainerActiveRecord) {
-            $reminder->contentcontainer_id = $model->contentcontainer_id;
-        }
-
-        if ($model instanceof ContentActiveRecord) {
-            $reminder->content_id = $model->id;
-        }
-
-        if($user) {
-            $reminder->contentcontainer_id = $user->contentcontainer_id;
-        }
-
-        $this->assertTrue($reminder->save());
-
-        return $reminder;
-    }
-
     protected function createEntry($from, $days, $title, $container = null, $visibility = Content::VISIBILITY_PUBLIC)
     {
         if (!$from) {
             $from = new DateTime();
         }
 
-        if (is_int($days)) {
+        if(is_string($days)) {
+            $to = clone $from;
+            $to->add(new DateInterval($days));
+            $fullDay = CalendarUtils::isAllDay($from, $to);
+        }else if (is_int($days)) {
             $fullDay = true;
             $to = clone $from;
             $to->add(new DateInterval("P" . $days . "D"));

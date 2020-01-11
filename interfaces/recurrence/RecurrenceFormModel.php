@@ -80,6 +80,10 @@ class RecurrenceFormModel extends Model
     {
         parent::init();
         $this->initRrule($this->entry->getRrule());
+        if(RecurrenceHelper::isRecurrentRoot($this->entry)) {
+            // Force edit mode all on root events
+            $this->recurrenceEditMode = static::EDIT_MODE_ALL;
+        }
     }
 
     /**
@@ -241,22 +245,23 @@ class RecurrenceFormModel extends Model
         }
 
         if(!$this->entry->getUid()) {
-            $this->entry->setUid(CalendarUtils::generateUUid());
-            $this->entry->getEventQuery()->save();
+            $this->entry->setUid(CalendarUtils::generateEventUid($this->entry));
+            $this->entry->save();
         }
-
-        $this->entry->setRrule($this->buildRRuleString());
 
         switch($this->recurrenceEditMode) {
             case static::EDIT_MODE_THIS:
                 // We only want to save this instance, so we ignore rrule changes
                 return true;
             case static::EDIT_MODE_CREATE:
-                return $this->entry->getEventQuery()->save();
+                $this->entry->setRrule($this->buildRRuleString());
+                return $this->entry->save();
             case static::EDIT_MODE_FOLLOWING:
-                return $original ? $this->entry->getEventQuery()->splitRecurrentEvent($original): false;
+                return $original ? $this->entry->getRecurrenceQuery()->saveThisAndFollowing($original): false;
             case static::EDIT_MODE_ALL:
-                return  $original ? $this->entry->getEventQuery()->updateAll($original) : false;
+                return $original ? $this->entry->getRecurrenceQuery()->saveAll($original) : false;
+            default:
+                $this->entry->save();
         }
 
         return true;

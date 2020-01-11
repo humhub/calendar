@@ -8,7 +8,11 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\SnippetModuleSettings;
+use humhub\widgets\Button;
+use humhub\widgets\ModalButton;
+use humhub\widgets\ModalDialog;
 use Yii;
 
 class ConfigController extends AbstractConfigController

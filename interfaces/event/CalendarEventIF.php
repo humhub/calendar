@@ -26,8 +26,9 @@ use DateTimeInterface;
  *
  * ## UID
  *
- * The uid of an event can be accessed by [[getUid()]] and set by [[setUid()]]. The module related to the event type either
- * can manually assign a UID, or let the [[AbstractCalendarQuery]] assign an uid when fetching the event.
+ * The uid of an event can be accessed by [[getUid()]]. The module related to the event type can either
+ * manually assign a UID, or let the calendar assign a uid which requires the event model to implement
+ * [[EditableEventIF]].
  *
  * ## Date ranges
  *
@@ -64,16 +65,6 @@ use DateTimeInterface;
  * - [[isEditable()]] whether or not this event supports the drag/drop and resize feature of the calendar view
  * - [[getUpdateUrl()]] the url used when drag/drop or resize feature is used in calendar view
  *
- * ## CalendarQuery
- *
- * In order to save an event after changing a value as for example the uid the interface needs a way of updating data.
- * The [[CalendarEventIF::getEventQuery()]] returns a [[AbstractCalendarQuery]] instance which is used as in the following example:
- *
- * ```php
- * $event->setUid($newUid);
- * $event->getEventQuery()->save()
- * ```
- *
  * @package humhub\modules\calendar\interfaces\event
  * @see AbstractCalendarQuery
  */
@@ -91,28 +82,20 @@ interface CalendarEventIF
 
     /**
      * Returns an unique id for this event, which is used beside others in ICal exports.
-     * When this property is supported, this field can be assigned automatically within the [[AbstractCalendarQuery]].
+     * When implementing [[EditableEventIF]] the uid will be assigned automatically when saving the event
+     * unless the module itself did already assign a uid.
      *
      * @return string|null
-     * @see AbstractCalendarQuery::$autoAssignUid
+     * @see EditableEventIF
      * @see https://www.kanzaki.com/docs/ical/uid.html
      */
     public function getUid();
 
     /**
-     * Sets the uid of this event.
-     *
-     * @param $uid
-     * @return mixed
-     * @see CalendarEventIF::getUid()
-     */
-    public function setUid($uid);
-
-    /**
      * Returns the [[CalendarTypeIF]] of this type.
      * @return CalendarTypeIF instance of the related calendar type
      */
-    public function getType();
+    public function getEventType();
 
     /**
      * Defines whether or not this event is an spans over an whole day.
@@ -278,13 +261,4 @@ interface CalendarEventIF
      * @return DateTime|null
      */
     public function getLastModified();
-
-    /**
-     * Returns an [[AbstractCalendarQuery]] instance mainly used for saving/deleting an event.
-     *
-     * @return AbstractCalendarQuery
-     * @see AbstractCalendarQuery::delete()
-     * @see AbstractCalendarQuery::save()
-     */
-    public function getEventQuery();
 }

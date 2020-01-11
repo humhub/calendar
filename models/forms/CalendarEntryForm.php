@@ -140,8 +140,9 @@ class CalendarEntryForm extends Model
         $startDT = CalendarUtils::getDateTime($start);
         $endDT = CalendarUtils::getDateTime($end);
 
+        $this->entry->all_day = CalendarUtils::isAllDay($startDT, $endDT);
 
-        if(CalendarUtils::isAllDay($startDT, $endDT)) {
+        if($this->isAllDay()) {
             // Calendar calculates in moment after format, but we need 23:59 on end date
             $endDT->modify('-1 second');
         } else if(!empty($timeZone)) {
@@ -209,7 +210,7 @@ class CalendarEntryForm extends Model
         $this->is_public = $this->entry->content->visibility;
 
         if(!$this->entry->isNewRecord) {
-            $type = $this->entry->getType();
+            $type = $this->entry->getEventType();
             if ($type) {
                 $this->type_id = $type->id;
             }
@@ -385,7 +386,7 @@ class CalendarEntryForm extends Model
 
         if($incrementSequence) {
             CalendarUtils::incrementSequence($this->entry);
-            $this->entry->getEventQuery()->save();
+            $this->entry->save();
         }
     }
 
@@ -410,13 +411,21 @@ class CalendarEntryForm extends Model
     public function getStartDateTime()
     {
         $timeZone = $this->isAllDay() ? 'UTC' : $this->timeZone;
-        return CalendarUtils::parseDateTimeString($this->start_date, $this->start_time, null, $timeZone);
+        $startDT = CalendarUtils::parseDateTimeString($this->start_date, $this->start_time, null, $timeZone);
+        if($this->isAllDay()) {
+            $startDT->setTime(0,0,0);
+        }
+        return $startDT;
     }
 
     public function getEndDateTime()
     {
         $timeZone = $this->isAllDay() ? 'UTC' : $this->timeZone;
-        return CalendarUtils::parseDateTimeString($this->end_date, $this->end_time, null, $timeZone);
+        $endDT = CalendarUtils::parseDateTimeString($this->end_date, $this->end_time, null, $timeZone);
+        if($this->isAllDay()) {
+            $endDT->setTime(23,59,59);
+        }
+        return $endDT;
     }
 
     public function getTimeFormat()

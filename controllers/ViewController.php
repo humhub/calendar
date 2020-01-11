@@ -2,10 +2,9 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\models\reminder\ReminderService;
-use humhub\modules\calendar\models\FullCalendar;
 use Yii;
+use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use DateTime;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\permissions\CreateEntry;
@@ -68,7 +67,7 @@ class ViewController extends ContentContainerController
         $filters = Yii::$app->request->get('filters', []);
 
         foreach ($this->calendarService->getCalendarItems(new DateTime($start, CalendarUtils::getUserTimeZone()), new DateTime($end, CalendarUtils::getUserTimeZone()), $filters, $this->contentContainer) as $entry) {
-            $result[] = FullCalendar::getFullCalendarArray($entry);;
+            $result[] = FullCalendar::getFullCalendarArray($entry);
         }
 
         return $this->asJson($result);

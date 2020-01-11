@@ -14,6 +14,10 @@ namespace humhub\modules\calendar\interfaces\event;
 interface CalendarTypeIF
 {
     /**
+     * Returns a unique key of this type of event.
+     * The event type key is besides others used in the autogeneration of uids and should therefore not use any special
+     * characters or spaces.
+     *
      * @return string an unique event type key.
      */
     public function getKey();

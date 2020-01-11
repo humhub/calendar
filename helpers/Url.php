@@ -240,4 +240,13 @@ class Url extends BaseUrl
 
         return $container->createUrl('/calendar/entry/user-list', ['id' => $entry->id, 'state' => $state]);
     }
+
+    public static function toEnableModuleOnProfileConfig()
+    {
+        if(Yii::$app->user->isGuest) {
+            return null;
+        }
+
+        return Yii::$app->user->identity->createUrl('/calendar/global/enable-config');
+    }
 }

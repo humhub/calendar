@@ -12,6 +12,7 @@ use DateInterval;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -29,7 +30,6 @@ use yii\db\ActiveRecord;
  * Date: 14.09.2017
  * Time: 12:31
  *
- * @todo change base class back to BaseObject after v1.3 is stable
  */
 abstract class AbstractCalendarQuery extends Component
 {
@@ -70,6 +70,12 @@ abstract class AbstractCalendarQuery extends Component
      * @var string database field for end date
      */
     public $endField = 'end_datetime';
+
+    /**
+     * @var string This field has to exist on the record class in order for [[autoAssignUid]] to work.
+     * @deprecated since v1.0 won't be used when implementing the new interfaces in v1.0
+     */
+    protected $uidField = 'uid';
 
     /**
      * Defines if expanded recurrent instances should be safed after the query.
@@ -145,6 +151,7 @@ abstract class AbstractCalendarQuery extends Component
 
     /**
      * @var bool determines if the query logic should try to auto assign a uid for the resulting events
+     * @deprecated since v1.0 won't be used when implementing the new interfaces in v1.0
      */
     protected $autoAssignUid = true;
 
@@ -210,10 +217,9 @@ abstract class AbstractCalendarQuery extends Component
         $expandResult = [];
 
         foreach ($result as $index => $entry) {
-            /* @var $entry CalendarEventIF */
-            if($query->autoAssignUid && empty($entry->getUid())) {
-                $entry->setUid(CalendarUtils::generateUUid());
-                $entry->getEventQuery()->save();
+            /* @var $entry ActiveRecord */
+            if (!($entry instanceof CalendarEntry) && $query->autoAssignUid && $entry->hasProperty($query->uidField) && empty($entry->{$query->uidField})) {
+                $entry->updateAttributes([$query->uidField => CalendarUtils::generateUUid()]);
             }
 
             if ($expand) {
@@ -274,7 +280,7 @@ abstract class AbstractCalendarQuery extends Component
      * Static initializer.
      * @return ActiveQuery
      */
-    public static function createQuery()
+    protected static function createQuery()
     {
         return call_user_func(static::$recordClass . '::find');
     }
@@ -667,7 +673,7 @@ abstract class AbstractCalendarQuery extends Component
     /**
      * Builds and executes the filter query.
      * This method will filter out entries not readable by the current logged in user.
-     * @return array result
+     * @return ContentContainerActiveRecord[] result
      */
     public function all()
     {

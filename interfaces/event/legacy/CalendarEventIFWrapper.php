@@ -13,9 +13,11 @@
  * Time: 17:16
  */
 
-namespace humhub\modules\calendar\interfaces\event;
+namespace humhub\modules\calendar\interfaces\event\legacy;
 
 
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\widgets\Label;
 use Yii;
 use \DateTime;
@@ -46,6 +48,12 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF
     const OPTION_EXDATE = 'exdate';
     const OPTION_LOCATION = 'location';
     const OPTION_DESCRIPTION = 'description';
+    const OPTION_LAST_MODIFIED = 'lastModified';
+
+    /**
+     * @var DummyEventQuery
+     */
+    private static $query;
 
     /**
      * @var CalendarTypeIF
@@ -211,17 +219,24 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF
     /**
      * @return CalendarTypeIF
      */
-    public function getType()
+    public function getEventType()
     {
         return $this->itemType;
     }
 
     /**
-     * @param $uid
-     * @return mixed
+     * Used for example in ICal exports. In case of ContentActiveRecords a common implementation would be:
+     *
+     * ```php
+     * public function getLastModified()
+     * {
+     *     return new DateTime($this->content->updated_at);
+     * }
+     * ```
+     * @return DateTime|null
      */
-    public function setUid($uid)
+    public function getLastModified()
     {
-        // TODO: Implement setUid() method.
+        return $this->getOption(static::OPTION_LAST_MODIFIED, null);
     }
 }

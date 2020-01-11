@@ -46,7 +46,7 @@ class IcalController extends Controller
 
         if(RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
             /* @var $event RecurrentEventIF */
-            $event = $event->getEventQuery()->getRecurrenceRoot();
+            $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
         }
 
         $uid = $event->getUid() ?: $this->uniqueId;

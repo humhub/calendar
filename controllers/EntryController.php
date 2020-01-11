@@ -80,10 +80,10 @@ class EntryController extends ContentContainerController
             throw new NotFoundHttpException();
         }
 
-        $recurrence = $recurrenceRoot->getEventQuery()->getRecurrenceInstance($recurrence_id);
+        $recurrence = $recurrenceRoot->getRecurrenceQuery()->getRecurrenceInstance($recurrence_id);
 
         if(!$recurrence) {
-            $recurrence = $recurrenceRoot->getEventQuery()->expandSingle($recurrence_id);
+            $recurrence = $recurrenceRoot->getRecurrenceQuery()->expandSingle($recurrence_id);
         }
 
         if(!$recurrence) {

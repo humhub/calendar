@@ -5,9 +5,11 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\calendar\models;
+namespace humhub\modules\calendar\models\fullcalendar;
 
 
+use humhub\modules\calendar\models\CalendarDateFormatter;
+use humhub\modules\calendar\models\CalendarEntry;
 use Yii;
 use DateTime;
 use Exception;
