@@ -6,7 +6,7 @@
     "sabre/vobject": "4.2.1",
     "simshaun/recurr": "^4",
     "sabre/xml": "1.5.1",
-    "sabre/uri": "1.2.1",
+    "sabre/uri": "1.2.1"
   },
   "config": {
     "process-timeout": 1800,
