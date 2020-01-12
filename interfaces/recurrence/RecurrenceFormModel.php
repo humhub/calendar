@@ -257,8 +257,10 @@ class RecurrenceFormModel extends Model
                 $this->entry->setRrule($this->buildRRuleString());
                 return $this->entry->save();
             case static::EDIT_MODE_FOLLOWING:
+                $this->entry->setRrule($this->buildRRuleString());
                 return $original ? $this->entry->getRecurrenceQuery()->saveThisAndFollowing($original): false;
             case static::EDIT_MODE_ALL:
+                $this->entry->setRrule($this->buildRRuleString());
                 return $original ? $this->entry->getRecurrenceQuery()->saveAll($original) : false;
             default:
                 $this->entry->save();

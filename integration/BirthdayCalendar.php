@@ -68,9 +68,7 @@ class BirthdayCalendar extends Component
                 'allDay' => true,
                 'title' => static::getTitle($user),
                 'icon' => 'fa-birthday-cake',
-                'openUrl' => $user->getUrl(),
                 'viewUrl' => $user->getUrl(),
-                'viewMode' => CalendarEventIF::VIEW_MODE_REDIRECT,
                 'editable' => false,
             ];
         }

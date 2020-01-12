@@ -6,7 +6,7 @@
  */
 
 use humhub\modules\calendar\assets\ReminderFormAssets;
-use humhub\modules\calendar\models\forms\ReminderSettings;
+use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace humhub\modules\calendar\models\forms;
+namespace humhub\modules\calendar\models\reminder\forms;
 
 
 use Yii;
@@ -165,6 +165,7 @@ class ReminderSettings extends Model
             foreach ($data[CalendarReminder::instance()->formName()] as $reminderData) {
                 $reminder = $this->initReminder();
                 $reminder->load($reminderData, '');
+                $reminder->ensureValidValue();
                 $this->reminders[] = $reminder;
 
                 if(count($this->reminders) >= $maxReminders) {
@@ -174,6 +175,13 @@ class ReminderSettings extends Model
         }
 
         return $reminderLoaded || $parentLoad;
+    }
+
+    private function translate(CalendarReminder $reminder)
+    {
+        if($reminder->unit === CalendarReminder::UNIT_DAY) {
+
+        }
     }
 
     public function isReminderTypeUseDefault()

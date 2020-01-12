@@ -127,21 +127,24 @@ class CalendarRecurrenceExpand extends Model
      */
     public static function expandUpcoming(RecurrentEventIF $event, $count = 1, $start = null , $save = true)
     {
-        if(is_bool($start)) {
-            $save = $start;
-            $start = null;
-        }
+        $from = new DateTime();
+        $startIndex = 0;
 
+        if($start instanceof \DateTimeInterface) {
+            $from = $start;
+            $startIndex = 0;
+        } else if(is_bool($start)) {
+            $save = $start;
+            $startIndex = 0;
+        } else if(is_int($start)) {
+            $startIndex = $start;
+        }
 
         if (!RecurrenceHelper::isRecurrent($event)) {
             return [];
         }
 
         $event = static::assureRootEvent($event);
-
-        if (!$start) {
-            $start = new DateTime();
-        }
 
         $vCalendar = (new VCalendar())->add($event);
         $eventTimeZone = CalendarUtils::getDateTimeZone($event->getTimezone());
@@ -152,17 +155,22 @@ class CalendarRecurrenceExpand extends Model
             return [];
         }
 
-        $it->fastForward($start);
+        $it->fastForward($from);
 
         $result = [];
 
+        // Add startIndex to count
+       $count += $startIndex;
+
         try {
             for ($i = 0; $i < $count && $it->valid(); $i++) {
-                $vEvent = static::stripTimezones($it->getEventObject(), $eventTimeZone);
-                $recurrenceId = RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $event->getTimezone());
-                $existingModel = $event->getRecurrenceQuery()->getRecurrenceInstance($recurrenceId);
-                $existingModel = $existingModel ?: static::createRecurrenceInstanceModel($event, $vEvent, $save);
-                $result[] = $existingModel;
+                if($i >= $startIndex) {
+                    $vEvent = static::stripTimezones($it->getEventObject(), $eventTimeZone);
+                    $recurrenceId = RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $event->getTimezone());
+                    $existingModel = $event->getRecurrenceQuery()->getRecurrenceInstance($recurrenceId);
+                    $existingModel = $existingModel ?: static::createRecurrenceInstanceModel($event, $vEvent, $save);
+                    $result[] = $existingModel;
+                }
                 $it->next();
             }
         } catch (MaxInstancesExceededException $me) {

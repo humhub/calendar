@@ -18,6 +18,7 @@ namespace humhub\modules\calendar\interfaces\event\legacy;
 
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
+use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\widgets\Label;
 use Yii;
 use \DateTime;
@@ -28,7 +29,7 @@ use yii\base\Model;
  * @package humhub\modules\calendar\interfaces
  * @deprecated Used for deprecated array based calendar interface (prior to v1.0.0)
  */
-class CalendarEventIFWrapper extends Model implements CalendarEventIF
+class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalendarEventIF
 {
     const OPTION_START = 'start';
     const OPTION_END = 'end';
@@ -89,7 +90,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF
         return $this->getOption(static::OPTION_TIMEZONE, Yii::$app->timeZone);
     }
 
-    public function isEditable()
+    public function isUpdatable()
     {
         return $this->getOption(static::OPTION_EDITABLE, false);
     }
@@ -238,5 +239,14 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF
     public function getLastModified()
     {
         return $this->getOption(static::OPTION_LAST_MODIFIED, null);
+    }
+
+    /**
+     * Add additional options supported by fullcalnedar: https://fullcalendar.io/docs/event-object
+     * @return array
+     */
+    public function getFullCalendarOptions()
+    {
+        return [];
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use humhub\components\View;
-use humhub\modules\calendar\models\forms\ReminderSettings;
+use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
 
 /* @var $this View */
 /* @var $reminderSettings ReminderSettings */

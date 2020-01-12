@@ -8,6 +8,7 @@
 namespace humhub\modules\calendar\models\fullcalendar;
 
 
+use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\calendar\models\CalendarEntry;
 use Yii;
@@ -34,18 +35,28 @@ class FullCalendar
         $result = [
             'uid' => $entry->getUid(),
             'title' => static::getTitle($entry),
-            'editable' => $entry->isEditable(),
+            'editable' => false,
             'backgroundColor' => Html::encode($calendarService->getEventColor($entry)),
             'allDay' => $entry->isAllDay(),
-            'updateUrl' => $entry->getUpdateUrl(),
-            'viewUrl' => $entry->getCalendarViewUrl(),
-            'viewMode' => $entry->getCalendarViewMode(),
+            'viewUrl' => $entry->getUrl(),
+            'viewMode' => FullCalendarEventIF::VIEW_MODE_REDIRECT,
             'icon' => $entry->getIcon(),
             'start' => static::toFullCalendarFormat($entry->getStartDateTime(), $entry->isAllDay()),
             'end' => static::toFullCalendarFormat(static::getEndDate($entry), $entry->isAllDay()),
             'eventDurationEditable' => true,
             'eventStartEditable' => true
         ];
+
+        if($entry instanceof FullCalendarEventIF) {
+            $result['editable'] = $entry->isUpdatable();
+            $result['updateUrl'] = $entry->getUpdateUrl();
+            $result['viewMode'] = $entry->getCalendarViewMode();
+            $result['viewUrl'] = $entry->getCalendarViewUrl();
+            $extraOptions = $entry->getFullCalendarOptions();
+            if(!empty($extraOptions)) {
+                $result = array_merge($result, $extraOptions);
+            }
+        }
 
         if($entry instanceof RecurrentEventIF) {
             $result['rrule'] = $entry->getRrule();

@@ -6,11 +6,12 @@
  */
 
 use humhub\libs\Html;
+use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
-/* @var \humhub\modules\calendar\models\forms\ReminderSettings $reminderSettings */
+/* @var ReminderSettings $reminderSettings */
 
 ?>
 

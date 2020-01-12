@@ -33,7 +33,7 @@ interface RecurrenceQueryIF
 
     public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null);
 
-    public function expandEvent($from = null, $to = null, $saveInstances = false, &$expandResult = []);
+    public function expandEvent($from = null, $to = null, $save = false, &$expandResult = []);
 
-    public function expandUpcoming($count, $from = null);
+    public function expandUpcoming($count, $from = null,  $save = false);
 }

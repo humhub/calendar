@@ -16,8 +16,23 @@ class RecurrenceEditTest extends RecurrenceUnitTest
     {
         $this->initRecurrentEvents();
         $this->assertCount(7, $this->recurrences);
+
+        $this->assertEquals('2019-12-01 00:00:00', $this->rootEvent->start_datetime);
+        $this->assertEquals('2019-12-01 23:59:59', $this->rootEvent->end_datetime);
         $this->assertEquals('2019-12-01 00:00:00', $this->recurrences[0]->start_datetime);
-        $this->assertEquals('2019-12-07 00:00:00', end($this->recurrences)->start_datetime);
+        $this->assertEquals('2019-12-01 23:59:59', $this->recurrences[0]->end_datetime);
+        $this->assertEquals('2019-12-02 00:00:00', $this->recurrences[1]->start_datetime);
+        $this->assertEquals('2019-12-02 23:59:59', $this->recurrences[1]->end_datetime);
+        $this->assertEquals('2019-12-03 00:00:00', $this->recurrences[2]->start_datetime);
+        $this->assertEquals('2019-12-03 23:59:59', $this->recurrences[2]->end_datetime);
+        $this->assertEquals('2019-12-04 00:00:00', $this->recurrences[3]->start_datetime);
+        $this->assertEquals('2019-12-04 23:59:59', $this->recurrences[3]->end_datetime);
+        $this->assertEquals('2019-12-05 00:00:00', $this->recurrences[4]->start_datetime);
+        $this->assertEquals('2019-12-05 23:59:59', $this->recurrences[4]->end_datetime);
+        $this->assertEquals('2019-12-06 00:00:00', $this->recurrences[5]->start_datetime);
+        $this->assertEquals('2019-12-06 23:59:59', $this->recurrences[5]->end_datetime);
+        $this->assertEquals('2019-12-07 00:00:00', $this->recurrences[6]->start_datetime);
+        $this->assertEquals('2019-12-07 23:59:59', $this->recurrences[6]->end_datetime);
     }
 
     public function testDeleteRecurrentInstance()
@@ -259,7 +274,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $newRecurrences = $this->expand();
         $this->assertCount(2, $newRecurrences);
         $this->assertEquals('2019-12-04 00:00:00', $newRecurrences[0]->start_datetime);
+        $this->assertEquals('2019-12-04 23:59:59', $newRecurrences[0]->end_datetime);
         $this->assertEquals('2019-12-06 00:00:00', $newRecurrences[1]->start_datetime);
+        $this->assertEquals('2019-12-06 23:59:59', $newRecurrences[1]->end_datetime);
     }
 
     //TODO: test edit participation mode

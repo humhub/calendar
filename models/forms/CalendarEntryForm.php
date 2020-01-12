@@ -9,6 +9,7 @@
 
 namespace humhub\modules\calendar\models\forms;
 
+use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;

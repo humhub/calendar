@@ -551,4 +551,44 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertHasNotification(Remind::class, $entry, $entry->content->createdBy->id, 2);
         $this->assertHasNotification(Remind::class, $entry, $entry->content->createdBy->id, 3);
     }
+
+    public function testRemindRecurrentInstance()
+    {
+        $this->becomeUser('admin');
+
+        // INIT GLOBAL Reminder
+        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 2);
+        $this->assertTrue($reminder->save());
+
+        // create recurrent event today tomorrow recurring every day
+        $entry = $this->createEntry(new DateTime(), 1, 'Test',  Space::findOne(['id' => 3]));
+        $entry->rrule = 'FREQ=DAILY;INTERVAL=1';
+        $entry->save();
+
+        // Expand today (first instance)
+        $today = $entry->getRecurrenceQuery()->expandUpcoming(1)[0];
+
+        // Expand day after tomorrow (index=2)
+        $dayAfterTomorrow = $entry->getRecurrenceQuery()->expandUpcoming(1, 2, true)[0];
+        CalendarReminder::initEntryLevel(3, CalendarReminder::UNIT_WEEK, $dayAfterTomorrow);
+
+        (new ReminderService())->sendAllReminder();
+
+        // Expand tomorrow event after reminder process run
+        $tomrorrow = $entry->getRecurrenceQuery()->expandUpcoming(1, 1)[0];
+        $this->assertNotNull($tomrorrow->getId());
+
+        $this->assertHasNotification(Remind::class, $tomrorrow, $tomrorrow->content->createdBy->id, 1);
+        $this->assertHasNotification(Remind::class, $tomrorrow, $tomrorrow->content->createdBy->id, 2);
+        $this->assertHasNotification(Remind::class, $tomrorrow, $tomrorrow->content->createdBy->id, 3);
+
+        $this->assertHasNotification(Remind::class, $dayAfterTomorrow, $dayAfterTomorrow->content->createdBy->id, 1);
+        $this->assertHasNotification(Remind::class, $dayAfterTomorrow, $dayAfterTomorrow->content->createdBy->id, 2);
+        $this->assertHasNotification(Remind::class, $dayAfterTomorrow, $dayAfterTomorrow->content->createdBy->id, 3);
+
+        // Today event has already started
+        $this->assertHasNoNotification(Remind::class, $today, $today->content->createdBy->id, 1);
+        $this->assertHasNoNotification(Remind::class, $today, $today->content->createdBy->id, 2);
+        $this->assertHasNoNotification(Remind::class, $today, $today->content->createdBy->id, 3);
+    }
 }

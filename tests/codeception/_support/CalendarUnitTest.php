@@ -42,8 +42,7 @@ class CalendarUnitTest extends HumHubDbTestCase
             $fullDay = CalendarUtils::isAllDay($from, $to);
         }else if (is_int($days)) {
             $fullDay = true;
-            $to = clone $from;
-            $to->add(new DateInterval("P" . $days . "D"));
+            $to = (clone $from)->setTime(0,0,0)->add(new DateInterval("P" . $days . "D"));
         } else if($days instanceof DateTime) {
             $fullDay = false;
             $to = $days;
@@ -63,7 +62,7 @@ class CalendarUnitTest extends HumHubDbTestCase
         if($fullDay) {
             $entry->all_day = 1;
             $from->setTime(0,0,0);
-            $to->setTime(23,59,59);
+            $to->modify('-1 hour')->setTime(23,59,59);
         } else {
             $entry->all_day = 0;
         }

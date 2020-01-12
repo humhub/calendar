@@ -43,7 +43,7 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
     {
         // Create a recurrent event starting today repeating every two days, but don't expand yet
         $this->initRecurrentEvents('FREQ=DAILY;INTERVAL=2', new DateTime(), false);
-        $instances = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(2);
+        $instances = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(2, true);
         $this->assertCount(2, $instances);
 
         $today = (new DateTime())->setTime(0,0,0);
@@ -63,7 +63,7 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         $expandEnd = (clone $today)->modify('+3 day');
         $existingRecurrences = $this->rootEvent->getRecurrenceQuery()->expandEvent($today, $expandEnd, true);
 
-        $upcomingRecurrences = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(2);
+        $upcomingRecurrences = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(2, true);
         $this->assertCount(2, $upcomingRecurrences);
 
 
@@ -74,5 +74,45 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         $next = $today->modify('+2 day');
         $this->assertEquals($next, $upcomingRecurrences[1]->getStartDateTime());
         $this->assertEquals($existingRecurrences[1]->id, $upcomingRecurrences[1]->getId());
+    }
+
+    public function testExpandUpcomingWithFrom()
+    {
+        // Create a recurrent event starting today repeating every two days, but don't expand yet
+        $this->initRecurrentEvents('FREQ=DAILY;INTERVAL=2', new DateTime(), false);
+
+        $first = (new DateTime())->setTime(0,0,0);
+        $second = (clone $first)->modify('+2 day');
+        $third = (clone $first)->modify('+4 day');
+        $fourth = (clone $first)->modify('+6 day');
+
+        // Test single expand
+        $upcoming = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(1, 0);
+        $this->assertCount(1, $upcoming);
+        $this->assertEquals($first, $upcoming[0]->getStartDateTime());
+
+        $upcoming = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(1, 1);
+        $this->assertCount(1, $upcoming);
+        $this->assertEquals($second, $upcoming[0]->getStartDateTime());
+
+        $upcoming = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(1, 2);
+        $this->assertCount(1, $upcoming);
+        $this->assertEquals($third, $upcoming[0]->getStartDateTime());
+
+        $upcoming = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(1, 3);
+        $this->assertCount(1, $upcoming);
+        $this->assertEquals($fourth, $upcoming[0]->getStartDateTime());
+
+        $upcoming = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(2, 1);
+        $this->assertCount(2, $upcoming);
+        $this->assertEquals($second, $upcoming[0]->getStartDateTime());
+        $this->assertEquals($third, $upcoming[1]->getStartDateTime());
+
+        $upcoming = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(4);
+        $this->assertCount(4, $upcoming);
+        $this->assertEquals($first, $upcoming[0]->getStartDateTime());
+        $this->assertEquals($second, $upcoming[1]->getStartDateTime());
+        $this->assertEquals($third, $upcoming[2]->getStartDateTime());
+        $this->assertEquals($fourth, $upcoming[3]->getStartDateTime());
     }
 }

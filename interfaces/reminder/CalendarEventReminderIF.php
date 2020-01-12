@@ -24,5 +24,5 @@ interface CalendarEventReminderIF extends CalendarEventIF
      *
      * @return ActiveQueryUser
      */
-    public function findUsersByInterest();
+    public function getReminderUserQuery();
 }

@@ -158,4 +158,26 @@ class ReminderTest extends CalendarUnitTest
         $this->assertEquals($reminder3->id, $reminders[2]->id);
         $this->assertEquals($reminder5->id, $reminders[3]->id);
     }
+
+    public function testDaysInFuture()
+    {
+        $reminder1 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_WEEK, 3);
+        $this->assertTrue($reminder1->save());
+
+        $reminder2 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 31);
+        $this->assertTrue($reminder2->save());
+
+        $this->assertEquals(31, CalendarReminder::getMaxReminderDaysInFuture());
+    }
+
+    public function testDaysInFuture2()
+    {
+        $reminder1 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_WEEK, 4);
+        $this->assertTrue($reminder1->save());
+
+        $reminder2 = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 23);
+        $this->assertTrue($reminder2->save());
+
+        $this->assertEquals(28, CalendarReminder::getMaxReminderDaysInFuture());
+    }
 }

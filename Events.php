@@ -189,7 +189,6 @@ class Events
             /** @var $model EditableEventIF **/
             if(empty($model->getUid())) {
                 $model->setUid(CalendarUtils::generateEventUid($model));
-                $model->save();
             }
         }
     }

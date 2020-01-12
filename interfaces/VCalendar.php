@@ -9,6 +9,7 @@ use Exception;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
+use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\user\models\User;
@@ -54,6 +55,9 @@ class VCalendar extends Model
 
         foreach ($items as $item)
         {
+            if(is_array($item)) {
+                $item = new CalendarEventIFWrapper(['options' => $item]);
+            }
             $instance->addVEvent($item);
         }
 

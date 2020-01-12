@@ -15,8 +15,7 @@
 
 namespace humhub\modules\calendar\models;
 
-use humhub\components\SettingsManager;
-use humhub\modules\calendar\models\forms\ReminderSettings;
+use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;

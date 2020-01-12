@@ -24,6 +24,11 @@ class Module extends ContentContainerModule
     public $reminderProcessInterval = 10;
 
     /**
+     * @var int Defines the maximum number of events the reminder process can handle at once
+     */
+    public $reminderProcessEventLimit = 500;
+
+    /**
      * @var int max amount of reminder allowed in the reminder settings
      */
     public $maxReminder = 3;

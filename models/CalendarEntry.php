@@ -4,6 +4,7 @@ namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
+use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\EditableRecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
@@ -58,8 +59,8 @@ use humhub\modules\user\models\User;
  * @property CalendarEntryParticipant[] participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
-class CalendarEntry extends ContentActiveRecord implements Searchable,
-    EditableRecurrentEventIF, CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF, CalendarEventSequenceIF
+class CalendarEntry extends ContentActiveRecord implements Searchable, EditableRecurrentEventIF, FullCalendarEventIF,
+    CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF, CalendarEventSequenceIF
 {
     /**
      * @inheritdoc
@@ -378,7 +379,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable,
     /**
      * @return ActiveQueryUser
      */
-    public function findUsersByInterest()
+    public function getReminderUserQuery()
     {
         if($this->content->container instanceof Space) {
             switch ($this->participation_mode) {
@@ -570,7 +571,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable,
      *
      * @return bool true if this entry is editable, false
      */
-    public function isEditable()
+    public function isUpdatable()
     {
         return !RecurrenceHelper::isRecurrent($this) && $this->content->canEdit();
     }
@@ -825,4 +826,21 @@ class CalendarEntry extends ContentActiveRecord implements Searchable,
     }
 
 
+    /**
+     * Adds additional options supported by fullcalendar: https://fullcalendar.io/docs/event-object
+     * @return array
+     */
+    public function getFullCalendarOptions()
+    {
+        return [];
+    }
+
+    /**
+     * @return string
+     * @deprecated since 1.0 use CalendarUtils::generateUUid()
+     */
+    public static function createUUid()
+    {
+        return CalendarUtils::generateUUid();
+    }
 }

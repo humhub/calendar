@@ -189,6 +189,7 @@ abstract class AbstractCalendarQuery extends Component
      * @param ContentContainerActiveRecord $container
      * @param array $filters
      * @param int $limit
+     * @param bool $expand
      * @return array|\yii\db\ActiveRecord[]
      * @throws \Throwable
      */
@@ -210,24 +211,38 @@ abstract class AbstractCalendarQuery extends Component
 
         $result = $query->all();
 
-        if (!$query->autoAssignUid && !$expand) {
-            return $result;
-        }
-
         $expandResult = [];
 
         foreach ($result as $index => $entry) {
-            /* @var $entry ActiveRecord */
-            if (!($entry instanceof CalendarEntry) && $query->autoAssignUid && $entry->hasProperty($query->uidField) && empty($entry->{$query->uidField})) {
-                $entry->updateAttributes([$query->uidField => CalendarUtils::generateUUid()]);
-            }
+            static::autoAssignUid($entry, $query);
 
             if ($expand) {
                 $query->expand($entry, $expandResult);
             }
         }
 
-        return $query->expand ? $expandResult : $result;
+        return $expand ? $expandResult : $result;
+    }
+
+    /**
+     * @param $entry
+     * @param $instance static
+     */
+    private static function autoAssignUid($entry, $query)
+    {
+        /* @var $entry ActiveRecord */
+        if($entry instanceof EditableEventIF && empty($entry->getUid())) {
+            $entry->setUid(CalendarUtils::generateEventUid($entry));
+            $entry->save();
+            return;
+        }
+
+        // LEGACY MODELS ONLY
+        if (!($entry instanceof CalendarEntry) && $query->autoAssignUid && $entry->hasProperty($query->uidField)
+            && empty($entry->{$query->uidField})) {
+            $entry->updateAttributes([$query->uidField => CalendarUtils::generateUUid()]);
+        }
+
     }
 
     /**

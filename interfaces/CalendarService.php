@@ -192,16 +192,17 @@ class CalendarService extends Component
      * @param int $daysInFuture
      * @param int $limit
      * @param array $filters
+     * @param bool $expand
      * @return CalendarEventIF[]
      * @throws \Throwable
      */
-    public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5, $filters = [])
+    public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5, $filters = [], $expand = true)
     {
         $start = new DateTime('now', CalendarUtils::getUserTimeZone());
         $end = ($daysInFuture > 0) ? (new DateTime('now', CalendarUtils::getUserTimeZone()))
                 ->add(new DateInterval('P'.$daysInFuture.'D')) : null;
 
-        return $this->getCalendarItems($start, $end, $filters, $contentContainer, $limit);
+        return $this->getCalendarItems($start, $end, $filters, $contentContainer, $limit, $expand);
     }
 
     /**

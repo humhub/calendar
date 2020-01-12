@@ -88,7 +88,7 @@ use yii\db\Expression;
  * @package humhub\modules\calendar\models
  *
  * @property integer $id
- * @property string $value
+ * @property integer $value
  * @property integer $unit
  * @property string $content_id
  * @property integer $contentcontainer_id
@@ -101,6 +101,12 @@ class CalendarReminder extends ActiveRecord
     const UNIT_HOUR = 1;
     const UNIT_DAY = 2;
     const UNIT_WEEK = 3;
+
+    const MAX_VALUES = [
+        self::UNIT_HOUR => 24,
+        self::UNIT_DAY => 31,
+        self::UNIT_WEEK => 4,
+    ];
 
     /**
      * @var CalendarReminder[]
@@ -140,7 +146,8 @@ class CalendarReminder extends ActiveRecord
     {
         $rules = [
             [['unit'], 'in', 'range' => [static::UNIT_HOUR, static::UNIT_DAY, static::UNIT_WEEK]],
-            [['value'], 'integer', 'min' => 1, 'max' => '100']
+            [['value'], 'number', 'min' => 1],
+            [['value'], 'validateValue']
         ];
 
         if ($this->active && !$this->disabled) {
@@ -148,6 +155,52 @@ class CalendarReminder extends ActiveRecord
         }
 
         return $rules;
+    }
+
+    public function validateValue($attribute, $params)
+    {
+        if(!$this->unit) {
+            return;
+        }
+
+        $max = static::MAX_VALUES[$this->unit];
+        if(!$this->validateMaxRange()) {
+            $this->addError('value',"Only values from 1 to $max are allowed");
+        }
+    }
+
+    private function validateMaxRange()
+    {
+        if(!$this->unit) {
+            return true;
+        }
+
+        return ((int) $this->value) <= static::MAX_VALUES[$this->unit];
+    }
+
+    public function ensureValidValue()
+    {
+        if($this->validateMaxRange()) {
+            return;
+        }
+        
+        switch ($this->unit) {
+            case static::UNIT_HOUR:
+                $this->unit = static::UNIT_DAY;
+                $this->value = round(((int) $this->value) / 24);
+                break;
+            case static::UNIT_DAY:
+                $this->unit = static::UNIT_WEEK;
+                $this->value = round(((int) $this->value) / 7);
+                break;
+            case static::UNIT_WEEK:
+                $this->value = static::MAX_VALUES[static::UNIT_WEEK];
+                break;
+            default:
+                return;
+        }
+
+        $this->ensureValidValue();
     }
 
     /**
@@ -188,6 +241,29 @@ class CalendarReminder extends ActiveRecord
         $instance = static::initContainerDefault(null, null, $container);
         $instance->disabled = 1;
         return $instance;
+    }
+
+    public static function getMaxReminderDaysInFuture()
+    {
+        $hourlyReminder = static::getMaxReminder(static::UNIT_HOUR);
+        $dailyReminder = static::getMaxReminder(static::UNIT_DAY);
+        $weeklyReminder = static::getMaxReminder(static::UNIT_WEEK);
+
+        $hour = $hourlyReminder ? ceil($hourlyReminder->value / 24) : 0;
+        $day = $dailyReminder ? $dailyReminder->value : 0;
+        $week = $weeklyReminder ? $weeklyReminder->value * 7 : 0;
+
+        return max($hour, $day, $week);
+    }
+
+    /**
+     * @param $unit
+     * @return static
+     */
+    private static function getMaxReminder($unit)
+    {
+        return static::find()->where(['unit' => $unit])->andWhere(['active' => 1])->andWhere(['disabled' => 0])
+            ->andWhere('value IS NOT NULL')->orderBy('value DESC')->one();
     }
 
     /**
@@ -408,7 +484,7 @@ class CalendarReminder extends ActiveRecord
     public static function getEntryLevelReminder(CalendarEventReminderIF $model, $user = true, $defaultFallback = false)
     {
         if($model->getContentRecord()->isNewRecord) {
-            return $defaultFallback ?  static::getEntryLevelDefaults($model, $user) : [];
+            return $defaultFallback ? static::getEntryLevelDefaults($model, $user) : [];
         }
 
         $query = static::find()

@@ -6,9 +6,12 @@ namespace humhub\modules\calendar\models\reminder;
 
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\models\CalendarEntryQuery;
+use humhub\modules\calendar\Module;
 use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -73,17 +76,20 @@ class ReminderProcessor extends Model
      */
     private function runByUpcomingEvents(ContentContainerActiveRecord $container = null)
     {
-        foreach ($this->calendarService->getUpcomingEntries($container, null, null, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]) as $entry) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('calendar');
+        $daysInFuture = min(31, CalendarReminder::getMaxReminderDaysInFuture());
+        foreach ($this->calendarService->getUpcomingEntries($container, $daysInFuture, $module->reminderProcessEventLimit, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE], true) as $entry) {
             $entry = CalendarUtils::getCalendarEvent($entry);
 
-            if(!$entry instanceof CalendarEventReminderIF) {
+            if(!$entry || !$entry instanceof CalendarEventReminderIF) {
                 continue;
             }
 
             $skipUsers = $this->handleEntryLevelReminder($entry);
 
-            if($skipUsers === true) { // Handled all recepients already
-                continue;
+            if($skipUsers === true) {
+                continue; // Handled all recipients already
             }
 
             $this->handleDefaultReminder($entry, $skipUsers);
@@ -97,7 +103,7 @@ class ReminderProcessor extends Model
      */
     private function runEntryLevelOnly()
     {
-        $entryLevelReminder = CalendarReminder::findEntryLevelReminder()->andWhere(['NOT IN', 'calendar_reminder.id', $this->handledReminders]) ->all();
+        $entryLevelReminder = CalendarReminder::findEntryLevelReminder()->andWhere(['NOT IN', 'calendar_reminder.id', $this->handledReminders])->all();
 
         $entryHandled = [];
         foreach ($entryLevelReminder as $reminder) {
@@ -121,7 +127,7 @@ class ReminderProcessor extends Model
      *
      * This function will return
      *
-     *  - true in case there was an container wide default reminder for this entry
+     *  - true in case there was a container wide default reminder for this entry
      *  - an array of contentcontainer ids of users already handled in case there was no container wide default for this entry
      *
      * @param CalendarEventReminderIF $entry
@@ -170,6 +176,7 @@ class ReminderProcessor extends Model
             }
         }
 
+        // entry reminder without contentcotnainer_id are space level entry reminder
         return isset($sentContainer[null]) ? true : $skipUsers;
     }
 
@@ -207,7 +214,7 @@ class ReminderProcessor extends Model
      */
     protected function getRecipientQuery(CalendarEventReminderIF $entry, $skipUsers = [])
     {
-        $query = $entry->findUsersByInterest();
+        $query = $entry->getReminderUserQuery();
 
         if(!empty($skipUsers)) {
             $query->andWhere(['NOT IN', 'user.contentcontainer_id', $skipUsers]);
@@ -223,6 +230,10 @@ class ReminderProcessor extends Model
      */
     private function handleDefaultReminder(CalendarEventReminderIF $entry, $skipUsers = [])
     {
+        if($entry instanceof RecurrentEventIF && $entry->getContentRecord()->isNewRecord) { // Make sure our model is saved
+            $entry->save();
+        }
+
         $sent = false;
         foreach (CalendarReminder::getDefaults($entry->getContentRecord()->container, true) as $reminder) {
             if(!$reminder->checkMaturity($entry)) {

@@ -52,6 +52,14 @@ class RecurrenceUnitTest extends CalendarUnitTest
         $entry->setRrule($rrule);
     }
 
+    /**
+     * @param bool $save
+     * @param null $entry
+     * @param int $fromDay
+     * @param int $toDay
+     * @return \humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF[]
+     * @throws \Exception
+     */
     protected function expand( $save = false, $entry = null,  $fromDay = 1, $toDay = 7)
     {
         if(!$entry) {
