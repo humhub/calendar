@@ -383,6 +383,11 @@ class CalendarEntryForm extends Model
         $this->end_time = $endTime;
     }
 
+    public function showReminderTab()
+    {
+        return $this->entry->isNewRecord || (new DateTime() > $this->entry->getStartDateTime());
+    }
+
     /**
      * @return bool
      * @throws \Throwable

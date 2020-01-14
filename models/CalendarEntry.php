@@ -765,6 +765,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
         $instance = new self($this->content->container, $this->content->visibility);
         $instance->start_datetime = $start;
         $instance->end_datetime = $end;
+
+        // Currently we do not support notifications and wall entries for recurring instances
+        $instance->silentContentCreation = true;
+        $instance->content->stream_channel = null;
+
         return $instance;
     }
 

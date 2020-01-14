@@ -2,8 +2,9 @@
 
 namespace humhub\modules\calendar;
 
-use humhub\modules\calendar\interfaces\event\EditableEventIF;
+use DateTime;
 use Yii;
+use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -156,11 +157,20 @@ class Events
             $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $eventModel]);
         }
 
+        /* @var $eventModel CalendarEventIF */
+        if($eventModel->getStartDateTime() <= new DateTime()) {
+            return;
+        }
+
         if($eventModel instanceof CalendarEventReminderIF) {
             $event->sender->addWidget(ReminderLink::class, ['entry' => $eventModel]);
         }
     }
 
+    /**
+     * @param $model
+     * @return CalendarEventIF|null
+     */
     private static function getCalendarEvent($model)
     {
         if($model instanceof CalendarEventIF) {
