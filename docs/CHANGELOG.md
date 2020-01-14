@@ -22,7 +22,7 @@ Changelog
 - Fix #117: Date selection accepts invalid user input
 - Fix #155: AbstractCalendarQuery does not include events spanning over the search interval
 - Fix #78: Add date information to response activity
-- Enh: Improved mail html and text views
+- Enh #165: Improved mail html and text views
 
 0.7.5 (October 16, 2019)
 -----------------------

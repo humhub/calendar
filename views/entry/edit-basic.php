@@ -31,7 +31,7 @@ use yii\jui\DatePicker;
                                     {input}
                                 </div>
                                 {error}{hint}'
-        ])->textInput(['placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title'), 'maxlength' => 45])->label(false) ?>
+        ])->textInput(['placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title'), 'maxlength' => 200])->label(false) ?>
     </div>
 
     <?php Yii::$app->formatter->timeZone = $calendarEntryForm->timeZone ?>
