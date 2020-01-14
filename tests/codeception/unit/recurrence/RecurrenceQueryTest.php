@@ -23,17 +23,17 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         $this->space = Space::findOne(['id' => 1]);
 
         $from = $this->getEntryDate()->setTime(0,0,0);
-        $to = $this->getEntryDate()->modify('+1 day')->setTime(23,59,59);
+        $to = $this->getEntryDate()->modify('+2 day')->setTime(0,0,0);
 
         $this->rootEvent = $this->createEntry($from, 2, 'Two Day Event', $this->space);
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=2');
         $this->assertTrue($this->rootEvent->save());
         $recurrences = $this->expand();
         $this->assertEquals('2019-12-01 00:00:00', $recurrences[0]->start_datetime);
-        $this->assertEquals('2019-12-02 23:59:59', $recurrences[0]->end_datetime);
+        $this->assertEquals('2019-12-03 00:00:00', $recurrences[0]->end_datetime);
 
         $this->assertEquals('2019-12-03 00:00:00', $recurrences[1]->start_datetime);
-        $this->assertEquals('2019-12-04 23:59:59', $recurrences[1]->end_datetime);
+        $this->assertEquals('2019-12-05 00:00:00', $recurrences[1]->end_datetime);
     }
 
     /**

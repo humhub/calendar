@@ -236,7 +236,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
             $startDT = CalendarUtils::translateTimezone($this->start_datetime, CalendarUtils::getSystemTimeZone(), $this->time_zone, false);
             $startDT->setTime(0,0);
             $endDT =  CalendarUtils::translateTimezone($this->end_datetime, CalendarUtils::getSystemTimeZone(), $this->time_zone, false);
-            $endDT->setTime(23,59, 59);
+            $endDT->modify('+1 day')->setTime(0,0, 0);
             $this->updateAttributes([
                 'start_datetime' => CalendarUtils::toDBDateFormat($startDT),
                 'end_datetime' => CalendarUtils::toDBDateFormat($endDT)
@@ -293,18 +293,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
         $start = new DateTime($this->start_datetime);
         $end = new DateTime($this->end_datetime);
 
-        $isAllDayMomentAfter = CalendarUtils::isAllDay($start, $end, false);
-        $isAllDayNonStrict = CalendarUtils::isAllDay($start, $end, false);
-
-        // Make sure all_day is set right
-        if(!$this->all_day && $isAllDayNonStrict) {
-            $this->all_day = 1;
-        }
-
         // Make sure end and start time is set right for all_day events
-        if($this->all_day && !$isAllDayMomentAfter) {
-            $this->start_datetime = CalendarUtils::toDBDateFormat($start->setTime(0,0));
-            $this->end_datetime = CalendarUtils::toDBDateFormat($end->setTime(23,59, 59));
+        if($this->all_day) {
+            CalendarUtils::ensureAllDay($start, $end);
+            $this->start_datetime = CalendarUtils::toDBDateFormat($start);
+            $this->end_datetime = CalendarUtils::toDBDateFormat($end);
         }
 
         if($this->participation_mode === null) {
@@ -451,7 +444,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function getStartDateTime()
     {
-        return new DateTime($this->start_datetime, CalendarUtils::getSystemTimeZone(false));
+        return new DateTime($this->start_datetime, CalendarUtils::getSystemTimeZone());
     }
 
     /**
@@ -460,7 +453,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function getEndDateTime()
     {
-        return new DateTime($this->end_datetime, CalendarUtils::getSystemTimeZone(false));
+        return new DateTime($this->end_datetime, CalendarUtils::getSystemTimeZone());
     }
 
     /**

@@ -10,15 +10,16 @@ namespace humhub\modules\calendar\assets;
 
 use yii\web\AssetBundle;
 
-class ReminderFormAssets extends AssetBundle
+class MomentAsset extends AssetBundle
 {
     public $publishOptions = [
         'forceCopy' => false
     ];
     
-    public $sourcePath = '@calendar/resources';
+    public $sourcePath = '@calendar/node_modules/moment/min';
 
     public $js = [
-        'js/humhub.calendar.reminder.Form.js',
+        'moment-with-locales.min.js',
     ];
+
 }

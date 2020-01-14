@@ -8,6 +8,7 @@
 namespace humhub\modules\calendar\models\fullcalendar;
 
 
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -33,7 +34,7 @@ class FullCalendar
         $calendarService = new CalendarService();
 
         $result = [
-            'uid' => $entry->getUid(),
+            'id' => $entry->getId(),
             'title' => static::getTitle($entry),
             'editable' => false,
             'backgroundColor' => Html::encode($calendarService->getEventColor($entry)),
@@ -98,6 +99,6 @@ class FullCalendar
      */
     public static function toFullCalendarFormat(DateTime $dt, $allDay = false)
     {
-        return CalendarDateFormatter::formatDate($dt, 'php:c', $allDay);
+        return $dt->format(CalendarUtils::DATE_FORMAT_ATOM);
     }
 }

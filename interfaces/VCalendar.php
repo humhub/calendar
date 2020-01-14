@@ -117,8 +117,10 @@ class VCalendar extends Model
         $dtend = clone $item->getEndDateTime();
 
         if($item->isAllDay()) {
-            // Translate from exact end to moment after
-            $dtend->modify('+1 hour')->setTime(0,0,0);
+            // Translate for legacy events
+            if($dtend->format('H:i') === '23:59') {
+                $dtend->modify('+1 hour')->setTime(0,0,0);
+            }
         }
 
         $result = [

@@ -65,8 +65,8 @@ class RecurrenceUnitTest extends CalendarUnitTest
         if(!$entry) {
             $entry = $this->rootEvent;
         }
-        $expandStart = (new DateTime)->setDate(2019, 12, $fromDay);
-        $expandEnd = (new DateTime)->setDate(2019, 12,  $toDay);
+        $expandStart = (new DateTime)->setDate(2019, 12, $fromDay)->setTime(0,0,0);
+        $expandEnd = (new DateTime)->setDate(2019, 12,  $toDay)->setTime(23,59,59);
         $result = [];
         return CalendarRecurrenceExpand::expand($entry, $expandStart, $expandEnd, $result, $save);
     }

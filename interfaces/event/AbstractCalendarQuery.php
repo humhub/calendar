@@ -57,6 +57,13 @@ abstract class AbstractCalendarQuery extends Component
     const FILTER_INCLUDE_NONREADABLE = 'includeNonReadable';
 
     /**
+     * If this filter is set, we add a offset tolerance to start or end date in case the
+     * user timezone offset differs from the system offset.
+     *
+     */
+    const FILTER_TIMEZONE_TOLERANCE = 'timezoneTolerance';
+
+    /**
      * @var string Defines the ActiveRecord class used for this query
      */
     protected static $recordClass;
@@ -142,7 +149,7 @@ abstract class AbstractCalendarQuery extends Component
     /**
      * @var boolean if set to false (default) will ignore time information in date filter intervals
      */
-    protected $_withTime = false;
+    protected $_withTime = true;
 
     /**
      * @var boolean determines if the query was already built
@@ -495,10 +502,17 @@ abstract class AbstractCalendarQuery extends Component
             }
         }
 
-        $this->_to = $to;
+        $this->_to = clone $to;
 
         if (!$this->_withTime) {
             $this->_to->setTime(23, 59, 59);
+        }
+
+        if($this->hasFilter(static::FILTER_TIMEZONE_TOLERANCE)) {
+            $offset = $this->getOffsetDiff($this->_to);
+            if($offset > 0) {
+                $this->_to->modify("+$offset seconds");
+            }
         }
 
         return $this;
@@ -549,13 +563,35 @@ abstract class AbstractCalendarQuery extends Component
             }
         }
 
-        $this->_from = $from;
+        $this->_from = clone $from;
 
         if (!$this->_withTime) {
             $this->_from->setTime(0, 0, 0);
         }
 
+        if($this->hasFilter(static::FILTER_TIMEZONE_TOLERANCE)) {
+            $offset = $this->getOffsetDiff($this->_from);
+            if($offset < 0) {
+                $this->_from->modify("$offset seconds");
+            }
+        }
+
         return $this;
+    }
+
+    /**
+     * @param DateTime $date
+     * @return int
+     */
+    private function getOffsetDiff(DateTime $date)
+    {
+        if(CalendarUtils::getUserTimeZone(true) === CalendarUtils::getSystemTimeZone(true)) {
+            return 0;
+        }
+
+        $offsetSystem = CalendarUtils::getSystemTimeZone()->getOffset($date);
+        $offsetUser = CalendarUtils::getUserTimeZone()->getOffset($date);
+        return $offsetUser - $offsetSystem;
     }
 
     /**
@@ -581,6 +617,7 @@ abstract class AbstractCalendarQuery extends Component
      */
     public function days($days)
     {
+        $this->withTime(false);
         return $this->interval($days);
     }
 
@@ -697,6 +734,8 @@ abstract class AbstractCalendarQuery extends Component
                 $this->setupQuery();
             }
 
+            $test = $this->_query->createCommand()->rawSql;
+
             return $this->preFilter($this->_query->all());
         } catch (FilterNotSupportedException $e) {
             return [];
@@ -751,10 +790,10 @@ abstract class AbstractCalendarQuery extends Component
             $this->_query->andFilterWhere(['or',
                 ['and',
                     $this->getStartCriteria($this->_from, '>='),
-                    $this->getStartCriteria($this->_to, '<=')
+                    $this->getStartCriteria($this->_to, '<')
                 ],
                 ['and',
-                    $this->getEndCriteria($this->_from, '>='),
+                    $this->getEndCriteria($this->_from, '>'),
                     $this->getEndCriteria($this->_to, '<=')
                 ],
                 $this->getRruleRootQuery()

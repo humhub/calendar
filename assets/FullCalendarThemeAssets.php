@@ -10,15 +10,22 @@ namespace humhub\modules\calendar\assets;
 
 use yii\web\AssetBundle;
 
-class ReminderFormAssets extends AssetBundle
+class FullCalendarThemeAssets extends AssetBundle
 {
     public $publishOptions = [
         'forceCopy' => false
     ];
     
-    public $sourcePath = '@calendar/resources';
+    public $sourcePath = '@calendar/resources/js/theme/bootstrap';
 
-    public $js = [
-        'js/humhub.calendar.reminder.Form.js',
+    public $css = [
+        'main.min.css'
     ];
+    public $js = [
+        'main.min.js'
+    ];
+    public $depends = [
+        FullCalendarAssets::class
+    ];
+
 }

@@ -27,6 +27,7 @@ class CalendarUnitTest extends HumHubDbTestCase
         Events::registerAutoloader();
         CalendarReminder::flushDefautlts();
         CalendarService::flushCache();
+        CalendarUtils::flush();
         Yii::$app->getModule('calendar')->maxReminder = 100;
     }
 
@@ -36,6 +37,7 @@ class CalendarUnitTest extends HumHubDbTestCase
             $from = new DateTime();
         }
 
+        $fullDay = false;
         if(is_string($days)) {
             $to = clone $from;
             $to->add(new DateInterval($days));
@@ -44,14 +46,11 @@ class CalendarUnitTest extends HumHubDbTestCase
             $fullDay = true;
             $to = (clone $from)->setTime(0,0,0)->add(new DateInterval("P" . $days . "D"));
         } else if($days instanceof DateTime) {
-            $fullDay = false;
             $to = $days;
         } else if($days instanceof DateInterval) {
-            $fullDay = false;
             $to = clone $from;
             $to->add($days);
         } else if(!$days) {
-            $fullDay = false;
             $to = clone $from;
             $to->add(new DateInterval('PT1H'));
         }
@@ -62,7 +61,7 @@ class CalendarUnitTest extends HumHubDbTestCase
         if($fullDay) {
             $entry->all_day = 1;
             $from->setTime(0,0,0);
-            $to->modify('-1 hour')->setTime(23,59,59);
+            $to->modify('+1 hour')->setTime(0,0,0);
         } else {
             $entry->all_day = 0;
         }

@@ -62,7 +62,11 @@ class CalendarDateFormatter extends Component
 
     public function getFormattedEndDate($format = 'long')
     {
-        return static::formatDate($this->calendarItem->getEndDateTime(), $format, $this->calendarItem->isAllDay());
+        $endDate = $this->calendarItem->getEndDateTime();
+        if($this->calendarItem->isAllDay()) {
+            $endDate->modify('-1 day');
+        }
+        return static::formatDate($endDate, $format, $this->calendarItem->isAllDay());
     }
 
     /**
@@ -134,12 +138,8 @@ class CalendarDateFormatter extends Component
     public function getDurationDays()
     {
         $end = $this->calendarItem->getEndDateTime();
-        if ($this->calendarItem->isAllDay()) {
-            if ($end === $this->calendarItem->getEndDateTime()->setTime('00', '00', '00'))
-                $end->modify('-1 day'); // revert modifications for all-day events integrated via interface
-        }
         $interval = $this->calendarItem->getStartDateTime()->diff($end, true);
-        return $interval->days + 1;
+        return $interval->days;
     }
 
     /**

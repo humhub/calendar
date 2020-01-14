@@ -13,7 +13,7 @@ use yii\web\AssetBundle;
 class FullCalendarAssets extends AssetBundle
 {
     public $publishOptions = [
-        'forceCopy' => true
+        'forceCopy' => false
     ];
     
     public $sourcePath = '@calendar/node_modules/@fullcalendar';
@@ -24,6 +24,7 @@ class FullCalendarAssets extends AssetBundle
         'timegrid/main.min.css',
         'list/main.min.css',
     ];
+
     public $js = [
         'core/main.min.js',
         'core/locales-all.min.js',
@@ -31,6 +32,11 @@ class FullCalendarAssets extends AssetBundle
         'timegrid/main.min.js',
         'list/main.min.js',
         'interaction/main.min.js',
+        'moment/main.js',
+    ];
+
+    public $depends = [
+        MomentAsset::class
     ];
 
 }

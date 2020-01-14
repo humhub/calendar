@@ -2,9 +2,7 @@
 
 namespace humhub\modules\calendar\widgets;
 
-use humhub\modules\calendar\assets\Assets;
-use humhub\modules\calendar\assets\FullCalendarAssets;
-use humhub\modules\calendar\assets\FullCalendarTheme;
+use humhub\modules\calendar\assets\CalendarAsset;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\widgets\JsWidget;
@@ -33,9 +31,7 @@ class FullCalendar extends JsWidget
 
     public function init()
     {
-        FullCalendarAssets::register($this->getView());
-        FullCalendarTheme::register($this->getView());
-        Assets::register($this->getView());
+        CalendarAsset::register($this->getView());
 
         if(Yii::$app->user->isGuest) {
             $this->canWrite = false;
@@ -77,7 +73,7 @@ class FullCalendar extends JsWidget
             'select-helper' => $this->canWrite,
             'selectors' => $this->selectors,
             'filters' => $this->filters,
-            'timezone' =>  CalendarUtils::getUserTimeZone(true),
+            //'time-zone' =>  CalendarUtils::getUserTimeZone(true),
             'locale' => $this->translateLocale(Yii::$app->formatter->locale),
         ];
     }

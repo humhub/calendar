@@ -34,11 +34,11 @@ class CalendarDateFormatValidator extends Validator
 
         try {
             $parsed = CalendarUtils::parseDateTimeString($value, $timeValue);
-            if (empty($parsed)) {
+            if (!$parsed) {
                 throw new \Exception('Invalid date time format: ' . $value . 'with time: ' . $timeValue);
             }
         } catch (\Exception $e) {
-            $this->addError($model, $attribute, Yii::t('CalendarModule.base', 'Invalid date format!'));
+            $this->addError($model, $attribute, Yii::t('CalendarModule.base', 'Invalid date or time format!'));
             Yii::warning($e);
         }
     }

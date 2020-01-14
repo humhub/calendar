@@ -258,9 +258,8 @@ class CalendarRecurrenceExpand extends Model
                 $vEventEnd = clone $vEvent->DTEND->getDateTime();
 
                 if ($vEventStart == $vEventEnd && $this->event->isAllDay()) {
-                    $vEventEnd = $vEventEnd->modify('+1 day')->modify('-1 second');
+                    $vEventEnd = CalendarUtils::getDateTime($vEventEnd)->modify('+1 day');
                 }
-
 
                 // Check if recurrence model exists
                 if (!$model) {
@@ -292,7 +291,6 @@ class CalendarRecurrenceExpand extends Model
         $dtEnd = CalendarUtils::getDateTime($vEvent->DTEND->getDateTime());
 
         if($root->isAllDay()) {
-            $dtEnd->modify('-1 second');
             CalendarUtils::ensureAllDay($dtStart, $dtEnd);
         }
 

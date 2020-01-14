@@ -6,7 +6,7 @@
  *
  */
 
-namespace humhub\modules\calendar\tests\codeception\unit;
+namespace humhub\modules\calendar\tests\codeception\unit\entry;
 
 use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -20,8 +20,52 @@ use Yii;
  * Time: 20:25
  */
 
-class CalendarFormatTest extends HumHubDbTestCase
+class CalendarEntryFormatTest extends HumHubDbTestCase
 {
+    public function testGetDurationDaysSingleDay()
+    {
+        $entry = new CalendarEntry([
+            'start_datetime' => '2017-09-12 00:00:00',
+            'end_datetime' => '2017-09-13 00:00:00',
+            'all_day' => 1,
+            'time_zone' => Yii::$app->timeZone
+        ]);
+        $this->assertEquals(1, $entry->formatter->getDurationDays());
+    }
+
+    public function testGetDurationDaysMultipleDays()
+    {
+        $entry = new CalendarEntry([
+            'start_datetime' => '2017-09-12 00:00:00',
+            'end_datetime' => '2017-09-15 00:00:00',
+            'all_day' => 1,
+            'time_zone' => Yii::$app->timeZone
+        ]);
+        $this->assertEquals(3, $entry->formatter->getDurationDays());
+    }
+
+    public function testGetDurationDaysMultipleDayNonAllDay()
+    {
+        $entry = new CalendarEntry([
+            'start_datetime' => '2017-09-12 10:00:00',
+            'end_datetime' => '2017-09-15 10:30:00',
+            'all_day' => 0,
+            'time_zone' => Yii::$app->timeZone
+        ]);
+        $this->assertEquals(3, $entry->formatter->getDurationDays());
+    }
+
+    public function testGetDurationDaysMultipleDayNonAllDay2()
+    {
+        $entry = new CalendarEntry([
+            'start_datetime' => '2017-09-12 10:00:00',
+            'end_datetime' => '2017-09-15 09:30:00',
+            'all_day' => 0,
+            'time_zone' => Yii::$app->timeZone
+        ]);
+        $this->assertEquals(2, $entry->formatter->getDurationDays());
+    }
+
     public function testAllDayOneDayFormatSameTimezone()
     {
         $this->becomeUser('Admin');
@@ -31,7 +75,7 @@ class CalendarFormatTest extends HumHubDbTestCase
 
         $entry = new CalendarEntry([
             'start_datetime' => '2017-09-12 00:00:00',
-            'end_datetime' => '2017-09-12 23:59:00',
+            'end_datetime' => '2017-09-13 00:00:00',
             'all_day' => 1,
             'time_zone' => Yii::$app->timeZone
         ]);
@@ -43,18 +87,16 @@ class CalendarFormatTest extends HumHubDbTestCase
     public function testAllDayOneDayFormatDifferentTimezone()
     {
         $this->becomeUser('Admin');
-        Yii::$app->user->getIdentity()->time_zone = Yii::$app->timeZone;
+        Yii::$app->user->getIdentity()->time_zone = 'UTC';
         Yii::$app->user->getIdentity()->language = 'de';
         Yii::$app->i18n->autosetLocale();
 
         $entry = new CalendarEntry([
             'start_datetime' => '2017-09-12 00:00:00',
-            'end_datetime' => '2017-09-12 23:59:00',
+            'end_datetime' => '2017-09-13 00:00:00',
             'all_day' => 1,
             'time_zone' => 'Europe/Berlin'
         ]);
-
-        $berlin_timezone = TimezoneHelper::generateList()['Europe/Berlin'];
 
         $this->assertEquals("12. September 2017", $entry->getFormattedTime());
         $this->assertEquals("12.09.2017", $entry->getFormattedTime('medium'));
@@ -69,9 +111,9 @@ class CalendarFormatTest extends HumHubDbTestCase
 
         $entry = new CalendarEntry([
             'start_datetime' => '2017-09-12 00:00:00',
-            'end_datetime' => '2017-09-12 23:59:00',
+            'end_datetime' => '2017-09-13 00:00:00',
             'all_day' => 1,
-            'time_zone' => Yii::$app->timeZone
+            'time_zone' => 'UTC'
         ]);
 
         // Date is not trnaslated since we use all_day = 1
@@ -88,7 +130,7 @@ class CalendarFormatTest extends HumHubDbTestCase
 
         $entry = new CalendarEntry([
             'start_datetime' => '2017-09-12 00:00:00',
-            'end_datetime' => '2017-09-13 23:59:00',
+            'end_datetime' => '2017-09-14 00:00:00',
             'all_day' => 1,
             'time_zone' => Yii::$app->timeZone
         ]);
@@ -107,7 +149,7 @@ class CalendarFormatTest extends HumHubDbTestCase
 
         $entry = new CalendarEntry([
             'start_datetime' => '2017-09-12 00:00:00',
-            'end_datetime' => '2017-09-13 23:59:00',
+            'end_datetime' => '2017-09-14 00:00:00',
             'all_day' => 1,
             'time_zone' => Yii::$app->timeZone
         ]);

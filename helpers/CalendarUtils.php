@@ -33,8 +33,12 @@ class CalendarUtils
     const DB_DATE_FORMAT = 'Y-m-d H:i:s';
     const DATE_FORMAT_SHORT = 'Y-m-d';
     const DATE_FORMAT_SHORT_NO_TIME = '!Y-m-d';
-    const TIME_FORMAT_SHORT = 'php:H:i';
-    const TIME_FORMAT_SHORT_MERIDIEM = 'php:h:i A';
+
+    const TIME_FORMAT_SHORT_PHP = 'H:i';
+    const TIME_FORMAT_SHORT = 'php:'.self::TIME_FORMAT_SHORT_PHP;
+    const TIME_FORMAT_SHORT_MERIDIEM_PHP = 'h:i A';
+    const TIME_FORMAT_SHORT_MERIDIEM = 'php:'.self::TIME_FORMAT_SHORT_MERIDIEM_PHP;
+
     const ICAL_TIME_FORMAT        = 'Ymd\THis';
 
     const DOW_SUNDAY = 1;
@@ -45,6 +49,14 @@ class CalendarUtils
     const DOW_FRIDAY = 6;
     const DOW_SATURDAY = 7;
 
+    /**
+     * @param $value
+     * @param null $timeValue
+     * @param null $timeFormat
+     * @param string $timeZone
+     * @return bool|DateTime
+     * @throws \Exception
+     */
     public static function parseDateTimeString($value, $timeValue = null, $timeFormat = null, $timeZone = 'UTC')
     {
         if(static::isInDbFormat($value)) {
@@ -54,6 +66,10 @@ class CalendarUtils
             $ts = DateHelper::parseDateTimeToTimestamp($value);
         }
 
+        if(!$ts) {
+            return false;
+        }
+
         if($timeValue) {
             $ts += static::parseTime($timeValue, $timeFormat);
         }
@@ -61,7 +77,24 @@ class CalendarUtils
         $date = new DateTime(null, new DateTimeZone('UTC'));
         $date->setTimestamp($ts);
 
-        return DateTime::createFromFormat(static::DB_DATE_FORMAT, static::toDBDateFormat($date), static::getDateTimeZone($timeZone));
+        $result = DateTime::createFromFormat(static::DB_DATE_FORMAT, static::toDBDateFormat($date), static::getDateTimeZone($timeZone));
+
+        /**
+         * We check for year 1980 regarding a Bug in HumHub 1.3 which returned unix epoch date for invalid date formats with time
+         * This was fixed in HumHub 1.4
+         */
+        if($result < new \DateTime('1980-01-01')) {
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    public static function getTimeFormat($php = false)
+    {
+        $withmeridiam = $php ? static::TIME_FORMAT_SHORT_MERIDIEM_PHP : static::TIME_FORMAT_SHORT_MERIDIEM;
+        $noMeridiam = $php ? static::TIME_FORMAT_SHORT_PHP : static::TIME_FORMAT_SHORT;
+        return Yii::$app->formatter->isShowMeridiem() ? $withmeridiam : $noMeridiam;
     }
 
     /**
@@ -108,35 +141,6 @@ class CalendarUtils
     }
 
     /**
-     *
-     * @param DateTimeInterface|string $date1
-     * @param DateTimeInterface|DateTime $date2
-     * @param bool $endDateMomentAfter
-     * @return boolean
-     * @throws \Exception
-     */
-    public static function isFullDaySpan($date1, $date2, $endDateMomentAfter = false)
-    {
-        $date1 = $date1 instanceof DateTimeInterface ? $date1 : new DateTime($date1);
-        $date2 = $date2 instanceof DateTimeInterface ? $date2 : new DateTime($date2);
-
-        $dateInterval = $date1->diff($date2, true);
-
-        if ($endDateMomentAfter) {
-            if ($dateInterval->days > 0 && $dateInterval->h == 0 && $dateInterval->i == 0 && $dateInterval->s == 0) {
-                return true;
-            }
-        } else {
-            if ($dateInterval->h == 23 && $dateInterval->i == 59) {
-                return true;
-            }
-        }
-
-
-        return false;
-    }
-
-    /**
      * Checks if the date spans over a whole day if $end is after $start and $start time is 00:00 and $end time is:
      *
      * - 00:00 or 23:59 if $endDateMomentAfter is null (non strict)
@@ -179,9 +183,12 @@ class CalendarUtils
 
     public static function ensureAllDay(DateTime $startDt, DateTime $endDt)
     {
+        if($startDt->format('Y-m-d') === $endDt->format('Y-m-d')) {
+            $endDt->modify('+1 day');
+        }
 
-        $endDt->setTime(23,59,59);
         $startDt->setTime(0,0,0);
+        $endDt->setTime(0,0,0);
     }
 
     /**
@@ -270,7 +277,7 @@ class CalendarUtils
         return  $asString ? static::$userTimezoneString : static::$userTimezone;
     }
 
-    public static function getSystemTimeZone($asString = true)
+    public static function getSystemTimeZone($asString = false)
     {
         return $asString ? Yii::$app->timeZone : new DateTimeZone(Yii::$app->timeZone);
     }

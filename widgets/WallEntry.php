@@ -2,7 +2,7 @@
 
 namespace humhub\modules\calendar\widgets;
 
-use humhub\modules\calendar\assets\Assets;
+use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\file\widgets\ShowFiles;
@@ -91,7 +91,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
      */
     public function run()
     {
-        Assets::register($this->getView());
+        CalendarBaseAssets::register($this->getView());
         /* @var $entry CalendarEntry */
         $entry = $this->contentObject;
 

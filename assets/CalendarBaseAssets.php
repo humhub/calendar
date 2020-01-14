@@ -10,22 +10,18 @@ namespace humhub\modules\calendar\assets;
 
 use yii\web\AssetBundle;
 
-class FullCalendarTheme extends AssetBundle
+class CalendarBaseAssets extends AssetBundle
 {
     public $publishOptions = [
         'forceCopy' => false
     ];
     
-    public $sourcePath = '@calendar/resources/js/theme/bootstrap';
+    public $sourcePath = '@calendar/resources';
 
     public $css = [
-        'main.min.css'
+        'css/calendar.css',
     ];
     public $js = [
-        'main.min.js'
+        'js/humhub.calendar.js'
     ];
-    public $depends = [
-        FullCalendarAssets::class
-    ];
-
 }

@@ -18,6 +18,7 @@ Changelog
 - Enh: Added fullcalendar list view
 - Enh: translatable calendar view buttons
 - Enh: Enhanced mobile calendar view
+- Chng: Switch from moment before (23:59:59) to moment after end date format on all_day events
 
 0.7.5 (October 16, 2019)
 -----------------------

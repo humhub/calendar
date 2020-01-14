@@ -6,7 +6,7 @@
  *
  */
 
-namespace humhub\modules\calendar\tests\codeception\unit;
+namespace humhub\modules\calendar\tests\codeception\unit\birthday;
 
 use DateInterval;
 use DateTime;

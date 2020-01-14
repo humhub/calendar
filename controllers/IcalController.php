@@ -51,7 +51,7 @@ class IcalController extends Controller
 
         $uid = $event->getUid() ?: $this->uniqueId;
 
-        return Yii::$app->response->sendContentAsFile(VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone())->serialize(), $uid.'.ics', ['mimeType' => static::EXPORT_MIME]);
+        return Yii::$app->response->sendContentAsFile(VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone(true))->serialize(), $uid.'.ics', ['mimeType' => static::EXPORT_MIME]);
 
     }
 

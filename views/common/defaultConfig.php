@@ -7,7 +7,7 @@
  *
  */
 
-use humhub\modules\calendar\assets\Assets;
+use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
@@ -18,7 +18,7 @@ use humhub\widgets\Tabs;
 /* @var $this yii\web\View */
 /* @var $model DefaultSettings */
 
-Assets::register($this);
+CalendarBaseAssets::register($this);
 
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\calendar\tests\codeception\unit;
+namespace humhub\modules\calendar\tests\codeception\unit\entry;
 
 use calendar\CalendarUnitTest;
 use humhub\modules\content\models\Content;
@@ -32,7 +32,6 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         // Starts in 4 days (not included)
         $entry4 = $this->createEntry((new DateTime)->add(new DateInterval('P4D')), 6, 'Future Entry', $s1);
 
-
         $entries = CalendarEntryQuery::find()->days(3)->all();
         
         $this->assertEquals(2, count($entries));
@@ -49,13 +48,13 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         $s1 = Space::findOne(['id' => 1]);
         
         // Whole day yesterday should be excluded
-        $entry1 = $this->createEntry((new DateTime)->sub(new DateInterval('P1D'))->setTime(0,0,0), (new DateTime)->sub(new DateInterval('P1D'))->setTime(23,59,59), 'Yesterday', $s1);
+        $entry1 = $this->createEntry((new DateTime)->sub(new DateInterval('P1D'))->setTime(0,0,0), 1, 'Yesterday', $s1);
         
         // Today
-        $entry2 = $this->createEntry(null, (new DateTime)->setTime(23,59,59), 'Today', $s1);
+        $entry2 = $this->createEntry(new DateTime, 1, 'Today', $s1);
         
         // Tomorrow
-        $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P1D'))->setTime(0,0,0), (new DateTime)->add(new DateInterval('P1D'))->setTime(23,59,59), 'Tomorrow', $s1);
+        $entry3 = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), 1, 'Tomorrow', $s1);
         
         // Get all entries from today by open range query
         $entries = CalendarEntryQuery::find()->days(0)->all();

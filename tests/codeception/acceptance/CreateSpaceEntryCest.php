@@ -45,7 +45,7 @@ class CreateSpaceEntryCest
         $I->seeElement('#calendarentryform-start_time:not(:disabled)');
         $I->seeElement('#calendarentryform-end_time:not(:disabled)');
         $I->seeInField('#calendarentryform-start_time', '10:00 AM');
-        $I->seeInField('#calendarentryform-end_time', '12:00 AM');
+        $I->seeInField('#calendarentryform-end_time', '12:00 PM');
 
         $I->click('[for="calendarentry-all_day"]');
         $I->wait(1);
@@ -54,7 +54,7 @@ class CreateSpaceEntryCest
         $I->seeElement('#calendarentryform-end_time:disabled');
 
         $I->dontSeeInField('#calendarentryform-start_time', '10:00 AM');
-        $I->dontSeeInField('#calendarentryform-end_time', '12:00 AM');
+        $I->dontSeeInField('#calendarentryform-end_time', '12:00 PM');
 
 
         $I->amGoingTo('Save my new calendar entry');

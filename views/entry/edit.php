@@ -1,7 +1,7 @@
 <?php
 
 
-use humhub\modules\calendar\assets\Assets;
+use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\Module;
@@ -15,7 +15,7 @@ use humhub\widgets\ModalDialog;
 /* @var $calendarEntryForm CalendarEntryForm */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 
-Assets::register($this);
+CalendarBaseAssets::register($this);
 
 $header = ($calendarEntryForm->entry->isNewRecord)
     ? Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> event')

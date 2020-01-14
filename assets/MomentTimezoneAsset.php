@@ -10,15 +10,20 @@ namespace humhub\modules\calendar\assets;
 
 use yii\web\AssetBundle;
 
-class ReminderFormAssets extends AssetBundle
+class MomentTimezoneAsset extends AssetBundle
 {
     public $publishOptions = [
         'forceCopy' => false
     ];
     
-    public $sourcePath = '@calendar/resources';
+    public $sourcePath = '@calendar/node_modules/moment-timezone/builds';
 
     public $js = [
-        'js/humhub.calendar.reminder.Form.js',
+        'moment-timezone-with-data.js',
     ];
+
+    public $depends = [
+        MomentAsset::class
+    ];
+
 }

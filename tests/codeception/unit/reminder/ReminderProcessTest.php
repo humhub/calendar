@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit\reminder;
 
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\reminder\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
@@ -22,7 +23,7 @@ class ReminderProcessTest  extends CalendarUnitTest
     protected function setUp()
     {
         parent::setUp();
-        Events::onBeforeRequest();
+        Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
         // Make sure we don't receive content created notifications
         Membership::updateAll(['send_notifications' => 0]);
     }
@@ -413,6 +414,7 @@ class ReminderProcessTest  extends CalendarUnitTest
 
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
+
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('P2D')), null, 'Test',  Space::findOne(['id' => 3]));
 
         // Check Only sent to not declined user
@@ -464,8 +466,9 @@ class ReminderProcessTest  extends CalendarUnitTest
     {
         $this->becomeUser('admin');
 
-        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
+        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
+
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
         $entry->save();
@@ -590,5 +593,45 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertHasNoNotification(Remind::class, $today, $today->content->createdBy->id, 1);
         $this->assertHasNoNotification(Remind::class, $today, $today->content->createdBy->id, 2);
         $this->assertHasNoNotification(Remind::class, $today, $today->content->createdBy->id, 3);
+    }
+
+    public function testSimpleGlobalDefaultReminder()
+    {
+        $this->becomeUser('Admin');
+        $globalReminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 2);
+        $this->assertTrue($globalReminder->save());
+        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test',  Space::findOne(['id' => 3]));
+        (new ReminderService())->sendAllReminder();
+        $this->assertTrue(CalendarReminderSent::check($globalReminder, $entry));
+    }
+
+    public function testSimpleSpaceDefaultReminder()
+    {
+        $this->becomeUser('Admin');
+        $default = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_DAY, 2, Space::findOne(['id' => 3]));
+        $this->assertTrue($default->save());
+        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test',  Space::findOne(['id' => 3]));
+        (new ReminderService())->sendAllReminder();
+        $this->assertTrue(CalendarReminderSent::check($default, $entry));
+    }
+
+    public function testSimpleEntryLevelContainerReminder()
+    {
+        $this->becomeUser('Admin');
+        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test',  Space::findOne(['id' => 3]));
+        $reminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 2, $entry);
+        $this->assertTrue($reminder->save());
+        (new ReminderService())->sendAllReminder();
+        $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
+    }
+
+    public function testSimpleEntryLevelUserReminder()
+    {
+        $this->becomeUser('Admin');
+        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test',  Space::findOne(['id' => 3]));
+        $reminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 2, $entry, Yii::$app->user->identity);
+        $this->assertTrue($reminder->save());
+        (new ReminderService())->sendAllReminder();
+        $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
     }
 }

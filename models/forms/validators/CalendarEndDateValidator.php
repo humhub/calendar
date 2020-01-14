@@ -10,8 +10,8 @@
 namespace humhub\modules\calendar\models\forms\validators;
 
 use Yii;
-use yii\base\Model;
 use yii\validators\Validator;
+use humhub\modules\calendar\models\forms\CalendarEntryForm;
 
 /**
  * Validates the end date which should be bigger thant start date
@@ -21,12 +21,16 @@ use yii\validators\Validator;
 class CalendarEndDateValidator extends Validator
 {
     /**
-     * @param Model $model
+     * @param CalendarEntryForm $model
      * @param string $attribute
      */
     public function validateAttribute($model, $attribute)
     {
-        if ($model->getStartDateTime() >= $model->getEndDateTime()) {
+        $valid = $model->isAllDay()
+            ? $model->getStartDateTime() <= $model->getEndDateTime()
+            : $model->getStartDateTime() < $model->getEndDateTime();
+
+        if (!$valid) {
             $this->addError($model, $attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
         }
     }

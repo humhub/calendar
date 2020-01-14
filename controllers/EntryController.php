@@ -3,7 +3,6 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -163,10 +162,12 @@ class EntryController extends ContentContainerController
         if ($calendarEntryForm->load(Yii::$app->request->post()) && $calendarEntryForm->save()) {
             if(empty($cal)) {
                 return ModalClose::widget(['saved' => true]);
-            } else {
-                return $this->renderModal($calendarEntryForm->entry, 1);
             }
-        } elseif(!Yii::$app->request->post()) { // Set default time for all day events creation other than 00:00, 23:59
+
+            return $this->renderModal($calendarEntryForm->entry, 1);
+        }
+
+        if ($calendarEntryForm->isAllDay()) {
             $calendarEntryForm->setDefaultTime();
         }
 
@@ -222,6 +223,7 @@ class EntryController extends ContentContainerController
         }
 
         $entryForm = new CalendarEntryForm(['entry' => $entry, 'timeZone' => CalendarUtils::getUserTimeZone(true)]);
+
         $start = Yii::$app->request->post('start');
         $end = Yii::$app->request->post('end');
 
