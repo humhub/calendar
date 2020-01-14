@@ -220,6 +220,7 @@ interface RecurrentEventIF extends EditableEventIF
      * Here are examples of data which should be copied:
      *
      * - content owner [[Content::$created_by]]
+     * - content visibility [[Content::$visibility]]
      * - title
      * - description
      * - timezone

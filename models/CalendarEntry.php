@@ -137,11 +137,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
 
         $this->query = new CalendarEntryRecurrenceQuery(['event' => $this]);
 
-        if(!$this->time_zone) {
+        if (!$this->time_zone) {
             $this->time_zone = CalendarUtils::getUserTimeZone(true);
         }
 
-        if($this->sequence === null) {
+        if ($this->sequence === null) {
             $this->sequence = 0;
         }
 
@@ -196,12 +196,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     {
         $labels = [];
 
-        if($this->closed) {
+        if ($this->closed) {
             $labels[] = Label::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
         }
 
         $type = $this->getEventType();
-        if($type) {
+        if ($type) {
             $labels[] = Label::asColor($type->color, $type->name)->sortOrder(310);
         }
 
@@ -213,7 +213,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function rules()
     {
-        $dateFormat =  'php:'.CalendarUtils::DB_DATE_FORMAT;
+        $dateFormat = 'php:' . CalendarUtils::DB_DATE_FORMAT;
 
         return [
             [['files'], 'safe'],
@@ -231,17 +231,41 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
 
     public function afterFind()
     {
-        // Check for legacy event, prior to v2.0 all_day events were translated to system timezone
-        if($this->isAllDay() && !CalendarUtils::isAllDay($this->start_datetime, $this->end_datetime)) {
+        if (!$this->isAllDay()) {
+            parent::afterFind();
+            return;
+        }
+
+        /**
+         * Here we translate legacy all day events as follows:
+         *
+         * Old all day events were translated into system timezone, now we ignore timezone translation for all day events
+         * so we calculate back and ensure valid all day format.
+         *
+         * Old all day events ended right before with end time 23:59, now we save in moment after format.
+         */
+        if (!CalendarUtils::isAllDay($this->start_datetime, $this->end_datetime)) {
             $startDT = CalendarUtils::translateTimezone($this->start_datetime, CalendarUtils::getSystemTimeZone(), $this->time_zone, false);
-            $startDT->setTime(0,0);
-            $endDT =  CalendarUtils::translateTimezone($this->end_datetime, CalendarUtils::getSystemTimeZone(), $this->time_zone, false);
-            $endDT->modify('+1 day')->setTime(0,0, 0);
+            $startDT->setTime(0, 0);
+            $endDT = CalendarUtils::translateTimezone($this->end_datetime, CalendarUtils::getSystemTimeZone(), $this->time_zone, false);
+            $endDT->modify('+1 day')->setTime(0, 0, 0);
             $this->updateAttributes([
                 'start_datetime' => CalendarUtils::toDBDateFormat($startDT),
                 'end_datetime' => CalendarUtils::toDBDateFormat($endDT)
             ]);
+        } else if (!CalendarUtils::isAllDay($this->start_datetime, $this->end_datetime, true)) {
+            // Translate from 23:59 end dates to 00:00 end dates
+            $start = $this->getStartDateTime();
+            $end = $this->getEndDateTime()->modify('+1 hour');
+            CalendarUtils::ensureAllDay($start, $end);
+            $this->updateAttributes([
+                'start_datetime' => CalendarUtils::toDBDateFormat($start),
+                'end_datetime' => CalendarUtils::toDBDateFormat($end)
+            ]);
         }
+
+
+        parent::afterFind();
     }
 
     /**
@@ -294,13 +318,13 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
         $end = new DateTime($this->end_datetime);
 
         // Make sure end and start time is set right for all_day events
-        if($this->all_day) {
+        if ($this->all_day) {
             CalendarUtils::ensureAllDay($start, $end);
             $this->start_datetime = CalendarUtils::toDBDateFormat($start);
             $this->end_datetime = CalendarUtils::toDBDateFormat($end);
         }
 
-        if($this->participation_mode === null) {
+        if ($this->participation_mode === null) {
             $this->participation->setDefautls();
         }
 
@@ -337,7 +361,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
         $this->closed = $this->closed ? 0 : 1;
         $this->save();
 
-        if($this->closed) {
+        if ($this->closed) {
             $this->participation->sendUpdateNotification(CanceledEvent::class);
         } else {
             $this->participation->sendUpdateNotification(ReopenedEvent::class);
@@ -363,7 +387,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     public function setType($type)
     {
         $type = ($type instanceof ContentTag) ? $type : ContentTag::findOne(['id' => $type]);
-        if($type->is(CalendarEntryType::class)) {
+        if ($type->is(CalendarEntryType::class)) {
             CalendarEntryType::deleteContentRelations($this->content);
             $this->content->addTag($type);
         }
@@ -374,7 +398,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function getReminderUserQuery()
     {
-        if($this->content->container instanceof Space) {
+        if ($this->content->container instanceof Space) {
             switch ($this->participation_mode) {
                 case static::PARTICIPATION_MODE_NONE:
                     return Membership::getSpaceMembersQuery($this->content->container);
@@ -390,7 +414,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
                         ->andWhere(['IN', 'calendar_entry_participant.participation_state',
                             [CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]]);
 
-                    return  Membership::getSpaceMembersQuery($this->content->container)
+                    return Membership::getSpaceMembersQuery($this->content->container)
                         ->andWhere(['NOT EXISTS', $userDeclinedQuery])
                         ->orWhere(['EXISTS', $participantQuery]);
 
@@ -470,11 +494,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function isAllDay()
     {
-        if($this->all_day === null) {
+        if ($this->all_day === null) {
             $this->all_day = 1;
         }
 
-        return (boolean) $this->all_day;
+        return (boolean)$this->all_day;
     }
 
     /**
@@ -495,13 +519,13 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function getBadge()
     {
-        if($this->participation->isEnabled()) {
+        if ($this->participation->isEnabled()) {
             $status = $this->getParticipationStatus(Yii::$app->user->identity);
-            switch($status) {
+            switch ($status) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
                     return Label::success(Yii::t('CalendarModule.base', 'Attending'))->right();
                 case CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE:
-                    if($this->allow_maybe) {
+                    if ($this->allow_maybe) {
                         return Label::success(Yii::t('CalendarModule.base', 'Interested'))->right();
                     }
             }
@@ -513,7 +537,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     public function generateIcs()
     {
         $timezone = Yii::$app->settings->get('timeZone');
-        $ics = new ICS($this->title, $this->description,$this->start_datetime, $this->end_datetime, null, null, $timezone, $this->all_day);
+        $ics = new ICS($this->title, $this->description, $this->start_datetime, $this->end_datetime, null, null, $timezone, $this->all_day);
         return $ics;
     }
 
@@ -552,7 +576,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function getUpdateUrl()
     {
-        if(RecurrenceHelper::isRecurrentInstance($this)) {
+        if (RecurrenceHelper::isRecurrentInstance($this)) {
             return null;
         }
 
@@ -582,7 +606,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function getEventStatus()
     {
-        if($this->closed) {
+        if ($this->closed) {
             return CalendarEventStatusIF::STATUS_CANCELLED;
         }
 
@@ -649,7 +673,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function getExternalParticipants($status = [])
     {
-        return $this->participation->getExternalParticipants( $status);
+        return $this->participation->getExternalParticipants($status);
     }
 
     /**
@@ -694,7 +718,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     }
 
 
-
     public function getRecurrenceId()
     {
         return $this->recurrence_id;
@@ -710,7 +733,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
         $this->parent_event_id = $rootId;
     }
 
-    public function getRrule() {
+    public function getRrule()
+    {
         return $this->rrule;
     }
 
@@ -752,12 +776,13 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     public function syncEventData($root, $original = null)
     {
         $this->content->created_by = $root->content->created_by;
+        $this->content->visibility = $root->content->visibility;
 
-        if(!$original || empty($this->description) || $original->description === $this->description) {
+        if (!$original || empty($this->description) || $original->description === $this->description) {
             $this->description = $root->description;
         }
 
-        if(!$original || empty($this->participant_info) || $original->participant_info === $this->participant_info) {
+        if (!$original || empty($this->participant_info) || $original->participant_info === $this->participant_info) {
             $this->participant_info = $root->participant_info;
         }
 
@@ -811,7 +836,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
      */
     public function getLastModified()
     {
-        if(is_string($this->content->updated_at)) {
+        if (is_string($this->content->updated_at)) {
             return new DateTime($this->content->updated_at);
         }
 
