@@ -50,6 +50,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
     const OPTION_LOCATION = 'location';
     const OPTION_DESCRIPTION = 'description';
     const OPTION_LAST_MODIFIED = 'lastModified';
+    const OPTION_SEQUENCE = 'sequence';
 
     /**
      * @var DummyEventQuery
@@ -248,5 +249,17 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
     public function getFullCalendarOptions()
     {
         return [];
+    }
+
+    /**
+     * Optional sequence support see https://www.kanzaki.com/docs/ical/sequence.html
+     *
+     * This function should return null in case sequences is not supported.
+     *
+     * @return int
+     */
+    public function getSequence()
+    {
+        return $this->getOption(static::OPTION_SEQUENCE, null);
     }
 }

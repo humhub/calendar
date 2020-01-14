@@ -209,4 +209,13 @@ interface CalendarEventIF
      * @return DateTime|null
      */
     public function getLastModified();
+
+    /**
+     * Optional sequence support see https://www.kanzaki.com/docs/ical/sequence.html
+     *
+     * This function should return 0 in case sequences is not supported.
+     *
+     * @return int
+     */
+    public function getSequence();
 }

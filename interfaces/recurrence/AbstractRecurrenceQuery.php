@@ -3,6 +3,7 @@
 
 namespace humhub\modules\calendar\interfaces\recurrence;
 
+use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -139,7 +140,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
      */
      public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null)
      {
-            if($this->event instanceof CalendarEventSequenceIF) {
+            if($this->event instanceof EditableEventIF) {
                 return $this->findRecurrenceInstances($start, $end)->andWhere(['>', $this->sequenceField, 0])->all();
             }
 

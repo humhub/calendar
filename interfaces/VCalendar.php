@@ -8,7 +8,6 @@ use DateTime;
 use Exception;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
-use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -150,9 +149,10 @@ class VCalendar extends Model
             }
         }
 
-        if ($item instanceof CalendarEventSequenceIF) {
+        if ($item->getSequence() !== null) {
             $result['SEQUENCE'] = $item->getSequence();
         }
+
         $lastModified = $item->getLastModified();
         if($lastModified) {
             $result['LAST-MODIFIED'] = $lastModified;

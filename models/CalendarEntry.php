@@ -3,13 +3,11 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\EditableRecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -29,7 +27,6 @@ use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\widgets\Label;
-use Sabre\VObject\UUIDUtil;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
 
@@ -60,7 +57,7 @@ use humhub\modules\user\models\User;
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable, EditableRecurrentEventIF, FullCalendarEventIF,
-    CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF, CalendarEventSequenceIF
+    CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
 {
     /**
      * @inheritdoc

@@ -7,7 +7,6 @@ namespace humhub\modules\calendar\helpers;
 use DateTime;
 use DateTimeZone;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
-use humhub\modules\calendar\interfaces\event\CalendarEventSequenceIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\VCalendar;
 use Sabre\VObject\Component\VEvent;

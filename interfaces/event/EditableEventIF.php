@@ -20,6 +20,27 @@ interface EditableEventIF extends CalendarEventIF
      * @return mixed
      */
     public function setUid($uid);
+
+    /**
+     * Sets the event revision sequence, this is optional and can be implemented as empty function if not supported.
+     *
+     * The calendar interface increments the sequence automatically when an EditableEventIF content entry is saved
+     * or when using the [[RecurrenceFormModel]].
+     *
+     * @param $sequence
+     * @return mixed
+     */
+    public function setSequence($sequence);
+
+    /**
+     * Should update all data used by the event interface setter.
+     *
+     * @return bool|int
+     */
     public function save();
+
+    /**
+     * Should delete the event. This is used for example in recurrent events when recurrent event instances are removed.
+     */
     public function delete();
 }
