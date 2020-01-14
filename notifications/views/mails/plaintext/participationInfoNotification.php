@@ -29,8 +29,7 @@ if($source instanceof CalendarEntry) {
 }
 
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
-    <?=  CalendarEventMailInfo::html($source, $url, $extraInfo) ?>
+<?=  CalendarEventMailInfo::text($source, $url, $extraInfo) ?>
 
-<?php $this->endContent();
+

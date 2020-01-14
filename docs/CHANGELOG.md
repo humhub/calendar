@@ -21,6 +21,8 @@ Changelog
 - Chng: Switch from moment before (23:59:59) to moment after end date format on all_day events
 - Fix #117: Date selection accepts invalid user input
 - Fix #155: AbstractCalendarQuery does not include events spanning over the search interval
+- Fix #78: Add date information to response activity
+- Enh: Improved mail html and text views
 
 0.7.5 (October 16, 2019)
 -----------------------

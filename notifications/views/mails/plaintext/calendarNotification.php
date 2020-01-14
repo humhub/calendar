@@ -6,9 +6,6 @@
  *
  */
 
-use humhub\modules\calendar\widgets\mails\CalendarEventMailInfo;
-use humhub\modules\calendar\models\CalendarEntry;
-
 /* @var $this yii\web\View */
 /* @var $viewable humhub\modules\content\notifications\ContentCreated */
 /* @var $url string */
@@ -23,14 +20,10 @@ use humhub\modules\calendar\models\CalendarEntry;
 /* @var $html string */
 /* @var $text string */
 
-$extraInfo = null;
-if($source instanceof CalendarEntry) {
-    $extraInfo = $source->participant_info;
-}
+use humhub\modules\calendar\widgets\mails\CalendarEventMailInfo;
+
 
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
-    <?=  CalendarEventMailInfo::html($source, $url, $extraInfo) ?>
+<?= CalendarEventMailInfo::text($source, $url) ?>
 
-<?php $this->endContent();

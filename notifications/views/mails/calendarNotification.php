@@ -20,20 +20,12 @@
 /* @var $html string */
 /* @var $text string */
 
-use humhub\widgets\mails\MailButtonList; ?>
+use humhub\modules\calendar\widgets\mails\CalendarEventMailInfo;
+
+
+?>
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
-    <?= humhub\widgets\mails\MailContentEntry::widget([
-            'originator' => $originator,
-            'content' => $html,
-            'date' => $date,
-            'space' => $space
-    ]) ?>
-
-    <?= MailButtonList::widget([
-        'buttons' => [
-            humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')])
-        ]
-    ]) ?>
+    <?= CalendarEventMailInfo::html($source, $url) ?>
 
 <?php $this->endContent();

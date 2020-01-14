@@ -55,11 +55,12 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
             <div class="row">
                 <div class="col-md-12">
                     <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full participation info...") ?>">
-                        <strong><i class="fa fa-info-circle"></i> <?= Yii::t('CalendarModule.views_entry_view', 'Participant information:') ?></strong>
+                        <strong><i class="fa fa-info-circle"></i> <?= Yii::t('CalendarModule.views_entry_view', 'Additional information:') ?></strong>
                         <?= RichText::output( $calendarEntry->participant_info); ?>
                     </div>
                 </div>
             </div>
+            <br>
         <?php endif; ?>
     <?php endif; ?>
 
@@ -72,8 +73,6 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
             </div>
         <?php endif; ?>
     <?php endif; ?>
-
-
 
     <?php if ($calendarEntry->participation->canRespond(Yii::$app->user->identity)): ?>
        <div class="row" style="padding-top:10px">
