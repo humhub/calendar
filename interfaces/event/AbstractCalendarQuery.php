@@ -789,6 +789,10 @@ abstract class AbstractCalendarQuery extends Component
             //Search for all dates with start and/or end within the given range
             $this->_query->andFilterWhere(['or',
                 ['and',
+                    $this->getStartCriteria($this->_from, '<'),
+                    $this->getEndCriteria($this->_to, '>')
+                ],
+                ['and',
                     $this->getStartCriteria($this->_from, '>='),
                     $this->getStartCriteria($this->_to, '<')
                 ],

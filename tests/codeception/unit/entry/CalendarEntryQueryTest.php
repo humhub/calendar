@@ -321,4 +321,33 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         $this->assertEquals(1, count($entries));
         $this->assertEquals('Entry 1', $entries[0]->title);
     }
+
+    /**
+     * @throws \Throwable
+     */
+    public function testOpenRangeStartAndEndOverlappingSearchInterval()
+    {
+        $this->becomeUser('Admin');
+        $start = (new DateTime())->modify('-2 month');
+        $end = (new DateTime())->modify('+2 month');
+        $this->createEntry($start, $end, 'Overlapping Entry', Space::findOne(['id' => 1]));
+
+        $entries = CalendarEntryQuery::find()->days(1)->openRange(true)->all();
+        $this->assertEquals(1, count($entries));
+        $this->assertEquals('Overlapping Entry', $entries[0]->title);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function testSimpleRangeStartAndEndOverlappingSearchInterval()
+    {
+        $this->becomeUser('Admin');
+        $start = (new DateTime())->modify('-2 month');
+        $end = (new DateTime())->modify('+2 month');
+        $this->createEntry($start, $end, 'Overlapping Entry', Space::findOne(['id' => 1]));
+
+        $entries = CalendarEntryQuery::find()->days(1)->openRange(false)->all();
+        $this->assertEquals(0, count($entries));
+    }
 }

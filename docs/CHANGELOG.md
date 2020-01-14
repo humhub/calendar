@@ -19,6 +19,8 @@ Changelog
 - Enh: translatable calendar view buttons
 - Enh: Enhanced mobile calendar view
 - Chng: Switch from moment before (23:59:59) to moment after end date format on all_day events
+- Fix #117: Date selection accepts invalid user input
+- Fix #155: AbstractCalendarQuery does not include events spanning over the search interval
 
 0.7.5 (October 16, 2019)
 -----------------------
