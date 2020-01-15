@@ -157,7 +157,7 @@ interface CalendarEventIF
      * The timezone string of the end date.
      * In case the start and end timezone is the same, this function can return null.
      *
-     * @return string
+     * @return string|null
      */
     public function getEndTimezone();
 

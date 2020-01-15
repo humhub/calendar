@@ -3,8 +3,9 @@
 namespace humhub\modules\calendar\interfaces\fullcalendar;
 
 use DateTime;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 
-interface FullCalendarEventIF
+interface FullCalendarEventIF extends CalendarEventIF
 {
     /**
      * Used when the detail view should be opened within a modal
