@@ -17,6 +17,7 @@
 
 namespace humhub\modules\calendar\models;
 
+use humhub\modules\calendar\helpers\CalendarUtils;
 use Yii;
 use DateTime;
 use humhub\libs\TimezoneHelper;
@@ -121,7 +122,16 @@ class CalendarDateFormatter extends Component
 
     protected function isSameDay()
     {
-        return $this->calendarItem->getStartDateTime()->format('Y-m-d') === $this->calendarItem->getEndDateTime()->format('Y-m-d');
+        $start =  $this->calendarItem->getStartDateTime();
+        $end = $this->calendarItem->getEndDateTime();
+
+        if(!$this->calendarItem->isAllDay()) {
+            $start->setTimezone(CalendarUtils::getUserTimeZone());
+            $end->setTimezone(CalendarUtils::getUserTimeZone());
+        }
+        
+        return $start->format('Y-m-d')
+            === $end->format('Y-m-d');
     }
 
     protected  function getFormattedAllDay($format = 'long')
