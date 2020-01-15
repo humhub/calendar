@@ -355,7 +355,7 @@ class CalendarEntryForm extends Model
             if($this->original) {
                 $startDate = $this->original->getStartDateTime();
             } else if($endDate instanceof DateTime) {
-                $startDate = (clone $endDate);
+                $startDate = clone $endDate;
             } else {
                 $startDate = new DateTime();
             }
@@ -366,7 +366,7 @@ class CalendarEntryForm extends Model
             if($this->original) {
                 $endDate = $this->translateFromMomentAfterToFormEndDate($this->original->getEndDateTime());
             }else if($startDate instanceof DateTime) {
-                $endDate = (clone $startDate);
+                $endDate = clone $startDate;
             } else {
                 $endDate = new DateTime();
             }

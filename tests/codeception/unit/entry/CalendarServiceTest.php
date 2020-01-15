@@ -48,7 +48,8 @@ class CalendarServiceTest extends CalendarUnitTest
         $searchDateEnd = new DateTime('2020-02-10T00:00:00+01:00');
 
 
-        $entryStart = (clone $searchDateStart)->modify('-1 day');
+        $entryStart = clone $searchDateStart;
+        $entryStart->modify('-1 day');
 
         // Entry from '2019-12-29 00:00:00' - '2020-12-30 00:00:00' should not be included in search
         $this->createEntry($entryStart , 1, 'e1', $s1);
@@ -111,7 +112,8 @@ class CalendarServiceTest extends CalendarUnitTest
         $searchDateEnd = new DateTime('2020-02-10T00:00:00+02:00');
 
 
-        $entryStart = (clone $searchDateStart)->modify('-1 day');
+        $entryStart = clone $searchDateStart;
+        $entryStart->modify('-1 day');
 
         // Entry from '2019-12-29 00:00:00' - '2020-12-30 00:00:00' should not be included in search
         $this->createEntry($entryStart , 1, 'e1', $s1);

@@ -431,7 +431,7 @@ class ReminderProcessTest  extends CalendarUnitTest
 
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
         $this->assertTrue($reminder->save());
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), null, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
         $entry->save();
 
@@ -440,13 +440,21 @@ class ReminderProcessTest  extends CalendarUnitTest
         // Check Only sent to not declined user
         (new ReminderService())->sendAllReminder();
 
-        $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
+        $this->assertCheck($reminder, $entry);
 
         $this->assertMailSent(4);
         $this->assertHasNotification(Remind::class, $entry, $entry->content->createdBy->id, 1);
         $this->assertHasNotification(Remind::class, $entry, $entry->content->createdBy->id, 2);
         $this->assertHasNotification(Remind::class, $entry, $entry->content->createdBy->id, 3);
         $this->assertHasNotification(Remind::class, $entry, $entry->content->createdBy->id, 4);
+    }
+
+    private function assertCheck($reminder, $entry)
+    {
+        if(!CalendarReminderSent::check($reminder, $entry)) {
+            $test = 'asdf';
+        }
+        $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
     }
 
     /**
@@ -469,14 +477,14 @@ class ReminderProcessTest  extends CalendarUnitTest
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
 
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), null, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
         $entry->save();
 
         // Check Only sent to not declined user
         (new ReminderService())->sendAllReminder();
 
-        $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
+        $this->assertCheck($reminder, $entry);
 
         $this->assertMailSent(3);
         $this->assertHasNotification(Remind::class, $entry, $entry->content->createdBy->id, 1);
@@ -504,7 +512,7 @@ class ReminderProcessTest  extends CalendarUnitTest
 
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
         $this->assertTrue($reminder->save());
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), null, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
         $entry->save();
 
@@ -513,7 +521,7 @@ class ReminderProcessTest  extends CalendarUnitTest
 
         (new ReminderService())->sendAllReminder();
 
-        $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
+        $this->assertCheck($reminder, $entry);
 
         // Check Only sent to not declined user
         $this->assertMailSent(2);
@@ -540,13 +548,13 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->becomeUser('admin');
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
         $this->assertTrue($reminder->save());
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), null, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_NONE;
         $entry->save();
 
         (new ReminderService())->sendAllReminder();
 
-        $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
+        $this->assertCheck($reminder, $entry);
 
         // Check Only sent to not declined user
         $this->assertMailSent(3);

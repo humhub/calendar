@@ -772,11 +772,13 @@ abstract class AbstractCalendarQuery extends Component
     protected function setupDateCriteria()
     {
         if($this->_from) {
-            $fromTime = (clone $this->_from)->setTimezone(CalendarUtils::getSystemTimeZone());
+            $fromTime = clone $this->_from;
+            $fromTime->setTimezone(CalendarUtils::getSystemTimeZone());
         }
 
         if($this->_to) {
-            $toTime = (clone $this->_to)->setTimezone(CalendarUtils::getSystemTimeZone());
+            $toTime = clone $this->_to->setTimezone(CalendarUtils::getSystemTimeZone());
+            $toTime->setTimezone(CalendarUtils::getSystemTimeZone());
         }
 
         if ($this->_openRange && $this->_from && $this->_to) {

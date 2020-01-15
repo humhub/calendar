@@ -8,9 +8,6 @@ use humhub\modules\calendar\Events;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\user\models\User;
 use Yii;
 use DateInterval;
 use DateTime;
@@ -44,7 +41,8 @@ class CalendarUnitTest extends HumHubDbTestCase
             $fullDay = CalendarUtils::isAllDay($from, $to);
         }else if (is_int($days)) {
             $fullDay = true;
-            $to = (clone $from)->setTime(0,0,0)->add(new DateInterval("P" . $days . "D"));
+            $to = clone $from;
+            $to->setTime(0,0,0)->add(new DateInterval("P" . $days . "D"));
         } else if($days instanceof DateTime) {
             $to = clone $days;
         } else if($days instanceof DateInterval) {

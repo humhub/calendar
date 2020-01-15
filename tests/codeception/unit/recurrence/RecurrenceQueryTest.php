@@ -60,7 +60,8 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
 
         $today = (new DateTime())->setTime(0,0,0);
 
-        $expandEnd = (clone $today)->modify('+3 day');
+        $expandEnd = clone $today;
+        $expandEnd->modify('+3 day');
         $existingRecurrences = $this->rootEvent->getRecurrenceQuery()->expandEvent($today, $expandEnd, true);
 
         $upcomingRecurrences = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(2, true);
@@ -82,9 +83,12 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         $this->initRecurrentEvents('FREQ=DAILY;INTERVAL=2', new DateTime(), false);
 
         $first = (new DateTime())->setTime(0,0,0);
-        $second = (clone $first)->modify('+2 day');
-        $third = (clone $first)->modify('+4 day');
-        $fourth = (clone $first)->modify('+6 day');
+        $second = clone $first;
+        $second->modify('+2 day');
+        $third = clone $first;
+        $third->modify('+4 day');
+        $fourth = clone $first;
+        $fourth->modify('+6 day');
 
         // Test single expand
         $upcoming = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(1, 0);

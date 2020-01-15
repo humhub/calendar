@@ -160,7 +160,6 @@ class VCalendar extends Model
 
         $evt = $this->vcalendar->add('VEVENT', $result);
 
-
         if ($item->isAllDay()) {
             if (isset($evt->DTSTART)) {
                 $evt->DTSTART['VALUE'] = 'DATE';
