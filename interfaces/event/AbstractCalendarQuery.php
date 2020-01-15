@@ -722,8 +722,6 @@ abstract class AbstractCalendarQuery extends Component
                 $this->setupQuery();
             }
 
-            $test = $this->_query->createCommand()->rawSql;
-
             return $this->preFilter($this->_query->all());
         } catch (FilterNotSupportedException $e) {
             return [];
