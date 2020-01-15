@@ -4,6 +4,8 @@
 namespace humhub\modules\calendar\interfaces\event;
 
 
+use DateTime;
+
 /**
  * In order to use some calendar interfaces events need to be updated or even deleted. Event types facilitating
  * such interfaces need to implement the EditableEventIF.
@@ -20,6 +22,7 @@ interface EditableEventIF extends CalendarEventIF
      * @return mixed
      */
     public function setUid($uid);
+
 
     /**
      * Sets the event revision sequence, this is optional and can be implemented as empty function if not supported.

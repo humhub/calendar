@@ -154,6 +154,14 @@ interface CalendarEventIF
     public function getTimezone();
 
     /**
+     * The timezone string of the end date.
+     * In case the start and end timezone is the same, this function can return null.
+     *
+     * @return string
+     */
+    public function getEndTimezone();
+
+    /**
      * Returns an url pointing to the detail view of this event. This function should not return an url to
      * a modal view.
      *

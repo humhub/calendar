@@ -9,9 +9,11 @@ namespace humhub\modules\calendar\models\fullcalendar;
 
 
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use DateTime;
 use Exception;
@@ -49,10 +51,17 @@ class FullCalendar
         ];
 
         if($entry instanceof FullCalendarEventIF) {
-            $result['editable'] = $entry->isUpdatable();
-            $result['updateUrl'] = $entry->getUpdateUrl();
+            $editable = $entry->isUpdatable();
+            $updateUrl = static::getUpdateUrl($entry);
+
+            if($editable && !empty($updateUrl)) {
+                $result['editable'] = true;
+                $result['updateUrl'] = $updateUrl;
+            }
+
             $result['viewMode'] = $entry->getCalendarViewMode();
             $result['viewUrl'] = $entry->getCalendarViewUrl();
+
             $extraOptions = $entry->getFullCalendarOptions();
             if(!empty($extraOptions)) {
                 $result = array_merge($result, $extraOptions);
@@ -65,6 +74,27 @@ class FullCalendar
         }
 
         return $result;
+    }
+
+    private static function getUpdateUrl(FullCalendarEventIF $entry)
+    {
+        $result = static::getOption($entry, 'updateUrl');
+
+        if(!empty($result)) {
+            return $result;
+        }
+
+        if($entry instanceof ContentActiveRecord) {
+            return Url::toUpdateEntry($entry);
+        }
+
+        return null;
+    }
+
+    private static function getOption(FullCalendarEventIF $entry, $key, $default = null)
+    {
+        $options = $entry->getFullCalendarOptions();
+        return (!empty($options) && isset($options[$key])) ? $options[$key] : $default;
     }
 
     private static function getEndDate(CalendarEventIF $entry)

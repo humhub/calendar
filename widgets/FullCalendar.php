@@ -52,7 +52,6 @@ class FullCalendar extends JsWidget
 
         if($this->contentContainer) {
             $this->editUrl = Url::toFullCalendarEdit($this->contentContainer);
-            $this->dropUrl = Url::toFullCalendarDrop($this->contentContainer);
         }
 
         parent::init();

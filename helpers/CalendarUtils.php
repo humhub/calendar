@@ -396,6 +396,10 @@ class CalendarUtils
         return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
     }
 
+    /**
+     * @param $model
+     * @return CalendarEventIF|null
+     */
     public static function getCalendarEvent($model)
     {
         if($model instanceof Content) {

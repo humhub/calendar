@@ -203,38 +203,6 @@ class EntryController extends ContentContainerController
     }
 
     /**
-     * @return \yii\web\Response
-     * @throws HttpException
-     * @throws Throwable
-     * @throws Exception
-     */
-    public function actionEditAjax($id)
-    {
-        $this->forcePostRequest();
-
-        $entry = $this->getCalendarEntry($id);
-
-        if (!$entry) {
-            throw new HttpException('404');
-        }
-
-        if (!$entry->content->canEdit()) {
-            throw new HttpException('403');
-        }
-
-        $entryForm = new CalendarEntryForm(['entry' => $entry, 'timeZone' => CalendarUtils::getUserTimeZone(true)]);
-
-        $start = Yii::$app->request->post('start');
-        $end = Yii::$app->request->post('end');
-
-        if ($entryForm->updateDateRangeFromCalendar($start, $end, CalendarUtils::getUserTimeZone(), true)) {
-            return $this->asJson(['success' => true]);
-        }
-
-        throw new HttpException(400, "Could not save! " . print_r($entry->getErrors()));
-    }
-
-    /**
      * @return mixed
      * @throws HttpException
      * @throws Throwable

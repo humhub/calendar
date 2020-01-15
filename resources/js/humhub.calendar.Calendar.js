@@ -135,8 +135,8 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             },
             themeSystem: 'bootstrap',
             loading: $.proxy(this.loader, this),
-            eventResize: $.proxy(this.resizeEvent, this),
-            eventDrop: $.proxy(this.dropEvent, this),
+            eventResize: $.proxy(this.updateEvent, this),
+            eventDrop: $.proxy(this.updateEvent, this),
             eventClick: $.proxy(this.clickEvent, this),
             eventRender: $.proxy(this.renderEvent, this)
         };
@@ -165,23 +165,25 @@ humhub.module('calendar.Calendar', function (module, require, $) {
         }
     };
 
-    Calendar.prototype.toJsonDateFormat = function (date) {
-        return FullCalendarMoment.toMoment(date, this.fullCalendar).format('YYYY-MM-DD HH:mm');
+    Calendar.prototype.toJsonDateFormat = function (date, allDay) {
+        if(allDay) {
+            return FullCalendarMoment.toMoment(date, this.fullCalendar).format('YYYY-MM-DD');
+        }
+
+        return FullCalendarMoment.toMoment(date, this.fullCalendar).format();
     };
 
     Calendar.prototype.select = function (info) {
+        var that = this;
         var options = {
             data: {
-                start: this.toJsonDateFormat(info.start),
-                end: this.toJsonDateFormat(info.end),
+                start: this.toJsonDateFormat(info.start, false),
+                end: this.toJsonDateFormat(info.end, false),
                 cal: 1
             }
         };
 
-        var that = this;
-        var selectUrl = this.options.global
-            ? this.options.globalCreateUrl
-            : this.options.editUrl;
+        var selectUrl = this.options.global ? this.options.globalCreateUrl : this.options.editUrl;
 
         modal.global.load(selectUrl, options).then(function () {
             modal.global.$.one('hidden.bs.modal submitted', function () {
@@ -199,58 +201,31 @@ humhub.module('calendar.Calendar', function (module, require, $) {
         this.fullCalendar.refetchEvents();
     };
 
-    Calendar.prototype.resizeEvent = function (info) {
+    Calendar.prototype.updateEvent = function (info) {
+        var that = this;
+        var event = info.event;
+        var eventProps = event.extendedProps;
         var options = {
             data: {
-                id: info.event.id,
-                start: this.toJsonDateFormat(info.event.start),
-                end: this.toJsonDateFormat(info.event.end),
+                id: event.id,
+                start: this.toJsonDateFormat(event.start, event.allDay),
+                end: this.toJsonDateFormat(event.end, event.allDay)
             }
         };
 
-        var that = this;
         this.loader();
-        var eventProps = info.event.extendedProps;
 
         client.post(eventProps.updateUrl, options).then(function (response) {
             if (response.success) {
                 module.log.success('saved');
             } else {
-                module.log.error(e, true);
+                module.log.error(response, true);
+            }
+
+            if(eventProps.refreshAfterUpdate) {
                 that.fetch();
             }
-        }).catch(function (e) {
-            module.log.error(e, true);
-            info.revert();
-        }).finally(function () {
-            that.loader(false);
-        });
-    };
 
-    Calendar.prototype.dropEvent = function (info) {
-        var options = {
-            data: {
-                id: encodeURIComponent(info.event.id),
-                start: this.toJsonDateFormat(info.event.start),
-                end: this.toJsonDateFormat(info.event.end),
-                cal: true
-            }
-        };
-
-        this.loader();
-
-        var that = this;
-        var eventProps = info.event.extendedProps;
-
-        var dropUrl = eventProps.updateUrl ? eventProps.updateUrl : this.options.dropUrl;
-
-        client.post(dropUrl, options).then(function (response) {
-            if (response.success) {
-                module.log.success('saved');
-            } else {
-                module.log.error(null, true);
-                info.revert();
-            }
         }).catch(function (e) {
             module.log.error(e, true);
             info.revert();

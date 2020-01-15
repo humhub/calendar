@@ -57,7 +57,7 @@ class Url extends BaseUrl
             return $container->createUrl('/calendar/container-config/delete-type', ['id' => $model->id]);
         }
 
-        return URL::to(['/calendar/config/delete-type', 'id' => $model->id]);
+        return static::to(['/calendar/config/delete-type', 'id' => $model->id]);
     }
 
     public static function toConfigCalendars(ContentContainerActiveRecord $container = null)
@@ -132,20 +132,6 @@ class Url extends BaseUrl
     public static function toFullCalendarEdit(ContentContainerActiveRecord $container)
     {
         return $container->createUrl('/calendar/entry/edit', ['cal' => 1]);
-    }
-
-    public static function toFullCalendarDrop(ContentContainerActiveRecord $container)
-    {
-        return $container->createUrl('/calendar/entry/edit-ajax');
-    }
-
-    public static function toEditEntryAjax(CalendarEntry $entry, $cal = null, ContentContainerActiveRecord $container = null)
-    {
-        if(!$container) {
-            $container = $entry->content->container;
-        }
-
-        return $container->createUrl('/calendar/entry/edit-ajax', ['id' => $entry->id]);
     }
 
     public static function toCreateEntry(ContentContainerActiveRecord $container, $start = null, $end = null)
@@ -248,5 +234,10 @@ class Url extends BaseUrl
         }
 
         return Yii::$app->user->identity->createUrl('/calendar/global/enable-config');
+    }
+
+    public static function toUpdateEntry(ContentActiveRecord $entry)
+    {
+        return static::to(['/calendar/full-calendar/update', 'id' => $entry->content->id]);
     }
 }

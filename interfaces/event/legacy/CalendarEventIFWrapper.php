@@ -91,11 +91,6 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
         return $this->getOption(static::OPTION_TIMEZONE, Yii::$app->timeZone);
     }
 
-    public function isUpdatable()
-    {
-        return $this->getOption(static::OPTION_EDITABLE, false);
-    }
-
     public function getTitle()
     {
         return $this->getOption(static::OPTION_TITLE, $this->itemType ? $this->itemType->getTitle() : '');
@@ -261,5 +256,42 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
     public function getSequence()
     {
         return $this->getOption(static::OPTION_SEQUENCE, null);
+    }
+
+    /**
+     * The timezone string of the end date.
+     * In case the start and end timezone is the same, this function can return null.
+     *
+     * @return string
+     */
+    public function getEndTimezone()
+    {
+        // TODO: Implement getEndTimezone() method.
+    }
+
+    /**
+     * Used to update and persist the start and end datetime of this event. This function has to be implemented in case
+     * `isUpdatable()` calendar view updates should be supported.
+     *
+     * When using the default update action the $start and $end date are provided in system timezone.
+     * When using a custom action defined as `updateUrl`, the dates have to be translated to system timezone manually.
+     *
+     * This function should implement all necessary validation. The default update action will automatically
+     * validate `$event->isUpdatable()` in order to check if the current user is allowed to edit the event.
+     *
+     * In case the event could not be saved this function should return an error message string or false otherwise true.
+     *
+     * @param DateTime $start
+     * @param DateTime $end
+     * @return boolean|string
+     */
+    public function updateTime(DateTime $start, DateTime $end)
+    {
+        return false;
+    }
+
+    public function isUpdatable()
+    {
+        return $this->getOption(static::OPTION_EDITABLE, false);
     }
 }

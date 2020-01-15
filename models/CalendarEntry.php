@@ -567,20 +567,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     }
 
     /**
-     * Access url of the source content or other view
-     *
-     * @return string the timezone this item was originally saved, note this is
-     */
-    public function getUpdateUrl()
-    {
-        if (RecurrenceHelper::isRecurrentInstance($this)) {
-            return null;
-        }
-
-        return Url::toEditEntryAjax($this);
-    }
-
-    /**
      * Check if this calendar entry is editable, for example by checking `$this->content->isEditable()`.
      *
      * @return bool true if this entry is editable, false
@@ -845,7 +831,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
         return null;
     }
 
-
     /**
      * Adds additional options supported by fullcalendar: https://fullcalendar.io/docs/event-object
      * @return array
@@ -862,5 +847,26 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     public static function createUUid()
     {
         return CalendarUtils::generateUUid();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function updateTime(DateTime $start, DateTime $end)
+    {
+        $this->start_datetime = CalendarUtils::toDBDateFormat($start);
+        $this->end_datetime = CalendarUtils::toDBDateFormat($end);
+        return $this->save();
+    }
+
+    /**
+     * The timezone string of the end date.
+     * In case the start and end timezone is the same, this function can return null.
+     *
+     * @return string
+     */
+    public function getEndTimezone()
+    {
+        return null;
     }
 }

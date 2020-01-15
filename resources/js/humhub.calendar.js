@@ -183,7 +183,6 @@ humhub.module('calendar', function (module, require, $) {
         };
 
         var editModal = function (evt) {
-            var that = this;
             var streamEntry = Widget.closest(evt.$trigger);
             streamEntry.loader();
             modal.load(evt).then(function (response) {
