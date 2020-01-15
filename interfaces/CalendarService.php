@@ -123,8 +123,8 @@ class CalendarService extends Component
 
         $event = new CalendarItemsEvent([
             'contentContainer' => $contentContainer,
-            'start' => $start,
-            'end' => $end,
+            'start' => $start ? clone $start : null,
+            'end' => $end ? clone $end : null,
             'filters' => $filters,
             'limit' => $limit,
             'expand' => $expand

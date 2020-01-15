@@ -200,40 +200,33 @@ class CalendarServiceTest extends CalendarUnitTest
     }
 
     /**
-     * Problem: all_day events are timezone independent whereas non all_day timezone events aren't.
-     *
-     * Currently we query without any timezone translation. This could be an issue if the user uses another timezone
-     * than the system.
-     *
-     * Either we need to implement an own condition for all_day and non all_day, one with and one without timezone
-     * Or we add the offset as tolerance and filter out manually after the query.
      *
      * [] = Event {} = Search
      *
-     *        [------{]------}
+     *        [------]{------}
      *
      * @throws \Exception
-
+    */
     public function testNonAllDayStartNotIncludedBoundaryTZ()
     {
-    $this->becomeUser('Admin');
-    Yii::$app->user->identity->updateAttributes(['time_zone' => 'Europe/Berlin']); // UTC+1
-    Yii::$app->timeZone = 'Europe/Berlin';
-    Yii::$app->formatter->timeZone = 'Europe/Berlin';
-    Yii::$app->formatter->locale = 'de';
+        $this->becomeUser('Admin');
+        Yii::$app->user->identity->updateAttributes(['time_zone' => 'Europe/Berlin']); // UTC+1
+        Yii::$app->timeZone = 'Europe/Berlin';
+        Yii::$app->formatter->timeZone = 'Europe/Berlin';
+        Yii::$app->formatter->locale = 'de';
 
-    $s1 = Space::findOne(['id' => 1]);
+        $s1 = Space::findOne(['id' => 1]);
 
-    $searchDateStart = new DateTime('2019-12-29T00:00:00+00:00'); // UTC+0 Europe/London
-    $searchDateEnd = new DateTime('2019-12-30T00:00:00+00:00');
+        $searchDateStart = new DateTime('2019-12-29T00:00:00+00:00'); // UTC+0 Europe/London
+        $searchDateEnd = new DateTime('2019-12-30T00:00:00+00:00');
 
-    // Berlin date from '2019-12-29T00:00:00' - '2019-12-29T00:00:00' UTC+1 should not be included in search
-    $entryStart = new DateTime('2019-12-29 00:00:00');
-    $entryEnd = new DateTime('2019-12-29 00:30:00');
+        // Berlin date from '2019-12-29T00:00:00' - '2019-12-29T00:00:00' UTC+1 should not be included in search
+        $entryStart = new DateTime('2019-12-29 00:00:00');
+        $entryEnd = new DateTime('2019-12-29 00:30:00');
 
-    $entry = $this->createEntry($entryStart, $entryEnd, 'e1', $s1);
-    $this->assertEquals('Europe/Berlin', $entry->getTimezone());
-    $entries = $this->service->getCalendarItems($searchDateStart, $searchDateEnd);
-    $this->assertCount(0, $entries);
-    }*/
+        $entry = $this->createEntry($entryStart, $entryEnd, 'e1', $s1);
+        $this->assertEquals('Europe/Berlin', $entry->getTimezone());
+        $entries = $this->service->getCalendarItems($searchDateStart, $searchDateEnd);
+        $this->assertCount(0, $entries);
+    }
 }

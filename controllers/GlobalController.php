@@ -220,11 +220,10 @@ class GlobalController extends Controller
             $settings->setSerialized('filters', $filters);
 
             $filters['userRelated'] = $selectors;
-            $filters[] = AbstractCalendarQuery::FILTER_TIMEZONE_TOLERANCE;
 
             $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), $filters);
         } else {
-            $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), [AbstractCalendarQuery::FILTER_TIMEZONE_TOLERANCE]);
+            $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end));
         }
 
         foreach ($entries as $entry) {

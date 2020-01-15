@@ -68,7 +68,6 @@ class ViewController extends ContentContainerController
         $result = [];
 
         $filters = Yii::$app->request->get('filters', []);
-        $filters[] = AbstractCalendarQuery::FILTER_TIMEZONE_TOLERANCE;
 
         foreach ($this->calendarService->getCalendarItems( new DateTime($start), new DateTime($end), $filters, $this->contentContainer) as $entry) {
             $result[] = FullCalendar::getFullCalendarArray($entry);

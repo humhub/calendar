@@ -57,7 +57,10 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
      */
     protected static $recordClass = CalendarEntry::class;
 
-    public $expand = true;
+    /**
+     * @inheritdocs
+     */
+    protected $dateQueryType = self::DATE_QUERY_TYPE_MIXED;
 
     /**
      * @var bool true if the participant join has already been added else false

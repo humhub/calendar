@@ -46,7 +46,7 @@ class CalendarUnitTest extends HumHubDbTestCase
             $fullDay = true;
             $to = (clone $from)->setTime(0,0,0)->add(new DateInterval("P" . $days . "D"));
         } else if($days instanceof DateTime) {
-            $to = $days;
+            $to = clone $days;
         } else if($days instanceof DateInterval) {
             $to = clone $from;
             $to->add($days);

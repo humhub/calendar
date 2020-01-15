@@ -56,17 +56,48 @@ abstract class AbstractCalendarQuery extends Component
      */
     const FILTER_INCLUDE_NONREADABLE = 'includeNonReadable';
 
-    /**
-     * If this filter is set, we add a offset tolerance to start or end date in case the
-     * user timezone offset differs from the system offset.
-     *
-     */
-    const FILTER_TIMEZONE_TOLERANCE = 'timezoneTolerance';
+    const DATE_QUERY_TYPE_TIME = 0;
+    const DATE_QUERY_TYPE_DATE = 1;
+    const DATE_QUERY_TYPE_MIXED = 2;
 
     /**
      * @var string Defines the ActiveRecord class used for this query
      */
     protected static $recordClass;
+
+    /**
+     * Defines the way how to handle a timezone differences between user and system.
+     * An event type can either contain
+     *
+     * - only all day events e.g. holiday
+     * - only time relevant events e.g. meetings
+     * - both types of events
+     *
+     * All day events should always be saved either in DATE format or in DATETIME format with time 00:00 (no timezone translation)
+     *
+     * Depending on the type of events the `$dateQueryType` has to be set to one of the following:
+     *
+     * [[DATE_QUERY_TYPE_TIME]] (default) will respect timezone differences between user and system and should only be used for event types
+     * with only time relevant events. The default $dateFormat used in the query will be `Y-m-d H:i:s`.
+     *
+     * [[DATE_QUERY_TYPE_DATE]] will ignore any timezone offset between user and system timezone and should only be used for event
+     * types with only all day events. The default $dateFormat used in the query will be `Y-m-d`.
+     *
+     * [[DATE_QUERY_TYPE_MIXED]] should be used for event types which support both, all day and non all day events. This mode requires
+     * the `$allDayField` to be set to an boolean field differentiating between all day and non all day events.
+     * The default $dateFormat used in the query will be `Y-m-d H:i:s`.
+     *
+     * @var int
+     * @see $allDayField
+     */
+    protected $dateQueryType = self::DATE_QUERY_TYPE_TIME;
+
+    /**
+     * The name of the all day field, which is only required if [[dateQueryType]] is set to [[DATE_QUERY_TYPE_MIXED]].
+     * @var string
+     * @see $dateQueryType
+     */
+    protected $allDayField = 'all_day';
 
     /**
      * @var string database field for start date
@@ -94,7 +125,7 @@ abstract class AbstractCalendarQuery extends Component
     /**
      * @var string database date format
      */
-    public $dateFormat = 'Y-m-d H:i:s';
+    public $dateFormat;
 
     /**
      * @var array Activated query filters
@@ -168,26 +199,13 @@ abstract class AbstractCalendarQuery extends Component
     protected $expand = true;
 
     /**
-     * @var CalendarEventIF
+     * @inheritDoc
      */
-    public $event;
-
-    public function save()
+    public function init()
     {
-        if($this->event instanceof ActiveRecord) {
-            return $this->event->save();
-        }
-
-        return false;
-    }
-
-    public function delete()
-    {
-        if($this->event instanceof ActiveRecord) {
-            return $this->event->delete();
-        }
-
-        return false;
+        parent::init();
+        // Make sure the date format is initialized
+        $this->getDateFormat();
     }
 
     /**
@@ -197,7 +215,7 @@ abstract class AbstractCalendarQuery extends Component
      * @param array $filters
      * @param int $limit
      * @param bool $expand
-     * @return array|\yii\db\ActiveRecord[]
+     * @return array|ActiveRecord[]
      * @throws \Throwable
      */
     public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true)
@@ -232,12 +250,11 @@ abstract class AbstractCalendarQuery extends Component
     }
 
     /**
-     * @param $entry
-     * @param $instance static
+     * @param $entry ActiveRecord
+     * @param $query static
      */
     private static function autoAssignUid($entry, $query)
     {
-        /* @var $entry ActiveRecord */
         if($entry instanceof EditableEventIF && empty($entry->getUid())) {
             $entry->setUid(CalendarUtils::generateEventUid($entry));
             $entry->save();
@@ -270,7 +287,7 @@ abstract class AbstractCalendarQuery extends Component
 
     /**
      * @param CalendarItemsEvent $event
-     * @return array|\yii\db\ActiveRecord[]
+     * @return array|ActiveRecord[]
      * @throws \Throwable
      */
     public static function findForEvent(CalendarItemsEvent $event)
@@ -508,13 +525,6 @@ abstract class AbstractCalendarQuery extends Component
             $this->_to->setTime(23, 59, 59);
         }
 
-        if($this->hasFilter(static::FILTER_TIMEZONE_TOLERANCE)) {
-            $offset = $this->getOffsetDiff($this->_to);
-            if($offset > 0) {
-                $this->_to->modify("+$offset seconds");
-            }
-        }
-
         return $this;
     }
 
@@ -569,29 +579,7 @@ abstract class AbstractCalendarQuery extends Component
             $this->_from->setTime(0, 0, 0);
         }
 
-        if($this->hasFilter(static::FILTER_TIMEZONE_TOLERANCE)) {
-            $offset = $this->getOffsetDiff($this->_from);
-            if($offset < 0) {
-                $this->_from->modify("$offset seconds");
-            }
-        }
-
         return $this;
-    }
-
-    /**
-     * @param DateTime $date
-     * @return int
-     */
-    private function getOffsetDiff(DateTime $date)
-    {
-        if(CalendarUtils::getUserTimeZone(true) === CalendarUtils::getSystemTimeZone(true)) {
-            return 0;
-        }
-
-        $offsetSystem = CalendarUtils::getSystemTimeZone()->getOffset($date);
-        $offsetUser = CalendarUtils::getUserTimeZone()->getOffset($date);
-        return $offsetUser - $offsetSystem;
     }
 
     /**
@@ -785,35 +773,98 @@ abstract class AbstractCalendarQuery extends Component
      */
     protected function setupDateCriteria()
     {
+        if($this->_from) {
+            $fromTime = (clone $this->_from)->setTimezone(CalendarUtils::getSystemTimeZone());
+        }
+
+        if($this->_to) {
+            $toTime = (clone $this->_to)->setTimezone(CalendarUtils::getSystemTimeZone());
+        }
+
         if ($this->_openRange && $this->_from && $this->_to) {
             //Search for all dates with start and/or end within the given range
-            $this->_query->andFilterWhere(['or',
-                ['and',
-                    $this->getStartCriteria($this->_from, '<'),
-                    $this->getEndCriteria($this->_to, '>')
-                ],
-                ['and',
-                    $this->getStartCriteria($this->_from, '>='),
-                    $this->getStartCriteria($this->_to, '<')
-                ],
-                ['and',
-                    $this->getEndCriteria($this->_from, '>'),
-                    $this->getEndCriteria($this->_to, '<=')
-                ],
-                $this->getRruleRootQuery()
-            ]);
+
+            if($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
+                $this->_query->andFilterWhere(['or',
+                    ['and', $this->getStartCriteria($this->_from, '<'), $this->getEndCriteria($this->_to, '>')],
+                    ['and', $this->getStartCriteria($this->_from, '>='), $this->getStartCriteria($this->_to, '<')],
+                    ['and', $this->getEndCriteria($this->_from, '>'), $this->getEndCriteria($this->_to, '<=')],
+                    $this->isRecurrenceRootCondition()
+                ]);
+            } else if($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
+                $this->_query->andFilterWhere(['or',
+                    ['and', $this->getStartCriteria($fromTime, '<'), $this->getEndCriteria($toTime, '>')],
+                    ['and', $this->getStartCriteria($fromTime, '>='), $this->getStartCriteria($toTime, '<')],
+                    ['and', $this->getEndCriteria($fromTime, '>'), $this->getEndCriteria($toTime, '<=')],
+                    $this->isRecurrenceRootCondition()
+                ]);
+            } else if($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
+                $this->_query->andFilterWhere(
+                   ['or',
+                        ['or',
+                            ['and',
+                                [$this->allDayField => 0],
+                                ['or',
+                                    ['and', $this->getStartCriteria($fromTime, '<'), $this->getEndCriteria($toTime, '>')],
+                                    ['and', $this->getStartCriteria($fromTime, '>='), $this->getStartCriteria($toTime, '<')],
+                                    ['and', $this->getEndCriteria($fromTime, '>'), $this->getEndCriteria($toTime, '<=')]
+                                ]
+                            ],
+                            ['and',
+                                [$this->allDayField => 1],
+                                ['or',
+                                    ['and', $this->getStartCriteria($this->_from, '<'), $this->getEndCriteria($this->_to, '>')],
+                                    ['and', $this->getStartCriteria($this->_from, '>='), $this->getStartCriteria($this->_to, '<')],
+                                    ['and', $this->getEndCriteria($this->_from, '>'), $this->getEndCriteria($this->_to, '<=')]
+                                ]
+                            ],
+                        ],
+                        $this->isRecurrenceRootCondition()
+                    ]
+                );
+            }
         } else {
             if ($this->_from) {
-                $this->_query->andWhere(['or', $this->getStartCriteria($this->_from, '>='), $this->getRruleRootQuery()]);
+                if($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
+                    $this->_query->andWhere(['or', $this->getStartCriteria($this->_from, '>='), $this->isRecurrenceRootCondition()]);
+                } else if($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
+                    $this->_query->andWhere(['or', $this->getStartCriteria($fromTime, '>='), $this->isRecurrenceRootCondition()]);
+                } else if($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
+                    $this->_query->andWhere(
+                        ['or',
+                            ['and', [$this->allDayField => 0], $this->getStartCriteria($fromTime, '>=')],
+                            ['and', [$this->allDayField => 1], $this->getStartCriteria($this->_from, '>=')],
+                            $this->isRecurrenceRootCondition()
+                        ]
+                    );
+                }
             }
 
             if ($this->_to) {
-                $this->_query->andWhere(['or', $this->getEndCriteria($this->_to, '<='), $this->getRruleRootQuery()]);
+                if($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
+                    $this->_query->andWhere(['or', $this->getEndCriteria($this->_to, '<='), $this->isRecurrenceRootCondition()]);
+                } else if($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
+                    $this->_query->andWhere(['or', $this->getEndCriteria($toTime, '<='), $this->isRecurrenceRootCondition()]);
+                } else if($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
+                    $this->_query->andWhere(
+                        ['or',
+                            ['and', [$this->allDayField => 0], $this->getEndCriteria($toTime, '<=')],
+                            ['and', [$this->allDayField => 1], $this->getEndCriteria($this->_to, '<=')],
+                            $this->isRecurrenceRootCondition()
+                        ]
+                    );
+                }
+
             }
         }
     }
 
-    protected function getRruleRootQuery()
+    /**
+     * Returns a sql condition filtering recurrent root events if supported. Returns empty string if not supported.
+     *
+     * @return string
+     */
+    protected function isRecurrenceRootCondition()
     {
         return '';
     }
@@ -826,7 +877,7 @@ abstract class AbstractCalendarQuery extends Component
      */
     protected function getStartCriteria(DateTime $date, $eq = '>=')
     {
-        return [$eq, $this->startField, $date->format($this->dateFormat)];
+        return [$eq, $this->startField, $date->format($this->getDateFormat())];
     }
 
     /**
@@ -837,7 +888,23 @@ abstract class AbstractCalendarQuery extends Component
      */
     protected function getEndCriteria(DateTime $date, $eq = '<=')
     {
-        return [$eq, $this->endField, $date->format($this->dateFormat)];
+        return [$eq, $this->endField, $date->format($this->getDateFormat())];
+    }
+
+    protected function getDateFormat()
+    {
+        if(!empty($this->dateFormat)) {
+            return $this->dateFormat;
+        }
+
+        switch ($this->dateQueryType) {
+            case static::DATE_QUERY_TYPE_DATE:
+                return $this->dateFormat = CalendarUtils::DATE_FORMAT_SHORT;
+            case static::DATE_QUERY_TYPE_TIME:
+            case static::DATE_QUERY_TYPE_MIXED:
+            default:
+                return $this->dateFormat = CalendarUtils::DB_DATE_FORMAT;
+        }
     }
 
     /**

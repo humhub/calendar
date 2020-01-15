@@ -32,6 +32,9 @@ cache:
     - $HOME/.composer/cache
 
 install:
+  - ls -la
+  - npm install
+  - composer update
   - .travis/install-dependencies.sh
   - .travis/setup-humhub.sh
   - composer update

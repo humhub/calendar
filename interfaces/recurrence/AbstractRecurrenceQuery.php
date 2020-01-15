@@ -120,7 +120,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
         return CalendarRecurrenceExpand::expandSingle($this->event, $recurrence_id, true);
     }
 
-    protected function getRruleRootQuery()
+    protected function isRecurrenceRootCondition()
     {
         if($this->isRecurrenceSupported()) {
             return ['and',
@@ -302,7 +302,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
      */
     public function saveAll(RecurrentEventIF $original)
     {
-        if(!$this->save()) {
+        if(!$this->event->save()) {
             return false;
         }
 
