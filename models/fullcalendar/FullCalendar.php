@@ -99,6 +99,10 @@ class FullCalendar
      */
     public static function toFullCalendarFormat(DateTime $dt, $allDay = false)
     {
+        if($allDay) {
+            return $dt->format(CalendarUtils::DATE_FORMAT_SHORT);
+        }
+
         return $dt->format(CalendarUtils::DATE_FORMAT_ATOM);
     }
 }

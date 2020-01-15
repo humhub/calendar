@@ -32,11 +32,13 @@ class FullCalendarAssets extends AssetBundle
         'timegrid/main.min.js',
         'list/main.min.js',
         'interaction/main.min.js',
-        'moment/main.js',
+        'moment/main.min.js',
+        'moment-timezone/main.min.js',
     ];
 
     public $depends = [
-        MomentAsset::class
+        MomentAsset::class,
+        MomentTimezoneAsset::class,
     ];
 
 }

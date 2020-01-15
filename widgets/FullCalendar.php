@@ -73,7 +73,7 @@ class FullCalendar extends JsWidget
             'select-helper' => $this->canWrite,
             'selectors' => $this->selectors,
             'filters' => $this->filters,
-            //'time-zone' =>  CalendarUtils::getUserTimeZone(true),
+            'time-zone' =>  CalendarUtils::getUserTimeZone(true),
             'locale' => $this->translateLocale(Yii::$app->formatter->locale),
         ];
     }

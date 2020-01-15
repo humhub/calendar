@@ -124,7 +124,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
             },
             buttonText: buttonText,
-            plugins: ['dayGrid', 'timeGrid', 'list', 'interaction', 'bootstrap', 'moment'],
+            plugins: ['dayGrid', 'timeGrid', 'list', 'interaction', 'bootstrap', 'moment', 'momentTimezone'],
             defaultView: 'dayGridMonth',
             aspectRatio: 1.5,
             canCreate: true,
