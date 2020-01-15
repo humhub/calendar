@@ -243,7 +243,8 @@ humhub.module('calendar.Calendar', function (module, require, $) {
         }
 
         var that = this;
-        if (!eventProps.viewMode || eventProps.viewMode === 'modal') {
+
+        if (eventProps.viewMode === 'modal') {
             modal.global.load(eventProps.viewUrl).then(function () {
                 modal.global.set({backdrop: true});
                 modal.global.$.one('hidden.bs.modal', function () {
@@ -253,7 +254,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 module.log.error(e, true);
                 modal.global.close();
             });
-        } else if (eventProps.viewMode === 'redirect') {
+        } else {
             client.pjax.redirect(eventProps.viewUrl);
         }
     };

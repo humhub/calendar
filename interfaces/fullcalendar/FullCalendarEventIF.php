@@ -63,7 +63,10 @@ interface FullCalendarEventIF
      * When returning a detail-view url [[getCalendarViewMode()]] should return 'redirect'.
      * When returning a modal-view url [[getCalendarViewMode()]] should return 'modal'.
      *
-     * @return string
+     * In case this function returns null [[CalendarEventIF:getUrl()]] will be used as fallback url in combination with
+     * view mode redirect.
+     *
+     * @return string|null
      */
     public function getCalendarViewUrl();
 

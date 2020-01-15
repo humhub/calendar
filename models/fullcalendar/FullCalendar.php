@@ -59,8 +59,14 @@ class FullCalendar
                 $result['updateUrl'] = $updateUrl;
             }
 
-            $result['viewMode'] = $entry->getCalendarViewMode();
             $result['viewUrl'] = $entry->getCalendarViewUrl();
+
+            if(!empty($result['viewUrl'])) {
+                $result['viewMode'] = $entry->getCalendarViewMode();
+            } else {
+                $result['viewUrl'] = $entry->getUrl();
+                $result['viewMode'] = FullCalendarEventIF::VIEW_MODE_REDIRECT;
+            }
 
             $extraOptions = $entry->getFullCalendarOptions();
             if(!empty($extraOptions)) {
