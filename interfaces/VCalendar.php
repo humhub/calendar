@@ -6,6 +6,7 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateTime;
 use Exception;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
@@ -122,10 +123,18 @@ class VCalendar extends Model
             }
         }
 
+        $dtStart = clone $item->getStartDateTime();
+        $dtEnd =  clone $item->getEndDateTime();
+
+        if(!$item->isAllDay()) {
+            $dtStart->setTimezone(CalendarUtils::getStartTimeZone($item));
+            $dtEnd->setTimezone(CalendarUtils::getStartTimeZone($item));
+        }
+
         $result = [
             'UID' => $item->getUid(),
-            'DTSTART' => $item->getStartDateTime(),
-            'DTEND' => $dtend,
+            'DTSTART' => $dtStart,
+            'DTEND' => $dtEnd,
             'SUMMARY' => $item->getTitle(),
         ];
 

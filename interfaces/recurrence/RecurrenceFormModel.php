@@ -123,7 +123,7 @@ class RecurrenceFormModel extends Model
             if ($this->rrule->getUntil()) {
                 $this->end = static::ENDS_ON_DATE;
                 $endDate = $this->rrule->getUntil();
-                $endDate->setTimeZone(new \DateTimeZone('UTC'));
+                $endDate->setTimeZone(CalendarUtils::getStartTimeZone($this->entry));
                 $this->setEndDate($endDate);
             } else if ($this->rrule->getCount()) {
                 $this->end = static::ENDS_AFTER_OCCURRENCES;
@@ -137,7 +137,7 @@ class RecurrenceFormModel extends Model
 
         if (empty($this->endDate)) {
             $endDate = clone $this->entry->getStartDateTime();
-            $this->setEndDate($endDate->modify('+1 years')->setTime(0, 0));
+            $this->setEndDate($endDate->modify('+1 week')->setTime(0, 0));
         }
 
         return $this;
@@ -163,7 +163,7 @@ class RecurrenceFormModel extends Model
             ['frequency', 'validateModel'],
             ['end', 'integer', 'min' => static::ENDS_NEVER, 'max' => static::ENDS_AFTER_OCCURRENCES],
             ['endOccurrences', 'integer'],
-            ['endDate', DbDateValidator::class, 'timeZone' => new \DateTimeZone('UTC')],
+            ['endDate', DbDateValidator::class, 'timeZone' => CalendarUtils::getStartTimeZone($this->entry)],
             ['recurrenceEditMode', 'integer', 'min'  => static::EDIT_MODE_THIS, 'max' => static::EDIT_MODE_ALL],
         ];
     }
@@ -298,7 +298,7 @@ class RecurrenceFormModel extends Model
         if ($this->end == static::ENDS_ON_DATE) {
             $until = $this->endDate instanceof \DateTimeInterface
                 ? $this->endDate
-                : new DateTime($this->endDate, new \DateTimeZone('UTC'));
+                : new DateTime($this->endDate, CalendarUtils::getStartTimeZone($this->entry));
             $this->rrule->setUntil($until);
         } else if ($this->end == static::ENDS_AFTER_OCCURRENCES) {
             $this->rrule->setCount($this->endOccurrences);

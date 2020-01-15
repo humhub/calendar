@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -13,6 +14,8 @@ use humhub\modules\calendar\helpers\Url;
 /* @var $form ActiveForm */
 
 $entry = $model->entry;
+
+/** @var CalendarEventIF $root */
 $root = $entry->getRecurrenceQuery()->getRecurrenceRoot();
 
 ?>
@@ -31,13 +34,16 @@ $root = $entry->getRecurrenceQuery()->getRecurrenceRoot();
         <br>
         <br>
 
-        <?= Button::info(Yii::t('CalendarModule.recurrence', 'Edit this and following events'))
-            ->options(['data-edit-mode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING ])
-            ->action('setEditMode')
-            ->style('width:100%')->lg()->loader(false)?>
+        <?php if(true) : ?>
 
-        <br>
-        <br>
+            <?= Button::info(Yii::t('CalendarModule.recurrence', 'Edit this and following events'))
+                ->options(['data-edit-mode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING ])
+                ->action('setEditMode')
+                ->style('width:100%')->lg()->loader(false)?>
+
+            <br>
+            <br>
+        <?php endif; ?>
 
         <?= ModalButton::info(Yii::t('CalendarModule.recurrence', 'Edit all events'))
             ->load(Url::toEditEntry($root))

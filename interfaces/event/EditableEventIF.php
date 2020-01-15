@@ -14,6 +14,8 @@ use DateTime;
  */
 interface EditableEventIF extends CalendarEventIF
 {
+    public function getId();
+
     /**
      * Sets the uid of this event. This only have to be implemented if the module does not generate own UIDs.
      * If not actually implemented (empty) a new UID is created every time this event is exported.

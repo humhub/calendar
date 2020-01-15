@@ -8,10 +8,10 @@
 namespace humhub\modules\calendar\models\fullcalendar;
 
 
+use humhub\components\ActiveRecord;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
-use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
@@ -36,7 +36,6 @@ class FullCalendar
         $calendarService = new CalendarService();
 
         $result = [
-            'id' => $entry->getId(),
             'title' => static::getTitle($entry),
             'editable' => false,
             'backgroundColor' => Html::encode($calendarService->getEventColor($entry)),
@@ -49,6 +48,10 @@ class FullCalendar
             'eventDurationEditable' => true,
             'eventStartEditable' => true
         ];
+
+        if($entry instanceof ContentActiveRecord) {
+            $result['id'] = $entry->getPrimaryKey();
+        }
 
         if($entry instanceof FullCalendarEventIF) {
             $editable = $entry->isUpdatable();
@@ -75,8 +78,8 @@ class FullCalendar
         }
 
         if($entry instanceof RecurrentEventIF) {
-            $result['rrule'] = $entry->getRrule();
-            $result['exdate'] = $entry->getExdate();
+           // $result['rrule'] = $entry->getRrule();
+           // $result['exdate'] = $entry->getExdate();
         }
 
         return $result;

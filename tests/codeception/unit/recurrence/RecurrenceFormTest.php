@@ -53,7 +53,7 @@ class RecurrenceFormTest extends CalendarUnitTest
         $this->assertContains(CalendarUtils::DOW_SUNDAY, $this->form->weekDays);
         $this->assertEquals(RecurrenceFormModel::MONTHLY_BY_DAY_OF_MONTH, $this->form->monthDaySelection);
         $this->assertEquals(RecurrenceFormModel::ENDS_NEVER, $this->form->end);
-        $this->assertEquals('2020-11-10 00:00:00', $this->form->endDate);
+        $this->assertEquals('2019-11-17 00:00:00', $this->form->endDate);
         $this->assertEquals(10, $this->form->endOccurrences);
         $this->assertTrue($this->form->validate());
     }

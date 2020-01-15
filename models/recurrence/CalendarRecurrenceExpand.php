@@ -222,8 +222,8 @@ class CalendarRecurrenceExpand extends Model
         }
 
         $existingModels = $this->event->getRecurrenceQuery()->getExistingRecurrences($start, $end);
-        $recurrences = $this->calculateRecurrenceInstances($start, $end);
-        $this->syncRecurrences($existingModels, $recurrences, $endResult);
+        $recurrencesUTC = $this->calculateRecurrenceInstances($start, $end);
+        $this->syncRecurrences($existingModels, $recurrencesUTC, $endResult);
 
         return $endResult;
     }
@@ -239,23 +239,25 @@ class CalendarRecurrenceExpand extends Model
         // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
         // Note: VCalendar expand will translate all dates with time to UTC
         $vCalendar = (new VCalendar())->add($this->event);
-        $expandedVCalendar = $vCalendar->getInstance()->expand($start, $end, $this->eventTimeZone);
+        $expandedVCalendar = $vCalendar->getInstance()->expand($start, $end, $this->event->isAllDay() ? null :$this->eventTimeZone);
         return $expandedVCalendar->select('VEVENT');
     }
 
     /**
      * @param RecurrentEventIF[] $existingModels
-     * @param VEvent[] $recurrences
+     * @param VEvent[] $recurrencesUTC
      * @param $endResult
      */
-    private function syncRecurrences(array $existingModels, array $recurrences, &$endResult)
+    private function syncRecurrences(array $existingModels, array $recurrencesUTC, &$endResult)
     {
-        foreach ($recurrences as $vEvent) {
+        foreach ($recurrencesUTC as $vEventUTC) {
             try {
                 /* @var $model RecurrentEventIF */
+                /* @var $vEventStart DateTime */
+                /* @var $vEventEnd DateTime */
                 $model = null;
-                $vEventStart = clone $vEvent->DTSTART->getDateTime();
-                $vEventEnd = clone $vEvent->DTEND->getDateTime();
+                $vEventStart = clone $vEventUTC->DTSTART->getDateTime();
+                $vEventEnd = clone $vEventUTC->DTEND->getDateTime();
 
                 if ($vEventStart == $vEventEnd && $this->event->isAllDay()) {
                     $vEventEnd = CalendarUtils::getDateTime($vEventEnd)->modify('+1 day');
@@ -263,11 +265,11 @@ class CalendarRecurrenceExpand extends Model
 
                 // Check if recurrence model exists
                 if (!$model) {
-                    $model = $this->findRecurrenceModel($existingModels, $vEvent);
+                    $model = $this->findRecurrenceModel($existingModels, $vEventUTC);
                 }
 
                 if (!$model) {
-                    $model = static::createRecurrenceInstanceModel($this->event, $vEvent, $this->saveInstnace);
+                    $model = static::createRecurrenceInstanceModel($this->event, $vEventUTC, $this->saveInstnace);
                 }
 
                 $endResult[] = $model;
@@ -279,30 +281,33 @@ class CalendarRecurrenceExpand extends Model
 
     /**
      * @param RecurrentEventIF $root
-     * @param VEvent $vEvent
+     * @param VEvent $vEventUTC
      * @param bool $save
      * @return RecurrentEventIF
      * @throws Exception
      */
-    private static function createRecurrenceInstanceModel(RecurrentEventIf $root, VEvent $vEvent, $save = false)
+    private static function createRecurrenceInstanceModel(RecurrentEventIf $root, VEvent $vEventUTC, $save = false)
     {
         // Note VEvent uses datetime immutables
-        $dtStart = CalendarUtils::getDateTime($vEvent->DTSTART->getDateTime());
-        $dtEnd = CalendarUtils::getDateTime($vEvent->DTEND->getDateTime());
+        $dtStart = CalendarUtils::getDateTime($vEventUTC->DTSTART->getDateTime());
+        $dtEnd = CalendarUtils::getDateTime($vEventUTC->DTEND->getDateTime());
 
         if($root->isAllDay()) {
             CalendarUtils::ensureAllDay($dtStart, $dtEnd);
+        } else {
+            $dtStart->setTimezone(CalendarUtils::getSystemTimeZone());
+            $dtEnd->setTimezone(CalendarUtils::getSystemTimeZone());
         }
 
         $model = $root->createRecurrence(
-            CalendarUtils::toDBDateFormat($dtStart, true),
-            CalendarUtils::toDBDateFormat($dtEnd, true)
+            CalendarUtils::toDBDateFormat($dtStart),
+            CalendarUtils::toDBDateFormat($dtEnd)
         );
 
         $model->syncEventData($root, null);
 
         RecurrenceHelper::syncRecurrentEventData($root, $model,
-            RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $root->getTimezone())
+            RecurrenceHelper::getRecurrenceIdFromVEvent($vEventUTC, $root->getTimezone())
         );
 
         if ($save) {

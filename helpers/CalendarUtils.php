@@ -237,6 +237,22 @@ class CalendarUtils
         return $tz instanceof DateTimeZone ? $tz : new DateTimeZone($tz);
     }
 
+    public static function getStartTimeZone(CalendarEventIF $event, $asString = false)
+    {
+        return $asString ? $event->getTimezone() : static::getDateTimeZone($event->getTimezone());
+    }
+
+    public static function getEndTimeZone(CalendarEventIF $event, $asString = false)
+    {
+        $result = $event->getEndTimezone();
+
+        if(!$result) {
+            $result = $event->getTimezone();
+        }
+
+        return $asString ? $result : static::getDateTimeZone($result);
+    }
+
     public static function cleanRecurrentId($recurrentId, $targetTZ = null)
     {
         $date = ($recurrentId instanceof \DateTimeInterface) ? $recurrentId : new DateTime($recurrentId, new DateTimeZone('UTC'));
