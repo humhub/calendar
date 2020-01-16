@@ -156,6 +156,9 @@ class VCalendar extends Model
                     $result['EXDATE'][] = $exdate;
                 }
             }
+        } else {
+            $this->setLegacyRecurrentData($item, $result);
+
         }
 
         if ($item->getSequence() !== null) {
@@ -198,6 +201,25 @@ class VCalendar extends Model
         }
 
         return $this;
+    }
+
+    private function setLegacyRecurrentData($item, &$result)
+    {
+        if(!$item instanceof CalendarEventIFWrapper) {
+            return;
+        }
+
+        if ($item->getRRule()) {
+            $result['RRULE'] = $item->getRRule();
+        }
+
+        // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
+        if (!empty($item->getExdate())) {
+            $result['EXDATE'] = [];
+            foreach (explode(',', $item->getExdate()) as $exdate) {
+                $result['EXDATE'][] = $exdate;
+            }
+        }
     }
 
     private function getCN(User $user)

@@ -113,7 +113,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
 
     public function isAllDay()
     {
-        $this->getOption(static::OPTION_ALL_DAY,  false);
+        return $this->getOption(static::OPTION_ALL_DAY,  false);
     }
 
     public function getUpdateUrl()
