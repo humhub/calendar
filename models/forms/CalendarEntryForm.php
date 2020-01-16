@@ -407,7 +407,7 @@ class CalendarEntryForm extends Model
 
         return CalendarEntry::getDb()->transaction(function ($db) {
 
-            if(!$this->entry->save()) {
+            if(!$this->entry->saveEvent()) {
                 return false;
             }
 
@@ -458,7 +458,7 @@ class CalendarEntryForm extends Model
 
         if($incrementSequence) {
             CalendarUtils::incrementSequence($this->entry);
-            $this->entry->save();
+            $this->entry->saveEvent();
         }
     }
 

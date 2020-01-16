@@ -311,7 +311,7 @@ class CalendarRecurrenceExpand extends Model
         );
 
         if ($save) {
-            if (!$model->save()) {
+            if (!$model->saveEvent()) {
                 throw new Exception('Could not safe recurrent event');
             }
         }

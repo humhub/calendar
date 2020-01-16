@@ -4,8 +4,6 @@
 namespace humhub\modules\calendar\interfaces\event;
 
 
-use DateTime;
-
 /**
  * In order to use some calendar interfaces events need to be updated or even deleted. Event types facilitating
  * such interfaces need to implement the EditableEventIF.
@@ -14,8 +12,6 @@ use DateTime;
  */
 interface EditableEventIF extends CalendarEventIF
 {
-    public function getId();
-
     /**
      * Sets the uid of this event. This only have to be implemented if the module does not generate own UIDs.
      * If not actually implemented (empty) a new UID is created every time this event is exported.
@@ -42,10 +38,5 @@ interface EditableEventIF extends CalendarEventIF
      *
      * @return bool|int
      */
-    public function save();
-
-    /**
-     * Should delete the event. This is used for example in recurrent events when recurrent event instances are removed.
-     */
-    public function delete();
+    public function saveEvent();
 }

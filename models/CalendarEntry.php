@@ -5,7 +5,7 @@ namespace humhub\modules\calendar\models;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
-use humhub\modules\calendar\interfaces\recurrence\EditableRecurrentEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
@@ -56,7 +56,7 @@ use humhub\modules\user\models\User;
  * @property CalendarEntryParticipant[] participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  */
-class CalendarEntry extends ContentActiveRecord implements Searchable, EditableRecurrentEventIF, FullCalendarEventIF,
+class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, FullCalendarEventIF,
     CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
 {
     /**
@@ -356,7 +356,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     public function toggleClosed()
     {
         $this->closed = $this->closed ? 0 : 1;
-        $this->save();
+        $this->saveEvent();
 
         if ($this->closed) {
             $this->participation->sendUpdateNotification(CanceledEvent::class);
@@ -405,6 +405,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
                         ->andWhere(['=', 'calendar_entry_participant.calendar_entry_id', $this->id])
                         ->andWhere(['IN', 'calendar_entry_participant.participation_state',
                             [CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED]]);
+
                     $participantQuery = CalendarEntryParticipant::find()
                         ->where('calendar_entry_participant.user_id = user.id')
                         ->andWhere(['=', 'calendar_entry_participant.calendar_entry_id', $this->id])
@@ -868,5 +869,15 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, EditableR
     public function getEndTimezone()
     {
         return null;
+    }
+
+    /**
+     * Should update all data used by the event interface setter.
+     *
+     * @return bool|int
+     */
+    public function saveEvent()
+    {
+       $this->save();
     }
 }

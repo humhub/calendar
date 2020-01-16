@@ -246,7 +246,7 @@ class RecurrenceFormModel extends Model
 
         if(!$this->entry->getUid()) {
             $this->entry->setUid(CalendarUtils::generateEventUid($this->entry));
-            $this->entry->save();
+            $this->entry->saveEvent();
         }
 
         switch($this->recurrenceEditMode) {
@@ -255,7 +255,7 @@ class RecurrenceFormModel extends Model
                 return true;
             case static::EDIT_MODE_CREATE:
                 $this->entry->setRrule($this->buildRRuleString());
-                return $this->entry->save();
+                return $this->entry->saveEvent();
             case static::EDIT_MODE_FOLLOWING:
                 $this->entry->setRrule($this->buildRRuleString());
                 return $original ? $this->entry->getRecurrenceQuery()->saveThisAndFollowing($original): false;
@@ -263,7 +263,7 @@ class RecurrenceFormModel extends Model
                 $this->entry->setRrule($this->buildRRuleString());
                 return $original ? $this->entry->getRecurrenceQuery()->saveAll($original) : false;
             default:
-                $this->entry->save();
+                $this->entry->saveEvent();
         }
 
         return true;

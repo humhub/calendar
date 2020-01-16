@@ -257,7 +257,7 @@ abstract class AbstractCalendarQuery extends Component
     {
         if($entry instanceof EditableEventIF && empty($entry->getUid())) {
             $entry->setUid(CalendarUtils::generateEventUid($entry));
-            $entry->save();
+            $entry->saveEvent();
             return;
         }
 
@@ -1011,6 +1011,9 @@ abstract class AbstractCalendarQuery extends Component
         }
     }
 
+    /**
+     * @throws FilterNotSupportedException
+     */
     public function filterMine()
     {
         if ($this->_query instanceof ActiveQueryContent) {

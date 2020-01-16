@@ -231,7 +231,7 @@ class ReminderProcessor extends Model
     private function handleDefaultReminder(CalendarEventReminderIF $entry, $skipUsers = [])
     {
         if($entry instanceof RecurrentEventIF && $entry->getContentRecord()->isNewRecord) { // Make sure our model is saved
-            $entry->save();
+            $entry->saveEvent();
         }
 
         $sent = false;

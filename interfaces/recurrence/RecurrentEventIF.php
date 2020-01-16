@@ -8,7 +8,6 @@
 namespace humhub\modules\calendar\interfaces\recurrence;
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
 
 /**
@@ -249,4 +248,9 @@ interface RecurrentEventIF extends EditableEventIF
      * @return RecurrenceQueryIF
      */
     public function getRecurrenceQuery();
+
+    /**
+     * Should delete the event. This is required in order to delete recurrent event instances.
+     */
+    public function delete();
 }

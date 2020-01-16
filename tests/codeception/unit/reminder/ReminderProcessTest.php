@@ -433,7 +433,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertTrue($reminder->save());
         $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
-        $entry->save();
+        $entry->saveEvent();
 
         $entry->setParticipationStatus(User::findOne(['id' => 4]));
 
@@ -479,7 +479,7 @@ class ReminderProcessTest  extends CalendarUnitTest
 
         $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
-        $entry->save();
+        $entry->saveEvent();
 
         // Check Only sent to not declined user
         (new ReminderService())->sendAllReminder();
@@ -514,7 +514,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertTrue($reminder->save());
         $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
-        $entry->save();
+        $entry->saveEvent();
 
         // User2 declines
         $entry->setParticipationStatus(User::findOne(['id' => 3]), CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED);
@@ -550,7 +550,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertTrue($reminder->save());
         $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_NONE;
-        $entry->save();
+        $entry->saveEvent();
 
         (new ReminderService())->sendAllReminder();
 
@@ -574,7 +574,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         // create recurrent event today tomorrow recurring every day
         $entry = $this->createEntry(new DateTime(), 1, 'Test',  Space::findOne(['id' => 3]));
         $entry->rrule = 'FREQ=DAILY;INTERVAL=1';
-        $entry->save();
+        $entry->saveEvent();
 
         // Expand today (first instance)
         $today = $entry->getRecurrenceQuery()->expandUpcoming(1)[0];
