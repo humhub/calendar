@@ -8,6 +8,9 @@
 namespace humhub\modules\calendar\widgets;
 
 
+use humhub\modules\calendar\helpers\Url;
+use humhub\modules\user\models\User;
+use humhub\widgets\ModalButton;
 use Yii;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -37,6 +40,10 @@ class ConfigureButton extends Widget
     {
         if(Yii::$app->user->isGuest) {
             return '';
+        }
+
+        if($this->container instanceof User && !Yii::$app->user->getIdentity()->isModuleEnabled('calendar')) {
+            return ModalButton::defaultType()->load(Url::toEnableModuleOnProfileConfig())->icon('fa-cog')->visible($this->canConfigure());
         }
 
         return Button::defaultType()->link($this->getConfigUrl())->icon('fa-cog')->visible($this->canConfigure());

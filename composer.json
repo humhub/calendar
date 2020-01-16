@@ -3,10 +3,22 @@
   "description": "HumHub calendar module",
   "type": "library",
   "require": {
-    "php" : ">=5.6",
-    "sabre/vobject": "dev-master as 4.2.1",
+    "sabre/vobject": "4.2.1",
+    "simshaun/recurr": "^4",
     "sabre/xml": "1.5.1",
     "sabre/uri": "1.2.1"
   },
+  "config": {
+    "process-timeout": 1800,
+    "platform": {
+      "php": "5.6"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
   "minimum-stability": "dev"
 }

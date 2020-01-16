@@ -18,6 +18,7 @@ namespace humhub\modules\calendar\widgets;
 use Yii;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\widgets\WallEntryControlLink;
+use humhub\modules\calendar\helpers\Url;
 
 class DeleteLink extends WallEntryControlLink
 {
@@ -34,7 +35,7 @@ class DeleteLink extends WallEntryControlLink
         $this->options = [
             'data-action-click' => 'calendar.deleteEvent',
             'data-action-target' =>"[data-content-key='".$this->entry->content->id."']",
-            'data-action-url' => $this->entry->content->container->createUrl('/calendar/entry/delete', ['id' => $this->entry->id, 'cal' => 1])
+            'data-action-url' => Url::toEntryDelete($this->entry, 1)
         ];
 
         parent::init();

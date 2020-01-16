@@ -9,6 +9,8 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use Yii;
 
@@ -21,7 +23,7 @@ class DownloadIcsLink extends Widget
 {
 
     /**
-     * @var CalendarEntry
+     * @var CalendarEventIF
      */
     public $calendarEntry = null;
 
@@ -31,6 +33,6 @@ class DownloadIcsLink extends Widget
             return;
         }
 
-        return Html::a(Yii::t('CalendarModule.base', 'Download as ICS file'), $this->calendarEntry->content->container->createUrl('/calendar/entry/generateics', ['id' => $this->calendarEntry->id]), ['target' => '_blank']);
+        return Html::a(Yii::t('CalendarModule.base', 'Download as ICS file'), Url::toEntryDownloadICS($this->calendarEntry), ['target' => '_blank']);
     }
 }

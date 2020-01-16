@@ -6,10 +6,8 @@
  *
  */
 
-use humhub\modules\content\widgets\richtext\RichText;
-use humhub\widgets\mails\MailButtonList;
-use humhub\widgets\mails\MailButton;
-use humhub\widgets\mails\MailContentEntry;
+use humhub\modules\calendar\widgets\mails\CalendarEventMailInfo;
+use humhub\modules\calendar\models\CalendarEntry;
 
 /* @var $this yii\web\View */
 /* @var $viewable humhub\modules\content\notifications\ContentCreated */
@@ -25,22 +23,14 @@ use humhub\widgets\mails\MailContentEntry;
 /* @var $html string */
 /* @var $text string */
 
+$extraInfo = null;
+if($source instanceof CalendarEntry) {
+    $extraInfo = $source->participant_info;
+}
+
 ?>
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
-    <div style="overflow:hidden">
-        <?= MailContentEntry::widget([
-            'originator' => $originator,
-            'content' => $html.'<br><br>'. RichText::preview($source->participant_info),
-            'date' => $date,
-            'space' => $space
-        ]) ?>
-    </div>
-
-    <?= MailButtonList::widget([
-        'buttons' => [
-            MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')])
-        ]
-    ]) ?>
+    <?=  CalendarEventMailInfo::html($source, $url, $extraInfo) ?>
 
 <?php $this->endContent();

@@ -21,8 +21,9 @@ class SettingsCest
     {
         $I->amAdmin();
         $I->amOnRoute(['/calendar/config']);
-        $I->selectOption('#defaultsettings-participation_mode', 0);
-        $I->click('[type="submit"]', '.panel-body');
+        $I->waitForText('Calendar module configuration');
+        $I->selectOption('#participationsettings-participation_mode', 0);
+        $I->click('Save');
 
         $I->seeSuccess();
 
@@ -38,11 +39,12 @@ class SettingsCest
         $I->dontSeeElement('.participationOnly');
 
         $I->amOnSpace1('/calendar/container-config');
-        $I->selectOption('#defaultsettings-participation_mode', 2);
-        $I->click('[for="defaultsettings-allow_decline"]');
-        $I->click('[for="defaultsettings-allow_maybe"]');
+        $I->selectOption('#participationsettings-participation_mode', 2);
+        $I->click('[for="participationsettings-allow_decline"]');
+        $I->click('[for="participationsettings-allow_maybe"]');
 
-        $I->click('.btn-primary', '.layout-content-container');
+        $I->wait(2);
+        $I->click('Save');
         $I->seeSuccess();
         $I->see('Reset', '.layout-content-container');
 
@@ -59,21 +61,21 @@ class SettingsCest
 
         $I->seeSuccess();
 
-        $I->seeInField('#defaultsettings-participation_mode', 0);
+        $I->seeInField('#participationsettings-participation_mode', 0);
 
         $I->amOnRoute(['/calendar/config']);
         $I->click('Reset', '.panel-body');
 
         $I->seeSuccess();
 
-        $I->seeInField('#defaultsettings-participation_mode', 2);
+        $I->seeInField('#participationsettings-participation_mode', 2);
 
-        $I->seeCheckboxIsChecked('#defaultsettings-allow_decline');
-        $I->seeCheckboxIsChecked('#defaultsettings-allow_decline');
+        $I->seeCheckboxIsChecked('#participationsettings-allow_decline');
+        $I->seeCheckboxIsChecked('#participationsettings-allow_decline');
 
         $I->amOnSpace1('/calendar/container-config');
-        $I->seeCheckboxIsChecked('#defaultsettings-allow_decline');
-        $I->seeCheckboxIsChecked('#defaultsettings-allow_decline');
+        $I->seeCheckboxIsChecked('#participationsettings-allow_decline');
+        $I->seeCheckboxIsChecked('#participationsettings-allow_decline');
     }
 
 }

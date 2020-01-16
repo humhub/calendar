@@ -72,11 +72,6 @@ class CalendarEntryParticipant extends ActiveRecord
         ];
     }
 
-    public function beforeDelete()
-    {
-        return parent::beforeDelete();
-    }
-
     public function afterSave($insert, $changedAttributes)
     {
         $activity = null;

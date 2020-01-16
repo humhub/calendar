@@ -8,14 +8,15 @@
 
 namespace humhub\modules\calendar\integration;
 
-use DateTime;
-use humhub\modules\calendar\interfaces\CalendarItem;
-use humhub\modules\meeting\models\Meeting;
-use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Component;
 use yii\helpers\Html;
+use DateTime;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use  humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
+use humhub\modules\meeting\models\Meeting;
+use humhub\modules\user\models\User;
+
 
 /**
  * Created by PhpStorm.
@@ -36,7 +37,7 @@ class BirthdayCalendar extends Component
     const ITEM_TYPE_KEY = 'birthday';
 
     /**
-     * @param $event \humhub\modules\calendar\interfaces\CalendarItemTypesEvent
+     * @param $event CalendarItemTypesEvent
      * @return mixed
      */
     public static function addItemTypes($event)
@@ -49,7 +50,8 @@ class BirthdayCalendar extends Component
     }
 
     /**
-     * @param $event \humhub\modules\calendar\interfaces\CalendarItemsEvent
+     * @param $event \humhub\modules\calendar\interfaces\event\CalendarItemsEvent
+     * @throws \Throwable
      */
     public static function addItems($event)
     {
@@ -66,9 +68,7 @@ class BirthdayCalendar extends Component
                 'allDay' => true,
                 'title' => static::getTitle($user),
                 'icon' => 'fa-birthday-cake',
-                'openUrl' => $user->getUrl(),
                 'viewUrl' => $user->getUrl(),
-                'viewMode' => CalendarItem::VIEW_MODE_REDIRECT,
                 'editable' => false,
             ];
         }

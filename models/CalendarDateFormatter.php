@@ -17,18 +17,18 @@
 
 namespace humhub\modules\calendar\models;
 
-
+use humhub\modules\calendar\helpers\CalendarUtils;
 use Yii;
 use DateTime;
 use humhub\libs\TimezoneHelper;
-use humhub\modules\calendar\interfaces\CalendarItem;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use yii\base\Component;
 
 class CalendarDateFormatter extends Component
 {
 
     /**
-     * @var CalendarItem
+     * @var CalendarEventIF
      */
     public $calendarItem;
 
@@ -41,19 +41,9 @@ class CalendarDateFormatter extends Component
         }
     }
 
-    public function getFormattedStartDate($format = 'long', $timeZone = null)
+    public function getFormattedStartDate($format = 'long')
     {
-        if($timeZone) {
-            Yii::$app->formatter->timeZone = $timeZone;
-        }
-
-        $result = Yii::$app->formatter->asDate($this->calendarItem->getStartDateTime(), $format);
-
-        if($timeZone) {
-            Yii::$app->i18n->autosetLocale();
-        }
-
-        return $result;
+        return static::formatDate($this->calendarItem->getStartDateTime(), $format, $this->calendarItem->isAllDay());
     }
 
     public function getFormattedStartTime($format = 'short', $timeZone = null)
@@ -71,15 +61,31 @@ class CalendarDateFormatter extends Component
         return $result;
     }
 
-    public function getFormattedEndDate($format = 'long', $timeZone = null)
+    public function getFormattedEndDate($format = 'long')
     {
-        if($timeZone) {
-            Yii::$app->formatter->timeZone = $timeZone;
+        $endDate = $this->calendarItem->getEndDateTime();
+        if($this->calendarItem->isAllDay()) {
+            $endDate->modify('-1 day');
+        }
+        return static::formatDate($endDate, $format, $this->calendarItem->isAllDay());
+    }
+
+    /**
+     * @param \DateTimeInterface $date
+     * @param string $format
+     * @param bool $allDay
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
+    public static function formatDate(\DateTimeInterface $date, $format = 'long', $allDay = false)
+    {
+        if($allDay) {
+            Yii::$app->formatter->timeZone = $date->getTimezone()->getName();
         }
 
-        $result = Yii::$app->formatter->asDate($this->calendarItem->getEndDateTime(), $format);
+        $result = Yii::$app->formatter->asDate($date, $format);
 
-        if($timeZone) {
+        if($allDay) {
             Yii::$app->i18n->autosetLocale();
         }
 
@@ -116,21 +122,24 @@ class CalendarDateFormatter extends Component
 
     protected function isSameDay()
     {
-        return $this->calendarItem->getStartDateTime()->format('Y-m-d') === $this->calendarItem->getEndDateTime()->format('Y-m-d');
+        $start =  $this->calendarItem->getStartDateTime();
+        $end = $this->calendarItem->getEndDateTime();
+
+        if(!$this->calendarItem->isAllDay()) {
+            $start->setTimezone(CalendarUtils::getUserTimeZone());
+            $end->setTimezone(CalendarUtils::getUserTimeZone());
+        }
+        
+        return $start->format('Y-m-d')
+            === $end->format('Y-m-d');
     }
 
     protected  function getFormattedAllDay($format = 'long')
     {
-        $userTimeZone = Yii::$app->formatter->timeZone;
-        $resultTimeZone = empty($this->calendarItem->getTimezone()) ? Yii::$app->timeZone : $this->calendarItem->getTimezone();
-        $result = $result = $this->getFormattedStartDate($format, $resultTimeZone);
+        $result = $this->getFormattedStartDate($format);
 
         if($this->getDurationDays() > 1) {
-            $result .= ' - ' . $this->getFormattedEndDate($format, $resultTimeZone);
-        }
-
-        if($resultTimeZone !== $userTimeZone) {
-            $result .= ' ('.  self::getTimezoneLabel($resultTimeZone) .')';
+            $result .= ' - ' . $this->getFormattedEndDate($format);
         }
 
         return $result;
@@ -139,12 +148,8 @@ class CalendarDateFormatter extends Component
     public function getDurationDays()
     {
         $end = $this->calendarItem->getEndDateTime();
-        if ($this->calendarItem->isAllDay()) {
-            if ($end === $this->calendarItem->getEndDateTime()->setTime('00', '00', '00'))
-                $end->modify('-1 day'); // revert modifications for all-day events integrated via interface
-        }
         $interval = $this->calendarItem->getStartDateTime()->diff($end, true);
-        return $interval->days + 1;
+        return $interval->days;
     }
 
     /**

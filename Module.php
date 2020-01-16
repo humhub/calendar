@@ -4,8 +4,7 @@ namespace humhub\modules\calendar;
 
 use humhub\modules\calendar\models\CalendarEntryType;
 use Yii;
-use yii\helpers\Url;
-use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -14,16 +13,64 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 class Module extends ContentContainerModule
 {
+    /**
+     * @var bool feature switch for recurrence events
+     */
+    public $recurrenceActive = true;
+
+    /**
+     * @var int Reminder process run interval in minutes
+     */
+    public $reminderProcessInterval = 10;
+
+    /**
+     * @var int Defines the maximum number of events the reminder process can handle at once
+     */
+    public $reminderProcessEventLimit = 500;
+
+    /**
+     * @var int max amount of reminder allowed in the reminder settings
+     */
+    public $maxReminder = 3;
 
     /**
      * @inheritdoc
      */
     public $resourcesPath = 'resources';
 
-    public function init()
+    /**
+     * @return bool
+     */
+    public static function isRecurrenceActive()
     {
-        parent::init();
-        require_once Yii::getAlias('@calendar/vendor/autoload.php');
+        /* @var $module static */
+        $module = Yii::$app->getModule('calendar');
+        return $module ? $module->recurrenceActive : true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function onBeforeRequest()
+    {
+        static::registerAutoloader();
+    }
+
+    /**
+     * Register composer autoloader when Reader not found
+     */
+    public static function registerAutoloader()
+    {
+        if (class_exists('\Sabre\VObject\Component\VCalendar')) {
+            return;
+        }
+
+        require Yii::getAlias('@calendar/vendor/autoload.php');
+    }
+
+    public function getRemidnerProcessIntervalS()
+    {
+        return $this->reminderProcessInterval * 60;
     }
 
     /**
@@ -85,14 +132,12 @@ class Module extends ContentContainerModule
 
     public function getContentContainerConfigUrl(ContentContainerActiveRecord $container)
     {
-        return $container->createUrl('/calendar/container-config');
+        return Url::toConfig($container);
     }
 
     public function getConfigUrl()
     {
-        return Url::to([
-                    '/calendar/config'
-        ]);
+        return Url::toConfig();
     }
 
     /**
@@ -108,18 +153,4 @@ class Module extends ContentContainerModule
         }
         return [];
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeAction($action)
-    {
-        // Fix prior 1.2.1 without set formatter timeZone
-        // https://github.com/humhub/humhub/commit/3a06a3816131c3c10659b65e70422a8b8bdca15c#diff-6245cc1612ecb552c18a2e5a1d9bbca2c
-        if (empty(Yii::$app->formatter->timeZone)) {
-            Yii::$app->formatter->timeZone = Yii::$app->timeZone;
-        }
-        return parent::beforeAction($action);
-    }
-
 }

@@ -17,9 +17,17 @@ namespace humhub\modules\calendar\interfaces;
 
 use DateInterval;
 use DateTime;
-use humhub\modules\calendar\CalendarUtils;
+use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarItemsEvent;
+use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
+use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
+use humhub\modules\calendar\interfaces\event\CalendarTypeArrayWrapper;
 use humhub\modules\calendar\models\CalendarEntryQuery;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
+use humhub\modules\content\models\Content;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
 
@@ -46,6 +54,9 @@ class CalendarService extends Component
      */
     const EVENT_FIND_ITEMS = 'findItems';
 
+    /**
+     * @var array
+     */
     private static $resultCache = [];
 
     /**
@@ -78,8 +89,9 @@ class CalendarService extends Component
         $this->trigger(self::EVENT_GET_ITEM_TYPES, $event);
 
         $result = [];
-        foreach ($event->getTypes() as $key => $options) {
-            $result[] = new CalendarItemType(['key' => $key, 'options' => $options, 'contentContainer' => $contentContainer]);
+        foreach ($event->getTypes() as $key => $type) {
+            $type = is_array($type) ? new CalendarTypeArrayWrapper(['key' => $key, 'options' => $type]) : $type;
+            $result[] = new CalendarTypeSetting(['type' => $type, 'contentContainer' => $contentContainer]);
         }
 
 
@@ -102,14 +114,22 @@ class CalendarService extends Component
      * @param ContentContainerActiveRecord $contentContainer
      * @param null $limit
      * @param bool $expand
-     * @return CalendarItem[]
+     * @return CalendarEventIF[]
      * @throws \Throwable
      */
     public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null, $expand = true)
     {
         $result = [];
 
-        $event = new CalendarItemsEvent(['contentContainer' => $contentContainer, 'start' => $start, 'end' => $end, 'filters' => $filters, 'limit' => $limit, 'expand' => $expand]);
+        $event = new CalendarItemsEvent([
+            'contentContainer' => $contentContainer,
+            'start' => $start ? clone $start : null,
+            'end' => $end ? clone $end : null,
+            'filters' => $filters,
+            'limit' => $limit,
+            'expand' => $expand
+        ]);
+
         $this->trigger(static::EVENT_FIND_ITEMS, $event);
 
         foreach($event->getItems() as $itemTypeKey => $items) {
@@ -117,7 +137,12 @@ class CalendarService extends Component
 
             if($itemType && $itemType->isEnabled()) {
                 foreach ($items as $item) {
-                    $result[] = new CalendarItemWrapper(['itemType' => $itemType, 'options' => $item]);
+                    if(is_array($item)) {
+                        $result[] = new CalendarEventIFWrapper(['itemType' => $itemType, 'options' => $item]);
+                    } elseif($item instanceof CalendarEventIF) {
+                        $result[] = $item;
+                    }
+
                 }
             }
         }
@@ -131,24 +156,59 @@ class CalendarService extends Component
         return (count($result) > $limit) ? array_slice($result, 0, $limit) : $result;
     }
 
-    public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5)
+    public static $containerCache = [];
+
+    public function getEventColor(CalendarEventIF $event)
     {
-        $start = new DateTime('now', CalendarUtils::getUserTimeZone());
-        $end =  (new DateTime('now', CalendarUtils::getUserTimeZone()))
-            ->add(new DateInterval('P'.$daysInFuture.'D'));
-
-        $filters = [];
-
-        if (!$contentContainer) {
-            $filters[] = AbstractCalendarQuery::FILTER_DASHBOARD;
+        if($event->getColor()) {
+            return $event->getColor();
         }
 
-        return $this->getCalendarItems($start, $end, $filters, $contentContainer, $limit);
+        $type = $event->getEventType();
+
+        if(!$type) {
+            return null;
+        }
+
+        $typeSettings = null;
+
+        if($event instanceof ContentActiveRecord) {
+            /* @var $content Content */
+            $content = $event->content;
+            if($content->contentcontainer_id === null) {
+                $typeSettings = $this->getItemType($type->getKey());
+            } else {
+                $container = isset(static::$containerCache[$content->contentcontainer_id])
+                    ? static::$containerCache[$content->contentcontainer_id] : $content->container;
+                $typeSettings = $this->getItemType($type->getKey(), $container);
+            }
+        }
+
+        return $typeSettings ? $typeSettings->getColor() : $type->getDefaultColor();
+    }
+
+    /**
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @param int $daysInFuture
+     * @param int $limit
+     * @param array $filters
+     * @param bool $expand
+     * @return CalendarEventIF[]
+     * @throws \Throwable
+     */
+    public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5, $filters = [], $expand = true)
+    {
+        $start = new DateTime('now', CalendarUtils::getUserTimeZone());
+        $end = ($daysInFuture > 0) ? (new DateTime('now', CalendarUtils::getUserTimeZone()))
+                ->add(new DateInterval('P'.$daysInFuture.'D')) : null;
+
+        return $this->getCalendarItems($start, $end, $filters, $contentContainer, $limit, $expand);
     }
 
     /**
      * @param string $key item key
-     * @return CalendarItemType|null
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @return CalendarTypeSetting|null
      */
     public function getItemType($key, ContentContainerActiveRecord $contentContainer = null)
     {

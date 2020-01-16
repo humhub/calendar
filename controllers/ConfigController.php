@@ -1,42 +1,25 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\calendar\controllers;
 
-use Yii;
-use yii\data\ActiveDataProvider;
-use yii\helpers\Url;
 use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\models\CalendarEntryType;
-use humhub\modules\calendar\models\DefaultSettings;
-use humhub\modules\admin\components\Controller;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\SnippetModuleSettings;
-use yii\web\HttpException;
+use humhub\widgets\Button;
+use humhub\widgets\ModalButton;
+use humhub\widgets\ModalDialog;
+use Yii;
 
-/**
- * 
- */
-class ConfigController extends Controller
+class ConfigController extends AbstractConfigController
 {
-    /**
-     * @var CalendarService
-     */
-    public $calendarService;
+    public $requireContainer = false;
 
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-        $this->calendarService = $this->module->get(CalendarService::class);
-    }
+    public $subLayout = "@humhub/modules/admin/views/layouts/main";
 
     /**
      * @inheritdoc
@@ -46,103 +29,9 @@ class ConfigController extends Controller
         return [['permissions' => ManageModules::class]];
     }
 
-    /**
-     * Configuration action for system admins.
-     */
-    public function actionIndex()
+    public function getAccess()
     {
-        $model = new DefaultSettings();
-        
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('@calendar/views/common/defaultConfig', [
-            'model' => $model
-        ]);
-    }
-
-    public function actionTypes()
-    {
-        $typeDataProvider = new ActiveDataProvider([
-            //TODO: replace with findGlobal() after v1.2.3
-            'query' => CalendarEntryType::find()->andWhere('content_tag.contentcontainer_id IS NULL')
-        ]);
-
-        return $this->render('@calendar/views/common/typesConfig', [
-            'typeDataProvider' => $typeDataProvider,
-            'createUrl' => URL::to(['/calendar/config/edit-type']),
-            'contentContainer' => null
-        ]);
-    }
-
-    public function actionDeleteType($id)
-    {
-        $this->forcePostRequest();
-
-        $entryType = CalendarEntryType::find()->where(['id' => $id])->andWhere('contentcontainer_id IS NULL')->one();
-
-        if(!$entryType) {
-            throw new HttpException(404);
-        }
-
-        $entryType->delete();
-
-        return $this->htmlRedirect(Url::to(['/calendar/config/types']));
-    }
-
-    public function actionEditType($id = null)
-    {
-        if($id) {
-            $entryType = CalendarEntryType::find()->where(['id' => $id])->andWhere('contentcontainer_id IS NULL')->one();
-        } else {
-            $entryType = new CalendarEntryType();
-        }
-
-        if(!$entryType) {
-            throw new HttpException(404);
-        }
-
-        if($entryType->load(Yii::$app->request->post()) && $entryType->save()) {
-            $this->view->saved();
-            return $this->htmlRedirect(URL::to(['/calendar/config/types']));
-        }
-
-        return $this->renderAjax('@calendar/views/common/editTypeModal', ['model' => $entryType]);
-    }
-
-    public function actionCalendars()
-    {
-        return $this->render('@calendar/views/common/calendarsConfig', [
-            'contentContainer' => null,
-            'calendars' => $this->calendarService->getCalendarItemTypes()
-        ]);
-    }
-
-    public function actionEditCalendars($key)
-    {
-        $item = $this->calendarService->getItemType($key);
-
-        if(!$item) {
-            throw new HttpException(404);
-        }
-
-        if($item->load(Yii::$app->request->post()) && $item->save()) {
-            $this->view->saved();
-            return $this->htmlRedirect(URL::to(['/calendar/config/calendars']));
-        }
-
-        return $this->renderAjax('@calendar/views/common/editTypeModal', ['model' => $item]);
-    }
-
-    public function actionResetConfig()
-    {
-        $model = new DefaultSettings();
-        $model->reset();
-        $this->view->saved();
-        return $this->render('@calendar/views/common/defaultConfig', [
-            'model' => $model
-        ]);
+        return Yii::createObject($this->access);
     }
 
     public function actionSnippet()
@@ -157,4 +46,5 @@ class ConfigController extends Controller
             'model' => $model
         ]);
     }
+
 }

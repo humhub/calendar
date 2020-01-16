@@ -1,10 +1,9 @@
 <?php
 use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\FullCalendar;
-use humhub\widgets\Button;
-use humhub\widgets\FadeIn;
+use humhub\modules\calendar\helpers\Url;
 
-$loadAjaxUrl = $contentContainer->createUrl('/calendar/view/load-ajax');
+$loadAjaxUrl = Url::toAjaxLoad($contentContainer);
 
 /* @var $filters array */
 /* @var $canConfigure bool */

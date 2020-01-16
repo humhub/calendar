@@ -42,6 +42,7 @@ class GlobalGuestCalendarCest
 
         $I->createEventToday('Private Event', 'Private Event Description');
         $I->waitForText('Private Event', null,'#globalModal');
+        $I->wait(1);
         $I->click('Close', '#globalModal');
 
         $I->wait(1);
@@ -70,6 +71,7 @@ class GlobalGuestCalendarCest
         $I->click('Save', '#globalModal');
 
         $I->waitForText('Public Event',null, '.fc-event-container');
+        $I->wait(1);
         $I->click('Close', '#globalModal');
 
         $I->wait(1);
@@ -81,6 +83,7 @@ class GlobalGuestCalendarCest
 
         $I->createEventToday('Private Event', 'Private Event Description');
         $I->waitForText('Private Event', null,'#globalModal');
+        $I->wait(1);
         $I->click('Close', '#globalModal');
 
         $I->wait(1);

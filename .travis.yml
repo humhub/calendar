@@ -20,6 +20,7 @@ env:
     - HUMHUB_PATH=/opt/humhub
   matrix:
     - HUMHUB_VERSION=master
+    - HUMHUB_VERSION=develop
     - HUMHUB_VERSION=v1.3.14
 
 matrix:
@@ -31,6 +32,9 @@ cache:
     - $HOME/.composer/cache
 
 install:
+  - ls -la
+  - npm install
+  - composer update
   - .travis/install-dependencies.sh
   - .travis/setup-humhub.sh
   - composer update

@@ -1,8 +1,32 @@
 Changelog
 =========
 
-0.7.5 (October, 10, 2019)
+1.0.0
 -----------------------
+- Enh: Reminder support with reminder interface
+- Enh: Introduction of new `CalendarEventParticipationIF`
+- Enh: Support of recurring events with recurring event interface
+- Chng: Switched from array based interfaces to real interfaces
+- Fix #161: Error when accessing global configuration, in case the module is not enabled on profile level
+- Chng: Use of `helpers/Url` class
+- Fix #106: Issues with time validation on swedish locale
+- Chng: Omitted timezone translation on all day events
+- Enh: Never display timezone information on all day events
+- Enh: Better ICal export support
+- Fix #18: Incorrect Phrasing of Strings
+- Chng: Updated to fullcalendar v4
+- Enh: Added fullcalendar list view
+- Enh: translatable calendar view buttons
+- Enh: Enhanced mobile calendar view
+- Chng: Switch from moment before (23:59:59) to moment after end date format on all_day events
+- Fix #117: Date selection accepts invalid user input
+- Fix #155: AbstractCalendarQuery does not include events spanning over the search interval
+- Fix #78: Add date information to response activity
+- Enh #165: Improved mail html and text views
+
+0.7.5 (October 16, 2019)
+-----------------------
+- Fix: ExternalCalendarEntryQuery with either only start or only end not fails
 - Fix #163: Issue with sabre/uri and PHP < 7
 
 0.7.4 (October 16, 2019)

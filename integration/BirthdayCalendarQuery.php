@@ -16,7 +16,7 @@
 namespace humhub\modules\calendar\integration;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
-use humhub\modules\calendar\interfaces\FilterNotSupportedException;
+use humhub\modules\calendar\interfaces\event\FilterNotSupportedException;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -35,10 +35,10 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
      * @inheritdoc
      */
     protected static $recordClass = BirthdayUserModel::class;
+    protected $dateQueryType = self::DATE_QUERY_TYPE_DATE;
 
     public $startField = 'profile.birthday';
     public $endField = 'profile.birthday';
-    public $dateFormat = 'Y-m-d';
 
     protected $_orderBy = 'next_birthday ASC';
 

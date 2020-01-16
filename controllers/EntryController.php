@@ -2,11 +2,14 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\calendar\helpers\CalendarUtils;
+use Throwable;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
-use humhub\modules\calendar\models\DefaultSettings;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\stream\actions\Stream;
 use humhub\widgets\ModalClose;
 use humhub\modules\user\models\User;
@@ -15,6 +18,7 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use yii\web\NotFoundHttpException;
 
 /**
  * EntryController used to display, edit or delete calendar entries
@@ -30,6 +34,14 @@ class EntryController extends ContentContainerController
      */
     public $hideSidebar = true;
 
+    /**
+     * @param $id
+     * @param null $cal
+     * @return string
+     * @throws HttpException
+     * @throws Throwable
+     * @throws Exception
+     */
     public function actionView($id, $cal = null)
     {
         $entry = $this->getCalendarEntry($id);
@@ -38,6 +50,11 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
+        return $this->renderEntry($entry, $cal);
+    }
+
+    public function renderEntry(CalendarEntry $entry, $cal = null)
+    {
         // We need the $cal information, since the edit redirect in case of fullcalendar view is other than stream view
         if ($cal) {
             return $this->renderModal($entry, $cal);
@@ -46,12 +63,46 @@ class EntryController extends ContentContainerController
         return $this->render('view', ['entry' => $entry, 'stream' => true]);
     }
 
-    private function renderModal($entry, $cal)
+    /**
+     * @param $parent_id
+     * @param $recurrence_id
+     * @param null $cal
+     * @return mixed
+     * @throws Throwable
+     * @throws Exception
+     */
+    public function actionViewRecurrence($parent_id, $recurrence_id, $cal = null)
+    {
+        $recurrenceRoot = $this->getCalendarEntry($parent_id);
+
+        if(!$recurrenceRoot) {
+            throw new NotFoundHttpException();
+        }
+
+        $recurrence = $recurrenceRoot->getRecurrenceQuery()->getRecurrenceInstance($recurrence_id);
+
+        if(!$recurrence) {
+            $recurrence = $recurrenceRoot->getRecurrenceQuery()->expandSingle($recurrence_id);
+        }
+
+        if(!$recurrence) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->renderEntry($recurrence, $cal);
+    }
+
+    /**
+     * @param $entry
+     * @param $cal
+     * @return string
+     */
+    protected function renderModal($entry, $cal)
     {
         return $this->renderAjax('modal', [
             'entry' => $entry,
-            'editUrl' => $this->contentContainer->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal]),
-            'canManageEntries' => $entry->content->canEdit() || $this->canManageEntries(),
+            'editUrl' => Url::toEditEntry($entry, $cal, $this->contentContainer),
+            'canManageEntries' => $entry->content->canEdit(),
             'contentContainer' => $this->contentContainer,
         ]);
     }
@@ -61,27 +112,42 @@ class EntryController extends ContentContainerController
      * @param $type
      * @return \yii\web\Response
      * @throws HttpException
+     * @throws Throwable
+     * @throws Exception
      */
     public function actionRespond($id, $type)
     {
         $calendarEntry = $this->getCalendarEntry($id);
 
-        if ($calendarEntry == null) {
+        if (!$calendarEntry) {
             throw new HttpException('404');
         }
 
-        $participationState = $calendarEntry->respond((int)$type);
-        if($participationState->hasErrors()) {
-            return $this->asJson(['success' => false, 'errors' => $participationState->getErrors()]);
+        if(!$calendarEntry->canRespond(Yii::$app->user->identity)) {
+            throw new HttpException(403);
         }
+
+        $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int) $type);
+
         return $this->asJson(['success' => true]);
     }
 
+    /**
+     *
+     * @param null $id calendar entry id
+     * @param null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
+     * @param null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
+     * @param null $cal whether or not the edit event came from the calendar view
+     * @return string
+     * @throws HttpException
+     * @throws Throwable
+     * @throws Exception
+     * @throws InvalidConfigException
+     */
     public function actionEdit($id = null, $start = null, $end = null, $cal = null)
     {
         if (empty($id) && $this->canCreateEntries()) {
-            $calendarEntryForm = new CalendarEntryForm();
-            $calendarEntryForm->createNew($this->contentContainer, $start, $end);
+            $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end);
         } else {
             $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
             if(!$calendarEntryForm->entry->content->canEdit()) {
@@ -96,18 +162,29 @@ class EntryController extends ContentContainerController
         if ($calendarEntryForm->load(Yii::$app->request->post()) && $calendarEntryForm->save()) {
             if(empty($cal)) {
                 return ModalClose::widget(['saved' => true]);
-            } else {
-                return $this->renderModal($calendarEntryForm->entry, 1);
             }
+
+            return $this->renderModal($calendarEntryForm->entry, 1);
+        }
+
+        if ($calendarEntryForm->isAllDay()) {
+            $calendarEntryForm->setDefaultTime();
         }
 
         return $this->renderAjax('edit', [
             'calendarEntryForm' => $calendarEntryForm,
             'contentContainer' => $this->contentContainer,
-            'editUrl' => $this->contentContainer->createUrl('/calendar/entry/edit', ['id' => $calendarEntryForm->entry->id, 'cal' => $cal])
+            'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer)
         ]);
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws HttpException
+     * @throws Throwable
+     * @throws Exception
+     */
     public function actionToggleClose($id)
     {
         $entry = $this->getCalendarEntry($id);
@@ -125,29 +202,12 @@ class EntryController extends ContentContainerController
         return $this->asJson(Stream::getContentResultEntry($entry->content));
     }
 
-    public function actionEditAjax()
-    {
-        $this->forcePostRequest();
-
-        $entry = $this->getCalendarEntry(Yii::$app->request->post('id'));
-
-        if (!$entry) {
-            throw new HttpException('404');
-        }
-
-        if (!($this->canManageEntries() || $entry->content->canEdit())) {
-            throw new HttpException('403');
-        }
-
-        $entryForm = new CalendarEntryForm(['entry' => $entry]);
-
-        if ($entryForm->updateTime(Yii::$app->request->post('start'), Yii::$app->request->post('end'))) {
-            return $this->asJson(['success' => true]);
-        }
-
-        throw new HttpException(400, "Could not save! " . print_r($entry->getErrors()));
-    }
-
+    /**
+     * @return mixed
+     * @throws HttpException
+     * @throws Throwable
+     * @throws Exception
+     */
     public function actionUserList()
     {
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
@@ -175,27 +235,33 @@ class EntryController extends ContentContainerController
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
-    public function actionDelete()
+    /**
+     * @param $id
+     * @return EntryController|\yii\console\Response|\yii\web\Response
+     * @throws HttpException
+     * @throws Throwable
+     * @throws Exception
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDelete($id)
     {
         $this->forcePostRequest();
 
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
+        $calendarEntry = $this->getCalendarEntry($id);
 
-        if ($calendarEntry == null) {
+        if (!$calendarEntry) {
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
         }
 
-        if (!($this->canManageEntries() ||  $calendarEntry->content->canEdit())) {
+        if (!$calendarEntry->content->canEdit()) {
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to delete this event!"));
         }
 
         $calendarEntry->delete();
 
-        if (Yii::$app->request->isAjax) {
-            $this->asJson(['success' => true]);
-        } else {
-            return $this->redirect($this->contentContainer->createUrl('/calendar/view/index'));
-        }
+        return Yii::$app->request->isAjax
+            ? $this->asJson(['success' => true])
+            : $this->redirect(Url::toCalendar($this->contentContainer));
     }
 
     /**
@@ -203,6 +269,8 @@ class EntryController extends ContentContainerController
      *
      * @param int $id
      * @return CalendarEntry
+     * @throws Throwable
+     * @throws Exception
      */
     protected function getCalendarEntry($id)
     {
@@ -212,6 +280,7 @@ class EntryController extends ContentContainerController
     /**
      * Checks the CreatEntry permission for the given user on the given contentContainer.
      * @return bool
+     * @throws InvalidConfigException
      */
     private function canCreateEntries()
     {
@@ -219,17 +288,11 @@ class EntryController extends ContentContainerController
     }
 
     /**
-     * Checks the ManageEntry permission for the given user on the given contentContainer.
-     *
-     * Todo: After 1.2.1 use $entry->content->canEdit();
-     *
-     * @return bool
+     * @return \yii\console\Response|\yii\web\Response
+     * @throws Throwable
+     * @throws Exception
+     * @throws \yii\web\RangeNotSatisfiableHttpException
      */
-    private function canManageEntries()
-    {
-        return $this->contentContainer->permissionManager->can(new ManageEntry);
-    }
-
     public function actionGenerateics()
     {
         $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));

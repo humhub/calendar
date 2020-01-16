@@ -2,15 +2,9 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
-use humhub\modules\cfiles\models\rows\AbstractFileSystemItemRow;
+use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use Sabre\VObject\UUIDUtil;
-use Yii;
-use humhub\modules\space\models\Space;
 use DateTime;
-use DateInterval;
-use humhub\modules\user\models\User;
-use humhub\modules\content\components\ActiveQueryContent;
 
 /**
  * CalendarEntryQuery class can be used for creating filter queries for [[CalendarEntry]] models.
@@ -56,12 +50,17 @@ use humhub\modules\content\components\ActiveQueryContent;
  *
  * @author buddha
  */
-class CalendarEntryQuery extends AbstractCalendarQuery
+class CalendarEntryQuery extends AbstractRecurrenceQuery
 {
     /**
      * @inheritdocs
      */
     protected static $recordClass = CalendarEntry::class;
+
+    /**
+     * @inheritdocs
+     */
+    protected $dateQueryType = self::DATE_QUERY_TYPE_MIXED;
 
     /**
      * @var bool true if the participant join has already been added else false
@@ -72,13 +71,6 @@ class CalendarEntryQuery extends AbstractCalendarQuery
     {
         /* @var $event CalendarEntry */
         $events = parent::findForFilter($start, $end, $container, $filters, $limit, $expand);
-
-        foreach ($events as $event) {
-            if(empty($event->uid)) {
-                $event->save();
-            }
-        }
-
         return $events;
     }
 

@@ -26,6 +26,7 @@ class ForceParticipation extends ActiveJob
 
     /**
      * @throws \yii\base\InvalidConfigException
+     * @throws \Throwable
      */
     public function run()
     {
@@ -47,7 +48,7 @@ class ForceParticipation extends ActiveJob
 
         $users = [];
         foreach ($remainingMemberships as $membership) {
-            $entry->setParticipant($membership->user);
+            $entry->participation->setParticipationStatus($membership->user);
             $users[] = $membership->user;
         }
 

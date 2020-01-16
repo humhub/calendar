@@ -2,7 +2,7 @@
 
 use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\FullCalendar;
-use yii\helpers\Url;
+use humhub\modules\calendar\helpers\Url;
 
 /* @var $this \humhub\components\View */
 /* @var $selectors array */
@@ -25,7 +25,7 @@ use yii\helpers\Url;
                             'canWrite' => !Yii::$app->user->isGuest,
                             'selectors' => $selectors,
                             'filters' => $filters,
-                            'loadUrl' => Url::to(['load-ajax']),
+                            'loadUrl' => Url::toAjaxLoad(),
                             'editUrl' => $editUrl,
                         ]); ?>
                     </div>

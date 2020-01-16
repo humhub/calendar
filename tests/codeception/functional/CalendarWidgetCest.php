@@ -18,7 +18,7 @@ use Yii;
 class CalendarWidgetCest
 {
     /**
-     * @skip test broken on travis
+     * @skip fails on travis
      * @param FunctionalTester $I
      * @throws \Exception
      */

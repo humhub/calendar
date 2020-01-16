@@ -1,6 +1,7 @@
 <?php
 
-use yii\db\Migration;
+
+use humhub\components\Migration;
 
 class uninstall extends Migration
 {
@@ -9,6 +10,8 @@ class uninstall extends Migration
     {
         $this->dropTable('calendar_entry');
         $this->dropTable('calendar_entry_participant');
+        $this->dropTable('calendar_reminder_sent');
+        $this->dropTable('calendar_reminder');
     }
 
     public function down()

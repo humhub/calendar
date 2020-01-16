@@ -1,11 +1,12 @@
 <?php
 
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 use humhub\libs\Helpers;
 
-/* @var $calendarEntries \humhub\modules\calendar\interfaces\CalendarItem[] */
+/* @var $calendarEntries CalendarEventIF[] */
 /* @var $calendarUrl string */
 
 $extraMenus = '<li><a href="'.$calendarUrl.'"><i class="fa fa-arrow-circle-right"></i> '. Yii::t('CalendarModule.widgets_views_nextEvents', 'Open Calendar') .'</a></li>';
@@ -21,7 +22,6 @@ $extraMenus = '<li><a href="'.$calendarUrl.'"><i class="fa fa-arrow-circle-right
         <hr style="margin:0px">
         <ul class="media-list">
             <?php foreach ($calendarEntries as $entry) : ?>
-                <?php /* @var $entry \humhub\modules\calendar\models\CalendarEntry */ ?>
                 <?php $formatter = new CalendarDateFormatter(['calendarItem' => $entry]); ?>
                 <?php $color = ($entry->color) ? $entry->color : $this->theme->variable('info')?>
                 <a href="<?= $entry->getUrl() ?>">

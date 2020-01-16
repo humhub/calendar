@@ -2,13 +2,13 @@
 
 namespace humhub\modules\calendar\widgets;
 
+use Yii;
 use humhub\components\Widget;
 use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntryQuery;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use Yii;
-use yii\helpers\Url;
+use humhub\modules\calendar\helpers\Url;
 
 /**
  * UpcomingEvents shows next events in sidebar.
@@ -38,15 +38,20 @@ class UpcomingEvents extends Widget
         $settings = SnippetModuleSettings::instantiate();
         /** @var CalendarService $calendarService */
         $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
-        $calendarEntries = $calendarService->getUpcomingEntries($this->contentContainer, $settings->upcomingEventsSnippetDuration, $settings->upcomingEventsSnippetMaxItems);
+
+        $filters = [];
+
+        if(!$this->contentContainer) {
+            $filters[] = CalendarEntryQuery::FILTER_DASHBOARD;
+        }
+
+        $calendarEntries = $calendarService->getUpcomingEntries($this->contentContainer, $settings->upcomingEventsSnippetDuration, $settings->upcomingEventsSnippetMaxItems, $filters);
 
         if (empty($calendarEntries)) {
             return;
         }
 
-        $calendarUrl = ($this->contentContainer) ? $this->contentContainer->createUrl('/calendar/view') : Url::toRoute('/calendar/global');
-
-        return $this->render('upcomingEvents', ['calendarEntries' => $calendarEntries, 'calendarUrl' => $calendarUrl]);
+        return $this->render('upcomingEvents', ['calendarEntries' => $calendarEntries, 'calendarUrl' => Url::toCalendar($this->contentContainer)]);
     }
 
 }

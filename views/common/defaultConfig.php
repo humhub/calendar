@@ -6,55 +6,48 @@
  * @license https://www.humhub.com/licences
  *
  */
-/* @var $this yii\web\View */
-/* @var $model \humhub\modules\calendar\models\DefaultSettings */
 
-\humhub\modules\calendar\assets\Assets::register($this);
-
-use humhub\modules\calendar\models\forms\CalendarEntryForm;
+use humhub\modules\calendar\assets\CalendarBaseAssets;
+use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
 use humhub\widgets\Tabs;
-use \yii\helpers\Html;
 
-$helpBlock = $model->isGlobal()
-    ? Yii::t('CalendarModule.config', 'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.')
-    : Yii::t('CalendarModule.config', 'Here you can configure default settings for new calendar events.') ;
+/* @var $this yii\web\View */
+/* @var $model DefaultSettings */
+
+CalendarBaseAssets::register($this);
+
 ?>
 
 <div class="panel panel-default">
 
     <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
 
-    <?php if($model->isGlobal()) : ?>
+    <?php if ($model->isGlobal()) : ?>
         <?= GlobalConfigMenu::widget() ?>
     <?php else: ?>
-        <?= ContainerConfigMenu::widget()?>
+        <?= ContainerConfigMenu::widget() ?>
     <?php endif; ?>
 
-    <div class="panel-body" data-ui-widget="calendar.Form">
-        <?php $form = ActiveForm::begin(['action' => $model->getSubmitUrl()]); ?>
-            <h4>
-                <?= Yii::t('CalendarModule.config', 'Default event settings'); ?>
-            </h4>
 
-            <div class="help-block">
-                <?= $helpBlock ?>
-            </div>
+    <?php $form = ActiveForm::begin(['action' => $model->getSubmitUrl()]); ?>
 
-            <?= $form->field($model, 'participation_mode')->dropDownList(CalendarEntryForm::getParticipationModeItems(), ['data-action-change' => 'changeParticipationMode'])?>
-            <div class="participationOnly" style="<?= $model->isParticipationAllowed() ? '' : 'display:none' ?>">
-                <?= $form->field($model, 'allow_decline')->checkbox() ?>
-                <?= $form->field($model, 'allow_maybe')->checkbox() ?>
-            </div>
+    <?= Tabs::widget([
+        'viewPath' => '@calendar/views/common',
+        'params' => ['form' => $form, 'participationSettings' => $model->participationSettings, 'reminderSettings' => $model->reminderSettings],
+        'items' => [
+            ['label' => Yii::t('CalendarModule.settings', 'Participation'), 'view' => '_settings_participation', 'linkOptions' => ['class' => 'tab-basic']],
+            ['label' => Yii::t('CalendarModule.settings', 'Reminder'), 'view' => '_settings_reminder', 'linkOptions' => ['class' => 'tab-participation']],
+        ]
+    ]); ?>
 
-            <?= Button::primary(Yii::t('base', 'Save'))->submit() ?>
+    <hr>
 
-            <?php if($model->showResetButton()) : ?>
-                <a href="<?= $model->getResetButtonUrl(); ?>" class='btn btn-default pull-right' data-ui-loader><?= Yii::t('CalendarModule.config', 'Reset'); ?></a>
-            <?php endif; ?>
-        <?php ActiveForm::end(); ?>
+    <div class="panel-body">
+        <?= Button::primary(Yii::t('base', 'Save'))->submit() ?>
     </div>
+    <?php ActiveForm::end(); ?>
 </div>

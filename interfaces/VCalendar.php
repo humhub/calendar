@@ -5,7 +5,14 @@ namespace humhub\modules\calendar\interfaces;
 
 
 use DateTime;
-use humhub\modules\calendar\interfaces\CalendarItem;
+use Exception;
+use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
+use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\user\models\User;
 use yii\base\Model;
 use Sabre\VObject;
 
@@ -16,6 +23,9 @@ use Sabre\VObject;
 class VCalendar extends Model
 {
     const PRODID = '-//HumHub Org//HumHub Calendar 0.7//EN';
+    const PARTICIPATION_STATUS_ACCEPTED = 'ACCEPTED';
+    const PARTICIPATION_STATUS_DECLINED = 'DECLINED';
+    const PARTICIPATION_STATUS_TENTATIVE = 'TENTATIVE';
 
     /**
      * @var
@@ -31,7 +41,7 @@ class VCalendar extends Model
 
 
     /**
-     * @param CalendarItem[] $items
+     * @param CalendarEventIF[] $items
      * @return VCalendar
      */
     public static function withEvents($items, $tz = null)
@@ -39,8 +49,15 @@ class VCalendar extends Model
         $instance = (new static());
         $instance->addTimeZone($tz);
 
+        if(!is_array($items)) {
+            $items = [$items];
+        }
+
         foreach ($items as $item)
         {
+            if(is_array($item)) {
+                $item = new CalendarEventIFWrapper(['options' => $item]);
+            }
             $instance->addVEvent($item);
         }
 
@@ -64,7 +81,7 @@ class VCalendar extends Model
 
 
     /**
-     * @return VObject\Component\VCalendar
+     * @return void
      */
     private function initVObject()
     {
@@ -91,22 +108,113 @@ class VCalendar extends Model
     }
 
     /**
-     * @param $item CalendarItem
-     * @return array []
-     * @throws \Exception
+     * @param $item CalendarEventIF
+     * @return static
+     * @throws Exception
      */
-    private function addVEvent(CalendarItem $item)
+    private function addVEvent(CalendarEventIF $item)
     {
-        $dtend = $item->getEndDateTime();
+        $dtend = clone $item->getEndDateTime();
+
+        if($item->isAllDay()) {
+            // Translate for legacy events
+            if($dtend->format('H:i') === '23:59') {
+                $dtend->modify('+1 hour')->setTime(0,0,0);
+            }
+        }
+
+        $dtStart = clone $item->getStartDateTime();
+        $dtEnd =  clone $item->getEndDateTime();
+
+        if(!$item->isAllDay()) {
+            $dtStart->setTimezone(CalendarUtils::getStartTimeZone($item));
+            $dtEnd->setTimezone(CalendarUtils::getStartTimeZone($item));
+        }
 
         $result = [
-            'DTSTART' => $item->getStartDateTime(),
-            'DTEND' => $dtend,
-            'SUMMARY' => $item->getTitle()
+            'UID' => $item->getUid(),
+            'DTSTART' => $dtStart,
+            'DTEND' => $dtEnd,
+            'SUMMARY' => $item->getTitle(),
         ];
 
-        if (property_exists($item, 'location')) {
-            $result['LOCATION'] = $item->location;
+        if(!empty($item->getLocation())) {
+            $result['LOCATION'] = $item->getLocation();
+        }
+
+        if(!empty($item->getDescription())) {
+            $result['DESCRIPTION'] = $item->getDescription();
+        }
+
+        if ($item instanceof RecurrentEventIF && RecurrenceHelper::isRecurrent($item)) {
+
+            if(RecurrenceHelper::isRecurrentRoot($item)) {
+                $result['RRULE'] = $item->getRRule();
+
+                // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
+                if (!empty($item->getExdate())) {
+                    $result['EXDATE'] = [];
+                    foreach (explode(',', $item->getExdate()) as $exdate) {
+                        $result['EXDATE'][] = $exdate;
+                    }
+                }
+            } else if(RecurrenceHelper::isRecurrentInstance($item)) {
+                $result['RECURRENCE-ID'] = $item->getRecurrenceId();
+            }
+
+        } else {
+            $this->setLegacyRecurrentData($item, $result);
+
+        }
+
+        if ($item->getSequence() !== null) {
+            $result['SEQUENCE'] = $item->getSequence();
+        }
+
+        $lastModified = $item->getLastModified();
+        if($lastModified) {
+            $result['LAST-MODIFIED'] = $lastModified;
+        }
+
+        $evt = $this->vcalendar->add('VEVENT', $result);
+
+        if ($item->isAllDay()) {
+            if (isset($evt->DTSTART)) {
+                $evt->DTSTART['VALUE'] = 'DATE';
+            }
+
+            if (isset($evt->DTEND)) {
+                $evt->DTEND['VALUE'] = 'DATE';
+            }
+        }
+
+        if($item instanceof CalendarEventParticipationIF) {
+            $organizer = $item->getOrganizer();
+            if($organizer instanceof User) {
+                $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
+            }
+
+            /** This should be configurable because its may not be desired.
+            foreach ($item->findParticipants([CalendarEventParticipationIF::PARTICIPATION_STATUS_ACCEPTED])->limit(20)->all() as $user) {
+                /* @var $user User
+                $evt->add('ATTENDEE', $this->getCN($user));
+            }
+
+            if(!empty($item->getExternalParticipants())) {
+                foreach ($item->getExternalParticipants() as $email) {
+                    $evt->add('ATTENDEE', 'MAILTO:'.$email);
+                }
+            }
+            **/
+        }
+
+        return $this;
+    }
+
+    private function setLegacyRecurrentData($item, &$result)
+    {
+        if(!$item instanceof CalendarEventIFWrapper) {
+            return;
         }
 
         if ($item->getRRule()) {
@@ -120,25 +228,14 @@ class VCalendar extends Model
                 $result['EXDATE'][] = $exdate;
             }
         }
+    }
 
-        if (property_exists($item, 'description')) {
-            $result['DESCRIPTION'] = $item->description;
-        }
+    private function getCN(User $user)
+    {
+        $result = $user->getDisplayName();
 
-        $evt = $this->vcalendar->add('VEVENT', $result);
-
-        if (!empty($item->getUid())) {
-            $evt->UID = $item->getUid();
-        }
-
-        if ($item->isAllDay()) {
-            if (isset($evt->DTSTART)) {
-                $evt->DTSTART['VALUE'] = 'DATE';
-            }
-
-            if (isset($evt->DTEND)) {
-                $evt->DTEND['VALUE'] = 'DATE';
-            }
+        if($user->email) {
+            $result .= ':MAILTO:'.$user->email;
         }
 
         return $result;
@@ -154,6 +251,7 @@ class VCalendar extends Model
      *
      * @return mixed A Sabre\VObject\Component object representing a VTIMEZONE definition
      *               or false if no timezone information is available
+     * @throws Exception
      */
     function generate_vtimezone($tzid, $from = 0, $to = 0)
     {
@@ -161,7 +259,7 @@ class VCalendar extends Model
         if (!$to) $to = $from;
         try {
             $tz = new \DateTimeZone($tzid);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         // get all transitions for one year back/ahead
@@ -219,9 +317,9 @@ class VCalendar extends Model
 
 
     /**
-     * @param $items CalendarItem|CalendarItem[]|array
+     * @param $items CalendarEventIF|CalendarEventIF[]|array
      * @return VCalendar
-     * @throws \Exception
+     * @throws Exception
      */
     public function add($items)
     {

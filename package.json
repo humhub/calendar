@@ -12,7 +12,15 @@
     "url": "git+https://github.com/humhub/humhub-modules-calendar.git"
   },
   "dependencies": {
-    "fullcalendar": "*"
+    "@fullcalendar/core": "^4.3.1",
+    "@fullcalendar/daygrid": "*",
+    "@fullcalendar/interaction": "*",
+    "@fullcalendar/list": "*",
+    "@fullcalendar/moment": "*",
+    "@fullcalendar/moment-timezone": "*",
+    "@fullcalendar/timegrid": "*",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27"
   },
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
