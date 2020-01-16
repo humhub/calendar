@@ -72,8 +72,10 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             }
         });
 
+        var q = this.options.loadUrl.indexOf('?') === -1 ? '?' : '&' ;
+
         this.options.events = {
-            url: this.options.loadUrl + '&' + $.param({selectors: selectors, filters: filters}),
+            url: this.options.loadUrl + q + $.param({selectors: selectors, filters: filters}),
             error: function (err) {
                 module.log.error(err, true);
             }

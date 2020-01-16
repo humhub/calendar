@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.2 (January, 16, 2020)
+-----------------------
+- Fix: fullcalendar load url fails when using url rewrite
+
 1.0.1 (January, 16, 2020)
 -----------------------
 - Fix: Change default viewMode of legacy interface to `redirect`
