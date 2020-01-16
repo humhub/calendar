@@ -123,7 +123,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
 
     protected function getViewMode()
     {
-        return $this->getOption(static::OPTION_VIEW_MODE, static::VIEW_MODE_MODAL);
+        return $this->getOption(static::OPTION_VIEW_MODE, static::VIEW_MODE_REDIRECT);
     }
 
     protected function getViewUrl()
