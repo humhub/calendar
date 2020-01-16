@@ -6,8 +6,8 @@ Create events on profile or space level and allow other modules add calendar eve
 serves as basic calendar module and can be used in combination with the following modules:
 
  - [Task](https://www.humhub.com/marketplace/tasks/)
- - [Meetings](https://www.humhub.com/de/marketplace/meeting/)
- - [External Calendar](https://www.humhub.com/de/marketplace/meeting/)
+ - [Meetings](https://www.humhub.com/marketplace/meeting/)
+ - [External Calendar](https://www.humhub.com/marketplace/meeting/)
  - and others..
  
 ## Overview
