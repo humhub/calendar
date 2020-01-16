@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/humhub/humhub-modules-calendar.svg?branch=master)](https://travis-ci.org/humhub/humhub-modules-calendar)
-
 ## Description
 Full featured calendar for your users and spaces.
 
@@ -18,8 +16,8 @@ For a git based installation you'll need a `composer update` and `npm install` o
 ## Calendar interface
 
 The calendar module supports some interfaces which can be used by external events as see 
-[Interfaces](docs/interface.md) for the new interface available since module verison 1.0
-or [Interfaces](docs/interface0.6.md) for the legacy interface compatible with module version < 1.0
+[Interfaces](interface.md) for the new interface available since module verison 1.0
+or [Interfaces](interface0.6.md) for the legacy interface compatible with module version < 1.0
 
 ## Changelog
 

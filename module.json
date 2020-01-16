@@ -7,5 +7,5 @@
     "humhub": {
         "minVersion": "1.3.14"
     },
-    "screenshots": ["assets/screen1.jpg", "assets/screen2.jpg", "assets/screen3.jpg"]
+    "screenshots": ["resources/screen1.jpg", "resources/screen2.jpg", "resources/screen3.jpg"]
 }
