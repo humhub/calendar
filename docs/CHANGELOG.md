@@ -1,7 +1,11 @@
 Changelog
 =========
 
-1.0.0
+1.0.1 (January, 16, 2020)
+-----------------------
+- Fix: Change default viewMode of legacy interface to `redirect`
+
+1.0.0 (January, 16, 2020)
 -----------------------
 - Chng: Switched from array based interfaces to real interfaces
 - Enh: Reminder support with reminder interface `CalendarEventReminderIF`
