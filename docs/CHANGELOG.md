@@ -3,47 +3,53 @@ Changelog
 
 1.0.0
 -----------------------
-- Enh: Reminder support with reminder interface
-- Enh: Introduction of new `CalendarEventParticipationIF`
-- Enh: Support of recurring events with recurring event interface
 - Chng: Switched from array based interfaces to real interfaces
+- Enh: Reminder support with reminder interface `CalendarEventReminderIF`
+- Enh: Introduction of new `CalendarEventParticipationIF`
+- Enh: Support of recurring events with recurring `RecurrentEventIF`
+- Chng: Introduced `FullCalendarEventIF` for additional event view settings
 - Fix #161: Error when accessing global configuration, in case the module is not enabled on profile level
 - Chng: Use of `helpers/Url` class
-- Fix #106: Issues with time validation on swedish locale
+- Fix #106: Issues with time validation in swedish and greek locale
 - Chng: Omitted timezone translation on all day events
-- Enh: Never display timezone information on all day events
-- Enh: Better ICal export support
+- Enh: Omit timezone information on all day events
+- Enh: Enhanced ICal export format
 - Fix #18: Incorrect Phrasing of Strings
 - Chng: Updated to fullcalendar v4
 - Enh: Added fullcalendar list view
 - Enh: translatable calendar view buttons
 - Enh: Enhanced mobile calendar view
-- Chng: Switch from moment before (23:59:59) to moment after end date format on all_day events
+- Chng: Switch from inclusive to exclusive end date (23:59:59) on all day events
 - Fix #117: Date selection accepts invalid user input
 - Fix #155: AbstractCalendarQuery does not include events spanning over the search interval
 - Fix #78: Add date information to response activity
 - Enh #165: Improved mail html and text views
 
+
 0.7.5 (October 16, 2019)
 -----------------------
 - Fix: ExternalCalendarEntryQuery with either only start or only end not fails
-- Fix #163: Issue with sabre/uri and PHP < 7
+
 
 0.7.4 (October 16, 2019)
 -----------------------
 - Enh: Translation update
 
+
 0.7.3 (August 28, 2019)
 -----------------------
 - Fix: My events filter not working
+
 
 0.7.2 (August 22, 2019)
 -----------------------
 - Fix: `VCalendar::withEvents()` broken
 
+
 0.7.1 (August 22, 2019)
 -----------------------
 - Fix: Issue with PHP < 7 use of incompatible sabre/xml version
+
 
 0.7 (August 22, 2019)
 -----------------------
@@ -60,6 +66,7 @@ Changelog
 - Enh: Added rounded top border to global calendar view
 - Chng: Updated min version to 1.3.14
 
+
 0.6.23 (November 27, 2018)
 -----------------------
 - Enh: Use of new richtext
@@ -69,18 +76,22 @@ Changelog
 -----------------------
 - Fix: Hide permissions for space guest role
 
+
 0.6.21 (November 14, 2018)
 -----------------------
 - Fix: Same day events displaying wrong output date format
+
 
 0.6.20 (September 17, 2018)
 -----------------------
 - Enh: Added time information to force participation mail
 - Enh: Updated Translations
 
+
 0.6.19 (September 04, 2018)
 -----------------------
 - Fix: Other calendar configuration view not working
+
 
 0.6.18 (August 23, 2018)
 -----------------------
@@ -92,6 +103,7 @@ Changelog
 - Fix: Canceled event missing event title
 - Enh: Added move feature for HumHub >= 1.3.2
 - Fix: Global calendar types in space in space edit view
+
 
 0.6.17  (July 4, 2018)
 -----------------------

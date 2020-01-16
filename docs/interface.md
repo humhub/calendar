@@ -306,7 +306,7 @@ class CustomCalendarEvent extends CustomEvent implements EditableEventIF {
   
   public function saveEvent()
   {
-    $this->save();
+   return $this->save();
   }
 
   public static function find()

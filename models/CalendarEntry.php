@@ -878,6 +878,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function saveEvent()
     {
-       $this->save();
+       return $this->save();
     }
 }
