@@ -61,11 +61,11 @@ class Module extends ContentContainerModule
      */
     public static function registerAutoloader()
     {
-        if (class_exists('\ICal\ICal')) {
+        if (class_exists('\Sabre\VObject\Component\VCalendar')) {
             return;
         }
 
-        require Yii::getAlias('@external_calendar/vendor/autoload.php');
+        require Yii::getAlias('@calendar/vendor/autoload.php');
     }
 
     public function getRemidnerProcessIntervalS()
