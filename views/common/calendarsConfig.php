@@ -6,12 +6,15 @@
  *
  */
 
+use humhub\components\View;
+use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
-/* @var $this \humhub\components\View */
-/* @var $calendars \humhub\modules\calendar\interfaces\event\CalendarTypeSetting[] */
-/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $this View */
+/* @var $calendars CalendarTypeSetting[] */
+/* @var $contentContainer ContentContainerActiveRecord */
 ?>
 
 
@@ -28,11 +31,11 @@ use humhub\modules\calendar\widgets\GlobalConfigMenu;
     <div class="panel-body">
         <div class="clearfix">
             <h4>
-                <?= Yii::t('CalendarModule.config', 'Other Calendars Configuration'); ?>
+                <?= Yii::t('CalendarModule.config', 'Calendar Configuration'); ?>
             </h4>
 
             <div class="help-block">
-                <?= Yii::t('CalendarModule.config', 'Here you can manage calendar types provided by other modules.') ?>
+                <?= Yii::t('CalendarModule.config', 'Here you can manage and disable different calendars.') ?>
             </div>
 
         </div>

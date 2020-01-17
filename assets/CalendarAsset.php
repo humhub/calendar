@@ -21,12 +21,11 @@ class CalendarAsset extends AssetBundle
     public $sourcePath = '@calendar/resources/js';
 
     public $js = [
-        'humhub.calendar.Calendar.js'
+        'humhub.calendar.Calendar.min.js'
     ];
 
     public $depends = [
         FullCalendarAssets::class,
-        FullCalendarThemeAssets::class,
         CalendarBaseAssets::class
     ];
 

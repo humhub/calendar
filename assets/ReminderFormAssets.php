@@ -19,6 +19,6 @@ class ReminderFormAssets extends AssetBundle
     public $sourcePath = '@calendar/resources';
 
     public $js = [
-        'js/humhub.calendar.reminder.Form.js',
+        'js/humhub.calendar.reminder.Form.min.js',
     ];
 }

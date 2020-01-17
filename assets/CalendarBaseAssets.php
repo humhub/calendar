@@ -22,6 +22,6 @@ class CalendarBaseAssets extends AssetBundle
         'css/calendar.css',
     ];
     public $js = [
-        'js/humhub.calendar.js'
+        'js/humhub.calendar.min.js'
     ];
 }

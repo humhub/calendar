@@ -76,7 +76,7 @@ class ContainerConfigMenu extends SettingsTabs
 
         if(!empty($calendarService->getCalendarItemTypes($this->contentContainer))) {
             $this->items[] = [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Other Calendars'),
+                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Calendars'),
                 'url' => Url::toConfigCalendars($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'calendars'),
                 'visible' => Yii::$app->user->isAdmin()

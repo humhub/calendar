@@ -18,12 +18,14 @@ namespace humhub\modules\calendar\interfaces;
 use DateInterval;
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\event\CalendarEntryTypeSetting;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarItemsEvent;
 use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\interfaces\event\CalendarTypeArrayWrapper;
 use humhub\modules\calendar\models\CalendarEntryQuery;
+use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
@@ -88,12 +90,11 @@ class CalendarService extends Component
         $event = new CalendarItemTypesEvent(['contentContainer' => $contentContainer]);
         $this->trigger(self::EVENT_GET_ITEM_TYPES, $event);
 
-        $result = [];
+        $result = [new CalendarEntryTypeSetting(['type' => new CalendarEntryType(), 'contentContainer' => $contentContainer])];
         foreach ($event->getTypes() as $key => $type) {
             $type = is_array($type) ? new CalendarTypeArrayWrapper(['key' => $key, 'options' => $type]) : $type;
             $result[] = new CalendarTypeSetting(['type' => $type, 'contentContainer' => $contentContainer]);
         }
-
 
         return static::$resultCache[$containerKey] = $result;
     }

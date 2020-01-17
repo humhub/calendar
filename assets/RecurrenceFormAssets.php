@@ -19,6 +19,6 @@ class RecurrenceFormAssets extends AssetBundle
     public $sourcePath = '@calendar/resources';
 
     public $js = [
-        'js/humhub.calendar.recurrence.Form.js',
+        'js/humhub.calendar.recurrence.Form.min.js',
     ];
 }

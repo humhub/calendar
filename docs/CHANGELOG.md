@@ -1,6 +1,16 @@
 Changelog
 =========
 
+1.0.3 (January, 17, 2020)
+-----------------------
+- Fix: container based calendar type updates overwrite global defaults
+- Fix: Default weekly recurrence day not based on initial start date
+- Enh #42: Use space color as default entry color
+- Enh #95: Make default color of calendar events configurable
+- Chng: Renamed `Other calendars` section to `Calendars` section, since default events are configurable now
+- Enh: Use of grunt to minify and concat assets
+- Chng: `CalendarService::getCalendarItemTypes()` now includes `CalendarEntryType`
+
 1.0.2 (January, 16, 2020)
 -----------------------
 - Fix: fullcalendar load url fails when using url rewrite

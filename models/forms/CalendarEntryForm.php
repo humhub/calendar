@@ -115,13 +115,19 @@ class CalendarEntryForm extends Model
     {
         $instance = new static(['entry' => new CalendarEntry($contentContainer)]);
         $instance->updateDateRangeFromCalendar($start, $end);
+        $instance->setDefaults(); // Make sure default values are based on new start/end
         return $instance;
     }
 
     public function init()
     {
         parent::init();
+        $this->setDefaults();
 
+    }
+
+    private function setDefaults()
+    {
         $this->timeZone = $this->entry->time_zone;
         $this->is_public = $this->entry->content->visibility;
 

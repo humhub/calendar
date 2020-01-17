@@ -45,7 +45,7 @@ if($model instanceof CalendarTypeSetting) {
                                 {error}{hint}'
                 ])->textInput(['disabled' => $titleDisabled, 'placeholder' => Yii::t('CalendarModule.config', 'Name'), 'maxlength' => 100])->label(false) ?>
             </div>
-            <?php if($model instanceof CalendarTypeSetting) : ?>
+            <?php if($model instanceof CalendarTypeSetting && $model->canBeDisabled()) : ?>
                 <?= $form->field($model, 'enabled')->checkbox() ?>
             <?php endif; ?>
         </div>

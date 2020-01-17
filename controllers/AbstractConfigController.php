@@ -8,6 +8,7 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
@@ -107,15 +108,16 @@ abstract class AbstractConfigController extends ContentContainerController
 
     public function actionCalendars()
     {
+        $types = $this->calendarService->getCalendarItemTypes($this->contentContainer);
         return $this->render(static::VIEW_CONFIG_CALENDARS, [
             'contentContainer' => $this->contentContainer,
-            'calendars' => $this->calendarService->getCalendarItemTypes($this->contentContainer)
+            'calendars' => $types
         ]);
     }
 
     public function actionEditCalendars($key)
     {
-        $item = $this->calendarService->getItemType($key);
+        $item = $this->calendarService->getItemType($key, $this->contentContainer);
 
         if(!$item) {
             throw new HttpException(404);

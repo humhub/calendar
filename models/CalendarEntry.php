@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\interfaces\event\CalendarEntryTypeSetting;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -152,6 +153,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         // Note we can't call this in `init()` because of https://github.com/humhub/humhub/issues/3734
         $this->participation->setDefautls();
+
+        if(!$this->color && $this->content->container) {
+            $typeSetting = new CalendarEntryTypeSetting(['type' => $this->getEventType(), 'contentContainer' => $this->content->container]);
+            $this->color = $typeSetting->getColor();
+        }
     }
 
     /**

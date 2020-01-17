@@ -16,6 +16,8 @@
 namespace humhub\modules\calendar\interfaces\event;
 
 
+use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Model;
 use humhub\modules\calendar\helpers\Url;
@@ -31,6 +33,8 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  */
 class CalendarTypeSetting extends Model implements CalendarTypeIF
 {
+    const COLOR_VALIDATON_PATTERN = '/^#(?:[0-9a-fA-F]{3}){1,2}$/';
+
     /**
      * Fallback color used in case no default color was provided
      */
@@ -70,7 +74,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
         return [
             ['color', 'required'],
             ['enabled', 'integer', 'min' => 0, 'max' => 1],
-            ['color', 'match', 'pattern' => '/^#(?:[0-9a-fA-F]{3}){1,2}$/'],
+            ['color', 'match', 'pattern' => static::COLOR_VALIDATON_PATTERN],
         ];
     }
 
@@ -167,6 +171,11 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
         }
 
         return false;
+    }
+
+    public function canBeDisabled()
+    {
+        return true;
     }
 
     /**
