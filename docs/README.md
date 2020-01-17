@@ -22,4 +22,4 @@ serves as basic calendar module and can be used in combination with the followin
  
 ## Further Information
 
-Please refer to the [Developer Section](develop.md) for more information.
+Please refer to the [Developer Section](DEVELOPER.md) for more information.
