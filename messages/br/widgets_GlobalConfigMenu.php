@@ -1,8 +1,8 @@
 <?php
 
 return [
+    'Calendars' => '',
     'Defaults' => '',
     'Event Types' => '',
-    'Other Calendars' => '',
     'Snippet' => '',
 ];

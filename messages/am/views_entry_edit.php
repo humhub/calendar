@@ -1,12 +1,16 @@
 <?php
-return array (
-  '<strong>Create</strong> event' => '',
-  '<strong>Edit</strong> event' => '',
-  'Basic' => 'መሰረታዊ',
-  'Everybody can participate' => '',
-  'Files' => 'ፋይሎች',
-  'No participants' => '',
-  'Participation' => '',
-  'Select event type...' => '',
-  'Title' => 'ርዕስ',
-);
+
+return [
+    'Basic' => 'መሰረታዊ',
+    'Files' => 'ፋይሎች',
+    'Title' => 'ርዕስ',
+    '<strong>Create</strong> event' => '',
+    '<strong>Edit</strong> event' => '',
+    '<strong>Edit</strong> recurring event' => '',
+    'Everybody can participate' => '',
+    'No participants' => '',
+    'Participation' => '',
+    'Recurrence' => '',
+    'Reminder' => '',
+    'Select event type...' => '',
+];

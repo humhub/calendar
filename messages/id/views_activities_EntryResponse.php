@@ -1,6 +1,7 @@
 <?php
-return array (
-  '%displayName% attends to %contentTitle%.' => 'bisa hadir ke',
-  '%displayName% maybe attends to %contentTitle%.' => 'mungkin bisa hadir',
-  '%displayName% not attends to %contentTitle%.' => 'tidak dapat hadir',
-);
+
+return [
+    '%displayName% cannot attend %contentTitle%.' => '',
+    '%displayName% is attending %contentTitle%.' => '',
+    '%displayName% might be attending %contentTitle%.' => '',
+];

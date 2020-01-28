@@ -1,6 +1,7 @@
 <?php
-return array (
-  '%displayName% attends to %contentTitle%.' => '%displayName% piedalīsies %contentTitle%.',
-  '%displayName% maybe attends to %contentTitle%.' => '%displayName% varbūt piedalīsies %contentTitle%.',
-  '%displayName% not attends to %contentTitle%.' => '%displayName% nepiedalīsies %contentTitle%.',
-);
+
+return [
+    '%displayName% cannot attend %contentTitle%.' => '',
+    '%displayName% is attending %contentTitle%.' => '',
+    '%displayName% might be attending %contentTitle%.' => '',
+];

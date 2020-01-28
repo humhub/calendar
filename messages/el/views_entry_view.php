@@ -1,9 +1,10 @@
 <?php
-return array (
-  'Attend' => 'Προσέχω',
-  'Decline' => 'Άρνηση',
-  'Maybe' => 'Ίσως',
-  'Participant information:' => 'Πληροφορίες συμμετεχόντων:',
-  'Read full description...' => 'Διαβάστε την πλήρη περιγραφή ...',
-  'Read full participation info...' => 'Διαβάστε τις πλήρεις πληροφορίες συμμετοχής ...',
-);
+
+return [
+    'Attend' => 'Προσέχω',
+    'Decline' => 'Άρνηση',
+    'Maybe' => 'Ίσως',
+    'Read full description...' => 'Διαβάστε την πλήρη περιγραφή ...',
+    'Read full participation info...' => 'Διαβάστε τις πλήρεις πληροφορίες συμμετοχής ...',
+    'Additional information:' => '',
+];

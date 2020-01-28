@@ -1,11 +1,6 @@
 <?php
 
 return [
-    'Add all space members to this event' => '',
-    'Add remaining space members to this event' => '',
-    'Participation Info' => '',
-    '{displayName} Birthday' => '',
-    '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
     '<strong>Add</strong> profile calendar' => '<strong>Añadir</strong> calendario del perfil',
     '<strong>Choose</strong> target calendar' => 'Elige calendario',
     'Adds a calendar for private or public events to your profile and main menu.' => 'Añade un calendario para eventos privados o publicos a tu perfil y menu principal.',
@@ -49,4 +44,20 @@ return [
     'Title' => 'Título',
     'You don\'t have permission to delete this event!' => '¡No tienes permisos para borrar este evento!',
     'canceled' => 'cancelado',
+    '<strong>Reminder</strong> settings' => '',
+    'Add all space members to this event' => '',
+    'Add remaining space members to this event' => '',
+    'Do you want to install this module on your profile?' => '',
+    'Friday' => '',
+    'Invalid date or time format!' => '',
+    'Monday' => '',
+    'Participation Info' => '',
+    'Saturday' => '',
+    'Set reminder' => '',
+    'Sunday' => '',
+    'Thursday' => '',
+    'Tuesday' => '',
+    'Wednesday' => '',
+    '{displayName} Birthday' => '',
+    '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
 ];

@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'Participation Info' => '',
     '<strong>Add</strong> profile calendar' => '<strong>Profil</strong> naptár hozzáadása',
     '<strong>Choose</strong> target calendar' => 'Célnaptár <strong>kiválasztása</strong>',
     'Add all space members to this event' => 'A közösség minden tagjának hozzáadása ehhez az eseményhez.',
@@ -49,4 +48,16 @@ return [
     'canceled' => 'törölve',
     '{displayName} Birthday' => '{displayName} születésnapja',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} hozzáadott téged, a(z) "{contentTitle}" eseményhez a(z) {spaceName} közösségben, mely ekkor lesz megtartva: {time}.',
+    '<strong>Reminder</strong> settings' => '',
+    'Do you want to install this module on your profile?' => '',
+    'Friday' => '',
+    'Invalid date or time format!' => '',
+    'Monday' => '',
+    'Participation Info' => '',
+    'Saturday' => '',
+    'Set reminder' => '',
+    'Sunday' => '',
+    'Thursday' => '',
+    'Tuesday' => '',
+    'Wednesday' => '',
 ];

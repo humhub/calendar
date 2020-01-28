@@ -1,7 +1,8 @@
 <?php
-return array (
-  'Defaults' => 'Standardinställning',
-  'Event Types' => 'Aktivitetstyper',
-  'Other Calendars' => 'Andra kalendrar',
-  'Snippet' => 'Snippet',
-);
+
+return [
+    'Defaults' => 'Standardinställning',
+    'Event Types' => 'Aktivitetstyper',
+    'Snippet' => 'Snippet',
+    'Calendars' => '',
+];

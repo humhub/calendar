@@ -1,10 +1,10 @@
 <?php
 
 return [
+    'Additional information:' => '',
     'Attend' => '',
     'Decline' => '',
     'Maybe' => '',
-    'Participant information:' => '',
     'Read full description...' => '',
     'Read full participation info...' => '',
 ];
