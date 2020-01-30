@@ -1,16 +1,15 @@
 <?php
-
-return [
-    '<strong>Create</strong> event' => '<strong>Maak</strong> gebeurtenis aan',
-    '<strong>Edit</strong> event' => '<strong>Bewerk</strong> gebeurtenis',
-    'Basic' => 'Basis',
-    'Everybody can participate' => 'Iedereen kan deelnemen',
-    'Files' => 'Bestanden',
-    'No participants' => 'Geen deelnemers',
-    'Participation' => 'Deelnemen',
-    'Select event type...' => 'Kies een gebeurtenis-type...',
-    'Title' => 'Titel',
-    '<strong>Edit</strong> recurring event' => '',
-    'Recurrence' => '',
-    'Reminder' => '',
-];
+return array (
+  '<strong>Create</strong> event' => '<strong>Maak</strong> gebeurtenis aan',
+  '<strong>Edit</strong> event' => '<strong>Bewerk</strong> gebeurtenis',
+  '<strong>Edit</strong> recurring event' => '',
+  'Basic' => 'Basis',
+  'Everybody can participate' => 'Iedereen kan deelnemen',
+  'Files' => 'Bestanden',
+  'No participants' => 'Geen deelnemers',
+  'Participation' => 'Deelnemen',
+  'Recurrence' => '',
+  'Reminder' => 'Herinnering',
+  'Select event type...' => 'Kies een gebeurtenis-type...',
+  'Title' => 'Titel',
+);

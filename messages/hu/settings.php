@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Participation' => '',
-    'Reminder' => '',
-];
+return array (
+  'Participation' => 'Részvétel',
+  'Reminder' => 'Emlékeztető',
+);
