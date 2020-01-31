@@ -1,8 +1,8 @@
 <?php
 return array (
-  'day' => '',
+  'day' => 'jour',
   'list' => 'liste',
-  'month' => '',
+  'month' => 'mois',
   'today' => 'aujourd\'hui',
-  'week' => '',
+  'week' => 'semaine',
 );
