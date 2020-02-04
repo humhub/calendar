@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Defaults' => 'Standaard instellingen',
-    'Event Types' => 'Gebeurtenis-types',
-    'Snippet' => 'Codefragment',
-    'Calendars' => '',
-];
+return array (
+  'Calendars' => 'Agenda\\\'s',
+  'Defaults' => 'Standaard instellingen',
+  'Event Types' => 'Gebeurtenis-types',
+  'Snippet' => 'Codefragment',
+);
