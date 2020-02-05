@@ -1,6 +1,12 @@
 Changelog
 =========
 
+
+1.0.4 (February 5, 2020)
+------------------------
+- Enh: Updated translations
+
+
 1.0.3 (January, 17, 2020)
 -----------------------
 - Fix: container based calendar type updates overwrite global defaults
