@@ -55,9 +55,13 @@ class RecurrenceFormWidget extends JsWidget
 
     public function getData()
     {
-        return [
-            'picker-selector' => $this->picker
-        ];
+        if ($this->picker) {
+            return [
+                'picker-selector' => $this->picker
+            ];
+        }
+
+        return [];
     }
 
 }
