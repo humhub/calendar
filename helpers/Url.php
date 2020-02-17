@@ -161,7 +161,8 @@ class Url extends BaseUrl
             return $container->createUrl('/calendar/entry/view-recurrence', $params);
         }
 
-        return $container->createUrl('/calendar/entry/view', $params);
+        // Container should always be present but, in order to prevent null pointer (https://community.humhub.com/s/general-discussion/?contentId=209345)
+        return $container ? $container->createUrl('/calendar/entry/view', $params) : '#';
     }
 
     public static function toEntryDelete(CalendarEntry $entry, $cal = 0, ContentContainerActiveRecord $container = null)
