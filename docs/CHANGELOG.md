@@ -1,11 +1,13 @@
 Changelog
 =========
 
+1.0.5 (February 5, 2020)
+------------------------
+- Fix: recurrence_id unique index too long
 
 1.0.4 (February 5, 2020)
 ------------------------
 - Enh: Updated translations
-
 
 1.0.3 (January, 17, 2020)
 -----------------------
