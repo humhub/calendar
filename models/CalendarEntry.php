@@ -635,6 +635,10 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function getCalendarViewMode()
     {
+        if(empty($this->getCalendarViewUrl())) {
+            return static::VIEW_MODE_REDIRECT;
+        }
+        
         return static::VIEW_MODE_MODAL;
     }
 
