@@ -2,7 +2,7 @@
 return array (
   '<strong>Add</strong> profile calendar' => 'Profilkalender <strong>erstellen</strong>',
   '<strong>Choose</strong> target calendar' => 'Zielkalender <strong>wählen</strong>',
-  '<strong>Reminder</strong> settings' => '<strong>Reminder</strong> settings',
+  '<strong>Reminder</strong> settings' => '<strong>Erinnerungs</strong>einstellungen',
   'Add all space members to this event' => 'Alle Mitglieder dieses Spaces hinzufügen',
   'Add remaining space members to this event' => 'Restliche Mitglieder dieses Spaces hinzufügen',
   'Adds a calendar for private or public events to your profile and main menu.' => 'Fügt deinem Profil und Hauptmenü einen Kalender für private und öffentliche Termine hinzu.',
@@ -46,7 +46,7 @@ return array (
   'Reopen Event' => 'Termin wieder öffnen',
   'Saturday' => 'Samstag',
   'Send update notification' => 'Update-Benachrichtigung senden',
-  'Set reminder' => 'Errinerung erstellen',
+  'Set reminder' => 'Erinnerung erstellen',
   'Start Date' => 'Startdatum',
   'Start Time' => 'Startzeit',
   'Sunday' => 'Sonntag',
