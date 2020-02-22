@@ -19,6 +19,8 @@ use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use yii\web\NotFoundHttpException;
+use yii\web\RangeNotSatisfiableHttpException;
+use yii\web\Response;
 
 /**
  * EntryController used to display, edit or delete calendar entries
@@ -110,7 +112,7 @@ class EntryController extends ContentContainerController
     /**
      * @param $id
      * @param $type
-     * @return \yii\web\Response
+     * @return Response
      * @throws HttpException
      * @throws Throwable
      * @throws Exception
@@ -146,6 +148,10 @@ class EntryController extends ContentContainerController
      */
     public function actionEdit($id = null, $start = null, $end = null, $cal = null)
     {
+        if(empty($id) && !$this->canCreateEntries()) {
+            throw new HttpException(403);
+        }
+
         if (empty($id) && $this->canCreateEntries()) {
             $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end);
         } else {
@@ -180,7 +186,7 @@ class EntryController extends ContentContainerController
 
     /**
      * @param $id
-     * @return \yii\web\Response
+     * @return Response
      * @throws HttpException
      * @throws Throwable
      * @throws Exception
@@ -237,11 +243,10 @@ class EntryController extends ContentContainerController
 
     /**
      * @param $id
-     * @return EntryController|\yii\console\Response|\yii\web\Response
+     * @return EntryController|\yii\console\Response|Response
      * @throws HttpException
      * @throws Throwable
      * @throws Exception
-     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -274,7 +279,17 @@ class EntryController extends ContentContainerController
      */
     protected function getCalendarEntry($id)
     {
-        return CalendarEntry::find()->contentContainer($this->contentContainer)->readable()->where(['calendar_entry.id' => $id])->one();
+        if(!$id) {
+            throw new HttpException(404);
+        }
+
+        $entry = CalendarEntry::find()->contentContainer($this->contentContainer)->readable()->where(['calendar_entry.id' => $id])->one();
+
+        if(!$entry) {
+            throw new HttpException(404);
+        }
+
+        return $entry;
     }
 
     /**
@@ -288,14 +303,14 @@ class EntryController extends ContentContainerController
     }
 
     /**
-     * @return \yii\console\Response|\yii\web\Response
+     * @return Response
      * @throws Throwable
      * @throws Exception
-     * @throws \yii\web\RangeNotSatisfiableHttpException
+     * @throws RangeNotSatisfiableHttpException
      */
-    public function actionGenerateics()
+    public function actionGenerateics($id)
     {
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
+        $calendarEntry = $this->getCalendarEntry($id);
         $ics = $calendarEntry->generateIcs();
         return Yii::$app->response->sendContentAsFile($ics, uniqid() . '.ics', ['mimeType' => 'text/calendar']);
     }

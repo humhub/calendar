@@ -1,7 +1,11 @@
 Changelog
 =========
 
-1.0.5 (February 5, 2020)
+1.0.6
+------------------------
+- Fix: Forbidden create entry attempts should result in 403 instead of Internal server error
+
+1.0.5 (February 17, 2020)
 ------------------------
 - Fix: recurrence_id unique index too long
 
