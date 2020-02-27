@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Defaults' => 'Domyślne',
-    'Event Types' => 'Typy wydarzeń',
-    'Snippet' => 'Panel',
-    'Calendars' => '',
-];
+return array (
+  'Calendars' => 'Kalendarze',
+  'Defaults' => 'Domyślne',
+  'Event Types' => 'Typy wydarzeń',
+  'Snippet' => 'Panel',
+);

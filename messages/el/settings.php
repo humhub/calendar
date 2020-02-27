@@ -1,5 +1,5 @@
 <?php
 return array (
   'Participation' => 'Συμμετοχή',
-  'Reminder' => '',
+  'Reminder' => 'Υπενθύμιση',
 );
