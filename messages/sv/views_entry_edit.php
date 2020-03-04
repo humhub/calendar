@@ -8,7 +8,7 @@ return array (
   'Files' => 'Filer',
   'No participants' => 'Inga deltagare',
   'Participation' => 'Deltagande',
-  'Recurrence' => '',
+  'Recurrence' => 'Återkommande',
   'Reminder' => 'Påminnelse',
   'Select event type...' => 'Välj aktivitetstyp',
   'Title' => 'Rubrik',
