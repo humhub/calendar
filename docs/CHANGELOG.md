@@ -1,9 +1,11 @@
 Changelog
 =========
 
-1.0.6
-------------------------
+1.0.6 (March 4, 2020)
+---------------------
 - Fix: Forbidden create entry attempts should result in 403 instead of Internal server error
+- Fix #174: Spelling in calendar settings of german translation
+- Enh: Updated translations
 
 1.0.5 (February 17, 2020)
 ------------------------
