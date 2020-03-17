@@ -1,9 +1,8 @@
 <?php
-
-return [
-    '<strong>Starting</strong> {date}' => '',
-    'Additional information:' => '',
-    'Location:' => '',
-    'Organized by {userName}' => '',
-    'View Online: {url}' => '',
-];
+return array (
+  '<strong>Starting</strong> {date}' => '<strong>Ngày bắt đầu</strong> {date}',
+  'Additional information:' => 'Thông tin thêm:',
+  'Location:' => 'Địa điểm:',
+  'Organized by {userName}' => 'Tổ chức bởi {userName}',
+  'View Online: {url}' => 'Xem trực tuyến: {url}',
+);

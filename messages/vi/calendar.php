@@ -1,8 +1,8 @@
 <?php
 return array (
-  'day' => '',
-  'list' => 'liệt kê',
-  'month' => '',
+  'day' => 'ngày',
+  'list' => 'danh sách',
+  'month' => 'tháng',
   'today' => 'hôm nay',
-  'week' => '',
+  'week' => 'tuần',
 );
