@@ -37,8 +37,13 @@ class Events
      */
     public static function onBeforeRequest()
     {
-        static::registerAutoloader();
-        Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
+        try {
+            static::registerAutoloader();
+            Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
+        } catch (\Throwable $e) {
+            Yii::error($e);
+        }
+
     }
 
     /**
@@ -55,7 +60,11 @@ class Events
      */
     public static function onGetCalendarItemTypes($event)
     {
-        BirthdayCalendar::addItemTypes($event);
+        try {
+            BirthdayCalendar::addItemTypes($event);
+        } catch (\Throwable $e) {
+            Yii::error($e);
+        }
     }
 
     /**
@@ -64,106 +73,140 @@ class Events
      */
     public static function onFindCalendarItems($event)
     {
-        BirthdayCalendar::addItems($event);
+        try {
+            BirthdayCalendar::addItems($event);
+        } catch (\Throwable $e) {
+            Yii::error($e);
+        }
     }
 
     public static function onTopMenuInit($event)
     {
-        if (SnippetModuleSettings::instantiate()->showGlobalCalendarItems()) {
-            $event->sender->addItem([
-                'label' => Yii::t('CalendarModule.base', 'Calendar'),
-                'url' => Url::toGlobalCalendar(),
-                'icon' => '<i class="fa fa-calendar"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar' && Yii::$app->controller->id == 'global'),
-                'sortOrder' => 300,
-            ]);
+        try {
+            if (SnippetModuleSettings::instantiate()->showGlobalCalendarItems()) {
+                $event->sender->addItem([
+                    'label' => Yii::t('CalendarModule.base', 'Calendar'),
+                    'url' => Url::toGlobalCalendar(),
+                    'icon' => '<i class="fa fa-calendar"></i>',
+                    'isActive' => (Yii::$app->controller->module
+                        && Yii::$app->controller->module->id == 'calendar'
+                        && Yii::$app->controller->id == 'global'),
+                    'sortOrder' => 300,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
     }
 
     public static function onSpaceMenuInit($event)
     {
-        $space = $event->sender->space;
-        if ($space->isModuleEnabled('calendar')) {
-            $event->sender->addItem([
-                'label' => Yii::t('CalendarModule.base', 'Calendar'),
-                'group' => 'modules',
-                'url' => Url::toCalendar($space),
-                'icon' => '<i class="fa fa-calendar"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
+        try {
+            $space = $event->sender->space;
+            if ($space->isModuleEnabled('calendar')) {
+                $event->sender->addItem([
+                    'label' => Yii::t('CalendarModule.base', 'Calendar'),
+                    'group' => 'modules',
+                    'url' => Url::toCalendar($space),
+                    'icon' => '<i class="fa fa-calendar"></i>',
+                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
 
-            ]);
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
     }
 
     public static function onProfileMenuInit($event)
     {
-        $user = $event->sender->user;
-        if ($user->isModuleEnabled('calendar')) {
-            $event->sender->addItem([
-                'label' => Yii::t('CalendarModule.base', 'Calendar'),
-                'url' => Url::toCalendar($user),
-                'icon' => '<i class="fa fa-calendar"></i>',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
-            ]);
+        try {
+            $user = $event->sender->user;
+            if ($user->isModuleEnabled('calendar')) {
+                $event->sender->addItem([
+                    'label' => Yii::t('CalendarModule.base', 'Calendar'),
+                    'url' => Url::toCalendar($user),
+                    'icon' => '<i class="fa fa-calendar"></i>',
+                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
     }
 
     public static function onSpaceSidebarInit($event)
     {
-        $space = $event->sender->space;
-        $settings = SnippetModuleSettings::instantiate();
+        try {
+            $space = $event->sender->space;
+            $settings = SnippetModuleSettings::instantiate();
 
-        if ($space->isModuleEnabled('calendar')) {
-            if ($settings->showUpcomingEventsSnippet()) {
-                $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+            if ($space->isModuleEnabled('calendar')) {
+                if ($settings->showUpcomingEventsSnippet()) {
+                    $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+                }
             }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
     }
 
     public static function onDashboardSidebarInit($event)
     {
-        $settings = SnippetModuleSettings::instantiate();
+        try {
+            $settings = SnippetModuleSettings::instantiate();
 
-        if ($settings->showUpcomingEventsSnippet()) {
-            $event->sender->addWidget(UpcomingEvents::class, [], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+            if ($settings->showUpcomingEventsSnippet()) {
+                $event->sender->addWidget(UpcomingEvents::class, [], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
     }
 
     public static function onProfileSidebarInit($event)
     {
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
-
-        $user = $event->sender->user;
-        if ($user != null) {
-            $settings = SnippetModuleSettings::instantiate();
-
-            if ($settings->showUpcomingEventsSnippet()) {
-                $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $user], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+        try {
+            if (Yii::$app->user->isGuest) {
+                return;
             }
+
+            $user = $event->sender->user;
+            if ($user != null) {
+                $settings = SnippetModuleSettings::instantiate();
+
+                if ($settings->showUpcomingEventsSnippet()) {
+                    $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $user], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+                }
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
     }
 
     public static function onWallEntryLinks($event)
     {
-        $eventModel = static::getCalendarEvent($event->sender->object);
+        try {
+            $eventModel = static::getCalendarEvent($event->sender->object);
 
-        if(!$eventModel) {
-            return;
-        }
+            if(!$eventModel) {
+                return;
+            }
 
-        if ($eventModel instanceof ContentActiveRecord && $eventModel instanceof CalendarEventIF) {
-            $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $eventModel]);
-        }
+            if ($eventModel instanceof ContentActiveRecord && $eventModel instanceof CalendarEventIF) {
+                $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $eventModel]);
+            }
 
-        /* @var $eventModel CalendarEventIF */
-        if($eventModel->getStartDateTime() <= new DateTime()) {
-            return;
-        }
+            /* @var $eventModel CalendarEventIF */
+            if($eventModel->getStartDateTime() <= new DateTime()) {
+                return;
+            }
 
-        if($eventModel instanceof CalendarEventReminderIF) {
-            $event->sender->addWidget(ReminderLink::class, ['entry' => $eventModel]);
+            if($eventModel instanceof CalendarEventReminderIF) {
+                $event->sender->addWidget(ReminderLink::class, ['entry' => $eventModel]);
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
     }
 
@@ -189,17 +232,25 @@ class Events
 
     public static function onRecordBeforeInsert($event)
     {
-        static::onRecordBeforeUpdate($event);
+        try {
+            static::onRecordBeforeUpdate($event);
+        } catch (\Throwable $e) {
+            Yii::error($e);
+        }
     }
 
     public static function onRecordBeforeUpdate($event)
     {
-        $model = CalendarUtils::getCalendarEvent($event->sender);
-        if($model && ($model instanceof EditableEventIF)) {
-            /** @var $model EditableEventIF **/
-            if(empty($model->getUid())) {
-                $model->setUid(CalendarUtils::generateEventUid($model));
+        try {
+            $model = CalendarUtils::getCalendarEvent($event->sender);
+            if($model && ($model instanceof EditableEventIF)) {
+                /** @var $model EditableEventIF **/
+                if(empty($model->getUid())) {
+                    $model->setUid(CalendarUtils::generateEventUid($model));
+                }
             }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
     }
 
@@ -210,19 +261,24 @@ class Events
      */
     public static function onRecordBeforeDelete($event)
     {
-        $model = CalendarUtils::getCalendarEvent($event->sender);
+        try {
+            $model = CalendarUtils::getCalendarEvent($event->sender);
 
-        if(!$model || !($model instanceof CalendarEventReminderIF)) {
-            return;
+            if(!$model || !($model instanceof CalendarEventReminderIF)) {
+                return;
+            }
+
+            foreach(CalendarReminder::getEntryLevelReminder($model) as $reminder) {
+                $reminder->delete();
+            }
+
+            if($model instanceof RecurrentEventIF) {
+                $model->getRecurrenceQuery()->onDelete();
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
         }
 
-        foreach(CalendarReminder::getEntryLevelReminder($model) as $reminder) {
-            $reminder->delete();
-        }
-
-        if($model instanceof RecurrentEventIF) {
-            $model->getRecurrenceQuery()->onDelete();
-        }
     }
 
     /**
