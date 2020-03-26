@@ -6,6 +6,7 @@ Changelog
 - Chng: Updated grunt version to 1.1.0
 - Chng: More stable event error handling 
 - Fix #167: Can not remove calendar type, once a calendar type is set
+- Fix #173: Event cannot be moved to another Space
 
 1.0.6 (March 4, 2020)
 ---------------------
