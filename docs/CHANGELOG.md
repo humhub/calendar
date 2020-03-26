@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.6 (March 26, 2020)
+---------------------
+- Chng: Updated grunt version to 1.1.0
+
 1.0.6 (March 4, 2020)
 ---------------------
 - Fix: Forbidden create entry attempts should result in 403 instead of Internal server error

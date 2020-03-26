@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/humhub/humhub-modules-calendar#readme",
   "devDependencies": {
-    "grunt": "^1.0.4",
+    "grunt": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-uglify": "^4.0.1"
   }
