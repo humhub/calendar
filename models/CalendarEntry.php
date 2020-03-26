@@ -389,11 +389,25 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function setType($type)
     {
+        if(empty($type)) {
+            $this->removeType();
+            return;
+        }
+
         $type = ($type instanceof ContentTag) ? $type : ContentTag::findOne(['id' => $type]);
         if ($type->is(CalendarEntryType::class)) {
-            CalendarEntryType::deleteContentRelations($this->content);
+            $this->removeType();
             $this->content->addTag($type);
         }
+    }
+
+    /**
+     * Removes the calendar entry type.
+     * @param $type
+     */
+    public function removeType()
+    {
+        CalendarEntryType::deleteContentRelations($this->content);
     }
 
     /**

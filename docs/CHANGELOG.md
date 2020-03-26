@@ -4,6 +4,8 @@ Changelog
 1.0.6 (March 26, 2020)
 ---------------------
 - Chng: Updated grunt version to 1.1.0
+- Chng: More stable event error handling 
+- Fix #167: Can not remove calendar type, once a calendar type is set
 
 1.0.6 (March 4, 2020)
 ---------------------

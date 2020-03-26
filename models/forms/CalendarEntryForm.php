@@ -420,9 +420,7 @@ class CalendarEntryForm extends Model
             RichText::postProcess($this->entry->description, $this->entry);
             RichText::postProcess($this->entry->participant_info, $this->entry);
 
-            if ($this->type_id !== null) {
-                $this->entry->setType($this->type_id);
-            }
+            $this->entry->setType($this->type_id);
 
             if ($this->sendUpdateNotification && !$this->entry->isNewRecord) {
                 $this->entry->participation->sendUpdateNotification();
