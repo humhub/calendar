@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.6 (March 26, 2020)
+1.0.7 (March 26, 2020)
 ---------------------
 - Chng: Updated grunt version to 1.1.0
 - Chng: More stable event error handling 
