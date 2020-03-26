@@ -143,7 +143,7 @@ class Module extends ContentContainerModule
     /**
      * @inheritdoc
      */
-    public function getPermissions($contentContainer = null)
+    public function getContainerPermissions($contentContainer = null)
     {
         if ($contentContainer !== null) {
             return [

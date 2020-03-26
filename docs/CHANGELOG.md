@@ -8,6 +8,7 @@ Changelog
 - Fix #167: Can not remove calendar type, once a calendar type is set
 - Fix #173: Event cannot be moved to another Space
 - Fix #175: Implemented fallback for failed `calendar_entry_participant` user foreign key
+- Fix: Calendar permissions displayed on container without calendar module installed (https://github.com/humhub/humhub/issues/3828)
 
 1.0.6 (March 4, 2020)
 ---------------------
