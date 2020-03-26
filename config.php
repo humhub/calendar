@@ -2,6 +2,7 @@
 
 use humhub\components\Application;
 use humhub\modules\space\widgets\Menu;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\ProfileMenu;
 use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
 use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
@@ -33,5 +34,6 @@ return [
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_BEFORE_UPDATE, 'callback' => [Events::class, 'onRecordBeforeUpdate']],
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronRun']],
+        ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
     ],
 ];

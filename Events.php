@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 use Yii;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
@@ -307,6 +308,19 @@ class Events
                     $reminderSent->delete();
                 }
             }
+        }
+    }
+
+    /**
+     * Callback when a user is completely deleted.
+     *
+     * @param \yii\base\Event $event
+     */
+    public static function onUserDelete($event)
+    {
+        $user = $event->sender;
+        foreach (CalendarEntryParticipant::findAll(['user_id' => $user->id]) as $participant) {
+            $participant->delete();
         }
     }
 
