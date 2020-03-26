@@ -165,10 +165,11 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         }
 
         $spaceMemberQuery = Membership::find()
-            ->where('space_membership.user_id = user.id')
+            ->where('space_membership.user_id = calendar_entry_participant.user_id')
             ->andWhere(['space_membership.space_id' => $container->id]);
 
-        $query = $this->findParticipants()->andWhere(['NOT EXISTS', $spaceMemberQuery]);
+        $query = CalendarEntryParticipant::find()
+            ->where(['calendar_entry_id' => $this->entry->id])->andWhere(['NOT EXISTS', $spaceMemberQuery]);
 
         foreach ($query->all() as $nonSpaceMember) {
             try {
