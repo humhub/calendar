@@ -20,6 +20,25 @@ serves as basic calendar module and can be used in combination with the followin
  - Global and Space level default settings
  - ICS export
  
+## Installation
+
+A git installation requires calling `composer install` within the module root. 
+This is not required when installing by marketplace.
+
+## Build
+
+In order to build `resources/fullcalendar.bundle.min.js` run:
+
+```
+npm install
+```
+
+and
+
+```
+grunt build
+```
+ 
 ## Further Information
 
 Please refer to the [Developer Section](DEVELOPER.md) for more information.
