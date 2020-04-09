@@ -3,6 +3,8 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\components\access\ControllerAccess;
+use humhub\components\access\StrictAccess;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
@@ -25,6 +27,21 @@ class IcalController extends Controller
     public $calendarService;
 
     const EXPORT_MIME = 'text/calendar';
+
+    /**
+     * @inheritdocs
+     */
+    public $access = StrictAccess::class;
+
+    /**
+     * @return array
+     */
+    public function getAccessRules()
+    {
+        return [
+            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+        ];
+    }
 
     public function init()
     {

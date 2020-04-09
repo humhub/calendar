@@ -120,11 +120,7 @@ humhub.module('calendar', function (module, require, $) {
             }
         };
 
-        var CalendarEntry = function (id) {
-            Content.call(this, id);
-        };
-
-        object.inherits(CalendarEntry, Content);
+        var CalendarEntry = Content.extend();
 
         CalendarEntry.prototype.toggleClose = function (event) {
             this.update(client.post(event));

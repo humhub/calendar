@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use DateTime;
+use humhub\components\access\StrictAccess;
 use humhub\components\Controller;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -40,6 +41,14 @@ class GlobalController extends Controller
      */
     public $calendarService;
 
+    /**
+     * @inheritdocs
+     */
+    public $access = StrictAccess::class;
+
+    /**
+     * @return array
+     */
     public function getAccessRules()
     {
         return [

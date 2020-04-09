@@ -12,6 +12,8 @@ use yii\web\AssetBundle;
 
 class ReminderFormAssets extends AssetBundle
 {
+    public $defer = true;
+
     public $publishOptions = [
         'forceCopy' => false
     ];

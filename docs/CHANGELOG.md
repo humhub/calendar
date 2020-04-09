@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.8 (April 09, 2020)
+---------------------
+- Enh: Added 1.5 defer compatibility
+- Fix: load-ajax does not use `X-Requested-With	XMLHttpRequest` header
+- Fix: Global calendar does not use strict access for guest users
+
 1.0.7 (March 26, 2020)
 ---------------------
 - Chng: Updated grunt version to 1.1.0

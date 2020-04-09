@@ -10,22 +10,30 @@ humhub.module('calendar.Calendar', function (module, require, $) {
     var util = require('util');
     var string = util.string;
     var loader = require('ui.loader');
+    var view = require('ui.view');
     var modal = require('ui.modal');
 
     var Calendar = Widget.extend();
-    var view = require('ui.view');
 
     Calendar.prototype.init = function () {
+        var that = this;
         // Initial events
-        this.options.events = {
-            url: this.options.loadUrl,
-            data: {
-                selectors: this.options.selectors,
-                filters: this.options.filters
-            },
-            error: function (err) {
-                module.log.error(err, true);
-            }
+
+        this.options.events = function (info, successCallback, failureCallback) {
+        debugger;
+            $.ajax({
+                url: that.options.loadUrl,
+                type: 'GET',
+                data: {
+                    start: moment(info.start.valueOf()).format('YYYY-MM-DD'),
+                    end:  moment(info.end.valueOf()).format('YYYY-MM-DD'),
+                    selectors: that.options.selectors,
+                    filters: that.options.filters
+                },
+                success: function (response) {
+                    successCallback(response);
+                }
+            });
         };
 
         module.log.debug('Init calendar: ', this.options);
@@ -57,30 +65,21 @@ humhub.module('calendar.Calendar', function (module, require, $) {
     };
 
     Calendar.prototype.updateCalendarFilters = function (reload) {
-        var selectors = [];
-        var filters = [];
+        var that = this;
+        this.options.selectors = [];
+        this.options.filters = [];
 
         $('.selectorCheckbox').each(function () {
             if ($(this).prop('checked')) {
-                selectors.push($(this).val());
+                that.options.selectors.push($(this).val());
             }
         });
 
         $('.filterCheckbox').each(function () {
             if ($(this).prop('checked')) {
-                filters.push($(this).val());
+                that.options.filters.push($(this).val());
             }
         });
-
-        var q = this.options.loadUrl.indexOf('?') === -1 ? '?' : '&' ;
-
-        this.options.events = {
-            url: this.options.loadUrl + q + $.param({selectors: selectors, filters: filters}),
-            error: function (err) {
-                module.log.error(err, true);
-            }
-        };
-
 
         this.initFullCalendar(reload);
     };

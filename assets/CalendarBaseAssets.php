@@ -12,6 +12,8 @@ use yii\web\AssetBundle;
 
 class CalendarBaseAssets extends AssetBundle
 {
+    public $defer = true;
+
     public $publishOptions = [
         'forceCopy' => false
     ];
@@ -22,6 +24,6 @@ class CalendarBaseAssets extends AssetBundle
         'css/calendar.css',
     ];
     public $js = [
-        'js/humhub.calendar.min.js'
+        'js/humhub.calendar.js'
     ];
 }

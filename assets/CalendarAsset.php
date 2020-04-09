@@ -14,6 +14,8 @@ use yii\web\AssetBundle;
 
 class CalendarAsset extends AssetBundle
 {
+    public $defer = true;
+
     public $publishOptions = [
         'forceCopy' => false
     ];
