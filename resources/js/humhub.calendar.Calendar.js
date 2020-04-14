@@ -20,7 +20,6 @@ humhub.module('calendar.Calendar', function (module, require, $) {
         // Initial events
 
         this.options.events = function (info, successCallback, failureCallback) {
-        debugger;
             $.ajax({
                 url: that.options.loadUrl,
                 type: 'GET',
