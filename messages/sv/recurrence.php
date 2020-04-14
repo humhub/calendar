@@ -1,7 +1,7 @@
 <?php
 return array (
   'After (occurrences)' => '',
-  'Day' => '',
+  'Day' => 'Dag',
   'Days' => '',
   'Delete all events' => '',
   'Edit all events' => '',
@@ -20,7 +20,7 @@ return array (
   'On date' => '',
   'Repeat every' => '',
   'This event does not support recurrent events' => '',
-  'Week' => '',
+  'Week' => 'Vecka',
   'Weeks' => '',
   'Year' => '',
   'Years' => '',
