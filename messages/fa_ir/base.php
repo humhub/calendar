@@ -42,7 +42,7 @@ return array (
   'Send update notification' => '',
   'Start Date' => 'تاریخ شروع',
   'Start Time' => 'آغاز زمان',
-  'Time Zone' => '',
+  'Time Zone' => 'منطقه زمانی',
   'Title' => 'عنوان',
   'You don\'t have permission to delete this event!' => 'شما اجازه‌ی پاک کردن این رویداد را ندارید!',
   'canceled' => '',
