@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.9 (April 20, 2020)
+---------------------
+- Fix #178: Calendar settings button only visible for system admin
+
 1.0.8 (April 09, 2020)
 ---------------------
 - Enh: Added 1.5 defer compatibility

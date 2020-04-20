@@ -16,13 +16,19 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\permissions\ManageEntry;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\widgets\SettingsTabs;
 
 class ContainerConfigMenu extends SettingsTabs
 {
+    /**
+     * @var ContentContainerActiveRecord
+     */
     public $contentContainer;
 
     public function getFirstVisibleItem()
@@ -58,19 +64,20 @@ class ContainerConfigMenu extends SettingsTabs
     {
         /* @var $calendarService CalendarService */
         $calendarService =  Yii::$app->getModule('calendar')->get(CalendarService::class);
+        $canConfigure =  $this->contentContainer->can(ManageEntry::class);
 
         $this->items = [
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Defaults'),
                 'url' => Url::toConfig($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'index'),
-                'visible' => Yii::$app->user->isAdmin()
+                'visible' => $canConfigure
             ],
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
                 'url' => Url::toConfigTypes($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'types'),
-                'visible' => Yii::$app->user->isAdmin()
+                'visible' => $canConfigure
             ],
         ];
 
@@ -79,7 +86,7 @@ class ContainerConfigMenu extends SettingsTabs
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Calendars'),
                 'url' => Url::toConfigCalendars($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'calendars'),
-                'visible' => Yii::$app->user->isAdmin()
+                'visible' => $canConfigure
             ];
         }
     }
