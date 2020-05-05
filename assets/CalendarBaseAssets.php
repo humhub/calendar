@@ -21,9 +21,10 @@ class CalendarBaseAssets extends AssetBundle
     public $sourcePath = '@calendar/resources';
 
     public $css = [
-        'css/calendar.css',
+        'css/calendar.min.css',
     ];
+
     public $js = [
-        'js/humhub.calendar.js'
+        'js/humhub.calendar.min.js'
     ];
 }

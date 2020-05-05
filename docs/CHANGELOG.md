@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.0.10 (May 05, 2020)
+---------------------
+- Fix #178: Overflow issue in ee theme
+- Enh: Use of different aspect ratio for fluid themes
+- Enh: Added `aspectRatio` option to `FullCalendar` widget
+- Chng: Update HumHub min version to v1.4
+- Fix: Calendar buttons and loader render issue on mobile
+- Enh: Minified calendar.css stylesheet
+
 1.0.9 (April 20, 2020)
 ---------------------
 - Fix #178: Calendar settings button only visible for system admin

@@ -17,8 +17,8 @@ use humhub\widgets\FadeIn;
 <?php FadeIn::begin() ?>
 <div class="row calendar-options">
     <div class="col-md-12">
-        <div id="calendar-overview-loader" style="position: absolute;right: 10px;top: 60px;"></div>
-        <div class="pull-right">
+        <div id="calendar-overview-loader"></div>
+        <div class="calendar-option-buttons">
             <?= CalendarControls::widget([
                     'widgets' => [
                         [ConfigureButton::class, [], ['sortOrder' => 100]]

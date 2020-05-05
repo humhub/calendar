@@ -126,7 +126,6 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             buttonText: buttonText,
             plugins: ['dayGrid', 'timeGrid', 'list', 'interaction', 'bootstrap', 'moment', 'momentTimezone'],
             defaultView: 'dayGridMonth',
-            aspectRatio: 1.5,
             canCreate: true,
             selectable: true,
             select: $.proxy(this.select, this),

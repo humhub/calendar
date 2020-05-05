@@ -28,6 +28,8 @@ class FullCalendar extends JsWidget
     public $filters = [];
     public $contentContainer;
     public $enabled = true;
+    public $aspectRatio;
+    public $height = 'auto';
 
     public function init()
     {
@@ -60,7 +62,9 @@ class FullCalendar extends JsWidget
     public function getData()
     {
         return [
+            'height' => $this->height,
             'load-url' => $this->loadUrl,
+            'aspect-ratio' => $this->aspectRatio,
             'edit-url' => $this->editUrl,
             'drop-url' => $this->dropUrl,
             'global-create-url' => Url::toGlobalCreate(),

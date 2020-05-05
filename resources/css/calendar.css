@@ -681,3 +681,25 @@ tbody,
 #calendar-entry-form .ProseMirror {
 	min-height: 150px !important;
 }
+
+.calendar-option-buttons {
+	float:right;
+}
+
+#calendar-overview-loader {
+	position: absolute;
+	right: 10px;
+	top: 60px;
+}
+
+@media (max-width: 767px) {
+	.calendar-option-buttons {
+		float:none;
+		text-align:right;
+	}
+
+	#calendar-overview-loader {
+		position: inherit;
+		float:left;
+	}
+}

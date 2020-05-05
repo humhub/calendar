@@ -13,6 +13,13 @@ module.exports = function (grunt) {
                 }
             }
         },
+        cssmin: {
+            target: {
+                files: {
+                    'resources/css/calendar.min.css': ['resources/css/calendar.css']
+                }
+            }
+        },
         concat: {
             fullcalendarJs: {
                 src:[
@@ -46,8 +53,8 @@ module.exports = function (grunt) {
     //grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-   // grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 
-    grunt.registerTask('build', ['concat', 'uglify']);
+    grunt.registerTask('build', ['concat', 'uglify', 'cssmin']);
 };
