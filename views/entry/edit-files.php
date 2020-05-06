@@ -21,7 +21,6 @@ use humhub\modules\file\widgets\UploadButton;
                 'label' => true,
                 'tooltip' => false,
                 'cssButtonClass' => 'btn-default btn-sm',
-                'model' => $calendarEntryForm->entry,
                 'attribute' => 'files',
                 'dropZone' => '#calendar-entry-form',
                 'preview' => '#calendar_upload_preview',

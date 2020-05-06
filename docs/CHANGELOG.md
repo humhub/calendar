@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.11 (May 06, 2020)
+---------------------
+- Fix: #176 Files are not attached on calendar entry creation
+
 1.0.10 (May 05, 2020)
 ---------------------
 - Fix #178: Overflow issue in ee theme
