@@ -12,6 +12,7 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\calendar\Module;
 use humhub\modules\user\models\User;
 use yii\base\Model;
 use Sabre\VObject;
@@ -188,11 +189,16 @@ class VCalendar extends Model
             }
         }
 
+        $module = Module::instance();
+
         if($item instanceof CalendarEventParticipationIF) {
-            $organizer = $item->getOrganizer();
-            if($organizer instanceof User) {
-                $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
+            if($module->icsOrganizer) {
+                $organizer = $item->getOrganizer();
+                if($organizer instanceof User) {
+                    $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
+                }
             }
+
 
             /** This should be configurable because its may not be desired.
             foreach ($item->findParticipants([CalendarEventParticipationIF::PARTICIPATION_STATUS_ACCEPTED])->limit(20)->all() as $user) {
@@ -210,7 +216,7 @@ class VCalendar extends Model
 
         return $this;
     }
-
+    
     private function setLegacyRecurrentData($item, &$result)
     {
         if(!$item instanceof CalendarEventIFWrapper) {

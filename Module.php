@@ -33,6 +33,12 @@ class Module extends ContentContainerModule
      */
     public $maxReminder = 3;
 
+
+    /**
+     * @var bool whether or not to include the ORGANIZER in ICS export
+     */
+    public $icsOrganizer = false;
+
     /**
      * @inheritdoc
      */
@@ -138,6 +144,14 @@ class Module extends ContentContainerModule
     public function getConfigUrl()
     {
         return Url::toConfig();
+    }
+
+    /**
+     * @return Module
+     */
+    public static function instance()
+    {
+        return Yii::$app->getModule('calendar');
     }
 
     /**

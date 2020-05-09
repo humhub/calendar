@@ -1,9 +1,13 @@
 Changelog
 =========
 
+1.0.12 (Unreleased)
+---------------------
+- Fix #186: Make ICS Organizer field optional
+
 1.0.11 (May 06, 2020)
 ---------------------
-- Fix: #176 Files are not attached on calendar entry creation
+- Fix #176: Files are not attached on calendar entry creation
 
 1.0.10 (May 05, 2020)
 ---------------------
