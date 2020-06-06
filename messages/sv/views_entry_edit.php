@@ -2,7 +2,7 @@
 return array (
   '<strong>Create</strong> event' => '<strong>Skapa</strong> aktivitet',
   '<strong>Edit</strong> event' => '<strong>Ändra</strong> aktivitet',
-  '<strong>Edit</strong> recurring event' => '',
+  '<strong>Edit</strong> recurring event' => '<strong>Ändra</strong> återkommande aktivitet',
   'Basic' => 'Grund',
   'Everybody can participate' => 'Alla kan delta',
   'Files' => 'Filer',
