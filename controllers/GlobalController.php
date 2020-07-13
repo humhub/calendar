@@ -61,6 +61,7 @@ class GlobalController extends Controller
      */
     public function init()
     {
+        $this->appendPageTitle(Yii::t('CalendarModule.base', 'Calendar'));
         parent::init();
         $this->calendarService = $this->module->get(CalendarService::class);
     }
