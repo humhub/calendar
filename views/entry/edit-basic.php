@@ -64,7 +64,10 @@ use yii\jui\DatePicker;
     <?php Yii::$app->i18n->autosetLocale(); ?>
 
     <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
-    <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
+
+    <?php if($calendarEntryForm->canCreatePublicEntry()) :?>
+        <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
+    <?php endif; ?>
 
     <?= $form->field($calendarEntryForm->entry, 'description')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Description'), 'pluginOptions' => ['maxHeight' => '300px']])->label(false) ?>
 

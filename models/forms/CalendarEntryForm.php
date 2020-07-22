@@ -11,6 +11,12 @@ namespace humhub\modules\calendar\models\forms;
 
 use DateTime;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\permissions\CreatePublicContent;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
@@ -301,6 +307,12 @@ class CalendarEntryForm extends Model
         }
     }
 
+    public function canCreatePublicEntry()
+    {
+        $container = $this->entry->content->container;
+        return $container->can(CreatePublicContent::class) && !($container instanceof Space && $container->visibility === Space::VISIBILITY_NONE);
+    }
+
     /**
      * @param array $data
      * @param null $formName
@@ -317,7 +329,12 @@ class CalendarEntryForm extends Model
             $this->entry->time_zone = $this->timeZone;
         }
 
-        $this->entry->content->visibility = $this->is_public;
+        $container = $this->entry->content->container;
+        if(!$this->canCreatePublicEntry()) {
+            $this->entry->content->visibility = Content::VISIBILITY_PRIVATE;
+        } else {
+            $this->entry->content->visibility = $this->is_public;
+        }
 
         $result = $this->entry->load($data);
 
