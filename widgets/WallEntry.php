@@ -65,8 +65,8 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
         $result = parent::getContextMenu();
 
         if($canEdit) {
-            $this->addControl($result, [DeleteLink::class, ['entry' => $this->contentObject], ['sortOrder' => 100]]);
-            $this->addControl($result, [EditLink::class, ['entry' => $this->contentObject], ['sortOrder' => 200]]);
+            $this->addControl($result, [EditLink::class, ['entry' => $this->contentObject], ['sortOrder' => 100]]);
+            $this->addControl($result, [DeleteLink::class, ['entry' => $this->contentObject], ['sortOrder' => 200]]);
         }
 
         return $result;

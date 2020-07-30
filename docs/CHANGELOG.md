@@ -8,6 +8,8 @@ Changelog
 - Chg: Removed `RecurrenceQueryIF::getExistingRecurrences()` since it is not in use anymore
 - Fix: `AbstractRecurrenceQuery::findRecurrenceInstances()` did not include recurrences overlapping the search interval
 - Fix #193: Recurrence instance duplicates created by reminder process
+- Fix: Block `CalendarEntryParticipation::canRespond()` on recurrent root events
+- Chg: Switched edit/delete order in wallentry context menu
 
 1.0.11 (May 06, 2020)
 ---------------------
