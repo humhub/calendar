@@ -82,7 +82,7 @@ class ReminderProcessor extends Model
         foreach ($this->calendarService->getUpcomingEntries($container, $daysInFuture, $module->reminderProcessEventLimit, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE], true) as $entry) {
             $entry = CalendarUtils::getCalendarEvent($entry);
 
-            if(!$entry || !$entry instanceof CalendarEventReminderIF) {
+            if(!$entry || !($entry instanceof CalendarEventReminderIF)) {
                 continue;
             }
 
