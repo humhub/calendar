@@ -345,6 +345,10 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             $this->participation->setDefautls();
         }
 
+        if(RecurrenceHelper::isRecurrentRoot($this)) {
+            $this->streamChannel = null;
+        }
+
         return parent::beforeSave($insert);
     }
 

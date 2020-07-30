@@ -10,6 +10,7 @@ Changelog
 - Fix #193: Recurrence instance duplicates created by reminder process
 - Fix: Block `CalendarEntryParticipation::canRespond()` on recurrent root events
 - Chg: Switched edit/delete order in wallentry context menu
+- Chg: Prevent stream entry generation for recurrent root event
 
 1.0.11 (May 06, 2020)
 ---------------------
