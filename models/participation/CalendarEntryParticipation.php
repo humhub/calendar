@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\models\participation;
 
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\jobs\ForceParticipation;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -242,6 +243,10 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public function canRespond(User $user = null)
     {
+        if(RecurrenceHelper::isRecurrentRoot($this->entry)) {
+            return false;
+        }
+
         if (!$user) {
             return false;
         }
