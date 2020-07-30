@@ -27,8 +27,6 @@ interface RecurrenceQueryIF
      */
     public function getFollowingInstances();
 
-    public function getExistingRecurrences(DateTime $start = null, DateTime $end = null);
-
     public function expandSingle($recurrence_id, $save = true);
 
     public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null);

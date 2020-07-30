@@ -5,6 +5,9 @@ Changelog
 ---------------------
 - Fix #186: Make ICS Organizer field optional
 - Fix #189: Missing public content visibility permission check on calendar entry form
+- Chg: Removed `RecurrenceQueryIF::getExistingRecurrences()` since it is not in use anymore
+- Fix: `AbstractRecurrenceQuery::findRecurrenceInstances()` did not include recurrences overlapping the search interval
+- Fix #193: Recurrence instance duplicates created by reminder process
 
 1.0.11 (May 06, 2020)
 ---------------------

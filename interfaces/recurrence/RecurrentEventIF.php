@@ -76,8 +76,6 @@ use humhub\modules\calendar\interfaces\event\EditableEventIF;
  * related functions as:
  *
  * - [[AbstractRecurrenceQuery::getFollowingInstances()]]
- * - [[AbstractRecurrenceQuery::getExistingRecurrences()]]
- * - [[AbstractRecurrenceQuery::getExistingRecurrences()]]
  * - [[AbstractRecurrenceQuery::getRecurrenceRoot()]]
  * - [[AbstractRecurrenceQuery::getRecurrenceInstance()]]
  * - [[AbstractRecurrenceQuery::expandRoot()]]

@@ -11,6 +11,7 @@ use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
+use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
@@ -228,8 +229,21 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => self::$participationModes],
             [['end_datetime'], 'validateEndTime'],
+            [['recurrence_id'], 'validateRecurrenceId'],
             [['description', 'participant_info'], 'safe'],
         ];
+    }
+
+    /**
+     * This validation rules should prevent the creation of duplicate recurrent instances
+     */
+    public function validateRecurrenceId()
+    {
+        if($this->isNewRecord && RecurrenceHelper::isRecurrentInstance($this)) {
+            if(static::findOne(['recurrence_id' => $this->recurrence_id, 'parent_event_id' => $this->parent_event_id])) {
+                $this->addError('recurrence_id', 'Recurrence instance with the same recurrence_id already persisted');
+            }
+        }
     }
 
     public function afterFind()
@@ -903,5 +917,19 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public function saveEvent()
     {
        return $this->save();
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * // TODO: replace with $canMove = CreateEntry::class after HumHub min version = 1.5.2
+     */
+    public function canMove(ContentContainerActiveRecord $container = null)
+    {
+        if(!$container) {
+            return false;
+        }
+
+        return $container->getPermissionManager($this->content->createdBy)->can(CreateEntry::class);
     }
 }

@@ -221,9 +221,8 @@ class CalendarRecurrenceExpand extends Model
             $end = (new DateTime('now', $this->targetTimezone))->add(new \DateInterval('P2Y'));
         }
 
-        $existingModels = $this->event->getRecurrenceQuery()->getExistingRecurrences($start, $end);
         $recurrencesUTC = $this->calculateRecurrenceInstances($start, $end);
-        $this->syncRecurrences($existingModels, $recurrencesUTC, $endResult);
+        $this->syncRecurrences($recurrencesUTC, $endResult);
 
         return $endResult;
     }
@@ -248,7 +247,7 @@ class CalendarRecurrenceExpand extends Model
      * @param VEvent[] $recurrencesUTC
      * @param $endResult
      */
-    private function syncRecurrences(array $existingModels, array $recurrencesUTC, &$endResult)
+    private function syncRecurrences(array $recurrencesUTC, &$endResult)
     {
         foreach ($recurrencesUTC as $vEventUTC) {
             try {
@@ -265,7 +264,7 @@ class CalendarRecurrenceExpand extends Model
 
                 // Check if recurrence model exists
                 if (!$model) {
-                    $model = $this->findRecurrenceModel($existingModels, $vEventUTC);
+                    $model = $this->findRecurrenceModel($vEventUTC);
                 }
 
                 if (!$model) {
@@ -324,14 +323,9 @@ class CalendarRecurrenceExpand extends Model
      * @param VEvent $vEvent
      * @return mixed|null
      */
-    private function findRecurrenceModel(array $existingModels, VEvent $vEvent)
+    private function findRecurrenceModel(VEvent $vEvent)
     {
-        foreach ($existingModels as $existingModel) {
-            if ($existingModel->getRecurrenceId() === RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone())) {
-                return $existingModel;
-            }
-        }
-
-        return null;
+        $recurrenceId = RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone());
+        return $this->event->getRecurrenceQuery()->getRecurrenceInstance($recurrenceId);
     }
 }

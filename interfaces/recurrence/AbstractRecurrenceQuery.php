@@ -56,17 +56,6 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
     }
 
     /**
-     * @param DateTime|null $start
-     * @param DateTime|null $end
-     * @return ActiveQuery
-     * @throws \Throwable
-     */
-    public function getExistingRecurrences(DateTime $start = null, DateTime $end = null)
-    {
-        return $this->findRecurrenceInstances($start,$end)->all();
-    }
-
-    /**
      * @return ActiveQuery
      */
     protected function findRecurrenceInstances(DateTime $start = null, DateTime $end = null)
@@ -76,11 +65,15 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
             $query->andFilterWhere(
                 ['or',
                     ['and',
-                        ['>=', $this->startField, $start->format('Y-m-d H:i:s')],
-                        ['<=', $this->startField, $end->format('Y-m-d H:i:s')]
+                        ['<', $this->startField, $start->format('Y-m-d H:i:s')],
+                        ['>', $this->endField, $end->format('Y-m-d H:i:s')]
                     ],
                     ['and',
-                        ['>=', $this->endField, $start->format('Y-m-d H:i:s')],
+                        ['>=', $this->startField, $start->format('Y-m-d H:i:s')],
+                        ['<', $this->endField, $end->format('Y-m-d H:i:s')]
+                    ],
+                    ['and',
+                        ['>', $this->endField, $start->format('Y-m-d H:i:s')],
                         ['<=', $this->endField, $end->format('Y-m-d H:i:s')]
                     ]
                 ]);
