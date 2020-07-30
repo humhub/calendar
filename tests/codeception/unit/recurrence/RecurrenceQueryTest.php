@@ -23,7 +23,6 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         $this->space = Space::findOne(['id' => 1]);
 
         $from = $this->getEntryDate()->setTime(0,0,0);
-        $to = $this->getEntryDate()->modify('+2 day')->setTime(0,0,0);
 
         $this->rootEvent = $this->createEntry($from, 2, 'Two Day Event', $this->space);
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=2');

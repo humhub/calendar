@@ -23,7 +23,11 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
             </a>
             <h4 class="media-heading">
                 <a href="<?= $calendarEntry->getUrl(); ?>">
-                    <b><?= Html::encode($calendarEntry->title); ?></b>
+                    <b><?= Html::encode($calendarEntry->title) ?></b>
+
+                    <?php if(RecurrenceHelper::isRecurrentRoot($calendarEntry)) : ?>
+                        <small>(<?= Yii::t('CalendarModule.base', 'Recurring') ?>)</small>
+                    <?php endif; ?>
                 </a>
             </h4>
             <h5>

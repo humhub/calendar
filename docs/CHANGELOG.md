@@ -11,6 +11,7 @@ Changelog
 - Fix: Block `CalendarEntryParticipation::canRespond()` on recurrent root events
 - Chg: Switched edit/delete order in wallentry context menu
 - Chg: Prevent stream entry generation for recurrent root event
+- Enh: Added integrity check for duplicated recurrence instances
 
 1.0.11 (May 06, 2020)
 ---------------------
