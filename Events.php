@@ -3,6 +3,8 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use Yii;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
@@ -203,7 +205,7 @@ class Events
                 return;
             }
 
-            if($eventModel instanceof CalendarEventReminderIF) {
+            if($eventModel instanceof CalendarEventReminderIF && !RecurrenceHelper::isRecurrentRoot($eventModel)) {
                 $event->sender->addWidget(ReminderLink::class, ['entry' => $eventModel]);
             }
         } catch (\Throwable $e) {
@@ -274,13 +276,18 @@ class Events
             }
 
             if($model instanceof RecurrentEventIF) {
-                $model->getRecurrenceQuery()->onDelete();
+                // When deleting duplicates we want to prevent automatic exdate settings.
+                if(!static::$duplicateIntegrityRun) {
+                    $model->getRecurrenceQuery()->onDelete();
+                }
             }
         } catch (\Throwable $e) {
             Yii::error($e);
         }
 
     }
+
+    public static $duplicateIntegrityRun = false;
 
     /**
      * @param $event
@@ -309,6 +316,30 @@ class Events
                 }
             }
         }
+
+        static::$duplicateIntegrityRun = true;
+        $duplicatedRecurrences = CalendarEntry::find()
+            ->select('id, parent_event_id, recurrence_id, COUNT(*)')
+            ->where('recurrence_id IS NOT NULL')
+            ->andWhere('parent_event_id IS NOT NULL')
+            ->groupBy('parent_event_id, recurrence_id')
+            ->having('COUNT(*) > 1')->asArray(true);
+
+        foreach ($duplicatedRecurrences->all() as $duplicatedRecurrenceArr) {
+            $duplicateQuery = CalendarEntry::find()
+                ->where(['recurrence_id' => $duplicatedRecurrenceArr['recurrence_id']])
+                ->andWhere(['parent_event_id' => $duplicatedRecurrenceArr['parent_event_id']])
+                ->andWhere(['<>', 'id', $duplicatedRecurrenceArr['id']]);
+
+            foreach ($duplicateQuery->all() as $duplicate) {
+                if(RecurrenceHelper::isRecurrentInstance($duplicate) && $duplicate->id !== $duplicatedRecurrenceArr['id']) {
+                    if ($integrityController->showFix("Delete duplicated recurrent event instance " . $duplicate->id . "!")) {
+                        $duplicate->delete();
+                    }
+                }
+            }
+        }
+        static::$duplicateIntegrityRun = false;
     }
 
     /**
