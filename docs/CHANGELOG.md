@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.12 (Unreleased)
+1.0.12 (July, 31, 2020)
 ---------------------
 - Fix #186: Make ICS Organizer field optional
 - Fix #189: Missing public content visibility permission check on calendar entry form
