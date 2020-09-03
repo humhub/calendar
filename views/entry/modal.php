@@ -9,7 +9,7 @@ use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $entry \humhub\modules\calendar\models\CalendarEntry  */
 /* @var $canManageEntries boolean  */
 /* @var $editUrl string  */

@@ -8,7 +8,7 @@
 
 use humhub\modules\calendar\helpers\Url;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $model \humhub\modules\calendar\models\CalendarEntryType */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 

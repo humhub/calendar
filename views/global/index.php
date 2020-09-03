@@ -5,7 +5,7 @@ use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $selectors array */
 /* @var $filters array */
 

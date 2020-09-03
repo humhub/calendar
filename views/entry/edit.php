@@ -11,7 +11,7 @@ use humhub\widgets\Tabs;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\ModalDialog;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $calendarEntryForm CalendarEntryForm */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 
