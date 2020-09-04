@@ -1,7 +1,8 @@
 <?php
-return array (
-  'Defaults' => 'مقادیر پیش‌فرض',
-  'Event Types' => '',
-  'Other Calendars' => '',
-  'Snippet' => '',
-);
+
+return [
+    'Defaults' => 'مقادیر پیش‌فرض',
+    'Calendars' => '',
+    'Event Types' => '',
+    'Snippet' => '',
+];

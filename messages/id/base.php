@@ -52,6 +52,7 @@ return [
     'Invalid event type id selected.' => '',
     'Maximum number of participants' => '',
     'Monday' => '',
+    'Recurring' => '',
     'Reopen Event' => '',
     'Saturday' => '',
     'Set reminder' => '',

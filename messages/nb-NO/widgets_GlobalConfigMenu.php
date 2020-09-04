@@ -1,7 +1,8 @@
 <?php
-return array (
-  'Defaults' => 'Standard innstillinger',
-  'Event Types' => 'Aktivitetstyper',
-  'Other Calendars' => 'Andre Kalendere',
-  'Snippet' => 'Snippet',
-);
+
+return [
+    'Defaults' => 'Standard innstillinger',
+    'Event Types' => 'Aktivitetstyper',
+    'Snippet' => 'Snippet',
+    'Calendars' => '',
+];

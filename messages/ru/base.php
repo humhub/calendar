@@ -49,6 +49,7 @@ return [
     'Monday' => '',
     'Participation Info' => '',
     'Profile Calendar' => '',
+    'Recurring' => '',
     'Reopen Event' => '',
     'Saturday' => '',
     'Send update notification' => '',

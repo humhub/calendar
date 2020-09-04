@@ -53,6 +53,7 @@ return [
     'Invalid date or time format!' => '',
     'Monday' => '',
     'Participation Info' => '',
+    'Recurring' => '',
     'Saturday' => '',
     'Set reminder' => '',
     'Sunday' => '',

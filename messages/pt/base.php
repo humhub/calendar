@@ -47,6 +47,7 @@ return [
     'Participation Info' => '',
     'Profile Calendar' => '',
     'Public' => '',
+    'Recurring' => '',
     'Reopen Event' => '',
     'Saturday' => '',
     'Send update notification' => '',

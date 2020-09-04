@@ -54,6 +54,7 @@ return [
     'Friday' => '',
     'Invalid date or time format!' => '',
     'Monday' => '',
+    'Recurring' => '',
     'Saturday' => '',
     'Set reminder' => '',
     'Sunday' => '',

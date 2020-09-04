@@ -51,6 +51,7 @@ return [
     'Friday' => '',
     'Invalid date or time format!' => '',
     'Monday' => '',
+    'Recurring' => '',
     'Saturday' => '',
     'Send update notification' => '',
     'Set reminder' => '',
