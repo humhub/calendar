@@ -57,6 +57,7 @@ use humhub\modules\user\models\User;
  * @property string sequence
  * @property CalendarEntryParticipant[] participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
+ * @property string $location
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, FullCalendarEventIF,
     CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
@@ -231,6 +232,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             [['end_datetime'], 'validateEndTime'],
             [['recurrence_id'], 'validateRecurrenceId'],
             [['description', 'participant_info'], 'safe'],
+            ['location', 'string', 'max' => 64],
         ];
     }
 
@@ -315,6 +317,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             'allow_maybe' => Yii::t('CalendarModule.base', 'Allow participation state \'maybe\''),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
             'max_participants' => Yii::t('CalendarModule.base', 'Maximum number of participants'),
+            'location' => Yii::t('CalendarModule.base', 'Location'),
         ];
     }
 
@@ -595,9 +598,14 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $this->uid = $uid;
     }
 
+    public function hasLocation()
+    {
+        return isset($this->location) && $this->location !== '';
+    }
+
     public function getLocation()
     {
-        return null;
+        return $this->location;
     }
 
     public function getDescription()
@@ -824,6 +832,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $this->all_day = $root->all_day;
         $this->allow_decline = $root->allow_decline;
         $this->allow_maybe = $root->allow_maybe;
+        $this->location = $root->location;
     }
 
     /**

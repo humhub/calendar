@@ -69,6 +69,11 @@ class CalendarEntryForm extends Model
     public $timeZone;
 
     /**
+     * @var string location in calendar form
+     */
+    public $location;
+
+    /**
      * @var int calendar event type id
      */
     public $type_id;
@@ -135,6 +140,7 @@ class CalendarEntryForm extends Model
     private function setDefaults()
     {
         $this->timeZone = $this->entry->time_zone;
+        $this->location = $this->entry->location;
         $this->is_public = $this->entry->content->visibility;
 
         if(!$this->entry->isNewRecord) {
@@ -236,6 +242,7 @@ class CalendarEntryForm extends Model
             ['end_date', CalendarDateFormatValidator::class, 'timeField' => 'end_time'],
             ['end_date', CalendarEndDateValidator::class],
             ['type_id', CalendarTypeValidator::class],
+            ['location', 'string', 'max' => 64],
         ];
     }
 
@@ -248,6 +255,7 @@ class CalendarEntryForm extends Model
             'start_time' => Yii::t('CalendarModule.base', 'Start Time'),
             'end_time' => Yii::t('CalendarModule.base', 'End Time'),
             'timeZone' => Yii::t('CalendarModule.base', 'Time Zone'),
+            'location' => Yii::t('CalendarModule.base', 'Location'),
             'is_public' => Yii::t('CalendarModule.base', 'Public'),
             'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Send update notification'),
             'forceJoin' => ($this->entry->isNewRecord)

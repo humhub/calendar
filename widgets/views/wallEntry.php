@@ -53,6 +53,15 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
         <?php endif; ?>
     </div>
 
+    <?php if ($calendarEntry->hasLocation()) : ?>
+    <div class="row" style="padding-bottom:5px">
+        <div class="col-md-12">
+            <strong><?= Yii::t('CalendarModule.base', 'Location:'); ?></strong>
+            <?= Html::encode($calendarEntry->getLocation()); ?>
+        </div>
+    </div>
+    <?php endif;?>
+
     <?php if ($calendarEntry->participation->isEnabled()) : ?>
         <?php if($calendarEntry->participation->isShowParticipationInfo(Yii::$app->user->identity)) : ?>
             <br>

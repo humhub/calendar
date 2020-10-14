@@ -55,7 +55,9 @@ use yii\jui\DatePicker;
     </div>
 
     <div class="row">
-        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <?= $form->field($calendarEntryForm->entry, 'location')->textInput(['maxlength' => 64]) ?>
+        </div>
         <div class="col-md-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
             <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
         </div>
