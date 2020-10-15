@@ -69,11 +69,6 @@ class CalendarEntryForm extends Model
     public $timeZone;
 
     /**
-     * @var string location in calendar form
-     */
-    public $location;
-
-    /**
      * @var int calendar event type id
      */
     public $type_id;
@@ -140,7 +135,6 @@ class CalendarEntryForm extends Model
     private function setDefaults()
     {
         $this->timeZone = $this->entry->time_zone;
-        $this->location = $this->entry->location;
         $this->is_public = $this->entry->content->visibility;
 
         if(!$this->entry->isNewRecord) {
@@ -242,7 +236,6 @@ class CalendarEntryForm extends Model
             ['end_date', CalendarDateFormatValidator::class, 'timeField' => 'end_time'],
             ['end_date', CalendarEndDateValidator::class],
             ['type_id', CalendarTypeValidator::class],
-            ['location', 'string', 'max' => 64],
         ];
     }
 
