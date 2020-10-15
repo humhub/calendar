@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.13 (October, 14, 2020)
+1.0.13 (Unreleased)
 ---------------------
 - Enh: New attribute “Location” for calendar entry
 
