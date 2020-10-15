@@ -598,11 +598,21 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $this->uid = $uid;
     }
 
+    /**
+     * Check if this calendar entry has a filled location attribute
+     *
+     * @return bool true if location is filled, otherwise false
+     */
     public function hasLocation()
     {
         return isset($this->location) && $this->location !== '';
     }
 
+    /**
+     * Get location of this calendar entry
+     *
+     * @return string
+     */
     public function getLocation()
     {
         return $this->location;
