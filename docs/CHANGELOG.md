@@ -1,11 +1,13 @@
 Changelog
 =========
 
-1.0.13 (Unreleased)
+1.0.13 (October 16, 2020)
 ---------------------
 - Enh: New attribute “Location” for calendar entry
+- Fix #198: Recurrence & max. Participants not checked #198
 
-1.0.12 (July, 31, 2020)
+
+1.0.12 (July 31, 2020)
 ---------------------
 - Fix #186: Make ICS Organizer field optional
 - Fix #189: Missing public content visibility permission check on calendar entry form
