@@ -839,6 +839,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $this->color = $root->color;
         $this->time_zone = $root->time_zone;
         $this->participation_mode = $root->participation_mode;
+        $this->max_participants = $root->max_participants;
         $this->all_day = $root->all_day;
         $this->allow_decline = $root->allow_decline;
         $this->allow_maybe = $root->allow_maybe;
