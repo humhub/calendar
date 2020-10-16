@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.13 (Unreleased)
+---------------------
+- Enh: New attribute “Location” for calendar entry
+
 1.0.12 (July, 31, 2020)
 ---------------------
 - Fix #186: Make ICS Organizer field optional

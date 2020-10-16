@@ -248,6 +248,7 @@ class CalendarEntryForm extends Model
             'start_time' => Yii::t('CalendarModule.base', 'Start Time'),
             'end_time' => Yii::t('CalendarModule.base', 'End Time'),
             'timeZone' => Yii::t('CalendarModule.base', 'Time Zone'),
+            'location' => Yii::t('CalendarModule.base', 'Location'),
             'is_public' => Yii::t('CalendarModule.base', 'Public'),
             'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Send update notification'),
             'forceJoin' => ($this->entry->isNewRecord)
