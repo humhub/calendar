@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.14 (Unreleased)
+---------------------
+- Enh #208: Wall Stream Layout Migration
+
 1.0.13 (October 16, 2020)
 ---------------------
 - Enh: New attribute “Location” for calendar entry
