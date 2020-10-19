@@ -5,12 +5,12 @@ namespace humhub\modules\calendar\widgets;
 use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
-use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\content\widgets\stream\WallStreamModuleEntryWidget;
 use humhub\modules\file\widgets\ShowFiles;
 use Solarium\QueryType\Update\Query\Command\Delete;
 use Yii;
 
-class WallEntry extends WallStreamEntryWidget
+class WallEntry extends WallStreamModuleEntryWidget
 {
     /**
      * @var string
@@ -50,18 +50,10 @@ class WallEntry extends WallStreamEntryWidget
     {
         $result = parent::getControlsMenuEntries();
 
-        $canEdit = $this->model->content->canEdit();
-        if($canEdit) {
+        if ($this->model->content->canEdit()) {
             $result[] = [CloseLink::class, ['entry' => $this->model], ['sortOrder' => 210]];
-        }
-
-        if($this->stream) {
-            return $result;
-        }
-
-        if($canEdit) {
-            $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
-            $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
+        } else {
+            $this->renderOptions->disableControlsEntryEdit()->disableControlsEntryDelete();
         }
 
         return $result;
@@ -96,6 +88,14 @@ class WallEntry extends WallStreamEntryWidget
             'participantSate' => $entry->getParticipationStatus(Yii::$app->user->identity),
             'contentContainer' => $entry->content->container
         ]);
+    }
+
+    /**
+     * @return string a non encoded plain text title (no html allowed) used in the header of the widget
+     */
+    protected function getTitle()
+    {
+        return $this->model->title;
     }
 }
 
