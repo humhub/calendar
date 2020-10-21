@@ -13,6 +13,11 @@ use Yii;
 class WallEntry extends WallStreamModuleEntryWidget
 {
     /**
+     * @var CalendarEntry
+     */
+    public $model;
+
+    /**
      * @var string
      */
     public $managePermission = ManageEntry::class;
@@ -52,8 +57,9 @@ class WallEntry extends WallStreamModuleEntryWidget
 
         if ($this->model->content->canEdit()) {
             $result[] = [CloseLink::class, ['entry' => $this->model], ['sortOrder' => 210]];
-        } else {
             $this->renderOptions->disableControlsEntryEdit()->disableControlsEntryDelete();
+            $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
+            $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
         }
 
         return $result;
