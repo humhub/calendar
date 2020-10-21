@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.1.0 (Unreleased)
+---------------------
+- Enh #208: Wall Stream Layout Migration (HumHub 1.7+)
+
+
 1.0.13 (October 16, 2020)
 ---------------------
 - Enh: New attribute “Location” for calendar entry

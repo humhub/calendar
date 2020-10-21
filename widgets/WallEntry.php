@@ -6,12 +6,16 @@ use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\file\widgets\ShowFiles;
-use Solarium\QueryType\Update\Query\Command\Delete;
+use humhub\modules\content\widgets\stream\WallStreamModuleEntryWidget;
 use Yii;
-use humhub\modules\calendar\models\CalendarEntryParticipant;
 
-class WallEntry extends \humhub\modules\content\widgets\WallEntry
+class WallEntry extends WallStreamModuleEntryWidget
 {
+    /**
+     * @var CalendarEntry
+     */
+    public $model;
+
     /**
      * @var string
      */
@@ -46,27 +50,15 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
         ]
     ];
 
-    public function getContextMenu()
+    public function getControlsMenuEntries()
     {
-        $canEdit = $this->contentObject->content->canEdit();
-        if($canEdit) {
-            $this->controlsOptions = [
-                'add' => [
-                    [CloseLink::class, ['entry' => $this->contentObject], ['sortOrder' => 210]]
-                ]
-            ];
-        }
+        $result = parent::getControlsMenuEntries();
 
-        if($this->stream) {
-            return parent::getContextMenu();
-        }
-
-        $this->controlsOptions['prevent'] = [\humhub\modules\content\widgets\EditLink::class , \humhub\modules\content\widgets\DeleteLink::class];
-        $result = parent::getContextMenu();
-
-        if($canEdit) {
-            $this->addControl($result, [EditLink::class, ['entry' => $this->contentObject], ['sortOrder' => 100]]);
-            $this->addControl($result, [DeleteLink::class, ['entry' => $this->contentObject], ['sortOrder' => 200]]);
+        if ($this->model->content->canEdit()) {
+            $result[] = [CloseLink::class, ['entry' => $this->model], ['sortOrder' => 210]];
+            $this->renderOptions->disableControlsEntryEdit()->disableControlsEntryDelete();
+            $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
+            $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
         }
 
         return $result;
@@ -87,13 +79,13 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     }
 
     /**
-     * @inheritdoc
+     * @return string returns the content type specific part of this wall entry (e.g. post content)
      */
-    public function run()
+    protected function renderContent()
     {
         CalendarBaseAssets::register($this->getView());
         /* @var $entry CalendarEntry */
-        $entry = $this->contentObject;
+        $entry = $this->model;
 
         return $this->render('wallEntry', [
             'calendarEntry' => $entry,
@@ -101,6 +93,14 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
             'participantSate' => $entry->getParticipationStatus(Yii::$app->user->identity),
             'contentContainer' => $entry->content->container
         ]);
+    }
+
+    /**
+     * @return string a non encoded plain text title (no html allowed) used in the header of the widget
+     */
+    protected function getTitle()
+    {
+        return $this->model->title;
     }
 }
 

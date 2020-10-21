@@ -7,6 +7,7 @@ use humhub\modules\file\widgets\FilePreview;
 use yii\helpers\Html;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\widgets\Label;
 
 /* @var $calendarEntry CalendarEntry */
 /* @var $stream boolean */
@@ -18,22 +19,18 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
 <div class="media event" style="" data-action-component="calendar.CalendarEntry" data-calendar-entry="<?= $calendarEntry->id ?>">
     <div style="padding-left:10px; border-left: 3px solid <?= $color ?>">
         <div class="media-body clearfix">
-            <a href="<?= $calendarEntry->getUrl(); ?>" class="pull-left" style="margin-right: 10px">
-                <i class="fa fa-calendar colorDefault" style="font-size: 35px;"></i>
-            </a>
-            <h4 class="media-heading">
-                <a href="<?= $calendarEntry->getUrl(); ?>">
-                    <b><?= Html::encode($calendarEntry->title) ?></b>
-
-                    <?php if(RecurrenceHelper::isRecurrentRoot($calendarEntry)) : ?>
-                        <small>(<?= Yii::t('CalendarModule.base', 'Recurring') ?>)</small>
-                    <?php endif; ?>
-                </a>
-            </h4>
             <h5>
                 <?= $calendarEntry->getFormattedTime() ?>
-                <?php if($calendarEntry->isAllDay()) : ?>
+                <?php if ($calendarEntry->isAllDay()) : ?>
                         <small>(<?= Yii::t('CalendarModule.base', 'All Day') ?>)</small>
+                <?php endif; ?>
+
+                <?php if (RecurrenceHelper::isRecurrentRoot($calendarEntry)) : ?>
+                <small>(<?= Yii::t('CalendarModule.base', 'Recurring') ?>)</small>
+                <?php endif; ?>
+
+                <?php if ($calendarEntry->closed) : ?>
+                    <?= Label::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
                 <?php endif; ?>
             </h5>
 
