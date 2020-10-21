@@ -6,7 +6,7 @@ use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\file\widgets\ShowFiles;
-use Solarium\QueryType\Update\Query\Command\Delete;
+use humhub\modules\content\widgets\stream\WallStreamModuleEntryWidget;
 use Yii;
 
 class WallEntry extends WallStreamModuleEntryWidget
