@@ -51,6 +51,8 @@ return [
     'Do you want to install this module on your profile?' => '',
     'Friday' => '',
     'Invalid date or time format!' => '',
+    'Location' => '',
+    'Location:' => '',
     'Monday' => '',
     'Participation Info' => '',
     'Recurring' => '',

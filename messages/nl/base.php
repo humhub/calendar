@@ -35,6 +35,8 @@ return array (
   'Interested' => 'Belangstelling',
   'Invalid date or time format!' => 'Ongeldige datum- of tijdnotatie!',
   'Invalid event type id selected.' => 'Ongeldige gebeurtenistype-id geselecteerd.',
+  'Location' => 'Locatie',
+  'Location:' => 'Plaats:',
   'Maximum number of participants' => 'Maximaal aantal deelnemers',
   'Maybe attending users' => 'Misschien',
   'Monday' => 'Maandag',

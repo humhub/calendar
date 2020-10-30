@@ -40,6 +40,8 @@ return [
     'Interested' => '',
     'Invalid date or time format!' => '',
     'Invalid event type id selected.' => '',
+    'Location' => '',
+    'Location:' => '',
     'Maximum number of participants' => '',
     'Maybe attending users' => '',
     'Monday' => '',

@@ -35,6 +35,8 @@ return array (
   'Interested' => '',
   'Invalid date or time format!' => '',
   'Invalid event type id selected.' => '',
+  'Location' => 'Locație',
+  'Location:' => '',
   'Maximum number of participants' => '',
   'Maybe attending users' => 'Utilizatori care probabil vor participa',
   'Monday' => '',

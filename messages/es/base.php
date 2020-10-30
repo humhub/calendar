@@ -35,6 +35,8 @@ return array (
   'Interested' => 'Interesado',
   'Invalid date or time format!' => 'Formato de fecha y hora inválido!',
   'Invalid event type id selected.' => 'Se ha seleccionado un id de tipo de evento inválido.',
+  'Location' => 'Lugar',
+  'Location:' => 'Locación:',
   'Maximum number of participants' => 'Número máximo de participantes',
   'Maybe attending users' => 'Usuarios que tal vez asistan',
   'Monday' => 'Lunes',

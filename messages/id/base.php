@@ -50,6 +50,8 @@ return [
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Invalid date or time format!' => '',
     'Invalid event type id selected.' => '',
+    'Location' => '',
+    'Location:' => '',
     'Maximum number of participants' => '',
     'Monday' => '',
     'Recurring' => '',
