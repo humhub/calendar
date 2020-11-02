@@ -9,6 +9,7 @@ Changelog
 - Enh: Mark canceled events in "Upcoming events" snippet
 - Enh: Reworked calendar wall entry view
 - Fix #213: Calendar entry editing in stream not working
+- Fix #211: Unable to move event to another space
 
 
 1.0.13 (October 16, 2020)

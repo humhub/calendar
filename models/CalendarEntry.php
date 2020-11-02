@@ -950,12 +950,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     /**
      * @inheritDoc
      *
-     * // TODO: replace with $canMove = CreateEntry::class after HumHub min version = 1.5.2
      */
     public function canMove(ContentContainerActiveRecord $container = null)
     {
         if(!$container) {
-            return false;
+            return true;
         }
 
         return $container->getPermissionManager($this->content->createdBy)->can(CreateEntry::class);

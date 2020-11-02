@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\assets\CalendarBaseAssets;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\file\widgets\ShowFiles;
@@ -54,6 +55,11 @@ class WallEntry extends WallStreamModuleEntryWidget
     public function getControlsMenuEntries()
     {
         $result = parent::getControlsMenuEntries();
+
+        // Moving currently not supported for recurrent events
+        if(RecurrenceHelper::isRecurrent($this->model)) {
+            $this->renderOptions->disableControlsEntryMove();
+        }
 
         if($this->model->content->canEdit()) {
             $result[] = [CloseLink::class, ['entry' => $this->model], ['sortOrder' => 210]];
