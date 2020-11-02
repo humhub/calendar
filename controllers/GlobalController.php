@@ -172,12 +172,7 @@ class GlobalController extends Controller
             return [];
         }
 
-        $selectors = $this->getUserSettings()->getSerialized('lastSelectors', [
-            ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE,
-            ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
-        ]);
-
-        return $selectors;
+        return $this->getUserSettings()->getSerialized('lastSelectors', []);
     }
 
     /**
