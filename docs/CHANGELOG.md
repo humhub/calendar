@@ -11,6 +11,7 @@ Changelog
 - Fix #213: Calendar entry editing in stream not working
 - Fix #211: Unable to move event to another space
 - Fix #188: Topic label not translatable
+- Fix #166: Archived events are not excluded from the calendar
 
 1.0.13 (October 16, 2020)
 ---------------------

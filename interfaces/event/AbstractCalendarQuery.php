@@ -55,6 +55,7 @@ abstract class AbstractCalendarQuery extends Component
      * If this filter is set, non readable entries will be included
      */
     const FILTER_INCLUDE_NONREADABLE = 'includeNonReadable';
+    const FILTER_INCLUDE_ARCHIVED = 'includeArchived';
 
     const DATE_QUERY_TYPE_TIME = 0;
     const DATE_QUERY_TYPE_DATE = 1;
@@ -921,6 +922,10 @@ abstract class AbstractCalendarQuery extends Component
             $this->filterReadable();
         }
 
+        if (!$this->hasFilter(self::FILTER_INCLUDE_ARCHIVED)) {
+            $this->filterArchived();
+        }
+
         if (Yii::$app->user->isGuest) {
             $this->filterGuests($this->_container);
         } else {
@@ -978,6 +983,13 @@ abstract class AbstractCalendarQuery extends Component
     {
         if ($this->_query instanceof ActiveQueryContent) {
             $this->_query->readable();
+        }
+    }
+
+    protected function filterArchived()
+    {
+        if ($this->_query instanceof ActiveQueryContent) {
+            $this->_query->andWhere('content.archived = 0');
         }
     }
 
