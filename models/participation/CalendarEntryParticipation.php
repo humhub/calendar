@@ -212,8 +212,6 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             && $this->entry->content->container->can(ManageEntry::class);
     }
 
-
-
     /**
      * Finds a participant instance for the given user or the logged in user if no user provided.
      *
@@ -256,7 +254,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         }
 
         // Participants always can change/reset their state
-        if($this->isParticipant()) {
+        if($this->isParticipant($user)) {
             return true;
         }
 
@@ -271,7 +269,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         return false;
     }
 
-    private function maxParticipantCheck()
+    public function maxParticipantCheck()
     {
         return empty($this->entry->max_participants)
             || ($this->getParticipantCount(CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED) < $this->entry->max_participants);
