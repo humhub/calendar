@@ -11,6 +11,9 @@ use Yii;
 
 class WallEntry extends WallStreamModuleEntryWidget
 {
+
+    const VIEW_CONTEXT_FULLCALENDAR = 'fullCalendar';
+
     /**
      * @var CalendarEntry
      */
@@ -42,23 +45,25 @@ class WallEntry extends WallStreamModuleEntryWidget
     public $collapse = true;
 
     /**
-     * @inheritdoc
+     * @return array
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\IntegrityException
      */
-    public $addonOptions = [
-        ShowFiles::class => [
-            'preview' => false
-        ]
-    ];
-
     public function getControlsMenuEntries()
     {
         $result = parent::getControlsMenuEntries();
 
-        if ($this->model->content->canEdit()) {
+        if($this->model->content->canEdit()) {
             $result[] = [CloseLink::class, ['entry' => $this->model], ['sortOrder' => 210]];
-            $this->renderOptions->disableControlsEntryEdit()->disableControlsEntryDelete();
-            $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
-            $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
+
+            // We need special edit/delete behavior in full calendar view
+            if($this->renderOptions->isViewContext(static::VIEW_CONTEXT_FULLCALENDAR)) {
+                $this->renderOptions->disableControlsEntryEdit()->disableControlsEntryDelete();
+                $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
+                $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
+            }
         }
 
         return $result;

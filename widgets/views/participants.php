@@ -13,13 +13,13 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 ?>
 
 <?php if ($calendarEntry->participation->isEnabled()) : ?>
-    <strong><i class="fa fa-users"></i> <?= Yii::t('CalendarModule.widgets_views_participants', 'Participants:'); ?></strong><br>
+    <h5 style="margin:0 0 5px;font-weight:600"><?= Yii::t('CalendarModule.widgets_views_participants', 'Participants') ?></h5>
 
     <?php $title = Yii::t('CalendarModule.widgets_views_participants', ":count attending", [':count' => $countAttending]); ?>
     <?php if ($countAttending > 0) : ?>
         <?= ModalButton::instance($title)
             ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED))
-            ->link()->cssClass('colorSuccess')?>
+            ->link()?>
     <?php else : ?>
         <?= $title; ?>
     <?php endif ?>
@@ -30,7 +30,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
         <?php if ($countMaybe > 0) : ?>
             <?= ModalButton::instance($title)
                 ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE))
-                ->link()->cssClass('colorInfo') ?>
+                ->link() ?>
         <?php else : ?>
             <?= $title; ?>
         <?php endif ?>
@@ -42,7 +42,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
         <?php if ($countDeclined > 0) : ?>
             <?= ModalButton::instance($title)
                 ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED))
-                ->link()->cssClass('colorWarning') ?>
+                ->link() ?>
         <?php else : ?>
             <?= $title; ?>
         <?php endif ?>

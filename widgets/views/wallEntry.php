@@ -4,6 +4,7 @@ use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\widgets\EntryParticipants;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\Html;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -16,82 +17,84 @@ use humhub\widgets\Label;
 $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable('info');
 ?>
 
-<div class="media event" style="" data-action-component="calendar.CalendarEntry" data-calendar-entry="<?= $calendarEntry->id ?>">
-    <div style="padding-left:10px; border-left: 3px solid <?= $color ?>">
-        <div class="media-body clearfix">
-            <h5>
+<div class="media event calendar-wall-entry" style="margin-top:20px;" data-action-component="calendar.CalendarEntry" data-calendar-entry="<?= $calendarEntry->id ?>">
+    <div class="event-info-section clearfix" style="margin-bottom:10px">
+        <?= Icon::get('file-text')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+
+        <div class="event-info-section-content">
+            <h1>
                 <?= $calendarEntry->getFormattedTime() ?>
                 <?php if ($calendarEntry->isAllDay()) : ?>
                         <small>(<?= Yii::t('CalendarModule.base', 'All Day') ?>)</small>
                 <?php endif; ?>
-
                 <?php if (RecurrenceHelper::isRecurrentRoot($calendarEntry)) : ?>
-                <small>(<?= Yii::t('CalendarModule.base', 'Recurring') ?>)</small>
+                    <small>(<?= Yii::t('CalendarModule.base', 'Recurring') ?>)</small>
                 <?php endif; ?>
-
                 <?php if ($calendarEntry->closed) : ?>
                     <?= Label::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
                 <?php endif; ?>
-            </h5>
-
+            </h1>
         </div>
-        <?php if (!empty($calendarEntry->description)) : ?>
-            <hr>
-            <div style="overflow:hidden" <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full description...") ?>" >
-                <?= RichText::output($calendarEntry->description); ?>
-            </div>
-        <?php endif; ?>
 
-        <?php if(RecurrenceHelper::isRecurrentInstance($calendarEntry)) :?>
-            <hr style="border-style:dashed">
-            <div style="margin:10px 0">
-                <?= FilePreview::widget(['model' => $calendarEntry->getRecurrenceQuery()->getRecurrenceRoot()])?>
+        <?php if (!empty($calendarEntry->description)) : ?>
+            <div class="event-info-section-content" data-ui-show-more>
+                <?= RichText::output($calendarEntry->description) ?>
             </div>
         <?php endif; ?>
-    </div>
+   </div>
 
     <?php if ($calendarEntry->hasLocation()) : ?>
-    <div class="row" style="padding-bottom:5px">
-        <div class="col-md-12">
-            <strong><?= Yii::t('CalendarModule.base', 'Location:'); ?></strong>
-            <?= Html::encode($calendarEntry->getLocation()); ?>
-        </div>
+    <div class="event-info-section clearfix">
+            <?= Icon::get('map-marker')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+            <div class="event-info-section-content">
+                <h1>
+                    <?= Yii::t('CalendarModule.base', 'Location') ?>
+                </h1>
+                <?= Html::encode($calendarEntry->getLocation()) ?>
+            </div>
     </div>
     <?php endif;?>
 
-    <?php if ($calendarEntry->participation->isEnabled()) : ?>
-        <?php if($calendarEntry->participation->isShowParticipationInfo(Yii::$app->user->identity)) : ?>
-            <br>
-            <div class="row">
-                <div class="col-md-12">
-                    <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarModule.views_entry_view', "Read full participation info...") ?>">
-                        <strong><i class="fa fa-info-circle"></i> <?= Yii::t('CalendarModule.views_entry_view', 'Additional information:') ?></strong>
-                        <?= RichText::output( $calendarEntry->participant_info); ?>
-                    </div>
+    <?php if($calendarEntry->participation->isShowParticipationInfo(Yii::$app->user->identity)) : ?>
+        <div class="event-info-section clearfix">
+            <?= Icon::get('info-circle')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+            <div class="event-info-section-content">
+                <h1>
+                    <?= Yii::t('CalendarModule.views_entry_view', 'Additional information') ?>
+                </h1>
+                <div data-ui-show-more>
+                    <?= RichText::output($calendarEntry->participant_info) ?>
                 </div>
             </div>
-            <br>
-        <?php endif; ?>
-    <?php endif; ?>
+        </div>
+    <?php endif;?>
 
-    <?php if ($calendarEntry->participation->isEnabled()) : ?>
-        <?php if(!$calendarEntry->closed) : ?>
-            <div class="row">
-                <div class="col-md-12">
-                    <?= EntryParticipants::widget(['calendarEntry' => $calendarEntry]); ?>
-                </div>
-            </div>
-        <?php endif; ?>
-    <?php endif; ?>
-
-    <?php if ($calendarEntry->participation->canRespond(Yii::$app->user->identity)): ?>
-       <div class="row" style="padding-top:10px">
-            <div class="col-md-12">
-              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', "Attend")); ?>
-              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,    Yii::t('CalendarModule.views_entry_view', "Maybe")); ?>
-              <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views_entry_view', "Decline")); ?>
+    <?php if(RecurrenceHelper::isRecurrentInstance($calendarEntry)) :?>
+        <div class="event-info-section clearfix">
+            <?= Icon::get('files-o')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+            <div class="event-info-section-content">
+                <h1>
+                    <?= Yii::t('CalendarModule.base', 'Files') ?>
+                </h1>
+             <?= FilePreview::widget(['model' => $calendarEntry->getRecurrenceQuery()->getRecurrenceRoot()])?>
             </div>
         </div>
     <?php endif; ?>
-    
+
+    <?php if (!$calendarEntry->closed && $calendarEntry->participation->isEnabled()) : ?>
+        <div class="event-info-section clearfix">
+            <?= Icon::get('users')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+            <div class="event-info-section-content">
+                <?= EntryParticipants::widget(['calendarEntry' => $calendarEntry]) ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($calendarEntry->participation->canRespond(Yii::$app->user->identity)): ?>
+        <div class="event-participation-buttons clearfix">
+            <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', "Attend")) ?>
+            <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,    Yii::t('CalendarModule.views_entry_view', "Maybe")) ?>
+            <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views_entry_view', "Decline")) ?>
+        </div>
+    <?php endif; ?>
 </div>

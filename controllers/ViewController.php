@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
+use humhub\modules\calendar\widgets\WallEntry;
 use Yii;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
@@ -47,6 +48,7 @@ class ViewController extends ContentContainerController
      */
     public function actionIndex()
     {
+        $this->view->setViewContext(WallEntry::VIEW_CONTEXT_FULLCALENDAR);
         return $this->render('index', [
             'contentContainer' => $this->contentContainer,
             'canAddEntries' => $this->contentContainer->permissionManager->can(new CreateEntry()),

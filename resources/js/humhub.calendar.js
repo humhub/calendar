@@ -183,7 +183,11 @@ humhub.module('calendar', function (module, require, $) {
             streamEntry.loader();
             modal.load(evt).then(function (response) {
                 modal.global.$.one('submitted', function () {
-                    getCalendar().fetch();
+                    var calendar = getCalendar();
+                    if(calendar) {
+                        calendar.fetch();
+                    }
+
                 });
             }).catch(function (e) {
                 module.log.error(e, true);

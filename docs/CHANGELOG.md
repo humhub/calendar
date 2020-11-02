@@ -6,6 +6,9 @@ Changelog
 - Enh #208: Wall Stream Layout Migration (HumHub 1.7+)
 - Fix #210: Birthday calendar entry does not link to user profile
 - Fix: FullCalendar calls `getIcon()` on entry instead of event type
+- Enh: Mark canceled events in "Upcoming events" snippet
+- Enh: Reworked calendar wall entry view
+- Fix #213: Calendar entry editing in stream not working
 
 
 1.0.13 (October 16, 2020)

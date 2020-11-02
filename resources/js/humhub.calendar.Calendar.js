@@ -244,7 +244,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
         var that = this;
 
         if (eventProps.viewMode === 'modal') {
-            modal.global.load(eventProps.viewUrl).then(function () {
+            modal.global.load(eventProps.viewUrl, {'viewContext' : 'fullCalendar'}).then(function () {
                 modal.global.set({backdrop: true});
                 modal.global.$.one('hidden.bs.modal', function () {
                     that.fetch();

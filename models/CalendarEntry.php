@@ -561,7 +561,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         if($this->closed) {
             return Label::danger(Yii::t('CalendarModule.base', 'canceled'))->right();
         }
-        
+
         if ($this->participation->isEnabled()) {
             $status = $this->getParticipationStatus(Yii::$app->user->identity);
             switch ($status) {

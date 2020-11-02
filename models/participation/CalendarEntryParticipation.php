@@ -288,7 +288,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
 
     public function isShowParticipationInfo(User $user = null)
     {
-        if(empty($this->entry->participant_info)) {
+        if(empty($this->entry->participant_info) || !$this->isEnabled()) {
             return false;
         }
 
