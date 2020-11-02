@@ -1,9 +1,8 @@
 Changelog
 =========
 
-1.1.0 (Unreleased)
+1.1.1 (November 2, 2020)
 ---------------------
-- Enh #208: Wall Stream Layout Migration (HumHub 1.7+)
 - Fix #210: Birthday calendar entry does not link to user profile
 - Fix: FullCalendar calls `getIcon()` on entry instead of event type
 - Enh: Mark canceled events in "Upcoming events" snippet
@@ -12,6 +11,11 @@ Changelog
 - Fix #211: Unable to move event to another space
 - Fix #188: Topic label not translatable
 - Fix #166: Archived events are not excluded from the calendar
+- Fix #99: Users with participation state maybe can attend to events with exceeded max participation count 
+
+1.1.0 (November 2, 2020)
+---------------------
+- Enh #208: Wall Stream Layout Migration (HumHub 1.7+)
 
 1.0.13 (October 16, 2020)
 ---------------------
