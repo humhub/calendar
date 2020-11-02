@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.2 (Unreleased)
+---------------------
+- Fix: Only render file preview section of recurrent root event if files exists
+
 1.1.1 (November 2, 2020)
 ---------------------
 - Fix #210: Birthday calendar entry does not link to user profile
