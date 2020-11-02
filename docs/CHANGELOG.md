@@ -10,7 +10,7 @@ Changelog
 - Enh: Reworked calendar wall entry view
 - Fix #213: Calendar entry editing in stream not working
 - Fix #211: Unable to move event to another space
-
+- Fix #188: Topic label not translatable
 
 1.0.13 (October 16, 2020)
 ---------------------

@@ -250,6 +250,7 @@ class CalendarEntryForm extends Model
             'timeZone' => Yii::t('CalendarModule.base', 'Time Zone'),
             'location' => Yii::t('CalendarModule.base', 'Location'),
             'is_public' => Yii::t('CalendarModule.base', 'Public'),
+            'topics' => Yii::t('TopicModule.base', 'Topics'),
             'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Send update notification'),
             'forceJoin' => ($this->entry->isNewRecord)
                 ? Yii::t('CalendarModule.base', 'Add all space members to this event')
