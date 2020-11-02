@@ -70,15 +70,19 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
     <?php endif;?>
 
     <?php if(RecurrenceHelper::isRecurrentInstance($calendarEntry)) :?>
-        <div class="event-info-section clearfix">
-            <?= Icon::get('files-o')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
-            <div class="event-info-section-content">
-                <h1>
-                    <?= Yii::t('CalendarModule.base', 'Files') ?>
-                </h1>
-             <?= FilePreview::widget(['model' => $calendarEntry->getRecurrenceQuery()->getRecurrenceRoot()])?>
+
+        <?php /* @var $root CalendarEntry */ $root = $calendarEntry->getRecurrenceQuery()->getRecurrenceRoot() ?>
+        <?php if($root && $root->fileManager->find()->count()) : ?>
+            <div class="event-info-section clearfix">
+                <?= Icon::get('files-o')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+                <div class="event-info-section-content">
+                    <h1>
+                        <?= Yii::t('CalendarModule.base', 'Files') ?>
+                    </h1>
+                 <?= FilePreview::widget(['model' => $calendarEntry->getRecurrenceQuery()->getRecurrenceRoot()])?>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
     <?php endif; ?>
 
     <?php if (!$calendarEntry->closed && $calendarEntry->participation->isEnabled()) : ?>
