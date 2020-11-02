@@ -333,7 +333,7 @@ class Events
 
             foreach ($duplicateQuery->all() as $duplicate) {
                 if(RecurrenceHelper::isRecurrentInstance($duplicate) && $duplicate->id !== $duplicatedRecurrenceArr['id']) {
-                    if ($integrityController->showFix("Delete duplicated recurrent event instance " . $duplicate->id . "!")) {
+                    if ($integrityController->showFix('Delete duplicated recurrent event instance ' . $duplicate->id . '!')) {
                         $duplicate->delete();
                     }
                 }

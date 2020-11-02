@@ -27,7 +27,7 @@ use yii\base\InvalidConfigException;
 class FullCalendar
 {
     /**
-     * @param CalendarEntry $entry
+     * @param CalendarEventIF $entry
      * @return array
      * @throws Exception
      */
@@ -42,7 +42,7 @@ class FullCalendar
             'allDay' => $entry->isAllDay(),
             'viewUrl' => $entry->getUrl(),
             'viewMode' => FullCalendarEventIF::VIEW_MODE_REDIRECT,
-            'icon' => $entry->getIcon(),
+            'icon' => $entry->getEventType()->getIcon(),
             'start' => static::toFullCalendarFormat($entry->getStartDateTime(), $entry->isAllDay()),
             'end' => static::toFullCalendarFormat(static::getEndDate($entry), $entry->isAllDay()),
             'eventDurationEditable' => true,

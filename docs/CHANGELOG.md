@@ -4,6 +4,8 @@ Changelog
 1.1.0 (Unreleased)
 ---------------------
 - Enh #208: Wall Stream Layout Migration (HumHub 1.7+)
+- Fix #210: Birthday calendar entry does not link to user profile
+- Fix: FullCalendar calls `getIcon()` on entry instead of event type
 
 
 1.0.13 (October 16, 2020)

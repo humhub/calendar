@@ -122,11 +122,6 @@ interface CalendarEventIF
 
     /**
      * Returns the datetime this event ends.
-     * In case of all day events this should be the moment right before the next day no matter the timezone:
-     *
-     * ```
-     * 09.01.2020 23:59:59
-     * ```
      *
      * The timezone of this date does not has to be the same as [[getTimezone()]] as in the following example:
      *

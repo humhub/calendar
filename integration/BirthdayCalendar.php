@@ -42,11 +42,7 @@ class BirthdayCalendar extends Component
      */
     public static function addItemTypes($event)
     {
-        $event->addType(static::ITEM_TYPE_KEY, [
-            'title' => Yii::t('CalendarModule.base', 'Birthday'),
-            'color' => static::DEFAULT_COLOR,
-            'icon' => 'fa-calendar-o'
-        ]);
+        $event->addType(BirthdayCalendarType::ITEM_TYPE_KEY, new BirthdayCalendarType());
     }
 
     /**
@@ -58,22 +54,10 @@ class BirthdayCalendar extends Component
         /* @var $meetings Meeting[] */
         $users = BirthdayCalendarQuery::findForEvent($event);
 
-        $items = [];
         foreach ($users as $user) {
-            /** @var $user User **/
-            $upcomingBirthday = new DateTime($user->getAttribute('next_birthday'));
-            $items[] = [
-                'start' => $upcomingBirthday,
-                'end' => $upcomingBirthday,
-                'allDay' => true,
-                'title' => static::getTitle($user),
-                'icon' => 'fa-birthday-cake',
-                'viewUrl' => $user->getUrl(),
-                'editable' => false,
-            ];
+            $item = new BirthdayCalendarEntry(['model' => $user]);
+            $event->addItems(BirthdayCalendarType::ITEM_TYPE_KEY, $item);
         }
-
-        $event->addItems(static::ITEM_TYPE_KEY, $items);
     }
 
 
