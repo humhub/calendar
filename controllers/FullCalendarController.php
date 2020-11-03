@@ -3,21 +3,14 @@
 namespace humhub\modules\calendar\controllers;
 
 use DateTime;
-use humhub\components\access\StrictAccess;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\content\models\Content;
 
 class FullCalendarController extends Controller
 {
-    /**
-     * @inheritdocs
-     */
-    public $access = StrictAccess::class;
-
     /**
      * @inheritdocs
      */

@@ -3,15 +3,11 @@
 namespace humhub\modules\calendar\controllers;
 
 use DateTime;
-use humhub\components\access\StrictAccess;
 use humhub\components\Controller;
-use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\permissions\CreateEntry;
-use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\space\models\Membership;
@@ -40,11 +36,6 @@ class GlobalController extends Controller
      * @var CalendarService
      */
     public $calendarService;
-
-    /**
-     * @inheritdocs
-     */
-    public $access = StrictAccess::class;
 
     /**
      * @return array
