@@ -989,6 +989,7 @@ abstract class AbstractCalendarQuery extends Component
     protected function filterArchived()
     {
         if ($this->_query instanceof ActiveQueryContent) {
+            $this->_query->joinWith('content');
             $this->_query->andWhere('content.archived = 0');
         }
     }
