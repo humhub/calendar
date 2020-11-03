@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.2 (Unreleased)
+1.1.2 (November 3, 2020)
 ---------------------
 - Fix: Only render file preview section of recurrent root event if files exists
 - Chng: Remove default profile/space filter from global calendar
