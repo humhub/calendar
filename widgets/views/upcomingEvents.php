@@ -2,6 +2,7 @@
 
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 use humhub\libs\Helpers;
@@ -9,23 +10,24 @@ use humhub\libs\Helpers;
 /* @var $calendarEntries CalendarEventIF[] */
 /* @var $calendarUrl string */
 
-$extraMenus = '<li><a href="'.$calendarUrl.'"><i class="fa fa-arrow-circle-right"></i> '. Yii::t('CalendarModule.widgets_views_nextEvents', 'Open Calendar') .'</a></li>';
+$link = Html::a(Icon::get('arrow-circle-right').' '. Yii::t('CalendarModule.widgets_views_nextEvents', 'Open Calendar'), $calendarUrl);
+$extraMenus = Html::tag('li', $link);
 ?>
 <div class="panel calendar-upcoming-snippet" id="calendar-upcoming-events-snippet">
 
     <div class="panel-heading">
-        <i class="fa fa-calendar"></i> <?= Yii::t('CalendarModule.widgets_views_nextEvents', '<strong>Upcoming</strong> events '); ?>
-        <?= PanelMenu::widget(['id' => 'calendar-upcoming-events-snippet', 'extraMenus' => $extraMenus]); ?>
+        <?= Icon::get('calendar') ?> <?= Yii::t('CalendarModule.widgets_views_nextEvents', '<strong>Upcoming</strong> events ') ?>
+        <?= PanelMenu::widget(['id' => 'calendar-upcoming-events-snippet', 'extraMenus' => $extraMenus]) ?>
     </div>
 
-    <div class="panel-body" style="padding:0px;">
-        <hr style="margin:0px">
+    <div class="panel-body" style="padding:0;">
+        <hr style="margin:0">
         <ul class="media-list">
             <?php foreach ($calendarEntries as $entry) : ?>
                 <?php $formatter = new CalendarDateFormatter(['calendarItem' => $entry]); ?>
-                <?php $color = ($entry->color) ? $entry->color : $this->theme->variable('info')?>
+                <?php $color = ($entry->color) ? $entry->color : $this->theme->variable('info') ?>
                 <a href="<?= $entry->getUrl() ?>">
-                    <li style="border-left: 3px solid <?= $color?>">
+                    <li style="border-left: 3px solid <?= Html::encode($color) ?>">
                         <div class="media">
                             <div class="media-body  text-break">
                                 <?=  $entry->getBadge() ?>

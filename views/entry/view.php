@@ -1,5 +1,6 @@
 <?php
 use humhub\modules\content\widgets\PinLink;
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\stream\assets\StreamAsset;
 use humhub\modules\stream\actions\Stream;
 
@@ -9,11 +10,6 @@ use humhub\modules\stream\actions\Stream;
 <?php StreamAsset::register($this); ?>
 
 <div data-action-component="stream.SimpleStream">
-    <?= Stream::renderEntry($entry, [
-            'stream' => $stream,
-            'controlsOptions' => [
-                    'prevent' => [PinLink::class]
-            ]
-    ])?>
+    <?= StreamEntryWidget::renderStreamEntry($entry) ?>
 </div>
 

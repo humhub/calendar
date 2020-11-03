@@ -223,7 +223,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         return [
             [['files'], 'safe'],
             [['title', 'start_datetime', 'end_datetime'], 'required'],
-            ['color', 'string'],
+            [['color'], 'string', 'max' => 7],
             [['start_datetime'], 'date', 'format' => $dateFormat],
             [['end_datetime'], 'date', 'format' => $dateFormat],
             [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
