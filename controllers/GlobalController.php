@@ -212,8 +212,8 @@ class GlobalController extends Controller
             $selectors = Yii::$app->request->get('selectors', []);
             $filters = Yii::$app->request->get('filters', []);
 
-            $settings->setSerialized('selectors', $selectors);
-            $settings->setSerialized('filters', $filters);
+            $settings->setSerialized('lastSelectors', $selectors);
+            $settings->setSerialized('lastFilters', $filters);
 
             $filters['userRelated'] = $selectors;
 

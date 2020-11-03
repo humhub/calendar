@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.3 (November 3, 2020)
+---------------------
+- Fix: Remember Global calendar filter in user settings not working
+
 1.1.2 (November 3, 2020)
 ---------------------
 - Fix: Only render file preview section of recurrent root event if files exists
