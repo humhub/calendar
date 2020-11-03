@@ -989,9 +989,35 @@ abstract class AbstractCalendarQuery extends Component
     protected function filterArchived()
     {
         if ($this->_query instanceof ActiveQueryContent) {
-            $this->_query->joinWith('content');
+            if(!$this->isJoinedWith('content')) {
+                $this->_query->joinWith('content');
+            }
             $this->_query->andWhere('content.archived = 0');
         }
+    }
+
+    /**
+     * Checks if the query is joined with a given relation.
+     * Note, this only works for relations created by `joinWith`.
+     *
+     * @param $relation string
+     * @return bool
+     */
+    protected function isJoinedWith($relation)
+    {
+        $joinWith = $this->_query->joinWith;
+
+        if(empty($joinWith)) {
+            return false;
+        }
+
+        foreach ($joinWith as $join) {
+            if(isset($join[0][0]) && $join[0][0] === $relation) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function filterContentContainer()
