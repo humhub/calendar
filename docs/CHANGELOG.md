@@ -5,6 +5,7 @@ Changelog
 ---------------------
 - Fix: Only render file preview section of recurrent root event if files exists
 - Chng: Remove default profile/space filter from global calendar
+- Fix: Reminder process fails due to missing join in AbstractCalendarQuery
 
 1.1.1 (November 2, 2020)
 ---------------------

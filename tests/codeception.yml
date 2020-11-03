@@ -1,7 +1,7 @@
 actor: Tester
 namespace: calendar
+bootstrap: _bootstrap.php
 settings:
-    bootstrap: _bootstrap.php
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true
     shuffle: false

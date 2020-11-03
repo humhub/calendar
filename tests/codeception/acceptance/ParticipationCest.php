@@ -76,7 +76,7 @@ class ParticipationCest
 
         $I->click('Attend', '#globalModal');
         $I->waitForText('1 attending', null, '#globalModal');
-        $I->click('a.colorSuccess', '#globalModal');
+        $I->click('1 attending', '#globalModal');
         $I->waitForText('Attending users', null, '#globalModal');
         $I->see('Admin Tester', '#globalModal');
     }
