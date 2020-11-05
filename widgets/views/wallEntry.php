@@ -23,15 +23,17 @@ $color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable(
 
         <div class="event-info-section-content">
             <h1>
-                <?= $calendarEntry->getFormattedTime() ?>
-                <?php if ($calendarEntry->isAllDay()) : ?>
+                <?= ($calendarEntry->closed) ? '<s>' : '' ?>
+                    <?= $calendarEntry->getFormattedTime() ?>
+                <?= ($calendarEntry->closed) ? '</s>' : '' ?>
+                <?php if (!$calendarEntry->closed && $calendarEntry->isAllDay()) : ?>
                         <small>(<?= Yii::t('CalendarModule.base', 'All Day') ?>)</small>
                 <?php endif; ?>
                 <?php if (RecurrenceHelper::isRecurrentRoot($calendarEntry)) : ?>
                     <small>(<?= Yii::t('CalendarModule.base', 'Recurring') ?>)</small>
                 <?php endif; ?>
                 <?php if ($calendarEntry->closed) : ?>
-                    <?= Label::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
+                    &nbsp;<?= Label::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
                 <?php endif; ?>
             </h1>
         </div>
