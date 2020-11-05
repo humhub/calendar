@@ -36,7 +36,7 @@ humhub.module('calendar.recurrence.Form', function (module, require, $) {
     Form.prototype.updateMonthlySelection = function (date) {
         client.get(this.options.updateMonthlyRecurrenceTest, {data: {date: date}}).then(function(resp) {
            if(resp.result) {
-               $monthlySelection = $('#recurrenceformmodel-monthdayselection');
+               var $monthlySelection = $('#recurrenceformmodel-monthdayselection');
 
                $.each(resp.result, function(value, text) {
                    var $option = $monthlySelection.find('option[value='+value+']');
