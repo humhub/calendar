@@ -29,6 +29,7 @@ class RecurrenceFormModel extends Model
 
     const MONTHLY_BY_DAY_OF_MONTH = 1;
     const MONTHLY_BY_OCCURRENCE = 2;
+    const MONTHLY_LAST_DAY_OF_MONTH = 3;
 
     const ENDS_NEVER = 0;
     const ENDS_ON_DATE = 1;
@@ -86,6 +87,25 @@ class RecurrenceFormModel extends Model
         }
     }
 
+    private function getMonthDaySelectionByRRule(Rule $rule)
+    {
+        if((int) $this->frequency !== Frequency::MONTHLY) {
+            return static::MONTHLY_BY_DAY_OF_MONTH;
+        }
+
+        if($rule->getBySetPosition() !== null) {
+            return static::MONTHLY_BY_OCCURRENCE;
+        }
+
+        $byDay = $rule->getByDay();
+
+        if ($byDay !== null && $byDay[0] = '-') {
+            return static::MONTHLY_LAST_DAY_OF_MONTH;
+        }
+
+        return static::MONTHLY_BY_DAY_OF_MONTH;
+    }
+
     /**
      * @param null $rruleStr
      * @return $this
@@ -101,11 +121,7 @@ class RecurrenceFormModel extends Model
             $this->frequency = $this->rrule->getFreq();
             $this->weekDays = $this->rrule->getByDay();
 
-            if ($this->frequency == Frequency::MONTHLY && $this->rrule->getBySetPosition() !== null) {
-                $this->monthDaySelection = static::MONTHLY_BY_OCCURRENCE;
-            } else if ($this->frequency) {
-                $this->monthDaySelection = static::MONTHLY_BY_DAY_OF_MONTH;
-            }
+            $this->monthDaySelection = $this->getMonthDaySelectionByRRule($this->rrule);
 
             if ($this->frequency === Frequency::WEEKLY) {
                 $byDays = $this->rrule->getByDay();
@@ -158,7 +174,7 @@ class RecurrenceFormModel extends Model
             ['interval', 'integer', 'min' => 1],
             ['weekDays', 'safe'], //TODO: better validation
             ['frequency', 'integer', 'min' => static::FREQUENCY_NEVER, 'max' => Frequency::DAILY],
-            ['monthDaySelection', 'integer', 'min' => static::MONTHLY_BY_DAY_OF_MONTH, 'max' => static::MONTHLY_BY_OCCURRENCE],
+            ['monthDaySelection', 'integer', 'min' => static::MONTHLY_BY_DAY_OF_MONTH, 'max' => static::MONTHLY_LAST_DAY_OF_MONTH],
             ['frequency', 'validateFrequency'],
             ['frequency', 'validateModel'],
             ['end', 'integer', 'min' => static::ENDS_NEVER, 'max' => static::ENDS_AFTER_OCCURRENCES],
@@ -348,14 +364,22 @@ class RecurrenceFormModel extends Model
             $this->rrule->setByDay($this->getByDays());
         } else if ($this->frequency == Frequency::MONTHLY) {
             if ($this->monthDaySelection == static::MONTHLY_BY_OCCURRENCE) {
+                $pos = $this->getMonthlyPositionOfStart();
                 $this->rrule->setByDay([$this->translateDayOfWeekToRrule($this->getStartDayOfWeek())]);
-                $this->rrule->setBySetPosition([$this->getMonthlyPositionOfStart()]);
+                $this->rrule->setBySetPosition([$pos]);
+            } else if ($this->monthDaySelection == static::MONTHLY_LAST_DAY_OF_MONTH) {
+                $this->rrule->setByDay(['-1'.$this->translateDayOfWeekToRrule($this->getStartDayOfWeek())]);
             } else if ($this->monthDaySelection == static::MONTHLY_BY_DAY_OF_MONTH) {
                 $this->rrule->setByMonthDay([$this->getStartDayOfMonth()]);
             }
         }
 
         return $this;
+    }
+
+    private function isFifthWeekOfMonth($pos)
+    {
+        return $pos === 5;
     }
 
     private function getByDays()
@@ -371,23 +395,42 @@ class RecurrenceFormModel extends Model
         return $result;
     }
 
-    private function translateDayOfWeekToRrule($dow, $occurrence = null)
+    private function translateDayOfWeekToRrule($dow)
     {
-        $result = isset($this->dayOfWeekMap[$dow]) ? $this->dayOfWeekMap[$dow] : null;
-        return is_int($occurrence) ? $occurrence . $result : $result;
+        return isset($this->dayOfWeekMap[$dow]) ? $this->dayOfWeekMap[$dow] : null;
     }
 
     public function getMonthDaySelection()
     {
-        return [
+        $result = [
             self::MONTHLY_BY_DAY_OF_MONTH => Yii::t('CalendarModule.recurrence', 'Monthly on day {dayOfMonth}', [
                 'dayOfMonth' => $this->getStartDayOfMonth()
-            ]),
-            self::MONTHLY_BY_OCCURRENCE => Yii::t('CalendarModule.recurrence', 'Monthly on the {position} {dayOfWeek}', [
+            ])
+        ];
+
+         // If the date is not in the fifth week of the month
+        if(!$this->isFifthWeekOfMonth($this->getMonthlyPositionOfStart())) {
+            $result[self::MONTHLY_BY_OCCURRENCE] = Yii::t('CalendarModule.recurrence', 'Monthly on the {position} {dayOfWeek}', [
                 'position' => $this->getMonthlyPositionOfStartFormatted(),
                 'dayOfWeek' => $this->getStartDayOfWeekFormatted()
-            ]),
-        ];
+            ]);
+        }
+
+        // If the day is in the last week of month we add the possibility for 'last' day of month
+        if($this->isLastWeekDayOfMonth()) {
+            $result[self::MONTHLY_LAST_DAY_OF_MONTH] = Yii::t('CalendarModule.recurrence', 'Monthly on the {position} {dayOfWeek}', [
+                'position' =>  Yii::t('CalendarModule.recurrence', 'last'),
+                'dayOfWeek' => $this->getStartDayOfWeekFormatted()
+            ]);
+        }
+
+        return $result;
+    }
+
+    private function isLastWeekDayOfMonth()
+    {
+        $copy = clone $this->entry->getStartDateTime();
+        return $this->entry->getStartDateTime()->format('m') !==  $copy->modify('+1 week')->format('m');
     }
 
     public function getIntervalTypesSelection()
@@ -445,7 +488,7 @@ class RecurrenceFormModel extends Model
     private function getMonthlyPositionOfStart()
     {
         $dayNum = strtolower($this->getStartDayOfMonth());
-        return floor(($dayNum - 1) / 7) + 1;
+        return (int) floor(($dayNum - 1) / 7) + 1;
     }
 
     /**
@@ -460,6 +503,8 @@ class RecurrenceFormModel extends Model
                 return Yii::t('CalendarModule.recurrence', 'third');
             case 4:
                 return Yii::t('CalendarModule.recurrence', 'forth');
+            case 5:
+                return Yii::t('CalendarModule.recurrence', 'last');
             default:
                 return Yii::t('CalendarModule.recurrence', 'first');
         }

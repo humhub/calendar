@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\interfaces\recurrence\widgets;
 
 
 use humhub\modules\calendar\assets\RecurrenceFormAssets;
+use humhub\modules\calendar\helpers\Url;
 use humhub\widgets\JsWidget;
 use yii\widgets\ActiveForm;
 
@@ -57,7 +58,8 @@ class RecurrenceFormWidget extends JsWidget
     {
         if ($this->picker) {
             return [
-                'picker-selector' => $this->picker
+                'picker-selector' => $this->picker,
+                'update-monthly-recurrence-test' => Url::toUpdateMonthlyRecurrenceSelection()
             ];
         }
 

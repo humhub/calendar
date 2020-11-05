@@ -28,12 +28,17 @@ class RecurrenceFormTest extends CalendarUnitTest
      */
     protected $form;
 
-    private function initForm($rrule = null)
+    private function initForm($rrule = null, $date =  null)
     {
         parent::_before();
+
+        if(!$date) {
+            $date = $this->getEntryDate();
+        }
+
         $this->becomeUser('Admin');
         $this->space = Space::findOne(['id' => 1]);
-        $startDate = $this->getEntryDate();
+        $startDate = $date;
         $this->entry = $this->createEntry($startDate, 1, 'Past Entry', $this->space);
         $this->entry->updateAttributes(['rrule' => $rrule]);
         $this->form = new RecurrenceFormModel(['entry' => $this->entry]);
@@ -178,5 +183,57 @@ class RecurrenceFormTest extends CalendarUnitTest
         $this->assertEquals(RecurrenceFormModel::ENDS_AFTER_OCCURRENCES, $this->form->end);
         $this->assertEquals(20, $this->form->endOccurrences);
         $this->assertTrue($this->form->validate());
+    }
+
+    public function testLoadMonthlyRuleLastWeekDayOfMonth()
+    {
+        $this->initForm(null, (new DateTime())->setDate(2021, 4, 30));
+        $this->form->load([
+            'interval' => 1,
+            'frequency' => Frequency::MONTHLY,
+            'monthDaySelection' => RecurrenceFormModel::MONTHLY_LAST_DAY_OF_MONTH,
+        ], '');
+
+        $this->assertArrayNotHasKey(RecurrenceFormModel::MONTHLY_BY_OCCURRENCE, $this->form->getMonthDaySelection());
+        $this->assertTrue($this->form->save());
+        $this->assertEquals('FREQ=MONTHLY;INTERVAL=1;BYDAY=-1FR', $this->entry->rrule);
+    }
+
+    public function testLoadMonthlyRuleLastWeekDayOfMonthEndAfterOccurrence()
+    {
+        $this->initForm(null, (new DateTime())->setDate(2021, 4, 30));
+        $this->form->load([
+            'interval' => 1,
+            'frequency' => Frequency::MONTHLY,
+            'monthDaySelection' => RecurrenceFormModel::MONTHLY_LAST_DAY_OF_MONTH,
+            'end' => RecurrenceFormModel::ENDS_AFTER_OCCURRENCES,
+            'endOccurrences' => 2
+        ], '');
+
+        $this->assertTrue($this->form->save());
+        $this->assertEquals('FREQ=MONTHLY;COUNT=2;INTERVAL=1;BYDAY=-1FR', $this->entry->rrule);
+    }
+
+    public function testEditRuleWithMonthlyRuleLastWeekDayOfMonth()
+    {
+        $this->initForm('FREQ=MONTHLY;INTERVAL=1;BYDAY=-1TH', (new DateTime())->setDate(2021, 4, 30));
+        $this->assertEquals(1, $this->form->interval);
+        $this->assertEquals(Frequency::MONTHLY, $this->form->frequency);
+        $this->assertEquals(RecurrenceFormModel::MONTHLY_LAST_DAY_OF_MONTH, $this->form->monthDaySelection);
+        $this->assertEquals(RecurrenceFormModel::ENDS_NEVER, $this->form->end);
+        $this->assertTrue($this->form->validate());
+
+    }
+
+    public function testEditRuleWithMonthlyRuleLastWeekDayOfMonthEndAfterOccurrence()
+    {
+        $this->initForm('FREQ=MONTHLY;COUNT=2;INTERVAL=1;BYDAY=-1FR', (new DateTime())->setDate(2021, 4, 30));
+        $this->assertEquals(1, $this->form->interval);
+        $this->assertEquals(Frequency::MONTHLY, $this->form->frequency);
+        $this->assertEquals(RecurrenceFormModel::MONTHLY_LAST_DAY_OF_MONTH, $this->form->monthDaySelection);
+        $this->assertEquals(RecurrenceFormModel::ENDS_AFTER_OCCURRENCES, $this->form->end);
+        $this->assertEquals(2, $this->form->endOccurrences);
+        $this->assertTrue($this->form->validate());
+
     }
 }

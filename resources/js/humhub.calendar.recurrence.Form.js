@@ -7,6 +7,8 @@
 humhub.module('calendar.recurrence.Form', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
 
+    var client = require('client');
+
     var Form = Widget.extend();
     var WEEKDAY_SELECT = '#recurrenceformmodel-weekdays';
     var INTERVAL_TYPE_SELECT = '#recurrenceformmodel-frequency';
@@ -19,12 +21,42 @@ humhub.module('calendar.recurrence.Form', function (module, require, $) {
         this.updatedType();
         this.updatedEnd();
 
+        var that = this;
+
         if(this.options.pickerSelector) {
             $(this.options.pickerSelector).on('change', function() {
-                var date = $(this).datepicker('getDate');
+                var $datePicker = $(this);
+                var date = $datePicker.datepicker('getDate');
                 $(WEEKDAY_SELECT).val(date.getDay() + 1).trigger('change');
+                that.updateMonthlySelection($datePicker.val());
             });
         }
+    };
+
+    Form.prototype.updateMonthlySelection = function (date) {
+        client.get(this.options.updateMonthlyRecurrenceTest, {data: {date: date}}).then(function(resp) {
+           if(resp.result) {
+               $monthlySelection = $('#recurrenceformmodel-monthdayselection');
+
+               $.each(resp.result, function(value, text) {
+                   var $option = $monthlySelection.find('option[value='+value+']');
+                   if($option.length) {
+                       $option.text(text);
+                   } else {
+                       $monthlySelection.append($('<option>').attr('value', value).text(text));
+                   }
+               });
+
+               $monthlySelection.find('option').each(function() {
+                   var val = $(this).val();
+                   if(!resp.result[val]) {
+                       $(this).remove();
+                   }
+               })
+           }
+        }).catch(function(e) {
+            module.log.error(e);
+        })
     };
 
     Form.prototype.updatedValue = function () {

@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1.4 (November 3, 2020)
+---------------------
+- Fix #217: Monthly recurrence rule text on fifth week of the month not working
+- Enh: Added monthly recurrence setting "Monthly on last <day>"
+- Fix: Date picker udpate does not update monthly rule selection text
+- Enh: Updating start date input will update end date value if end < start (and vice versa)
+
 1.1.3 (November 3, 2020)
 ---------------------
 - Fix: Remember Global calendar filter in user settings not working

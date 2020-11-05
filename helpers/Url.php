@@ -241,4 +241,9 @@ class Url extends BaseUrl
     {
         return static::to(['/calendar/full-calendar/update', 'id' => $entry->content->id]);
     }
+
+    public static function toUpdateMonthlyRecurrenceSelection()
+    {
+        return static::to(['/calendar/global/update-monthly-recurrence-selection']);
+    }
 }

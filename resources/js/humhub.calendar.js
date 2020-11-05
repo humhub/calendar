@@ -32,6 +32,24 @@ humhub.module('calendar', function (module, require, $) {
                 $('#calendarentry-participation_mode').focus();
             });
 
+            this.$.find('#calendarentryform-start_date').on('change', function() {
+                var startTime =  $('#calendarentryform-start_date').datepicker('getDate').getTime();
+                var endTime = $('#calendarentryform-end_date').datepicker('getDate').getTime();
+
+                if(endTime < startTime) {
+                    $('#calendarentryform-end_date').val($('#calendarentryform-start_date').val())
+                }
+            });
+
+            this.$.find('#calendarentryform-end_date').on('change', function() {
+                var startTime =  $('#calendarentryform-start_date').datepicker('getDate').getTime();
+                var endTime = $('#calendarentryform-end_date').datepicker('getDate').getTime();
+
+                if(endTime < startTime) {
+                    $('#calendarentryform-start_date').val($('#calendarentryform-end_date').val())
+                }
+            });
+
             this.initTimeInput();
         };
 
