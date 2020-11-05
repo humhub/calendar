@@ -21,7 +21,7 @@ env:
     - HUMHUB_PATH=/opt/humhub
   matrix:
     - HUMHUB_VERSION=develop
-    #- HUMHUB_VERSION=master
+    - HUMHUB_VERSION=master
 
 matrix:
   fast_finish: true
