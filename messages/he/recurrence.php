@@ -27,6 +27,7 @@ return [
     'Years' => '',
     'first' => '',
     'forth' => '',
+    'last' => '',
     'on weekdays' => '',
     'second' => '',
     'third' => '',

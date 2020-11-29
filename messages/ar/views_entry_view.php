@@ -2,9 +2,7 @@
 
 return [
     'Decline' => 'رفض',
-    'Additional information:' => '',
+    'Additional information' => '',
     'Attend' => '',
     'Maybe' => '',
-    'Read full description...' => '',
-    'Read full participation info...' => '',
 ];
