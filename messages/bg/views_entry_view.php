@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'Additional information:' => '',
-    'Attend' => '',
-    'Decline' => '',
-    'Maybe' => '',
-    'Read full description...' => '',
-    'Read full participation info...' => '',
-];
+return array (
+  'Additional information:' => 'Допълнителна информация:',
+  'Attend' => 'Присъствам',
+  'Decline' => 'Отказвам',
+  'Maybe' => 'Не съм сигурен',
+  'Read full description...' => 'Прочетете пълното описание...',
+  'Read full participation info...' => 'Прочетете пълната информация за участие...',
+);

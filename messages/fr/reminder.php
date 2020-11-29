@@ -13,7 +13,7 @@ return array (
   'Upcoming {type}: {title}' => 'À venir {type} : {title}',
   'Use default reminder' => 'Utiliser les rappels par défaut',
   'Week' => 'Semaine',
-  'You have an <strong>{type}</strong> coming up' => 'Vous avez un <strong>{type}</strong> bientôt',
-  'You have an <strong>{type}</strong> coming up: {title}' => 'Vous avez un <strong>{type}</strong> bientôt : {title}',
+  'You have an <strong>{type}</strong> coming up' => 'Un événement de type <strong>{type}</strong> arrive bientôt',
+  'You have an <strong>{type}</strong> coming up: {title}' => 'Un événement de type <strong>{type}</strong> arrive bientôt : {title}',
   'Your reminder settings for event: <strong>\'{title}\'</strong>' => 'Vos paramètres de rappels pour l\'évènement : <strong>\'{title}\'</strong>',
 );

@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Calendars' => '',
-    'Defaults' => '',
-    'Event Types' => '',
-    'Snippet' => '',
-];
+return array (
+  'Calendars' => 'Календари',
+  'Defaults' => 'По подразбиране',
+  'Event Types' => 'Типове събития',
+  'Snippet' => 'Фрагмент',
+);
