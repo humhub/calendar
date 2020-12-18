@@ -1,8 +1,7 @@
 <?php
-
-return [
-    ':count attending' => ':брой присъстващи',
-    ':count declined' => ':брой отказали',
-    ':count maybe' => ':брой не са сигурни',
-    'Participants' => '',
-];
+return array (
+  ':count attending' => ':count присъстващи',
+  ':count declined' => ':count отказали',
+  ':count maybe' => ':count не са сигурни',
+  'Participants' => 'Участници',
+);

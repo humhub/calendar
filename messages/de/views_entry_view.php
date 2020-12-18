@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Attend' => 'Annehmen',
-    'Decline' => 'Ablehnen',
-    'Maybe' => 'Vielleicht',
-    'Additional information' => '',
-];
+return array (
+  'Additional information' => 'Weitere Informationen',
+  'Attend' => 'Annehmen',
+  'Decline' => 'Ablehnen',
+  'Maybe' => 'Vielleicht',
+);
