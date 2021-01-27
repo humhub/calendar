@@ -14,6 +14,7 @@ use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -101,7 +102,8 @@ class GlobalController extends Controller
             $calendarMemberSpaceQuery->leftJoin('contentcontainer_module',
                 'contentcontainer_module.module_id = :calendar AND contentcontainer_module.contentcontainer_id = space.contentcontainer_id',
                 [':calendar' => 'calendar']
-            )->andWhere('contentcontainer_module.module_id IS NOT NULL');
+            )->andWhere('contentcontainer_module.module_id IS NOT NULL')
+            ->andWhere(['contentcontainer_module.module_state' => ContentContainerModuleState::STATE_ENABLED]);
         }
 
         foreach ($calendarMemberSpaceQuery->all() as $space) {
