@@ -133,6 +133,6 @@ jobs:
             - name: Run test suite
               run: |
                 export HUMHUB_PATH=$GITHUB_WORKSPACE
-                cd protected/modules/${{ env.module-id }}/test
+                cd protected/modules/${{ env.module-id }}/tests
                 php $GITHUB_WORKSPACE/protected/vendor/bin/codecept build
                 php $GITHUB_WORKSPACE/protected/vendor/bin/codecept run --env github
