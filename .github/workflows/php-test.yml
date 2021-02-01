@@ -12,7 +12,7 @@ on:
 
 jobs:
     tests:
-        name: PHP ${{ matrix.php-version }}-mysql-${{ matrix.mysql-version }}
+        name: PHP ${{ matrix.php-version }}-mysql-${{ matrix.mysql-version }}-humhub-${{ matrix.humhub-ref }}
         env:
             module-id: calendar
             extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd
