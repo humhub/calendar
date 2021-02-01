@@ -123,9 +123,8 @@ jobs:
 
             - name: Build codeception core files
               run: |
-                cd protected/humhub/tests
+                cd $GITHUB_WORKSPACE/protected/humhub/tests
                 php ../../vendor/bin/codecept build
-                cd ../../
 
             - name: Run test server
               run: php --server 127.0.0.1:8080 &>/tmp/phpserver.log &
@@ -136,9 +135,14 @@ jobs:
             - name: Valdiate test server
               run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
 
+            - name: Install module dependencies
+              run: |
+                cd $GITHUB_WORKSPACE/protected/modules/${{ env.module-id }}
+                composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
+
             - name: Run test suite
               run: |
                 export HUMHUB_PATH=$GITHUB_WORKSPACE
-                cd protected/modules/${{ env.module-id }}/tests
+                cd $GITHUB_WORKSPACE/protected/modules/${{ env.module-id }}/tests
                 php $GITHUB_WORKSPACE/protected/vendor/bin/codecept build
                 php $GITHUB_WORKSPACE/protected/vendor/bin/codecept run --env github
