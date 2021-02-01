@@ -7,6 +7,8 @@ Changelog
 - Enh: Added monthly recurrence setting "Monthly on last <day>"
 - Fix: Date picker udpate does not update monthly rule selection text
 - Enh: Updating start date input will update end date value if end < start (and vice versa)
+- Enh: Updated translations
+- Fix #224: Hide space with disabled module on chooser modal window
 
 1.1.3 (November 3, 2020)
 ---------------------

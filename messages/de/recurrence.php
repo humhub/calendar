@@ -26,6 +26,7 @@ return array (
   'Years' => 'Jahre',
   'first' => 'erst.',
   'forth' => 'viert.',
+  'last' => 'zuletzt',
   'on weekdays' => 'an Wochentagen',
   'second' => 'zweit.',
   'third' => 'dritt.',

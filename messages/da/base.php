@@ -51,10 +51,10 @@ return [
     '<strong>Add</strong> profile calendar' => '',
     '<strong>Reminder</strong> settings' => '',
     'Do you want to install this module on your profile?' => '',
+    'Files' => '',
     'Friday' => '',
     'Invalid date or time format!' => '',
     'Location' => '',
-    'Location:' => '',
     'Monday' => '',
     'Recurring' => '',
     'Saturday' => '',
@@ -62,5 +62,6 @@ return [
     'Sunday' => '',
     'Thursday' => '',
     'Tuesday' => '',
+    'User birthdays' => '',
     'Wednesday' => '',
 ];

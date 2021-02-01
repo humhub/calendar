@@ -1,9 +1,17 @@
 <?php
+<<<<<<< HEAD
 return array (
-  'Additional information:' => 'Informations additionnelles :',
-  'Attend' => 'Participe',
-  'Decline' => 'Décline',
+  'Additional information' => 'Informations additionnelles :',
+  'Attend' => 'Participer',
+  'Decline' => 'Décliner',
   'Maybe' => 'Peut-être',
-  'Read full description...' => 'Lire la description complète...',
-  'Read full participation info...' => 'Lire les informations complètes...',
 );
+=======
+
+return [
+    'Attend' => 'Participer',
+    'Decline' => 'Décliner',
+    'Maybe' => 'Peut-être',
+    'Additional information' => '',
+];
+>>>>>>> c3c436c79dd3f37b02ac15dac2525555aa5f6aa4

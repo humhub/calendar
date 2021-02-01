@@ -26,6 +26,7 @@ return array (
   'Years' => 'Jaren',
   'first' => 'Eerste',
   'forth' => 'volgende',
+  'last' => 'laatste',
   'on weekdays' => 'op weekdagen van maandag tot vrijdag',
   'second' => 'Tweede',
   'third' => 'Derde',
