@@ -9,6 +9,8 @@
 namespace calendar\acceptance;
 
 use calendar\AcceptanceTester;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 
 class CreateSpaceEntryCest
 {
@@ -125,7 +127,9 @@ class CreateSpaceEntryCest
         $I->click('[for="calendarentryform-forcejoin"]');
         $I->click('Save', '#globalModal');
 
-        $I->waitForText('5 attending', null,'#globalModal');
+        $memberCount = Membership::getSpaceMembersQuery(Space::findOne(['id' => 1]))->count();
+
+        $I->waitForText($memberCount.' attending', null,'#globalModal');
 
         $I->wantToTest('closing the event');
 
