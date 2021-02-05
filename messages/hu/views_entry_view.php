@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Attend' => 'Részt vesz',
-    'Decline' => 'Nem vesz részt',
-    'Maybe' => 'Talán',
-    'Additional information' => '',
-];
+return array (
+  'Additional information' => 'További információ',
+  'Attend' => 'Részt vesz',
+  'Decline' => 'Nem vesz részt',
+  'Maybe' => 'Talán',
+);
