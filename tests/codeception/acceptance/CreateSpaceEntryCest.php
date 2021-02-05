@@ -125,7 +125,7 @@ class CreateSpaceEntryCest
         $I->click('[for="calendarentryform-forcejoin"]');
         $I->click('Save', '#globalModal');
 
-        $I->waitForText('4 attending', null,'#globalModal');
+        $I->waitForText('5 attending', null,'#globalModal');
 
         $I->wantToTest('closing the event');
 
