@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.4 (Unreleased)
+1.1.4 (February 5, 2021)
 ---------------------
 - Fix #217: Monthly recurrence rule text on fifth week of the month not working
 - Enh: Added monthly recurrence setting "Monthly on last <day>"
