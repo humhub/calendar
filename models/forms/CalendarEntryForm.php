@@ -437,7 +437,11 @@ class CalendarEntryForm extends Model
             }
 
             RichText::postProcess($this->entry->description, $this->entry);
-            RichText::postProcess($this->entry->participant_info, $this->entry);
+
+            // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
+            if($this->entry->participant_info) {
+                RichText::postProcess($this->entry->participant_info, $this->entry);
+            }
 
             $this->entry->setType($this->type_id);
 
