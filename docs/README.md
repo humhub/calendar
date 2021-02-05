@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/humhub/humhub-modules-calendar.svg?branch=master)](https://travis-ci.org/humhub/humhub-modules-calendar)
+[![Test Status](https://github.com/humhub/humhub-modules-calendar/workflows/PHP%20Codeception%20Tests/badge.svg)](https://github.com/humhub/humhub-modules-calendar/actions)
 
 # Calendar
 
@@ -19,25 +19,7 @@ serves as basic calendar module and can be used in combination with the followin
  - Event information as description and files
  - Global and Space level default settings
  - ICS export
- 
-## Installation
 
-A git installation requires calling `composer install` within the module root. 
-This is not required when installing by marketplace.
-
-## Build
-
-In order to build `resources/fullcalendar.bundle.min.js` run:
-
-```
-npm install
-```
-
-and
-
-```
-grunt build
-```
  
 ## Further Information
 
