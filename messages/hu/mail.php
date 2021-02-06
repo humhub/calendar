@@ -1,9 +1,8 @@
 <?php
-
-return [
-    '<strong>Starting</strong> {date}' => '',
-    'Additional information:' => '',
-    'Location:' => '',
-    'Organized by {userName}' => '',
-    'View Online: {url}' => '',
-];
+return array (
+  '<strong>Starting</strong> {date}' => '<strong>Kezdés:</strong> {date}',
+  'Additional information:' => 'További információ:',
+  'Location:' => 'Elhelyezkedés:',
+  'Organized by {userName}' => 'Szervező: {userName}',
+  'View Online: {url}' => 'Online megtekintés: {url}',
+);
