@@ -14,7 +14,7 @@ use humhub\widgets\Label;
 /* @var $stream boolean */
 /* @var $collapse boolean */
 
-$color = $calendarEntry->color ? $calendarEntry->color : $this->theme->variable('info');
+$color = $calendarEntry->getColor() ? $calendarEntry->getColor() : $this->theme->variable('info');
 ?>
 
 <div class="media event calendar-wall-entry" style="margin-top:20px;" data-action-component="calendar.CalendarEntry" data-calendar-entry="<?= $calendarEntry->id ?>">
