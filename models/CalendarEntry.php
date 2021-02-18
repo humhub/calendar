@@ -441,22 +441,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
                 case static::PARTICIPATION_MODE_NONE:
                     return Membership::getSpaceMembersQuery($this->content->container);
                 case static::PARTICIPATION_MODE_ALL:
-                    $userDeclinedQuery = CalendarEntryParticipant::find()
-                        ->where('calendar_entry_participant.user_id = user.id')
-                        ->andWhere(['=', 'calendar_entry_participant.calendar_entry_id', $this->id])
-                        ->andWhere(['IN', 'calendar_entry_participant.participation_state',
-                            [CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED]]);
-
-                    $participantQuery = CalendarEntryParticipant::find()
-                        ->where('calendar_entry_participant.user_id = user.id')
-                        ->andWhere(['=', 'calendar_entry_participant.calendar_entry_id', $this->id])
-                        ->andWhere(['IN', 'calendar_entry_participant.participation_state',
-                            [CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]]);
-
-                    return Membership::getSpaceMembersQuery($this->content->container)
-                        ->andWhere(['NOT EXISTS', $userDeclinedQuery])
-                        ->orWhere(['EXISTS', $participantQuery]);
-
                 case static::PARTICIPATION_MODE_INVITE:
                     return $this->participation->findParticipants([
                         CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
@@ -468,10 +452,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
                     return User::find()->where(['id' => $this->content->container->id]);
                 case static::PARTICIPATION_MODE_INVITE:
                 case static::PARTICIPATION_MODE_ALL:
-                    // TODO: remind all friends who did not decline for MODE_ALL
                     return $this->participation->findParticipants([
                         CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
-                        CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE])->orWhere(['user.id' => $this->content->container]);
+                        CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE])->union(User::find()->where(['id' =>  $this->content->container->id]));
 
             }
         }
