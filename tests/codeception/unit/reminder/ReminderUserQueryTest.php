@@ -2,22 +2,12 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit\reminder;
 
-use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
-use humhub\modules\calendar\models\reminder\ReminderService;
-use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\calendar\notifications\Remind;
-use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use Yii;
 use calendar\CalendarUnitTest;
 use DateInterval;
 use DateTime;
-use humhub\modules\calendar\Events;
-use humhub\modules\calendar\models\reminder\CalendarReminder;
-use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 
 class ReminderUserQueryTest  extends CalendarUnitTest
 {

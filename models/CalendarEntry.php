@@ -454,7 +454,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
                 case static::PARTICIPATION_MODE_ALL:
                     return $this->participation->findParticipants([
                         CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
-                        CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE])->union(User::find()->where(['id' =>  $this->content->container->id]));
+                        CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE])
+                        ->union(User::find()->where(['id' =>  $this->content->container->id]));
 
             }
         }
