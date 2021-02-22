@@ -11,10 +11,7 @@ namespace humhub\modules\calendar\integration;
 use Yii;
 use yii\base\Component;
 use yii\helpers\Html;
-use DateTime;
-use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use  humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
-use humhub\modules\meeting\models\Meeting;
 use humhub\modules\user\models\User;
 
 
@@ -51,7 +48,7 @@ class BirthdayCalendar extends Component
      */
     public static function addItems($event)
     {
-        /* @var $meetings Meeting[] */
+        /* @var $meetings BirthdayCalendarEntry[] */
         $users = BirthdayCalendarQuery::findForEvent($event);
 
         foreach ($users as $user) {
