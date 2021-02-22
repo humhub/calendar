@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.1.6 (February 22, 2021)
+---------------------
+- Fix: Birthdays can not be exported
+- Fix: Prevent vevent duplicates in export
+
 1.1.5 (February 18, 2021)
 ---------------------
 - Fix #226: Calendar Reminder Query for space entry `PARTICIPATION_MODE_ALL` should only include participants
