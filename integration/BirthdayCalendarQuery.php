@@ -17,6 +17,7 @@ namespace humhub\modules\calendar\integration;
 
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
 use humhub\modules\calendar\interfaces\event\FilterNotSupportedException;
+use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -74,8 +75,13 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     protected function filterDashboard()
     {
+        if(SnippetModuleSettings::instance()->includeBirthdayToDashboard()) {
+            return;
+        }
+
         if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->isEnabled) {
-            $this->_query->innerJoin('user_friendship', 'user.id=user_friendship.friend_user_id AND user_friendship.user_id=:userId', [':userId' => Yii::$app->user->id]);
+            $this->_query->innerJoin('user_friendship', 'user.id=user_friendship.friend_user_id AND user_friendship.user_id=:userId',
+                [':userId' => Yii::$app->user->id]);
         } else {
             throw new FilterNotSupportedException('Global filter not supported for this query');
         }

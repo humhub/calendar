@@ -15,7 +15,7 @@ use \yii\helpers\Html;
 
 <div class="panel panel-default">
 
-    <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
+    <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration') ?></div>
 
     <?= GlobalConfigMenu::widget() ?>
 
@@ -23,7 +23,7 @@ use \yii\helpers\Html;
         <?php $form = ActiveForm::begin(); ?>
         
         <h4>
-            <?= Yii::t('CalendarModule.config', 'Upcoming events snippet'); ?>
+            <?= Yii::t('CalendarModule.config', 'Upcoming events snippet') ?>
         </h4>
         
         <div class="help-block">
@@ -31,6 +31,7 @@ use \yii\helpers\Html;
         </div>
         
         <?= $form->field($model, 'upcomingEventsSnippetShow')->checkbox(); ?>
+        <?= $form->field($model, 'upcomingEventsSnippetIncludeBirthday')->checkbox(); ?>
         <?= $form->field($model, 'upcomingEventsSnippetDuration')->dropDownList($model->getDurationItems()); ?>
         <?= $form->field($model, 'upcomingEventsSnippetMaxItems')->input('number', ['min' => 1, 'max' => 30]) ?>
         <?= $form->field($model, 'upcomingEventsSnippetSortOrder')->input('number', ['min' => 0]) ?>

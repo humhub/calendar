@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.7 (Unreleased)
+---------------------
+- Enh: Added module snippet configuration "Include birthdays to dashboard snippet"
+
 1.1.6 (February 22, 2021)
 ---------------------
 - Fix: Birthdays can not be exported
