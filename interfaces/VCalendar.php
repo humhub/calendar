@@ -108,6 +108,8 @@ class VCalendar extends Model
         return $this->vcalendar->serialize();
     }
 
+    private $uids = [];
+
     /**
      * @param $item CalendarEventIF
      * @return static
@@ -116,6 +118,12 @@ class VCalendar extends Model
     private function addVEvent(CalendarEventIF $item)
     {
         $dtend = clone $item->getEndDateTime();
+
+        $uid = $item->getUid();
+
+        if(!$uid || in_array($uid, $this->uids)) {
+            return $this;
+        }
 
         if($item->isAllDay()) {
             // Translate for legacy events
@@ -178,6 +186,7 @@ class VCalendar extends Model
         }
 
         $evt = $this->vcalendar->add('VEVENT', $result);
+        $this->uids[] = $uid;
 
         if ($item->isAllDay()) {
             if (isset($evt->DTSTART)) {

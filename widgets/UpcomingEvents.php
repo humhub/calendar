@@ -35,7 +35,7 @@ class UpcomingEvents extends Widget
 
     public function run()
     {
-        $settings = SnippetModuleSettings::instantiate();
+        $settings = SnippetModuleSettings::instance();
         /** @var CalendarService $calendarService */
         $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
 

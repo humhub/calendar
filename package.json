@@ -1,6 +1,6 @@
 {
   "name": "humhub-modules-calendar",
-  "version": "0.6.5",
+  "version": "1.1.5",
   "description": "HumHub calendar module",
   "main": "index.js",
   "directories": {

@@ -1,6 +1,20 @@
 Changelog
 =========
 
+1.1.7 (Unreleased)
+---------------------
+- Enh: Added module snippet configuration "Include birthdays to dashboard snippet"
+
+1.1.6 (February 22, 2021)
+---------------------
+- Fix: Birthdays can not be exported
+- Fix: Prevent vevent duplicates in export
+
+1.1.5 (February 18, 2021)
+---------------------
+- Fix #226: Calendar Reminder Query for space entry `PARTICIPATION_MODE_ALL` should only include participants
+- Fix #226: Calendar Reminder Query for user entry `PARTICIPATION_MODE_ALL` did not include user itself
+
 1.1.4 (February 5, 2021)
 ---------------------
 - Fix #217: Monthly recurrence rule text on fifth week of the month not working

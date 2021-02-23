@@ -3,10 +3,12 @@
 namespace humhub\modules\calendar\tests\codeception\unit\reminder;
 
 use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\reminder\ReminderService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\notifications\Remind;
+use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -92,6 +94,7 @@ class ReminderProcessTest  extends CalendarUnitTest
 
         // Entry begins exactly in one hour
         $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry->updateAttributes(['participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE]);
 
         // Set a global reminder
         $globalReminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 1);
@@ -117,6 +120,13 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertFalse(CalendarReminderSent::check($userEntrylevelReminder, $entry));
         $this->assertMailSent(2);
         $this->assertHasNoNotification(Remind::class, $entry, $entry->content->createdBy->id, 1);
+    }
+
+    protected function createEntry($from, $days, $title, $container = null, $visibility = Content::VISIBILITY_PUBLIC)
+    {
+        $entry = parent::createEntry($from, $days, $title, $container, $visibility);
+        $entry->updateAttributes(['participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE]);
+        return $entry;
     }
 
     /**
@@ -435,6 +445,9 @@ class ReminderProcessTest  extends CalendarUnitTest
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
+        $entry->setParticipationStatus(User::findOne(['id' => 1]));
+        $entry->setParticipationStatus(User::findOne(['id' => 2]));
+        $entry->setParticipationStatus(User::findOne(['id' => 3]));
         $entry->setParticipationStatus(User::findOne(['id' => 4]));
 
         // Check Only sent to not declined user
@@ -481,6 +494,10 @@ class ReminderProcessTest  extends CalendarUnitTest
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
+        $entry->setParticipationStatus(User::findOne(['id' => 1]));
+        $entry->setParticipationStatus(User::findOne(['id' => 2]));
+        $entry->setParticipationStatus(User::findOne(['id' => 3]));
+
         // Check Only sent to not declined user
         (new ReminderService())->sendAllReminder();
 
@@ -516,7 +533,8 @@ class ReminderProcessTest  extends CalendarUnitTest
         $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
-        // User2 declines
+        $entry->setParticipationStatus(User::findOne(['id' => 1]));
+        $entry->setParticipationStatus(User::findOne(['id' => 2]));
         $entry->setParticipationStatus(User::findOne(['id' => 3]), CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED);
 
         (new ReminderService())->sendAllReminder();

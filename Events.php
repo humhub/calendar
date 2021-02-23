@@ -86,7 +86,7 @@ class Events
     public static function onTopMenuInit($event)
     {
         try {
-            if (SnippetModuleSettings::instantiate()->showGlobalCalendarItems()) {
+            if (SnippetModuleSettings::instance()->showGlobalCalendarItems()) {
                 $event->sender->addItem([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
                     'url' => Url::toGlobalCalendar(),

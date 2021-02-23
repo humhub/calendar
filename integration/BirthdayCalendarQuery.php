@@ -17,6 +17,7 @@ namespace humhub\modules\calendar\integration;
 
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
 use humhub\modules\calendar\interfaces\event\FilterNotSupportedException;
+use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -44,18 +45,17 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     protected function setupDateCriteria()
     {
-        if(!$this->_to || !$this->_from) {
-            throw new FilterNotSupportedException('Global filter not supported for this query');
-        }
+        $from = $this->_from ?: (new \DateTime())->setTime(0,0,0);
+        $to = $this->_to ?: (new \DateTime())->setTime(0,0,0)->modify('+2 year');
 
-        $toYear = (int)$this->_to->format('Y');
-        $fromYear = (int)$this->_from->format('Y');
+        $fromYear = (int)$from->format('Y');
+        $toYear = (int)$to->format('Y');
 
         // Check if fromDate and toDate years differs
         if ($toYear == $fromYear) {
             $toOrFromBirthday = "DATE_ADD(profile.birthday, INTERVAL {$fromYear}-YEAR(profile.birthday) YEAR)";
         } else {
-            $fromDate = $this->_from->format('Y-m-d');
+            $fromDate = $from->format('Y-m-d');
             $fromDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$fromYear}-YEAR(profile.birthday) YEAR)";
             $toDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$toYear}-YEAR(profile.birthday) YEAR)";
             $toOrFromBirthday = "IF( $fromDateBirth > DATE('{$fromDate}'), {$fromDateBirth}, {$toDateBirth})";
@@ -65,14 +65,23 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
         $this->_query->joinWith('profile');
         $this->_query->addSelect(['profile.*', 'user.*']);
         $this->_query->addSelect(new Expression($toOrFromBirthday . ' AS next_birthday'));
-        $this->_query->andWhere(new Expression($toOrFromBirthday . ' BETWEEN :fromDate AND :toDate'), [':fromDate' => $this->_from->format('Y-m-d'), ':toDate' => $this->_to->format('Y-m-d')]);
+        $this->_query->andWhere(new Expression($toOrFromBirthday . ' BETWEEN :fromDate AND :toDate'),
+            [
+                ':fromDate' => $from->format('Y-m-d'),
+                ':toDate' => $to->format('Y-m-d')
+            ]);
 
     }
 
     protected function filterDashboard()
     {
+        if(SnippetModuleSettings::instance()->includeBirthdayToDashboard()) {
+            return;
+        }
+
         if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->isEnabled) {
-            $this->_query->innerJoin('user_friendship', 'user.id=user_friendship.friend_user_id AND user_friendship.user_id=:userId', [':userId' => Yii::$app->user->id]);
+            $this->_query->innerJoin('user_friendship', 'user.id=user_friendship.friend_user_id AND user_friendship.user_id=:userId',
+                [':userId' => Yii::$app->user->id]);
         } else {
             throw new FilterNotSupportedException('Global filter not supported for this query');
         }

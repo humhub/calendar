@@ -27,6 +27,11 @@ class SnippetModuleSettings extends Model
     public $upcomingEventsSnippetShow = true;
 
     /**
+     * @var boolean whether or not to include birthdays in the dashboard snippet
+     */
+    public $upcomingEventsSnippetIncludeBirthday = false;
+
+    /**
      * @var boolean duration of upcoming events for the dashboard widget (default 31 days)
      */
     public $upcomingEventsSnippetDuration = self::DURATION_MONTH;
@@ -37,7 +42,7 @@ class SnippetModuleSettings extends Model
     public $upcomingEventsSnippetMaxItems = 5;
 
     /**
-     * @var int defines the snippet widgets sort order 
+     * @var int defines the snippet widgets sort order
      */
     public $upcomingEventsSnippetSortOrder = 0;
 
@@ -50,6 +55,7 @@ class SnippetModuleSettings extends Model
     {
         $module = Yii::$app->getModule('calendar');
         $this->upcomingEventsSnippetShow = $module->settings->get('upcomingEventsSnippetShow', $this->upcomingEventsSnippetShow);
+        $this->upcomingEventsSnippetIncludeBirthday = $module->settings->get('upcomingEventsSnippetIncludeBirthday', $this->upcomingEventsSnippetIncludeBirthday);
         $this->upcomingEventsSnippetDuration = $module->settings->get('upcomingEventsSnippetDuration', $this->upcomingEventsSnippetDuration);
         $this->upcomingEventsSnippetSortOrder = $module->settings->get('upcomingEventsSnippetSortOrder', $this->upcomingEventsSnippetSortOrder);
         $this->upcomingEventsSnippetMaxItems = $module->settings->get('upcomingEventsSnippetMaxItems', $this->upcomingEventsSnippetMaxItems);
@@ -59,6 +65,11 @@ class SnippetModuleSettings extends Model
     public function showUpcomingEventsSnippet()
     {
         return $this->upcomingEventsSnippetShow && $this->showGlobalCalendarItems();
+    }
+
+    public function includeBirthdayToDashboard()
+    {
+        return $this->upcomingEventsSnippetShow && $this->upcomingEventsSnippetIncludeBirthday;
     }
 
     public function showGlobalCalendarItems()
@@ -81,10 +92,10 @@ class SnippetModuleSettings extends Model
     public function rules()
     {
         return [
-            [['upcomingEventsSnippetShow', 'showIfInstalled'],  'boolean'],
-            ['upcomingEventsSnippetDuration',  'number', 'min' => self::DURATION_WEEK, 'max' => self::DURATION_YEAR],
-            ['upcomingEventsSnippetSortOrder',  'number', 'min' => 0],
-            ['upcomingEventsSnippetMaxItems',  'number', 'min' => 1, 'max' => 30]
+            [['upcomingEventsSnippetShow', 'showIfInstalled', 'upcomingEventsSnippetIncludeBirthday'], 'boolean'],
+            ['upcomingEventsSnippetDuration', 'number', 'min' => self::DURATION_WEEK, 'max' => self::DURATION_YEAR],
+            ['upcomingEventsSnippetSortOrder', 'number', 'min' => 0],
+            ['upcomingEventsSnippetMaxItems', 'number', 'min' => 1, 'max' => 30]
         ];
     }
 
@@ -95,6 +106,7 @@ class SnippetModuleSettings extends Model
     {
         return [
             'upcomingEventsSnippetShow' => Yii::t('CalendarModule.config', "Show snippet"),
+            'upcomingEventsSnippetIncludeBirthday' => Yii::t('CalendarModule.config', "Include birthdays to dashboard snippet"),
             'upcomingEventsSnippetDuration' => Yii::t('CalendarModule.config', 'Interval of upcoming events'),
             'upcomingEventsSnippetSortOrder' => Yii::t('CalendarModule.config', 'Sort order'),
             'upcomingEventsSnippetMaxItems' => Yii::t('CalendarModule.config', 'Max event items'),
@@ -114,12 +126,13 @@ class SnippetModuleSettings extends Model
 
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
         $module = Yii::$app->getModule('calendar');
         $module->settings->set('upcomingEventsSnippetShow', $this->upcomingEventsSnippetShow);
+        $module->settings->set('upcomingEventsSnippetIncludeBirthday', $this->upcomingEventsSnippetIncludeBirthday);
         $module->settings->set('upcomingEventsSnippetDuration', $this->upcomingEventsSnippetDuration);
         $module->settings->set('upcomingEventsSnippetSortOrder', $this->upcomingEventsSnippetSortOrder);
         $module->settings->set('upcomingEventsSnippetMaxItems', $this->upcomingEventsSnippetMaxItems);
