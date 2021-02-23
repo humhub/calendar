@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Upcoming</strong> events ' => '<strong>Previstos</strong> eventos',
-  'Open Calendar' => 'Calendário aberto',
+  '<strong>Upcoming</strong> events ' => '<strong>Próximos</strong> eventos',
+  'Open Calendar' => 'Abrir o Calendário',
 );
