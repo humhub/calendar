@@ -44,7 +44,7 @@ class SnippetModuleSettings extends Model
     /**
      * @var int defines the snippet widgets sort order
      */
-    public $upcomingEventsSnippetSortOrder = 0;
+    public $upcomingEventsSnippetSortOrder = 300;
 
     /**
      * @var boolean determines if the calendar top menu item adn dashboard widget should only be shown if the user installed the calendar module in his profile
