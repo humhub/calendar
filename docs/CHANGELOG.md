@@ -4,6 +4,7 @@ Changelog
 1.1.7 (Unreleased)
 ---------------------
 - Enh: Added module snippet configuration "Include birthdays to dashboard snippet"
+- Enh #218: Change snippet default sort
 
 1.1.6 (February 22, 2021)
 ---------------------
