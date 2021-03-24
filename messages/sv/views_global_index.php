@@ -4,7 +4,7 @@ return array (
   '<strong>Select</strong> calendars' => '<strong>Välj</strong> kalender',
   'Followed spaces' => 'Följda nätverk',
   'Followed users' => 'Följda användare',
-  'I\'m attending' => 'Jag kommer',
+  'I\'m attending' => 'Jag deltar',
   'My events' => 'Mina aktiviteter',
   'My profile' => 'Min profil',
   'My spaces' => 'Mina nätverk',
