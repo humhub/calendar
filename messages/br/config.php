@@ -19,6 +19,7 @@ return [
     'Here you can manage and disable different calendars.' => '',
     'Here you can manage your event types.' => '',
     'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => '',
+    'Include birthdays to dashboard snippet' => '',
     'Interval of upcoming events' => '',
     'Max event items' => '',
     'One month' => '',

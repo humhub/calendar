@@ -30,4 +30,5 @@ return [
     'Calendar Configuration' => '',
     'Default participation settings' => '',
     'Here you can manage and disable different calendars.' => '',
+    'Include birthdays to dashboard snippet' => '',
 ];
