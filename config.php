@@ -35,5 +35,6 @@ return [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronRun']],
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
+        ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
     ],
 ];

@@ -25,6 +25,7 @@ use humhub\modules\calendar\widgets\ReminderLink;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\helpers\Url;
+use humhub\modules\rest\Module as RestModule;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
 
@@ -376,5 +377,31 @@ class Events
             }
             $module->settings->set('lastReminderRunTS', time());
         }
+    }
+
+    public static function onRestApiAddRules()
+    {
+        /* @var RestModule $restModule */
+        $restModule = Yii::$app->getModule('rest');
+        $restModule->addRules([
+
+            ['pattern' => 'calendar/', 'route' => 'calendar/rest/calendar/find', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'calendar/container/<containerId:\d+>', 'route' => 'calendar/rest/calendar/find-by-container', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'calendar/container/<containerId:\d+>', 'route' => 'calendar/rest/calendar/delete-by-container', 'verb' => 'DELETE'],
+
+            //Calendar entry CRUD
+            ['pattern' => 'calendar/container/<containerId:\d+>', 'route' => 'calendar/rest/calendar/create', 'verb' => 'POST'],
+            ['pattern' => 'calendar/entry/<id:\d+>', 'route' => 'calendar/rest/calendar/view', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'calendar/entry/<id:\d+>', 'route' => 'calendar/rest/calendar/update', 'verb' => 'PUT'],
+            ['pattern' => 'calendar/entry/<id:\d+>', 'route' => 'calendar/rest/calendar/delete', 'verb' => 'DELETE'],
+
+            //Calendar Entry Management
+            ['pattern' => 'calendar/entry/<id:\d+>/upload-files', 'route' => 'calendar/rest/calendar/attach-files', 'verb' => 'POST'],
+            ['pattern' => 'calendar/entry/<id:\d+>/remove-file/<fileId:\d+>', 'route' => 'calendar/rest/calendar/remove-file', 'verb' => 'DELETE'],
+
+            //Participate
+            ['pattern' => 'calendar/entry/<id:\d+>/respond', 'route' => 'calendar/rest/calendar/respond', 'verb' => 'POST'],
+
+        ], 'calendar');
     }
 }
