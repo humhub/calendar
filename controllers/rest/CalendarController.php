@@ -54,11 +54,9 @@ class CalendarController extends BaseContentController
 
         $requestParams = $this->prepareRequestParams(Yii::$app->request->getBodyParams(), 'CalendarEntryForm', 'CalendarEntry');
 
-        $calendarEntryForm = new CalendarEntryForm();
-        $calendarEntryForm->createNew($container);
-        $calendarEntryForm->load($requestParams, '');
+        $calendarEntryForm = CalendarEntryForm::createEntry($container);
 
-        if ($calendarEntryForm->save()) {
+        if ($calendarEntryForm->load($requestParams) && $calendarEntryForm->save()) {
             return RestDefinitions::getCalendarEntry($calendarEntryForm->entry);
         }
 
@@ -120,7 +118,7 @@ class CalendarController extends BaseContentController
             return $this->returnError(400, 'Type field cannot be blank');
         }
 
-        if (! in_array($respondType, [
+        if (! in_array((int)$respondType, [
                 CalendarEntryParticipant::PARTICIPATION_STATE_NONE,
                 CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED,
                 CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
