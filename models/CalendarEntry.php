@@ -563,7 +563,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
 
     public function generateIcs()
     {
-        $timezone = Yii::$app->settings->get('timeZone');
+        $timezone = Yii::$app->settings->get('defaultTimeZone');
         $ics = new ICS($this->title, $this->description, $this->start_datetime, $this->end_datetime, null, null, $timezone, $this->all_day);
         return $ics;
     }

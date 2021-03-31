@@ -3,9 +3,9 @@
     "name": "Calendar",
     "description": "Calendar for spaces or user profiles.",
     "keywords": ["calendar"],
-    "version": "1.1.7",
+    "version": "1.2.0",
     "humhub": {
-        "minVersion": "1.7"
+        "minVersion": "1.9"
     },
     "homepage": "https://github.com/humhub/humhub-modules-calendar",
     "authors": [

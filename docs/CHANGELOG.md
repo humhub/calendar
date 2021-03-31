@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.0 (Unreleased)
+---------------------
+- Enh: Use default timezone instead of deprecated server timezone
+
 1.1.7 (Unreleased)
 ---------------------
 - Enh: Added module snippet configuration "Include birthdays to dashboard snippet"
