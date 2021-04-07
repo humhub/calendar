@@ -7,7 +7,7 @@
     "humhub": {
         "minVersion": "1.7"
     },
-    "homepage": "https://github.com/humhub/humhub-modules-calendar",
+    "homepage": "https://github.com/humhub/calendar",
     "authors": [
         {
             "name": "Andreas Strobel"
