@@ -25,7 +25,6 @@ use humhub\modules\calendar\widgets\ReminderLink;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\helpers\Url;
-use humhub\modules\rest\Module as RestModule;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
 
@@ -381,7 +380,7 @@ class Events
 
     public static function onRestApiAddRules()
     {
-        /* @var RestModule $restModule */
+        /* @var humhub\modules\rest\Module $restModule */
         $restModule = Yii::$app->getModule('rest');
         $restModule->addRules([
 
