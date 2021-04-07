@@ -121,7 +121,7 @@ jobs:
             - name: Checkout REST Module
               uses: actions/checkout@v2
               with:
-                  repository: 'humhub/humhub-modules-rest'
+                  repository: 'humhub/rest'
                   ref: 'develop'
                   path: 'protected/modules/rest'
 
