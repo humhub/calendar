@@ -23,8 +23,8 @@ paths:
         - application/json
         - application/xml
       parameters:
-        - $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/parameters/pageParam'
-        - $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/parameters/limitParam'
+        - $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/pageParam'
+        - $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/limitParam'
       responses:
         '200':
           description: Success
@@ -32,13 +32,13 @@ paths:
             type: object
             properties:
               total:
-                $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/properties/totalProperty'
+                $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/properties/totalProperty'
               page:
-                $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/properties/pageProperty'
+                $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/properties/pageProperty'
               pages:
-                $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/properties/pagesProperty'
+                $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/properties/pagesProperty'
               links:
-                $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/properties/linksProperty'
+                $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/properties/linksProperty'
               results:
                 type: array
                 items:
@@ -59,9 +59,9 @@ paths:
           description: ID of content container
           required: true
           type: integer
-        - $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/content.yaml#/components/parameters/topicsParam'
-        - $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/parameters/pageParam'
-        - $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/parameters/limitParam'
+        - $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/content.yaml#/components/parameters/topicsParam'
+        - $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/pageParam'
+        - $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/limitParam'
       responses:
         200:
           description: Success
@@ -69,13 +69,13 @@ paths:
             type: object
             properties:
               total:
-                $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/properties/totalProperty'
+                $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/properties/totalProperty'
               page:
-                $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/properties/pageProperty'
+                $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/properties/pageProperty'
               pages:
-                $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/properties/pagesProperty'
+                $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/properties/pagesProperty'
               links:
-                $ref: 'https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/components/properties/linksProperty'
+                $ref: 'https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/properties/linksProperty'
               results:
                 type: array
                 items:
@@ -506,7 +506,7 @@ paths:
                 example: Calendar entry not found
 
 securityDefinitions:
-  $ref: "https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/common.yaml#/securityDefinitions"
+  $ref: "https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/securityDefinitions"
 
 definitions:
   CalendarEntry:
@@ -564,7 +564,7 @@ definitions:
         type: string
         example: null
       content:
-        $ref: "https://raw.githubusercontent.com/humhub/humhub-modules-rest/master/docs/swagger/content.yaml#/definitions/Content"
+        $ref: "https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/content.yaml#/definitions/Content"
 
   CalendarEntryPostParams:
     in: body
