@@ -1,4 +1,4 @@
-[![Test Status](https://github.com/humhub/humhub-modules-calendar/workflows/PHP%20Codeception%20Tests/badge.svg)](https://github.com/humhub/humhub-modules-calendar/actions)
+[![Test Status](https://github.com/humhub/calendar/workflows/PHP%20Codeception%20Tests/badge.svg)](https://github.com/humhub/calendar/actions)
 
 # Calendar
 
