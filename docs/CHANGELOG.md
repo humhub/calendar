@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.1.7 (Unreleased)
+1.1.7 (April 7, 2021)
 ---------------------
 - Enh: Added module snippet configuration "Include birthdays to dashboard snippet"
 - Enh #218: Change snippet default sort
+- Enh #235: Added REST API Module Support 
 
 1.1.6 (February 22, 2021)
 ---------------------
