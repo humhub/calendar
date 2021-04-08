@@ -403,4 +403,13 @@ class Events
 
         ], 'calendar');
     }
+
+    public static function onBeforeConsoleAction()
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('calendar');
+
+        // Prevents the Yii HelpCommand from crawling all web controllers and possibly throwing errors at REST endpoints if the REST module is not available.
+        $module->controllerNamespace = 'calendar/commands';
+    }
 }
