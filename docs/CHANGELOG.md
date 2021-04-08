@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.8  (April 8, 2021)
+----------------------
+- Fix #221: Fix call of console commands when REST API module doesn't exist
+
 1.1.7 (April 7, 2021)
 ---------------------
 - Enh: Added module snippet configuration "Include birthdays to dashboard snippet"
