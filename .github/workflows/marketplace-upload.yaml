@@ -1,0 +1,32 @@
+on:
+  push:
+    tags:
+    - 'v*'
+
+name: Upload to HumHub Marketplace
+
+jobs:
+  build:
+    name: Build and Upload Module Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with: 
+          path: ${{ github.event.repository.name }}
+
+      - name: Build project
+        run: |
+          zip -r ${{ github.event.repository.name }}.zip ${{ github.event.repository.name }}/
+      - name: Install Composer
+        run: cd ${{ github.event.repository.name }}; composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
+
+      - name: Install NPM
+        run: cd ${{ github.event.repository.name }}; npm install
+
+      - name: Upload Package to HumHub Marketplace
+        run: |
+          curl --fail \
+          -F "key=${{secrets.MARKETPLACE_API_KEY}}" \
+          -F "ModuleVersionUpload[zipFile]=@${{ github.event.repository.name }}.zip" \
+          https://api.humhub.com/v1/marketplace/upload?moduleId=${{ github.event.repository.name }}
