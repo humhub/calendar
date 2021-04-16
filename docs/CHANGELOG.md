@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.9  (April 14, 2021)
+----------------------
+- Fix: Todays Birthday not shown in Dashboard Snippet when Interval is one year
+
 1.1.8  (April 8, 2021)
 ----------------------
 - Fix #221: Fix call of console commands when REST API module doesn't exist
