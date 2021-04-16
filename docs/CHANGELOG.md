@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.9  (April 14, 2021)
+1.1.10  (April 14, 2021)
 ----------------------
 - Fix: Todays Birthday not shown in Dashboard Snippet when Interval is one year
 
