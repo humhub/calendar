@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.11 (Unreleased)
+---------------------
+- Fix #114: PHP8 - Deprecate required parameters after optional parameters
+
 1.1.10  (April 14, 2021)
 ----------------------
 - Fix: Todays Birthday not shown in Dashboard Snippet when Interval is one year
