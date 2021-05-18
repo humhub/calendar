@@ -57,7 +57,7 @@ return array (
   'Time Zone' => 'Strefa czasowa',
   'Title' => 'Tytuł',
   'Tuesday' => 'Wtorek',
-  'User birthdays' => '',
+  'User birthdays' => 'Urodziny użytownika',
   'Wednesday' => 'Środa',
   'You don\'t have permission to delete this event!' => 'Nie masz uprawnień aby usunąć to wydarzenie!',
   'canceled' => 'anulowano',
