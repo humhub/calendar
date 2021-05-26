@@ -4,6 +4,7 @@ Changelog
 1.1.11 (Unreleased)
 ---------------------
 - Fix #114: PHP8 - Deprecate required parameters after optional parameters
+- Fix #244: CLI error when no REST module is installed
 
 1.1.10  (April 14, 2021)
 ----------------------
