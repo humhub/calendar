@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar;
 
+use humhub\components\console\Application as ConsoleApplication;
 use humhub\modules\calendar\models\CalendarEntryType;
 use Yii;
 use humhub\modules\calendar\helpers\Url;
@@ -43,6 +44,19 @@ class Module extends ContentContainerModule
      * @inheritdoc
      */
     public $resourcesPath = 'resources';
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (Yii::$app instanceof ConsoleApplication) {
+            // Prevents the Yii HelpCommand from crawling all web controllers and possibly throwing errors at REST endpoints if the REST module is not available.
+            $this->controllerNamespace = 'calendar/commands';
+        }
+    }
 
     /**
      * @return bool
