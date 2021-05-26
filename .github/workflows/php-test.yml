@@ -122,7 +122,7 @@ jobs:
               uses: actions/checkout@v2
               with:
                   repository: 'humhub/rest'
-                  ref: 'develop'
+                  ref: 'master'
                   path: 'protected/modules/rest'
 
             - name: Activate REST Module
