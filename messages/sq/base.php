@@ -55,7 +55,7 @@ return array (
   'Sunday' => '',
   'Thursday' => '',
   'Time Zone' => '',
-  'Title' => '',
+  'Title' => 'Titulli',
   'Tuesday' => '',
   'User birthdays' => '',
   'Wednesday' => '',
