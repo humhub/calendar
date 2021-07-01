@@ -231,6 +231,7 @@ class CalendarEntryForm extends Model
             ['timeZone', 'in', 'range' => DateTimeZone::listIdentifiers()],
             ['topics', 'safe'],
             [['is_public', 'type_id', 'sendUpdateNotification', 'forceJoin'], 'integer'],
+            [['start_date', 'end_date'], 'required'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => CalendarUtils::getTimeFormat()],
             ['start_date', CalendarDateFormatValidator::class, 'timeField' => 'start_time'],
             ['end_date', CalendarDateFormatValidator::class, 'timeField' => 'end_time'],

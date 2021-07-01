@@ -5,6 +5,7 @@ Changelog
 ---------------------
 - Fix #114: PHP8 - Deprecate required parameters after optional parameters
 - Fix #244: CLI error when no REST module is installed
+- Fix #246: Fix error displaying of empty date fields
 
 1.1.10  (April 14, 2021)
 ----------------------
