@@ -137,7 +137,14 @@ jobs:
                 php ../../vendor/bin/codecept build
 
             - name: Run test server
-              run: php --server 127.0.0.1:8080 &>/tmp/phpserver.log &
+              run: |
+                # Temporary condition while branch "master" doesn't use pretty URLs on acceptance tests
+                if cat $GITHUB_WORKSPACE/.github/workflows/php-test.yml | grep -q ":8080 index-test.php"
+                then
+                  php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
+                else
+                  php --server 127.0.0.1:8080 &>/tmp/phpserver.log &
+                fi
 
             - name: Setup chromedriver
               run: chromedriver --url-base=/wd/hub &
