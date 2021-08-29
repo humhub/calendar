@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'Calendar: attend' => '',
-    'Calendar: decline' => '',
-    'Calendar: maybe' => '',
-    'Whenever someone declines to participate in an event.' => '',
-    'Whenever someone may be participating in an event.' => '',
-    'Whenever someone participates in an event.' => '',
-];
+return array (
+  'Calendar: attend' => 'Calendario: asistir',
+  'Calendar: decline' => 'Calendario: rechazar',
+  'Calendar: maybe' => 'Calendario: quizá',
+  'Whenever someone declines to participate in an event.' => 'Cuando alguien rechaza participar en un evento.',
+  'Whenever someone may be participating in an event.' => 'Cuando alguien quizá participe en un evento.',
+  'Whenever someone participates in an event.' => 'Cuando alguien participa en un evento.',
+);
