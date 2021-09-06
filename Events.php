@@ -6,6 +6,8 @@ use DateTime;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
@@ -105,8 +107,9 @@ class Events
     public static function onSpaceMenuInit($event)
     {
         try {
+            /* @var Space $space */
             $space = $event->sender->space;
-            if ($space->isModuleEnabled('calendar')) {
+            if ($space->moduleManager->isEnabled('calendar')) {
                 $event->sender->addItem([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
                     'group' => 'modules',
@@ -124,8 +127,9 @@ class Events
     public static function onProfileMenuInit($event)
     {
         try {
+            /* @var User $user */
             $user = $event->sender->user;
-            if ($user->isModuleEnabled('calendar')) {
+            if ($user->moduleManager->isEnabled('calendar')) {
                 $event->sender->addItem([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
                     'url' => Url::toCalendar($user),
@@ -141,10 +145,11 @@ class Events
     public static function onSpaceSidebarInit($event)
     {
         try {
+            /* @var Space $space */
             $space = $event->sender->space;
             $settings = SnippetModuleSettings::instantiate();
 
-            if ($space->isModuleEnabled('calendar')) {
+            if ($space->moduleManager->isEnabled('calendar')) {
                 if ($settings->showUpcomingEventsSnippet()) {
                     $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
                 }

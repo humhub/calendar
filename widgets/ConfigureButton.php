@@ -42,7 +42,7 @@ class ConfigureButton extends Widget
             return '';
         }
 
-        if($this->container instanceof User && !Yii::$app->user->getIdentity()->isModuleEnabled('calendar')) {
+        if($this->container instanceof User && !Yii::$app->user->getIdentity()->moduleManager->isEnabled('calendar')) {
             return ModalButton::defaultType()->load(Url::toEnableModuleOnProfileConfig())->icon('fa-cog')->visible($this->canConfigure());
         }
 
