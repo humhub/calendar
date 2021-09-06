@@ -1,16 +1,13 @@
 Changelog
 =========
 
-1.2.0 (Unreleased)
----------------------
-- Enh #5274: Deprecate CompatModuleManager
-
 1.1.11 (Unreleased)
 ---------------------
 - Fix #114: PHP8 - Deprecate required parameters after optional parameters
 - Fix #244: CLI error when no REST module is installed
 - Fix #246: Fix error displaying of empty date fields
 - Enh #187: Possibility to disable participation activities in the mail summary
+- Enh #5274: Deprecate CompatModuleManager
 
 1.1.10  (April 14, 2021)
 ----------------------
