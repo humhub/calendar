@@ -74,7 +74,7 @@ class GlobalController extends Controller
     public function actionIndex()
     {
         if (!Yii::$app->user->isGuest) {
-            $moduleEnabled = Yii::$app->user->getIdentity()->isModuleEnabled('calendar');
+            $moduleEnabled = Yii::$app->user->getIdentity()->moduleManager->isEnabled('calendar');
         } else {
             $moduleEnabled = false;
             $configureUrl = null;
@@ -135,7 +135,7 @@ class GlobalController extends Controller
         }
 
         if ($container instanceof User && $container->is(Yii::$app->user->getIdentity())) {
-            if (!$container->isModuleEnabled('calendar')) {
+            if (!$container->moduleManager->isEnabled('calendar')) {
                 return Yii::$app->runAction('/calendar/global/enable', ['start' => $start, 'end' => $end]);
 
                 /**
