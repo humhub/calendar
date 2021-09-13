@@ -8,6 +8,7 @@ Changelog
 - Fix #246: Fix error displaying of empty date fields
 - Enh #187: Possibility to disable participation activities in the mail summary
 - Enh #5274: Deprecate CompatModuleManager
+- Fix #254: Fix wall stream entry icons color
 
 1.1.10  (April 14, 2021)
 ----------------------
