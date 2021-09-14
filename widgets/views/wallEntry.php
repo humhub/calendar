@@ -5,16 +5,18 @@ use humhub\modules\calendar\widgets\EntryParticipants;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\ui\icon\widgets\Icon;
-use yii\helpers\Html;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\widgets\Label;
+use yii\helpers\Html;
+use yii\web\View;
 
 /* @var $calendarEntry CalendarEntry */
 /* @var $stream boolean */
 /* @var $collapse boolean */
+/* @var $this View */
 
-$color = $calendarEntry->getColor() ? $calendarEntry->getColor() : $this->theme->variable('info');
+$color = $this->theme->variable('text-color-secondary');
 ?>
 
 <div class="media event calendar-wall-entry" style="margin-top:20px;" data-action-component="calendar.CalendarEntry" data-calendar-entry="<?= $calendarEntry->id ?>">
