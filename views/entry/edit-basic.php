@@ -7,6 +7,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\form\widgets\ColorPicker;
 use humhub\modules\content\widgets\ContentTagDropDown;
+use humhub\modules\ui\form\widgets\ContentVisibilitySelect;
 use humhub\modules\ui\form\widgets\TimePicker;
 use humhub\widgets\ActiveForm;
 use humhub\widgets\TimeZoneDropdownAddition;
@@ -68,7 +69,7 @@ use yii\jui\DatePicker;
     <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
 
     <?php if($calendarEntryForm->canCreatePublicEntry()) :?>
-        <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
+        <?= $form->field($calendarEntryForm, 'is_public')->widget(ContentVisibilitySelect::class, ['contentOwner' => 'entry']) ?>
     <?php endif; ?>
 
     <?= $form->field($calendarEntryForm->entry, 'description')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Description'), 'pluginOptions' => ['maxHeight' => '300px']])->label(false) ?>

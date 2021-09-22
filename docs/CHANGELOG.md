@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.0 (Unreleased)
+---------------------
+- Enh #140: Use widget ContentVisibiltySelect
+
 1.1.11 (Unreleased)
 ---------------------
 - Fix #114: PHP8 - Deprecate required parameters after optional parameters
