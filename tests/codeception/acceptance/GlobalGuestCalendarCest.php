@@ -27,7 +27,7 @@ class GlobalGuestCalendarCest
 
         $I->amOnSpace1('/calendar/view');
         $I->createEventToday('Public Event', 'Public Event Description', null, null, false);
-        $I->click('[for="calendarentryform-is_public"]');
+        $I->jsClick('input[type="checkbox"][id="calendarentryform-is_public"]');
         $I->click('Save', '#globalModal');
 
         $I->waitForText('Public Event',null, '.fc-event-container');
@@ -67,7 +67,7 @@ class GlobalGuestCalendarCest
 
         $I->amOnSpace2('/calendar/view');
         $I->createEventToday('Public Event', 'Public Event Description', null, null, false);
-        $I->click('[for="calendarentryform-is_public"]');
+        $I->jsClick('input[type="checkbox"][id="calendarentryform-is_public"]');
         $I->click('Save', '#globalModal');
 
         $I->waitForText('Public Event',null, '.fc-event-container');
