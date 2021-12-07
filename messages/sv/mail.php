@@ -4,5 +4,5 @@ return array (
   'Additional information:' => 'Ytterligare information:',
   'Location:' => 'Plats:',
   'Organized by {userName}' => 'Arrangerad av {userName}',
-  'View Online: {url}' => 'Se Online: {url}',
+  'View Online: {url}' => 'Visa Online: {url}',
 );
