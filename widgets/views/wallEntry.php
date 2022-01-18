@@ -109,6 +109,8 @@ $color = $this->theme->variable('text-color-secondary');
             <?php endif ?>
 
             <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views_entry_view', "Decline")) ?>
+
+            <?= EntryParticipants::inviteButton($calendarEntry) ?>
         </div>
     <?php endif; ?>
 </div>

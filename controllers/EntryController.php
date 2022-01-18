@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\models\forms\InviteForm;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -313,5 +314,22 @@ class EntryController extends ContentContainerController
         $calendarEntry = $this->getCalendarEntry($id);
         $ics = $calendarEntry->generateIcs();
         return Yii::$app->response->sendContentAsFile($ics, uniqid() . '.ics', ['mimeType' => 'text/calendar']);
+    }
+
+    /**
+     * Display a form to invite new participants
+     *
+     * @param $id
+     * @return string
+     */
+    public function actionInvite($id)
+    {
+        $inviteForm = new InviteForm(['entryId' => $id]);
+
+        if ($inviteForm->load(Yii::$app->request->post()) && $inviteForm->save()) {
+            //
+        }
+
+        return $this->renderAjax('invite', ['inviteForm' => $inviteForm]);
     }
 }

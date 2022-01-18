@@ -499,6 +499,7 @@ class CalendarEntryForm extends Model
     {
         return [
             CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
+            CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.views_entry_edit', 'Only by Invite'),
             CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
         ];
     }

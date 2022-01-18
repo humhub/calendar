@@ -241,7 +241,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public function canRespond(User $user = null)
     {
-        if(RecurrenceHelper::isRecurrentRoot($this->entry)) {
+        if (RecurrenceHelper::isRecurrentRoot($this->entry)) {
             return false;
         }
 
@@ -249,16 +249,20 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             return false;
         }
 
-        if($this->entry->closed) {
+        if ($this->entry->closed) {
             return false;
         }
 
-        // Participants always can change/reset their state
-        if($this->isParticipant($user)) {
+        if ($this->entry->isOwner($user)) {
             return true;
         }
 
-        if(!$this->maxParticipantCheck()) {
+        // Participants always can change/reset their state
+        if ($this->isParticipant($user)) {
+            return true;
+        }
+
+        if (!$this->maxParticipantCheck()) {
             return false;
         }
 
