@@ -327,7 +327,7 @@ class EntryController extends ContentContainerController
         $inviteForm = new InviteForm(['entryId' => $id]);
 
         if ($inviteForm->load(Yii::$app->request->post()) && $inviteForm->save()) {
-            //
+            return ModalClose::widget(['success' => Yii::t('CalendarModule.base', 'Invited')]);
         }
 
         return $this->renderAjax('invite', ['inviteForm' => $inviteForm]);

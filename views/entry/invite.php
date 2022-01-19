@@ -23,6 +23,7 @@ use yii\bootstrap\ActiveForm;
     <?= $form->field($inviteForm, 'entryId')->hiddenInput()->label(false) ?>
     <?= UserPickerField::widget([
         'model' => $inviteForm,
+        'form' => $form,
         'attribute' => 'userGuids',
         'placeholder' => Yii::t('AdminModule.user', 'Invite new participants...'),
         'focus' => true,
