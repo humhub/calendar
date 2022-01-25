@@ -9,9 +9,11 @@ namespace humhub\modules\calendar\models\forms;
 
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\notifications\Invited;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
+use yii\db\Expression;
 
 /**
  * Form to invite new participants into the Calendar entry
@@ -42,12 +44,17 @@ class InviteForm extends Model
     public $_entry;
 
     /**
+     * @var User[]
+     */
+    public $invitedUsers;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['entryId', 'userGuids', 'mode'], 'required'],
+            [['entryId', 'userGuids'], 'required'],
             [['entryId'], 'integer'],
             [['entryId'], 'validateEntryId'],
             [['mode'], 'validateMode'],
@@ -56,15 +63,15 @@ class InviteForm extends Model
 
     public function validateEntryId()
     {
-        if (!isset($this->modes[$this->mode])) {
-            $this->addError('mode', 'Wrong mode!');
+        if ($this->entry && !$this->entry->isOwner()) {
+            $this->addError('entryId', 'Only owner of the calendar entry can invite!');
         }
     }
 
     public function validateMode()
     {
-        if ($this->entry && !$this->entry->isOwner()) {
-            $this->addError('entryId', 'Only owner of the calendar entry can invite!');
+        if (!isset($this->modes[$this->mode])) {
+            $this->addError('mode', 'Wrong mode!');
         }
     }
 
@@ -82,6 +89,7 @@ class InviteForm extends Model
     public function getModes(): array
     {
         return [
+            CalendarEntryParticipant::PARTICIPATION_STATE_NONE => Yii::t('CalendarModule.base', 'None'),
             CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED => Yii::t('CalendarModule.base', 'Attend'),
             CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE => Yii::t('CalendarModule.base', 'Maybe'),
             CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED => Yii::t('CalendarModule.base', 'Decline'),
@@ -94,7 +102,14 @@ class InviteForm extends Model
             return null;
         }
 
-        return CalendarEntry::findOne($this->entryId);
+        if ($this->_entry === null) {
+            $this->_entry = CalendarEntry::findOne($this->entryId);
+            if (!$this->_entry) {
+                $this->_entry = false;
+            }
+        }
+
+        return $this->_entry === false ? null : $this->_entry;
     }
 
     public function save(): bool
@@ -103,10 +118,21 @@ class InviteForm extends Model
             return false;
         }
 
-        $users = User::find()->where(['IN', 'guid', $this->userGuids])->all();
-        foreach ($users as $user) {
-            $this->entry->setParticipationStatus($user, $this->mode);
+        $this->invitedUsers = User::find()
+            ->leftJoin('calendar_entry_participant', 'user.id = user_id AND calendar_entry_id = :entry_id', ['entry_id' => $this->entry->id])
+            ->where(['IN', 'guid', $this->userGuids])
+            ->andWhere(['IS', 'user_id', new Expression('NULL')])
+            ->all();
+
+        if (empty($this->invitedUsers)) {
+            return true;
         }
+
+        foreach ($this->invitedUsers as $invitedUser) {
+            $this->entry->setParticipationStatus($invitedUser, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED);
+        }
+
+        Invited::instance()->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($this->invitedUsers);
 
         return true;
     }

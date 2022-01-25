@@ -27,9 +27,8 @@ use yii\bootstrap\ActiveForm;
         'attribute' => 'userGuids',
         'placeholder' => Yii::t('AdminModule.user', 'Invite new participants...'),
         'focus' => true,
+        'options' => ['label' => false],
     ]) ?>
-    <br>
-    <?= $form->field($inviteForm, 'mode')->dropDownList($inviteForm->modes) ?>
 </div>
 
 <div class="modal-footer">

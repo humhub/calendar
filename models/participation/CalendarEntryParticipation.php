@@ -216,17 +216,17 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      * Finds a participant instance for the given user or the logged in user if no user provided.
      *
      * @param User $user
-     * @return CalendarEntryParticipant
+     * @return CalendarEntryParticipant|null
      * @throws \Throwable
      */
-    public function findParticipant(User $user = null)
+    public function findParticipant(User $user = null): ?CalendarEntryParticipant
     {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
 
-        if(!$user) {
-            return;
+        if (!$user) {
+            return null;
         }
 
         return CalendarEntryParticipant::findOne(['user_id' => $user->id, 'calendar_entry_id' => $this->entry->id]);
@@ -254,6 +254,10 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         }
 
         if ($this->entry->isOwner($user)) {
+            return true;
+        }
+
+        if ($this->isInvited($user)) {
             return true;
         }
 
@@ -286,6 +290,15 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             :  [static::PARTICIPATION_STATUS_ACCEPTED];
 
         return in_array($this->getParticipationStatus($user), $states);
+    }
+
+    public function isInvited(User $user = null)
+    {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        return $this->getParticipationStatus($user) === static::PARTICIPATION_STATUS_INVITED;
     }
 
     public function isShowParticipationInfo(User $user = null)

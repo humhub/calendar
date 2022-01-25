@@ -2,7 +2,6 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\forms\InviteForm;
 use Throwable;
 use Yii;
@@ -327,7 +326,17 @@ class EntryController extends ContentContainerController
         $inviteForm = new InviteForm(['entryId' => $id]);
 
         if ($inviteForm->load(Yii::$app->request->post()) && $inviteForm->save()) {
-            return ModalClose::widget(['success' => Yii::t('CalendarModule.base', 'Invited')]);
+            if (empty($inviteForm->invitedUsers)) {
+                return ModalClose::widget(['warn' => Yii::t('CalendarModule.base', 'No new users have been invited.')]);
+            }
+
+            $invitedUsers = [];
+            foreach ($inviteForm->invitedUsers as $invitedUser) {
+                $invitedUsers[] = '"' . $invitedUser->displayName . '"';
+            }
+            return ModalClose::widget(['success' => Yii::t('CalendarModule.base', 'Invited: {users}', [
+                'users' => implode(', ', $invitedUsers)
+            ])]);
         }
 
         return $this->renderAjax('invite', ['inviteForm' => $inviteForm]);

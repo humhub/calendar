@@ -100,6 +100,10 @@ $color = $this->theme->variable('text-color-secondary');
 
     <?php if ($calendarEntry->participation->canRespond(Yii::$app->user->identity)): ?>
         <div class="event-participation-buttons clearfix">
+            <?php if ($calendarEntry->participation->isInvited()) : ?>
+                <div class="text-warning"><?= Icon::get('warning') . Yii::t('CalendarModule.views_entry_view', 'You are invited, please select your role:') ?></div>
+            <?php endif ?>
+
             <?php if($calendarEntry->participation->maxParticipantCheck() || $calendarEntry->participation->isParticipant(Yii::$app->user->identity, false)) : ?>
                 <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', "Attend")) ?>
             <?php endif ?>
