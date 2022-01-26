@@ -1,11 +1,8 @@
 <?php
-
-
 use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\Module;
-use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\Tabs;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -14,6 +11,7 @@ use humhub\widgets\ModalDialog;
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $calendarEntryForm CalendarEntryForm */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $editUrl string */
 
 CalendarBaseAssets::register($this);
 
@@ -46,7 +44,8 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Participation'),'view' => 'edit-participation', 'linkOptions' => ['class' => 'tab-participation']],
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Reminder'),'view' => 'edit-reminder', 'linkOptions' => ['class' => 'tab-reminder'], 'visible' =>  ($calendarEntryForm->showReminderTab() )],
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Recurrence'),'view' => 'edit-recurrence', 'linkOptions' => ['class' => 'tab-recurrence'], 'visible' => Module::isRecurrenceActive()],
-                        ['label' => Yii::t('CalendarModule.views_entry_edit', 'Files'), 'view' => 'edit-files', 'linkOptions' => ['class' => 'tab-files']]
+                        ['label' => Yii::t('CalendarModule.views_entry_edit', 'Files'), 'view' => 'edit-files', 'linkOptions' => ['class' => 'tab-files']],
+                        ['label' => Yii::t('CalendarModule.views_entry_edit', 'Participants'), 'view' => 'edit-participants', 'linkOptions' => ['class' => 'tab-participants']],
                      ]
                 ]); ?>
             </div>
