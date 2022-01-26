@@ -8,7 +8,6 @@
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\widgets\ParticipantList;
 
-/* @var $form \humhub\widgets\ActiveForm */
 /* @var $calendarEntryForm CalendarEntryForm */
 ?>
 

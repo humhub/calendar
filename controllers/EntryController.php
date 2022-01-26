@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\models\forms\InviteForm;
+use humhub\modules\calendar\widgets\ParticipantList;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -181,6 +182,87 @@ class EntryController extends ContentContainerController
             'calendarEntryForm' => $calendarEntryForm,
             'contentContainer' => $this->contentContainer,
             'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer)
+        ]);
+    }
+
+    /**
+     * Action for participants pagination of the Calendar entry
+     *
+     * @param null $id
+     * @return string
+     * @throws Exception
+     * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws Throwable
+     * @throws \yii\db\IntegrityException
+     */
+    public function actionParticipants($id = null)
+    {
+        $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
+        if (!$calendarEntryForm->entry->content->canEdit()) {
+            throw new HttpException(403);
+        }
+
+        return $this->renderAjax('edit-participants', [
+            'calendarEntryForm' => $calendarEntryForm,
+        ]);
+    }
+
+    public function actionUpdateParticipantStatus()
+    {
+        $entryId = Yii::$app->request->post('entryId');
+        $userId = Yii::$app->request->post('userId');
+        $status = Yii::$app->request->post('status');
+
+        if (!in_array($status, array_keys(ParticipantList::getStatuses()))) {
+            throw new HttpException(403, 'Wrong status!');
+        }
+
+        $entry = $this->getCalendarEntry($entryId);
+        if (!$entry->content->canEdit()) {
+            throw new HttpException(403);
+        }
+
+        $user = User::findOne($userId);
+        if (!$user) {
+            throw new HttpException(404, 'User not found!');
+        }
+
+        $entry->participation->setParticipationStatus($user, $status);
+
+        return $this->asJson([
+            'success' => true,
+            'message' => Yii::t('CalendarModule.base', 'Status updated.'),
+        ]);
+    }
+
+    public function actionRemoveParticipant()
+    {
+        $entryId = Yii::$app->request->post('entryId');
+        $userId = Yii::$app->request->post('userId');
+
+        $entry = $this->getCalendarEntry($entryId);
+        if (!$entry->content->canEdit()) {
+            throw new HttpException(403);
+        }
+
+        $user = User::findOne($userId);
+        if (!$user) {
+            throw new HttpException(404, 'User not found!');
+        }
+
+        $participant = $entry->participation->findParticipant($user);
+
+        if (!$participant || !$participant->delete()) {
+            return $this->asJson([
+                'success' => false,
+                'message' => Yii::t('CalendarModule.base', 'Cannot remove the participant!'),
+            ]);
+        }
+
+        return $this->asJson([
+            'success' => true,
+            'message' => Yii::t('CalendarModule.base', 'Participant removed.'),
         ]);
     }
 
