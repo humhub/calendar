@@ -22,17 +22,17 @@ use yii\helpers\Html;
                 'user' => $user,
                 'link' => false,
                 'width' => 32,
-                'htmlOptions' => ['class' => 'media-object pull-left', 'style' => 'margin-right:5px'],
+                'htmlOptions' => ['class' => 'media-object'],
             ]) ?>
             <h4 class="media-heading"><?= Html::encode($user->displayName) ?></h4>
             <h5><?= Html::encode($user->displayNameSub) ?></h5>
         </a>
-        <div class="media-body" style="width:1%">
+        <div class="media-body">
             <?= Html::dropDownList('status', $entry->participation->getParticipationStatus($user), $statuses, [
                 'data-action-change' => 'update',
             ]) ?>
         </div>
-        <div class="media-body" style="width:1%;padding-left:5px">
+        <div class="media-body">
             <?= Button::danger()->xs()
                 ->icon('remove')
                 ->confirm(null, Yii::t('CalendarModule.views_entry_edit', 'Are you sure want to remove the participant from the event?'))

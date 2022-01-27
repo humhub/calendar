@@ -4,22 +4,21 @@ namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\models\forms\InviteForm;
 use humhub\modules\calendar\widgets\ParticipantItem;
-use humhub\modules\calendar\widgets\ParticipantList;
-use Throwable;
-use Yii;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
-use yii\web\HttpException;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\stream\actions\Stream;
-use humhub\widgets\ModalClose;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\widgets\ModalClose;
+use Throwable;
+use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\RangeNotSatisfiableHttpException;
 use yii\web\Response;
@@ -206,6 +205,13 @@ class EntryController extends ContentContainerController
 
         return $this->renderAjax('edit-participants', [
             'calendarEntryForm' => $calendarEntryForm,
+        ]);
+    }
+
+    public function actionAddParticipantsForm()
+    {
+        return $this->renderAjax('edit-participants-add', [
+            'statuses' => ParticipantItem::getStatuses(),
         ]);
     }
 

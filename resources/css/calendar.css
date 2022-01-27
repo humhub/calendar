@@ -683,8 +683,18 @@ tbody,
 .calendar-entry-participants .media-list {
     margin: 0;
 }
-#calendar-entry-add-participants-form {
-    display: none;
+.calendar-entry-participants .media-list .media-body {
+    width: 1%;
+}
+.calendar-entry-participants .media-list .media-body:first-child {
+    width: auto;
+}
+.calendar-entry-participants .media-list .media-body:first-child .media-object {
+    float: left;
+    margin-right: 5px;
+}
+.calendar-entry-participants .media-list .media-body:last-child {
+    padding-left: 5px;
 }
 #calendar-entry-add-participants-form li {
     padding: 0 2px;

@@ -6,7 +6,6 @@
  */
 
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\widgets\ParticipantAdd;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User as User;
 use humhub\widgets\AjaxLinkPager;
@@ -24,21 +23,18 @@ use yii\helpers\Html;
     <p><?= Yii::t('CalendarModule.views_entry_edit', 'No participants.'); ?></p>
 <?php endif; ?>
 
-<ul class="media-list">
+<?= Html::beginTag('ul', ['class' => 'media-list']) ?>
     <?php foreach ($users as $user) : ?>
         <?= ParticipantItem::widget([
             'entry' => $entry,
             'user' => $user,
         ])?>
     <?php endforeach; ?>
-    <li id="calendar-entry-add-participants-form" style="display:none">
-        <?= ParticipantAdd::widget() ?>
-    </li>
-</ul>
+<?= Html::endTag('ul') ?>
 
 <?= Button::info(Yii::t('CalendarModule.views_entry_edit', 'Add participants'))
     ->sm()
-    ->action('displayAddForm') ?>
+    ->action('displayAddForm', $entry->content->container->createUrl('/calendar/entry/add-participants-form')) ?>
 
 <div class="pagination-container">
     <?= AjaxLinkPager::widget([

@@ -57,8 +57,17 @@ humhub.module('calendar.participants.List', function (module, require, $) {
     };
 
     List.prototype.displayAddForm = function (evt) {
-        $('#calendar-entry-add-participants-form').show()
-        evt.$trigger.hide();
+        const list = this.$.find('ul.media-list');
+
+        client.get(evt).then(function(response) {
+            list.append(response.html);
+            Widget.closest(list.find('[data-ui-init]'));
+            evt.$trigger.remove();
+        }).catch(function(e) {
+            module.log.error(e, true);
+        }).finally(function () {
+            evt.finish();
+        });
     }
 
     List.prototype.add = function (evt) {
