@@ -56,5 +56,34 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         });
     };
 
+    List.prototype.displayAddForm = function (evt) {
+        $('#calendar-entry-add-participants-form').show()
+        evt.$trigger.hide();
+    }
+
+    List.prototype.add = function (evt) {
+        const form = evt.$trigger.closest('li');
+        const data = {
+            entryId: this.data('entry-id'),
+            status: form.find('select[name=status]').val(),
+            guids: form.find('select[name="newParticipants[]"]').val(),
+        };
+
+        client.post(this.data('add-url'), {data}).then(function(response) {
+            if (response.success) {
+                status.success(response.success);
+                form.before(response.html);
+            } else if (response.warning) {
+                status.warn(response.warning);
+            } else if (response.error) {
+                status.error(response.error);
+            }
+        }).catch(function(e) {
+            module.log.error(e, true);
+        }).finally(function () {
+            evt.finish();
+        });
+    }
+
     module.export = List;
 });

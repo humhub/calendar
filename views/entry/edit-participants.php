@@ -10,7 +10,6 @@ use humhub\modules\calendar\widgets\ParticipantList;
 
 /* @var $calendarEntryForm CalendarEntryForm */
 ?>
-
-<div class="modal-body">
+<div class="modal-body calendar-entry-participants">
     <?= ParticipantList::widget(['entry' => $calendarEntryForm->entry]) ?>
 </div>

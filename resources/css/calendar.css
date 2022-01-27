@@ -665,12 +665,39 @@ tbody,
 }
 
 #calendar-entry-form .ProseMirror-menubar-wrapper {
-
     z-index: 8;
 }
 
 #calendar-entry-form .ProseMirror {
     min-height: 150px !important;
+}
+.calendar-entry-participants.modal-body {
+    padding: 0;
+}
+.calendar-entry-participants button[data-action-click=displayAddForm] {
+    margin: 10px 0 0 12px;
+}
+.calendar-entry-participants .pagination {
+    margin: 10px 0 0;
+}
+.calendar-entry-participants .media-list {
+    margin: 0;
+}
+#calendar-entry-add-participants-form {
+    display: none;
+}
+#calendar-entry-add-participants-form li {
+    padding: 0 2px;
+    border: none;
+}
+#calendar-entry-add-participants-form li:hover {
+    background: none;
+}
+#calendar-entry-add-participants-form li.select2-selection__choice:hover {
+    background: #21A1B3;
+}
+#calendar-entry-add-participants-form .media .media-body:first-child {
+    padding-right: 5px;
 }
 
 .calendar-option-buttons {

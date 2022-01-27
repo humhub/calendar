@@ -9,7 +9,6 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\assets\ParticipantsListAssets;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\user\models\User;
 use humhub\widgets\JsWidget;
 use Yii;
@@ -75,19 +74,8 @@ class ParticipantList extends JsWidget
             'entry' => $this->entry,
             'users' => $usersQuery->all(),
             'pagination' => $pagination,
-            'statuses' => self::getStatuses(),
             'options' => $this->getOptions(),
         ]);
-    }
-
-    public static function getStatuses(): array
-    {
-        return [
-            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED => Yii::t('CalendarModule.views_entry_edit', 'Attend'),
-            CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE => Yii::t('CalendarModule.views_entry_edit', 'Maybe'),
-            CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED => Yii::t('CalendarModule.views_entry_edit', 'Declined'),
-            CalendarEntryParticipant::PARTICIPATION_STATE_INVITED => Yii::t('CalendarModule.views_entry_edit', 'Invited'),
-        ];
     }
 
     /**
@@ -97,6 +85,7 @@ class ParticipantList extends JsWidget
     {
         return [
             'entry-id' => $this->entry->id,
+            'add-url' => $this->entry->content->container->createUrl('/calendar/entry/add-participants'),
             'update-url' => $this->entry->content->container->createUrl('/calendar/entry/update-participant-status'),
             'remove-url' => $this->entry->content->container->createUrl('/calendar/entry/remove-participant'),
         ];

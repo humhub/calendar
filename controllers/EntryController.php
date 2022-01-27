@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\models\forms\InviteForm;
+use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\calendar\widgets\ParticipantList;
 use Throwable;
 use Yii;
@@ -208,13 +209,67 @@ class EntryController extends ContentContainerController
         ]);
     }
 
+    public function actionAddParticipants()
+    {
+        $this->forcePostRequest();
+
+        $entryId = Yii::$app->request->post('entryId');
+        $status = Yii::$app->request->post('status');
+        $guids = Yii::$app->request->post('guids');
+
+        if (empty($guids)) {
+            return $this->asJson([
+                'error' => Yii::t('CalendarModule.base', 'Please select new participants.'),
+            ]);
+        }
+
+        if (!ParticipantItem::hasStatus($status)) {
+            throw new HttpException(403, 'Wrong status!');
+        }
+
+        $entry = $this->getCalendarEntry($entryId);
+        if (!$entry->content->canEdit()) {
+            throw new HttpException(403);
+        }
+
+        $users = User::find()->where(['IN', 'guid', $guids])->all();
+        $addedUsers = [];
+        $newParticipantsHtml = [];
+        foreach ($users as $user) {
+            if ($entry->participation->findParticipant($user)) {
+                continue;
+            }
+            $entry->participation->setParticipationStatus($user, $status);
+            $addedUsers[] = $user->displayName;
+            $newParticipantsHtml[] = ParticipantItem::widget([
+                'entry' => $entry,
+                'user' => $user,
+            ]);
+        }
+
+        if (empty($addedUsers)) {
+            return $this->asJson([
+                'warning' => Yii::t('CalendarModule.base', 'No new participants were added.'),
+            ]);
+        }
+
+        return $this->asJson([
+            'success' => Yii::t('CalendarModule.base', 'Added: {users}', [
+                'users' => implode(', ', $addedUsers)
+            ]),
+            'html' => $newParticipantsHtml,
+        ]);
+    }
+
     public function actionUpdateParticipantStatus()
     {
+        $this->forcePostRequest();
+
         $entryId = Yii::$app->request->post('entryId');
         $userId = Yii::$app->request->post('userId');
         $status = Yii::$app->request->post('status');
 
-        if (!in_array($status, array_keys(ParticipantList::getStatuses()))) {
+        if (!ParticipantItem::hasStatus($status)) {
             throw new HttpException(403, 'Wrong status!');
         }
 
@@ -238,6 +293,8 @@ class EntryController extends ContentContainerController
 
     public function actionRemoveParticipant()
     {
+        $this->forcePostRequest();
+
         $entryId = Yii::$app->request->post('entryId');
         $userId = Yii::$app->request->post('userId');
 
