@@ -61,6 +61,10 @@ class ParticipantList extends JsWidget
         $usersQuery = User::find();
         $usersQuery->innerJoin('calendar_entry_participant', 'user.id = user_id');
         $usersQuery->where(['calendar_entry_id' => $this->entry->id]);
+        $state = Yii::$app->request->get('state', Yii::$app->request->post('state', ''));
+        if (!empty($state) && ParticipantItem::hasStatus($state)) {
+            $usersQuery->andWhere(['participation_state' => $state]);
+        }
 
         $countQuery = clone $usersQuery;
         $pagination = new Pagination([
@@ -88,6 +92,7 @@ class ParticipantList extends JsWidget
             'add-url' => $this->entry->content->container->createUrl('/calendar/entry/add-participants'),
             'update-url' => $this->entry->content->container->createUrl('/calendar/entry/update-participant-status'),
             'remove-url' => $this->entry->content->container->createUrl('/calendar/entry/remove-participant'),
+            'filter-url' => $this->entry->content->container->createUrl('/calendar/entry/participants'),
         ];
     }
 }

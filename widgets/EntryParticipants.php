@@ -24,19 +24,21 @@ class EntryParticipants extends Widget
 
     public function run()
     {
-        if($this->calendarEntry->closed) {
-            return;
+        if ($this->calendarEntry->closed) {
+            return '';
         }
 
         $countAttending = $this->getParticipantStateCount(CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, true);
         $countMaybe = $this->getParticipantStateCount(CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, $this->calendarEntry->allow_maybe);
         $countDeclined = $this->getParticipantStateCount(CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, $this->calendarEntry->allow_decline);
+        $countInvited = $this->getParticipantStateCount(CalendarEntryParticipant::PARTICIPATION_STATE_INVITED, true);
 
         return $this->render('participants', [
             'calendarEntry' => $this->calendarEntry,
             'countAttending' => $countAttending,
             'countMaybe' => $countMaybe,
             'countDeclined' => $countDeclined,
+            'countInvited' => $countInvited,
         ]);
     }
 

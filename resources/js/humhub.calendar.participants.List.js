@@ -45,6 +45,9 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         client.post(this.data('remove-url'), {data}).then(function(response) {
             if (response.success) {
                 status.success(response.message);
+                if (participation.closest('ul').find('li[data-user-id]').length === 1) {
+                    participation.closest('ul').prev('p').show();
+                }
                 participation.remove();
             } else {
                 status.error(response.message);
@@ -81,7 +84,7 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         client.post(this.data('add-url'), {data}).then(function(response) {
             if (response.success) {
                 status.success(response.success);
-                form.before(response.html);
+                form.before(response.html).closest('ul').prev('p').hide();
             } else if (response.warning) {
                 status.warn(response.warning);
             } else if (response.error) {
@@ -93,6 +96,22 @@ humhub.module('calendar.participants.List', function (module, require, $) {
             evt.finish();
         });
     }
+
+    List.prototype.filterState = function (evt) {
+        const data = {
+            id: this.data('entry-id'),
+            state: evt.$trigger.val(),
+        };
+
+        loader.set(evt.$trigger.parent(), {size: '10px', css: {padding: '0px'}});
+        client.get(this.data('filter-url'), {data}).then(function(response) {
+            $('#globalModal').html(response.html);
+        }).catch(function(e) {
+            module.log.error(e, true);
+        }).finally(function () {
+            evt.finish();
+        });
+    };
 
     module.export = List;
 });

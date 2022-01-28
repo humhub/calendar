@@ -9,7 +9,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 /* @var $countAttending integer */
 /* @var $countMaybe integer */
 /* @var $countDeclined integer */
-
+/* @var $countInvited integer */
 ?>
 
 <?php if ($calendarEntry->participation->isEnabled()) : ?>
@@ -46,6 +46,15 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
         <?php else : ?>
             <?= $title; ?>
         <?php endif ?>
+    <?php endif ?>
+
+    &middot; <?php $title = Yii::t('CalendarModule.widgets_views_participants', ":count invited", [':count' => $countInvited]); ?>
+    <?php if ($countInvited > 0) : ?>
+        <?= ModalButton::instance($title)
+            ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED))
+            ->link() ?>
+    <?php else : ?>
+        <?= $title; ?>
     <?php endif ?>
 
     <br>

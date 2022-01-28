@@ -8,11 +8,9 @@ use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\widgets\ModalClose;
 use Throwable;
 use Yii;
@@ -198,19 +196,18 @@ class EntryController extends ContentContainerController
      */
     public function actionParticipants($id = null)
     {
-        $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
-        if (!$calendarEntryForm->entry->content->canEdit()) {
-            throw new HttpException(403);
-        }
-
-        return $this->renderAjax('edit-participants', [
-            'calendarEntryForm' => $calendarEntryForm,
+        return $this->renderAjax('participants', [
+            'entry' => $this->getCalendarEntry($id),
         ]);
     }
 
     public function actionAddParticipantsForm()
     {
-        return $this->renderAjax('edit-participants-add', [
+        if (!$this->canCreateEntries()) {
+            throw new HttpException(403);
+        }
+
+        return $this->renderAjax('participants-add', [
             'statuses' => ParticipantItem::getStatuses(),
         ]);
     }
@@ -351,39 +348,6 @@ class EntryController extends ContentContainerController
         $entry->toggleClosed();
 
         return $this->asJson(Stream::getContentResultEntry($entry->content));
-    }
-
-    /**
-     * @return mixed
-     * @throws HttpException
-     * @throws Throwable
-     * @throws Exception
-     */
-    public function actionUserList()
-    {
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
-
-        if ($calendarEntry == null) {
-            throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
-        }
-        $state = Yii::$app->request->get('state');
-
-        $query = User::find();
-        $query->leftJoin('calendar_entry_participant', 'user.id=calendar_entry_participant.user_id AND calendar_entry_participant.calendar_entry_id=:calendar_entry_id AND calendar_entry_participant.participation_state=:state', [
-            ':calendar_entry_id' => $calendarEntry->id,
-            ':state' => $state
-        ]);
-        $query->where('calendar_entry_participant.id IS NOT NULL');
-
-        $title = "";
-        if ($state == CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED) {
-            $title = Yii::t('CalendarModule.base', 'Attending users');
-        } elseif ($state == CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED) {
-            $title = Yii::t('CalendarModule.base', 'Declining users');
-        } elseif ($state == CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE) {
-            $title = Yii::t('CalendarModule.base', 'Maybe attending users');
-        }
-        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
     /**

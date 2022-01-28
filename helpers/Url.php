@@ -224,13 +224,13 @@ class Url extends BaseUrl
         return $entry->content->container->createUrl('/calendar/entry/invite', ['id' => $entry->id]);
     }
 
-    public static function toParticipationUserList(CalendarEntry $entry, $state, ContentContainerActiveRecord $container = null)
+    public static function toParticipationUserList(CalendarEntry $entry, $state = null, ContentContainerActiveRecord $container = null)
     {
         if(!$container) {
             $container = $entry->content->container;
         }
 
-        return $container->createUrl('/calendar/entry/user-list', ['id' => $entry->id, 'state' => $state]);
+        return $container->createUrl('/calendar/entry/participants', ['id' => $entry->id, 'state' => $state]);
     }
 
     public static function toEnableModuleOnProfileConfig()

@@ -685,6 +685,7 @@ tbody,
 }
 .calendar-entry-participants .media-list .media-body {
     width: 1%;
+    word-break: initial;
 }
 .calendar-entry-participants .media-list .media-body:first-child {
     width: auto;
@@ -693,8 +694,11 @@ tbody,
     float: left;
     margin-right: 5px;
 }
-.calendar-entry-participants .media-list .media-body:last-child {
+.calendar-entry-participants .media-list .media-body:last-child:not(:first-child) {
     padding-left: 5px;
+}
+.calendar-entry-participants-filters {
+    padding: 12px;
 }
 #calendar-entry-add-participants-form li {
     padding: 0 2px;

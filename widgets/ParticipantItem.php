@@ -54,4 +54,10 @@ class ParticipantItem extends Widget
     {
         return array_key_exists($status, self::getStatuses());
     }
+
+    public static function getStatusTitle($status): string
+    {
+        $statuses = self::getStatuses();
+        return $statuses[$status] ?? '';
+    }
 }

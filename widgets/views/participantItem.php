@@ -6,6 +6,7 @@
  */
 
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User as User;
 use humhub\modules\user\widgets\Image;
 use humhub\widgets\Button;
@@ -28,15 +29,21 @@ use yii\helpers\Html;
             <h5><?= Html::encode($user->displayNameSub) ?></h5>
         </a>
         <div class="media-body">
-            <?= Html::dropDownList('status', $entry->participation->getParticipationStatus($user), $statuses, [
-                'data-action-change' => 'update',
-            ]) ?>
+            <?php if ($entry->content->canEdit()) : ?>
+                <?= Html::dropDownList('status', $entry->participation->getParticipationStatus($user), $statuses, [
+                    'data-action-change' => 'update',
+                ]) ?>
+            <?php else : ?>
+                <span class="label label-default"><?= ParticipantItem::getStatusTitle($entry->participation->getParticipationStatus($user)) ?></span>
+            <?php endif; ?>
         </div>
-        <div class="media-body">
-            <?= Button::danger()->xs()
-                ->icon('remove')
-                ->confirm(null, Yii::t('CalendarModule.views_entry_edit', 'Are you sure want to remove the participant from the event?'))
-                ->action('remove') ?>
-        </div>
+        <?php if ($entry->content->canEdit()) : ?>
+            <div class="media-body">
+                <?= Button::danger()->xs()
+                    ->icon('remove')
+                    ->confirm(null, Yii::t('CalendarModule.views_entry_edit', 'Are you sure want to remove the participant from the event?'))
+                    ->action('remove') ?>
+            </div>
+        <?php endif; ?>
     </div>
 <?= Html::endTag('li') ?>
