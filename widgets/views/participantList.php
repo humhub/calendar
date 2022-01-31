@@ -6,7 +6,9 @@
  */
 
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\widgets\ParticipantAddForm;
 use humhub\modules\calendar\widgets\ParticipantFilter;
+use humhub\modules\calendar\widgets\ParticipantInviteForm;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User as User;
 use humhub\widgets\AjaxLinkPager;
@@ -18,6 +20,8 @@ use yii\helpers\Html;
 /* @var User[] $users */
 /* @var Pagination $pagination */
 /* @var array $options */
+/* @var bool $initAddForm */
+/* @var bool $initInviteForm */
 ?>
 <?= Html::beginTag('div', $options) ?>
 <?= ParticipantFilter::widget() ?>
@@ -31,13 +35,25 @@ use yii\helpers\Html;
             'user' => $user,
         ])?>
     <?php endforeach; ?>
+    <?php if ($initAddForm) : ?>
+        <?= ParticipantAddForm::widget(['entry' => $entry]) ?>
+    <?php endif; ?>
+    <?php if ($initInviteForm) : ?>
+        <?= ParticipantInviteForm::widget(['entry' => $entry]) ?>
+    <?php endif; ?>
 <?= Html::endTag('ul') ?>
 
-<?php if ($entry->content->canEdit()) : ?>
+<?php if (!$initAddForm && $entry->content->canEdit()) : ?>
     <?= Button::success(Yii::t('CalendarModule.views_entry_edit', 'Add participants'))
-        ->sm()
+        ->cssClass('btn-participants-action')->sm()
         ->icon('add')
-        ->action('displayAddForm', $entry->content->container->createUrl('/calendar/entry/add-participants-form')) ?>
+        ->action('displayForm', $entry->content->container->createUrl('/calendar/entry/add-participants-form', ['id' => $entry->id])) ?>
+<?php endif; ?>
+<?php if (!$initInviteForm && $entry->canInvite()) : ?>
+    <?= Button::info(Yii::t('CalendarModule.views_entry_edit', 'Invite participants'))
+        ->cssClass('btn-participants-action btn-participants-action-invite')->sm()
+        ->icon('send')
+        ->action('displayForm', $entry->content->container->createUrl('/calendar/entry/invite-participants-form', ['id' => $entry->id])) ?>
 <?php endif; ?>
 
 <div class="pagination-container">

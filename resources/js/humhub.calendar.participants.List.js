@@ -59,12 +59,12 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         });
     };
 
-    List.prototype.displayAddForm = function (evt) {
+    List.prototype.displayForm = function (evt) {
         const list = this.$.find('ul.media-list');
 
         client.get(evt).then(function(response) {
             list.append(response.html);
-            Widget.closest(list.find('[data-ui-init]'));
+            Widget.closest(list.find('li.calendar-entry-new-participants-form:last-child').find('[data-ui-init]'));
             evt.$trigger.remove();
         }).catch(function(e) {
             module.log.error(e, true);
@@ -77,14 +77,17 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         const form = evt.$trigger.closest('li');
         const data = {
             entryId: this.data('entry-id'),
-            status: form.find('select[name=status]').val(),
             guids: form.find('select[name="newParticipants[]"]').val(),
         };
+        const entryStatus = form.find('select[name=status]');
+        if (entryStatus.length) {
+            data.status = entryStatus.val();
+        }
 
-        client.post(this.data('add-url'), {data}).then(function(response) {
+        client.post(evt, {data}).then(function(response) {
             if (response.success) {
                 status.success(response.success);
-                form.before(response.html).closest('ul').prev('p').hide();
+                form.closest('ul').find('li.calendar-entry-new-participants-form:first').before(response.html).closest('ul').prev('p').hide();
             } else if (response.warning) {
                 status.warn(response.warning);
             } else if (response.error) {

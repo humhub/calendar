@@ -674,7 +674,7 @@ tbody,
 .calendar-entry-participants.modal-body {
     padding: 0;
 }
-.calendar-entry-participants button[data-action-click=displayAddForm] {
+.calendar-entry-participants button.btn-participants-action {
     margin: 10px 0 0 12px;
 }
 .calendar-entry-participants .pagination {
@@ -694,24 +694,21 @@ tbody,
     float: left;
     margin-right: 5px;
 }
-.calendar-entry-participants .media-list .media-body:last-child:not(:first-child) {
+.calendar-entry-participants .media-list .media-body:not(:first-child) {
     padding-left: 5px;
 }
 .calendar-entry-participants-filters {
     padding: 12px;
 }
-#calendar-entry-add-participants-form li {
+.media-list .calendar-entry-new-participants-form li {
     padding: 0 2px;
     border: none;
 }
-#calendar-entry-add-participants-form li:hover {
+.calendar-entry-new-participants-form li:hover {
     background: none;
 }
-#calendar-entry-add-participants-form li.select2-selection__choice:hover {
+.calendar-entry-new-participants-form li.select2-selection__choice:hover {
     background: #21A1B3;
-}
-#calendar-entry-add-participants-form .media .media-body:first-child {
-    padding-right: 5px;
 }
 
 .calendar-option-buttons {

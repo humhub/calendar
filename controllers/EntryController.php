@@ -2,7 +2,10 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use humhub\modules\calendar\models\forms\InviteForm;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\notifications\Invited;
+use humhub\modules\calendar\widgets\ParticipantAddForm;
+use humhub\modules\calendar\widgets\ParticipantInviteForm;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
@@ -16,6 +19,7 @@ use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\db\Expression;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\RangeNotSatisfiableHttpException;
@@ -198,18 +202,19 @@ class EntryController extends ContentContainerController
     {
         return $this->renderAjax('participants', [
             'entry' => $this->getCalendarEntry($id),
+            'initForm' => Yii::$app->request->get('form'),
         ]);
     }
 
-    public function actionAddParticipantsForm()
+    public function actionAddParticipantsForm($id)
     {
-        if (!$this->canCreateEntries()) {
+        $entry = $this->getCalendarEntry($id);
+
+        if (!$entry->content->canEdit()) {
             throw new HttpException(403);
         }
 
-        return $this->renderAjax('participants-add', [
-            'statuses' => ParticipantItem::getStatuses(),
-        ]);
+        return ParticipantAddForm::widget(['entry' => $entry]);
     }
 
     public function actionAddParticipants()
@@ -218,13 +223,6 @@ class EntryController extends ContentContainerController
 
         $entryId = Yii::$app->request->post('entryId');
         $status = Yii::$app->request->post('status');
-        $guids = Yii::$app->request->post('guids');
-
-        if (empty($guids)) {
-            return $this->asJson([
-                'error' => Yii::t('CalendarModule.base', 'Please select new participants.'),
-            ]);
-        }
 
         if (!ParticipantItem::hasStatus($status)) {
             throw new HttpException(403, 'Wrong status!');
@@ -235,32 +233,80 @@ class EntryController extends ContentContainerController
             throw new HttpException(403);
         }
 
-        $users = User::find()->where(['IN', 'guid', $guids])->all();
-        $addedUsers = [];
+        return $this->addParticipants($entry, $status, false, [
+            'noUsers' => Yii::t('CalendarModule.base', 'No new participants were added.'),
+            'addedUsers' => Yii::t('CalendarModule.base', 'Added: {users}'),
+        ]);
+    }
+
+    private function addParticipants($entry, $status, $withInvitation, $messages): Response
+    {
+        $guids = Yii::$app->request->post('guids');
+
+        if (empty($guids)) {
+            return $this->asJson([
+                'error' => Yii::t('CalendarModule.base', 'Please select new participants.'),
+            ]);
+        }
+
+        $users = User::find()
+            ->leftJoin('calendar_entry_participant', 'user.id = user_id AND calendar_entry_id = :entry_id', ['entry_id' => $entry->id])
+            ->where(['IN', 'guid', $guids])
+            ->andWhere(['IS', 'user_id', new Expression('NULL')])
+            ->all();
+
+        if (empty($users)) {
+            return $this->asJson([
+                'warning' => $messages['noUsers'],
+            ]);
+        }
+
+        $addedUserNames = [];
         $newParticipantsHtml = [];
         foreach ($users as $user) {
-            if ($entry->participation->findParticipant($user)) {
-                continue;
-            }
             $entry->participation->setParticipationStatus($user, $status);
-            $addedUsers[] = $user->displayName;
+            $addedUserNames[] = $user->displayName;
             $newParticipantsHtml[] = ParticipantItem::widget([
                 'entry' => $entry,
                 'user' => $user,
             ]);
         }
 
-        if (empty($addedUsers)) {
-            return $this->asJson([
-                'warning' => Yii::t('CalendarModule.base', 'No new participants were added.'),
-            ]);
+        if ($withInvitation) {
+            Invited::instance()->from(Yii::$app->user->getIdentity())->about($entry)->sendBulk($users);
         }
 
         return $this->asJson([
-            'success' => Yii::t('CalendarModule.base', 'Added: {users}', [
-                'users' => implode(', ', $addedUsers)
-            ]),
+            'success' => str_replace('{users}', implode(', ', $addedUserNames), $messages['addedUsers']),
             'html' => $newParticipantsHtml,
+        ]);
+    }
+
+    public function actionInviteParticipantsForm($id)
+    {
+        $entry = $this->getCalendarEntry($id);
+
+        if (!$entry->canInvite()) {
+            throw new HttpException(403);
+        }
+
+        return ParticipantInviteForm::widget(['entry' => $entry]);
+    }
+
+    public function actionInviteParticipants()
+    {
+        $this->forcePostRequest();
+
+        $entryId = Yii::$app->request->post('entryId');
+
+        $entry = $this->getCalendarEntry($entryId);
+        if (!$entry->canInvite()) {
+            throw new HttpException(403);
+        }
+
+        return $this->addParticipants($entry, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED, true, [
+            'noUsers' => Yii::t('CalendarModule.base', 'No new participants were invited.'),
+            'addedUsers' => Yii::t('CalendarModule.base', 'Invited: {users}'),
         ]);
     }
 
@@ -422,32 +468,5 @@ class EntryController extends ContentContainerController
         $calendarEntry = $this->getCalendarEntry($id);
         $ics = $calendarEntry->generateIcs();
         return Yii::$app->response->sendContentAsFile($ics, uniqid() . '.ics', ['mimeType' => 'text/calendar']);
-    }
-
-    /**
-     * Display a form to invite new participants
-     *
-     * @param $id
-     * @return string
-     */
-    public function actionInvite($id)
-    {
-        $inviteForm = new InviteForm(['entryId' => $id]);
-
-        if ($inviteForm->load(Yii::$app->request->post()) && $inviteForm->save()) {
-            if (empty($inviteForm->invitedUsers)) {
-                return ModalClose::widget(['warn' => Yii::t('CalendarModule.base', 'No new users have been invited.')]);
-            }
-
-            $invitedUsers = [];
-            foreach ($inviteForm->invitedUsers as $invitedUser) {
-                $invitedUsers[] = '"' . $invitedUser->displayName . '"';
-            }
-            return ModalClose::widget(['success' => Yii::t('CalendarModule.base', 'Invited: {users}', [
-                'users' => implode(', ', $invitedUsers)
-            ])]);
-        }
-
-        return $this->renderAjax('invite', ['inviteForm' => $inviteForm]);
     }
 }

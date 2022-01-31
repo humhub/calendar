@@ -11,12 +11,13 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
 /* @var $entry CalendarEntry */
+/* @var $initForm string */
 ?>
 <?php ModalDialog::begin(['header' => Yii::t('CalendarModule.views_entry_view', 'Participants of the event "{eventTitle}"', [
     'eventTitle' => $entry->title
 ])]) ?>
     <div class="modal-body calendar-entry-participants">
-        <?= ParticipantList::widget(['entry' => $entry]) ?>
+        <?= ParticipantList::widget(['entry' => $entry, 'initForm' => $initForm]) ?>
     </div>
     <div class="modal-footer">
         <?= ModalButton::cancel(Yii::t('base', 'Close'))?>

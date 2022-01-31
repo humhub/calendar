@@ -40,6 +40,11 @@ class ParticipantList extends JsWidget
     public $pageSize = null;
 
     /**
+     * @var string 'add', 'invite' - what form should be initalized on load the list
+     */
+    public $initForm;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -79,6 +84,8 @@ class ParticipantList extends JsWidget
             'users' => $usersQuery->all(),
             'pagination' => $pagination,
             'options' => $this->getOptions(),
+            'initAddForm' => strpos($this->initForm, 'add') !== false,
+            'initInviteForm' => strpos($this->initForm, 'invite') !== false,
         ]);
     }
 
@@ -89,7 +96,6 @@ class ParticipantList extends JsWidget
     {
         return [
             'entry-id' => $this->entry->id,
-            'add-url' => $this->entry->content->container->createUrl('/calendar/entry/add-participants'),
             'update-url' => $this->entry->content->container->createUrl('/calendar/entry/update-participant-status'),
             'remove-url' => $this->entry->content->container->createUrl('/calendar/entry/remove-participant'),
             'filter-url' => $this->entry->content->container->createUrl('/calendar/entry/participants'),

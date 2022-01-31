@@ -219,9 +219,9 @@ class Url extends BaseUrl
             'id' => $entry->id]);
     }
 
-    public static function toInviteParticipants(CalendarEntry $entry)
+    public static function toInviteParticipantsForm(CalendarEntry $entry)
     {
-        return $entry->content->container->createUrl('/calendar/entry/invite', ['id' => $entry->id]);
+        return $entry->content->container->createUrl('/calendar/entry/participants', ['id' => $entry->id, 'state' => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED, 'form' => 'invite']);
     }
 
     public static function toParticipationUserList(CalendarEntry $entry, $state = null, ContentContainerActiveRecord $container = null)

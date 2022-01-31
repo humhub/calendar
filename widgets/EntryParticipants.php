@@ -76,9 +76,9 @@ class EntryParticipants extends Widget
             return '';
         }
 
-        return Button::asLink(Yii::t('CalendarModule.views_entry_view', 'Invite participants'), Url::toInviteParticipants($calendarEntry))
+        return Button::asLink(Yii::t('CalendarModule.views_entry_view', 'Invite participants'), Url::toInviteParticipantsForm($calendarEntry))
             ->cssClass('btn btn-primary')->sm()
-            ->icon('fa-users')
+            ->icon('send')
             ->options(['data-target' => '#globalModal']);
     }
 }
