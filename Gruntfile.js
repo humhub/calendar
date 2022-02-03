@@ -9,7 +9,7 @@ module.exports = function (grunt) {
                     'resources/js/humhub.calendar.min.js': ['resources/js/humhub.calendar.js'],
                     'resources/js/humhub.calendar.recurrence.Form.min.js': ['resources/js/humhub.calendar.recurrence.Form.js'],
                     'resources/js/humhub.calendar.reminder.Form.min.js': ['resources/js/humhub.calendar.reminder.Form.js'],
-                    'resources/js/humhub.calendar.participants.List.min.js': ['resources/js/humhub.calendar.participants.List.js'],
+                    'resources/js/humhub.calendar.participation.Form.min.js': ['resources/js/humhub.calendar.participation.Form.js'],
                 }
             }
         },

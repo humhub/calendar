@@ -23,7 +23,6 @@ use yii\helpers\Html;
 /* @var bool $initAddForm */
 /* @var bool $initInviteForm */
 ?>
-<?= Html::beginTag('div', $options) ?>
 <?= ParticipantFilter::widget() ?>
 
 <p style="padding:0 12px<?php if (!empty($users)) : ?>;display:none<?php endif; ?>"><?= Yii::t('CalendarModule.views_entry_edit', 'No participants.'); ?></p>
@@ -61,5 +60,3 @@ use yii\helpers\Html;
         'pagination' => $pagination,
     ]); ?>
 </div>
-
-<?= Html::endTag('div') ?>

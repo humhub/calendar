@@ -15,9 +15,13 @@ use humhub\widgets\ModalDialog;
 
 CalendarBaseAssets::register($this);
 
-$header = ($calendarEntryForm->entry->isNewRecord)
-    ? Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> event')
-    : Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> event');
+if ($calendarEntryForm->entry->isNewRecord) {
+    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> event');
+    $saveButtonText = Yii::t('CalendarModule.views_entry_edit', 'Next');
+} else {
+    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> event');
+    $saveButtonText = null;
+}
 
 if(RecurrenceHelper::isRecurrent($calendarEntryForm->entry)) {
     $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> recurring event');
@@ -41,7 +45,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
                     'params' => ['form' => $form, 'calendarEntryForm' => $calendarEntryForm, 'contentContainer' => $contentContainer],
                     'items' => [
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Basic'),'view' => 'edit-basic', 'linkOptions' => ['class' => 'tab-basic']],
-                        ['label' => Yii::t('CalendarModule.views_entry_edit', 'Participation'),'view' => 'edit-participation', 'linkOptions' => ['class' => 'tab-participation']],
+                        //['label' => Yii::t('CalendarModule.views_entry_edit', 'Participation'),'view' => 'edit-participation', 'linkOptions' => ['class' => 'tab-participation']],
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Reminder'),'view' => 'edit-reminder', 'linkOptions' => ['class' => 'tab-reminder'], 'visible' =>  ($calendarEntryForm->showReminderTab() )],
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Recurrence'),'view' => 'edit-recurrence', 'linkOptions' => ['class' => 'tab-recurrence'], 'visible' => Module::isRecurrenceActive()],
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Files'), 'view' => 'edit-files', 'linkOptions' => ['class' => 'tab-files']],
@@ -52,7 +56,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
             <hr>
 
             <div class="modal-footer">
-                <?= ModalButton::submitModal($editUrl); ?>
+                <?= ModalButton::submitModal($editUrl, $saveButtonText); ?>
                 <?= ModalButton::cancel(); ?>
             </div>
         </div>

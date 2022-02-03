@@ -9,7 +9,7 @@ namespace humhub\modules\calendar\assets;
 
 use yii\web\AssetBundle;
 
-class ParticipantsListAssets extends AssetBundle
+class ParticipationFormAssets extends AssetBundle
 {
     public $defer = true;
 
@@ -29,6 +29,6 @@ class ParticipantsListAssets extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.calendar.participants.List.min.js',
+        'js/humhub.calendar.participation.Form.js',
     ];
 }

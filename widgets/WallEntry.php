@@ -71,7 +71,7 @@ class WallEntry extends WallStreamModuleEntryWidget
             }
         }
 
-        $result[] = [ParticipantsLink::class, ['entry' => $this->model], ['sortOrder' => 300]];
+        $result[] = [ParticipantsLink::class, ['entry' => $this->model], ['sortOrder' => 110]];
 
         return $result;
     }

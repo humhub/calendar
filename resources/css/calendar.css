@@ -671,8 +671,14 @@ tbody,
 #calendar-entry-form .ProseMirror {
     min-height: 150px !important;
 }
+#calendar-entry-participation-settings-title {
+    display: block;
+    margin: 20px 20px 17px;
+    font-size: 16px;
+    color: #000;
+}
 .calendar-entry-participants.modal-body {
-    padding: 0;
+    padding: 0 0 20px 0;
 }
 .calendar-entry-participants button.btn-participants-action {
     margin: 10px 0 0 12px;

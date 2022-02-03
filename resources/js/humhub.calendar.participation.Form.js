@@ -4,15 +4,15 @@
  * @license https://www.humhub.com/licences
  */
 
-humhub.module('calendar.participants.List', function (module, require, $) {
+humhub.module('calendar.participation.Form', function (module, require, $) {
     const Widget = require('ui.widget').Widget;
     const loader = require('ui.loader');
     const client = require('client');
     const status = require('ui.status');
 
-    var List = Widget.extend();
+    var Form = Widget.extend();
 
-    List.prototype.update = function (evt) {
+    Form.prototype.update = function (evt) {
         const updater = evt.$trigger.parent();
         const updaterHtml = evt.$trigger.parent().html();
         const data = {
@@ -35,7 +35,7 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         });
     };
 
-    List.prototype.remove = function (evt) {
+    Form.prototype.remove = function (evt) {
         const participation = evt.$trigger.closest('li');
         const data = {
             entryId: this.data('entry-id'),
@@ -59,7 +59,7 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         });
     };
 
-    List.prototype.displayForm = function (evt) {
+    Form.prototype.displayForm = function (evt) {
         const list = this.$.find('ul.media-list');
 
         client.get(evt).then(function(response) {
@@ -73,7 +73,7 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         });
     }
 
-    List.prototype.add = function (evt) {
+    Form.prototype.add = function (evt) {
         const form = evt.$trigger.closest('li');
         const data = {
             entryId: this.data('entry-id'),
@@ -100,7 +100,7 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         });
     }
 
-    List.prototype.filterState = function (evt) {
+    Form.prototype.filterState = function (evt) {
         const data = {
             id: this.data('entry-id'),
             state: evt.$trigger.val(),
@@ -116,5 +116,17 @@ humhub.module('calendar.participants.List', function (module, require, $) {
         });
     };
 
-    module.export = List;
+    Form.prototype.changeParticipationMode = function (evt) {
+        if (evt.$trigger.val() == 0) {
+            this.$.find('.participationOnly').fadeOut('fast');
+            this.$.find('#calendar-entry-participation-tabs').hide();
+            this.$.find('#calendar-entry-participation-settings-title').show();
+        } else {
+            this.$.find('.participationOnly').fadeIn('fast');
+            this.$.find('#calendar-entry-participation-tabs').show();
+            this.$.find('#calendar-entry-participation-settings-title').hide();
+        }
+    };
+
+    module.export = Form;
 });

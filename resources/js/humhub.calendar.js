@@ -122,14 +122,6 @@ humhub.module('calendar', function (module, require, $) {
             this.$.find('.timeZoneInput').fadeToggle();
         };
 
-        Form.prototype.changeParticipationMode = function (evt) {
-            if (evt.$trigger.val() == 0) {
-                this.$.find('.participationOnly').fadeOut('fast');
-            } else {
-                this.$.find('.participationOnly').fadeIn('fast');
-            }
-        };
-
         Form.prototype.changeEventType = function (evt) {
             var $selected = evt.$trigger.find(':selected');
             if ($selected.data('type-color')) {

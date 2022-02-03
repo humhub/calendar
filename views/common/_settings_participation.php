@@ -2,6 +2,7 @@
 
 use humhub\components\View;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
+use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
 use humhub\widgets\Button;
 
@@ -27,7 +28,7 @@ $helpBlock = $participationSettings->isGlobal()
         <?= $helpBlock ?>
     </div>
 
-    <?= $form->field($participationSettings, 'participation_mode')->dropDownList(CalendarEntryForm::getParticipationModeItems(), ['data-action-change' => 'changeParticipationMode']) ?>
+    <?= $form->field($participationSettings, 'participation_mode')->dropDownList(CalendarEntryParticipationForm::getModeItems(), ['data-action-change' => 'changeParticipationMode']) ?>
     <div class="participationOnly" style="<?= $participationSettings->isParticipationAllowed() ? '' : 'display:none' ?>">
         <?= $form->field($participationSettings, 'allow_decline')->checkbox() ?>
         <?= $form->field($participationSettings, 'allow_maybe')->checkbox() ?>

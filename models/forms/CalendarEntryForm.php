@@ -11,10 +11,7 @@ namespace humhub\modules\calendar\models\forms;
 
 use DateTime;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -77,16 +74,6 @@ class CalendarEntryForm extends Model
      * @var
      */
     public $topics = [];
-
-    /**
-     * @var bool
-     */
-    public $sendUpdateNotification = 0;
-
-    /**
-     * @var integer if set to true all space participants will be added to the event
-     */
-    public $forceJoin = 0;
 
     /**
      * @var CalendarEntry
@@ -230,7 +217,7 @@ class CalendarEntryForm extends Model
         return [
             ['timeZone', 'in', 'range' => DateTimeZone::listIdentifiers()],
             ['topics', 'safe'],
-            [['is_public', 'type_id', 'sendUpdateNotification', 'forceJoin'], 'integer'],
+            [['is_public', 'type_id'], 'integer'],
             [['start_date', 'end_date'], 'required'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => CalendarUtils::getTimeFormat()],
             ['start_date', CalendarDateFormatValidator::class, 'timeField' => 'start_time'],
@@ -252,10 +239,6 @@ class CalendarEntryForm extends Model
             'location' => Yii::t('CalendarModule.base', 'Location'),
             'is_public' => Yii::t('CalendarModule.base', 'Public'),
             'topics' => Yii::t('TopicModule.base', 'Topics'),
-            'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Send update notification'),
-            'forceJoin' => ($this->entry->isNewRecord)
-                ? Yii::t('CalendarModule.base', 'Add all space members to this event')
-                : Yii::t('CalendarModule.base', 'Add remaining space members to this event'),
         ];
     }
 
@@ -438,24 +421,11 @@ class CalendarEntryForm extends Model
             }
 
             // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
-            if($this->entry->participant_info) {
+            if($this->entry->description) {
                 RichText::postProcess($this->entry->description, $this->entry);
             }
 
-            // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
-            if($this->entry->participant_info) {
-                RichText::postProcess($this->entry->participant_info, $this->entry);
-            }
-
             $this->entry->setType($this->type_id);
-
-            if ($this->sendUpdateNotification && !$this->entry->isNewRecord) {
-                $this->entry->participation->sendUpdateNotification();
-            }
-
-            if ($this->forceJoin) {
-                $this->entry->participation->addAllUsers();
-            }
 
             Topic::attach($this->entry->content, $this->topics);
 
@@ -493,15 +463,6 @@ class CalendarEntryForm extends Model
             CalendarUtils::incrementSequence($this->entry);
             $this->entry->saveEvent();
         }
-    }
-
-    public static function getParticipationModeItems()
-    {
-        return [
-            CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
-            CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.views_entry_edit', 'Only by Invite'),
-            CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
-        ];
     }
 
     public function showTimeFields()

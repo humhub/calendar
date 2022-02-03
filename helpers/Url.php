@@ -129,6 +129,15 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal]);
     }
 
+    public static function toEditEntryParticipation(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
+    {
+        if (!$container) {
+            $container = $entry->content->container;
+        }
+
+        return $container->createUrl('/calendar/entry/edit-participation', ['id' => $entry->id]);
+    }
+
     public static function toFullCalendarEdit(ContentContainerActiveRecord $container)
     {
         return $container->createUrl('/calendar/entry/edit', ['cal' => 1]);

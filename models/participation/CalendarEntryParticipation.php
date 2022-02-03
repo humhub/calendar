@@ -241,6 +241,10 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public function canRespond(User $user = null)
     {
+        if ($this->entry->participation_mode == self::PARTICIPATION_MODE_NONE) {
+            return false;
+        }
+
         if (RecurrenceHelper::isRecurrentRoot($this->entry)) {
             return false;
         }

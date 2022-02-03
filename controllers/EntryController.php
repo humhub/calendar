@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\notifications\Invited;
 use humhub\modules\calendar\widgets\ParticipantAddForm;
 use humhub\modules\calendar\widgets\ParticipantInviteForm;
@@ -113,6 +114,33 @@ class EntryController extends ContentContainerController
     }
 
     /**
+     * Render modal window with participation settings form and participants manager
+     *
+     * @param CalendarEntry $entry
+     * @param string|null $activeTab by default 'settings' or null, 'list'
+     * @return string
+     */
+    protected function renderParticipation(CalendarEntry $entry, ?string $activeTab = null): string
+    {
+        return $this->renderAjax('modal-participants', [
+            'calendarEntryParticipationForm' => new CalendarEntryParticipationForm(['entry' => $entry]),
+            'activeTab' => $activeTab,
+            'saveUrl' => Url::toEditEntryParticipation($entry),
+            'widgetOptions' => [
+                'id' => 'calendar-entry-participation-form',
+                'data' => [
+                    'ui-widget' => 'calendar.participation.Form',
+                    'ui-init' => true,
+                    'entry-id' => $entry->id,
+                    'update-url' => $this->contentContainer->createUrl('/calendar/entry/update-participant-status'),
+                    'remove-url' => $this->contentContainer->createUrl('/calendar/entry/remove-participant'),
+                    'filter-url' => $this->contentContainer->createUrl('/calendar/entry/participants'),
+                ]
+            ],
+        ]);
+    }
+
+    /**
      * @param $id
      * @param $type
      * @return Response
@@ -151,7 +179,7 @@ class EntryController extends ContentContainerController
      */
     public function actionEdit($id = null, $start = null, $end = null, $cal = null)
     {
-        if(empty($id) && !$this->canCreateEntries()) {
+        if (empty($id) && !$this->canCreateEntries()) {
             throw new HttpException(403);
         }
 
@@ -173,7 +201,9 @@ class EntryController extends ContentContainerController
                 return ModalClose::widget(['saved' => true]);
             }
 
-            return $this->renderModal($calendarEntryForm->entry, 1);
+            return empty($id)
+                ? $this->renderParticipation($calendarEntryForm->entry)
+                : $this->renderModal($calendarEntryForm->entry, 1);
         }
 
         if ($calendarEntryForm->isAllDay()) {
@@ -185,6 +215,28 @@ class EntryController extends ContentContainerController
             'contentContainer' => $this->contentContainer,
             'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer)
         ]);
+    }
+
+    public function actionEditParticipation($id = null)
+    {
+        if (empty($id)) {
+            throw new HttpException(403);
+        }
+
+        $calendarEntryParticipationForm = new CalendarEntryParticipationForm(['entry' => $this->getCalendarEntry($id)]);
+        if (!$calendarEntryParticipationForm->entry->content->canEdit()) {
+            throw new HttpException(403);
+        }
+
+        if (!$calendarEntryParticipationForm->entry) {
+            throw new HttpException(404);
+        }
+
+        if ($calendarEntryParticipationForm->load(Yii::$app->request->post()) && $calendarEntryParticipationForm->save()) {
+            return ModalClose::widget(['saved' => true]);
+        }
+
+        return $this->renderParticipation($calendarEntryParticipationForm->entry);
     }
 
     /**
@@ -200,10 +252,7 @@ class EntryController extends ContentContainerController
      */
     public function actionParticipants($id = null)
     {
-        return $this->renderAjax('participants', [
-            'entry' => $this->getCalendarEntry($id),
-            'initForm' => Yii::$app->request->get('form'),
-        ]);
+        return $this->renderParticipation($this->getCalendarEntry($id), 'list');
     }
 
     public function actionAddParticipantsForm($id)
@@ -432,15 +481,16 @@ class EntryController extends ContentContainerController
      * @throws Throwable
      * @throws Exception
      */
-    protected function getCalendarEntry($id)
+    protected function getCalendarEntry($id): CalendarEntry
     {
-        if(!$id) {
+        if (!$id) {
             throw new HttpException(404);
         }
 
+        /* @var CalendarEntry $entry */
         $entry = CalendarEntry::find()->contentContainer($this->contentContainer)->readable()->where(['calendar_entry.id' => $id])->one();
 
-        if(!$entry) {
+        if (!$entry) {
             throw new HttpException(404);
         }
 
