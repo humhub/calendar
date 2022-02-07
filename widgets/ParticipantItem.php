@@ -40,14 +40,19 @@ class ParticipantItem extends Widget
         ]);
     }
 
-    public static function getStatuses(): array
+    public static function getStatuses(bool $allowInvite = true): array
     {
-        return [
+        $statuses = [
             CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED => Yii::t('CalendarModule.views_entry_edit', 'Attend'),
             CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE => Yii::t('CalendarModule.views_entry_edit', 'Maybe'),
             CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED => Yii::t('CalendarModule.views_entry_edit', 'Declined'),
-            CalendarEntryParticipant::PARTICIPATION_STATE_INVITED => Yii::t('CalendarModule.views_entry_edit', 'Invited'),
         ];
+
+        if ($allowInvite) {
+            $statuses[CalendarEntryParticipant::PARTICIPATION_STATE_INVITED] = Yii::t('CalendarModule.views_entry_edit', 'Invited');
+        }
+
+        return $statuses;
     }
 
     public static function hasStatus($status): bool

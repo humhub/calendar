@@ -18,11 +18,15 @@ use yii\web\View;
 /* @var $activeTab string|null */
 /* @var $widgetOptions array */
 /* @var $saveUrl string */
+/* @var $isNewRecord bool */
 /* @var $this View  */
 
 ParticipationFormAssets::register($this);
 ?>
-<?php ModalDialog::begin(['header' =>'<strong>' . Yii::t('CalendarModule.views_entry_view', 'Event Participants') . '</strong>']) ?>
+<?php ModalDialog::begin([
+    'header' =>'<strong>' . Yii::t('CalendarModule.views_entry_view', 'Event Participants') . '</strong>',
+    'size' => 'large',
+]) ?>
     <?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
         <?= Html::beginTag('div', $widgetOptions) ?>
             <strong id="calendar-entry-participation-settings-title"<?php if ($calendarEntryParticipationForm->entry->participation->isEnabled()) : ?> style="display:none"<?php endif;?>>
@@ -54,7 +58,7 @@ ParticipationFormAssets::register($this);
             <hr>
 
             <div class="modal-footer">
-                <?= ModalButton::submitModal($saveUrl) ?>
+                <?= ModalButton::submitModal($saveUrl, $isNewRecord ? Yii::t('CalendarModule.views_entry_edit', 'Create event') : null) ?>
                 <?= ModalButton::cancel() ?>
             </div>
         <?= Html::endTag('div') ?>

@@ -12,11 +12,9 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var $form ActiveForm */
 /* @var $calendarEntryParticipationForm CalendarEntryParticipationForm */
 ?>
-
 <div class="modal-body calendar-entry-participants">
-    <?= ParticipantList::widget(['entry' => $calendarEntryParticipationForm->entry]) ?>
+    <?= ParticipantList::widget([
+        'form' => $form,
+        'model' => $calendarEntryParticipationForm,
+    ]) ?>
 </div>
-
-<?php if ($calendarEntryParticipationForm->entry->participation->canAddAll()) : ?>
-    <?= $form->field($calendarEntryParticipationForm, 'forceJoin')->checkbox() ?>
-<?php endif; ?>

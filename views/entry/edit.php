@@ -32,7 +32,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
 ?>
 
 
-<?php ModalDialog::begin(['header' => $header, 'closable' => false]) ?>
+<?php ModalDialog::begin(['header' => $header, 'size' => 'large', 'closable' => false]) ?>
     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
         <div id="calendar-entry-form" data-ui-widget="calendar.Form" data-ui-init data-is-recurrent="<?= RecurrenceHelper::isRecurrent($calendarEntryForm->entry)?>">

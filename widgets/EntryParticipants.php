@@ -65,20 +65,4 @@ class EntryParticipants extends Widget
                      ->icon($participantSate === $state ? 'fa-check' : null)
                      ->action('calendar.respond', Url::toEntryRespond($calendarEntry, $state));
     }
-
-    public static function inviteButton(CalendarEntry $calendarEntry): string
-    {
-        if ($calendarEntry->participation_mode !== CalendarEntry::PARTICIPATION_MODE_INVITE) {
-            return '';
-        }
-
-        if (!$calendarEntry->isOwner()) {
-            return '';
-        }
-
-        return Button::asLink(Yii::t('CalendarModule.views_entry_view', 'Invite participants'), Url::toInviteParticipantsForm($calendarEntry))
-            ->cssClass('btn btn-primary')->sm()
-            ->icon('send')
-            ->options(['data-target' => '#globalModal']);
-    }
 }

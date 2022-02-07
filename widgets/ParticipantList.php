@@ -8,7 +8,8 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\data\Pagination;
@@ -19,19 +20,19 @@ use yii\data\Pagination;
 class ParticipantList extends Widget
 {
     /**
-     * @var CalendarEntry
+     * @var ActiveForm
      */
-    public $entry;
+    public $form;
+
+    /**
+     * @var CalendarEntryParticipationForm
+     */
+    public $model;
 
     /**
      * @var int displayed users per page
      */
     public $pageSize = null;
-
-    /**
-     * @var string 'add', 'invite' - what form should be initalized on load the list
-     */
-    public $initForm;
 
     /**
      * @inheritdoc
@@ -52,7 +53,7 @@ class ParticipantList extends Widget
     {
         $usersQuery = User::find();
         $usersQuery->innerJoin('calendar_entry_participant', 'user.id = user_id');
-        $usersQuery->where(['calendar_entry_id' => $this->entry->id]);
+        $usersQuery->where(['calendar_entry_id' => $this->model->entry->id]);
         $state = Yii::$app->request->get('state', Yii::$app->request->post('state', ''));
         if (!empty($state) && ParticipantItem::hasStatus($state)) {
             $usersQuery->andWhere(['participation_state' => $state]);
@@ -67,11 +68,10 @@ class ParticipantList extends Widget
         $usersQuery->offset($pagination->offset)->limit($pagination->limit);
 
         return $this->render('participantList', [
-            'entry' => $this->entry,
+            'form' => $this->form,
+            'model' => $this->model,
             'users' => $usersQuery->all(),
             'pagination' => $pagination,
-            'initAddForm' => strpos($this->initForm, 'add') !== false,
-            'initInviteForm' => strpos($this->initForm, 'invite') !== false,
         ]);
     }
 }

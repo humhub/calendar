@@ -8,7 +8,8 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 
 /**
  * ParticipantAddForm to display a form to add participants to the Calendar entry (without invitation)
@@ -16,21 +17,27 @@ use humhub\modules\calendar\models\CalendarEntry;
 class ParticipantAddForm extends Widget
 {
     /**
-     * @var CalendarEntry
+     * @var ActiveForm
      */
-    public $entry;
+    public $form;
+
+    /**
+     * @var CalendarEntryParticipationForm
+     */
+    public $model;
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-        if (!$this->entry->content->canEdit()) {
+        if (!$this->model->entry->content->canEdit()) {
             return '';
         }
 
         return $this->render('participantAddForm', [
-            'entry' => $this->entry,
+            'form' => $this->form,
+            'model' => $this->model,
         ]);
     }
 }

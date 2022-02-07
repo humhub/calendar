@@ -59,22 +59,8 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         });
     };
 
-    Form.prototype.displayForm = function (evt) {
-        const list = this.$.find('ul.media-list');
-
-        client.get(evt).then(function(response) {
-            list.append(response.html);
-            Widget.closest(list.find('li.calendar-entry-new-participants-form:last-child').find('[data-ui-init]'));
-            evt.$trigger.remove();
-        }).catch(function(e) {
-            module.log.error(e, true);
-        }).finally(function () {
-            evt.finish();
-        });
-    }
-
     Form.prototype.add = function (evt) {
-        const form = evt.$trigger.closest('li');
+        const form = evt.$trigger.closest('.calendar-entry-new-participants-form');
         const data = {
             entryId: this.data('entry-id'),
             guids: form.find('select[name="newParticipants[]"]').val(),
@@ -87,7 +73,7 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         client.post(evt, {data}).then(function(response) {
             if (response.success) {
                 status.success(response.success);
-                form.closest('ul').find('li.calendar-entry-new-participants-form:first').before(response.html).closest('ul').prev('p').hide();
+                form.next('ul').append(response.html).closest('ul').prev('p').hide();
             } else if (response.warning) {
                 status.warn(response.warning);
             } else if (response.error) {
@@ -103,7 +89,7 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     Form.prototype.filterState = function (evt) {
         const data = {
             id: this.data('entry-id'),
-            state: evt.$trigger.val(),
+            state: evt.$trigger.data('state'),
         };
 
         loader.set(evt.$trigger.parent(), {size: '10px', css: {padding: '0px'}});

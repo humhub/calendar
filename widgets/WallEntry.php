@@ -69,9 +69,9 @@ class WallEntry extends WallStreamModuleEntryWidget
                 $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
                 $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
             }
-        }
 
-        $result[] = [ParticipantsLink::class, ['entry' => $this->model], ['sortOrder' => 110]];
+            $result[] = [ParticipantsLink::class, ['entry' => $this->model], ['sortOrder' => 110]];
+        }
 
         return $result;
     }

@@ -32,6 +32,7 @@ use yii\helpers\Html;
             <?php if ($entry->content->canEdit()) : ?>
                 <?= Html::dropDownList('status', $entry->participation->getParticipationStatus($user), $statuses, [
                     'data-action-change' => 'update',
+                    'class' => 'form-control',
                 ]) ?>
             <?php else : ?>
                 <span class="label label-default"><?= ParticipantItem::getStatusTitle($entry->participation->getParticipationStatus($user)) ?></span>
@@ -39,7 +40,7 @@ use yii\helpers\Html;
         </div>
         <?php if ($entry->content->canEdit()) : ?>
             <div class="media-body">
-                <?= Button::danger()->xs()
+                <?= Button::danger()->sm()
                     ->icon('remove')
                     ->confirm(null, Yii::t('CalendarModule.views_entry_edit', 'Are you sure want to remove the participant from the event?'))
                     ->action('remove') ?>

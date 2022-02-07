@@ -687,34 +687,70 @@ tbody,
     margin: 10px 0 0;
 }
 .calendar-entry-participants .media-list {
-    margin: 0;
+    margin: 0 11px;
 }
-.calendar-entry-participants .media-list .media-body {
+.calendar-entry-participants .media-body {
     width: 1%;
     word-break: initial;
 }
-.calendar-entry-participants .media-list .media-body:first-child {
+.calendar-entry-participants .media-body:first-child {
     width: auto;
 }
-.calendar-entry-participants .media-list .media-body:first-child .media-object {
+.calendar-entry-participants .media-body:first-child .media-object {
     float: left;
     margin-right: 5px;
 }
-.calendar-entry-participants .media-list .media-body:not(:first-child) {
+.calendar-entry-participants .media-body:not(:first-child) {
     padding-left: 5px;
 }
+.calendar-entry-participants select.form-control {
+    width: auto;
+    height: 40px;
+    padding-right: 24px;
+}
+.calendar-entry-new-participants-form button.btn, .calendar-entry-participants .media-list button.btn {
+    height: 32px;
+    margin-top: 3px;
+}
+.calendar-entry-participants-count {
+    padding: 18px 18px 0;
+    margin: 0;
+}
+.calendar-entry-new-participants-form {
+    padding: 18px;
+}
+.calendar-entry-new-participants-form .form-group {
+    padding-top: 15px;
+}
+.calendar-entry-new-participants-form .form-group .regular-checkbox-container label {
+    padding-left: 0;
+}
 .calendar-entry-participants-filters {
-    padding: 12px;
+    padding: 10px 18px 0;
 }
-.media-list .calendar-entry-new-participants-form li {
-    padding: 0 2px;
-    border: none;
+.calendar-entry-participants-filter-title {
+    font-size: 80%;
 }
-.calendar-entry-new-participants-form li:hover {
-    background: none;
+.calendar-entry-participants-filters .btn.btn-info {
+    margin: 10px 10px 0 0;
+    padding: 3px 14px;
 }
-.calendar-entry-new-participants-form li.select2-selection__choice:hover {
-    background: #21A1B3;
+.calendar-entry-participants-filters .btn.btn-info.active {
+    background: #0397A8 !important;
+    color: #FFF !important;
+}
+.calendar-entry-participants-filters .btn.btn-info:not(.active) {
+    border: 1px solid #435F6F;
+    color: #435F6F !important;
+    background: #FFF;
+}
+.calendar-entry-participants-filters .btn.btn-info:not(.active):hover {
+    background: #0397A8 !important;
+    border: 1px solid #0397A8;
+    color: #FFF !important;
+}
+.calendar-entry-participants .pagination-container {
+    margin-top: 25px;
 }
 
 .calendar-option-buttons {

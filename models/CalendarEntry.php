@@ -946,6 +946,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
 
     public function canInvite(?User $user = null): bool
     {
-        return $this->participation_mode === CalendarEntry::PARTICIPATION_MODE_INVITE && $this->isOwner($user);
+        return $this->isOwner($user);
     }
 }

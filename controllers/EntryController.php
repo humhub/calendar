@@ -6,7 +6,6 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\notifications\Invited;
 use humhub\modules\calendar\widgets\ParticipantAddForm;
-use humhub\modules\calendar\widgets\ParticipantInviteForm;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
@@ -118,14 +117,16 @@ class EntryController extends ContentContainerController
      *
      * @param CalendarEntry $entry
      * @param string|null $activeTab by default 'settings' or null, 'list'
+     * @param bool $isNewRecord
      * @return string
      */
-    protected function renderParticipation(CalendarEntry $entry, ?string $activeTab = null): string
+    protected function renderParticipation(CalendarEntry $entry, ?string $activeTab = null, bool $isNewRecord = false): string
     {
         return $this->renderAjax('modal-participants', [
             'calendarEntryParticipationForm' => new CalendarEntryParticipationForm(['entry' => $entry]),
             'activeTab' => $activeTab,
             'saveUrl' => Url::toEditEntryParticipation($entry),
+            'isNewRecord' => $isNewRecord,
             'widgetOptions' => [
                 'id' => 'calendar-entry-participation-form',
                 'data' => [
@@ -202,7 +203,7 @@ class EntryController extends ContentContainerController
             }
 
             return empty($id)
-                ? $this->renderParticipation($calendarEntryForm->entry)
+                ? $this->renderParticipation($calendarEntryForm->entry, null, true)
                 : $this->renderModal($calendarEntryForm->entry, 1);
         }
 
@@ -225,11 +226,7 @@ class EntryController extends ContentContainerController
 
         $calendarEntryParticipationForm = new CalendarEntryParticipationForm(['entry' => $this->getCalendarEntry($id)]);
         if (!$calendarEntryParticipationForm->entry->content->canEdit()) {
-            throw new HttpException(403);
-        }
-
-        if (!$calendarEntryParticipationForm->entry) {
-            throw new HttpException(404);
+            throw new HttpException(403, 'You cannot edit the event!');
         }
 
         if ($calendarEntryParticipationForm->load(Yii::$app->request->post()) && $calendarEntryParticipationForm->save()) {
@@ -282,13 +279,14 @@ class EntryController extends ContentContainerController
             throw new HttpException(403);
         }
 
-        return $this->addParticipants($entry, $status, false, [
-            'noUsers' => Yii::t('CalendarModule.base', 'No new participants were added.'),
-            'addedUsers' => Yii::t('CalendarModule.base', 'Added: {users}'),
-        ]);
+        if ($status == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED && !$entry->canInvite()) {
+            throw new HttpException(403, Yii::t('CalendarModule.base', 'You cannot invite participants!'));
+        }
+
+        return $this->addParticipants($entry, $status);
     }
 
-    private function addParticipants($entry, $status, $withInvitation, $messages): Response
+    private function addParticipants($entry, $status): Response
     {
         $guids = Yii::$app->request->post('guids');
 
@@ -304,9 +302,13 @@ class EntryController extends ContentContainerController
             ->andWhere(['IS', 'user_id', new Expression('NULL')])
             ->all();
 
+        $isInvitation = ($status == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED);
+
         if (empty($users)) {
             return $this->asJson([
-                'warning' => $messages['noUsers'],
+                'warning' => $isInvitation
+                    ? Yii::t('CalendarModule.base', 'No new participants were invited.')
+                    : Yii::t('CalendarModule.base', 'No new participants were added.'),
             ]);
         }
 
@@ -321,41 +323,16 @@ class EntryController extends ContentContainerController
             ]);
         }
 
-        if ($withInvitation) {
+        if ($isInvitation) {
             Invited::instance()->from(Yii::$app->user->getIdentity())->about($entry)->sendBulk($users);
         }
 
+        $messageOptions = ['users' => implode(', ', $addedUserNames)];
         return $this->asJson([
-            'success' => str_replace('{users}', implode(', ', $addedUserNames), $messages['addedUsers']),
+            'success' => $isInvitation
+                ? Yii::t('CalendarModule.base', 'Invited: {users}', $messageOptions)
+                : Yii::t('CalendarModule.base', 'Added: {users}', $messageOptions),
             'html' => $newParticipantsHtml,
-        ]);
-    }
-
-    public function actionInviteParticipantsForm($id)
-    {
-        $entry = $this->getCalendarEntry($id);
-
-        if (!$entry->canInvite()) {
-            throw new HttpException(403);
-        }
-
-        return ParticipantInviteForm::widget(['entry' => $entry]);
-    }
-
-    public function actionInviteParticipants()
-    {
-        $this->forcePostRequest();
-
-        $entryId = Yii::$app->request->post('entryId');
-
-        $entry = $this->getCalendarEntry($entryId);
-        if (!$entry->canInvite()) {
-            throw new HttpException(403);
-        }
-
-        return $this->addParticipants($entry, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED, true, [
-            'noUsers' => Yii::t('CalendarModule.base', 'No new participants were invited.'),
-            'addedUsers' => Yii::t('CalendarModule.base', 'Invited: {users}'),
         ]);
     }
 
