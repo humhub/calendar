@@ -120,7 +120,7 @@ class EntryController extends ContentContainerController
      * @param bool $isNewRecord
      * @return string
      */
-    protected function renderParticipation(CalendarEntry $entry, ?string $activeTab = null, bool $isNewRecord = false): string
+    protected function renderModalParticipation(CalendarEntry $entry, ?string $activeTab = null, bool $isNewRecord = false): string
     {
         return $this->renderAjax('modal-participants', [
             'calendarEntryParticipationForm' => new CalendarEntryParticipationForm(['entry' => $entry]),
@@ -135,7 +135,7 @@ class EntryController extends ContentContainerController
                     'entry-id' => $entry->id,
                     'update-url' => $this->contentContainer->createUrl('/calendar/entry/update-participant-status'),
                     'remove-url' => $this->contentContainer->createUrl('/calendar/entry/remove-participant'),
-                    'filter-url' => $this->contentContainer->createUrl('/calendar/entry/participants'),
+                    'filter-url' => $this->contentContainer->createUrl('/calendar/entry/participants-list'),
                 ]
             ],
         ]);
@@ -203,7 +203,7 @@ class EntryController extends ContentContainerController
             }
 
             return empty($id)
-                ? $this->renderParticipation($calendarEntryForm->entry, null, true)
+                ? $this->renderModalParticipation($calendarEntryForm->entry, null, true)
                 : $this->renderModal($calendarEntryForm->entry, 1);
         }
 
@@ -233,23 +233,34 @@ class EntryController extends ContentContainerController
             return ModalClose::widget(['saved' => true]);
         }
 
-        return $this->renderParticipation($calendarEntryParticipationForm->entry);
+        return $this->renderModalParticipation($calendarEntryParticipationForm->entry);
     }
 
     /**
-     * Action for participants pagination of the Calendar entry
+     * Action to render modal window with participation settings and active tab "Participants of the event"
      *
-     * @param null $id
+     * @param integer|null $id
      * @return string
-     * @throws Exception
-     * @throws HttpException
-     * @throws InvalidConfigException
-     * @throws Throwable
-     * @throws \yii\db\IntegrityException
      */
-    public function actionParticipants($id = null)
+    public function actionModalParticipants($id = null)
     {
-        return $this->renderParticipation($this->getCalendarEntry($id), 'list');
+        return $this->renderModalParticipation($this->getCalendarEntry($id), 'list');
+    }
+
+    /**
+     * Action to render only participants list
+     * Used for filtering and pagination
+     *
+     * @param integer|null $id
+     * @return string
+     */
+    public function actionParticipantsList($id = null)
+    {
+        return $this->renderAjax('edit-participants', [
+            'calendarEntryParticipationForm' => new CalendarEntryParticipationForm(['entry' => $this->getCalendarEntry($id)]),
+            'form' => null,
+            'renderWrapper' => false,
+        ]);
     }
 
     public function actionAddParticipantsForm($id)

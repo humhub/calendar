@@ -14,7 +14,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 $entry = $calendarEntryParticipationForm->entry;
 ?>
-
 <div class="modal-body">
     <?= $form->field($entry, 'participation_mode')
         ->dropDownList(CalendarEntryParticipationForm::getModeItems(), ['data-action-change' => 'changeParticipationMode'])->label(false) ?>

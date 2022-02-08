@@ -34,7 +34,7 @@ ParticipationFormAssets::register($this);
             </strong>
             <?= Tabs::widget([
                 'viewPath' => '@calendar/views/entry',
-                'params' => ['form' => $form, 'calendarEntryParticipationForm' => $calendarEntryParticipationForm],
+                'params' => ['form' => $form, 'calendarEntryParticipationForm' => $calendarEntryParticipationForm, 'renderWrapper' => true],
                 'options' => [
                     'id' => 'calendar-entry-participation-tabs',
                     'style' => !$calendarEntryParticipationForm->entry->participation->isEnabled() ? 'display:none' : false,

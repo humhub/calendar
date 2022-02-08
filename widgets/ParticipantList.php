@@ -63,7 +63,7 @@ class ParticipantList extends Widget
         $pagination = new Pagination([
             'totalCount' => $countQuery->count(),
             'pageSize' => $this->pageSize,
-            'route' => '/calendar/entry/participants',
+            'route' => '/calendar/entry/participants-list',
         ]);
         $usersQuery->offset($pagination->offset)->limit($pagination->limit);
 

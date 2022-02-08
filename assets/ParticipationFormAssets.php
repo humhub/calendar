@@ -29,6 +29,6 @@ class ParticipationFormAssets extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.calendar.participation.Form.js',
+        'js/humhub.calendar.participation.Form.min.js',
     ];
 }

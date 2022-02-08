@@ -228,18 +228,13 @@ class Url extends BaseUrl
             'id' => $entry->id]);
     }
 
-    public static function toInviteParticipantsForm(CalendarEntry $entry)
-    {
-        return $entry->content->container->createUrl('/calendar/entry/participants', ['id' => $entry->id, 'state' => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED, 'form' => 'invite']);
-    }
-
     public static function toParticipationUserList(CalendarEntry $entry, $state = null, ContentContainerActiveRecord $container = null)
     {
         if(!$container) {
             $container = $entry->content->container;
         }
 
-        return $container->createUrl('/calendar/entry/participants', ['id' => $entry->id, 'state' => $state]);
+        return $container->createUrl('/calendar/entry/modal-participants', ['id' => $entry->id, 'state' => $state]);
     }
 
     public static function toEnableModuleOnProfileConfig()

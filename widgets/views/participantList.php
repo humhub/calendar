@@ -21,27 +21,33 @@ use yii\helpers\Html;
 /* @var Pagination $pagination */
 /* @var array $options */
 ?>
-<?= ParticipantFilter::widget() ?>
+<?php if ($form instanceof ActiveForm) : ?>
+    <?= ParticipantFilter::widget() ?>
 
-<p class="calendar-entry-participants-count"><?= $pagination->totalCount
-    ? Yii::t('CalendarModule.views_entry_edit', '{count} participants', ['count' => $pagination->totalCount])
-    : Yii::t('CalendarModule.views_entry_edit', 'No participants')
-?></p>
+    <p class="calendar-entry-participants-count"><?= $pagination->totalCount
+        ? Yii::t('CalendarModule.views_entry_edit', '{count} participants', ['count' => '<span>' . $pagination->totalCount . '</span>'])
+        : Yii::t('CalendarModule.views_entry_edit', 'No participants')
+    ?></p>
 
-<?= ParticipantAddForm::widget(['form' => $form, 'model' => $model]) ?>
+    <?= ParticipantAddForm::widget(['form' => $form, 'model' => $model]) ?>
+<?php endif; ?>
 
-<?= Html::beginTag('ul', ['class' => 'media-list']) ?>
-    <?php foreach ($users as $user) : ?>
-        <?= ParticipantItem::widget([
-            'entry' => $model->entry,
-            'user' => $user,
-        ])?>
-    <?php endforeach; ?>
-<?= Html::endTag('ul') ?>
+<?= Html::beginTag('div', ['id' => 'calendar-entry-participants-list']) ?>
+    <?= Html::beginTag('ul', ['class' => 'media-list']) ?>
+        <?php foreach ($users as $user) : ?>
+            <?= ParticipantItem::widget([
+                'entry' => $model->entry,
+                'user' => $user,
+            ])?>
+        <?php endforeach; ?>
+    <?= Html::endTag('ul') ?>
 
-<div class="pagination-container">
-    <?= AjaxLinkPager::widget([
-        'pagination' => $pagination,
-        'jsBeforeSend' => 'function(){}',
-    ]); ?>
-</div>
+    <div class="pagination-container">
+        <?= AjaxLinkPager::widget([
+            'pagination' => $pagination,
+            'jsBeforeSend' => 'function(){}',
+            'jsSuccess' => 'function(html){ $("#globalModal #calendar-entry-participants-list").after(html).remove(); }',
+        ]); ?>
+        <?= Html::hiddenInput('calendar-entry-participants-count', $pagination->totalCount) ?>
+    </div>
+<?= Html::endTag('div') ?>

@@ -49,6 +49,7 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
                     participation.closest('ul').prev('p').show();
                 }
                 participation.remove();
+                updateParticipantsCount(-1);
             } else {
                 status.error(response.message);
             }
@@ -73,7 +74,10 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         client.post(evt, {data}).then(function(response) {
             if (response.success) {
                 status.success(response.success);
-                form.next('ul').append(response.html).closest('ul').prev('p').hide();
+                const list = form.closest('.calendar-entry-participants').find('#calendar-entry-participants-list ul.media-list');
+                const count = list.find('li').length;
+                list.append(response.html);
+                updateParticipantsCount(list.find('li').length - count);
             } else if (response.warning) {
                 status.warn(response.warning);
             } else if (response.error) {
@@ -87,14 +91,22 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     }
 
     Form.prototype.filterState = function (evt) {
+        const filter = evt.$trigger;
+        const filters = filter.parent();
+        const modal = $('#globalModal');
         const data = {
             id: this.data('entry-id'),
-            state: evt.$trigger.data('state'),
+            state: filter.data('state'),
         };
 
-        loader.set(evt.$trigger.parent(), {size: '10px', css: {padding: '0px'}});
+        filter.attr('data-active', '');
+        loader.set(filters, {size: '10px', css: {padding: '0px'}});
         client.get(this.data('filter-url'), {data}).then(function(response) {
-            $('#globalModal').html(response.html);
+            modal.find('#calendar-entry-participants-list').after(response.html).remove();
+            updateParticipantsCount(modal.find('[name=calendar-entry-participants-count]').val(), false);
+            loader.reset(filters);
+            filters.find('.btn.active').removeClass('active');
+            filters.find('[data-active]').addClass('active').removeAttr('data-active');
         }).catch(function(e) {
             module.log.error(e, true);
         }).finally(function () {
@@ -113,6 +125,11 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
             this.$.find('#calendar-entry-participation-settings-title').hide();
         }
     };
+
+    const updateParticipantsCount = function(value, shift) {
+        const counter = $('#globalModal').find('.calendar-entry-participants-count span');
+        counter.html(shift || typeof(shift) === 'undefined' ? parseInt(counter.html()) + value : value);
+    }
 
     module.export = Form;
 });

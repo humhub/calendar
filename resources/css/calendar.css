@@ -752,6 +752,12 @@ tbody,
 .calendar-entry-participants .pagination-container {
     margin-top: 25px;
 }
+.calendar-entry-participants .pagination > li > a {
+    color: #000;
+}
+.calendar-entry-participants .pagination > .active > a {
+    color: #fff;
+}
 
 .calendar-option-buttons {
     float: right;
