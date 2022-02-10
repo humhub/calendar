@@ -9,8 +9,30 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     const loader = require('ui.loader');
     const client = require('client');
     const status = require('ui.status');
+    const calendar = require('calendar');
 
     var Form = Widget.extend();
+
+    Form.prototype.init = function () {
+        var that = this;
+        this.saveButton = $('#calendar-entry-participation-button-save');
+        this.nextButton = $('#calendar-entry-participation-button-next');
+        this.backButton = $('#calendar-entry-participation-button-back');
+
+        this.tabSettings = $('#calendar-entry-participation-tabs li:first');
+        this.tabParticipants = $('#calendar-entry-participation-tabs li:last');
+
+        this.isNewRecord = this.backButton.length;
+        if (this.isNewRecord) {
+            $('#calendar-entry-participation-tabs li a').click(function () {
+                if ($('#calendar-entry-participation-tabs li:visible').length > 1) {
+                    const isTabSettingsActive = $(this).closest('li').index() === 0;
+                    that.saveButton.toggle(!isTabSettingsActive);
+                    that.nextButton.toggle(isTabSettingsActive);
+                }
+            });
+        }
+    }
 
     Form.prototype.update = function (evt) {
         const updater = evt.$trigger.parent();
@@ -115,20 +137,42 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     };
 
     Form.prototype.changeParticipationMode = function (evt) {
-        if (evt.$trigger.val() == 0) {
-            this.$.find('.participationOnly').fadeOut('fast');
-            this.$.find('#calendar-entry-participation-tabs').hide();
-            this.$.find('#calendar-entry-participation-settings-title').show();
+        const noParticipants = evt.$trigger.val() == 0;
+
+        if (noParticipants) {
+            this.$.find('.participationOnly').fadeOut('fast')
         } else {
             this.$.find('.participationOnly').fadeIn('fast');
-            this.$.find('#calendar-entry-participation-tabs').show();
-            this.$.find('#calendar-entry-participation-settings-title').hide();
+        }
+        this.tabParticipants.toggle(!noParticipants);
+        if (this.isNewRecord) {
+            this.saveButton.toggle(noParticipants);
+            this.nextButton.toggle(!noParticipants);
         }
     };
 
     const updateParticipantsCount = function(value, shift) {
         const counter = $('#globalModal').find('.calendar-entry-participants-count span');
         counter.html(shift || typeof(shift) === 'undefined' ? parseInt(counter.html()) + value : value);
+    }
+
+    Form.prototype.next = function (evt) {
+        this.tabParticipants.find('a').click();
+        this.nextButton.hide();
+        this.saveButton.show();
+        evt.finish();
+    }
+
+    Form.prototype.back = function (evt) {
+        if (this.tabParticipants.hasClass('active')) {
+            this.tabSettings.find('a').click();
+            this.saveButton.hide();
+            this.nextButton.show();
+        } else {
+            loader.set(evt.$trigger, {size: '10px', css: {padding: '0px'}});
+            calendar.editModal(evt);
+        }
+        evt.finish();
     }
 
     module.export = Form;

@@ -13,11 +13,11 @@ use yii\helpers\Html;
 ?>
 <?= Html::beginTag('div', ['class' => 'calendar-entry-participants-filters']) ?>
     <div class="calendar-entry-participants-filter-title"><?= Yii::t('CalendarModule.views_entry_view', 'Filter') ?></div>
-    <?php foreach ($statuses as $statusKey => $statusTitle) : ?>
-        <?= Button::info($statusTitle)
+    <?php foreach ($statuses as $statusKey => $statusTitle) :
+        echo Button::info($statusTitle)
             ->cssClass($statusKey == $state ? 'active' : '')->xs()
             ->action('filterState')
             ->options(['data-state' => $statusKey])
-            ->loader(false) ?>
-    <?php endforeach; ?>
+            ->loader(false);
+    endforeach; ?>
 <?= Html::endTag('div') ?>

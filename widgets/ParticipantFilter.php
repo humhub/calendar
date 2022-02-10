@@ -20,6 +20,9 @@ class ParticipantFilter extends Widget
      */
     public $state;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();

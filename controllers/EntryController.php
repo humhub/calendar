@@ -98,16 +98,16 @@ class EntryController extends ContentContainerController
     }
 
     /**
-     * @param $entry
+     * @param CalendarEntry $entry
      * @param $cal
      * @return string
      */
-    protected function renderModal($entry, $cal)
+    protected function renderModal(CalendarEntry $entry, $cal)
     {
         return $this->renderAjax('modal', [
             'entry' => $entry,
-            'editUrl' => Url::toEditEntry($entry, $cal, $this->contentContainer),
-            'canManageEntries' => $entry->content->canEdit(),
+            'editUrl' => $entry->content->canEdit() ? Url::toEditEntry($entry, $cal, $this->contentContainer) : false,
+            'inviteUrl' => $entry->canInvite() ? Url::toParticipationUserList($entry, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED) : false,
             'contentContainer' => $this->contentContainer,
         ]);
     }
@@ -122,9 +122,14 @@ class EntryController extends ContentContainerController
      */
     protected function renderModalParticipation(CalendarEntry $entry, ?string $activeTab = null, bool $isNewRecord = false): string
     {
+        if ($activeTab === 'list' && $entry->participation_mode == CalendarEntry::PARTICIPATION_MODE_NONE) {
+            $activeTab = null;
+        }
+
         return $this->renderAjax('modal-participants', [
             'calendarEntryParticipationForm' => new CalendarEntryParticipationForm(['entry' => $entry]),
             'activeTab' => $activeTab,
+            'editUrl' => Url::toEditEntry($entry),
             'saveUrl' => Url::toEditEntryParticipation($entry),
             'isNewRecord' => $isNewRecord,
             'widgetOptions' => [

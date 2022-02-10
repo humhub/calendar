@@ -671,12 +671,6 @@ tbody,
 #calendar-entry-form .ProseMirror {
     min-height: 150px !important;
 }
-#calendar-entry-participation-settings-title {
-    display: block;
-    margin: 20px 20px 17px;
-    font-size: 16px;
-    color: #000;
-}
 .calendar-entry-participants.modal-body {
     padding: 0 0 20px 0;
 }
@@ -713,11 +707,11 @@ tbody,
     margin-top: 3px;
 }
 .calendar-entry-participants-count {
-    padding: 18px 18px 0;
+    padding: 18px;
     margin: 0;
 }
 .calendar-entry-new-participants-form {
-    padding: 18px;
+    padding: 18px 18px 4px;
 }
 .calendar-entry-new-participants-form .form-group {
     padding-top: 15px;
@@ -732,7 +726,7 @@ tbody,
     font-size: 80%;
 }
 .calendar-entry-participants-filters .btn.btn-info {
-    margin: 10px 10px 0 0;
+    margin: 10px 8px 0 0;
     padding: 3px 14px;
 }
 .calendar-entry-participants-filters .btn.btn-info.active {

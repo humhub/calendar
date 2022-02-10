@@ -14,6 +14,7 @@ use yii\helpers\Html;
 
 /* @var ActiveForm $form */
 /* @var CalendarEntryParticipationForm $model */
+/* @var string $state */
 ?>
 <?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form']) ?>
     <div class="media">
@@ -25,7 +26,7 @@ use yii\helpers\Html;
             ]) ?>
         </div>
         <div class="media-body">
-            <?= Html::dropDownList('status', '', ParticipantItem::getStatuses($model->entry->canInvite()), ['class' => 'form-control']) ?>
+            <?= Html::dropDownList('status', $state, ParticipantItem::getStatuses($model->entry->canInvite()), ['class' => 'form-control']) ?>
         </div>
         <div class="media-body">
             <?= Button::info()->sm()
