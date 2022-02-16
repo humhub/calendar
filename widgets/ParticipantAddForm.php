@@ -8,6 +8,7 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
@@ -40,8 +41,9 @@ class ParticipantAddForm extends Widget
         parent::init();
 
         if ($this->state === null) {
-            $this->state = Yii::$app->request->get('state', Yii::$app->request->post('state', ''));
+            $this->state = Yii::$app->request->get('state', Yii::$app->request->post('state', CalendarEntryParticipant::PARTICIPATION_STATE_INVITED));
         }
+        $this->model->newParticipantStatus = $this->state;
     }
 
     /**
@@ -56,7 +58,6 @@ class ParticipantAddForm extends Widget
         return $this->render('participantAddForm', [
             'form' => $this->form,
             'model' => $this->model,
-            'state' => $this->state,
         ]);
     }
 }

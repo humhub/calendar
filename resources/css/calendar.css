@@ -716,6 +716,10 @@ tbody,
 .calendar-entry-new-participants-form .form-group {
     padding-top: 15px;
 }
+.calendar-entry-new-participants-form .form-group.field-calendarentryparticipationform-newparticipantstatus {
+    padding: 0;
+    margin: 0;
+}
 .calendar-entry-new-participants-form .form-group .regular-checkbox-container label {
     padding-left: 0;
 }

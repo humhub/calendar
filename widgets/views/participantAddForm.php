@@ -14,19 +14,19 @@ use yii\helpers\Html;
 
 /* @var ActiveForm $form */
 /* @var CalendarEntryParticipationForm $model */
-/* @var string $state */
 ?>
 <?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form']) ?>
     <div class="media">
         <div class="media-body">
             <?= UserPickerField::widget([
-                'name' => 'newParticipants',
+                'model' => $model,
+                'attribute' => 'newParticipants',
                 'placeholder' => Yii::t('AdminModule.user', 'Add new participants...'),
                 'options' => ['label' => false],
             ]) ?>
         </div>
         <div class="media-body">
-            <?= Html::dropDownList('status', $state, ParticipantItem::getStatuses($model->entry->canInvite()), ['class' => 'form-control']) ?>
+            <?= $form->field($model, 'newParticipantStatus')->dropDownList(ParticipantItem::getStatuses($model->entry->canInvite()))->label(false) ?>
         </div>
         <div class="media-body">
             <?= Button::info()->sm()

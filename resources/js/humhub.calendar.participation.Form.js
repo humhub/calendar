@@ -86,9 +86,9 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         const form = evt.$trigger.closest('.calendar-entry-new-participants-form');
         const data = {
             entryId: this.data('entry-id'),
-            guids: form.find('select[name="newParticipants[]"]').val(),
+            guids: form.find('select[name="CalendarEntryParticipationForm[newParticipants][]"]').val(),
         };
-        const entryStatus = form.find('select[name=status]');
+        const entryStatus = form.find('select[name="CalendarEntryParticipationForm[newParticipantStatus]"]');
         if (entryStatus.length) {
             data.status = entryStatus.val();
         }

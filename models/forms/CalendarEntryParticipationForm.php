@@ -7,23 +7,15 @@
 
 namespace humhub\modules\calendar\models\forms;
 
-use DateTime;
-use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\permissions\CreatePublicContent;
-use humhub\modules\space\models\Space;
-use Yii;
-use yii\base\Exception;
-use yii\base\Model;
-use DateTimeZone;
-use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
-use humhub\modules\calendar\models\forms\validators\CalendarDateFormatValidator;
-use humhub\modules\calendar\models\forms\validators\CalendarEndDateValidator;
-use humhub\modules\calendar\models\forms\validators\CalendarTypeValidator;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\notifications\Invited;
+use humhub\modules\calendar\widgets\ParticipantItem;
+use humhub\modules\user\models\User;
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\topic\models\Topic;
-use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntry;
+use Yii;
+use yii\base\Model;
+use yii\db\Expression;
 
 /**
  * CalendarEntryParticipationForm to edit participation settings of the Calendar Entry
@@ -51,6 +43,16 @@ class CalendarEntryParticipationForm extends Model
     public $original;
 
     /**
+     * @var array
+     */
+    public $newParticipants;
+
+    /**
+     * @var integer
+     */
+    public $newParticipantStatus;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -74,7 +76,9 @@ class CalendarEntryParticipationForm extends Model
     public function rules()
     {
         return [
-            [['sendUpdateNotification', 'forceJoin'], 'integer'],
+            [['sendUpdateNotification', 'forceJoin', 'newParticipantStatus'], 'integer'],
+            [['newParticipants'], 'safe'],
+            [['newParticipantStatus'], 'in', 'range' => array_keys(ParticipantItem::getStatuses($this->entry->canInvite()))],
         ];
     }
 
@@ -123,6 +127,8 @@ class CalendarEntryParticipationForm extends Model
                 $this->entry->participation->sendUpdateNotification();
             }
 
+            $this->addParticipants();
+
             if ($this->forceJoin) {
                 $this->entry->participation->addAllUsers();
             }
@@ -138,5 +144,30 @@ class CalendarEntryParticipationForm extends Model
             CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.views_entry_edit', 'Only by Invite'),
             CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
         ];
+    }
+
+    private function addParticipants(): void
+    {
+        if (empty($this->newParticipants)) {
+            return;
+        }
+
+        $users = User::find()
+            ->leftJoin('calendar_entry_participant', 'user.id = user_id AND calendar_entry_id = :entry_id', ['entry_id' => $this->entry->id])
+            ->where(['IN', 'guid', $this->newParticipants])
+            ->andWhere(['IS', 'user_id', new Expression('NULL')])
+            ->all();
+
+        if (empty($users)) {
+            return;
+        }
+
+        foreach ($users as $user) {
+            $this->entry->participation->setParticipationStatus($user, $this->newParticipantStatus);
+        }
+
+        if ($this->newParticipantStatus == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED) {
+            Invited::instance()->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($users);
+        }
     }
 }
