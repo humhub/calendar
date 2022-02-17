@@ -78,7 +78,7 @@ class CalendarEntryParticipationForm extends Model
         return [
             [['sendUpdateNotification', 'forceJoin', 'newParticipantStatus'], 'integer'],
             [['newParticipants'], 'safe'],
-            [['newParticipantStatus'], 'in', 'range' => array_keys(ParticipantItem::getStatuses($this->entry->canInvite()))],
+            [['newParticipantStatus'], 'in', 'range' => array_keys(ParticipantItem::getStatuses($this->entry))],
         ];
     }
 

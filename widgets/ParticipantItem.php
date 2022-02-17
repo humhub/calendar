@@ -40,15 +40,26 @@ class ParticipantItem extends Widget
         ]);
     }
 
-    public static function getStatuses(bool $allowInvite = true): array
+    /**
+     * Get possible statuses for participation
+     *
+     * @param CalendarEntry|null $entry The entry is used to restrict statuses depending on Entry settings or permissions of current User,
+     *                                  null - to don't restrict statuses
+     * @return array
+     */
+    public static function getStatuses(?CalendarEntry $entry = null): array
     {
-        $statuses = [
-            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED => Yii::t('CalendarModule.views_entry_edit', 'Attend'),
-            CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE => Yii::t('CalendarModule.views_entry_edit', 'Maybe'),
-            CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED => Yii::t('CalendarModule.views_entry_edit', 'Declined'),
-        ];
+        if ($entry && $entry->participation_mode == CalendarEntry::PARTICIPATION_MODE_INVITE) {
+            $statuses = [];
+        } else {
+            $statuses = [
+                CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED => Yii::t('CalendarModule.views_entry_edit', 'Attend'),
+                CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE => Yii::t('CalendarModule.views_entry_edit', 'Maybe'),
+                CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED => Yii::t('CalendarModule.views_entry_edit', 'Declined'),
+            ];
+        }
 
-        if ($allowInvite) {
+        if (!$entry || $entry->canInvite()) {
             $statuses[CalendarEntryParticipant::PARTICIPATION_STATE_INVITED] = Yii::t('CalendarModule.views_entry_edit', 'Invited');
         }
 

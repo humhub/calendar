@@ -26,7 +26,7 @@ use yii\helpers\Html;
             ]) ?>
         </div>
         <div class="media-body">
-            <?= $form->field($model, 'newParticipantStatus')->dropDownList(ParticipantItem::getStatuses($model->entry->canInvite()))->label(false) ?>
+            <?= $form->field($model, 'newParticipantStatus')->dropDownList(ParticipantItem::getStatuses($model->entry))->label(false) ?>
         </div>
         <div class="media-body">
             <?= Button::info()->sm()
