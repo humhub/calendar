@@ -47,7 +47,6 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Basic'),'view' => 'edit-basic', 'linkOptions' => ['class' => 'tab-basic']],
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Reminder'),'view' => 'edit-reminder', 'linkOptions' => ['class' => 'tab-reminder'], 'visible' =>  ($calendarEntryForm->showReminderTab() )],
                         ['label' => Yii::t('CalendarModule.views_entry_edit', 'Recurrence'),'view' => 'edit-recurrence', 'linkOptions' => ['class' => 'tab-recurrence'], 'visible' => Module::isRecurrenceActive()],
-                        ['label' => Yii::t('CalendarModule.views_entry_edit', 'Files'), 'view' => 'edit-files', 'linkOptions' => ['class' => 'tab-files']],
                     ]
                 ]); ?>
             </div>

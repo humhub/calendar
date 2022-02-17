@@ -429,8 +429,6 @@ class CalendarEntryForm extends Model
 
             Topic::attach($this->entry->content, $this->topics);
 
-            $this->entry->fileManager->attach(Yii::$app->request->post('fileList'));
-
             $result = true;
 
             if($this->showReminderTab()) {
