@@ -2,6 +2,7 @@
 
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
+use humhub\modules\calendar\Module;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\topic\widgets\TopicPicker;
@@ -65,11 +66,25 @@ use yii\jui\DatePicker;
 
     <?php Yii::$app->i18n->autosetLocale(); ?>
 
-    <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
+    <div class="row">
+        <div class="col-sm-4">
+            <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
 
-    <?php if($calendarEntryForm->canCreatePublicEntry()) :?>
-        <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
-    <?php endif; ?>
+            <?php if ($calendarEntryForm->canCreatePublicEntry()) :?>
+                <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
+            <?php endif; ?>
+        </div>
+        <?php if (Module::isRecurrenceActive()) : ?>
+        <div class="col-sm-4">
+            <?= $form->field($calendarEntryForm->entry, 'recurring')->checkbox(['data-action-change' => 'toggleRecurring']) ?>
+        </div>
+        <?php endif; ?>
+        <?php if ($calendarEntryForm->isFutureEvent()) : ?>
+        <div class="col-sm-4">
+            <?= $form->field($calendarEntryForm->entry, 'reminder')->checkbox(['data-action-change' => 'toggleReminder']) ?>
+        </div>
+        <?php endif; ?>
+    </div>
 
     <?= $form->field($calendarEntryForm->entry, 'description')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Description'), 'pluginOptions' => ['maxHeight' => '300px']])->label(false) ?>
 

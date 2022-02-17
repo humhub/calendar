@@ -3,38 +3,14 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\interfaces\event\CalendarEntryTypeSetting;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
-use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
-use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceQueryIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
-use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
-use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
-use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
-use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
-use humhub\modules\calendar\permissions\CreateEntry;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\user\components\ActiveQueryUser;
-use Yii;
 use DateTime;
-use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
-use humhub\modules\calendar\notifications\CanceledEvent;
-use humhub\modules\calendar\notifications\ReopenedEvent;
-use humhub\modules\calendar\permissions\ManageEntry;
-use humhub\modules\calendar\widgets\WallEntry;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\models\ContentTag;
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\space\models\Membership;
-use humhub\modules\space\models\Space;
 use humhub\widgets\Label;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\user\models\User;
 use yii\base\Model;
 
 /**
@@ -47,6 +23,8 @@ use yii\base\Model;
  * @property string $start_datetime
  * @property string $end_datetime
  * @property integer $all_day
+ * @property integer $recurring
+ * @property integer $reminder
  * @property integer $participation_mode
  * @property string $color
  * @property string $uid
@@ -328,6 +306,11 @@ class CalendarEntryDummy extends Model implements CalendarEventIF, RecurrentEven
     public function getId()
     {
         // TODO: Implement getId() method.
+    }
+
+    public function isRecurringEnabled(): bool
+    {
+        return (bool) $this->recurring;
     }
 
     /**

@@ -130,6 +130,14 @@ humhub.module('calendar', function (module, require, $) {
             }
         };
 
+        Form.prototype.toggleRecurring = function (evt) {
+            $('.calendar-entry-form-tabs .tab-recurrence').parent().toggle(evt.$trigger.is(':checked'));
+        };
+
+        Form.prototype.toggleReminder = function (evt) {
+            $('.calendar-entry-form-tabs .tab-reminder').parent().toggle(evt.$trigger.is(':checked'));
+        };
+
         var CalendarEntry = Content.extend();
 
         CalendarEntry.prototype.toggleClose = function (event) {

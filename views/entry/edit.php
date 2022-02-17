@@ -2,7 +2,6 @@
 use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\Module;
 use humhub\widgets\ModalButton;
 use humhub\widgets\Tabs;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -44,9 +43,23 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
                     'viewPath' => '@calendar/views/entry',
                     'params' => ['form' => $form, 'calendarEntryForm' => $calendarEntryForm, 'contentContainer' => $contentContainer],
                     'items' => [
-                        ['label' => Yii::t('CalendarModule.views_entry_edit', 'Basic'),'view' => 'edit-basic', 'linkOptions' => ['class' => 'tab-basic']],
-                        ['label' => Yii::t('CalendarModule.views_entry_edit', 'Reminder'),'view' => 'edit-reminder', 'linkOptions' => ['class' => 'tab-reminder'], 'visible' =>  ($calendarEntryForm->showReminderTab() )],
-                        ['label' => Yii::t('CalendarModule.views_entry_edit', 'Recurrence'),'view' => 'edit-recurrence', 'linkOptions' => ['class' => 'tab-recurrence'], 'visible' => Module::isRecurrenceActive()],
+                        [
+                            'label' => Yii::t('CalendarModule.views_entry_edit', 'Basic'),
+                            'view' => 'edit-basic',
+                            'linkOptions' => ['class' => 'tab-basic'],
+                        ],
+                        [
+                            'label' => Yii::t('CalendarModule.views_entry_edit', 'Reminder'),
+                            'view' => 'edit-reminder',
+                            'linkOptions' => ['class' => 'tab-reminder'],
+                            'headerOptions' => $calendarEntryForm->showReminderTab() ? [] : ['style' => 'display:none'],
+                        ],
+                        [
+                            'label' => Yii::t('CalendarModule.views_entry_edit', 'Recurrence'),
+                            'view' => 'edit-recurrence',
+                            'linkOptions' => ['class' => 'tab-recurrence'],
+                            'headerOptions' => $calendarEntryForm->showRecurrenceTab() ? [] : ['style' => 'display:none'],
+                        ],
                     ]
                 ]); ?>
             </div>

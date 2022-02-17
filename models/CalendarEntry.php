@@ -42,20 +42,22 @@ use humhub\modules\user\models\User;
  * @property string $start_datetime
  * @property string $end_datetime
  * @property integer $all_day
+ * @property integer $recurring
+ * @property integer $reminder
  * @property integer $participation_mode
  * @property string $color
  * @property string $uid
  * @property integer $allow_decline
  * @property integer $allow_maybe
  * @property string $participant_info
- * @property integer closed
- * @property integer max_participants
- * @property string rrule
- * @property string recurrence_id
- * @property int parent_event_id
- * @property string exdate
- * @property string sequence
- * @property CalendarEntryParticipant[] participantEntries
+ * @property integer $closed
+ * @property integer $max_participants
+ * @property string $rrule
+ * @property string $recurrence_id
+ * @property int $parent_event_id
+ * @property string $exdate
+ * @property string $sequence
+ * @property CalendarEntryParticipant[] $participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  * @property string $location
  */
@@ -226,7 +228,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             [['color'], 'string', 'max' => 7],
             [['start_datetime'], 'date', 'format' => $dateFormat],
             [['end_datetime'], 'date', 'format' => $dateFormat],
-            [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
+            [['all_day', 'recurring', 'reminder', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => self::$participationModes],
             [['end_datetime'], 'validateEndTime'],
@@ -313,6 +315,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             'type_id' => Yii::t('CalendarModule.base', 'Event Type'),
             'description' => Yii::t('CalendarModule.base', 'Description'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
+            'recurring' => Yii::t('CalendarModule.base', 'Recurring'),
+            'reminder' => Yii::t('CalendarModule.base', 'Enable Reminder'),
             'allow_decline' => Yii::t('CalendarModule.base', 'Allow participation state \'decline\''),
             'allow_maybe' => Yii::t('CalendarModule.base', 'Allow participation state \'maybe\''),
             'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
@@ -763,6 +767,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public function setRecurrenceRootId($rootId)
     {
         $this->parent_event_id = $rootId;
+    }
+
+    public function isRecurringEnabled(): bool
+    {
+        return (bool) $this->recurring;
     }
 
     public function getRrule()

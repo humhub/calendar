@@ -11,6 +11,7 @@ namespace humhub\modules\calendar\models\forms;
 
 use DateTime;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
+use humhub\modules\calendar\Module;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
@@ -395,9 +396,19 @@ class CalendarEntryForm extends Model
         $this->end_time = $endTime;
     }
 
-    public function showReminderTab()
+    public function isFutureEvent(): bool
     {
-        return($this->entry->getStartDateTime() > new DateTime());
+        return $this->entry->getStartDateTime() > new DateTime();
+    }
+
+    public function showReminderTab(): bool
+    {
+        return ($this->entry->reminder && $this->isFutureEvent());
+    }
+
+    public function showRecurrenceTab(): bool
+    {
+        return ($this->entry->recurring && Module::isRecurrenceActive());
     }
 
     /**
@@ -416,12 +427,12 @@ class CalendarEntryForm extends Model
 
         return CalendarEntry::getDb()->transaction(function ($db) {
 
-            if(!$this->entry->saveEvent()) {
+            if (!$this->entry->saveEvent()) {
                 return false;
             }
 
             // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
-            if($this->entry->description) {
+            if ($this->entry->description) {
                 RichText::postProcess($this->entry->description, $this->entry);
             }
 
@@ -431,13 +442,15 @@ class CalendarEntryForm extends Model
 
             $result = true;
 
-            if($this->showReminderTab()) {
-               $result = $result && $this->reminderSettings->save();
+            if ($this->showReminderTab()) {
+                $result = $result && $this->reminderSettings->save();
             }
 
-            $result = $result && $this->recurrenceForm->save($this->original);
+            if ($this->showRecurrenceTab()) {
+                $result = $result && $this->recurrenceForm->save($this->original);
+            }
 
-            if($result) {
+            if ($result) {
                 $this->sequenceCheck();
             }
 
