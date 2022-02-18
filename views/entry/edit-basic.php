@@ -8,6 +8,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\form\widgets\ColorPicker;
 use humhub\modules\content\widgets\ContentTagDropDown;
+use humhub\modules\ui\form\widgets\ContentVisibilitySelect;
 use humhub\modules\ui\form\widgets\TimePicker;
 use humhub\widgets\ActiveForm;
 use humhub\widgets\TimeZoneDropdownAddition;
@@ -69,10 +70,6 @@ use yii\jui\DatePicker;
     <div class="row">
         <div class="col-sm-4">
             <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
-
-            <?php if ($calendarEntryForm->canCreatePublicEntry()) :?>
-                <?= $form->field($calendarEntryForm, 'is_public')->checkbox() ?>
-            <?php endif; ?>
         </div>
         <?php if (Module::isRecurrenceActive()) : ?>
         <div class="col-sm-4">
@@ -82,6 +79,11 @@ use yii\jui\DatePicker;
         <?php if ($calendarEntryForm->isFutureEvent()) : ?>
         <div class="col-sm-4">
             <?= $form->field($calendarEntryForm->entry, 'reminder')->checkbox(['data-action-change' => 'toggleReminder']) ?>
+        </div>
+        <?php endif; ?>
+        <?php if ($calendarEntryForm->canCreatePublicEntry()) :?>
+        <div class="col-sm-12">
+            <?= $form->field($calendarEntryForm, 'is_public')->widget(ContentVisibilitySelect::class, ['contentOwner' => 'entry']) ?>
         </div>
         <?php endif; ?>
     </div>
