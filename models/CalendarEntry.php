@@ -841,6 +841,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $this->allow_decline = $root->allow_decline;
         $this->allow_maybe = $root->allow_maybe;
         $this->location = $root->location;
+        $this->recurring = $root->recurring;
     }
 
     /**

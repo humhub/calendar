@@ -29,7 +29,8 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
                 'all_day' => '0',
                 'title' => 'Test title',
                 'description' => 'TestDescription',
-                'participation_mode' => 2
+                'participation_mode' => 2,
+                'recurring' => 1,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',

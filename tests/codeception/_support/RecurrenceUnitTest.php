@@ -36,6 +36,7 @@ class RecurrenceUnitTest extends CalendarUnitTest
         $this->space = Space::findOne(['id' => 1]);
         $startDate = $startDate ?: $this->getEntryDate();
         $this->rootEvent = $this->createEntry($startDate, 1, 'Past Entry', $this->space);
+        $this->rootEvent->recurring = 1;
         $this->setDefaults($this->rootEvent, $rrule);
         $this->assertTrue($this->rootEvent->save());
 
@@ -60,7 +61,7 @@ class RecurrenceUnitTest extends CalendarUnitTest
      * @return \humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF[]
      * @throws \Exception
      */
-    protected function expand( $save = false, $entry = null,  $fromDay = 1, $toDay = 7)
+    protected function expand($save = false, $entry = null, $fromDay = 1, $toDay = 7)
     {
         if(!$entry) {
             $entry = $this->rootEvent;
