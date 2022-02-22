@@ -40,7 +40,7 @@ class AcceptanceTester extends \AcceptanceTester
        }
 
        if($save) {
-           $this->click('Save', '#globalModal');
+           $this->click('Next', '#globalModal');
            $this->wait(1);
        }
    }

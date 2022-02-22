@@ -1,10 +1,10 @@
 <?php
 
-use humhub\components\View;
-use humhub\modules\calendar\models\forms\CalendarEntryForm;
+use humhub\modules\calendar\assets\ParticipationFormAssets;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
 use humhub\widgets\Button;
+use yii\web\View;
 
 /* @var $this View */
 /* @var $participationSettings ParticipationSettings */
@@ -13,9 +13,10 @@ $helpBlock = $participationSettings->isGlobal()
     ? Yii::t('CalendarModule.config', 'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.')
     : Yii::t('CalendarModule.config', 'Here you can configure default settings for new calendar events.') ;
 
+ParticipationFormAssets::register($this);
 ?>
 
-<div class="panel-body" data-ui-widget="calendar.Form">
+<div class="panel-body" data-ui-widget="calendar.participation.Form">
     <h4>
         <?= Yii::t('CalendarModule.config', 'Default participation settings'); ?>
         <?php if ($participationSettings->showResetButton()) : ?>
