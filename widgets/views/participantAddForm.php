@@ -14,6 +14,8 @@ use yii\helpers\Html;
 
 /* @var ActiveForm $form */
 /* @var CalendarEntryParticipationForm $model */
+/* @var string $searchUsersUrl */
+/* @var string $addParticipantsUrl */
 ?>
 <?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form']) ?>
     <div class="media">
@@ -23,6 +25,7 @@ use yii\helpers\Html;
                 'attribute' => 'newParticipants',
                 'placeholder' => Yii::t('AdminModule.user', 'Add new participants...'),
                 'options' => ['label' => false],
+                'url' => $searchUsersUrl,
             ]) ?>
         </div>
         <div class="media-body">
@@ -31,7 +34,7 @@ use yii\helpers\Html;
         <div class="media-body">
             <?= Button::info()->sm()
                 ->icon('send')
-                ->action('add', $model->entry->content->container->createUrl('/calendar/entry/add-participants')) ?>
+                ->action('add', $addParticipantsUrl) ?>
         </div>
     </div>
     <?php if ($model->entry->participation->canAddAll()) : ?>

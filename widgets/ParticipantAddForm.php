@@ -10,6 +10,7 @@ namespace humhub\modules\calendar\widgets;
 use humhub\components\Widget;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
@@ -55,9 +56,18 @@ class ParticipantAddForm extends Widget
             return '';
         }
 
+        if (($this->model->entry->content->container instanceof Space) && !$this->model->entry->content->isPublic()) {
+            // Search only members for private Space
+            $searchUsersUrl = $this->model->entry->content->container->createUrl('/space/membership/search');
+        } else {
+            $searchUsersUrl = null;
+        }
+
         return $this->render('participantAddForm', [
             'form' => $this->form,
             'model' => $this->model,
+            'searchUsersUrl' => $searchUsersUrl,
+            'addParticipantsUrl' => $this->model->entry->content->container->createUrl('/calendar/entry/add-participants')
         ]);
     }
 }
