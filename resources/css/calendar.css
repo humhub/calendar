@@ -782,6 +782,9 @@ tbody,
 .calendar-wall-entry .event-participation-buttons {
 	margin:15px 0;
 }
+.calendar-wall-entry .event-participation-buttons button {
+    margin-right: 8px;
+}
 .calendar-wall-entry .event-participation-buttons button .fa {
     font-size: 130%;
     position: relative;
