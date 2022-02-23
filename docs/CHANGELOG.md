@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1.11 (Unreleased)
----------------------
+1.1.11 (February 23, 2022)
+--------------------------
 - Fix #114: PHP8 - Deprecate required parameters after optional parameters
 - Fix #244: CLI error when no REST module is installed
 - Fix #246: Fix error displaying of empty date fields
