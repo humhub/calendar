@@ -27,7 +27,7 @@ class AcceptanceTester extends \AcceptanceTester
    {
        $this->waitForElementVisible('.fc-today');
        $this->click('.fc-today');
-       $this->waitForText('Create event');
+       $this->waitForText('Create Event');
 
        $this->fillField('CalendarEntry[title]', $title);
        $this->fillField('#calendarentry-description .humhub-ui-richtext'  , $description);

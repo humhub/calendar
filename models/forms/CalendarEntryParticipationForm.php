@@ -88,10 +88,10 @@ class CalendarEntryParticipationForm extends Model
     public function attributeLabels()
     {
         return [
-            'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Send update notification'),
+            'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Notify participants about changes'),
             'forceJoin' => ($this->entry->isNewRecord)
                 ? Yii::t('CalendarModule.base', 'Add all space members to this event')
-                : Yii::t('CalendarModule.base', 'Invite all participants from the space'),
+                : Yii::t('CalendarModule.base', 'Invite all Space members'),
         ];
     }
 

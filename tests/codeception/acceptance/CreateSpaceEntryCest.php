@@ -14,7 +14,7 @@ use humhub\modules\space\models\Space;
 
 class CreateSpaceEntryCest
 {
-    
+
     public function testInstallAndCreatEntry(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -30,7 +30,7 @@ class CreateSpaceEntryCest
         $I->click('Calendar', '.layout-nav-container');
         $I->waitForElementVisible('.fc-today');
         $I->click('.fc-today');
-        $I->waitForText('Create event', null, '#globalModal');
+        $I->waitForText('Create Event', null, '#globalModal');
 
         $I->fillField('CalendarEntry[title]', 'My Test Entry');
         $I->fillField('#calendarentry-description .humhub-ui-richtext', 'My Test Entry Description');
@@ -90,7 +90,7 @@ class CreateSpaceEntryCest
 
         $I->waitForElementVisible('.fc-today');
         $I->click('.fc-today');
-        $I->waitForText('Create event');
+        $I->waitForText('Create Event');
 
         $I->fillField('CalendarEntry[title]', 'New Test Event');
 
@@ -104,7 +104,7 @@ class CreateSpaceEntryCest
 
         $I->expect('All space members to be attending');
         $I->click('New Test Event');
-        $I->waitForText('2 attending', null,'#globalModal');
+        $I->waitForText('2 Attending', null,'#globalModal');
         $I->amOnSpace(1, '/calendar/view/index');
 
         $I->wantToTest('Adding a new space member and using then using the add all members again');
@@ -126,7 +126,7 @@ class CreateSpaceEntryCest
         $I->waitForText('New Test Event',null, '#globalModal');
         $I->click('Invite', '#globalModal .modal-footer');
 
-        $I->waitForText('Event Participants', null, '#globalModal');
+        $I->waitForText('Participants', null, '#globalModal');
         $I->waitForElementVisible('[for="calendarentryparticipationform-forcejoin"]', null, '#globalModal');
         $I->click('[for="calendarentryparticipationform-forcejoin"]');
         $I->click('Save', '#globalModal');
@@ -135,7 +135,7 @@ class CreateSpaceEntryCest
 
         $memberCount = Membership::getSpaceMembersQuery(Space::findOne(['id' => 1]))->count();
 
-        $I->waitForText($memberCount.' attending', null,'#globalModal');
+        $I->waitForText($memberCount.' Attending', null,'#globalModal');
 
         $I->wantToTest('closing the event');
 
@@ -161,7 +161,7 @@ class CreateSpaceEntryCest
         $I->waitForElementVisible('.fc-today');
         $I->click('.fc-today');
 
-        $I->waitForText('Create event', null, '#globalModal');
+        $I->waitForText('Create Event', null, '#globalModal');
         $I->fillField('CalendarEntry[title]', 'User Test Event 2');
         $I->click('Next', '#globalModal');
         $I->waitForText('Participants', null, '#globalModal');

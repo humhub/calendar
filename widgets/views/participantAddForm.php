@@ -23,7 +23,7 @@ use yii\helpers\Html;
             <?= UserPickerField::widget([
                 'model' => $model,
                 'attribute' => 'newParticipants',
-                'placeholder' => Yii::t('AdminModule.user', 'Add new participants...'),
+                'placeholder' => Yii::t('AdminModule.user', 'Add participants...'),
                 'options' => ['label' => false],
                 'url' => $searchUsersUrl,
             ]) ?>

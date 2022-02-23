@@ -15,7 +15,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 <?php if ($calendarEntry->participation->isEnabled()) : ?>
     <h5 style="margin:0 0 5px;font-weight:600"><?= Yii::t('CalendarModule.widgets_views_participants', 'Participants') ?></h5>
 
-    <?php $title = Yii::t('CalendarModule.widgets_views_participants', ":count attending", [':count' => $countAttending]); ?>
+    <?php $title = Yii::t('CalendarModule.widgets_views_participants', ':count Attending', [':count' => $countAttending]); ?>
     <?php if ($countAttending > 0) : ?>
         <?= ModalButton::instance($title)
             ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED))
@@ -26,7 +26,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 
     <?php if($calendarEntry->allow_maybe) : ?>
          &middot;
-        <?php $title = Yii::t('CalendarModule.widgets_views_participants', ":count maybe", [':count' => $countMaybe]); ?>
+        <?php $title = Yii::t('CalendarModule.widgets_views_participants', ':count Undecided', [':count' => $countMaybe]); ?>
         <?php if ($countMaybe > 0) : ?>
             <?= ModalButton::instance($title)
                 ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE))
@@ -38,7 +38,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 
     <?php if($calendarEntry->allow_decline) : ?>
          &middot;
-        <?php $title = Yii::t('CalendarModule.widgets_views_participants', ":count declined", [':count' => $countDeclined]); ?>
+        <?php $title = Yii::t('CalendarModule.widgets_views_participants', ':count Declined', [':count' => $countDeclined]); ?>
         <?php if ($countDeclined > 0) : ?>
             <?= ModalButton::instance($title)
                 ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED))
@@ -48,7 +48,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
         <?php endif ?>
     <?php endif ?>
 
-    &middot; <?php $title = Yii::t('CalendarModule.widgets_views_participants', ":count invited", [':count' => $countInvited]); ?>
+    &middot; <?php $title = Yii::t('CalendarModule.widgets_views_participants', ':count Invited', [':count' => $countInvited]); ?>
     <?php if ($countInvited > 0) : ?>
         <?= ModalButton::instance($title)
             ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED))

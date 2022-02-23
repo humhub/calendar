@@ -77,6 +77,11 @@ class CalendarEntryForm extends Model
     public $topics = [];
 
     /**
+     * @var bool
+     */
+    public $sendUpdateNotification = 0;
+
+    /**
      * @var CalendarEntry
      */
     public $entry;
@@ -218,7 +223,7 @@ class CalendarEntryForm extends Model
         return [
             ['timeZone', 'in', 'range' => DateTimeZone::listIdentifiers()],
             ['topics', 'safe'],
-            [['is_public', 'type_id'], 'integer'],
+            [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
             [['start_date', 'end_date'], 'required'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => CalendarUtils::getTimeFormat()],
             ['start_date', CalendarDateFormatValidator::class, 'timeField' => 'start_time'],
@@ -240,6 +245,7 @@ class CalendarEntryForm extends Model
             'location' => Yii::t('CalendarModule.base', 'Location'),
             'is_public' => Yii::t('CalendarModule.base', 'Public'),
             'topics' => Yii::t('TopicModule.base', 'Topics'),
+            'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Notify participants about changes'),
         ];
     }
 
@@ -439,6 +445,10 @@ class CalendarEntryForm extends Model
             $this->entry->setType($this->type_id);
 
             Topic::attach($this->entry->content, $this->topics);
+
+            if ($this->sendUpdateNotification && !$this->entry->isNewRecord) {
+                $this->entry->participation->sendUpdateNotification();
+            }
 
             $result = true;
 

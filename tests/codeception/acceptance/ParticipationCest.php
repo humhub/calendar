@@ -30,14 +30,14 @@ class ParticipationCest
         $I->selectOption('#calendarentry-participation_mode', 2);
 
         $I->canSee('Maximum number of participants', '#globalModal');
-        $I->canSee('Allow participation state', '#globalModal');
+        $I->canSee('Allow option', '#globalModal');
 
         $I->selectOption('#calendarentry-participation_mode', 0);
 
         $I->wait(1);
 
         $I->cantSee('Maximum number of participants', '#globalModal');
-        $I->cantSee('Allow participation state', '#globalModal');
+        $I->cantSee('Allow option', '#globalModal');
 
         $I->click('[type="submit"]');
         $I->wait(1);
@@ -48,7 +48,7 @@ class ParticipationCest
         $I->dontSee('Decline', '#globalModal button');
 
         $I->click('Invite', '#globalModal');
-        $I->waitForText('Event Participants',null, '#globalModal');
+        $I->waitForText('Participants',null, '#globalModal');
 
         $I->selectOption('#calendarentry-participation_mode', 2);
 
@@ -64,7 +64,7 @@ class ParticipationCest
         $I->see('Decline', '#globalModal button');
 
         $I->click('Invite', '#globalModal');
-        $I->waitForText('Event Participants',null, '#globalModal');
+        $I->waitForText('Participants',null, '#globalModal h4');
         $I->click('.tab-participation');
         $I->click('[for="calendarentry-allow_decline"]', '#globalModal');
         $I->click('[for="calendarentry-allow_maybe"]', '#globalModal');
@@ -78,9 +78,9 @@ class ParticipationCest
         $I->dontSee('Decline', '#globalModal button');
 
         $I->click('Attend', '#globalModal');
-        $I->waitForText('1 attending', null, '#globalModal');
-        $I->click('1 attending', '#globalModal');
-        $I->waitForText('Event Participants', null, '#globalModal');
+        $I->waitForText('1 Attending', null, '#globalModal');
+        $I->click('1 Attending', '#globalModal');
+        $I->waitForText('Participants', null, '#globalModal');
         $I->see('Admin Tester', '#globalModal');
     }
 }

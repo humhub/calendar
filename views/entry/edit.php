@@ -15,10 +15,10 @@ use humhub\widgets\ModalDialog;
 CalendarBaseAssets::register($this);
 
 if ($calendarEntryForm->entry->isNewRecord) {
-    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> event');
+    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> Event');
     $saveButtonText = Yii::t('CalendarModule.views_entry_edit', 'Next');
 } else {
-    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> event');
+    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> Event');
     $saveButtonText = null;
 }
 
@@ -44,7 +44,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
                     'params' => ['form' => $form, 'calendarEntryForm' => $calendarEntryForm, 'contentContainer' => $contentContainer],
                     'items' => [
                         [
-                            'label' => Yii::t('CalendarModule.views_entry_edit', 'Basic'),
+                            'label' => Yii::t('CalendarModule.views_entry_edit', 'General'),
                             'view' => 'edit-basic',
                             'linkOptions' => ['class' => 'tab-basic'],
                         ],

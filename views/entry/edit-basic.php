@@ -99,4 +99,8 @@ use yii\jui\DatePicker;
     ])->label(false) ?>
 
     <?= $form->field($calendarEntryForm, 'topics')->widget(TopicPicker::class, ['contentContainer' => $contentContainer]); ?>
+
+    <?php if (!$calendarEntryForm->entry->isNewRecord) : ?>
+        <?= $form->field($calendarEntryForm, 'sendUpdateNotification')->checkbox() ?>
+    <?php endif; ?>
 </div>

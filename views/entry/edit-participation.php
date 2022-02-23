@@ -16,13 +16,13 @@ $entry = $calendarEntryParticipationForm->entry;
 ?>
 <div class="modal-body">
     <?= $form->field($entry, 'participation_mode')
-        ->dropDownList(CalendarEntryParticipationForm::getModeItems(), ['data-action-change' => 'changeParticipationMode'])->label(false) ?>
+        ->dropDownList(CalendarEntryParticipationForm::getModeItems(), ['data-action-change' => 'changeParticipationMode']) ?>
 
     <div class="participationOnly" style="<?= $entry->participation->isEnabled() ? '' : 'display:none' ?>">
         <?= $form->field($entry, 'max_participants')->textInput() ?>
         <?= $form->field($entry, 'allow_decline')->checkbox() ?>
         <?= $form->field($entry, 'allow_maybe')->checkbox() ?>
-        <?= $form->field($entry, 'participant_info')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Participation Info'), 'pluginOptions' => ['maxHeight' => '300px']])->label(false) ?>
+        <?= $form->field($entry, 'participant_info')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Additional Information for participants'), 'pluginOptions' => ['maxHeight' => '300px']])->label(false) ?>
 
         <?php if (!$entry->isNewRecord) : ?>
             <?= $form->field($calendarEntryParticipationForm, 'sendUpdateNotification')->checkbox() ?>

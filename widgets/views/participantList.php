@@ -29,7 +29,7 @@ use yii\helpers\Html;
     <?= ParticipantFilter::widget() ?>
 
     <p class="calendar-entry-participants-count"><?= $pagination->totalCount
-        ? Yii::t('CalendarModule.views_entry_edit', '{count} participants', ['count' => '<span>' . $pagination->totalCount . '</span>'])
+        ? Yii::t('CalendarModule.views_entry_edit', '{count} Participants', ['count' => '<span>' . $pagination->totalCount . '</span>'])
         : Yii::t('CalendarModule.views_entry_edit', 'No participants')
     ?></p>
 <?php endif; ?>

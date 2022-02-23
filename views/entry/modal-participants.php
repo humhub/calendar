@@ -30,7 +30,7 @@ $hiddenStyle = ['style' => 'display:none'];
 $visibleStyle = [];
 ?>
 <?php ModalDialog::begin([
-    'header' =>'<strong>' . Yii::t('CalendarModule.views_entry_view', 'Event Participants') . '</strong>',
+    'header' =>'<strong>' . Yii::t('CalendarModule.views_entry_view', 'Participants') . '</strong>',
     'size' => 'large',
 ]) ?>
     <?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>

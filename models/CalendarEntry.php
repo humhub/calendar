@@ -317,9 +317,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
             'recurring' => Yii::t('CalendarModule.base', 'Recurring'),
             'reminder' => Yii::t('CalendarModule.base', 'Enable Reminder'),
-            'allow_decline' => Yii::t('CalendarModule.base', 'Allow participation state \'decline\''),
-            'allow_maybe' => Yii::t('CalendarModule.base', 'Allow participation state \'maybe\''),
-            'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
+            'allow_decline' => Yii::t('CalendarModule.base', 'Allow option \'Decline\''),
+            'allow_maybe' => Yii::t('CalendarModule.base', 'Allow option \'Undecided\''),
+            'participation_mode' => Yii::t('CalendarModule.base', 'Mode'),
             'max_participants' => Yii::t('CalendarModule.base', 'Maximum number of participants'),
             'location' => Yii::t('CalendarModule.base', 'Location'),
         ];
