@@ -61,8 +61,8 @@ class EntryParticipants extends Widget
         }
 
         $participantSate = $calendarEntry->getParticipationStatus(Yii::$app->user->identity);
-        return Button::info($label)->sm()
-                     ->icon($participantSate === $state ? 'fa-check' : null)
+        return Button::info($label)
+                     ->icon($participantSate === $state ? 'fa-check-circle' : null)
                      ->action('calendar.respond', Url::toEntryRespond($calendarEntry, $state));
     }
 }

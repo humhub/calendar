@@ -782,6 +782,12 @@ tbody,
 .calendar-wall-entry .event-participation-buttons {
 	margin:15px 0;
 }
+.calendar-wall-entry .event-participation-buttons button .fa {
+    font-size: 130%;
+    position: relative;
+    top: 1px;
+    margin-right: 3px;
+}
 
 .calendar-wall-entry [data-action-click] {
 	cursor: pointer;
