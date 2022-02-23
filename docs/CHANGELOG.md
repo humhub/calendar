@@ -11,6 +11,7 @@ Changelog
 - Fix #254: Fix wall stream entry icons color
 - Fix #260: In the calendar view, "Day" button is not translated with Humhub's messages
 - Enh #265: Disable to change participant status when event is over
+- Fix #233: Fix recurrence events visibility in snippet
 
 1.1.10  (April 14, 2021)
 ----------------------

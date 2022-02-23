@@ -148,7 +148,7 @@ class CalendarService extends Component
             }
         }
 
-        $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, $limit, $expand);
+        $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, null, $expand);
 
         $result = array_merge($calendarEntries, $result);
 
