@@ -780,7 +780,7 @@ tbody,
 }
 
 .calendar-wall-entry .event-participation-buttons {
-	margin:15px 0;
+    margin: 32px 0 15px;
 }
 .calendar-wall-entry .event-participation-buttons button {
     margin-right: 8px;
