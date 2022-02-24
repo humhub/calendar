@@ -107,13 +107,14 @@ class CalendarEntryForm extends Model
      * @param $contentContainer
      * @param string|null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
      * @param string|null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
+     * @param string|null $view FullCalendar view mode, 'month'
      * @return CalendarEntryForm
      * @throws Exception
      */
-    public static function createEntry($contentContainer, $start = null, $end = null)
+    public static function createEntry($contentContainer, $start = null, $end = null, $view = null)
     {
         $instance = new static(['entry' => new CalendarEntry($contentContainer)]);
-        $instance->updateDateRangeFromCalendar($start, $end);
+        $instance->updateDateRangeFromCalendar($start, $end, null, false, $view);
         $instance->setDefaults(); // Make sure default values are based on new start/end
         return $instance;
     }
@@ -160,10 +161,11 @@ class CalendarEntryForm extends Model
      * @param string|null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
      * @param null $timeZone the timezone of $start/$end, if null $this->timeZone is assumed
      * @param bool $save
+     * @param string|null $view FullCalendar view mode, 'month'
      * @return bool|void
      * @throws \Throwable
      */
-    public function updateDateRangeFromCalendar($start = null, $end = null, $timeZone = null, $save = false)
+    public function updateDateRangeFromCalendar($start = null, $end = null, $timeZone = null, $save = false, $view = null)
     {
         if (!$start || !$end) {
             return;
@@ -172,7 +174,14 @@ class CalendarEntryForm extends Model
         $startDT = CalendarUtils::getDateTime($start);
         $endDT = CalendarUtils::getDateTime($end);
 
-        $this->entry->all_day = (int) CalendarUtils::isAllDay($start, $endDT);
+        if ($view === 'month') {
+            $currentHour = date('H');
+            $startDT->setTime($currentHour + 1, 0);
+            $endDT->setTime($currentHour + 2, 0);
+            $this->entry->all_day = 0;
+        } else {
+            $this->entry->all_day = (int) CalendarUtils::isAllDay($start, $endDT);
+        }
 
         if ($this->isAllDay()) {
             $this->translateFromMomentAfterToFormEndDate($endDT);

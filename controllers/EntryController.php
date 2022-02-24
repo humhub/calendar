@@ -177,20 +177,21 @@ class EntryController extends ContentContainerController
      * @param null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
      * @param null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
      * @param null $cal whether or not the edit event came from the calendar view
+     * @param string|null $view FullCalendar view mode, 'month'
      * @return string
      * @throws HttpException
      * @throws Throwable
      * @throws Exception
      * @throws InvalidConfigException
      */
-    public function actionEdit($id = null, $start = null, $end = null, $cal = null)
+    public function actionEdit($id = null, $start = null, $end = null, $cal = null, $view = null)
     {
         if (empty($id) && !$this->canCreateEntries()) {
             throw new HttpException(403);
         }
 
         if (empty($id) && $this->canCreateEntries()) {
-            $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end);
+            $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end, $view);
         } else {
             $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
             if(!$calendarEntryForm->entry->content->canEdit()) {

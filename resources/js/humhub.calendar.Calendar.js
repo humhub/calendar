@@ -185,6 +185,9 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 cal: 1
             }
         };
+        if (info.view.type === 'dayGridMonth') {
+            options.data.view = 'month';
+        }
 
         var selectUrl = this.options.global ? this.options.globalCreateUrl : this.options.editUrl;
 
