@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.12 (Unreleased)
+--------------------------
+- Fix #241: Fix filter "I'm attending" for recurrence events
+
 1.1.11 (February 23, 2022)
 --------------------------
 - Fix #114: PHP8 - Deprecate required parameters after optional parameters
