@@ -162,8 +162,12 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
-        if(!$calendarEntry->canRespond(Yii::$app->user->identity)) {
+        if (!$calendarEntry->canRespond(Yii::$app->user->identity)) {
             throw new HttpException(403);
+        }
+
+        if ($calendarEntry->isPast()) {
+            throw new HttpException(403, 'Event is over!');
         }
 
         $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int) $type);

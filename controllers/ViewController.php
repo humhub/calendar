@@ -71,7 +71,10 @@ class ViewController extends ContentContainerController
 
         $filters = Yii::$app->request->get('filters', []);
 
-        foreach ($this->calendarService->getCalendarItems( new DateTime($start), new DateTime($end), $filters, $this->contentContainer) as $entry) {
+        // Don't expand recurrence event on filter by "I'm attending" because this option is selected per each date separately
+        $expand = !in_array(AbstractCalendarQuery::FILTER_PARTICIPATE, $filters);
+
+        foreach ($this->calendarService->getCalendarItems( new DateTime($start), new DateTime($end), $filters, $this->contentContainer, null, $expand) as $entry) {
             $result[] = FullCalendar::getFullCalendarArray($entry);
         }
 

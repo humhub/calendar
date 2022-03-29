@@ -7,7 +7,7 @@ serves as basic calendar module and can be used in combination with the followin
 
  - [Task](https://www.humhub.com/marketplace/tasks/)
  - [Meetings](https://www.humhub.com/marketplace/meeting/)
- - [External Calendar](https://www.humhub.com/marketplace/meeting/)
+ - [External Calendar](https://www.humhub.com/en/marketplace/external_calendar/)
  - and others..
  
 ## Overview

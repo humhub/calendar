@@ -958,4 +958,10 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         return $this->isOwner($user);
     }
+
+    public function isPast(): bool
+    {
+        $timeZone = CalendarUtils::getEndTimeZone($this);
+        return new DateTime('now', $timeZone) > new DateTime($this->end_datetime, $timeZone);
+    }
 }

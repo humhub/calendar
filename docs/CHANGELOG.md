@@ -1,8 +1,12 @@
 Changelog
 =========
 
-1.1.11 (Unreleased)
----------------------
+1.1.12 (Unreleased)
+--------------------------
+- Fix #241: Fix filter "I'm attending" for recurrence events
+
+1.1.11 (February 23, 2022)
+--------------------------
 - Fix #114: PHP8 - Deprecate required parameters after optional parameters
 - Fix #244: CLI error when no REST module is installed
 - Fix #246: Fix error displaying of empty date fields
@@ -11,6 +15,8 @@ Changelog
 - Fix #254: Fix wall stream entry icons color
 - Fix #260: In the calendar view, "Day" button is not translated with Humhub's messages
 - Enh #263: Add participation option "Only by Invite"
+- Enh #265: Disable to change participant status when event is over
+- Fix #233: Fix recurrence events visibility in snippet
 
 1.1.10  (April 14, 2021)
 ----------------------
