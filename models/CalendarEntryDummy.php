@@ -308,9 +308,14 @@ class CalendarEntryDummy extends Model implements CalendarEventIF, RecurrentEven
         // TODO: Implement getId() method.
     }
 
+    public function getRecurring(): bool
+    {
+        return !empty($this->rrule);
+    }
+
     public function isRecurringEnabled(): bool
     {
-        return (bool) $this->recurring;
+        return $this->recurring;
     }
 
     /**
@@ -378,6 +383,11 @@ class CalendarEntryDummy extends Model implements CalendarEventIF, RecurrentEven
     public function setRecurrenceId($recurrenceId)
     {
         // TODO: Implement setRecurrenceId() method.
+    }
+
+    public function getReminder(): bool
+    {
+        return false;
     }
 
     /**

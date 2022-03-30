@@ -16,7 +16,6 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         $from = $this->getEntryDate()->setTime(0,0,0);
 
         $this->rootEvent = $this->createEntry($from, 2, 'Two Day Event', $this->space);
-        $this->rootEvent->recurring = 1;
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=2');
         $this->assertTrue($this->rootEvent->saveEvent());
         $recurrences = $this->expand();

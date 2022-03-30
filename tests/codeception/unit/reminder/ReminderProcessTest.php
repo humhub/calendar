@@ -591,7 +591,6 @@ class ReminderProcessTest  extends CalendarUnitTest
 
         // create recurrent event today tomorrow recurring every day
         $entry = $this->createEntry(new DateTime(), 1, 'Test',  Space::findOne(['id' => 3]));
-        $entry->recurring = 1;
         $entry->rrule = 'FREQ=DAILY;INTERVAL=1';
         $entry->saveEvent();
 

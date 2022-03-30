@@ -11,6 +11,7 @@ use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -42,8 +43,6 @@ use humhub\modules\user\models\User;
  * @property string $start_datetime
  * @property string $end_datetime
  * @property integer $all_day
- * @property integer $recurring
- * @property integer $reminder
  * @property integer $participation_mode
  * @property string $color
  * @property string $uid
@@ -60,6 +59,8 @@ use humhub\modules\user\models\User;
  * @property CalendarEntryParticipant[] $participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  * @property string $location
+ * @property-read bool $recurring
+ * @property-read bool $reminder
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, FullCalendarEventIF,
     CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
@@ -132,6 +133,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      * @var CalendarEntryParticipation
      */
     public $participation;
+
+    /**
+     * @var bool Cached of reminder enabled
+     */
+    private $_reminder;
 
     public function init()
     {
@@ -228,7 +234,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             [['color'], 'string', 'max' => 7],
             [['start_datetime'], 'date', 'format' => $dateFormat],
             [['end_datetime'], 'date', 'format' => $dateFormat],
-            [['all_day', 'recurring', 'reminder', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
+            [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => self::$participationModes],
             [['end_datetime'], 'validateEndTime'],
@@ -769,9 +775,14 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $this->parent_event_id = $rootId;
     }
 
+    public function getRecurring(): bool
+    {
+        return !empty($this->rrule);
+    }
+
     public function isRecurringEnabled(): bool
     {
-        return (bool) $this->recurring;
+        return $this->recurring;
     }
 
     public function getRrule()
@@ -782,6 +793,17 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public function setRrule($rrule)
     {
         $this->rrule = $rrule;
+    }
+
+    public function getReminder(): bool
+    {
+        if (!isset($this->_reminder)) {
+            $this->_reminder = empty($this->content->id)
+                ? false
+                : CalendarReminder::find()->where(['content_id' => $this->content->id])->exists();
+        }
+
+        return $this->_reminder;
     }
 
     public function getExdate()
@@ -841,7 +863,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $this->allow_decline = $root->allow_decline;
         $this->allow_maybe = $root->allow_maybe;
         $this->location = $root->location;
-        $this->recurring = $root->recurring;
     }
 
     /**

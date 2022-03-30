@@ -39,7 +39,6 @@ class RecurrenceServiceTest extends RecurrenceUnitTest
         $today = (new DateTime())->setTime(0,0,0);
 
         $this->rootEvent = $this->createEntry($today, 1, 'Recurrent Event', $this->space);
-        $this->rootEvent->recurring = 1;
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=1');
         $this->assertTrue($this->rootEvent->saveEvent());
 
@@ -66,7 +65,6 @@ class RecurrenceServiceTest extends RecurrenceUnitTest
         $today = (new DateTime())->setTime(0,0,0);
 
         $this->rootEvent = $this->createEntry($today, 1, 'Recurrent Event', $this->space);
-        $this->rootEvent->recurring = 1;
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=1');
         $this->assertTrue($this->rootEvent->saveEvent());
 
