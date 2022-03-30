@@ -9,6 +9,7 @@
 namespace calendar\acceptance;
 
 use calendar\AcceptanceTester;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 
@@ -38,9 +39,12 @@ class CreateSpaceEntryCest
         $I->wantToTest('the hide/show functionality for time values (all day selection)');
         $I->seeElement('#calendarentryform-start_time:not(:disabled)');
         $I->seeElement('#calendarentryform-end_time:not(:disabled)');
-        $startDate = date('h:00 A', mktime(date('H') + 1));
+        $time = CalendarUtils::getDateTime(date('Y-m-d H:i:s'));
+        $time->setTime(date('H'), 0);
+        $startDate = $time->format('h:00 A');
         $I->seeInField('#calendarentryform-start_time', $startDate);
-        $endDate = date('h:00 A', mktime(date('H') + 2));
+        $time->setTime(date('H') + 1, 0);
+        $endDate = $time->format('h:00 A');
         $I->seeInField('#calendarentryform-end_time', $endDate);
 
         $I->click('[for="calendarentry-all_day"]');

@@ -7,6 +7,7 @@
  */
 
 use calendar\AcceptanceTester;
+use humhub\modules\calendar\helpers\CalendarUtils;
 
 /**
  * Created by PhpStorm.
@@ -41,8 +42,10 @@ class ParticipationCest
 
         $I->click('[type="submit"]');
         $I->wait(1);
-        $time = mktime(date('H') + 1);
-        $timePrefix = date('g', $time) . substr(date('a', $time), 0, 1);
+
+        $time = CalendarUtils::getDateTime(date('Y-m-d H:i:s'));
+        $time->setTime(date('H'), 0);
+        $timePrefix = $time->format('g') . substr($time->format('a'), 0, 1);
         $I->click($timePrefix . ' Participant Event');
         $I->waitForText('Participant Description',null,'#globalModal');
         $I->dontSee('Attend', '#globalModal button');
