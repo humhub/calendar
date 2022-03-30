@@ -7,7 +7,6 @@
  */
 
 use calendar\AcceptanceTester;
-use humhub\modules\calendar\helpers\CalendarUtils;
 
 /**
  * Created by PhpStorm.
@@ -25,6 +24,7 @@ class ParticipationCest
         $I->amGoingTo('create a new space event with');
         $I->amOnSpace1('/calendar/view');
         $I->createEventToday('Participant Event', 'Participant Description', null, null, false);
+        $I->click('[for="calendarentry-all_day"]');
         $I->click('Next', '#globalModal');
         $I->waitForText('Maximum number of participants');
 
@@ -43,10 +43,7 @@ class ParticipationCest
         $I->click('[type="submit"]');
         $I->wait(1);
 
-        $time = CalendarUtils::getDateTime(date('Y-m-d H:i:s'));
-        $time->setTime(date('H'), 0);
-        $timePrefix = $time->format('g') . substr($time->format('a'), 0, 1);
-        $I->click($timePrefix . ' Participant Event');
+        $I->click('Participant Event');
         $I->waitForText('Participant Description',null,'#globalModal');
         $I->dontSee('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
@@ -62,7 +59,7 @@ class ParticipationCest
 
         $I->click('[type="submit"]');
         $I->seeSuccess();
-        $I->click($timePrefix . ' Participant Event');
+        $I->click('Participant Event');
         $I->waitForText('Participant Description',null, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->see('Maybe', '#globalModal button');
@@ -76,7 +73,7 @@ class ParticipationCest
         $I->click('[type="submit"]');
         $I->wait(1);
 
-        $I->click($timePrefix . ' Participant Event');
+        $I->click('Participant Event');
         $I->waitForText('Participant Description',null, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
