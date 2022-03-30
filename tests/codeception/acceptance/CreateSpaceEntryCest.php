@@ -36,28 +36,20 @@ class CreateSpaceEntryCest
         $I->fillField('#calendarentry-description .humhub-ui-richtext', 'My Test Entry Description');
 
         $I->wantToTest('the hide/show functionality for time values (all day selection)');
-        $I->seeElement('#calendarentryform-start_time:disabled');
-        $I->seeElement('#calendarentryform-end_time:disabled');
-        $I->dontSeeInField('#calendarentryform-start_time', '10:00 AM');
-        $I->dontSeeInField('#calendarentryform-end_time', '12:00 AM');
-
-        $I->click('[for="calendarentry-all_day"]');
-
-        $I->wait(1);
         $I->seeElement('#calendarentryform-start_time:not(:disabled)');
         $I->seeElement('#calendarentryform-end_time:not(:disabled)');
-        $I->seeInField('#calendarentryform-start_time', '10:00 AM');
-        $I->seeInField('#calendarentryform-end_time', '12:00 PM');
+        $startDate = date('h:00 A', mktime(date('H') + 1));
+        $I->seeInField('#calendarentryform-start_time', $startDate);
+        $endDate = date('h:00 A', mktime(date('H') + 2));
+        $I->seeInField('#calendarentryform-end_time', $endDate);
 
         $I->click('[for="calendarentry-all_day"]');
-        $I->wait(1);
 
+        $I->wait(1);
         $I->seeElement('#calendarentryform-start_time:disabled');
         $I->seeElement('#calendarentryform-end_time:disabled');
-
-        $I->dontSeeInField('#calendarentryform-start_time', '10:00 AM');
-        $I->dontSeeInField('#calendarentryform-end_time', '12:00 PM');
-
+        $I->dontSeeInField('#calendarentryform-start_time', $startDate);
+        $I->dontSeeInField('#calendarentryform-end_time', $endDate);
 
         $I->amGoingTo('Save my new calendar entry');
         $I->click('Next', '#globalModal');
@@ -93,6 +85,7 @@ class CreateSpaceEntryCest
         $I->waitForText('Create Event');
 
         $I->fillField('CalendarEntry[title]', 'New Test Event');
+        $I->click('[for="calendarentry-all_day"]');
 
         $I->click('Next', '#globalModal');
         $I->waitForText('Participants', null, '#globalModal');

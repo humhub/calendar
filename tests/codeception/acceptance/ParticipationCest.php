@@ -41,7 +41,9 @@ class ParticipationCest
 
         $I->click('[type="submit"]');
         $I->wait(1);
-        $I->click('Participant Event');
+        $time = mktime(date('H') + 1);
+        $timePrefix = date('g', $time) . substr(date('a', $time), 0, 1);
+        $I->click($timePrefix . ' Participant Event');
         $I->waitForText('Participant Description',null,'#globalModal');
         $I->dontSee('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
@@ -57,7 +59,7 @@ class ParticipationCest
 
         $I->click('[type="submit"]');
         $I->seeSuccess();
-        $I->click('Participant Event');
+        $I->click($timePrefix . ' Participant Event');
         $I->waitForText('Participant Description',null, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->see('Maybe', '#globalModal button');
@@ -71,7 +73,7 @@ class ParticipationCest
         $I->click('[type="submit"]');
         $I->wait(1);
 
-        $I->click('Participant Event');
+        $I->click($timePrefix . ' Participant Event');
         $I->waitForText('Participant Description',null, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');

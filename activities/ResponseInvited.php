@@ -28,7 +28,7 @@ class ResponseInvited extends BaseActivity implements ConfigurableActivityInterf
      */
     public function getTitle()
     {
-        return Yii::t('CalendarModule.activities', 'Calendar: invite');
+        return Yii::t('CalendarModule.activities', 'Calendar: Invite');
     }
 
     /**

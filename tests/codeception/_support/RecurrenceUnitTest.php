@@ -50,6 +50,7 @@ class RecurrenceUnitTest extends CalendarUnitTest
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->title = 'My Recurrent Event';
         $entry->description = 'My Recurrent Event Description';
+        $entry->recurring = 1;
         $entry->setRrule($rrule);
     }
 
