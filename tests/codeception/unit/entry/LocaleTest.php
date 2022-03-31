@@ -89,7 +89,9 @@ class LocaleTest extends CalendarUnitTest
                 'start_date' => $startDate,
                 'start_time' => $startTime,
                 'end_date' => $endDate,
-                'end_time' => $endTime
+                'end_time' => $endTime,
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]), "Error loading form with locale $locale");
         $this->assertTrue($form->save(), "Error saving form with locale $locale");
@@ -120,7 +122,9 @@ class LocaleTest extends CalendarUnitTest
                 'start_date' => '11/11/19',
                 'start_time' => '12:00 AM',
                 'end_date' => '11/11/19',
-                'end_time' => '3:00 PM'
+                'end_time' => '3:00 PM',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 

@@ -46,6 +46,8 @@ class ApiTester extends \ApiTester
             'timeZone' => 'Europe/Helsinki',
             'forceJoin' => 1,
             'topics' => '',
+            'reminder' => 1,
+            'recurring' => 1,
         ], $params);
 
         $this->amGoingTo('create a sample calendar entry');
@@ -70,6 +72,8 @@ class ApiTester extends \ApiTester
                 'timeZone' => $params['timeZone'],
                 'forceJoin' => $params['forceJoin'],
                 'topics' => $params['topics'],
+                'reminder' => $params['reminder'],
+                'recurring' => $params['recurring'],
             ],
         ]);
     }

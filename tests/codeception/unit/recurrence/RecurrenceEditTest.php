@@ -76,7 +76,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'start_date' => '12/3/19',
                 'start_time' => '10:00 AM',
                 'end_date' => '12/3/19',
-                'end_time' => '10:30 AM'
+                'end_time' => '10:30 AM',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_THIS
@@ -132,7 +134,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'start_date' => '12/2/19',
                 'start_time' => '10:00 AM',
                 'end_date' => '12/2/19',
-                'end_time' => '10:30 AM'
+                'end_time' => '10:30 AM',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_THIS
@@ -175,7 +179,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'is_public' => '0',
                 'all_day' => '1',
                 'start_date' => '12/3/19',
-                'end_date' => '12/3/19'
+                'end_date' => '12/3/19',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING
@@ -207,7 +213,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'is_public' => '0',
                 'all_day' => '1',
                 'start_date' => '12/4/19',
-                'end_date' => '12/4/19'
+                'end_date' => '12/4/19',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING
@@ -242,7 +250,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'is_public' => '0',
                 'all_day' => '1',
                 'start_date' => '12/4/19',
-                'end_date' => '12/4/19'
+                'end_date' => '12/4/19',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_ALL,

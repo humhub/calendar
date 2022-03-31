@@ -37,7 +37,9 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
                 'start_date' => '6/27/17',
                 'start_time' => '12:00 PM',
                 'end_date' => '6/28/17',
-                'end_time' => '01:00 PM'
+                'end_time' => '01:00 PM',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
@@ -54,7 +56,9 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
             ],
             'CalendarEntryForm' => [
                 'start_date' => '7/16/17',
-                'end_date' => '8/16/17'
+                'end_date' => '8/16/17',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]);
 
@@ -71,7 +75,9 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
                 'all_day' => '1'
             ],
             'CalendarEntryForm' => [
-                'end_date' => '8/16/17'
+                'end_date' => '8/16/17',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]);
 
@@ -85,7 +91,10 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
         $calendarForm = new CalendarEntryForm(['entry' => $this->form->entry]);
         $calendarForm->load([
             'CalendarEntry' => [],
-            'CalendarEntryForm' => [],
+            'CalendarEntryForm' => [
+                'reminder' => 1,
+                'recurring' => 1,
+            ],
             'RecurrenceFormModel' => [
                 'frequency' => Frequency::DAILY,
                 'interval' => 1
@@ -103,7 +112,9 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
         $calendarForm->load([
             'CalendarEntry' => [],
             'CalendarEntryForm' => [
-                'is_public' => '0'
+                'is_public' => '0',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
         ]);
 

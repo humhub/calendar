@@ -243,8 +243,8 @@ class CalendarEntryForm extends Model
     {
         return [
             ['timeZone', 'in', 'range' => DateTimeZone::listIdentifiers()],
-            ['topics', 'safe'],
-            [['is_public', 'type_id', 'sendUpdateNotification', 'reminder', 'recurring'], 'integer'],
+            [['topics', 'reminder', 'recurring'], 'safe'],
+            [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
             [['start_date', 'end_date'], 'required'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => CalendarUtils::getTimeFormat()],
             ['start_date', CalendarDateFormatValidator::class, 'timeField' => 'start_time'],

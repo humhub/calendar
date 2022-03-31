@@ -23,8 +23,6 @@ use yii\base\Model;
  * @property string $start_datetime
  * @property string $end_datetime
  * @property integer $all_day
- * @property integer $recurring
- * @property integer $reminder
  * @property integer $participation_mode
  * @property string $color
  * @property string $uid
@@ -41,6 +39,8 @@ use yii\base\Model;
  * @property CalendarEntryParticipant[] participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  * @property string $location
+ * @property-read bool $recurring
+ * @property-read bool $reminder
  */
 class CalendarEntryDummy extends Model implements CalendarEventIF, RecurrentEventIF
 {

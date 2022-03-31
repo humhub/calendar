@@ -37,7 +37,9 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'start_date' => '6/27/17',
                 'start_time' => '12:00 PM',
                 'end_date' => '6/28/17',
-                'end_time' => '01:00 PM'
+                'end_time' => '01:00 PM',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
@@ -294,7 +296,9 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'start_date' => '2/2/20',
                 'start_time' => '10:00 AM', // will be ignored
                 'end_date' => '2/3/20',
-                'end_time' => '10:30 AM' // will be ignored
+                'end_time' => '10:30 AM', // will be ignored
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
@@ -454,7 +458,9 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'start_date' => '2/2/20',
                 'start_time' => '10:00 AM',
                 'end_date' => '2/3/20',
-                'end_time' => '10:30 AM'
+                'end_time' => '10:30 AM',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
@@ -523,7 +529,9 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'start_date' => '2/2/20',
                 'start_time' => '10:00 AM',
                 'end_date' => '2/3/20',
-                'end_time' => '10:30 AM'
+                'end_time' => '10:30 AM',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
@@ -558,6 +566,8 @@ class CalendarEntryFormTest extends CalendarUnitTest
             'CalendarEntryForm' => [
                 'start_date' => '2/2/20',
                 'end_date' => '2/3/20',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 

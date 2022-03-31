@@ -65,7 +65,9 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'start_date' => '6/27/17',
                 'start_time' => '12:00 PM',
                 'end_date' => '6/28/17',
-                'end_time' => '01:00 PM'
+                'end_time' => '01:00 PM',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
@@ -97,7 +99,9 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'start_date' => '6/27/17',
                 'start_time' => '12:00 PM',
                 'end_date' => '6/28/17',
-                'end_time' => '01:00 PM'
+                'end_time' => '01:00 PM',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
@@ -143,6 +147,8 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'is_public' => '1',
                 'start_date' => '6/27/17',
                 'end_date' => '6/27/17',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
@@ -185,6 +191,8 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'is_public' => '1',
                 'start_date' => '8/16/17',
                 'end_date' => '8/16/17',
+                'reminder' => 1,
+                'recurring' => 1,
             ]
         ]));
 
