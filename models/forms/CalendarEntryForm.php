@@ -92,9 +92,19 @@ class CalendarEntryForm extends Model
     public $original;
 
     /**
+     * @var bool
+     */
+    public $reminder;
+
+    /**
      * @var ReminderSettings
      */
     public $reminderSettings;
+
+    /**
+     * @var bool
+     */
+    public $recurring;
 
     /**
      * @var RecurrenceFormModel
@@ -145,7 +155,9 @@ class CalendarEntryForm extends Model
             $this->entry->setDefaults();
         }
 
+        $this->reminder = $this->entry->reminder;
         $this->reminderSettings = new ReminderSettings(['entry' => $this->entry]);
+        $this->recurring = $this->entry->recurring;
         $this->recurrenceForm = new RecurrenceFormModel(['entry' => $this->entry]);
     }
 
@@ -232,7 +244,7 @@ class CalendarEntryForm extends Model
         return [
             ['timeZone', 'in', 'range' => DateTimeZone::listIdentifiers()],
             ['topics', 'safe'],
-            [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
+            [['is_public', 'type_id', 'sendUpdateNotification', 'reminder', 'recurring'], 'integer'],
             [['start_date', 'end_date'], 'required'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => CalendarUtils::getTimeFormat()],
             ['start_date', CalendarDateFormatValidator::class, 'timeField' => 'start_time'],
@@ -253,6 +265,8 @@ class CalendarEntryForm extends Model
             'timeZone' => Yii::t('CalendarModule.base', 'Time Zone'),
             'location' => Yii::t('CalendarModule.base', 'Location'),
             'is_public' => Yii::t('CalendarModule.base', 'Public'),
+            'recurring' => Yii::t('CalendarModule.base', 'Recurring'),
+            'reminder' => Yii::t('CalendarModule.base', 'Enable Reminder'),
             'topics' => Yii::t('TopicModule.base', 'Topics'),
             'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Notify participants about changes'),
         ];
@@ -457,8 +471,13 @@ class CalendarEntryForm extends Model
                 $this->entry->participation->sendUpdateNotification();
             }
 
-            $result = $this->reminderSettings->save();
+            $result = $this->reminder
+                ? $this->reminderSettings->save()
+                : $this->reminderSettings->clear();
 
+            if (!$this->recurring) {
+                $this->recurrenceForm->frequency = RecurrenceFormModel::FREQUENCY_NEVER;
+            }
             $result = $this->recurrenceForm->save($this->original) && $result;
 
             if ($result) {
