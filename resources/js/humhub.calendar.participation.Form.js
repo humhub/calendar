@@ -5,11 +5,11 @@
  */
 
 humhub.module('calendar.participation.Form', function (module, require, $) {
-    const Widget = require('ui.widget').Widget;
-    const loader = require('ui.loader');
-    const client = require('client');
-    const status = require('ui.status');
-    const calendar = require('calendar');
+    var Widget = require('ui.widget').Widget;
+    var loader = require('ui.loader');
+    var client = require('client');
+    var status = require('ui.status');
+    var calendar = require('calendar');
 
     var Form = Widget.extend();
 
@@ -26,7 +26,7 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         if (this.isNewRecord) {
             $('#calendar-entry-participation-tabs li a').click(function () {
                 if ($('#calendar-entry-participation-tabs li:visible').length > 1) {
-                    const isTabSettingsActive = $(this).closest('li').index() === 0;
+                    var isTabSettingsActive = $(this).closest('li').index() === 0;
                     that.saveButton.toggle(!isTabSettingsActive);
                     that.nextButton.toggle(isTabSettingsActive);
                 }
@@ -35,16 +35,16 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     }
 
     Form.prototype.update = function (evt) {
-        const updater = evt.$trigger.parent();
-        const updaterHtml = evt.$trigger.parent().html();
-        const data = {
+        var updater = evt.$trigger.parent();
+        var updaterHtml = evt.$trigger.parent().html();
+        var data = {
             entryId: this.data('entry-id'),
             userId: evt.$trigger.closest('li').data('user-id'),
             status: evt.$trigger.val(),
         };
 
         loader.set(updater, {size: '10px', css: {padding: '0px'}});
-        client.post(this.data('update-url'), {data}).then(function(response) {
+        client.post(this.data('update-url'), {data: data}).then(function(response) {
             if (response.success) {
                 status.success(response.message);
                 loader.remove(updater);
@@ -58,13 +58,13 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     };
 
     Form.prototype.remove = function (evt) {
-        const participation = evt.$trigger.closest('li');
-        const data = {
+        var participation = evt.$trigger.closest('li');
+        var data = {
             entryId: this.data('entry-id'),
             userId: participation.data('user-id'),
         };
 
-        client.post(this.data('remove-url'), {data}).then(function(response) {
+        client.post(this.data('remove-url'), {data: data}).then(function(response) {
             if (response.success) {
                 status.success(response.message);
                 if (participation.closest('ul').find('li[data-user-id]').length === 1) {
@@ -83,21 +83,21 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     };
 
     Form.prototype.add = function (evt) {
-        const form = evt.$trigger.closest('.calendar-entry-new-participants-form');
-        const data = {
+        var form = evt.$trigger.closest('.calendar-entry-new-participants-form');
+        var data = {
             entryId: this.data('entry-id'),
             guids: form.find('select[name="CalendarEntryParticipationForm[newParticipants][]"]').val(),
         };
-        const entryStatus = form.find('select[name="CalendarEntryParticipationForm[newParticipantStatus]"]');
+        var entryStatus = form.find('select[name="CalendarEntryParticipationForm[newParticipantStatus]"]');
         if (entryStatus.length) {
             data.status = entryStatus.val();
         }
 
-        client.post(evt, {data}).then(function(response) {
+        client.post(evt, {data: data}).then(function(response) {
             if (response.success) {
                 status.success(response.success);
-                const list = form.closest('.calendar-entry-participants').find('#calendar-entry-participants-list ul.media-list');
-                const count = list.find('li').length;
+                var list = form.closest('.calendar-entry-participants').find('#calendar-entry-participants-list ul.media-list');
+                var count = list.find('li').length;
                 list.append(response.html);
                 updateParticipantsCount(list.find('li').length - count);
             } else if (response.warning) {
@@ -113,17 +113,17 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     }
 
     Form.prototype.filterState = function (evt) {
-        const filter = evt.$trigger;
-        const filters = filter.parent();
-        const modal = $('#globalModal');
-        const data = {
+        var filter = evt.$trigger;
+        var filters = filter.parent();
+        var modal = $('#globalModal');
+        var data = {
             id: this.data('entry-id'),
             state: filter.data('state'),
         };
 
         filter.attr('data-active', '');
         loader.set(filters, {size: '10px', css: {padding: '0px'}});
-        client.get(this.data('filter-url'), {data}).then(function(response) {
+        client.get(this.data('filter-url'), {data: data}).then(function(response) {
             modal.find('#calendar-entry-participants-list').after(response.html).remove();
             updateParticipantsCount(modal.find('[name=calendar-entry-participants-count]').val(), false);
             loader.reset(filters);
@@ -137,7 +137,7 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     };
 
     Form.prototype.changeParticipationMode = function (evt) {
-        const noParticipants = evt.$trigger.val() == 0;
+        var noParticipants = evt.$trigger.val() == 0;
 
         if (noParticipants) {
             this.$.find('.participationOnly').fadeOut('fast')
@@ -151,8 +151,8 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         }
     };
 
-    const updateParticipantsCount = function(value, shift) {
-        const counter = $('#globalModal').find('.calendar-entry-participants-count span');
+    var updateParticipantsCount = function(value, shift) {
+        var counter = $('#globalModal').find('.calendar-entry-participants-count span');
         counter.html(shift || typeof(shift) === 'undefined' ? parseInt(counter.html()) + value : value);
     }
 

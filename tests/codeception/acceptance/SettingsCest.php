@@ -32,7 +32,6 @@ class SettingsCest
         $I->enableModule(1, 'calendar');
 
         $I->amOnSpace1('/calendar/view');
-        $I->wait(1);
         $I->createEventToday('Setting Event','Setting Description',null,null,false);
         $I->click('Next', '#globalModal');
 
