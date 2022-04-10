@@ -8,6 +8,7 @@ use DateTimeZone;
 use humhub\libs\DateHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
+use humhub\modules\calendar\Module;
 use humhub\modules\content\models\Content;
 use Sabre\VObject\UUIDUtil;
 use Yii;
