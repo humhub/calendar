@@ -409,6 +409,7 @@ class CalendarUtils
     }
 
     public static function generateUUid($type = 'event') {
+        Module::registerAutoloader();
         return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
     }
 
