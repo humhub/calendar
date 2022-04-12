@@ -356,7 +356,7 @@ class CalendarEntryForm extends Model
         // Translate from 01.01.20 -> db date format
         $this->setFormDates($startDT, $endDt);
 
-        if($this->entry->isNewRecord || $this->showReminderTab($this->original)) {
+        if($this->entry->isNewRecord || $this->showReminderTab()) {
             $result |= $this->reminderSettings->load($data);
         }
 

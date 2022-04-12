@@ -4,6 +4,7 @@ Changelog
 1.1.12 (Unreleased)
 --------------------------
 - Fix #241: Fix filter "I'm attending" for recurrence events
+- Fix #276: Fix saving time when system date is transition to daylight
 
 1.1.11 (February 23, 2022)
 --------------------------

@@ -124,7 +124,10 @@ class CalendarUtils
                 if($dt === false) {
                     return false;
                 }
-                $result = $dt->getTimestamp() - strtotime('TODAY');
+                // Use 1st January for time seconds extracting because today date has an issue
+                // with dates like 27th March when hour is shifted to summer/winter time
+                $dt->setDate($dt->format('Y'), 1, 1);
+                $result = $dt->getTimestamp() - strtotime($dt->format('Y') . '-01-01');
             } catch (\Exception $e) {
                 return false;
             }
