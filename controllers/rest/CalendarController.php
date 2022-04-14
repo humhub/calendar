@@ -39,6 +39,14 @@ class CalendarController extends BaseContentController
         return RestDefinitions::getCalendarEntry($contentRecord);
     }
 
+    private function saveCalendarEntry(CalendarEntryForm $calendarEntryForm): bool
+    {
+        $data = $this->prepareRequestParams(Yii::$app->request->getBodyParams(), 'CalendarEntryForm', 'CalendarEntry');
+        return $calendarEntryForm->load($data) &&
+            $calendarEntryForm->save() &&
+            (!method_exists($this, 'updateContent') || $this->updateContent($calendarEntryForm->entry, $data));
+    }
+
     public function actionCreate($containerId)
     {
         $containerRecord = ContentContainer::findOne(['id' => $containerId]);
@@ -52,12 +60,10 @@ class CalendarController extends BaseContentController
             return $this->returnError(403, 'You are not allowed to create calendar entry!');
         }
 
-        $requestParams = $this->prepareRequestParams(Yii::$app->request->getBodyParams(), 'CalendarEntryForm', 'CalendarEntry');
-
         $calendarEntryForm = CalendarEntryForm::createEntry($container);
 
-        if ($calendarEntryForm->load($requestParams) && $calendarEntryForm->save()) {
-            return RestDefinitions::getCalendarEntry($calendarEntryForm->entry);
+        if ($this->saveCalendarEntry($calendarEntryForm)) {
+            return $this->returnContentDefinition($calendarEntryForm->entry);
         }
 
         if ($calendarEntryForm->hasErrors() || $calendarEntryForm->entry->hasErrors()) {
@@ -83,12 +89,8 @@ class CalendarController extends BaseContentController
             return $this->returnError(403, 'You are not allowed to update this calendar entry!');
         }
 
-        $requestParams = $this->prepareRequestParams(Yii::$app->request->getBodyParams(), 'CalendarEntryForm', 'CalendarEntry');
-
-        $calendarEntryForm->load($requestParams, '');
-
-        if ($calendarEntryForm->save()) {
-            return RestDefinitions::getCalendarEntry($calendarEntryForm->entry);
+        if ($this->saveCalendarEntry($calendarEntryForm)) {
+            return $this->returnContentDefinition($calendarEntryForm->entry);
         }
 
         if ($calendarEntryForm->hasErrors() || $calendarEntryForm->entry->hasErrors()) {
