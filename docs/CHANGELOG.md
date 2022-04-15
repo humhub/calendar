@@ -1,8 +1,12 @@
 Changelog
 =========
 
-1.1.12 (Unreleased)
---------------------------
+1.2.0 (April 15, 2022)
+----------------------
+- Enh #263: Added new participation option "Only by Invite"
+- Enh #263: Various UI improvements
+- Enh #263: Added participation edit dialog 
+- Enh: Use default timezone instead of deprecated server timezone
 - Fix #241: Fix filter "I'm attending" for recurrence events
 - Fix #276: Fix saving time when system date is transition to daylight
 
@@ -15,7 +19,6 @@ Changelog
 - Enh #5274: Deprecate CompatModuleManager
 - Fix #254: Fix wall stream entry icons color
 - Fix #260: In the calendar view, "Day" button is not translated with Humhub's messages
-- Enh #263: Add participation option "Only by Invite"
 - Enh #265: Disable to change participant status when event is over
 - Fix #233: Fix recurrence events visibility in snippet
 
