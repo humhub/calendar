@@ -61,6 +61,8 @@ class EventCest extends HumHubApiTestCest
                 'start_time' => '10:30',
                 'end_date' => '2021-04-26',
                 'end_time' => '19:30',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
         ]);
         $I->seeCalendarEntryDefinitionById(1);

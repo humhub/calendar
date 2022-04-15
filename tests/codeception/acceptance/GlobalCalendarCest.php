@@ -58,10 +58,10 @@ class GlobalCalendarCest
         $I->waitForText('Next', null, '#globalModal');
         $I->click('Next', '#globalModal');
 
-        $I->waitForText('Create event', null, '#globalModal');
+        $I->waitForText('Create Event', null, '#globalModal');
         $I->fillField('CalendarEntry[title]', 'My Test Profile Entry');
         $I->fillField('#calendarentry-description .humhub-ui-richtext',  'My Test Profile Entry Description');
-        $I->click('Save', '#globalModal');
+        $I->click('Next', '#globalModal');
 
         //$I->waitForText('Close', null, '#globalModal');
         //$I->click('Close', '#globalModal');

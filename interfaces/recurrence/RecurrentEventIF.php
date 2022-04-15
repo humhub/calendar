@@ -91,6 +91,11 @@ interface RecurrentEventIF extends EditableEventIF
     public function getId();
 
     /**
+     * @return bool Is recurring enabled for the event?
+     */
+    public function isRecurringEnabled(): bool;
+
+    /**
      * @return string the rrule string
      */
     public function getRrule();

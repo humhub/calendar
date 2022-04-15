@@ -27,11 +27,12 @@ class GlobalGuestCalendarCest
 
         $I->amOnSpace1('/calendar/view');
         $I->createEventToday('Public Event', 'Public Event Description', null, null, false);
-        $I->click('[for="calendarentryform-is_public"]');
-        $I->click('Save', '#globalModal');
+        $I->jsClick('#calendarentryform-is_public');
+        $I->click('Next', '#globalModal');
 
         $I->waitForText('Public Event',null, '.fc-event-container');
-        $I->click('Close', '#globalModal');
+        $I->click('Next', '#globalModal');
+        $I->click('Save', '#globalModal');
 
         $I->wait(1);
 
@@ -41,9 +42,10 @@ class GlobalGuestCalendarCest
         $I->wait(1);
 
         $I->createEventToday('Private Event', 'Private Event Description');
-        $I->waitForText('Private Event', null,'#globalModal');
-        $I->wait(1);
-        $I->click('Close', '#globalModal');
+        $I->waitForText('Next',null, '#globalModal');
+        $I->click('Next', '#globalModal');
+        $I->click('Save', '#globalModal');
+        $I->seeSuccess();
 
         $I->wait(1);
 
@@ -67,12 +69,13 @@ class GlobalGuestCalendarCest
 
         $I->amOnSpace2('/calendar/view');
         $I->createEventToday('Public Event', 'Public Event Description', null, null, false);
-        $I->click('[for="calendarentryform-is_public"]');
-        $I->click('Save', '#globalModal');
+        $I->jsClick('#calendarentryform-is_public');
+        $I->click('Next', '#globalModal');
 
         $I->waitForText('Public Event',null, '.fc-event-container');
         $I->wait(1);
-        $I->click('Close', '#globalModal');
+        $I->click('Next', '#globalModal');
+        $I->click('Save', '#globalModal');
 
         $I->wait(1);
 
@@ -82,9 +85,8 @@ class GlobalGuestCalendarCest
         $I->wait(1);
 
         $I->createEventToday('Private Event', 'Private Event Description');
-        $I->waitForText('Private Event', null,'#globalModal');
-        $I->wait(1);
-        $I->click('Close', '#globalModal');
+        $I->click('Next', '#globalModal');
+        $I->click('Save', '#globalModal');
 
         $I->wait(1);
 

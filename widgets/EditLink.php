@@ -29,7 +29,7 @@ class EditLink extends WallEntryControlLink
 
     public function init()
     {
-        $this->label = Yii::t('ContentModule.widgets_views_editLink', 'Edit');
+        $this->label = Yii::t('CalendarModule.base', 'Edit Event');
         $this->icon = 'fa-pencil';
         $this->options = [
             'data-action-click' => 'calendar.editModal',

@@ -33,6 +33,6 @@ class DownloadIcsLink extends Widget
             return;
         }
 
-        return Html::a(Yii::t('CalendarModule.base', 'Download as ICS file'), Url::toEntryDownloadICS($this->calendarEntry), ['target' => '_blank']);
+        return Html::a(Yii::t('CalendarModule.base', 'Donwload ICS'), Url::toEntryDownloadICS($this->calendarEntry), ['target' => '_blank']);
     }
 }

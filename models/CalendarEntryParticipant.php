@@ -24,6 +24,7 @@ class CalendarEntryParticipant extends ActiveRecord
     const PARTICIPATION_STATE_DECLINED = 1;
     const PARTICIPATION_STATE_MAYBE = 2;
     const PARTICIPATION_STATE_ACCEPTED = 3;
+    const PARTICIPATION_STATE_INVITED = 4;
 
     /**
      * @return string the associated database table name
@@ -81,6 +82,8 @@ class CalendarEntryParticipant extends ActiveRecord
             $activity = new \humhub\modules\calendar\activities\ResponseMaybe();
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_DECLINED) {
             $activity = new \humhub\modules\calendar\activities\ResponseDeclined();
+        } elseif ($this->participation_state == self::PARTICIPATION_STATE_INVITED) {
+            $activity = new \humhub\modules\calendar\activities\ResponseInvited();
         } else {
             throw new \yii\base\Exception("Invalid participation state: " . $this->participation_state);
         }

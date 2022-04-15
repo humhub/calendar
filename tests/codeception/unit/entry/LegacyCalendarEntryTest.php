@@ -28,6 +28,8 @@ class LegacyCalendarEntryTest extends CalendarUnitTest
         $space1 = Space::findOne(['id' => 1]);
         $calendarForm = CalendarEntryForm::createEntry($space1, '2019-11-13 00:00:00', '2019-11-14 00:00:00');
         $calendarForm->entry->title = 'Legacy Event';
+        $calendarForm->reminder = 1;
+        $calendarForm->recurring = 1;
         $this->assertTrue($calendarForm->save());
 
         // Save legacy all day
@@ -56,6 +58,8 @@ class LegacyCalendarEntryTest extends CalendarUnitTest
         $space1 = Space::findOne(['id' => 1]);
         $calendarForm = CalendarEntryForm::createEntry($space1, '2019-11-13 00:00:00', '2019-11-14 00:00:00');
         $calendarForm->entry->title = 'Legacy Event';
+        $calendarForm->reminder = 1;
+        $calendarForm->recurring = 1;
         $this->assertTrue($calendarForm->save());
 
         // Save legacy all day
@@ -84,6 +88,8 @@ class LegacyCalendarEntryTest extends CalendarUnitTest
         $space1 = Space::findOne(['id' => 1]);
         $calendarForm = CalendarEntryForm::createEntry($space1, '2019-11-13 00:00:00', '2019-11-14 00:00:00');
         $calendarForm->entry->title = 'Legacy Event';
+        $calendarForm->reminder = 1;
+        $calendarForm->recurring = 1;
         $this->assertTrue($calendarForm->save());
 
         // Save legacy all day
@@ -111,6 +117,8 @@ class LegacyCalendarEntryTest extends CalendarUnitTest
         $space1 = Space::findOne(['id' => 1]);
         $calendarForm = CalendarEntryForm::createEntry($space1, '2019-11-13 00:00:00', '2019-11-14 00:00:00');
         $calendarForm->entry->title = 'Legacy Event';
+        $calendarForm->reminder = 1;
+        $calendarForm->recurring = 1;
         $this->assertTrue($calendarForm->save());
 
         // Save legacy all day

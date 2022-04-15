@@ -3,15 +3,12 @@
 namespace humhub\modules\calendar\tests\codeception\unit;
 
 use calendar\RecurrenceUnitTest;
-use DateTime;
-use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use Recurr\Frequency;
-use Yii;
 
 class RecurrenceEditTest extends RecurrenceUnitTest
 {
@@ -79,7 +76,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'start_date' => '12/3/19',
                 'start_time' => '10:00 AM',
                 'end_date' => '12/3/19',
-                'end_time' => '10:30 AM'
+                'end_time' => '10:30 AM',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_THIS
@@ -135,7 +134,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'start_date' => '12/2/19',
                 'start_time' => '10:00 AM',
                 'end_date' => '12/2/19',
-                'end_time' => '10:30 AM'
+                'end_time' => '10:30 AM',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_THIS
@@ -171,13 +172,16 @@ class RecurrenceEditTest extends RecurrenceUnitTest
             'CalendarEntry' => [
                 'title' => 'Overwritten title',
                 'description' => 'Overwritten description',
-                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE,
+                'recurring' => 1,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '0',
                 'all_day' => '1',
                 'start_date' => '12/3/19',
-                'end_date' => '12/3/19'
+                'end_date' => '12/3/19',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING
@@ -186,7 +190,7 @@ class RecurrenceEditTest extends RecurrenceUnitTest
 
         $this->assertTrue($form->save());
         $this->rootEvent->refresh();
-        $newRecurrences = $this->expand();
+        $newRecurrences = $this->expand(false, null, 1, 2);
         $this->assertCount(2, $newRecurrences);
         $this->assertEquals('2019-12-01 00:00:00', $newRecurrences[0]->start_datetime);
         $this->assertEquals('2019-12-02 00:00:00', $newRecurrences[1]->start_datetime);
@@ -202,13 +206,16 @@ class RecurrenceEditTest extends RecurrenceUnitTest
             'CalendarEntry' => [
                 'title' => 'Overwritten title',
                 'description' => 'Overwritten description',
-                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE,
+                'recurring' => 1,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '0',
                 'all_day' => '1',
                 'start_date' => '12/4/19',
-                'end_date' => '12/4/19'
+                'end_date' => '12/4/19',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING
@@ -243,7 +250,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'is_public' => '0',
                 'all_day' => '1',
                 'start_date' => '12/4/19',
-                'end_date' => '12/4/19'
+                'end_date' => '12/4/19',
+                'reminder' => 1,
+                'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_ALL,

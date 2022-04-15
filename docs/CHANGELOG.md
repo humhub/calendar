@@ -15,6 +15,7 @@ Changelog
 - Enh #5274: Deprecate CompatModuleManager
 - Fix #254: Fix wall stream entry icons color
 - Fix #260: In the calendar view, "Day" button is not translated with Humhub's messages
+- Enh #263: Add participation option "Only by Invite"
 - Enh #265: Disable to change participant status when event is over
 - Fix #233: Fix recurrence events visibility in snippet
 

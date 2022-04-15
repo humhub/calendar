@@ -216,17 +216,17 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      * Finds a participant instance for the given user or the logged in user if no user provided.
      *
      * @param User $user
-     * @return CalendarEntryParticipant
+     * @return CalendarEntryParticipant|null
      * @throws \Throwable
      */
-    public function findParticipant(User $user = null)
+    public function findParticipant(User $user = null): ?CalendarEntryParticipant
     {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
 
-        if(!$user) {
-            return;
+        if (!$user) {
+            return null;
         }
 
         return CalendarEntryParticipant::findOne(['user_id' => $user->id, 'calendar_entry_id' => $this->entry->id]);
@@ -241,7 +241,11 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public function canRespond(User $user = null)
     {
-        if(RecurrenceHelper::isRecurrentRoot($this->entry)) {
+        if ($this->entry->participation_mode == self::PARTICIPATION_MODE_NONE) {
+            return false;
+        }
+
+        if (RecurrenceHelper::isRecurrentRoot($this->entry)) {
             return false;
         }
 
@@ -249,16 +253,24 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             return false;
         }
 
-        if($this->entry->closed) {
+        if ($this->entry->closed) {
             return false;
         }
 
-        // Participants always can change/reset their state
-        if($this->isParticipant($user)) {
+        if ($this->entry->isOwner($user)) {
             return true;
         }
 
-        if(!$this->maxParticipantCheck()) {
+        if ($this->isInvited($user)) {
+            return true;
+        }
+
+        // Participants always can change/reset their state
+        if ($this->isParticipant($user)) {
+            return true;
+        }
+
+        if (!$this->maxParticipantCheck()) {
             return false;
         }
 
@@ -282,6 +294,15 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             :  [static::PARTICIPATION_STATUS_ACCEPTED];
 
         return in_array($this->getParticipationStatus($user), $states);
+    }
+
+    public function isInvited(User $user = null)
+    {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        return $this->getParticipationStatus($user) === static::PARTICIPATION_STATUS_INVITED;
     }
 
     public function isShowParticipationInfo(User $user = null)
