@@ -26,7 +26,7 @@ class AcceptanceTester extends \AcceptanceTester
    public function createEventToday($title = 'My Test Entry', $description = 'My Test Entry Description', $startTime = null, $endTime = null, $save = true)
    {
        $this->waitForElementVisible('.fc-today');
-       $this->click('.fc-today');
+       $this->click('.fc-day-top.fc-today');
        $this->waitForText('Create Event');
 
        $this->fillField('CalendarEntry[title]', $title);
