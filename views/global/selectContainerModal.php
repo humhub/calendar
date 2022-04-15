@@ -23,7 +23,6 @@ use humhub\libs\Html;
         </div>
         <div class="modal-footer">
             <?= ModalButton::submitModal($submitUrl, Yii::t('CalendarModule.base', 'Next'))?>
-            <?= ModalButton::cancel()?>
         </div>
     <?php $form = ActiveForm::end()?>
 <?php ModalDialog::end() ?>

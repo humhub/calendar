@@ -665,12 +665,96 @@ tbody,
 }
 
 #calendar-entry-form .ProseMirror-menubar-wrapper {
-
     z-index: 8;
 }
 
 #calendar-entry-form .ProseMirror {
     min-height: 150px !important;
+}
+.calendar-entry-participants.modal-body {
+    padding: 0 0 20px 0;
+}
+.calendar-entry-participants button.btn-participants-action {
+    margin: 10px 0 0 12px;
+}
+.calendar-entry-participants .pagination {
+    margin: 10px 0 0;
+}
+.calendar-entry-participants .media-list {
+    margin: 0 11px;
+}
+.calendar-entry-participants .media-body {
+    width: 1%;
+    word-break: initial;
+}
+.calendar-entry-participants .media-body:first-child {
+    width: auto;
+}
+.calendar-entry-participants .media-body:first-child .media-object {
+    float: left;
+    margin-right: 5px;
+}
+.calendar-entry-participants .media-body:not(:first-child) {
+    padding-left: 5px;
+}
+.calendar-entry-participants select.form-control {
+    width: auto;
+    height: 40px;
+    padding-right: 24px;
+}
+.calendar-entry-new-participants-form button.btn, .calendar-entry-participants .media-list button.btn {
+    height: 32px;
+    margin-top: 3px;
+}
+.calendar-entry-participants-count {
+    padding: 18px;
+    margin: 0;
+}
+.calendar-entry-new-participants-form {
+    padding: 18px 18px 4px;
+}
+.calendar-entry-new-participants-form .form-group {
+    padding-top: 15px;
+}
+.calendar-entry-new-participants-form .form-group.field-calendarentryparticipationform-newparticipantstatus {
+    padding: 0;
+    margin: 0;
+}
+.calendar-entry-new-participants-form .form-group .regular-checkbox-container label {
+    padding-left: 0;
+}
+.calendar-entry-participants-filters {
+    padding: 10px 18px 0;
+}
+.calendar-entry-participants-filter-title {
+    font-size: 80%;
+}
+.calendar-entry-participants-filters .btn.btn-info {
+    margin: 10px 8px 0 0;
+    padding: 3px 14px;
+}
+.calendar-entry-participants-filters .btn.btn-info.active {
+    background: #0397A8 !important;
+    color: #FFF !important;
+}
+.calendar-entry-participants-filters .btn.btn-info:not(.active) {
+    border: 1px solid #435F6F;
+    color: #435F6F !important;
+    background: #FFF;
+}
+.calendar-entry-participants-filters .btn.btn-info:not(.active):hover {
+    background: #0397A8 !important;
+    border: 1px solid #0397A8;
+    color: #FFF !important;
+}
+.calendar-entry-participants .pagination-container {
+    margin-top: 25px;
+}
+.calendar-entry-participants .pagination > li > a {
+    color: #000;
+}
+.calendar-entry-participants .pagination > .active > a {
+    color: #fff;
 }
 
 .calendar-option-buttons {
@@ -696,7 +780,16 @@ tbody,
 }
 
 .calendar-wall-entry .event-participation-buttons {
-	margin:15px 0;
+    margin: 32px 0 15px;
+}
+.calendar-wall-entry .event-participation-buttons button {
+    margin-right: 8px;
+}
+.calendar-wall-entry .event-participation-buttons button .fa {
+    font-size: 130%;
+    position: relative;
+    top: 1px;
+    margin-right: 3px;
 }
 
 .calendar-wall-entry [data-action-click] {

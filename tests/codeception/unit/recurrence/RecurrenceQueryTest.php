@@ -2,18 +2,9 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit;
 
-use calendar\CalendarUnitTest;
 use calendar\RecurrenceUnitTest;
-use DateInterval;
 use DateTime;
-use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
-use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\forms\CalendarEntryForm;
-use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
-use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
 use humhub\modules\space\models\Space;
-use Recurr\Frequency;
 
 class RecurrenceQueryTest extends RecurrenceUnitTest
 {

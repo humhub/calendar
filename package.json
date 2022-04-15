@@ -19,7 +19,7 @@
     "@fullcalendar/moment": "*",
     "@fullcalendar/moment-timezone": "*",
     "@fullcalendar/timegrid": "*",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.27"
   },
   "author": "Julian Harrer",
@@ -29,9 +29,9 @@
   },
   "homepage": "https://github.com/humhub/humhub-modules-calendar#readme",
   "devDependencies": {
-    "grunt": "^1.1.0",
+    "grunt": "^1.3.0",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-uglify": "^4.0.1",
-    "grunt-contrib-cssmin": "^3.0.0"
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-uglify": "^4.0.1"
   }
 }

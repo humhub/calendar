@@ -77,7 +77,7 @@ class RecurrenceHelper
             return false;
         }
 
-        return !empty($evt->getRrule());
+        return $evt->isRecurringEnabled() && !empty($evt->getRrule());
     }
 
     public static function isRecurrentInstance(CalendarEventIF $evt)

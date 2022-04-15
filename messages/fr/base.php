@@ -57,7 +57,7 @@ return array (
   'Time Zone' => 'Fuseau horaire',
   'Title' => 'Titre',
   'Tuesday' => 'Mardi',
-  'User birthdays' => '',
+  'User birthdays' => 'Anniversaires des utilisateurs et utilisatrices',
   'Wednesday' => 'Mercredi',
   'You don\'t have permission to delete this event!' => 'Vous n\'avez pas les permissions pour effacer cet événement.',
   'canceled' => 'annulé',

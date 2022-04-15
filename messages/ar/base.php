@@ -54,7 +54,7 @@ return array (
   'Start Time' => '',
   'Sunday' => '',
   'Thursday' => '',
-  'Time Zone' => '',
+  'Time Zone' => 'وحدة زمنية',
   'Title' => 'العنوان',
   'Tuesday' => '',
   'User birthdays' => '',

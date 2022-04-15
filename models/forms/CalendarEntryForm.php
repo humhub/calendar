@@ -11,10 +11,8 @@ namespace humhub\modules\calendar\models\forms;
 
 use DateTime;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\calendar\Module;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -84,11 +82,6 @@ class CalendarEntryForm extends Model
     public $sendUpdateNotification = 0;
 
     /**
-     * @var integer if set to true all space participants will be added to the event
-     */
-    public $forceJoin = 0;
-
-    /**
      * @var CalendarEntry
      */
     public $entry;
@@ -99,9 +92,19 @@ class CalendarEntryForm extends Model
     public $original;
 
     /**
+     * @var bool
+     */
+    public $reminder;
+
+    /**
      * @var ReminderSettings
      */
     public $reminderSettings;
+
+    /**
+     * @var bool
+     */
+    public $recurring;
 
     /**
      * @var RecurrenceFormModel
@@ -114,13 +117,14 @@ class CalendarEntryForm extends Model
      * @param $contentContainer
      * @param string|null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
      * @param string|null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
+     * @param string|null $view FullCalendar view mode, 'month'
      * @return CalendarEntryForm
      * @throws Exception
      */
-    public static function createEntry($contentContainer, $start = null, $end = null)
+    public static function createEntry($contentContainer, $start = null, $end = null, $view = null)
     {
         $instance = new static(['entry' => new CalendarEntry($contentContainer)]);
-        $instance->updateDateRangeFromCalendar($start, $end);
+        $instance->updateDateRangeFromCalendar($start, $end, null, false, $view);
         $instance->setDefaults(); // Make sure default values are based on new start/end
         return $instance;
     }
@@ -151,7 +155,9 @@ class CalendarEntryForm extends Model
             $this->entry->setDefaults();
         }
 
+        $this->reminder = $this->entry->reminder;
         $this->reminderSettings = new ReminderSettings(['entry' => $this->entry]);
+        $this->recurring = $this->entry->recurring;
         $this->recurrenceForm = new RecurrenceFormModel(['entry' => $this->entry]);
     }
 
@@ -167,10 +173,11 @@ class CalendarEntryForm extends Model
      * @param string|null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
      * @param null $timeZone the timezone of $start/$end, if null $this->timeZone is assumed
      * @param bool $save
+     * @param string|null $view FullCalendar view mode, 'month'
      * @return bool|void
      * @throws \Throwable
      */
-    public function updateDateRangeFromCalendar($start = null, $end = null, $timeZone = null, $save = false)
+    public function updateDateRangeFromCalendar($start = null, $end = null, $timeZone = null, $save = false, $view = null)
     {
         if (!$start || !$end) {
             return;
@@ -179,7 +186,14 @@ class CalendarEntryForm extends Model
         $startDT = CalendarUtils::getDateTime($start);
         $endDT = CalendarUtils::getDateTime($end);
 
-        $this->entry->all_day = (int) CalendarUtils::isAllDay($start, $endDT);
+        if ($view === 'month') {
+            $currentHour = date('H');
+            $startDT->setTime($currentHour + 1, 0);
+            $endDT->setTime($currentHour + 2, 0);
+            $this->entry->all_day = 0;
+        } else {
+            $this->entry->all_day = (int) CalendarUtils::isAllDay($start, $endDT);
+        }
 
         if ($this->isAllDay()) {
             $this->translateFromMomentAfterToFormEndDate($endDT);
@@ -229,8 +243,9 @@ class CalendarEntryForm extends Model
     {
         return [
             ['timeZone', 'in', 'range' => DateTimeZone::listIdentifiers()],
-            ['topics', 'safe'],
-            [['is_public', 'type_id', 'sendUpdateNotification', 'forceJoin'], 'integer'],
+            [['topics', 'reminder', 'recurring'], 'safe'],
+            [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
+            [['start_date', 'end_date'], 'required'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => CalendarUtils::getTimeFormat()],
             ['start_date', CalendarDateFormatValidator::class, 'timeField' => 'start_time'],
             ['end_date', CalendarDateFormatValidator::class, 'timeField' => 'end_time'],
@@ -250,11 +265,10 @@ class CalendarEntryForm extends Model
             'timeZone' => Yii::t('CalendarModule.base', 'Time Zone'),
             'location' => Yii::t('CalendarModule.base', 'Location'),
             'is_public' => Yii::t('CalendarModule.base', 'Public'),
+            'recurring' => Yii::t('CalendarModule.base', 'Recurring'),
+            'reminder' => Yii::t('CalendarModule.base', 'Enable Reminder'),
             'topics' => Yii::t('TopicModule.base', 'Topics'),
-            'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Send update notification'),
-            'forceJoin' => ($this->entry->isNewRecord)
-                ? Yii::t('CalendarModule.base', 'Add all space members to this event')
-                : Yii::t('CalendarModule.base', 'Add remaining space members to this event'),
+            'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Notify participants about changes'),
         ];
     }
 
@@ -355,7 +369,7 @@ class CalendarEntryForm extends Model
         // Translate from 01.01.20 -> db date format
         $this->setFormDates($startDT, $endDt);
 
-        if($this->entry->isNewRecord || $this->showReminderTab($this->original)) {
+        if($this->entry->isNewRecord || $this->showReminderTab()) {
             $result |= $this->reminderSettings->load($data);
         }
 
@@ -411,9 +425,19 @@ class CalendarEntryForm extends Model
         $this->end_time = $endTime;
     }
 
-    public function showReminderTab()
+    public function isFutureEvent(): bool
     {
-        return($this->entry->getStartDateTime() > new DateTime());
+        return $this->entry->getStartDateTime() > new DateTime();
+    }
+
+    public function showReminderTab(): bool
+    {
+        return ($this->entry->reminder && $this->isFutureEvent());
+    }
+
+    public function showRecurrenceTab(): bool
+    {
+        return ($this->entry->recurring && Module::isRecurrenceActive());
     }
 
     /**
@@ -432,43 +456,33 @@ class CalendarEntryForm extends Model
 
         return CalendarEntry::getDb()->transaction(function ($db) {
 
-            if(!$this->entry->saveEvent()) {
+            if (!$this->entry->saveEvent()) {
                 return false;
             }
 
             // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
-            if($this->entry->participant_info) {
+            if ($this->entry->description) {
                 RichText::postProcess($this->entry->description, $this->entry);
             }
 
-            // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
-            if($this->entry->participant_info) {
-                RichText::postProcess($this->entry->participant_info, $this->entry);
-            }
-
             $this->entry->setType($this->type_id);
+
+            Topic::attach($this->entry->content, $this->topics);
 
             if ($this->sendUpdateNotification && !$this->entry->isNewRecord) {
                 $this->entry->participation->sendUpdateNotification();
             }
 
-            if ($this->forceJoin) {
-                $this->entry->participation->addAllUsers();
+            $result = $this->reminder
+                ? $this->reminderSettings->save()
+                : $this->reminderSettings->clear();
+
+            if (!$this->recurring) {
+                $this->recurrenceForm->frequency = RecurrenceFormModel::FREQUENCY_NEVER;
             }
+            $result = $this->recurrenceForm->save($this->original) && $result;
 
-            Topic::attach($this->entry->content, $this->topics);
-
-            $this->entry->fileManager->attach(Yii::$app->request->post('fileList'));
-
-            $result = true;
-
-            if($this->showReminderTab()) {
-               $result = $result && $this->reminderSettings->save();
-            }
-
-            $result = $result && $this->recurrenceForm->save($this->original);
-
-            if($result) {
+            if ($result) {
                 $this->sequenceCheck();
             }
 
@@ -492,14 +506,6 @@ class CalendarEntryForm extends Model
             CalendarUtils::incrementSequence($this->entry);
             $this->entry->saveEvent();
         }
-    }
-
-    public static function getParticipationModeItems()
-    {
-        return [
-            CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
-            CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
-        ];
     }
 
     public function showTimeFields()

@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Defaults' => 'Προεπιλογές',
-    'Event Types' => 'Τύποι εκδηλώσεων',
-    'Snippet' => 'Απόσπασμα',
-    'Calendars' => '',
-];
+return array (
+  'Calendars' => 'Ημερολόγια',
+  'Defaults' => 'Προεπιλογές',
+  'Event Types' => 'Τύποι εκδηλώσεων',
+  'Snippet' => 'Απόσπασμα',
+);

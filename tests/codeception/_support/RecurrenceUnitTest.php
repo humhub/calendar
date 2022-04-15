@@ -60,7 +60,7 @@ class RecurrenceUnitTest extends CalendarUnitTest
      * @return \humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF[]
      * @throws \Exception
      */
-    protected function expand( $save = false, $entry = null,  $fromDay = 1, $toDay = 7)
+    protected function expand($save = false, $entry = null, $fromDay = 1, $toDay = 7)
     {
         if(!$entry) {
             $entry = $this->rootEvent;

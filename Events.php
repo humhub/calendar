@@ -6,6 +6,8 @@ use DateTime;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
@@ -105,8 +107,9 @@ class Events
     public static function onSpaceMenuInit($event)
     {
         try {
+            /* @var Space $space */
             $space = $event->sender->space;
-            if ($space->isModuleEnabled('calendar')) {
+            if ($space->moduleManager->isEnabled('calendar')) {
                 $event->sender->addItem([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
                     'group' => 'modules',
@@ -124,8 +127,9 @@ class Events
     public static function onProfileMenuInit($event)
     {
         try {
+            /* @var User $user */
             $user = $event->sender->user;
-            if ($user->isModuleEnabled('calendar')) {
+            if ($user->moduleManager->isEnabled('calendar')) {
                 $event->sender->addItem([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
                     'url' => Url::toCalendar($user),
@@ -141,10 +145,11 @@ class Events
     public static function onSpaceSidebarInit($event)
     {
         try {
+            /* @var Space $space */
             $space = $event->sender->space;
             $settings = SnippetModuleSettings::instantiate();
 
-            if ($space->isModuleEnabled('calendar')) {
+            if ($space->moduleManager->isEnabled('calendar')) {
                 if ($settings->showUpcomingEventsSnippet()) {
                     $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
                 }
@@ -376,5 +381,31 @@ class Events
             }
             $module->settings->set('lastReminderRunTS', time());
         }
+    }
+
+    public static function onRestApiAddRules()
+    {
+        /* @var humhub\modules\rest\Module $restModule */
+        $restModule = Yii::$app->getModule('rest');
+        $restModule->addRules([
+
+            ['pattern' => 'calendar/', 'route' => 'calendar/rest/calendar/find', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'calendar/container/<containerId:\d+>', 'route' => 'calendar/rest/calendar/find-by-container', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'calendar/container/<containerId:\d+>', 'route' => 'calendar/rest/calendar/delete-by-container', 'verb' => 'DELETE'],
+
+            //Calendar entry CRUD
+            ['pattern' => 'calendar/container/<containerId:\d+>', 'route' => 'calendar/rest/calendar/create', 'verb' => 'POST'],
+            ['pattern' => 'calendar/entry/<id:\d+>', 'route' => 'calendar/rest/calendar/view', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'calendar/entry/<id:\d+>', 'route' => 'calendar/rest/calendar/update', 'verb' => 'PUT'],
+            ['pattern' => 'calendar/entry/<id:\d+>', 'route' => 'calendar/rest/calendar/delete', 'verb' => 'DELETE'],
+
+            //Calendar Entry Management
+            ['pattern' => 'calendar/entry/<id:\d+>/upload-files', 'route' => 'calendar/rest/calendar/attach-files', 'verb' => 'POST'],
+            ['pattern' => 'calendar/entry/<id:\d+>/remove-file/<fileId:\d+>', 'route' => 'calendar/rest/calendar/remove-file', 'verb' => 'DELETE'],
+
+            //Participate
+            ['pattern' => 'calendar/entry/<id:\d+>/respond', 'route' => 'calendar/rest/calendar/respond', 'verb' => 'POST'],
+
+        ], 'calendar');
     }
 }

@@ -58,7 +58,7 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
             $fromDate = $from->format('Y-m-d');
             $fromDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$fromYear}-YEAR(profile.birthday) YEAR)";
             $toDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$toYear}-YEAR(profile.birthday) YEAR)";
-            $toOrFromBirthday = "IF( $fromDateBirth > DATE('{$fromDate}'), {$fromDateBirth}, {$toDateBirth})";
+            $toOrFromBirthday = "IF( $fromDateBirth >= DATE('{$fromDate}'), {$fromDateBirth}, {$toDateBirth})";
         }
 
         $this->_query->visible();

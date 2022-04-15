@@ -366,6 +366,30 @@ class ReminderSettings extends Model
         return $preservedReminders;
     }
 
+    /**
+     * Delete all reminders of the calendar entry
+     *
+     * @return bool
+     * @throws StaleObjectException
+     */
+    public function clear(): bool
+    {
+        if (!$this->entry) {
+            return true;
+        }
+
+        /* @var CalendarReminder[] $reminders */
+        $reminders = $this->loadReminder(false);
+
+        foreach ($reminders as $reminder) {
+            if (!$reminder->delete()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function getReminderTypeOptions()
     {
         $result = [static::REMINDER_TYPE_NONE => Yii::t('CalendarModule.reminder', 'No reminder')];

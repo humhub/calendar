@@ -1,4 +1,4 @@
-[![Test Status](https://github.com/humhub/humhub-modules-calendar/workflows/PHP%20Codeception%20Tests/badge.svg)](https://github.com/humhub/humhub-modules-calendar/actions)
+[![Test Status](https://github.com/humhub/calendar/workflows/PHP%20Codeception%20Tests/badge.svg)](https://github.com/humhub/calendar/actions)
 
 # Calendar
 
@@ -7,7 +7,7 @@ serves as basic calendar module and can be used in combination with the followin
 
  - [Task](https://www.humhub.com/marketplace/tasks/)
  - [Meetings](https://www.humhub.com/marketplace/meeting/)
- - [External Calendar](https://www.humhub.com/marketplace/meeting/)
+ - [External Calendar](https://www.humhub.com/en/marketplace/external_calendar/)
  - and others..
  
 ## Overview

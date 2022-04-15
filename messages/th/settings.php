@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Participation' => '',
-    'Reminder' => '',
-];
+return array (
+  'Participation' => 'การเข้าร่วม',
+  'Reminder' => 'เตือนความจำ',
+);

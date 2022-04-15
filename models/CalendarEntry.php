@@ -11,6 +11,7 @@ use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -48,16 +49,18 @@ use humhub\modules\user\models\User;
  * @property integer $allow_decline
  * @property integer $allow_maybe
  * @property string $participant_info
- * @property integer closed
- * @property integer max_participants
- * @property string rrule
- * @property string recurrence_id
- * @property int parent_event_id
- * @property string exdate
- * @property string sequence
- * @property CalendarEntryParticipant[] participantEntries
+ * @property integer $closed
+ * @property integer $max_participants
+ * @property string $rrule
+ * @property string $recurrence_id
+ * @property int $parent_event_id
+ * @property string $exdate
+ * @property string $sequence
+ * @property CalendarEntryParticipant[] $participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  * @property string $location
+ * @property-read bool $recurring
+ * @property-read bool $reminder
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, FullCalendarEventIF,
     CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
@@ -130,6 +133,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      * @var CalendarEntryParticipation
      */
     public $participation;
+
+    /**
+     * @var bool Cached of reminder enabled
+     */
+    private $_reminder;
 
     public function init()
     {
@@ -313,9 +321,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             'type_id' => Yii::t('CalendarModule.base', 'Event Type'),
             'description' => Yii::t('CalendarModule.base', 'Description'),
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
-            'allow_decline' => Yii::t('CalendarModule.base', 'Allow participation state \'decline\''),
-            'allow_maybe' => Yii::t('CalendarModule.base', 'Allow participation state \'maybe\''),
-            'participation_mode' => Yii::t('CalendarModule.base', 'Participation Mode'),
+            'allow_decline' => Yii::t('CalendarModule.base', 'Allow option \'Decline\''),
+            'allow_maybe' => Yii::t('CalendarModule.base', 'Allow option \'Undecided\''),
+            'participation_mode' => Yii::t('CalendarModule.base', 'Mode'),
             'max_participants' => Yii::t('CalendarModule.base', 'Maximum number of participants'),
             'location' => Yii::t('CalendarModule.base', 'Location'),
         ];
@@ -765,6 +773,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $this->parent_event_id = $rootId;
     }
 
+    public function getRecurring(): bool
+    {
+        return !empty($this->rrule);
+    }
+
+    public function isRecurringEnabled(): bool
+    {
+        return $this->recurring;
+    }
+
     public function getRrule()
     {
         return $this->rrule;
@@ -773,6 +791,17 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public function setRrule($rrule)
     {
         $this->rrule = $rrule;
+    }
+
+    public function getReminder(): bool
+    {
+        if (!isset($this->_reminder)) {
+            $this->_reminder = empty($this->content->id)
+                ? false
+                : CalendarReminder::find()->where(['content_id' => $this->content->id])->exists();
+        }
+
+        return $this->_reminder;
     }
 
     public function getExdate()
@@ -942,5 +971,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         }
 
         return $container->getPermissionManager($this->content->createdBy)->can(CreateEntry::class);
+    }
+
+    public function canInvite(?User $user = null): bool
+    {
+        return $this->isOwner($user);
+    }
+
+    public function isPast(): bool
+    {
+        $timeZone = CalendarUtils::getEndTimeZone($this);
+        return new DateTime('now', $timeZone) > new DateTime($this->end_datetime, $timeZone);
     }
 }

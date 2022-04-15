@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\widgets;
 use humhub\modules\calendar\assets\CalendarAsset;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\permissions\CreateEntry;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\widgets\JsWidget;
 use Yii;
 use humhub\modules\calendar\helpers\Url;
@@ -26,6 +27,9 @@ class FullCalendar extends JsWidget
     public $editUrl;
     public $selectors = [];
     public $filters = [];
+    /**
+     * @var ContentContainerActiveRecord $contentContainer
+     */
     public $contentContainer;
     public $enabled = true;
     public $aspectRatio;
@@ -48,7 +52,7 @@ class FullCalendar extends JsWidget
         }
 
         // Used by the global calendar if the module is not enabled for the given user.
-        if($this->contentContainer && !$this->contentContainer->isModuleEnabled('calendar')) {
+        if($this->contentContainer && !$this->contentContainer->moduleManager->isEnabled('calendar')) {
             $this->enabled = false;
         }
 

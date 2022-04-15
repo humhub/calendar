@@ -1,14 +1,40 @@
 Changelog
 =========
 
-1.2.0 (Unreleased)
----------------------
+1.2.0 (April 15, 2022)
+----------------------
+- Enh #263: Added new participation option "Only by Invite"
+- Enh #263: Various UI improvements
+- Enh #263: Added participation edit dialog 
 - Enh: Use default timezone instead of deprecated server timezone
+- Fix #241: Fix filter "I'm attending" for recurrence events
+- Fix #276: Fix saving time when system date is transition to daylight
 
-1.1.7 (Unreleased)
+1.1.11 (February 23, 2022)
+--------------------------
+- Fix #114: PHP8 - Deprecate required parameters after optional parameters
+- Fix #244: CLI error when no REST module is installed
+- Fix #246: Fix error displaying of empty date fields
+- Enh #187: Possibility to disable participation activities in the mail summary
+- Enh #5274: Deprecate CompatModuleManager
+- Fix #254: Fix wall stream entry icons color
+- Fix #260: In the calendar view, "Day" button is not translated with Humhub's messages
+- Enh #265: Disable to change participant status when event is over
+- Fix #233: Fix recurrence events visibility in snippet
+
+1.1.10  (April 14, 2021)
+----------------------
+- Fix: Todays Birthday not shown in Dashboard Snippet when Interval is one year
+
+1.1.8  (April 8, 2021)
+----------------------
+- Fix #221: Fix call of console commands when REST API module doesn't exist
+
+1.1.7 (April 7, 2021)
 ---------------------
 - Enh: Added module snippet configuration "Include birthdays to dashboard snippet"
 - Enh #218: Change snippet default sort
+- Enh #235: Added REST API Module Support 
 
 1.1.6 (February 22, 2021)
 ---------------------

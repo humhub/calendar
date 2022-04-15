@@ -17,6 +17,7 @@ interface CalendarEventParticipationIF
     const PARTICIPATION_STATUS_DECLINED = 1;
     const PARTICIPATION_STATUS_MAYBE = 2;
     const PARTICIPATION_STATUS_ACCEPTED = 3;
+    const PARTICIPATION_STATUS_INVITED = 4;
 
     /**
      * Returns the participation state for a given user or guests if $user is null.

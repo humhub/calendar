@@ -1,0 +1,1 @@
+This second file is used to test API endpoint `calendar/entry/1/upload-files` in order to upload file to a calendar event.

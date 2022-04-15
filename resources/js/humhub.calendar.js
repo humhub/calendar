@@ -122,20 +122,20 @@ humhub.module('calendar', function (module, require, $) {
             this.$.find('.timeZoneInput').fadeToggle();
         };
 
-        Form.prototype.changeParticipationMode = function (evt) {
-            if (evt.$trigger.val() == 0) {
-                this.$.find('.participationOnly').fadeOut('fast');
-            } else {
-                this.$.find('.participationOnly').fadeIn('fast');
-            }
-        };
-
         Form.prototype.changeEventType = function (evt) {
             var $selected = evt.$trigger.find(':selected');
             if ($selected.data('type-color')) {
                 $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('type-color'));
                 $('.colorpicker-element').data('colorpicker').update();
             }
+        };
+
+        Form.prototype.toggleRecurring = function (evt) {
+            $('.calendar-entry-form-tabs .tab-recurrence').parent().toggle(evt.$trigger.is(':checked'));
+        };
+
+        Form.prototype.toggleReminder = function (evt) {
+            $('.calendar-entry-form-tabs .tab-reminder').parent().toggle(evt.$trigger.is(':checked'));
         };
 
         var CalendarEntry = Content.extend();

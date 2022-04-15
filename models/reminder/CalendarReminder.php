@@ -418,7 +418,7 @@ class CalendarReminder extends ActiveRecord
         return $result;
     }
 
-    private static function setDefaultResult(ContentContainerActiveRecord $container = null, $result)
+    private static function setDefaultResult(ContentContainerActiveRecord $container = null, $result = null)
     {
         if($container) {
             static::$containerDefaults[$container->contentcontainer_id] = $result;

@@ -113,6 +113,10 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             buttonText.week = module.text('button.week');
         }
 
+        if (module.text('button.day') !== 'day') {
+            buttonText.day = module.text('button.day');
+        }
+
         if (module.text('button.list') !== 'list') {
             buttonText.list = module.text('button.list');
         }
@@ -181,6 +185,9 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 cal: 1
             }
         };
+        if (info.view.type === 'dayGridMonth') {
+            options.data.view = 'month';
+        }
 
         var selectUrl = this.options.global ? this.options.globalCreateUrl : this.options.editUrl;
 

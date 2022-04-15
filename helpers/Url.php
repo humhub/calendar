@@ -129,6 +129,15 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal]);
     }
 
+    public static function toEditEntryParticipation(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
+    {
+        if (!$container) {
+            $container = $entry->content->container;
+        }
+
+        return $container->createUrl('/calendar/entry/edit-participation', ['id' => $entry->id]);
+    }
+
     public static function toFullCalendarEdit(ContentContainerActiveRecord $container)
     {
         return $container->createUrl('/calendar/entry/edit', ['cal' => 1]);
@@ -219,13 +228,13 @@ class Url extends BaseUrl
             'id' => $entry->id]);
     }
 
-    public static function toParticipationUserList(CalendarEntry $entry, $state, ContentContainerActiveRecord $container = null)
+    public static function toParticipationUserList(CalendarEntry $entry, $state = null, ContentContainerActiveRecord $container = null)
     {
         if(!$container) {
             $container = $entry->content->container;
         }
 
-        return $container->createUrl('/calendar/entry/user-list', ['id' => $entry->id, 'state' => $state]);
+        return $container->createUrl('/calendar/entry/modal-participants', ['id' => $entry->id, 'state' => $state]);
     }
 
     public static function toEnableModuleOnProfileConfig()

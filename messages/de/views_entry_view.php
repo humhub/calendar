@@ -1,7 +1,7 @@
 <?php
 return array (
   'Additional information' => 'Weitere Informationen',
-  'Attend' => 'Annehmen',
+  'Attend' => 'Teilnehmen',
   'Decline' => 'Ablehnen',
   'Maybe' => 'Vielleicht',
 );

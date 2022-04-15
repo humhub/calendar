@@ -22,7 +22,7 @@ use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 
 class ReminderProcessTest  extends CalendarUnitTest
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);

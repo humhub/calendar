@@ -6,7 +6,6 @@ use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
-use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\content\widgets\stream\WallStreamModuleEntryWidget;
 use Yii;
 
@@ -70,6 +69,8 @@ class WallEntry extends WallStreamModuleEntryWidget
                 $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
                 $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
             }
+
+            $result[] = [ParticipantsLink::class, ['entry' => $this->model], ['sortOrder' => 110]];
         }
 
         return $result;

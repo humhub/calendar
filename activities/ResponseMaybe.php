@@ -9,16 +9,32 @@
 namespace humhub\modules\calendar\activities;
 
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
+use Yii;
 
 /**
  * ResponseMaybe Activity
  *
  * @author luke
  */
-class ResponseMaybe extends BaseActivity
+class ResponseMaybe extends BaseActivity implements ConfigurableActivityInterface
 {
-
     public $viewName = 'response_maybe';
     public $moduleId = 'calendar';
 
+    /**
+     * @inheritdoc
+     */
+    public function getTitle()
+    {
+        return Yii::t('CalendarModule.activities', 'Calendar: maybe');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDescription()
+    {
+        return Yii::t('CalendarModule.activities', 'Whenever someone may be participating in an event.');
+    }
 }

@@ -221,7 +221,7 @@ abstract class AbstractCalendarQuery extends Component
      */
     public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true)
     {
-        $query = static::find()
+        $query = static::find(null, $expand)
             ->container($container)
             ->filter($filters)
             ->limit($limit);
@@ -300,16 +300,18 @@ abstract class AbstractCalendarQuery extends Component
     /**
      * Static initializer.
      * @param User $user user instance used for some of the filter e.g. [[mine()]] by default current logged in user.
+     * @param bool $xpand
      * @return \self
      * @throws \Throwable
      */
-    public static function find(User $user = null)
+    public static function find(User $user = null, bool $expand = true)
     {
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
         }
 
         $instance = new static();
+        $instance->expand = $expand;
         $instance->_query = static::createQuery();
         $instance->_user = $user;
 
