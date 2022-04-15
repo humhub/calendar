@@ -1,8 +1,9 @@
 <?php
 
 return [
-    ':count attending' => '',
-    ':count declined' => '',
-    ':count maybe' => '',
+    ':count Attending' => '',
+    ':count Declined' => '',
+    ':count Invited' => '',
+    ':count Undecided' => '',
     'Participants' => '',
 ];

@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'day' => '',
-    'list' => '',
-    'month' => '',
-    'today' => '',
-    'week' => '',
+    'Day' => '',
+    'List' => '',
+    'Month' => '',
+    'Today' => '',
+    'Week' => '',
 ];

@@ -1,8 +1,9 @@
 <?php
-return array (
-  'day' => '',
-  'list' => 'lista',
-  'month' => '',
-  'today' => 'tänään',
-  'week' => '',
-);
+
+return [
+    'Day' => '',
+    'List' => '',
+    'Month' => '',
+    'Today' => '',
+    'Week' => '',
+];

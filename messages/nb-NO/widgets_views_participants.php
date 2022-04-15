@@ -1,7 +1,9 @@
 <?php
-return array (
-  ':count attending' => ':count deltar',
-  ':count declined' => ':count deltar ikke',
-  ':count maybe' => ':count deltar kanskje',
-  'Participants' => 'Deltakere',
-);
+
+return [
+    'Participants' => 'Deltakere',
+    ':count Attending' => '',
+    ':count Declined' => '',
+    ':count Invited' => '',
+    ':count Undecided' => '',
+];
