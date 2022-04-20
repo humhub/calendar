@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Participants' => 'Participantes',
-    ':count Attending' => '',
-    ':count Declined' => '',
-    ':count Invited' => '',
-    ':count Undecided' => '',
-];
+return array (
+  ':count Attending' => ':count van a asistir',
+  ':count Declined' => ':count han rechazado asistir',
+  ':count Invited' => ':count invitados',
+  ':count Undecided' => ':count están indecisos',
+  'Participants' => 'Participantes',
+);

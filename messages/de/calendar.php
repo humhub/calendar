@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Day' => '',
-    'List' => '',
-    'Month' => '',
-    'Today' => '',
-    'Week' => '',
-];
+return array (
+  'Day' => 'Tag',
+  'List' => 'Liste',
+  'Month' => 'Monat',
+  'Today' => 'Heute',
+  'Week' => 'Woche',
+);

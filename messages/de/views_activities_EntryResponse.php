@@ -1,8 +1,7 @@
 <?php
-
-return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% kann nicht teilnehmen an %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% nimmt teil an %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% nimmt vielleicht teil an %contentTitle%.',
-    '%displayName% is invited to %contentTitle%.' => '',
-];
+return array (
+  '%displayName% cannot attend %contentTitle%.' => '%displayName% kann nicht an %contentTitle% teilnehmen.',
+  '%displayName% is attending %contentTitle%.' => '%displayName% nimmt an %contentTitle%  teil.',
+  '%displayName% is invited to %contentTitle%.' => '%displayName% ist zu %contentTitle%  eingeladen.',
+  '%displayName% might be attending %contentTitle%.' => '%displayName% nimmt vielleicht an %contentTitle%  teil.',
+);
