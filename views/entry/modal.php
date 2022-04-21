@@ -13,7 +13,7 @@ use humhub\widgets\ModalDialog;
 /* @var $editUrl string  */
 /* @var $inviteUrl string  */
 ?>
-<?php ModalDialog::begin(['size' => 'large', 'closable' => true]); ?>
+<?php ModalDialog::begin(['size' => 'large', 'closable' => true, 'showClose' => true]); ?>
     <div class="modal-body" style="padding-bottom:0px">
         <?= $this->renderAjax('view', ['entry' => $entry, 'stream' => false])?>
     </div>
