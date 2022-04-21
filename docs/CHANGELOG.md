@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Unreleased
+----------------------
+- Enh #269: Add Close Button to Calendar Entry Modal
+
 1.2.0 (April 15, 2022)
 ----------------------
 - Enh #263: Added new participation option "Only by Invite"
