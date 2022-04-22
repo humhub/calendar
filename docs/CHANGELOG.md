@@ -4,6 +4,7 @@ Changelog
 Unreleased
 ----------------------
 - Enh #269: Add Close Button to Calendar Entry Modal
+- Enh #272: Add minutely reminders
 
 1.2.0 (April 15, 2022)
 ----------------------
