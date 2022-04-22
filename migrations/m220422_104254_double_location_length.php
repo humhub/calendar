@@ -12,7 +12,6 @@ class m220422_104254_double_location_length extends Migration
      */
     public function safeUp()
     {
-;        $this->addColumn('calendar_entry', 'location', 'varchar(64) DEFAULT NULL');
         $this->alterColumn('calendar_entry', 'location', 'varchar(128) DEFAULT NULL');
     }
 
