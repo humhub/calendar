@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.1 (Unreleased)
+Unreleased
 --------------------------
 - Fix #283: Increase Location field max. length to 128 characters
 - Enh #269: Add Close Button to Calendar Entry Modal
