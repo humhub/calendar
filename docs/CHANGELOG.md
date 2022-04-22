@@ -3,7 +3,7 @@ Changelog
 
 1.2.1 (Unreleased)
 --------------------------
-- Fix #283: Double lenght of Location field
+- Fix #283: Increase Location field max. length to 128 characters
 
 
 1.2.0 (April 15, 2022)
