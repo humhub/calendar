@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2.1 (Unreleased)
+--------------------------
+- Fix #283: Double lenght of Location field
+
+
 1.2.0 (April 15, 2022)
 ----------------------
 - Enh #263: Added new participation option "Only by Invite"
