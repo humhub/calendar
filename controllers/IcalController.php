@@ -53,17 +53,19 @@ class IcalController extends Controller
      */
     public function actionExport($id)
     {
-        $event = $this->getEvent($id);
+        /* @var $events RecurrentEventIF[] */
+        $events = [$this->getEvent($id)];
 
-        if(RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
-            /* @var $event RecurrentEventIF */
-            $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
+        if (RecurrenceHelper::isRecurrent($events[0]) && !RecurrenceHelper::isRecurrentRoot($events[0])) {
+            array_unshift($events, $events[0]->getRecurrenceQuery()->getRecurrenceRoot());
+            $events[1]->setUid($events[1]->getUid() . '-' . $events[1]->id);
         }
 
-        $uid = $event->getUid() ?: $this->uniqueId;
+        $uid = $events[0]->getUid() ?: $this->uniqueId;
 
-        return Yii::$app->response->sendContentAsFile(VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone(true))->serialize(), $uid.'.ics', ['mimeType' => static::EXPORT_MIME]);
+        $calendar = VCalendar::withEvents($events, CalendarUtils::getSystemTimeZone(true));
 
+        return Yii::$app->response->sendContentAsFile($calendar->serialize(), $uid.'.ics', ['mimeType' => static::EXPORT_MIME]);
     }
 
     public function actionGenerateics()
