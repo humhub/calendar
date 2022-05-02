@@ -111,31 +111,31 @@ class VCalendar extends Model
     private $uids = [];
 
     /**
-     * @param $item CalendarEventIF
+     * @param CalendarEventIF $item
+     * @param bool $isRecurrenceChild
      * @return static
      * @throws Exception
      */
-    private function addVEvent(CalendarEventIF $item)
+    private function addVEvent(CalendarEventIF $item, bool $isRecurrenceChild = false)
     {
         $dtend = clone $item->getEndDateTime();
 
-        $uid = $item->getUid();
-
-        if(!$uid || in_array($uid, $this->uids)) {
-            return $this;
+        if (!$isRecurrenceChild) {
+            $uid = $item->getUid();
+            if (!$uid || in_array($uid, $this->uids)) {
+                return $this;
+            }
         }
 
-        if($item->isAllDay()) {
+        if ($item->isAllDay() && $dtend->format('H:i') === '23:59') {
             // Translate for legacy events
-            if($dtend->format('H:i') === '23:59') {
-                $dtend->modify('+1 hour')->setTime(0,0,0);
-            }
+            $dtend->modify('+1 hour')->setTime(0,0,0);
         }
 
         $dtStart = clone $item->getStartDateTime();
         $dtEnd =  clone $item->getEndDateTime();
 
-        if(!$item->isAllDay()) {
+        if (!$item->isAllDay()) {
             $dtStart->setTimezone(CalendarUtils::getStartTimeZone($item));
             $dtEnd->setTimezone(CalendarUtils::getStartTimeZone($item));
         }
@@ -147,17 +147,16 @@ class VCalendar extends Model
             'SUMMARY' => $item->getTitle(),
         ];
 
-        if(!empty($item->getLocation())) {
+        if (!empty($item->getLocation())) {
             $result['LOCATION'] = $item->getLocation();
         }
 
-        if(!empty($item->getDescription())) {
+        if (!empty($item->getDescription())) {
             $result['DESCRIPTION'] = $item->getDescription();
         }
 
         if ($item instanceof RecurrentEventIF && RecurrenceHelper::isRecurrent($item)) {
-
-            if(RecurrenceHelper::isRecurrentRoot($item)) {
+            if (RecurrenceHelper::isRecurrentRoot($item)) {
                 $result['RRULE'] = $item->getRRule();
 
                 // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
@@ -167,13 +166,15 @@ class VCalendar extends Model
                         $result['EXDATE'][] = $exdate;
                     }
                 }
-            } else if(RecurrenceHelper::isRecurrentInstance($item)) {
-                $result['RECURRENCE-ID'] = $item->getRecurrenceId();
-            }
 
+                $recurrenceItems = $item->getRecurrenceInstances()->all();
+            } else if (RecurrenceHelper::isRecurrentInstance($item)) {
+                $recurrenceId = new DateTime($item->getRecurrenceId());
+                $recurrenceId->setTimezone(CalendarUtils::getStartTimeZone($item));
+                $result['RECURRENCE-ID'] = $recurrenceId;
+            }
         } else {
             $this->setLegacyRecurrentData($item, $result);
-
         }
 
         if ($item->getSequence() !== null) {
@@ -186,7 +187,18 @@ class VCalendar extends Model
         }
 
         $evt = $this->vcalendar->add('VEVENT', $result);
+
+        if ($isRecurrenceChild) {
+            return $this;
+        }
+
         $this->uids[] = $uid;
+
+        if (!empty($recurrenceItems)) {
+            foreach ($recurrenceItems as $recurrenceItem) {
+                $this->addVEvent($recurrenceItem, true);
+            }
+        }
 
         if ($item->isAllDay()) {
             if (isset($evt->DTSTART)) {
@@ -225,7 +237,7 @@ class VCalendar extends Model
 
         return $this;
     }
-    
+
     private function setLegacyRecurrentData($item, &$result)
     {
         if(!$item instanceof CalendarEventIFWrapper) {
