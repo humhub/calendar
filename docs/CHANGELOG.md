@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.2 (Unreleased)
+----------------------
+- Fix #291: Fix default event length on month mode
+
 1.2.1 (May 3, 2022)
 ----------------------
 - Fix #283: Increase Location field max. length to 128 characters
