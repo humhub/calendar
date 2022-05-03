@@ -240,7 +240,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             [['end_datetime'], 'validateEndTime'],
             [['recurrence_id'], 'validateRecurrenceId'],
             [['description', 'participant_info'], 'safe'],
-            ['location', 'string', 'max' => 64],
+            ['location', 'string', 'max' => 128],
         ];
     }
 

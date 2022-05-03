@@ -1,10 +1,12 @@
 Changelog
 =========
 
-Unreleased
+1.2.2 (Unreleased)
 ----------------------
-- Enh #269: Add Close Button to Calendar Entry Modal
+- Fix #291: Fix default event length on month mode
+- Fix #287: Export recurring calendar entries
 - Enh #272: Add minutely reminders
+
 
 1.2.0 (April 15, 2022)
 ----------------------
