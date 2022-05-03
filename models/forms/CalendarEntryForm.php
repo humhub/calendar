@@ -187,9 +187,8 @@ class CalendarEntryForm extends Model
         $endDT = CalendarUtils::getDateTime($end);
 
         if ($view === 'month') {
-            $currentHour = date('H');
-            $startDT->setTime($currentHour + 1, 0);
-            $endDT->setTime($currentHour + 2, 0);
+            $startDT->setTime(date('H') + 1, 0);
+            $endDT = (clone $startDT)->modify('+1 hour');
             $this->entry->all_day = 0;
         } else {
             $this->entry->all_day = (int) CalendarUtils::isAllDay($start, $endDT);

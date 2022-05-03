@@ -1,11 +1,16 @@
 Changelog
 =========
 
-1.2.1 (Unreleased)
+1.2.2 (Unreleased)
+----------------------
+- Fix #291: Fix default event length on month mode
+- Fix #287: Export recurring calendar entries
+
+1.2.1 (May 3, 2022)
 ----------------------
 - Fix #283: Increase Location field max. length to 128 characters
 - Enh #269: Add Close Button to Calendar Entry Modal
-- Fix #287: Export recurring calendar entries
+- Enh: Updated translations
 
 1.2.0 (April 15, 2022)
 ----------------------
