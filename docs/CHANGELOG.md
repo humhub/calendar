@@ -4,6 +4,7 @@ Changelog
 1.2.2 (Unreleased)
 ----------------------
 - Fix #291: Fix default event length on month mode
+- Fix #287: Export recurring calendar entries
 
 1.2.1 (May 3, 2022)
 ----------------------
