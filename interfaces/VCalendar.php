@@ -113,10 +113,11 @@ class VCalendar extends Model
     /**
      * @param CalendarEventIF $item
      * @param bool $isRecurrenceChild
+     * @param bool $initRecurrenceChildren
      * @return static
      * @throws Exception
      */
-    private function addVEvent(CalendarEventIF $item, bool $isRecurrenceChild = false)
+    private function addVEvent(CalendarEventIF $item, bool $isRecurrenceChild = false, bool $initRecurrenceChildren = true)
     {
         $dtend = clone $item->getEndDateTime();
 
@@ -167,7 +168,9 @@ class VCalendar extends Model
                     }
                 }
 
-                $recurrenceItems = $item->getRecurrenceInstances()->all();
+                if ($initRecurrenceChildren) {
+                    $recurrenceItems = $item->getRecurrenceInstances()->all();
+                }
             } else if (RecurrenceHelper::isRecurrentInstance($item)) {
                 $recurrenceId = new DateTime($item->getRecurrenceId());
                 $recurrenceId->setTimezone(CalendarUtils::getStartTimeZone($item));
@@ -345,17 +348,18 @@ class VCalendar extends Model
 
     /**
      * @param $items CalendarEventIF|CalendarEventIF[]|array
+     * @param $initRecurrenceChildren bool
      * @return VCalendar
      * @throws Exception
      */
-    public function add($items)
+    public function add($items, bool $initRecurrenceChildren = true)
     {
         if (!is_array($items)) {
             $items = [$items];
         }
 
         foreach ($items as $item) {
-            $this->addVEvent($item);
+            $this->addVEvent($item, false, $initRecurrenceChildren);
         }
 
         return $this;
