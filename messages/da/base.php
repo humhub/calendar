@@ -40,6 +40,7 @@ return [
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} har netop tilføjet dig til eventet "{contentTitle}" på siden {spaceName}, som starter {time}.',
     '<strong>Add</strong> profile calendar' => '',
     '<strong>Reminder</strong> settings' => '',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

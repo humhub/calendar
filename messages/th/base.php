@@ -53,6 +53,7 @@ return [
     'canceled' => 'ยกเลิก',
     '{displayName} Birthday' => '{displayName} วันเกิด',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} เพิ่งเพิ่มคุณในกิจกรรม "{contentTitle}" ในช่องว่าง {spaceName} เริ่มเมื่อ {time}',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

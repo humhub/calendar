@@ -53,6 +53,7 @@ return [
     'canceled' => 'ακυρώθηκε',
     '{displayName} Birthday' => 'Γενέθλια του χρήστη {displayName}',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => 'Ο/Η {displayName} μόλις σας πρόσθεσε στην εκδήλωση "{contentTitle}" του χώρου  {spaceName} ξεκινώντας από {time}.',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

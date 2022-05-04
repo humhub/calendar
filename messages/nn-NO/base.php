@@ -6,6 +6,7 @@ return [
     '<strong>Choose</strong> target calendar' => '',
     '<strong>Reminder</strong> settings' => '',
     'Add all space members to this event' => '',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Adds a calendar for private or public events to your profile and main menu.' => '',

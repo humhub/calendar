@@ -53,6 +53,7 @@ return [
     'canceled' => 'törölve',
     '{displayName} Birthday' => '{displayName} születésnapja',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} hozzáadott téged, a(z) "{contentTitle}" eseményhez a(z) {spaceName} közösségben, mely ekkor lesz megtartva: {time}.',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

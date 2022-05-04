@@ -35,6 +35,7 @@ return [
     '{displayName} Birthday' => '{displayName} Berulangtahun',
     '<strong>Reminder</strong> settings' => '',
     'Add all space members to this event' => '',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',
