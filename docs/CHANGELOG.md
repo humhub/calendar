@@ -5,6 +5,7 @@ Changelog
 ----------------------
 - Fix #291: Fix default event length on month mode
 - Fix #287: Export recurring calendar entries
+- Fix #294: Fix status on inviting of all space members
 
 1.2.1 (May 3, 2022)
 ----------------------

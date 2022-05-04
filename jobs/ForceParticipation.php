@@ -10,6 +10,7 @@ namespace humhub\modules\calendar\jobs;
 
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\notifications\ForceAdd;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\space\models\Membership;
@@ -24,6 +25,8 @@ class ForceParticipation extends ActiveJob
 
     public $originator_id;
 
+    public $status;
+
     /**
      * @throws \yii\base\InvalidConfigException
      * @throws \Throwable
@@ -33,22 +36,25 @@ class ForceParticipation extends ActiveJob
         /* @var $entry CalendarEntry */
         $entry = CalendarEntry::findOne(['id' => $this->entry_id]);
         $originator = User::findOne(['id' => $this->originator_id]);
+        $status = isset($this->status) ? $this->status : CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED;
 
-        if(!$entry || !$originator || !($entry->content->container instanceof Space)) {
-            throw new InvalidConfigException('Could not force calendar event participation due to inavlid config ('.$this->entry_id.', '.$this.$this->originator_id.')');
+        if(!$entry || !$originator || !($entry->content->container instanceof Space) ||
+            !CalendarEntryParticipation::isAllowedStatus($status)) {
+            throw new InvalidConfigException('Could not force calendar event participation due to invalid config ('.$this->entry_id.', '.$this->originator_id.', '.$status.')');
         }
 
         $subQuery = CalendarEntryParticipant::find()
             ->where(['calendar_entry_id' => $this->entry_id])
             ->andWhere('calendar_entry_participant.user_id = space_membership.user_id');
 
+        /* @var Membership[] $remainingMemberships */
         $remainingMemberships = Membership::find()
             ->where(['space_id' => $entry->content->container->id])
             ->andWhere(['NOT EXISTS', $subQuery])->all();
 
         $users = [];
         foreach ($remainingMemberships as $membership) {
-            $entry->participation->setParticipationStatus($membership->user);
+            $entry->participation->setParticipationStatus($membership->user, $status);
             $users[] = $membership->user;
         }
 
