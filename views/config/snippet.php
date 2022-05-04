@@ -9,8 +9,8 @@
 /* @var $model \humhub\modules\calendar\models\SnippetModuleSettings */
 
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
+use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
-use \yii\helpers\Html;
 ?>
 
 <div class="panel panel-default">
@@ -44,7 +44,7 @@ use \yii\helpers\Html;
                 'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.'));
         ?>
 
-        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
+        <?= Button::save()->submit() ?>
         <?php ActiveForm::end(); ?>
     </div>
 </div>
