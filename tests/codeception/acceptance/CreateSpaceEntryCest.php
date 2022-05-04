@@ -125,9 +125,11 @@ class CreateSpaceEntryCest
         $I->waitForText($memberCount.' Invited', null,'#globalModal');
 
         $I->amUser1(true);
+        $I->waitForText('You are invited, please select your role:');
         $I->click('Attend');
 
         $I->amAdmin(true);
+        $I->waitForText('You are invited, please select your role:');
 
         $I->wantToTest('closing the event');
         $I->jsClick('[data-action-click="toggleClose"]');
