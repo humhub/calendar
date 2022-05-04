@@ -91,7 +91,7 @@ class CreateSpaceEntryCest
 
         $I->expect('All space members to be attending');
         $I->click('New Test Event');
-        $I->waitForText('2 Attending', null,'#globalModal');
+        $I->waitForText('2 Invited', null,'#globalModal');
         $I->amOnSpace(1, '/calendar/view/index');
 
         $I->wantToTest('Adding a new space member and using then using the add all members again');
@@ -122,10 +122,14 @@ class CreateSpaceEntryCest
 
         $memberCount = Membership::getSpaceMembersQuery(Space::findOne(['id' => 1]))->count();
 
-        $I->waitForText($memberCount.' Attending', null,'#globalModal');
+        $I->waitForText($memberCount.' Invited', null,'#globalModal');
+
+        $I->amUser1(true);
+        $I->click('Attend');
+
+        $I->amAdmin(true);
 
         $I->wantToTest('closing the event');
-
         $I->jsClick('[data-action-click="toggleClose"]');
         $I->wait(5);
 
