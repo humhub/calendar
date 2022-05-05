@@ -8,6 +8,7 @@
 namespace humhub\modules\calendar\models\forms;
 
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\notifications\Invited;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User;
@@ -130,7 +131,7 @@ class CalendarEntryParticipationForm extends Model
             $this->addParticipants();
 
             if ($this->forceJoin) {
-                $this->entry->participation->addAllUsers();
+                $this->entry->participation->addAllUsers(CalendarEntryParticipation::PARTICIPATION_STATUS_INVITED);
             }
 
             return true;

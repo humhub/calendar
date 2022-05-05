@@ -41,6 +41,7 @@ return [
     '{displayName} Birthday' => '{displayName} Bursdag',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} la deg til arrangementet «{contentTitle}» i gruppen {spaceName} som starter {time}.',
     '<strong>Reminder</strong> settings' => '',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

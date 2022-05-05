@@ -53,6 +53,7 @@ return [
     'canceled' => 'otkazano',
     '{displayName} Birthday' => '{displayName} Rođendane',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} vas je upravo dodao na događaj "{contentTitle}" u prostoru {spaceName} počevši od {time}.',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

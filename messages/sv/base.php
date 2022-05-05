@@ -53,6 +53,7 @@ return [
     'canceled' => 'Inställd',
     '{displayName} Birthday' => '{displayName} Födelsedag',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} lade precis till dig till aktiviteten "{contentTitle}" i forumet {spaceName} startar {time}.',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

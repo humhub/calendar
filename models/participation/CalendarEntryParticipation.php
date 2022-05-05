@@ -195,11 +195,17 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
 
     /**
      * Adds all space members to this event
+     *
+     * @param int|null $status NUUL - Default status - static::PARTICIPATION_STATUS_ACCEPTED
      */
-    public function addAllUsers()
+    public function addAllUsers($status = null)
     {
-        if($this->entry->participation_mode == static::PARTICIPATION_MODE_ALL && $this->canAddAll()) {
-            Yii::$app->queue->push(new ForceParticipation(['entry_id' => $this->entry->id, 'originator_id' => Yii::$app->user->getId()]));
+        if ($this->entry->participation_mode == static::PARTICIPATION_MODE_ALL && $this->canAddAll()) {
+            Yii::$app->queue->push(new ForceParticipation([
+                'entry_id' => $this->entry->id,
+                'originator_id' => Yii::$app->user->getId(),
+                'status' => $status
+            ]));
         }
     }
 
@@ -294,6 +300,17 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             :  [static::PARTICIPATION_STATUS_ACCEPTED];
 
         return in_array($this->getParticipationStatus($user), $states);
+    }
+
+    public static function isAllowedStatus(int $status): bool
+    {
+        return in_array($status, [
+            static::PARTICIPATION_STATUS_NONE,
+            static::PARTICIPATION_STATUS_DECLINED,
+            static::PARTICIPATION_STATUS_MAYBE,
+            static::PARTICIPATION_STATUS_ACCEPTED,
+            static::PARTICIPATION_STATUS_INVITED
+        ]);
     }
 
     public function isInvited(User $user = null)

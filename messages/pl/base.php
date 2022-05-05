@@ -53,6 +53,7 @@ return [
     'canceled' => 'anulowano',
     '{displayName} Birthday' => 'Urodziny {displayName}',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} właśnie dodał(a) Cię do wydarzenia "{contentTitle} w strefie {spaceName}, które startuje o {time}',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

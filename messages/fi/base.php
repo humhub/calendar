@@ -49,6 +49,7 @@ return [
     '{displayName} Birthday' => '{displayName} Syntymäpäivä',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} lisäsi sinut tapahtumaan "{contentTitle} {time}" sivulla {spaceName}',
     '<strong>Reminder</strong> settings' => '',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

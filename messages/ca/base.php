@@ -26,6 +26,7 @@ return [
     '<strong>Add</strong> profile calendar' => '',
     '<strong>Choose</strong> target calendar' => '',
     '<strong>Reminder</strong> settings' => '',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

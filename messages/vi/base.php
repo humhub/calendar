@@ -51,6 +51,7 @@ return [
     'canceled' => 'đã hủy',
     '{displayName} Birthday' => 'Sinh nhật {displayName}',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} vừa mới thêm bạn vào sự kiện "{contentTitle}" trong diễn đàn {spaceName} bắt đầu từ {time}.',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',

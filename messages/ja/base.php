@@ -53,6 +53,7 @@ return [
     'canceled' => 'キャンセル済み',
     '{displayName} Birthday' => '{displayName}さんの誕生日',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => 'たった今 {displayName} さんはあなたを{time}に始まる、スペース"{spaceName}"のイベント"{contentTitle}"に追加しました .',
+    'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',
