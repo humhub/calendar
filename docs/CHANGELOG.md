@@ -21,6 +21,7 @@ Changelog
 - Enh: Use default timezone instead of deprecated server timezone
 - Fix #241: Fix filter "I'm attending" for recurrence events
 - Fix #276: Fix saving time when system date is transition to daylight
+- Enh #282: Allow update content topics on REST API
 
 1.1.11 (February 23, 2022)
 --------------------------
