@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.2.2 (Unreleased)
-----------------------
+1.2.2 (May 6, 2022)
+-------------------
 - Fix #291: Fix default event length on month mode
 - Fix #287: Export recurring calendar entries
 - Enh #272: Add minutely reminders
