@@ -652,7 +652,7 @@ definitions:
                 format: int64
                 example: 3
         content:
-          $ref: "https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/content.yaml#/definitions/ContentForm"
+          $ref: "https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/content.yaml#/definitions/Content"
 
 
   CalendarEntryPutParams:
@@ -745,4 +745,4 @@ definitions:
                 format: int64
                 example: 3
         content:
-          $ref: "https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/content.yaml#/definitions/ContentForm"
+          $ref: "https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/content.yaml#/definitions/Content"
