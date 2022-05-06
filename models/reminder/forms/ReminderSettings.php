@@ -133,6 +133,7 @@ class ReminderSettings extends Model
     public static function getUnitSelection()
     {
         return [
+            CalendarReminder::UNIT_MINUTE => Yii::t('CalendarModule.reminder', 'Minute'),
             CalendarReminder::UNIT_HOUR => Yii::t('CalendarModule.reminder', 'Hour'),
             CalendarReminder::UNIT_DAY => Yii::t('CalendarModule.reminder', 'Day'),
             CalendarReminder::UNIT_WEEK => Yii::t('CalendarModule.reminder', 'Week'),
