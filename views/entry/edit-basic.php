@@ -33,7 +33,7 @@ use yii\jui\DatePicker;
                                     {input}
                                 </div>
                                 {error}{hint}'
-        ])->textInput(['placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title'), 'maxlength' => 200])->label(false) ?>
+        ])->textInput(['placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title')])->label(false) ?>
     </div>
 
     <?php Yii::$app->formatter->timeZone = $calendarEntryForm->timeZone ?>
@@ -58,7 +58,7 @@ use yii\jui\DatePicker;
 
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($calendarEntryForm->entry, 'location')->textInput(['maxlength' => 64]) ?>
+            <?= $form->field($calendarEntryForm->entry, 'location')->textInput() ?>
         </div>
         <div class="col-md-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
             <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
