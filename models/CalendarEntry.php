@@ -135,6 +135,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public $participation;
 
     /**
+     * @var bool Cached of recurring enabled
+     */
+    private $_recurring;
+
+    /**
      * @var bool Cached of reminder enabled
      */
     private $_reminder;
@@ -775,7 +780,14 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
 
     public function getRecurring(): bool
     {
-        return !empty($this->rrule);
+        if (!isset($this->_recurring)) {
+            $recurrenceRoot = $this->getRecurrenceRoot();
+            $entry = $recurrenceRoot ?? $this;
+
+            $this->_recurring = !empty($entry->rrule);
+        }
+
+        return $this->_recurring;
     }
 
     public function isRecurringEnabled(): bool
@@ -796,9 +808,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public function getReminder(): bool
     {
         if (!isset($this->_reminder)) {
-            $this->_reminder = empty($this->content->id)
+            $recurrenceRoot = $this->getRecurrenceRoot();
+            $entry = $recurrenceRoot ?? $this;
+
+            $this->_reminder = empty($entry->content->id)
                 ? false
-                : CalendarReminder::find()->where(['content_id' => $this->content->id])->exists();
+                : CalendarReminder::find()->where(['content_id' => $entry->content->id])->exists();
         }
 
         return $this->_reminder;
@@ -812,6 +827,15 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public function getRecurrenceRootId()
     {
         return $this->parent_event_id;
+    }
+
+    public function getRecurrenceRoot(): ?self
+    {
+        if (empty($this->parent_event_id)) {
+            return null;
+        }
+
+        return self::findOne(['id' => $this->parent_event_id]);
     }
 
     /**
