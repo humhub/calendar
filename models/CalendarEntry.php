@@ -804,9 +804,13 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         if (!isset($this->_reminder)) {
             $entry = $this->recurrenceRoot ?? $this;
-            $this->_reminder = empty($entry->content->id)
-                ? false
-                : CalendarReminder::find()->where(['content_id' => $entry->content->id])->exists();
+            if (empty($entry->content->id)) {
+                $this->_reminder = false;
+            } else {
+                $reminder = CalendarReminder::findOne(['content_id' => $entry->content->id]);
+                // Default or Custom reminder is selected for this Calendar Entry
+                $this->_reminder = empty($reminder) || !$reminder->isDisabled();
+            }
         }
 
         return $this->_reminder;

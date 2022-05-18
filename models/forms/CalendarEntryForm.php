@@ -368,9 +368,7 @@ class CalendarEntryForm extends Model
         // Translate from 01.01.20 -> db date format
         $this->setFormDates($startDT, $endDt);
 
-        if($this->entry->isNewRecord || $this->showReminderTab()) {
-            $result |= $this->reminderSettings->load($data);
-        }
+        $result |= $this->reminderSettings->load($data);
 
         $result |= $this->recurrenceForm->load($data);
 
@@ -472,9 +470,11 @@ class CalendarEntryForm extends Model
                 $this->entry->participation->sendUpdateNotification();
             }
 
-            $result = $this->reminder
-                ? $this->reminderSettings->save()
-                : $this->reminderSettings->clear();
+            if (!$this->reminder) {
+                $this->reminderSettings->reminderType = ReminderSettings::REMINDER_TYPE_NONE;
+                $this->reminderSettings->reminders = [];
+            }
+            $result = $this->reminderSettings->save();
 
             if (!$this->recurring) {
                 $this->recurrenceForm->frequency = RecurrenceFormModel::FREQUENCY_NEVER;
