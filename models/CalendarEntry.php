@@ -61,6 +61,7 @@ use humhub\modules\user\models\User;
  * @property string $location
  * @property-read bool $recurring
  * @property-read bool $reminder
+ * @property-read CalendarEntry|null $recurrenceRoot
  */
 class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, FullCalendarEventIF,
     CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
@@ -135,9 +136,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public $participation;
 
     /**
-     * @var bool Cached of recurring enabled
+     * @var self|null|false Cached recurrence root event
      */
-    private $_recurring;
+    private $_recurrenceRoot = false;
 
     /**
      * @var bool Cached of reminder enabled
@@ -780,14 +781,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
 
     public function getRecurring(): bool
     {
-        if (!isset($this->_recurring)) {
-            $recurrenceRoot = $this->getRecurrenceRoot();
-            $entry = $recurrenceRoot ?? $this;
-
-            $this->_recurring = !empty($entry->rrule);
-        }
-
-        return $this->_recurring;
+        $entry = $this->recurrenceRoot ?? $this;
+        return !empty($entry->rrule);
     }
 
     public function isRecurringEnabled(): bool
@@ -808,9 +803,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public function getReminder(): bool
     {
         if (!isset($this->_reminder)) {
-            $recurrenceRoot = $this->getRecurrenceRoot();
-            $entry = $recurrenceRoot ?? $this;
-
+            $entry = $this->recurrenceRoot ?? $this;
             $this->_reminder = empty($entry->content->id)
                 ? false
                 : CalendarReminder::find()->where(['content_id' => $entry->content->id])->exists();
@@ -831,11 +824,13 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
 
     public function getRecurrenceRoot(): ?self
     {
-        if (empty($this->parent_event_id)) {
-            return null;
+        if ($this->_recurrenceRoot === false) {
+            $this->_recurrenceRoot = empty($this->parent_event_id)
+                ? null
+                : self::findOne(['id' => $this->parent_event_id]);
         }
 
-        return self::findOne(['id' => $this->parent_event_id]);
+        return $this->_recurrenceRoot;
     }
 
     /**
