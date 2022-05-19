@@ -101,8 +101,10 @@ class CalendarReminder extends ActiveRecord
     const UNIT_HOUR = 1;
     const UNIT_DAY = 2;
     const UNIT_WEEK = 3;
+    const UNIT_MINUTE = 4;
 
     const MAX_VALUES = [
+        self::UNIT_MINUTE => 60,
         self::UNIT_HOUR => 24,
         self::UNIT_DAY => 31,
         self::UNIT_WEEK => 4,
@@ -145,7 +147,7 @@ class CalendarReminder extends ActiveRecord
     public function rules()
     {
         $rules = [
-            [['unit'], 'in', 'range' => [static::UNIT_HOUR, static::UNIT_DAY, static::UNIT_WEEK]],
+            [['unit'], 'in', 'range' => [static::UNIT_MINUTE, static::UNIT_HOUR, static::UNIT_DAY, static::UNIT_WEEK]],
             [['value'], 'number', 'min' => 1],
             [['value'], 'validateValue']
         ];
@@ -185,6 +187,10 @@ class CalendarReminder extends ActiveRecord
         }
         
         switch ($this->unit) {
+            case static::UNIT_MINUTE:
+                $this->unit = static::UNIT_HOUR;
+                $this->value = round(((int) $this->value) / 60);
+                break;
             case static::UNIT_HOUR:
                 $this->unit = static::UNIT_DAY;
                 $this->value = round(((int) $this->value) / 24);
@@ -245,15 +251,17 @@ class CalendarReminder extends ActiveRecord
 
     public static function getMaxReminderDaysInFuture()
     {
+        $minutelyReminder = static::getMaxReminder(static::UNIT_MINUTE);
         $hourlyReminder = static::getMaxReminder(static::UNIT_HOUR);
         $dailyReminder = static::getMaxReminder(static::UNIT_DAY);
         $weeklyReminder = static::getMaxReminder(static::UNIT_WEEK);
 
+        $minute = $minutelyReminder ? ceil($minutelyReminder->value / 60) : 0;
         $hour = $hourlyReminder ? ceil($hourlyReminder->value / 24) : 0;
         $day = $dailyReminder ? $dailyReminder->value : 0;
         $week = $weeklyReminder ? $weeklyReminder->value * 7 : 0;
 
-        return max($hour, $day, $week);
+        return max($minute, $hour, $day, $week);
     }
 
     /**
@@ -566,6 +574,9 @@ class CalendarReminder extends ActiveRecord
         }
 
         switch ($this->unit) {
+            case static::UNIT_MINUTE:
+                $modifyUnit = 'minutes';
+                break;
             case static::UNIT_HOUR:
                 $modifyUnit = 'hours';
                 break;

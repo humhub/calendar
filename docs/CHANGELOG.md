@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.2.2 (Unreleased)
-----------------------
+1.2.2 (May 6, 2022)
+-------------------
 - Fix #291: Fix default event length on month mode
 - Fix #287: Export recurring calendar entries
+- Enh #272: Add minutely reminders
 - Fix #294: Fix status on inviting of all space members
 - Enh #285: Full calendar: in the global settings, add the possibility to change the default view
 
@@ -12,7 +13,7 @@ Changelog
 ----------------------
 - Fix #283: Increase Location field max. length to 128 characters
 - Enh #269: Add Close Button to Calendar Entry Modal
-- Enh: Updated translations
+- Enh: Updated translations 
 
 1.2.0 (April 15, 2022)
 ----------------------
@@ -22,6 +23,7 @@ Changelog
 - Enh: Use default timezone instead of deprecated server timezone
 - Fix #241: Fix filter "I'm attending" for recurrence events
 - Fix #276: Fix saving time when system date is transition to daylight
+- Enh #282: Allow update content topics on REST API
 
 1.1.11 (February 23, 2022)
 --------------------------
