@@ -297,16 +297,10 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
         if (!empty($followingInstances)) {
             $lastInstance = end($followingInstances);
 
-            /**
-             * If editMode = all -> $original is the root node and we want to sync all existing recurrence instances
-             * If editMode = following -> $original is an old recurrent instance which itself should be excluded from sync
-             */
-            $searchStartDate = $isSplit ?  $original->getStartDateTime() : $original->getEndDateTime();
-
             // If not recurrent, we delete all following instances
             $remainingRecurrenceIds = !RecurrenceHelper::isRecurrent($this->event)
                 ? []
-                : RecurrenceHelper::getRecurrenceIds($this->event, $searchStartDate, $lastInstance->getEndDateTime());
+                : RecurrenceHelper::getRecurrenceIds($this->event, $original->getStartDateTime(), $lastInstance->getEndDateTime());
 
             foreach ($followingInstances as $followingInstance) {
                 if($followingInstance->getId() === $original->getId()) {
