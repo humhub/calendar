@@ -57,10 +57,8 @@ humhub.module('calendar', function (module, require, $) {
             var mode = evt.$trigger.data('editMode');
 
             if (mode == Form.RECUR_EDIT_MODE_THIS) {
-                $('.tab-recurrence').hide();
                 $('.field-calendarentryform-is_public').hide();
             } else {
-                $('.tab-recurrence').show();
                 $('.field-calendarentryform-is_public').show();
             }
 

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.3 (Unreleased)
+-------------------
+- Fix #302: Fix visibility of tabs "Reminder" and "Recurring" for single recurrence event
+
 1.2.2 (May 6, 2022)
 -------------------
 - Fix #291: Fix default event length on month mode
