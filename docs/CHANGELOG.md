@@ -15,6 +15,7 @@ Changelog
 - Fix #287: Export recurring calendar entries
 - Enh #272: Add minutely reminders
 - Fix #294: Fix status on inviting of all space members
+- Enh #285: Full calendar: in the global settings, add the possibility to change the default view
 
 1.2.1 (May 3, 2022)
 ----------------------
