@@ -430,7 +430,7 @@ class CalendarEntryForm extends Model
 
     public function showReminderTab(): bool
     {
-        return $this->reminder && $this->isFutureEvent();
+        return ($this->reminder && $this->isFutureEvent()) || $this->entry->reminder;
     }
 
     public function showRecurrenceTab(): bool
