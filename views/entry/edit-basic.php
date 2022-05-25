@@ -76,7 +76,7 @@ use yii\jui\DatePicker;
             <?= $form->field($calendarEntryForm, 'recurring')->checkbox(['data-action-change' => 'toggleRecurring']) ?>
         </div>
         <?php endif; ?>
-        <?php if ($calendarEntryForm->isFutureEvent()) : ?>
+        <?php if ($calendarEntryForm->recurring || $calendarEntryForm->isFutureEvent()) : ?>
         <div class="col-sm-4">
             <?= $form->field($calendarEntryForm, 'reminder')->checkbox(['data-action-change' => 'toggleReminder']) ?>
         </div>

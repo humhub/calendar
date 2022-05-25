@@ -3,11 +3,9 @@ Changelog
 
 1.2.3 (Unreleased)
 -------------------
-<<<<<<< fix/306-first-recurrence-event-disappears
 - Fix #306: Fix disappearing of first event of recurring series
-=======
 - Fix #302: Fix visibility of tabs "Reminder" and "Recurring" for single recurrence event
->>>>>>> master
+- Fix #300: Fix default reminders for new creating calendar entry
 
 1.2.2 (May 6, 2022)
 -------------------
