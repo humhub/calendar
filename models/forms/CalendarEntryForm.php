@@ -155,8 +155,9 @@ class CalendarEntryForm extends Model
             $this->entry->setDefaults();
         }
 
-        $this->reminder = $this->entry->reminder;
         $this->reminderSettings = new ReminderSettings(['entry' => $this->entry]);
+        $this->reminder = $this->entry->isNewRecord && $this->reminderSettings->hasDefaults() ? true : $this->entry->reminder;
+
         $this->recurring = $this->entry->recurring;
         $this->recurrenceForm = new RecurrenceFormModel(['entry' => $this->entry]);
     }
@@ -429,12 +430,12 @@ class CalendarEntryForm extends Model
 
     public function showReminderTab(): bool
     {
-        return ($this->entry->reminder && $this->isFutureEvent());
+        return $this->reminder && $this->isFutureEvent();
     }
 
     public function showRecurrenceTab(): bool
     {
-        return ($this->entry->recurring && Module::isRecurrenceActive());
+        return $this->recurring && Module::isRecurrenceActive();
     }
 
     /**
