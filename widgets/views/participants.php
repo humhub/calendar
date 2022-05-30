@@ -19,6 +19,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
     <?php if ($countAttending > 0) : ?>
         <?= ModalButton::instance($title)
             ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED))
+            ->action('calendar.editModal')
             ->link()?>
     <?php else : ?>
         <?= $title; ?>
@@ -30,6 +31,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
         <?php if ($countMaybe > 0) : ?>
             <?= ModalButton::instance($title)
                 ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE))
+                ->action('calendar.editModal')
                 ->link() ?>
         <?php else : ?>
             <?= $title; ?>
@@ -42,6 +44,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
         <?php if ($countDeclined > 0) : ?>
             <?= ModalButton::instance($title)
                 ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED))
+                ->action('calendar.editModal')
                 ->link() ?>
         <?php else : ?>
             <?= $title; ?>
@@ -52,6 +55,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
     <?php if ($countInvited > 0) : ?>
         <?= ModalButton::instance($title)
             ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED))
+            ->action('calendar.editModal')
             ->link() ?>
     <?php else : ?>
         <?= $title; ?>
