@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.2.3 (Unreleased)
--------------------
+1.2.3 (May 30, 2022)
+--------------------
 - Fix #306: Fix disappearing of first event of recurring series
 - Fix #302: Fix visibility of tabs "Reminder" and "Recurring" for single recurrence event
 - Fix #300: Fix default reminders for new creating calendar entry
