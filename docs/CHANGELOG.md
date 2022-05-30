@@ -6,6 +6,7 @@ Changelog
 - Fix #306: Fix disappearing of first event of recurring series
 - Fix #302: Fix visibility of tabs "Reminder" and "Recurring" for single recurrence event
 - Fix #300: Fix default reminders for new creating calendar entry
+- Fix #313: Reload stream entry after save "Participants" modal
 
 1.2.2 (May 6, 2022)
 -------------------
