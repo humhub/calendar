@@ -24,8 +24,6 @@ use yii\helpers\Html;
 <?php if ($form instanceof ActiveForm) : ?>
     <?= ParticipantAddForm::widget(['form' => $form, 'model' => $model]) ?>
 
-    <?= Html::tag('hr', '', ['style' => 'margin:10px 18px']) ?>
-
     <?= ParticipantFilter::widget() ?>
 
     <p class="calendar-entry-participants-count"><?= $pagination->totalCount

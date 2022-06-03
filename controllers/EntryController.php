@@ -273,17 +273,6 @@ class EntryController extends ContentContainerController
         ]);
     }
 
-    public function actionAddParticipantsForm($id)
-    {
-        $entry = $this->getCalendarEntry($id);
-
-        if (!$entry->content->canEdit()) {
-            throw new HttpException(403);
-        }
-
-        return ParticipantAddForm::widget(['entry' => $entry]);
-    }
-
     public function actionAddParticipants()
     {
         $this->forcePostRequest();
