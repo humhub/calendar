@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.4 (Unreleased)
+--------------------
+- Fix #315: Fix participants list settings visibility
+
 1.2.3 (May 30, 2022)
 --------------------
 - Fix #306: Fix disappearing of first event of recurring series
