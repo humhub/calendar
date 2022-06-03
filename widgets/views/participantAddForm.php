@@ -41,3 +41,5 @@ use yii\helpers\Html;
         <?= $form->field($model, 'forceJoin')->checkbox() ?>
     <?php endif; ?>
 <?= Html::endTag('div') ?>
+
+<?= Html::tag('hr', '', ['style' => 'margin:10px 18px']) ?>

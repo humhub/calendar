@@ -56,11 +56,11 @@ class WallEntry extends WallStreamModuleEntryWidget
         $result = parent::getControlsMenuEntries();
 
         // Moving currently not supported for recurrent events
-        if(RecurrenceHelper::isRecurrent($this->model)) {
+        if (RecurrenceHelper::isRecurrent($this->model)) {
             $this->renderOptions->disableControlsEntryMove();
         }
 
-        if($this->model->content->canEdit()) {
+        if ($this->model->content->canEdit()) {
             $result[] = [CloseLink::class, ['entry' => $this->model], ['sortOrder' => 210]];
 
             // We need special edit/delete behavior in full calendar view
@@ -69,9 +69,9 @@ class WallEntry extends WallStreamModuleEntryWidget
                 $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
                 $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
             }
-
-            $result[] = [ParticipantsLink::class, ['entry' => $this->model], ['sortOrder' => 110]];
         }
+
+        $result[] = [ParticipantsLink::class, ['entry' => $this->model], ['sortOrder' => 110]];
 
         return $result;
     }

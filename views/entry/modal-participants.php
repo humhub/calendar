@@ -47,6 +47,7 @@ $visibleStyle = [];
                         'view' => 'edit-participation',
                         'linkOptions' => ['class' => 'tab-participation'],
                         'active' => (empty($activeTab) || $activeTab === 'settings'),
+                        'visible' => $calendarEntryParticipationForm->entry->content->canEdit()
                     ],
                     [
                         'label' => Yii::t('CalendarModule.views_entry_edit', 'Participants'),
@@ -75,9 +76,11 @@ $visibleStyle = [];
                     <?= ModalButton::cancel(Yii::t('CalendarModule.views_entry_edit', 'Close'))
                             ->id('calendar-entry-participation-button-close') ?>
                 <?php endif; ?>
-                <?= ModalButton::submitModal($saveUrl)
+                <?php if ($calendarEntryParticipationForm->entry->content->canEdit()) : ?>
+                    <?= ModalButton::submitModal($saveUrl)
                         ->id('calendar-entry-participation-button-save')
                         ->options(!$isNewRecord || !$isParticipationEnabled ? $visibleStyle : $hiddenStyle) ?>
+                <?php endif; ?>
             </div>
         <?= Html::endTag('div') ?>
     <?php ActiveForm::end() ?>

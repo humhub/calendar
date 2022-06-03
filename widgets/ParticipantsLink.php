@@ -25,7 +25,9 @@ class ParticipantsLink extends WallEntryControlLink
         $this->icon = 'fa-users';
         $this->options = [
             'data-action-click' => 'editModal',
-            'data-action-url' => Url::toEditEntryParticipation($this->entry)
+            'data-action-url' => $this->entry->content->canEdit()
+                ? Url::toEditEntryParticipation($this->entry)
+                : Url::toParticipationUserList($this->entry)
         ];
 
         parent::init();
