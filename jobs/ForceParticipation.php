@@ -50,6 +50,7 @@ class ForceParticipation extends ActiveJob
         /* @var Membership[] $remainingMemberships */
         $remainingMemberships = Membership::find()
             ->where(['space_id' => $entry->content->container->id])
+            ->andWhere(['status' => Membership::STATUS_MEMBER])
             ->andWhere(['NOT EXISTS', $subQuery])->all();
 
         $users = [];
