@@ -4,6 +4,7 @@ Changelog
 1.2.4 (Unreleased)
 --------------------
 - Fix #315: Fix participants list settings visibility
+- Fix #316: Fix invitation of space members
 
 1.2.3 (May 30, 2022)
 --------------------
