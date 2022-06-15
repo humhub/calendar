@@ -23,6 +23,7 @@ class CalendarFilterBar extends Widget
 
     public $showFilter = true;
     public $showSelectors = true;
+    public $showTypes = true;
 
     public $canConfigure = false;
 
@@ -37,7 +38,8 @@ class CalendarFilterBar extends Widget
             'canConfigure' => $this->canConfigure,
             'selectors' => $this->selectors,
             'showFilters' => $this->showFilter,
-            'showSelectors' => $this->showSelectors
+            'showSelectors' => $this->showSelectors,
+            'showTypes' => $this->showTypes
         ]);
     }
 }

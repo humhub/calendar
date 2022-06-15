@@ -27,7 +27,8 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                     start: moment(info.start.valueOf()).format('YYYY-MM-DD'),
                     end:  moment(info.end.valueOf()).format('YYYY-MM-DD'),
                     selectors: that.options.selectors,
-                    filters: that.options.filters
+                    filters: that.options.filters,
+                    types: that.options.types
                 },
                 success: function (response) {
                     successCallback(response);
@@ -61,12 +62,17 @@ humhub.module('calendar.Calendar', function (module, require, $) {
 
             that.updateCalendarFilters(true);
         });
+
+        $('select[name="filterType[]"]').on('change.select2', function () {
+            that.updateCalendarFilters(true);
+        });
     };
 
     Calendar.prototype.updateCalendarFilters = function (reload) {
         var that = this;
         this.options.selectors = [];
         this.options.filters = [];
+        this.options.types = [];
 
         $('.selectorCheckbox').each(function () {
             if ($(this).prop('checked')) {
@@ -79,6 +85,8 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 that.options.filters.push($(this).val());
             }
         });
+
+        that.options.types = $('select[name="filterType[]"]').val();
 
         this.initFullCalendar(reload);
     };

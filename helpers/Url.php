@@ -255,4 +255,11 @@ class Url extends BaseUrl
     {
         return static::to(['/calendar/global/update-monthly-recurrence-selection']);
     }
+
+    public static function toFindFilterTypes(ContentContainerActiveRecord $container = null)
+    {
+        return $container
+            ? $container->createUrl('/calendar/view/find-filter-types')
+            : static::to(['/calendar/global/find-filter-types']);
+    }
 }

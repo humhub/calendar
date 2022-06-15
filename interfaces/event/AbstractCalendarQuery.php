@@ -9,17 +9,14 @@
 namespace humhub\modules\calendar\interfaces\event;
 
 use DateInterval;
+use DateTime;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
-use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use Yii;
-use DateTime;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ActiveQueryContent;
+use Yii;
 use yii\base\Component;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -134,6 +131,11 @@ abstract class AbstractCalendarQuery extends Component
     protected $_filters = [];
 
     /**
+     * @var array Activated query types
+     */
+    protected $_types = [];
+
+    /**
      * @var ActiveQuery the actual query instance
      */
     protected $_query;
@@ -219,11 +221,12 @@ abstract class AbstractCalendarQuery extends Component
      * @return array|ActiveRecord[]
      * @throws \Throwable
      */
-    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true)
+    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true, $types = [])
     {
         $query = static::find(null, $expand)
             ->container($container)
             ->filter($filters)
+            ->types($types)
             ->limit($limit);
 
         if ($end) {
@@ -371,6 +374,18 @@ abstract class AbstractCalendarQuery extends Component
     public function filter($filters = [])
     {
         $this->_filters = $filters;
+        return $this;
+    }
+
+    /**
+     * Sets the types array.
+     *
+     * @param array $types
+     * @return $this
+     */
+    public function types($types = [])
+    {
+        $this->_types = $types;
         return $this;
     }
 
@@ -739,6 +754,7 @@ abstract class AbstractCalendarQuery extends Component
         $this->setUpRelations();
         $this->setupCriteria();
         $this->setupFilters();
+        $this->setupTypes();
         $this->_built = true;
     }
 
@@ -995,6 +1011,24 @@ abstract class AbstractCalendarQuery extends Component
                 $this->_query->joinWith('content');
             }
             $this->_query->andWhere('content.archived = 0');
+        }
+    }
+
+    /**
+     * Sets up the types contained in the $_types array.
+     */
+    protected function setupTypes()
+    {
+        if (empty($this->_types) || !is_array($this->_types)) {
+            return;
+        }
+
+        if ($this->_query instanceof ActiveQueryContent) {
+            if(!$this->isJoinedWith('content')) {
+                $this->_query->joinWith('content');
+            }
+            $this->_query->innerJoin('content_tag_relation', 'content_tag_relation.content_id = content.id');
+            $this->_query->andWhere(['IN', 'content_tag_relation.tag_id', $this->_types]);
         }
     }
 
