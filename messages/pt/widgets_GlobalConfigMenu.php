@@ -2,6 +2,6 @@
 return array (
   'Calendars' => 'Calendários',
   'Defaults' => 'Padrões',
-  'Event Types' => 'Tipos de evento',
+  'Event Types' => 'Tipos de Evento',
   'Snippet' => 'Excerto',
 );

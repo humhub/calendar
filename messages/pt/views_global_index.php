@@ -5,7 +5,7 @@ return array (
   'Followed spaces' => 'Espaços seguidos',
   'Followed users' => 'Pessoas seguidas',
   'I\'m attending' => 'Vou',
-  'My events' => 'Os meus eventos',
-  'My profile' => 'O meu perfil',
-  'My spaces' => 'Os meus espaços',
+  'My events' => 'Meus eventos',
+  'My profile' => 'Meu perfil',
+  'My spaces' => 'Meus espaços',
 );
