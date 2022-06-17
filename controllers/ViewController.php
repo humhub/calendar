@@ -2,15 +2,15 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
-use humhub\modules\calendar\widgets\WallEntry;
-use Yii;
-use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use DateTime;
+use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
+use humhub\modules\calendar\widgets\FilterType;
+use humhub\modules\calendar\widgets\WallEntry;
+use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentContainerController;
+use Yii;
 use yii\base\InvalidConfigException;
 
 /**
@@ -70,14 +70,20 @@ class ViewController extends ContentContainerController
         $result = [];
 
         $filters = Yii::$app->request->get('filters', []);
+        $types = Yii::$app->request->get('types', []);
 
         // Don't expand recurrence event on filter by "I'm attending" because this option is selected per each date separately
         $expand = !in_array(AbstractCalendarQuery::FILTER_PARTICIPATE, $filters);
 
-        foreach ($this->calendarService->getCalendarItems( new DateTime($start), new DateTime($end), $filters, $this->contentContainer, null, $expand) as $entry) {
+        foreach ($this->calendarService->getCalendarItems( new DateTime($start), new DateTime($end), $filters, $this->contentContainer, null, $expand, $types) as $entry) {
             $result[] = FullCalendar::getFullCalendarArray($entry);
         }
 
         return $this->asJson($result);
+    }
+
+    public function actionFindFilterTypes($keyword)
+    {
+        return $this->asJson(FilterType::searchByContainer($keyword, $this->contentContainer));
     }
 }

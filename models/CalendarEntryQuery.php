@@ -1,7 +1,6 @@
 <?php
 namespace humhub\modules\calendar\models;
 
-use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use DateTime;
@@ -67,10 +66,10 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
      */
     private $praticipantJoined = false;
 
-    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true)
+    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true, $types = [])
     {
-        /* @var $event CalendarEntry */
-        $events = parent::findForFilter($start, $end, $container, $filters, $limit, $expand);
+        /* @var $events CalendarEntry[] */
+        $events = parent::findForFilter($start, $end, $container, $filters, $limit, $expand, $types);
         return $events;
     }
 

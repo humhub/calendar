@@ -28,6 +28,7 @@ class FullCalendar extends JsWidget
     public $editUrl;
     public $selectors = [];
     public $filters = [];
+    public $types = [];
     /**
      * @var ContentContainerActiveRecord $contentContainer
      */
@@ -84,6 +85,7 @@ class FullCalendar extends JsWidget
             'select-helper' => $this->canWrite,
             'selectors' => $this->selectors,
             'filters' => $this->filters,
+            'types' => $this->types,
             'time-zone' => CalendarUtils::getUserTimeZone(true),
             'locale' => $this->translateLocale(Yii::$app->formatter->locale),
         ];

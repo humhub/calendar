@@ -12,6 +12,7 @@ use humhub\modules\calendar\models\CalendarEntryDummy;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\permissions\CreateEntry;
+use humhub\modules\calendar\widgets\FilterType;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerModuleState;
@@ -217,13 +218,14 @@ class GlobalController extends Controller
 
             $selectors = Yii::$app->request->get('selectors', []);
             $filters = Yii::$app->request->get('filters', []);
+            $types = Yii::$app->request->get('types', []);
 
             $settings->setSerialized('lastSelectors', $selectors);
             $settings->setSerialized('lastFilters', $filters);
 
             $filters['userRelated'] = $selectors;
 
-            $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), $filters);
+            $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), $filters, null, null, true, $types);
         } else {
             $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end));
         }
@@ -282,5 +284,10 @@ class GlobalController extends Controller
         $dummy = new CalendarEntryDummy(['start' => CalendarUtils::parseDateTimeString($date, null, null, null)]);
         $recurrenceForm = new RecurrenceFormModel(['entry' => $dummy]);
         return $this->asJson(['result' => $recurrenceForm->getMonthDaySelection()]);
+    }
+
+    public function actionFindFilterTypes($keyword)
+    {
+        return $this->asJson(FilterType::search($keyword, null, true));
     }
 }

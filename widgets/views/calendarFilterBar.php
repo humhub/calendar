@@ -2,6 +2,7 @@
 
 use humhub\modules\calendar\widgets\CalendarControls;
 use humhub\modules\calendar\widgets\ConfigureButton;
+use humhub\modules\calendar\widgets\FilterType;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\widgets\FadeIn;
@@ -12,6 +13,7 @@ use humhub\widgets\FadeIn;
 /* @var $filters array */
 /* @var $showSelectors bool */
 /* @var $showFilters bool */
+/* @var $showTypes bool */
 ?>
 
 <?php FadeIn::begin() ?>
@@ -92,7 +94,18 @@ use humhub\widgets\FadeIn;
                 </div>
             </div>
         </div>
+        <?php endif ?>
+        <?php if ($showTypes) : ?>
+        <div class="calendar-types" style="<?= $showSelectors || $showFilters ? 'border-left:2px solid ' . $this->theme->variable('default') : '' ?>">
+            <strong style="padding-left:10px;">
+                <?= Yii::t('CalendarModule.base', 'Filter by types'); ?>
+            </strong>
+            <br>
+            <div style="padding: 0 0 10px 10px">
+                <?= FilterType::widget(['name' => 'filterType']) ?>
+            </div>
+        </div>
+        <?php endif ?>
     </div>
-    <?php endif ?>
 </div>
 <?php FadeIn::end() ?>

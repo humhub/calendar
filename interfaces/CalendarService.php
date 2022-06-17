@@ -115,10 +115,11 @@ class CalendarService extends Component
      * @param ContentContainerActiveRecord $contentContainer
      * @param null $limit
      * @param bool $expand
+     * @param array $types
      * @return CalendarEventIF[]
      * @throws \Throwable
      */
-    public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null, $expand = true)
+    public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null, $expand = true, $types = [])
     {
         $result = [];
 
@@ -148,7 +149,7 @@ class CalendarService extends Component
             }
         }
 
-        $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, null, $expand);
+        $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, null, $expand, $types);
 
         $result = array_merge($calendarEntries, $result);
 

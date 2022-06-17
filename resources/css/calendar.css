@@ -638,14 +638,11 @@ tbody,
     background-color: #fff;
 }
 
-.calendar-options .calendar-selectors {
-    display: inline-block;
+.calendar-options .calendar-selectors,
+.calendar-options .calendar-filters,
+.calendar-options .calendar-types {
     float: left;
     margin-right: 10px;
-}
-
-.calendar-options .calendar-filters {
-    display: inline-block;
 }
 
 .timeField .form-group {
