@@ -43,6 +43,7 @@ return [
     'Enable Reminder' => '',
     'Event Type' => '',
     'Event type color' => '',
+    'Filter by types' => '',
     'Friday' => '',
     'Invalid date or time format!' => '',
     'Invalid event type id selected.' => '',

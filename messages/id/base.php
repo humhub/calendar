@@ -45,6 +45,7 @@ return [
     'Donwload ICS' => '',
     'Edit Event' => '',
     'Enable Reminder' => '',
+    'Filter by types' => '',
     'Friday' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Invalid date or time format!' => '',

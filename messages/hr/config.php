@@ -30,5 +30,9 @@ return [
     'Sort order' => 'Poredaj redoslijed',
     'There are currently no event types available.' => 'Trenutačno nema dostupnih vrsta događaja.',
     'Upcoming events snippet' => 'Isječak nadolazećih događaja',
+    'Calendar default view mode settings' => '',
+    'Here you can configure default settings for the full calendar.' => '',
+    'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'View mode' => '',
 ];

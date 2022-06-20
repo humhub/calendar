@@ -1,5 +1,7 @@
 <?php
-return array (
-  'Participation' => 'Tham gia',
-  'Reminder' => 'Nhắc nhở',
-);
+
+return [
+    'Participation' => 'Tham gia',
+    'Reminder' => 'Nhắc nhở',
+    'Full calendar' => '',
+];

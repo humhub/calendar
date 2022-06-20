@@ -59,6 +59,7 @@ return [
     'Donwload ICS' => '',
     'Edit Event' => '',
     'Enable Reminder' => '',
+    'Filter by types' => '',
     'Invalid date or time format!' => '',
     'Invite' => '',
     'Invite all Space members' => '',

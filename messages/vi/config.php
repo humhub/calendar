@@ -30,5 +30,9 @@ return [
     'Sort order' => 'Thứ tự sắp xếp',
     'There are currently no event types available.' => 'Hiện không có sự kiện nào',
     'Upcoming events snippet' => 'Block thông tin các sự kiện sắp tới',
+    'Calendar default view mode settings' => '',
+    'Here you can configure default settings for the full calendar.' => '',
+    'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'View mode' => '',
 ];

@@ -9,6 +9,7 @@ return [
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
         <strong>Set reminder</strong> link.' => '',
     'Hour' => '',
+    'Minute' => '',
     'No reminder' => '',
     'Upcoming {type}' => '',
     'Upcoming {type}: {title}' => '',

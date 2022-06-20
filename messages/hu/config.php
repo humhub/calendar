@@ -30,5 +30,9 @@ return [
     'Sort order' => 'Rendezési sorrend',
     'There are currently no event types available.' => 'Jelenleg nincs elérhető eseménytípus.',
     'Upcoming events snippet' => 'Közelgő események kódrészlet (snippet)',
+    'Calendar default view mode settings' => '',
+    'Here you can configure default settings for the full calendar.' => '',
+    'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'View mode' => '',
 ];

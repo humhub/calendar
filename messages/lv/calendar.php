@@ -6,4 +6,5 @@ return [
     'Month' => '',
     'Today' => '',
     'Week' => '',
+    'Year' => '',
 ];

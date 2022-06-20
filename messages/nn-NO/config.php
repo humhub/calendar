@@ -7,6 +7,7 @@ return [
     '<strong>Confirm</strong> Deletion' => '',
     'Adds an snippet with upcoming events to your users dashboard.' => '',
     'Calendar Configuration' => '',
+    'Calendar default view mode settings' => '',
     'Create new type' => '',
     'Default participation settings' => '',
     'Delete' => '',
@@ -15,6 +16,8 @@ return [
     'Half a year' => '',
     'Here you can configure default settings for new calendar events.' => '',
     'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => '',
+    'Here you can configure default settings for the full calendar.' => '',
+    'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Here you can manage and disable different calendars.' => '',
     'Here you can manage your event types.' => '',
     'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => '',
@@ -31,4 +34,5 @@ return [
     'Sort order' => '',
     'There are currently no event types available.' => '',
     'Upcoming events snippet' => '',
+    'View mode' => '',
 ];

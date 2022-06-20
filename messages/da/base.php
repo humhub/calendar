@@ -50,6 +50,7 @@ return [
     'Donwload ICS' => '',
     'Edit Event' => '',
     'Enable Reminder' => '',
+    'Filter by types' => '',
     'Friday' => '',
     'Invalid date or time format!' => '',
     'Invite' => '',

@@ -28,7 +28,11 @@ return [
     'There are currently no event types available.' => 'Tapahtumien tyypit eivät ole tällä hetkellä käytettävissä.',
     'Upcoming events snippet' => 'Tulevat tapahtumat',
     'Calendar Configuration' => '',
+    'Calendar default view mode settings' => '',
     'Default participation settings' => '',
+    'Here you can configure default settings for the full calendar.' => '',
+    'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Here you can manage and disable different calendars.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'View mode' => '',
 ];

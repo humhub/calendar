@@ -60,6 +60,7 @@ return [
     'Donwload ICS' => '',
     'Edit Event' => '',
     'Enable Reminder' => '',
+    'Filter by types' => '',
     'Invite' => '',
     'Invite all Space members' => '',
     'Invited: {users}' => '',

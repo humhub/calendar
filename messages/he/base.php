@@ -36,6 +36,7 @@ return [
     'Event not found!' => '',
     'Event type color' => '',
     'Files' => '',
+    'Filter by types' => '',
     'Friday' => '',
     'ID' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',

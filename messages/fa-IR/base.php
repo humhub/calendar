@@ -42,6 +42,7 @@ return [
     'Enable Reminder' => '',
     'Event Type' => '',
     'Event type color' => '',
+    'Filter by types' => '',
     'Friday' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
     'Interested' => '',
