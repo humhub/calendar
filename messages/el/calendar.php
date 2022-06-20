@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'Day' => '',
-    'List' => '',
-    'Month' => '',
-    'Today' => '',
-    'Week' => '',
-    'Year' => '',
-];
+return array (
+  'Day' => 'Ημέρα',
+  'List' => '',
+  'Month' => 'Μήνας',
+  'Today' => '',
+  'Week' => 'Εβδομάδα',
+  'Year' => 'Ετος',
+);

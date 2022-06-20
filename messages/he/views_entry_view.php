@@ -1,12 +1,11 @@
 <?php
-
-return [
-    'Decline' => 'דחה',
-    'Additional information' => '',
-    'All' => '',
-    'Attend' => '',
-    'Filter' => '',
-    'Maybe' => '',
-    'Participants' => '',
-    'You are invited, please select your role:' => '',
-];
+return array (
+  'Additional information' => '',
+  'All' => 'הכל',
+  'Attend' => '',
+  'Decline' => 'דחה',
+  'Filter' => '',
+  'Maybe' => '',
+  'Participants' => '',
+  'You are invited, please select your role:' => '',
+);

@@ -1,12 +1,11 @@
 <?php
-
-return [
-    'Attend' => 'Tham dự',
-    'Decline' => 'Từ chối',
-    'Maybe' => 'Có thể',
-    'Additional information' => '',
-    'All' => '',
-    'Filter' => '',
-    'Participants' => '',
-    'You are invited, please select your role:' => '',
-];
+return array (
+  'Additional information' => '',
+  'All' => 'Tất cả',
+  'Attend' => 'Tham dự',
+  'Decline' => 'Từ chối',
+  'Filter' => 'Lọc',
+  'Maybe' => 'Có thể',
+  'Participants' => 'Người tham gia',
+  'You are invited, please select your role:' => '',
+);

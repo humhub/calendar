@@ -1,12 +1,11 @@
 <?php
-
-return [
-    'Additional information' => 'Επιπλέον Πληροφορίες',
-    'Attend' => 'Συμμετοχή',
-    'Decline' => 'Άρνηση',
-    'Maybe' => 'Ίσως',
-    'All' => '',
-    'Filter' => '',
-    'Participants' => '',
-    'You are invited, please select your role:' => '',
-];
+return array (
+  'Additional information' => 'Επιπλέον Πληροφορίες',
+  'All' => 'Όλα',
+  'Attend' => 'Συμμετοχή',
+  'Decline' => 'Άρνηση',
+  'Filter' => 'Φίλτρο',
+  'Maybe' => 'Ίσως',
+  'Participants' => 'Συμμετέχοντες',
+  'You are invited, please select your role:' => '',
+);

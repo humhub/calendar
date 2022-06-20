@@ -1,12 +1,11 @@
 <?php
-
-return [
-    'Additional information' => 'Допълнителна информация',
-    'Attend' => 'Присъствам',
-    'Decline' => 'Отказвам',
-    'Maybe' => 'Не съм сигурен',
-    'All' => '',
-    'Filter' => '',
-    'Participants' => '',
-    'You are invited, please select your role:' => '',
-];
+return array (
+  'Additional information' => 'Допълнителна информация',
+  'All' => 'Всички',
+  'Attend' => 'Присъствам',
+  'Decline' => 'Отказвам',
+  'Filter' => 'Филтър',
+  'Maybe' => 'Не съм сигурен',
+  'Participants' => 'Участници',
+  'You are invited, please select your role:' => '',
+);

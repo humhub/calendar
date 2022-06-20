@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'Day' => '',
-    'List' => '',
-    'Month' => '',
-    'Today' => '',
-    'Week' => '',
-    'Year' => '',
-];
+return array (
+  'Day' => 'Ngày',
+  'List' => 'Danh sách',
+  'Month' => 'Tháng',
+  'Today' => 'Hôm nay',
+  'Week' => 'Tuần',
+  'Year' => 'Năm',
+);

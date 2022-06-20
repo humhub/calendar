@@ -1,12 +1,11 @@
 <?php
-
-return [
-    'Attend' => '参加',
-    'Decline' => '辞退',
-    'Maybe' => '未定',
-    'Additional information' => '',
-    'All' => '',
-    'Filter' => '',
-    'Participants' => '',
-    'You are invited, please select your role:' => '',
-];
+return array (
+  'Additional information' => '',
+  'All' => 'すべて',
+  'Attend' => '参加',
+  'Decline' => '辞退',
+  'Filter' => 'フィルター',
+  'Maybe' => '未定',
+  'Participants' => '参加者',
+  'You are invited, please select your role:' => '',
+);

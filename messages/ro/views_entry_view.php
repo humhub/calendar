@@ -1,12 +1,11 @@
 <?php
-
-return [
-    'Attend' => 'Participă',
-    'Decline' => 'Respinge',
-    'Maybe' => 'Probabil',
-    'Additional information' => '',
-    'All' => '',
-    'Filter' => '',
-    'Participants' => '',
-    'You are invited, please select your role:' => '',
-];
+return array (
+  'Additional information' => '',
+  'All' => 'Toate',
+  'Attend' => 'Participă',
+  'Decline' => 'Respinge',
+  'Filter' => 'Filtrează',
+  'Maybe' => 'Probabil',
+  'Participants' => 'Participanți',
+  'You are invited, please select your role:' => '',
+);
