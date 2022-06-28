@@ -12,10 +12,8 @@ on:
 
 jobs:
   tests:
-    uses: humhub/actions/.github/workflows/module-tests.yml@main
+    uses: humhub/actions/.github/workflows/module-tests-v1.10.yml@main
     with:
       module-id: calendar
-      php: >-
-        ['7.4']
       use-rest-module: true
       install-composer: true
