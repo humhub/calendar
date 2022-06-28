@@ -1,0 +1,11 @@
+name: PHP Codeception Tests
+
+on: push
+
+jobs:
+  tests:
+    uses: humhub/actions/.github/workflows/module-tests-master.yml@main
+    with:
+      module-id: calendar
+      use-rest-module: true
+      install-composer: true
