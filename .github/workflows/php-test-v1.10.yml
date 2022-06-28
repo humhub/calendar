@@ -1,14 +1,6 @@
-name: PHP Codeception Tests
+name: PHP Codeception Tests - v1.10
 
-on:
-  push:
-    branches:
-      - master
-      - develop
-  pull_request:
-    branches:
-      - master
-      - develop
+on: push
 
 jobs:
   tests:
