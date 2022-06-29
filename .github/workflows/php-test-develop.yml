@@ -1,0 +1,14 @@
+name: PHP Codeception Tests - develop
+
+on:
+  push:
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  tests:
+    uses: humhub/actions/.github/workflows/module-tests-develop.yml@main
+    with:
+      module-id: calendar
+      use-rest-module: true
+      install-composer: true
