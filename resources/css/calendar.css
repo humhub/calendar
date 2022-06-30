@@ -173,6 +173,10 @@ html .fc,
     border-bottom-right-radius: 4px;
 }
 
+.fc-disabled-cursor:hover {
+    cursor: not-allowed;
+}
+
 /*
 	Our default prev/next buttons use HTML entities like &lsaquo; &rsaquo; &laquo; &raquo;
 	and we'll try to make them look good cross-browser.
