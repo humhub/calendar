@@ -6,6 +6,7 @@ Changelog
 - Fix #315: Fix participants list settings visibility
 - Fix #316: Fix invitation of space members
 - Enh #261: Filter by event types
+- Enh #312: Show tooltip for locked past events
 
 1.2.3 (May 30, 2022)
 --------------------

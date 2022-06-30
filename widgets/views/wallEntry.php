@@ -100,7 +100,7 @@ $color = $this->theme->variable('text-color-secondary');
 
     <?php if ($calendarEntry->participation->canRespond(Yii::$app->user->identity)): ?>
         <div class="event-participation-buttons clearfix">
-            <?php if ($calendarEntry->participation->isInvited()) : ?>
+            <?php if ($calendarEntry->participation->isInvited() && !$calendarEntry->isPast()) : ?>
                 <div class="text-warning"><?= Icon::get('warning') . Yii::t('CalendarModule.views_entry_view', 'You are invited, please select your role:') ?></div>
             <?php endif ?>
 
