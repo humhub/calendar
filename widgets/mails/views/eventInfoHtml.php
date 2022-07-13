@@ -8,7 +8,7 @@
 use humhub\libs\Html;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;use humhub\modules\calendar\models\CalendarDateFormatter;
-use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
 
@@ -52,12 +52,12 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
                 <?php endif; ?>
 
                 <?php if(!empty($event->getDescription())) : ?>
-                    <p><?= nl2br(RichText::preview($event->getDescription())) ?></p>
+                    <p><?= RichTextToEmailHtmlConverter::process($event->getDescription()) ?></p>
                 <?php endif; ?>
 
                 <?php if(isset($extraInfo)) : ?>
                     <h2><?= Yii::t('CalendarModule.mail', 'Additional information:'); ?></h2>
-                    <p><?=  nl2br(RichText::preview($extraInfo)) ?></p>
+                    <p><?= RichTextToEmailHtmlConverter::process($extraInfo) ?></p>
                 <?php endif; ?>
 
             </td>
