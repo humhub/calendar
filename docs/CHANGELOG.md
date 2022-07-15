@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.4 (July 15, 2022)
+1.2.5 (July 15, 2022)
 --------------------
 - Fix #315: Fix participants list settings visibility
 - Fix #316: Fix invitation of space members
