@@ -1,12 +1,14 @@
 Changelog
 =========
 
-1.2.4 (Unreleased)
+1.2.4 (July 15, 2022)
 --------------------
 - Fix #315: Fix participants list settings visibility
 - Fix #316: Fix invitation of space members
 - Enh #261: Filter by event types
 - Enh #312: Show tooltip for locked past events
+- Enh #324: Use `RichTextToEmailHtmlConverter` class to convert text to HTML
+
 
 1.2.3 (May 30, 2022)
 --------------------
