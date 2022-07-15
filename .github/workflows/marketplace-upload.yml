@@ -11,3 +11,4 @@ jobs:
     with:
       install-composer: true
       install-npm: true
+    secrets: inherit
