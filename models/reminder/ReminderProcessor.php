@@ -86,6 +86,10 @@ class ReminderProcessor extends Model
                 continue;
             }
 
+            if ($entry->closed) {
+                continue;
+            }
+
             $skipUsers = $this->handleEntryLevelReminder($entry);
 
             if($skipUsers === true) {
