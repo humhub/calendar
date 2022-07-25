@@ -124,7 +124,7 @@ class CalendarEntryParticipationForm extends Model
                 RichText::postProcess($this->entry->participant_info, $this->entry);
             }
 
-            if ($this->sendUpdateNotification && !$this->entry->isNewRecord) {
+            if ($this->sendUpdateNotification && !$this->entry->isNewRecord && !$this->entry->closed) {
                 $this->entry->participation->sendUpdateNotification();
             }
 

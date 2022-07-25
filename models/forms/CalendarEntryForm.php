@@ -467,7 +467,7 @@ class CalendarEntryForm extends Model
 
             Topic::attach($this->entry->content, $this->topics);
 
-            if ($this->sendUpdateNotification && !$this->entry->isNewRecord) {
+            if ($this->sendUpdateNotification && !$this->entry->isNewRecord && !$this->entry->closed) {
                 $this->entry->participation->sendUpdateNotification();
             }
 
