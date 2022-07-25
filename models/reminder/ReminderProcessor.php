@@ -118,6 +118,10 @@ class ReminderProcessor extends Model
                 continue;
             }
 
+            if ($entry->closed) {
+                continue;
+            }
+
             $entryKey = get_class($entry).':'.$entry->id;
             if(!isset($entryHandled[$entryKey])) {
                 $this->handleEntryLevelReminder($entry);
