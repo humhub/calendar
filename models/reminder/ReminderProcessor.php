@@ -86,6 +86,10 @@ class ReminderProcessor extends Model
                 continue;
             }
 
+            if ($entry->closed) {
+                continue;
+            }
+
             $skipUsers = $this->handleEntryLevelReminder($entry);
 
             if($skipUsers === true) {
@@ -111,6 +115,10 @@ class ReminderProcessor extends Model
 
             if(!$entry instanceof CalendarEventReminderIF) {
                 $reminder->delete();
+                continue;
+            }
+
+            if ($entry->closed) {
                 continue;
             }
 
