@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.3.0 (Unreleased)
+--------------------
+- Enh: Remove deprecated checkbox "regular" style
+
+
 1.2.6 (Unreleased)
 --------------------
 - Fix #327: Don't send notifications for canceled event
