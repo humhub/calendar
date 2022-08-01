@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => 'Mô tả',
   'Do you want to install this module on your profile?' => 'Bạn có muốn cài đặt module này vào trang cá nhân?',
-  'Donwload ICS' => '',
+  'Download ICS' => '',
   'Edit' => 'Chỉnh sửa',
   'Edit Event' => '',
   'Enable' => 'Kích hoạt',

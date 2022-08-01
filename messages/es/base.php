@@ -20,7 +20,7 @@ return [
     'Cannot remove the participant!' => 'No se puede eliminar al participante.',
     'Description' => 'Descripción',
     'Do you want to install this module on your profile?' => '¿Quieres instalar este módulo en tu perfil?',
-    'Donwload ICS' => 'Descargar ICS',
+    'Download ICS' => 'Descargar ICS',
     'Edit' => 'Editar',
     'Edit Event' => 'Editar el evento',
     'Enable' => 'Activar',

@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => 'คำอธิบาย',
   'Do you want to install this module on your profile?' => 'คุณต้องการติดตั้งโมดูลนี้ในโปรไฟล์ของคุณหรือไม่?',
-  'Donwload ICS' => '',
+  'Download ICS' => '',
   'Edit' => 'แก้ไข',
   'Edit Event' => '',
   'Enable' => 'เปิดใช้งาน',
