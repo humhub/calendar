@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => 'Описание',
   'Do you want to install this module on your profile?' => 'Искате ли да инсталирате този модул във вашия профил?',
-  'Donwload ICS' => '',
+  'Download ICS' => '',
   'Edit' => 'Редактиране',
   'Edit Event' => '',
   'Enable' => 'Активиране',

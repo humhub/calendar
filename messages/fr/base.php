@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => 'Impossible de retirer le ou la participant·e !',
   'Description' => 'Description',
   'Do you want to install this module on your profile?' => 'Voulez-vous installer ce module sur votre profil ?',
-  'Donwload ICS' => 'Télécharger au format ICS',
+  'Download ICS' => 'Télécharger au format ICS',
   'Edit' => 'Modifier',
   'Edit Event' => 'Modifier l’événement',
   'Enable' => 'Activer',

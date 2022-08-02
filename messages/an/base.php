@@ -25,7 +25,7 @@ return [
     'Cancel Event' => '',
     'Cannot remove the participant!' => '',
     'Do you want to install this module on your profile?' => '',
-    'Donwload ICS' => '',
+    'Download ICS' => '',
     'Edit Event' => '',
     'Enable' => '',
     'Enable Reminder' => '',

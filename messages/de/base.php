@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => 'Teilnehmer konnte nicht entfernt werden!',
   'Description' => 'Beschreibung',
   'Do you want to install this module on your profile?' => 'Willst du dieses Modul für dein eigenes Profil installieren?',
-  'Donwload ICS' => 'Herunterladen als ICS-Datei',
+  'Download ICS' => 'Herunterladen als ICS-Datei',
   'Edit' => 'Bearbeiten',
   'Edit Event' => 'Termin bearbeiten',
   'Enable' => 'Aktivieren',

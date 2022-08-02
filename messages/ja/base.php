@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => '説明',
   'Do you want to install this module on your profile?' => 'あなたのプロフィールにこのモジュールをインストールしますか?',
-  'Donwload ICS' => 'ICSをダウンロード',
+  'Download ICS' => 'ICSをダウンロード',
   'Edit' => '編集',
   'Edit Event' => '',
   'Enable' => '有効化',
