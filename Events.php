@@ -6,10 +6,7 @@ use DateTime;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\calendar\permissions\CreateEntry;
-use humhub\modules\content\widgets\WallCreateContentMenu;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
@@ -412,21 +409,4 @@ class Events
         ], 'calendar');
     }
 
-    public static function onInitWallCreateContentMenu($event)
-    {
-        /* @var WallCreateContentMenu $menu */
-        $menu = $event->sender;
-
-        if ($menu->contentContainer &&
-            $menu->contentContainer->moduleManager->isEnabled('calendar') &&
-            $menu->contentContainer->getPermissionManager()->can(CreateEntry::class)) {
-            $menu->addEntry(new MenuLink([
-                'label' => Yii::t('CalendarModule.base', 'Calendar'),
-                // TODO: Implement form loading by AJAX with [data-action-click="loadForm"]
-                'url' => $menu->contentContainer->createUrl('/calendar/view/index'),
-                'sortOrder' => 500,
-                'icon' => 'calendar',
-            ]));
-        }
-    }
 }

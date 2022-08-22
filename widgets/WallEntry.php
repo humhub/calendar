@@ -11,6 +11,10 @@ use Yii;
 
 class WallEntry extends WallStreamModuleEntryWidget
 {
+    /**
+     * @inheritdoc
+     */
+    public $createRoute = '/calendar/entry/edit';
 
     const VIEW_CONTEXT_FULLCALENDAR = 'fullCalendar';
 
@@ -33,6 +37,16 @@ class WallEntry extends WallStreamModuleEntryWidget
      * @inheritdoc
      */
     public $editMode = self::EDIT_MODE_MODAL;
+
+    /**
+     * @inheritdoc
+     */
+    public $menuIcon = 'calendar';
+
+    /**
+     * @inheritdoc
+     */
+    public $menuSortOrder = 500;
 
     /**
      * @var bool defines if the description and participation info should be cut at a certain height, this should only be the case in the stream

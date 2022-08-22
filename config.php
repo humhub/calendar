@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\Application;
-use humhub\modules\content\widgets\WallCreateContentMenu;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\ProfileMenu;
@@ -37,6 +36,5 @@ return [
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronRun']],
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
-        ['class' => WallCreateContentMenu::class, 'event' => WallCreateContentMenu::EVENT_INIT, 'callback' => [Events::class, 'onInitWallCreateContentMenu']],
     ],
 ];
