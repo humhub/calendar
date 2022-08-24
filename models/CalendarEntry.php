@@ -311,7 +311,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function validateEndTime($attribute, $params)
     {
-        if (new DateTime($this->start_datetime) >= new DateTime($this->end_datetime)) {
+        if (new DateTime($this->start_datetime ?? 'now') >= new DateTime($this->end_datetime ?? 'now')) {
             $this->addError($attribute, Yii::t('CalendarModule.base', "End time must be after start time!"));
         }
     }
@@ -348,8 +348,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
 
     public function beforeSave($insert)
     {
-        $start = new DateTime($this->start_datetime);
-        $end = new DateTime($this->end_datetime);
+        $start = new DateTime($this->start_datetime ?? 'now');
+        $end = new DateTime($this->end_datetime ?? 'now');
 
         // Make sure end and start time is set right for all_day events
         if ($this->all_day) {
@@ -505,7 +505,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function getStartDateTime()
     {
-        return new DateTime($this->start_datetime, CalendarUtils::getSystemTimeZone());
+        return new DateTime($this->start_datetime ?? 'now', CalendarUtils::getSystemTimeZone());
     }
 
     /**
@@ -514,7 +514,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function getEndDateTime()
     {
-        return new DateTime($this->end_datetime, CalendarUtils::getSystemTimeZone());
+        return new DateTime($this->end_datetime ?? 'now', CalendarUtils::getSystemTimeZone());
     }
 
     /**
@@ -1004,6 +1004,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public function isPast(): bool
     {
         $timeZone = CalendarUtils::getEndTimeZone($this);
-        return new DateTime('now', $timeZone) > new DateTime($this->end_datetime, $timeZone);
+        return new DateTime('now', $timeZone) > new DateTime($this->end_datetime ?? 'now', $timeZone);
     }
 }
