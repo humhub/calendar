@@ -4,6 +4,7 @@ Changelog
 1.2.6 (Unreleased)
 --------------------
 - Fix #327: Don't send notifications for canceled event
+- Fix #334: Fix null in DateTime on PHP 8.1
 - Enh #331: Menu for creating a Calendar Entry from wall stream
 
 

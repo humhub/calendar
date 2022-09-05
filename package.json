@@ -20,7 +20,7 @@
     "@fullcalendar/moment-timezone": "*",
     "@fullcalendar/timegrid": "*",
     "moment": "^2.29.4",
-    "moment-timezone": "^0.5.27"
+    "moment-timezone": "^0.5.35"
   },
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
