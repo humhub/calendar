@@ -56,7 +56,7 @@ class CalendarController extends BaseContentController
         /** @var ContentContainerActiveRecord $container */
         $container = $containerRecord->getPolymorphicRelation();
 
-        if (! $container->permissionManager->can(CreateEntry::class)) {
+        if (!(new CalendarEntry($container))->content->canEdit()) {
             return $this->returnError(403, 'You are not allowed to create calendar entry!');
         }
 

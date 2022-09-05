@@ -108,7 +108,7 @@ class GlobalController extends Controller
         }
 
         foreach ($calendarMemberSpaceQuery->all() as $space) {
-            if ($space->permissionManager->can(CreateEntry::class)) {
+            if ((new CalendarEntry($space))->content->canEdit()) {
                 $contentContainerSelection[$space->contentcontainer_id] = $space->displayName;
             }
         }
@@ -131,7 +131,7 @@ class GlobalController extends Controller
 
         $container = $contentContainer->getPolymorphicRelation();
 
-        if (!$container->permissionManager->can(CreateEntry::class)) {
+        if (!(new CalendarEntry($container))->content->canEdit()) {
             throw new HttpException(403);
         }
 

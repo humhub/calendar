@@ -491,7 +491,7 @@ class EntryController extends ContentContainerController
      */
     private function canCreateEntries()
     {
-        return $this->contentContainer->permissionManager->can(CreateEntry::class);
+        return (new CalendarEntry($this->contentContainer))->content->canEdit();
     }
 
     /**

@@ -5,6 +5,7 @@ namespace humhub\modules\calendar\widgets;
 use humhub\modules\calendar\assets\CalendarAsset;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\participation\FullCalendarSettings;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -109,7 +110,7 @@ class FullCalendar extends JsWidget
     private function canCreate()
     {
         if ($this->contentContainer && !Yii::$app->user->isGuest) {
-            return $this->contentContainer->can(CreateEntry::class);
+            return (new CalendarEntry($this->contentContainer))->content->canEdit();
         } else if (!Yii::$app->user->isGuest) {
             return Yii::$app->user->getIdentity()->isCurrentUser();
         }

@@ -4,6 +4,7 @@ Changelog
 1.2.6 (Unreleased)
 --------------------
 - Fix #327: Don't send notifications for canceled event
+- Enh #331: Menu for creating a Calendar Entry from wall stream
 
 
 1.2.5 (July 15, 2022)
