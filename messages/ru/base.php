@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => 'Описание',
   'Do you want to install this module on your profile?' => '',
-  'Donwload ICS' => '',
+  'Download ICS' => '',
   'Edit' => 'Изменить',
   'Edit Event' => '',
   'Enable' => 'Включить',

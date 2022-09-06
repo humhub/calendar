@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => 'Περιγραφή',
   'Do you want to install this module on your profile?' => 'Θέλετε να εγκαταστήσετε αυτήν την ενότητα στο προφίλ σας;',
-  'Donwload ICS' => '',
+  'Download ICS' => '',
   'Edit' => 'Επεξεργασία',
   'Edit Event' => '',
   'Enable' => 'Ενεργοποίηση',

@@ -4,6 +4,7 @@ Changelog
 1.2.6 (Unreleased)
 --------------------
 - Fix #327: Don't send notifications for canceled event
+- Fix #334: Fix null in DateTime on PHP 8.1
 
 
 1.2.5 (July 15, 2022)

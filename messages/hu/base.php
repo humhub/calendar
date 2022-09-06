@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => 'Leírás',
   'Do you want to install this module on your profile?' => 'Telepíteni szeretnéd ezt a modult a profilodhoz?',
-  'Donwload ICS' => '',
+  'Download ICS' => '',
   'Edit' => 'Szerkesztés',
   'Edit Event' => '',
   'Enable' => 'Engedélyezés',

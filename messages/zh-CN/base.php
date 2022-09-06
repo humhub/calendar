@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => '描述',
   'Do you want to install this module on your profile?' => '',
-  'Donwload ICS' => '',
+  'Download ICS' => '',
   'Edit' => '编辑',
   'Edit Event' => '',
   'Enable' => '生效',

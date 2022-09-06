@@ -75,7 +75,7 @@ class CalendarUtils
             $ts += static::parseTime($timeValue, $timeFormat);
         }
 
-        $date = new DateTime(null, new DateTimeZone('UTC'));
+        $date = new DateTime('now', new DateTimeZone('UTC'));
         $date->setTimestamp($ts);
 
         $result = DateTime::createFromFormat(static::DB_DATE_FORMAT, static::toDBDateFormat($date), static::getDateTimeZone($timeZone));
