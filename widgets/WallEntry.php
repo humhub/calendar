@@ -39,11 +39,6 @@ class WallEntry extends WallStreamModuleEntryWidget
     public $editMode = self::EDIT_MODE_MODAL;
 
     /**
-     * @inheritdoc
-     */
-    public $createFormSortOrder = 500;
-
-    /**
      * @var bool defines if the description and participation info should be cut at a certain height, this should only be the case in the stream
      */
     public $stream = true;
