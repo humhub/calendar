@@ -14,7 +14,7 @@ class WallEntry extends WallStreamModuleEntryWidget
     /**
      * @inheritdoc
      */
-    public $createRoute = '/calendar/entry/edit';
+    public $createRoute = '/calendar/entry/add-from-wall';
 
     const VIEW_CONTEXT_FULLCALENDAR = 'fullCalendar';
 

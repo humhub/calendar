@@ -51,6 +51,7 @@ humhub.module('calendar', function (module, require, $) {
             });
 
             this.initTimeInput();
+            this.initSubmitAction();
         };
 
         Form.prototype.setEditMode = function (evt) {
@@ -83,6 +84,22 @@ humhub.module('calendar', function (module, require, $) {
                     $this.data('oldVal', $this.val()).val('');
                 }
             });
+        };
+
+        Form.prototype.initSubmitAction = function () {
+            modal.global.$.one('submitted', onCalEntryFormSubmitted);
+        }
+
+        var onCalEntryFormSubmitted = function (evt, response) {
+            return;
+            // TODO: Implement adding an Entry into the wall stream
+            if (response.reloadWall) {
+                modal.global.close(true);
+                event.trigger('humhub:content:newEntry', response.content, this);
+                event.trigger('humhub:content:afterSubmit', response.content, this);
+            } else {
+                modal.global.$.one('submitted', onCalEntryFormSubmitted);
+            }
         };
 
         Form.prototype.toggleDateTime = function (evt) {
