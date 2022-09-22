@@ -12,6 +12,7 @@ humhub.module('calendar', function (module, require, $) {
         var modal = require('ui.modal');
         var action = require('action');
         var Content = require('content').Content;
+        var event = require('event');
 
         var Calendar = Widget.extend();
 
@@ -91,10 +92,7 @@ humhub.module('calendar', function (module, require, $) {
         }
 
         var onCalEntryFormSubmitted = function (evt, response) {
-            return;
-            // TODO: Implement adding an Entry into the wall stream
             if (response.reloadWall) {
-                modal.global.close(true);
                 event.trigger('humhub:content:newEntry', response.content, this);
                 event.trigger('humhub:content:afterSubmit', response.content, this);
             } else {

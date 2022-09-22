@@ -11,6 +11,7 @@ use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -198,7 +199,7 @@ class EntryController extends ContentContainerController
      * @param null $cal whether or not the edit event came from the calendar view
      * @param string|null $view FullCalendar view mode, 'month'
      * @param bool $wall True when a Calendary Entry is created/updated from wall stream
-     * @return string
+     * @return string|Response
      * @throws HttpException
      * @throws Throwable
      * @throws Exception
@@ -224,7 +225,16 @@ class EntryController extends ContentContainerController
         }
 
         if ($calendarEntryForm->load(Yii::$app->request->post()) && $calendarEntryForm->save()) {
-            if(empty($cal)) {
+            if ($wall) {
+                $entry = StreamEntryResponse::getAsArray($calendarEntryForm->entry->content);
+                $entry['reloadWall'] = true;
+                $entry['content'] = $entry['output'];
+                $entry['output'] = $this->renderModalParticipation($calendarEntryForm->entry, null, true);
+
+                return $this->asJson($entry);
+            }
+
+            if (empty($cal)) {
                 return ModalClose::widget(['saved' => true]);
             }
 
