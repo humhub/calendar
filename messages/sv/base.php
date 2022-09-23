@@ -19,7 +19,7 @@ return array (
   'Cannot remove the participant!' => '',
   'Description' => 'Beskrivning',
   'Do you want to install this module on your profile?' => 'Vill du installera denna modul i din profil',
-  'Download ICS' => '',
+  'Download ICS' => 'Ladda ner ICS',
   'Edit' => 'Ändra',
   'Edit Event' => '',
   'Enable' => 'Aktivera',
