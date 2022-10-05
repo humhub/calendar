@@ -64,6 +64,7 @@ return [
     'Start Time' => '',
     'Status updated.' => '',
     'Sunday' => '',
+    'The event has already ended.' => '',
     'Thursday' => '',
     'Time Zone' => '',
     'Title' => '',

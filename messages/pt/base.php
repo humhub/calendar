@@ -76,4 +76,5 @@ return [
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} adicionou-te ao evento "{contentTitle}" no espaço {spaceName} com início às {time}.',
     '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} convidou-te para o evento "{contentTitle}" no espaço {spaceName} que terá início às {time}.',
     'Filter by types' => '',
+    'The event has already ended.' => '',
 ];
