@@ -1,13 +1,9 @@
 Changelog
 =========
 
-1.3.0 (Unreleased)
---------------------
+1.3.0 (November 7, 2022)
+------------------------
 - Enh #328: Remove deprecated checkbox "regular" style
-
-
-1.2.6 (Unreleased)
---------------------
 - Fix #327: Don't send notifications for canceled event
 - Fix #334: Fix null in DateTime on PHP 8.1
 - Fix #340: Translation of "Delete" message string 
