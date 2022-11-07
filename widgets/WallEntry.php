@@ -11,6 +11,10 @@ use Yii;
 
 class WallEntry extends WallStreamModuleEntryWidget
 {
+    /**
+     * @inheritdoc
+     */
+    public $createRoute = '/calendar/entry/add-from-wall';
 
     const VIEW_CONTEXT_FULLCALENDAR = 'fullCalendar';
 

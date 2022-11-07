@@ -2,17 +2,18 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use DateTime;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\notifications\Invited;
-use humhub\modules\calendar\widgets\ParticipantAddForm;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\widgets\ModalClose;
 use Throwable;
@@ -176,26 +177,42 @@ class EntryController extends ContentContainerController
     }
 
     /**
+     * Add a calendar Entry from wall stream
+     *
+     * @return string
+     * @throws Exception
+     * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws Throwable
+     */
+    public function actionAddFromWall()
+    {
+        $date = (new DateTime('now'))->setTime(date('H'), 0)->format(CalendarUtils::DATE_FORMAT_ATOM);
+        return $this->actionEdit(null, $date, $date, 1, 'month', true);
+    }
+
+    /**
      *
      * @param null $id calendar entry id
      * @param null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
      * @param null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
      * @param null $cal whether or not the edit event came from the calendar view
      * @param string|null $view FullCalendar view mode, 'month'
-     * @return string
+     * @param bool $wall True when a Calendary Entry is created/updated from wall stream
+     * @return string|Response
      * @throws HttpException
      * @throws Throwable
      * @throws Exception
      * @throws InvalidConfigException
      */
-    public function actionEdit($id = null, $start = null, $end = null, $cal = null, $view = null)
+    public function actionEdit($id = null, $start = null, $end = null, $cal = null, $view = null, $wall = null)
     {
         if (empty($id) && !$this->canCreateEntries()) {
             throw new HttpException(403);
         }
 
         if (empty($id) && $this->canCreateEntries()) {
-            $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end, $view);
+            $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end, $view, $wall);
         } else {
             $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
             if(!$calendarEntryForm->entry->content->canEdit()) {
@@ -208,7 +225,16 @@ class EntryController extends ContentContainerController
         }
 
         if ($calendarEntryForm->load(Yii::$app->request->post()) && $calendarEntryForm->save()) {
-            if(empty($cal)) {
+            if ($wall) {
+                $entry = StreamEntryResponse::getAsArray($calendarEntryForm->entry->content);
+                $entry['reloadWall'] = true;
+                $entry['content'] = $entry['output'];
+                $entry['output'] = $this->renderModalParticipation($calendarEntryForm->entry, null, true);
+
+                return $this->asJson($entry);
+            }
+
+            if (empty($cal)) {
                 return ModalClose::widget(['saved' => true]);
             }
 
@@ -224,7 +250,7 @@ class EntryController extends ContentContainerController
         return $this->renderAjax('edit', [
             'calendarEntryForm' => $calendarEntryForm,
             'contentContainer' => $this->contentContainer,
-            'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer)
+            'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer, $calendarEntryForm->wall)
         ]);
     }
 
@@ -491,7 +517,7 @@ class EntryController extends ContentContainerController
      */
     private function canCreateEntries()
     {
-        return $this->contentContainer->permissionManager->can(CreateEntry::class);
+        return (new CalendarEntry($this->contentContainer))->content->canEdit();
     }
 
     /**

@@ -79,6 +79,11 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     /**
      * @inheritdoc
      */
+    protected $createPermission = CreateEntry::class;
+
+    /**
+     * @inheritdoc
+     */
     public $managePermission = ManageEntry::class;
 
     /**

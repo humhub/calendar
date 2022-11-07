@@ -120,13 +120,13 @@ class Url extends BaseUrl
         return static::to(['/calendar/global/select']);
     }
 
-    public static function toEditEntry(CalendarEntry $entry, $cal = null, ContentContainerActiveRecord $container = null)
+    public static function toEditEntry(CalendarEntry $entry, $cal = null, ContentContainerActiveRecord $container = null, $wall = null)
     {
         if(!$container) {
             $container = $entry->content->container;
         }
 
-        return $container->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal]);
+        return $container->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal, 'wall' => $wall]);
     }
 
     public static function toEditEntryParticipation(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
