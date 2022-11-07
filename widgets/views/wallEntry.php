@@ -41,7 +41,7 @@ $color = $this->theme->variable('text-color-secondary');
         </div>
 
         <?php if (!empty($calendarEntry->description)) : ?>
-            <div class="event-info-section-content" data-ui-show-more>
+            <div class="event-info-section-content" data-ui-markdown data-ui-show-more>
                 <?= RichText::output($calendarEntry->description) ?>
             </div>
         <?php endif; ?>
@@ -66,7 +66,7 @@ $color = $this->theme->variable('text-color-secondary');
                 <h1>
                     <?= Yii::t('CalendarModule.views_entry_view', 'Additional information') ?>
                 </h1>
-                <div data-ui-show-more>
+                <div data-ui-markdown data-ui-show-more>
                     <?= RichText::output($calendarEntry->participant_info) ?>
                 </div>
             </div>

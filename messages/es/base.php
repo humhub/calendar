@@ -20,7 +20,6 @@ return [
     'Cannot remove the participant!' => 'No se puede eliminar al participante.',
     'Description' => 'Descripción',
     'Do you want to install this module on your profile?' => '¿Quieres instalar este módulo en tu perfil?',
-    'Download ICS' => 'Descargar ICS',
     'Edit' => 'Editar',
     'Edit Event' => 'Editar el evento',
     'Enable' => 'Activar',
@@ -33,6 +32,7 @@ return [
     'Event not found!' => '¡Evento no encontrado!',
     'Event type color' => 'Color del tipo de evento',
     'Files' => 'Archivos',
+    'Filter by types' => 'Filtrar por tipos',
     'Friday' => 'Viernes',
     'ID' => 'ID',
     'In order to add events to your profile, you have to enable the calendar module first.' => 'Para poder añadir eventos a su perfil tiene primero que activar el módulo de calendario.',
@@ -75,5 +75,6 @@ return [
     '{displayName} Birthday' => 'El Cumpleaños de {displayName}',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} te ha invitado al evento "{contentTitle}" en el espacio: {spaceName} , el cual comienza: {time}.',
     '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} acaba de invitarte al evento "{contentTitle}" en el espacio {spaceName}, empezando a las {time}.',
-    'Filter by types' => '',
+    'Download ICS' => '',
+    'The event has already ended.' => '',
 ];
