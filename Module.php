@@ -185,7 +185,7 @@ class Module extends ContentContainerModule
     /**
      * @inheritdoc
      */
-    public function getContentClasses(?ContentContainerActiveRecord $contentContainer = null): array
+    public function getContentClasses(): array
     {
         return [CalendarEntry::class];
     }
