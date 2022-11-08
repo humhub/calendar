@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.4.1 (Unreleased)
---------------------------------
+1.4.0-beta.2  (Unreleased)
+--------------------------
 - Enh #341: Don't invite disabled users
 
 
