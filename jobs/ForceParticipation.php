@@ -16,7 +16,6 @@ use humhub\modules\queue\ActiveJob;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use Yii;
 use yii\base\InvalidConfigException;
 
 class ForceParticipation extends ActiveJob
@@ -49,8 +48,10 @@ class ForceParticipation extends ActiveJob
 
         /* @var Membership[] $remainingMemberships */
         $remainingMemberships = Membership::find()
+            ->joinWith('user')
             ->where(['space_id' => $entry->content->container->id])
-            ->andWhere(['status' => Membership::STATUS_MEMBER])
+            ->andWhere(['space_membership.status' => Membership::STATUS_MEMBER])
+            ->andWhere(['user.status' => User::STATUS_ENABLED])
             ->andWhere(['NOT EXISTS', $subQuery])->all();
 
         $users = [];

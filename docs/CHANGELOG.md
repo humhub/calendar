@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.4.0-beta.2  (Unreleased)
+--------------------------
+- Enh #341: Don't invite disabled users
+
+
 1.4.0-beta.1  (November 7, 2022)
 --------------------------------
 - Enh #331: Implemented new HumHub v1.13 Content Form Support
