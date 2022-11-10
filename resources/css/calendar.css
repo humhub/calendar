@@ -638,10 +638,6 @@ tbody,
 }
 
 /* OPTIONS */
-.calendar-options .regular-checkbox:not(:checked) + .regular-checkbox-box {
-    background-color: #fff;
-}
-
 .calendar-options .calendar-selectors,
 .calendar-options .calendar-filters,
 .calendar-options .calendar-types {
@@ -721,7 +717,7 @@ tbody,
     padding: 0;
     margin: 0;
 }
-.calendar-entry-new-participants-form .form-group .regular-checkbox-container label {
+.calendar-entry-new-participants-form .form-group .checkbox label {
     padding-left: 0;
 }
 .calendar-entry-participants-filters {

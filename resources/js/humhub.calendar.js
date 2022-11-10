@@ -12,6 +12,8 @@ humhub.module('calendar', function (module, require, $) {
         var modal = require('ui.modal');
         var action = require('action');
         var Content = require('content').Content;
+        var event = require('event');
+        var StreamEntry = require('stream').StreamEntry;
 
         var Calendar = Widget.extend();
 
@@ -51,6 +53,7 @@ humhub.module('calendar', function (module, require, $) {
             });
 
             this.initTimeInput();
+            this.initSubmitAction();
         };
 
         Form.prototype.setEditMode = function (evt) {
@@ -83,6 +86,29 @@ humhub.module('calendar', function (module, require, $) {
                     $this.data('oldVal', $this.val()).val('');
                 }
             });
+        };
+
+        Form.prototype.initSubmitAction = function () {
+            modal.global.$.one('submitted', onCalEntryFormSubmitted);
+        }
+
+        var onCalEntryFormSubmitted = function (evt, response) {
+            if (response.id) {
+                modal.global.$.one('hidden.bs.modal', function () {
+                    var entry = StreamEntry.getNodeByKey(response.id);
+                    if (entry.length) {
+                        entry = new StreamEntry(entry);
+                        entry.reload();
+                    }
+                });
+            }
+
+            if (response.reloadWall) {
+                event.trigger('humhub:content:newEntry', response.content, this);
+                event.trigger('humhub:content:afterSubmit', response.content, this);
+            } else {
+                modal.global.$.one('submitted', onCalEntryFormSubmitted);
+            }
         };
 
         Form.prototype.toggleDateTime = function (evt) {

@@ -181,4 +181,12 @@ class Module extends ContentContainerModule
         }
         return [];
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentClasses(): array
+    {
+        return [CalendarEntry::class];
+    }
 }

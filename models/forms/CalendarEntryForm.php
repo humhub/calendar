@@ -112,20 +112,27 @@ class CalendarEntryForm extends Model
     public $recurrenceForm;
 
     /**
+     * @var boolean defines if the Task is created from wall stream
+     */
+    public $wall;
+
+    /**
      * Will create a new CalendarEntryForm instance with new CalendarEntry model.
      *
      * @param $contentContainer
      * @param string|null $start FullCalendar start datetime e.g.: 2020-01-01 00:00:00
      * @param string|null $end FullCalendar end datetime e.g.: 2020-01-02 00:00:00
      * @param string|null $view FullCalendar view mode, 'month'
+     * @param bool $wall True when a Calendary Entry is created/updated from wall stream
      * @return CalendarEntryForm
      * @throws Exception
      */
-    public static function createEntry($contentContainer, $start = null, $end = null, $view = null)
+    public static function createEntry($contentContainer, $start = null, $end = null, $view = null, $wall = null)
     {
         $instance = new static(['entry' => new CalendarEntry($contentContainer)]);
         $instance->updateDateRangeFromCalendar($start, $end, null, false, $view);
         $instance->setDefaults(); // Make sure default values are based on new start/end
+        $instance->wall = $wall;
         return $instance;
     }
 

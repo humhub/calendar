@@ -1,8 +1,19 @@
 Changelog
 =========
 
-1.2.6 (Unreleased)
---------------------
+1.4.0-beta.2  (Unreleased)
+--------------------------
+- Enh #341: Don't invite disabled users
+
+
+1.4.0-beta.1  (November 7, 2022)
+--------------------------------
+- Enh #331: Implemented new HumHub v1.13 Content Form Support
+
+
+1.3.0 (November 7, 2022)
+------------------------
+- Enh #328: Remove deprecated checkbox "regular" style
 - Fix #327: Don't send notifications for canceled event
 - Fix #334: Fix null in DateTime on PHP 8.1
 - Fix #340: Translation of "Delete" message string 
