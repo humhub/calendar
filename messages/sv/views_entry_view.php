@@ -7,5 +7,5 @@ return array (
   'Filter' => 'Filtrera',
   'Maybe' => 'Kanske',
   'Participants' => 'Deltagare',
-  'You are invited, please select your role:' => '',
+  'You are invited, please select your role:' => 'Du är inbjuden, välj din roll:',
 );

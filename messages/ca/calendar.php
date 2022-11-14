@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Day' => '',
+  'Day' => 'Dia',
   'List' => 'Llista',
-  'Month' => '',
-  'Today' => '',
-  'Week' => '',
-  'Year' => '',
+  'Month' => 'Mes',
+  'Today' => 'Avui',
+  'Week' => 'Setmana',
+  'Year' => 'Any',
 );
