@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Participation' => 'Participação',
-    'Reminder' => 'Lembrete',
-    'Full calendar' => '',
-];
+return array (
+  'Full calendar' => 'Calendário completo',
+  'Participation' => 'Participação',
+  'Reminder' => 'Lembrete',
+);
