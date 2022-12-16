@@ -4,6 +4,7 @@ Changelog
 1.4.0-beta.2  (Unreleased)
 --------------------------
 - Enh #341: Don't invite disabled users
+- Fix #345: Fix event creating on PHP 8.1+
 
 
 1.4.0-beta.1  (November 7, 2022)
