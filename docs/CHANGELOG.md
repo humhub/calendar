@@ -5,6 +5,7 @@ Changelog
 --------------------------
 - Enh #341: Don't invite disabled users
 - Fix #345: Fix event creating on PHP 8.1+
+- Fix #344: Fix click event on calendar cell without create permission
 
 
 1.4.0-beta.1  (November 7, 2022)
