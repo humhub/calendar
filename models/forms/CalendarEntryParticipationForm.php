@@ -8,7 +8,6 @@
 namespace humhub\modules\calendar\models\forms;
 
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\notifications\Invited;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User;
@@ -54,6 +53,11 @@ class CalendarEntryParticipationForm extends Model
     public $newParticipantStatus;
 
     /**
+     * @var integer
+     */
+    public $newForceStatus;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -77,9 +81,9 @@ class CalendarEntryParticipationForm extends Model
     public function rules()
     {
         return [
-            [['sendUpdateNotification', 'forceJoin', 'newParticipantStatus'], 'integer'],
+            [['sendUpdateNotification', 'forceJoin', 'newParticipantStatus', 'newForceStatus'], 'integer'],
             [['newParticipants'], 'safe'],
-            [['newParticipantStatus'], 'in', 'range' => array_keys(ParticipantItem::getStatuses($this->entry))],
+            [['newParticipantStatus', 'newForceStatus'], 'in', 'range' => array_keys(ParticipantItem::getStatuses($this->entry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE))],
         ];
     }
 
@@ -90,9 +94,6 @@ class CalendarEntryParticipationForm extends Model
     {
         return [
             'sendUpdateNotification' => Yii::t('CalendarModule.base', 'Notify participants about changes'),
-            'forceJoin' => ($this->entry->isNewRecord)
-                ? Yii::t('CalendarModule.base', 'Add all space members to this event')
-                : Yii::t('CalendarModule.base', 'Invite all Space members'),
         ];
     }
 
@@ -131,7 +132,7 @@ class CalendarEntryParticipationForm extends Model
             $this->addParticipants();
 
             if ($this->forceJoin) {
-                $this->entry->participation->addAllUsers(CalendarEntryParticipation::PARTICIPATION_STATUS_INVITED);
+                $this->entry->participation->addAllUsers($this->newForceStatus);
             }
 
             return true;
