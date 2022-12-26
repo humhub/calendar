@@ -6,9 +6,9 @@ use DateTime;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use Yii;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -27,6 +27,7 @@ use humhub\modules\calendar\widgets\ReminderLink;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\helpers\Url;
+use Yii;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
 
@@ -88,7 +89,8 @@ class Events
     public static function onTopMenuInit($event)
     {
         try {
-            if (SnippetModuleSettings::instance()->showGlobalCalendarItems()) {
+            if (SnippetModuleSettings::instance()->showGlobalCalendarItems() &&
+                MenuSettings::instance()->show) {
                 $event->sender->addItem([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
                     'url' => Url::toGlobalCalendar(),
@@ -96,7 +98,7 @@ class Events
                     'isActive' => (Yii::$app->controller->module
                         && Yii::$app->controller->module->id == 'calendar'
                         && Yii::$app->controller->id == 'global'),
-                    'sortOrder' => 300,
+                    'sortOrder' => MenuSettings::instance()->sortOrder,
                 ]);
             }
         } catch (\Throwable $e) {

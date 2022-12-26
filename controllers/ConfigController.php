@@ -8,11 +8,8 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\calendar\models\SnippetModuleSettings;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
 use Yii;
 
 class ConfigController extends AbstractConfigController
@@ -43,6 +40,19 @@ class ConfigController extends AbstractConfigController
         }
 
         return $this->render('snippet', [
+            'model' => $model
+        ]);
+    }
+
+    public function actionMenu()
+    {
+        $model = new MenuSettings();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('menu', [
             'model' => $model
         ]);
     }
