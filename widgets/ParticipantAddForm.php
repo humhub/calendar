@@ -45,6 +45,7 @@ class ParticipantAddForm extends Widget
             $this->state = Yii::$app->request->get('state', Yii::$app->request->post('state', CalendarEntryParticipant::PARTICIPATION_STATE_INVITED));
         }
         $this->model->newParticipantStatus = $this->state;
+        $this->model->newForceStatus = CalendarEntryParticipant::PARTICIPATION_STATE_INVITED;
     }
 
     /**
@@ -67,7 +68,8 @@ class ParticipantAddForm extends Widget
             'form' => $this->form,
             'model' => $this->model,
             'searchUsersUrl' => $searchUsersUrl,
-            'addParticipantsUrl' => $this->model->entry->content->container->createUrl('/calendar/entry/add-participants')
+            'addParticipantsUrl' => $this->model->entry->content->container->createUrl('/calendar/entry/add-participants'),
+            'statuses' => ParticipantItem::getStatuses($this->model->entry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE)
         ]);
     }
 }
