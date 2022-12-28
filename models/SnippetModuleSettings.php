@@ -108,7 +108,6 @@ class SnippetModuleSettings extends Model
             'upcomingEventsSnippetShow' => Yii::t('CalendarModule.config', "Show snippet"),
             'upcomingEventsSnippetIncludeBirthday' => Yii::t('CalendarModule.config', "Include birthdays to dashboard snippet"),
             'upcomingEventsSnippetDuration' => Yii::t('CalendarModule.config', 'Interval of upcoming events'),
-            'upcomingEventsSnippetSortOrder' => Yii::t('CalendarModule.config', 'Sort order'),
             'upcomingEventsSnippetMaxItems' => Yii::t('CalendarModule.config', 'Max event items'),
             'showIfInstalled' => Yii::t('CalendarModule.config', 'Only show top menu item and snippet if the module is installed in the users profile'),
         ];

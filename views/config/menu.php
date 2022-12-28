@@ -7,6 +7,7 @@
 
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
+use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
 
@@ -24,7 +25,7 @@ use yii\widgets\ActiveForm;
         <hr>
 
         <?= $form->field($model, 'show')->checkbox(); ?>
-        <?= $form->field($model, 'sortOrder')->input('number', ['min' => 0]) ?>
+        <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class) ?>
 
         <?= Button::save()->submit() ?>
         <?php ActiveForm::end(); ?>

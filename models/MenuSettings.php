@@ -57,7 +57,6 @@ class MenuSettings extends Model
     {
         return [
             'show' => Yii::t('CalendarModule.config', 'Show menu'),
-            'sortOrder' => Yii::t('CalendarModule.config', 'Sort order'),
         ];
     }
 

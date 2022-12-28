@@ -9,6 +9,7 @@
 /* @var $model \humhub\modules\calendar\models\SnippetModuleSettings */
 
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
+use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
 ?>
@@ -34,7 +35,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'upcomingEventsSnippetIncludeBirthday')->checkbox(); ?>
         <?= $form->field($model, 'upcomingEventsSnippetDuration')->dropDownList($model->getDurationItems()); ?>
         <?= $form->field($model, 'upcomingEventsSnippetMaxItems')->input('number', ['min' => 1, 'max' => 30]) ?>
-        <?= $form->field($model, 'upcomingEventsSnippetSortOrder')->input('number', ['min' => 0]) ?>
+        <?= $form->field($model, 'upcomingEventsSnippetSortOrder')->widget(SortOrderField::class) ?>
         
         <hr>
 
