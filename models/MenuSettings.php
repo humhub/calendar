@@ -56,7 +56,7 @@ class MenuSettings extends Model
     public function attributeLabels()
     {
         return [
-            'show' => Yii::t('CalendarModule.config', 'Add \'Calendar\' to the main navigation'),
+            'show' => Yii::t('CalendarModule.config', 'Add \'Calendar\' to the main menu'),
         ];
     }
 
