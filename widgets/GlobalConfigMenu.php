@@ -51,6 +51,12 @@ class GlobalConfigMenu extends SettingsTabs
                 'active' => $this->isCurrentRoute('calendar', 'config', 'snippet'),
                 'sortOrder' => 30
             ],
+            [
+                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Menu'),
+                'url' =>  Url::toConfigMenu(),
+                'active' => $this->isCurrentRoute('calendar', 'config', 'menu'),
+                'sortOrder' => 40
+            ],
         ];
 
         if(!empty($calendarService->getCalendarItemTypes())) {

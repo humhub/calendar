@@ -1,11 +1,12 @@
 Changelog
 =========
 
-1.4.0-beta.2  (Unreleased)
+1.4.0  (December 29, 2022)
 --------------------------
 - Enh #341: Don't invite disabled users
 - Fix #345: Fix event creating on PHP 8.1+
 - Fix #344: Fix click event on calendar cell without create permission
+- Fix #323: Menu configuration
 - Enh #333: Implement status selector for adding all space members
 
 

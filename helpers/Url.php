@@ -74,6 +74,11 @@ class Url extends BaseUrl
         return static::toRoute(['/calendar/config/snippet']);
     }
 
+    public static function toConfigMenu()
+    {
+        return static::toRoute(['/calendar/config/menu']);
+    }
+
     public static function toCalendar(ContentContainerActiveRecord $container = null)
     {
         if($container) {
