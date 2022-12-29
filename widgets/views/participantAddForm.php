@@ -6,7 +6,6 @@
  */
 
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
-use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
@@ -16,6 +15,7 @@ use yii\helpers\Html;
 /* @var CalendarEntryParticipationForm $model */
 /* @var string $searchUsersUrl */
 /* @var string $addParticipantsUrl */
+/* @var array $statuses */
 ?>
 <?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form']) ?>
     <div class="media">
@@ -29,7 +29,7 @@ use yii\helpers\Html;
             ]) ?>
         </div>
         <div class="media-body">
-            <?= $form->field($model, 'newParticipantStatus')->dropDownList(ParticipantItem::getStatuses($model->entry))->label(false) ?>
+            <?= $form->field($model, 'newParticipantStatus')->dropDownList($statuses)->label(false) ?>
         </div>
         <div class="media-body">
             <?= Button::info()->sm()
@@ -38,7 +38,10 @@ use yii\helpers\Html;
         </div>
     </div>
     <?php if ($model->entry->participation->canAddAll()) : ?>
-        <?= $form->field($model, 'forceJoin')->checkbox() ?>
+        <?= $form->field($model, 'forceJoin')->checkbox()
+            ->label(Yii::t('CalendarModule.base', 'Add all Space members with status {status}', [
+                'status' => $form->field($model, 'newForceStatus')->dropDownList($statuses)->label(false)
+            ])) ?>
     <?php endif; ?>
 <?= Html::endTag('div') ?>
 

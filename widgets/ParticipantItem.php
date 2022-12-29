@@ -45,9 +45,10 @@ class ParticipantItem extends Widget
      *
      * @param CalendarEntry|null $entry The entry is used to restrict statuses depending on Entry settings or permissions of current User,
      *                                  null - to don't restrict statuses
+     * @param array|int|null $exclude What statuses should be excluded
      * @return array
      */
-    public static function getStatuses(?CalendarEntry $entry = null): array
+    public static function getStatuses(?CalendarEntry $entry = null, $exclude = null): array
     {
         if ($entry && $entry->participation_mode == CalendarEntry::PARTICIPATION_MODE_INVITE) {
             $statuses = [];
@@ -61,6 +62,17 @@ class ParticipantItem extends Widget
 
         if (!$entry || $entry->canInvite()) {
             $statuses[CalendarEntryParticipant::PARTICIPATION_STATE_INVITED] = Yii::t('CalendarModule.views_entry_edit', 'Invited');
+        }
+
+        if (!empty($exclude) && !empty($statuses)) {
+            if (!is_array($exclude)) {
+                $exclude = [$exclude];
+            }
+            foreach ($exclude as $excludeStatus) {
+                if (isset($statuses[$excludeStatus])) {
+                    unset($statuses[$excludeStatus]);
+                }
+            }
         }
 
         return $statuses;
