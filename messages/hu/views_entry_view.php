@@ -7,5 +7,5 @@ return array (
   'Filter' => 'Szűrés',
   'Maybe' => 'Talán',
   'Participants' => 'Résztvevők',
-  'You are invited, please select your role:' => '',
+  'You are invited, please select your role:' => 'Önt meghívták, kérjük, válassza ki a szerepét:',
 );

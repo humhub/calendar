@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Participants' => 'Résztvevők',
-    ':count Attending' => '',
-    ':count Declined' => '',
-    ':count Invited' => '',
-    ':count Undecided' => '',
-];
+return array (
+  ':count Attending' => ':count Részt vesz',
+  ':count Declined' => ':count Elutasítva',
+  ':count Invited' => ':count Meghívva',
+  ':count Undecided' => ':count Még nem döntött',
+  'Participants' => 'Résztvevők',
+);
