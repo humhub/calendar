@@ -24,9 +24,9 @@ return [
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Näytä vain ylävalikkokohta ja katkelmat, jos laajennus on asennettu käyttäjän profiiliin',
     'Reset' => 'Tyhjennä',
     'Show snippet' => 'Näytä widget',
-    'Sort order' => 'Lajittelujärjestys',
     'There are currently no event types available.' => 'Tapahtumien tyypit eivät ole tällä hetkellä käytettävissä.',
     'Upcoming events snippet' => 'Tulevat tapahtumat',
+    'Add \'Calendar\' to the main menu' => '',
     'Calendar Configuration' => '',
     'Calendar default view mode settings' => '',
     'Default participation settings' => '',
@@ -34,5 +34,6 @@ return [
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Here you can manage and disable different calendars.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'Menu settings' => '',
     'View mode' => '',
 ];

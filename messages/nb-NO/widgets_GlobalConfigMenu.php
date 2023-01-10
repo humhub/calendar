@@ -5,4 +5,5 @@ return [
     'Event Types' => 'Aktivitetstyper',
     'Snippet' => 'Snippet',
     'Calendars' => '',
+    'Menu' => '',
 ];

@@ -4,7 +4,6 @@ return [
     '<strong>Add</strong> profile calendar' => '<strong>Adicionar</strong> calendário pessoal',
     '<strong>Choose</strong> target calendar' => '<strong>Escolher</strong> calendário alvo',
     '<strong>Reminder</strong> settings' => '<strong>Definições</strong> do lembrete',
-    'Add all space members to this event' => 'Convidar todos os membros deste espaço para este evento',
     'Add participants...' => 'Adicionar participantes...',
     'Added: {users}' => 'Adicionado: {users}',
     'Additional Information for participants' => 'Informação adicional para os participantes',
@@ -40,7 +39,6 @@ return [
     'Invalid date or time format!' => 'Formato de data ou hora inválido!',
     'Invalid event type id selected.' => 'Selecionado id de tipo de evento inválido.',
     'Invite' => 'Convidar',
-    'Invite all Space members' => 'Convidar todos os membros do Espaço',
     'Invited: {users}' => 'Convidados: {users}',
     'Location' => 'Local',
     'Maximum number of participants' => 'Número máximo de participantes',
@@ -75,6 +73,7 @@ return [
     '{displayName} Birthday' => 'Aniversário de {displayName}',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} adicionou-te ao evento "{contentTitle}" no espaço {spaceName} com início às {time}.',
     '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} convidou-te para o evento "{contentTitle}" no espaço {spaceName} que terá início às {time}.',
+    'Add all Space members with status {status}' => '',
     'Filter by types' => '',
     'The event has already ended.' => '',
 ];

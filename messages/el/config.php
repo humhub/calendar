@@ -28,11 +28,12 @@ return [
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Εμφανίζεται μόνο το στοιχείο του επάνω μενού και το απόσπασμα εάν η ενότητα είναι εγκατεστημένη στο προφίλ των χρηστών',
     'Reset' => 'Επαναφορά',
     'Show snippet' => 'Εμφάνιση αποσπάσματος',
-    'Sort order' => 'Σειρά ταξινόμησης',
     'There are currently no event types available.' => 'Προς το παρόν δεν υπάρχουν διαθέσιμοι τύποι εκδηλώσεων.',
     'Upcoming events snippet' => 'Απόσπασμα προσεχών εκδηλώσεων',
+    'Add \'Calendar\' to the main menu' => '',
     'Calendar default view mode settings' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
+    'Menu settings' => '',
     'View mode' => '',
 ];

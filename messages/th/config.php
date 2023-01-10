@@ -28,11 +28,12 @@ return [
     'Only show top menu item and snippet if the module is installed in the users profile' => 'แสดงรายการเมนูด้านบนและตัวอย่างเท่านั้นหากติดตั้งโมดูลในโปรไฟล์ผู้ใช้',
     'Reset' => 'รีเซ็ต',
     'Show snippet' => 'แสดงตัวอย่าง',
-    'Sort order' => 'เรียงลำดับ',
     'There are currently no event types available.' => 'ขณะนี้ไม่มีประเภทเหตุการณ์ที่พร้อมใช้งาน',
     'Upcoming events snippet' => 'ตัวอย่างเหตุการณ์ที่จะเกิดขึ้น',
+    'Add \'Calendar\' to the main menu' => '',
     'Calendar default view mode settings' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
+    'Menu settings' => '',
     'View mode' => '',
 ];

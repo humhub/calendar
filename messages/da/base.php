@@ -2,7 +2,6 @@
 
 return [
     '<strong>Choose</strong> target calendar' => '<strong>Vælg</strong> hvilken kalender',
-    'Add all space members to this event' => 'Tilføj alle medlemmer af siden til dette event',
     'Adds a calendar for private or public events to your profile and main menu.' => 'Tilføjer en kalender for private eller offentlige events til din profil og mainmenu.',
     'Adds an event calendar to this space.' => 'Tilføjer en event kalender til denne side',
     'All Day' => 'Hele dagen',
@@ -42,6 +41,7 @@ return [
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} har netop tilføjet dig til eventet "{contentTitle}" på siden {spaceName}, som starter {time}.',
     '<strong>Add</strong> profile calendar' => '',
     '<strong>Reminder</strong> settings' => '',
+    'Add all Space members with status {status}' => '',
     'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
@@ -55,7 +55,6 @@ return [
     'Filter by types' => '',
     'Friday' => '',
     'Invalid date or time format!' => '',
-    'Invite all Space members' => '',
     'Invited: {users}' => '',
     'Location' => '',
     'Mode' => '',

@@ -3,7 +3,6 @@
 return [
     '<strong>Add</strong> profile calendar' => '<strong>Opprett</strong> profil kalender',
     '<strong>Choose</strong> target calendar' => '<strong>Velg</strong> mål kalender',
-    'Add all space members to this event' => 'Legg til alle medlemmene i gruppen til dette arrangementet',
     'Adds a calendar for private or public events to your profile and main menu.' => 'Legger til en kalender for private eller offentlige arrangement til din profil og hovedmeny.',
     'Adds an event calendar to this space.' => 'Legger til en kalender i denne gruppen.',
     'All Day' => 'Hele dagen',
@@ -43,6 +42,7 @@ return [
     '{displayName} Birthday' => '{displayName} Bursdag',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} la deg til arrangementet «{contentTitle}» i gruppen {spaceName} som starter {time}.',
     '<strong>Reminder</strong> settings' => '',
+    'Add all Space members with status {status}' => '',
     'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
@@ -56,7 +56,6 @@ return [
     'Filter by types' => '',
     'Friday' => '',
     'Invalid date or time format!' => '',
-    'Invite all Space members' => '',
     'Invited: {users}' => '',
     'Mode' => '',
     'Monday' => '',

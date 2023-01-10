@@ -3,7 +3,6 @@
 return [
     '<strong>Add</strong> profile calendar' => '<strong>Lisää</strong> kalenteri',
     '<strong>Choose</strong> target calendar' => '<strong>Valitse</strong> kalenteri',
-    'Add all space members to this event' => 'Lisää kaikki sivun jäsenet tähän tapahtumaan',
     'Adds a calendar for private or public events to your profile and main menu.' => 'Lisää kalenteri yksityisiin tai julkisiin tapahtumiin profiiliisi ja päävalikkoosi.',
     'Adds an event calendar to this space.' => 'Lisää tapahtumakalenteri tähän tilaan.',
     'All Day' => 'Koko päivä',
@@ -51,6 +50,7 @@ return [
     '{displayName} Birthday' => '{displayName} Syntymäpäivä',
     '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} lisäsi sinut tapahtumaan "{contentTitle} {time}" sivulla {spaceName}',
     '<strong>Reminder</strong> settings' => '',
+    'Add all Space members with status {status}' => '',
     'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
@@ -63,7 +63,6 @@ return [
     'Enable Reminder' => '',
     'Filter by types' => '',
     'Invalid date or time format!' => '',
-    'Invite all Space members' => '',
     'Invited: {users}' => '',
     'Mode' => '',
     'No new participants were added.' => '',

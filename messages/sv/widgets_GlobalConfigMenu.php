@@ -1,7 +1,9 @@
 <?php
-return array (
-  'Calendars' => 'Kalendrar',
-  'Defaults' => 'Standardinställning',
-  'Event Types' => 'Aktivitetstyper',
-  'Snippet' => 'Snippet',
-);
+
+return [
+    'Calendars' => 'Kalendrar',
+    'Defaults' => 'Standardinställning',
+    'Event Types' => 'Aktivitetstyper',
+    'Snippet' => 'Snippet',
+    'Menu' => '',
+];

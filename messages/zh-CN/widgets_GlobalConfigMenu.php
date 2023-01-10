@@ -4,5 +4,6 @@ return [
     'Defaults' => '默认',
     'Calendars' => '',
     'Event Types' => '',
+    'Menu' => '',
     'Snippet' => '',
 ];

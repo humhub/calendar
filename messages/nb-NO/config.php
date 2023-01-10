@@ -24,9 +24,9 @@ return [
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Vis kun øverste menypunkt og snippet hvis modulen er installert på brukerens profil',
     'Reset' => 'Tilbakestill',
     'Show snippet' => 'Vis snippet',
-    'Sort order' => 'Sorteringsrekkefølge',
     'There are currently no event types available.' => 'Det er ingen aktivitetstyper tilgjengelig',
     'Upcoming events snippet' => 'Snippet for kommende aktiviteter',
+    'Add \'Calendar\' to the main menu' => '',
     'Calendar Configuration' => '',
     'Calendar default view mode settings' => '',
     'Default participation settings' => '',
@@ -34,5 +34,6 @@ return [
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Here you can manage and disable different calendars.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'Menu settings' => '',
     'View mode' => '',
 ];

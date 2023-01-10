@@ -28,11 +28,12 @@ return [
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Só mostrar o item do menu do topo e excerto se o módulo estiver instalado no perfil da pessoa',
     'Reset' => 'Restabelecer padrão',
     'Show snippet' => 'Mostrar excerto',
-    'Sort order' => 'Ordenação',
     'There are currently no event types available.' => 'De momento, não há tipos de eventos disponíveis.',
     'Upcoming events snippet' => 'Excerto com os próximos eventos',
+    'Add \'Calendar\' to the main menu' => '',
     'Calendar default view mode settings' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
+    'Menu settings' => '',
     'View mode' => '',
 ];

@@ -1,7 +1,9 @@
 <?php
-return array (
-  'Calendars' => 'Kalendari',
-  'Defaults' => 'Zadano',
-  'Event Types' => 'Vrste događaja',
-  'Snippet' => 'Isječak',
-);
+
+return [
+    'Calendars' => 'Kalendari',
+    'Defaults' => 'Zadano',
+    'Event Types' => 'Vrste događaja',
+    'Snippet' => 'Isječak',
+    'Menu' => '',
+];

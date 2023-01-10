@@ -5,4 +5,5 @@ return [
     'Event Types' => 'Taphtumatyypit',
     'Snippet' => 'Laatikko',
     'Calendars' => '',
+    'Menu' => '',
 ];

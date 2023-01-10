@@ -28,11 +28,12 @@ return [
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Показване на горния елемент от менюто и фрагмента само ако модулът е инсталиран в потребителския профил',
     'Reset' => 'Нулиране',
     'Show snippet' => 'Показване на фрагмент',
-    'Sort order' => 'Сортирай ред',
     'There are currently no event types available.' => 'Понастоящем няма налични типове събития.',
     'Upcoming events snippet' => 'Фрагмент за предстоящи събития',
+    'Add \'Calendar\' to the main menu' => '',
     'Calendar default view mode settings' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
+    'Menu settings' => '',
     'View mode' => '',
 ];

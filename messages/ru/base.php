@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'Add all space members to this event' => 'Добавить всех участников пространства в событие',
     'Adds a calendar for private or public events to your profile and main menu.' => 'Добавляет календарь для лчиных или публичных событий в ваш профиль или в главное меню.',
     'Adds an event calendar to this space.' => 'Добавляет календарь к этому Пространству',
     'All Day' => 'Весь день',
@@ -34,6 +33,7 @@ return [
     '<strong>Add</strong> profile calendar' => '',
     '<strong>Choose</strong> target calendar' => '',
     '<strong>Reminder</strong> settings' => '',
+    'Add all Space members with status {status}' => '',
     'Add participants...' => '',
     'Added: {users}' => '',
     'Additional Information for participants' => '',
@@ -51,7 +51,6 @@ return [
     'Interested' => '',
     'Invalid date or time format!' => '',
     'Invalid event type id selected.' => '',
-    'Invite all Space members' => '',
     'Invited: {users}' => '',
     'Mode' => '',
     'Monday' => '',

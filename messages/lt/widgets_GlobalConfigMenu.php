@@ -4,5 +4,6 @@ return [
     'Defaults' => 'Numatytieji',
     'Calendars' => '',
     'Event Types' => '',
+    'Menu' => '',
     'Snippet' => '',
 ];
