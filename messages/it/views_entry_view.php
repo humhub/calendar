@@ -7,5 +7,5 @@ return array (
   'Filter' => 'Filtro',
   'Maybe' => 'Forse',
   'Participants' => 'Partecipanti',
-  'You are invited, please select your role:' => '',
+  'You are invited, please select your role:' => 'Sei invitato, seleziona il tuo ruolo:',
 );

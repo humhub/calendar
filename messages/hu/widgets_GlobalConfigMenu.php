@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Calendars' => 'Naptárak',
-    'Defaults' => 'Alapértelmezett',
-    'Event Types' => 'Eseménytípusok',
-    'Snippet' => 'Kódrészlet (snippet)',
-    'Menu' => '',
-];
+return array (
+  'Calendars' => 'Naptárak',
+  'Defaults' => 'Alapértelmezett',
+  'Event Types' => 'Eseménytípusok',
+  'Menu' => 'Menü',
+  'Snippet' => 'Kódrészlet (snippet)',
+);
