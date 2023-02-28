@@ -16,7 +16,7 @@ return array (
   'Only by Invite' => '',
   'Participants' => 'Участники',
   'Recurrence' => '',
-  'Reminder' => '',
+  'Reminder' => 'Напоминание',
   'Select event type...' => '',
   'Settings' => 'Настройки',
   'Title' => 'Наименование',

@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Defaults' => '既定',
-    'Calendars' => '',
-    'Event Types' => '',
-    'Menu' => '',
-    'Snippet' => '',
-];
+return array (
+  'Calendars' => '',
+  'Defaults' => '既定',
+  'Event Types' => '',
+  'Menu' => 'メニュー',
+  'Snippet' => '',
+);

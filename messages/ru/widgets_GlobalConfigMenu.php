@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Defaults' => 'По-умолчанию',
-    'Calendars' => '',
-    'Event Types' => '',
-    'Menu' => '',
-    'Snippet' => '',
-];
+return array (
+  'Calendars' => '',
+  'Defaults' => 'По-умолчанию',
+  'Event Types' => '',
+  'Menu' => 'Меню',
+  'Snippet' => '',
+);

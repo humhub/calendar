@@ -3,7 +3,7 @@ return array (
   'Day' => '',
   'List' => 'Список',
   'Month' => '',
-  'Today' => '',
+  'Today' => 'Сегодня',
   'Week' => '',
   'Year' => '',
 );

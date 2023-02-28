@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Defaults' => 'Oletukset',
-    'Event Types' => 'Taphtumatyypit',
-    'Snippet' => 'Laatikko',
-    'Calendars' => '',
-    'Menu' => '',
-];
+return array (
+  'Calendars' => '',
+  'Defaults' => 'Oletukset',
+  'Event Types' => 'Taphtumatyypit',
+  'Menu' => 'Valikko',
+  'Snippet' => 'Laatikko',
+);

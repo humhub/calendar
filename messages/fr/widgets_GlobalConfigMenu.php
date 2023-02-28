@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Calendars' => 'Calendriers',
-    'Defaults' => 'Général',
-    'Event Types' => 'Types',
-    'Snippet' => 'Extrait',
-    'Menu' => '',
-];
+return array (
+  'Calendars' => 'Calendriers',
+  'Defaults' => 'Général',
+  'Event Types' => 'Types',
+  'Menu' => 'Menu',
+  'Snippet' => 'Extrait',
+);

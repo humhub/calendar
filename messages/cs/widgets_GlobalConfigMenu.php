@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Defaults' => 'Výchozí',
-    'Calendars' => '',
-    'Event Types' => '',
-    'Menu' => '',
-    'Snippet' => '',
-];
+return array (
+  'Calendars' => '',
+  'Defaults' => 'Výchozí',
+  'Event Types' => '',
+  'Menu' => 'Menu',
+  'Snippet' => '',
+);

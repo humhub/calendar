@@ -18,7 +18,7 @@ return array (
   'Recurrence' => '',
   'Reminder' => '',
   'Select event type...' => '',
-  'Settings' => '',
+  'Settings' => 'Anviwònman',
   'Title' => 'Tit',
   'Undecided' => '',
   '{count} Participants' => '',

@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Defaults' => 'Varsayılan',
-    'Event Types' => 'Etkinlik Türleri',
-    'Calendars' => '',
-    'Menu' => '',
-    'Snippet' => '',
-];
+return array (
+  'Calendars' => '',
+  'Defaults' => 'Varsayılan',
+  'Event Types' => 'Etkinlik Türleri',
+  'Menu' => 'Menü',
+  'Snippet' => '',
+);

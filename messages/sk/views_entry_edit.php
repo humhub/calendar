@@ -18,7 +18,7 @@ return array (
   'Recurrence' => '',
   'Reminder' => '',
   'Select event type...' => '',
-  'Settings' => '',
+  'Settings' => 'nastavenie',
   'Title' => '제목',
   'Undecided' => '',
   '{count} Participants' => '',

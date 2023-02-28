@@ -1,7 +1,7 @@
 <?php
 return array (
   'Additional information' => '',
-  'All' => '',
+  'All' => 'Semua',
   'Attend' => 'Hadir',
   'Decline' => 'Batal',
   'Filter' => 'Filter',
