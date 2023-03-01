@@ -1,9 +1,8 @@
 <?php
-
-return [
-    ':count Attending' => '',
-    ':count Declined' => '',
-    ':count Invited' => '',
-    ':count Undecided' => '',
-    'Participants' => '',
-];
+return array (
+  ':count Attending' => '',
+  ':count Declined' => '',
+  ':count Invited' => '',
+  ':count Undecided' => '',
+  'Participants' => '參與者',
+);

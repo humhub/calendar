@@ -14,7 +14,7 @@ return array (
   'Next' => '下一個',
   'No participants' => '',
   'Only by Invite' => '',
-  'Participants' => '',
+  'Participants' => '參與者',
   'Recurrence' => '',
   'Reminder' => '',
   'Select event type...' => '',
