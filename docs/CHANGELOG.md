@@ -3,7 +3,7 @@ Changelog
 
 1.5.0  (Unreleased)
 --------------------------
-- Fix: Remove recurrent entries hardly
+- Fix #361: Remove recurrent entries hardly
 
 
 1.4.0  (December 29, 2022)
