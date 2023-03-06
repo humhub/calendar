@@ -385,6 +385,18 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         return parent::beforeDelete();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function delete()
+    {
+        if (RecurrenceHelper::isRecurrent($this)) {
+            return parent::hardDelete();
+        }
+
+        return parent::delete();
+    }
+
     public function setExdate($exdateStr)
     {
         $this->exdate = $exdateStr;

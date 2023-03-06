@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.5.0  (Unreleased)
+--------------------------
+- Fix: Remove recurrent entries hardly
+
+
 1.4.0  (December 29, 2022)
 --------------------------
 - Enh #341: Don't invite disabled users
