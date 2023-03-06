@@ -63,7 +63,7 @@ class CalendarController extends BaseContentController
         $calendarEntryForm = CalendarEntryForm::createEntry($container);
 
         if ($this->saveCalendarEntry($calendarEntryForm)) {
-            return $this->returnContentDefinition($calendarEntryForm->entry);
+            return $this->returnContentDefinition(CalendarEntry::findOne($calendarEntryForm->entry->id));
         }
 
         if ($calendarEntryForm->hasErrors() || $calendarEntryForm->entry->hasErrors()) {
@@ -90,7 +90,7 @@ class CalendarController extends BaseContentController
         }
 
         if ($this->saveCalendarEntry($calendarEntryForm)) {
-            return $this->returnContentDefinition($calendarEntryForm->entry);
+            return $this->returnContentDefinition(CalendarEntry::findOne($calendarEntryForm->entry->id));
         }
 
         if ($calendarEntryForm->hasErrors() || $calendarEntryForm->entry->hasErrors()) {
