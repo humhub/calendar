@@ -4,7 +4,7 @@ return array (
   '(global)' => '(allgemein)',
   '<strong>Calendar</strong> module configuration' => '<strong>Kalender</strong>-Modul-Einstellungen',
   '<strong>Confirm</strong> Deletion' => 'Löschen <strong>bestätigen</strong>',
-  'Add \'Calendar\' to the main menu' => '',
+  'Add \'Calendar\' to the main menu' => 'Füge "Kalender" zur Hauptnavigation hinzu',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Fügt ein Widget mit anstehenden Terminen zur Übersicht deiner Benutzer hinzu.',
   'Calendar Configuration' => 'Kalenderkonfiguration',
   'Calendar default view mode settings' => 'Standardansicht für Kalender',
