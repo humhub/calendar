@@ -9,7 +9,6 @@ use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\form\widgets\ColorPicker;
 use humhub\modules\content\widgets\ContentTagDropDown;
 use humhub\modules\ui\form\widgets\ContentVisibilitySelect;
-use humhub\modules\ui\form\widgets\TimePicker;
 use humhub\widgets\ActiveForm;
 use humhub\widgets\TimeZoneDropdownAddition;
 use yii\jui\DatePicker;
@@ -43,7 +42,7 @@ use yii\jui\DatePicker;
             <?= $form->field($calendarEntryForm, 'start_date')->widget(DatePicker::class, ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]) ?>
         </div>
         <div class="col-md-6 timeField" <?= !$calendarEntryForm->showTimeFields() ? 'style="opacity:0.2"' : '' ?>>
-            <?= $form->field($calendarEntryForm, 'start_time')->widget(TimePicker::class, ['disabled' => $calendarEntryForm->entry->all_day]); ?>
+            <?= $form->field($calendarEntryForm, 'start_time')->input('time', ['disabled' => $calendarEntryForm->entry->all_day]) ?>
         </div>
     </div>
 
@@ -52,7 +51,7 @@ use yii\jui\DatePicker;
             <?= $form->field($calendarEntryForm, 'end_date')->widget(DatePicker::class, ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]) ?>
         </div>
         <div class="col-md-6 timeField" <?= !$calendarEntryForm->showTimeFields() ? 'style="opacity:0.2"' : '' ?>>
-            <?= $form->field($calendarEntryForm, 'end_time')->widget(TimePicker::class, ['disabled' => $calendarEntryForm->entry->all_day]); ?>
+            <?= $form->field($calendarEntryForm, 'end_time')->input('time', ['disabled' => $calendarEntryForm->entry->all_day]) ?>
         </div>
     </div>
 
