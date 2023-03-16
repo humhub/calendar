@@ -132,6 +132,9 @@ html .fc,
     border: 1px solid #eeeeee;
 }
 
+td.fc-today {
+    background: var(--background-color-highlight);
+}
 .fc-unthemed td.fc-today, .fc-state-highlight { /* <td> today cell */ /* TODO: add .fc-today to <th> */
     background: #f6fdfc !important;
 }
