@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.5.0  (Unreleased)
+--------------------------
+- Enh #365: Use CSS theme var `--background-color-highlight` for today
+
+
 1.4.0  (December 29, 2022)
 --------------------------
 - Enh #341: Don't invite disabled users
