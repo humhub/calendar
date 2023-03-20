@@ -100,7 +100,7 @@ class RecurrenceHelper
 
     public static function recurrenceIdToDate($recurrenceId, $format = CalendarUtils::DB_DATE_FORMAT)
     {
-        $date = DateTime::createFromFormat(static::ICAL_TIME_FORMAT, $recurrenceId);
+        $date = DateTime::createFromFormat(static::ICAL_TIME_FORMAT, $recurrenceId ?? '');
         if($format) {
             return $date->format($format);
         }
