@@ -41,7 +41,8 @@ class CalendarController extends BaseContentController
 
     private function saveCalendarEntry(CalendarEntryForm $calendarEntryForm): bool
     {
-        $data = $this->prepareRequestParams(Yii::$app->request->getBodyParams(), 'CalendarEntryForm', 'CalendarEntry');
+        $data = Yii::$app->request->bodyParams;
+
         return $calendarEntryForm->load($data) &&
             $calendarEntryForm->save() &&
             (!method_exists($this, 'updateContent') || $this->updateContent($calendarEntryForm->entry, $data));
