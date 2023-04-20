@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.4.1 (Unreleased)
+------------------
+- Fix #368: Fixed ignoring of `all-day` param in REST
+
 1.4.0  (December 29, 2022)
 --------------------------
 - Enh #341: Don't invite disabled users
