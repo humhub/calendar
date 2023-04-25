@@ -375,6 +375,40 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     }
 
     /**
+     * @inheritdoc
+     */
+    public function afterSoftDelete()
+    {
+        parent::afterSoftDelete();
+
+        // Run soft deletion of all child entries on soft delete of root entry
+        if (!$this->getRecurrenceRootId() && $this->isRecurringEnabled()) {
+            foreach ($this->getRecurrenceInstances()->all() as $recurrenceEntry) {
+                /* @var CalendarEntry $recurrenceEntry */
+                $recurrenceEntry->softDelete();
+            }
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterStateChange(?int $newState, ?int $previousState): void
+    {
+        parent::afterStateChange($newState, $previousState);
+
+        // Restore root entry if a recurrence entry is restored
+        if ($this->getRecurrenceRootId() && $this->isRecurringEnabled() &&
+            $newState === Content::STATE_PUBLISHED && $previousState === Content::STATE_DELETED) {
+            $root = $this->getRecurrenceRoot();
+            if ($root instanceof CalendarEntry && $root->content->state != $newState) {
+                $root->content->setState($newState);
+                $root->content->save();
+            }
+        }
+    }
+
+    /**
      * @return mixed
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
@@ -383,6 +417,20 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         $this->participation->deleteAll();
         return parent::beforeDelete();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function delete()
+    {
+        if (RecurrenceHelper::isRecurrentInstance($this)) {
+            // Recurrent entry should be deleted hardly, because
+            // the column `exdate` should be filled for the root entry after deletion
+            return $this->hardDelete();
+        }
+
+        return parent::delete();
     }
 
     public function setExdate($exdateStr)
@@ -695,7 +743,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         if(empty($this->getCalendarViewUrl())) {
             return static::VIEW_MODE_REDIRECT;
         }
-        
+
         return static::VIEW_MODE_MODAL;
     }
 

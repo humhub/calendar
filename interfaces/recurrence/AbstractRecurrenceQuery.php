@@ -209,7 +209,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
         if(RecurrenceHelper::isRecurrentRoot($this->event)) {
             self::$deletedRoot[] = $this->event->getUid();
             foreach($this->getFollowingInstances() as $recurrence) {
-                $recurrence->delete();
+                $recurrence->softDelete();
             }
         } elseif(RecurrenceHelper::isRecurrentInstance($this->event)) {
             $root = $this->getRecurrenceRoot();
