@@ -397,13 +397,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         parent::afterStateChange($newState, $previousState);
 
-        // Restore root entry if a recurrence entry is restored
-        if ($this->getRecurrenceRootId() && $this->isRecurringEnabled() &&
-            $newState === Content::STATE_PUBLISHED && $previousState === Content::STATE_DELETED) {
-            $root = $this->getRecurrenceRoot();
-            if ($root instanceof CalendarEntry && $root->content->state != $newState) {
-                $root->content->setState($newState);
-                $root->content->save();
+        // Restore root and all recurrence/child entries if at least one related entry has been restored
+        if ($newState === Content::STATE_PUBLISHED && $previousState === Content::STATE_DELETED && $this->isRecurringEnabled()) {
+            $root = $this->getRecurrenceRoot() ?? $this;
+            $entries = $root->getRecurrenceInstances()->all();
+            $entries[] = $root;
+            foreach ($entries as $entry) {
+                if ($entry->content->state != $newState) {
+                    $entry->content->setState($newState);
+                    $entry->content->save();
+                }
             }
         }
     }
