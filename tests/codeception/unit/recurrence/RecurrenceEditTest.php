@@ -8,6 +8,7 @@ use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
+use humhub\modules\content\models\Content;
 use Recurr\Frequency;
 
 class RecurrenceEditTest extends RecurrenceUnitTest
@@ -49,10 +50,18 @@ class RecurrenceEditTest extends RecurrenceUnitTest
     {
         $this->initRecurrentEvents();
         $this->rootEvent->delete();
-        $this->assertEmpty(CalendarEntry::findOne(['id' => $this->recurrences[0]->getId()]));
-        $this->assertEmpty(CalendarEntry::findOne(['id' => $this->recurrences[1]->getId()]));
-        $this->assertEmpty(CalendarEntry::findOne(['id' => $this->recurrences[2]->getId()]));
-        $this->assertEmpty(CalendarEntry::findOne(['id' => $this->recurrences[3]->getId()]));
+        for ($i = 0; $i < 4; $i++) {
+            $entry = CalendarEntry::find()->joinWith('content')
+                ->where(['calendar_entry.id' => $this->recurrences[0]->getId()]);
+            $entryDeleted = clone $entry;
+            $this->assertNull($entry->andWhere(['content.state' => Content::STATE_PUBLISHED])->one());
+            $this->assertNotNull($entryDeleted->andWhere(['content.state' => Content::STATE_DELETED])->one());
+        }
+
+        $this->rootEvent->hardDelete();
+        for ($i = 0; $i < 4; $i++) {
+            $this->assertNotNull(CalendarEntry::findOne(['calendar_entry.id' => $this->recurrences[0]->getId()]));
+        }
     }
 
     /**
