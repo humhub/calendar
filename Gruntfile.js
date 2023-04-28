@@ -47,6 +47,15 @@ module.exports = function (grunt) {
                 ],
                 dest: 'resources/css/fullcalendar.bundle.min.css'
             }
+        },
+        watch: {
+            scripts: {
+                files: ['resources/js/*.js', 'resources/css/*.css'],
+                tasks: ['build'],
+                options: {
+                    spawn: false,
+                },
+            },
         }
     });
 
@@ -54,7 +63,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('build', ['concat', 'uglify', 'cssmin']);
 };
