@@ -36,6 +36,7 @@ class CalendarController extends BaseContentController
     public function returnContentDefinition(ContentActiveRecord $contentRecord)
     {
         /** @var CalendarEntry $contentRecord */
+        $contentRecord->refresh();
         return RestDefinitions::getCalendarEntry($contentRecord);
     }
 
