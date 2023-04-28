@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Day' => '',
+  'Day' => '日',
   'List' => 'リスト',
-  'Month' => '',
+  'Month' => '月',
   'Today' => '今日',
-  'Week' => '',
-  'Year' => '',
+  'Week' => '週',
+  'Year' => '年',
 );

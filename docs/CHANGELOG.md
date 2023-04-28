@@ -4,7 +4,7 @@ Changelog
 1.5.0  (Unreleased)
 --------------------------
 - Enh #365: Use CSS theme var `--background-color-highlight` for today
-
+- Fix #368: Fixed ignoring of `all-day` param in REST
 
 1.4.0  (December 29, 2022)
 --------------------------

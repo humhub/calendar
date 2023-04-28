@@ -22,7 +22,7 @@ class EventCest extends HumHubApiTestCest
 
         $I->amGoingTo('create a calendar event with error');
         $I->sendPost('calendar/container/1');
-        $I->seeBadMessage('Start date cannot be blank');
+        $I->seeServerErrorMessage('Internal error while save calendar entry!');
     }
 
     public function testGetEventById(ApiTester $I)

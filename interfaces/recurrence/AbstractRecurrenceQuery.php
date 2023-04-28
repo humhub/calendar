@@ -209,7 +209,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
         if(RecurrenceHelper::isRecurrentRoot($this->event)) {
             self::$deletedRoot[] = $this->event->getUid();
             foreach($this->getFollowingInstances() as $recurrence) {
-                $recurrence->delete();
+                $recurrence->softDelete();
             }
         } elseif(RecurrenceHelper::isRecurrentInstance($this->event)) {
             $root = $this->getRecurrenceRoot();
@@ -254,7 +254,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
             if($isFirstInstanceEdit) {
                 // We are editing the first instance, so we do not need the old root anymore
                 // TODO: what about attached files?
-                $root->delete();
+                $root->hardDelete();
             } else {
                 $splitDate = $original->getStartDateTime()->setTimezone(CalendarUtils::getStartTimeZone($this->event))->modify('-1 hour');
                 $root->setRrule(RRuleHelper::setUntil($root->getRrule(), $splitDate));

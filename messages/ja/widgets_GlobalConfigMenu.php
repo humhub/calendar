@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Calendars' => '',
+  'Calendars' => 'カレンダー',
   'Defaults' => '既定',
-  'Event Types' => '',
+  'Event Types' => 'イベントタイプ',
   'Menu' => 'メニュー',
-  'Snippet' => '',
+  'Snippet' => 'スニペット',
 );

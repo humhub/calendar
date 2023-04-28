@@ -120,7 +120,7 @@ class CalendarUtils
 
         if($format) {
             try {
-                $dt = DateTime::createFromFormat(static::parseFormat($format), $value);
+                $dt = DateTime::createFromFormat(static::parseFormat($format), $value ?? '');
                 if($dt === false) {
                     return false;
                 }
