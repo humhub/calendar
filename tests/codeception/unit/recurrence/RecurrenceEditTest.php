@@ -50,17 +50,49 @@ class RecurrenceEditTest extends RecurrenceUnitTest
     {
         $this->initRecurrentEvents();
         $this->rootEvent->delete();
-        for ($i = 0; $i < 4; $i++) {
-            $entry = CalendarEntry::find()->joinWith('content')
-                ->where(['calendar_entry.id' => $this->recurrences[0]->getId()]);
-            $entryDeleted = clone $entry;
-            $this->assertNull($entry->andWhere(['content.state' => Content::STATE_PUBLISHED])->one());
-            $this->assertNotNull($entryDeleted->andWhere(['content.state' => Content::STATE_DELETED])->one());
+        foreach ($this->recurrences as $recurrenceEntry) {
+            $entryQuery = CalendarEntry::find()->joinWith('content')
+                ->where(['calendar_entry.id' => $recurrenceEntry->id]);
+            $entryDeletedQuery = clone $entryQuery;
+            $this->assertNull($entryQuery->andWhere(['content.state' => Content::STATE_PUBLISHED])->one());
+            $this->assertNotNull($entryDeletedQuery->andWhere(['content.state' => Content::STATE_DELETED])->one());
         }
 
         $this->rootEvent->hardDelete();
-        for ($i = 0; $i < 4; $i++) {
-            $this->assertNotNull(CalendarEntry::findOne(['calendar_entry.id' => $this->recurrences[0]->getId()]));
+        foreach ($this->recurrences as $recurrenceEntry) {
+            $this->assertNotNull(CalendarEntry::findOne(['calendar_entry.id' => $recurrenceEntry->id]));
+        }
+    }
+
+    public function testRestoreRecurrentInstance()
+    {
+        $this->initRecurrentEvents();
+        $this->rootEvent->delete();
+        $entries = $this->recurrences;
+        array_unshift($entries, $this->rootEvent);
+        foreach ($entries as $entry) {
+            $softDeletedEntry = CalendarEntry::find()
+                ->joinWith('content')
+                ->where(['calendar_entry.id' => $entry->id])
+                ->andWhere(['content.state' => Content::STATE_DELETED]);
+            $this->assertTrue($softDeletedEntry->exists());
+        }
+
+        // Restore one random child event
+        /* @var CalendarEntry[] $allEntries */
+        $allEntries = $this->rootEvent->getRecurrenceInstances()->all();
+        array_unshift($allEntries, $this->rootEvent);
+        $anyRecurrenceEntry = $allEntries[rand(1, count($allEntries) - 1)];
+        $anyRecurrenceEntry->content->setState(Content::STATE_PUBLISHED);
+        $anyRecurrenceEntry->content->save();
+
+        // Check root and all child events are restored automatically as well
+        foreach ($allEntries as $entry) {
+            $restoredEntry = CalendarEntry::find()
+                ->joinWith('content')
+                ->where(['calendar_entry.id' => $entry->id])
+                ->andWhere(['content.state' => Content::STATE_PUBLISHED]);
+            $this->assertTrue($restoredEntry->exists());
         }
     }
 
