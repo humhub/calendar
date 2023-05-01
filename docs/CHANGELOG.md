@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.0  (Unreleased)
---------------------------
+1.5.0  (May 1, 2023)
+--------------------
 - Enh #365: Use CSS theme var `--background-color-highlight` for today
 - Fix #368: Fixed ignoring of `all-day` param in REST
 - Fix #375: Hard delete records on disable module
