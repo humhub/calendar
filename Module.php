@@ -110,7 +110,7 @@ class Module extends ContentContainerModule
     public function disable()
     {
         foreach (CalendarEntry::find()->all() as $entry) {
-            $entry->delete();
+            $entry->hardDelete();
         }
 
         CalendarEntryType::deleteByModule();
@@ -124,7 +124,7 @@ class Module extends ContentContainerModule
     {
         parent::disableContentContainer($container);
         foreach (CalendarEntry::find()->contentContainer($container)->all() as $entry) {
-            $entry->delete();
+            $entry->hardDelete();
         }
 
         CalendarEntryType::deleteByModule($container);
