@@ -5,6 +5,7 @@ Changelog
 --------------------------
 - Enh #365: Use CSS theme var `--background-color-highlight` for today
 - Fix #368: Fixed ignoring of `all-day` param in REST
+- Fix #375: Hard delete records on disable module
 
 1.4.0  (December 29, 2022)
 --------------------------
