@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.1  (Unreleased)
+--------------------
+- Enh #376: Added support for hidden tasks in stream
+
 1.5.0  (May 1, 2023)
 --------------------
 - Enh #365: Use CSS theme var `--background-color-highlight` for today

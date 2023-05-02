@@ -205,6 +205,10 @@ class ReminderSettings extends Model
 
     public function save()
     {
+        if (!$this->validate()) {
+            return false;
+        }
+
         // Delete all reminder which do not match a submitted one
         $preservedReminders = $this->reset(true);
 

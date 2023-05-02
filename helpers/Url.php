@@ -102,6 +102,15 @@ class Url extends BaseUrl
         return static::to(['/calendar/config/edit-calendars', 'key' => $type->getKey()]);
     }
 
+    public static function toBasicSettingsReset(ContentContainerActiveRecord $container = null)
+    {
+        if ($container) {
+            return $container->createUrl('/calendar/container-config/reset-basic-config');
+        }
+
+        return static::to(['/calendar/config/reset-basic-config']);
+    }
+
     public static function toParticipationSettingsReset(ContentContainerActiveRecord $container = null)
     {
         if($container) {

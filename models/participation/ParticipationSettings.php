@@ -107,6 +107,10 @@ class ParticipationSettings extends Model
 
     public function save()
     {
+        if (!$this->validate()) {
+            return false;
+        }
+
         $settings = $this->getSettings();
         $settings->set(self::SETTING_PARTICIPATION_MODE, $this->participation_mode);
         $settings->set(self::SETTING_ALLOW_MAYBE, $this->allow_maybe);
