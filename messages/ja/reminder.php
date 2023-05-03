@@ -11,10 +11,10 @@ return array (
   'Minute' => '分',
   'No reminder' => 'リマインダーなし',
   'Upcoming {type}' => '今後の {type}',
-  'Upcoming {type}: {title}' => '今後の {type}: {title}',
+  'Upcoming {type}: {title}' => '今後の {type}：{title}',
   'Use default reminder' => 'デフォルトのリマインダーを使用',
   'Week' => '週',
   'You have an <strong>{type}</strong> coming up' => '<strong>{type}</strong> が近づいています',
-  'You have an <strong>{type}</strong> coming up: {title}' => '次の <strong>{type}</strong> があります： {title}',
+  'You have an <strong>{type}</strong> coming up: {title}' => '次の <strong>{type}</strong> があります：{title}',
   'Your reminder settings for event: <strong>\'{title}\'</strong>' => 'イベントのリマインダー設定： <strong>\'{title}\'</strong>',
 );

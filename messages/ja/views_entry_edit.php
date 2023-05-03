@@ -3,7 +3,7 @@ return array (
   '<strong>Create</strong> Event' => 'イベントを<strong>作成</strong>',
   '<strong>Edit</strong> Event' => 'イベントを<strong>編集</strong>',
   '<strong>Edit</strong> recurring event' => '繰り返しイベントを<strong>編集</strong>',
-  'Are you sure want to remove the participant from the event?' => 'イベントから参加者を削除しますか?',
+  'Are you sure want to remove the participant from the event?' => 'イベントから参加者を削除しますか？',
   'Attending' => '参加',
   'Back' => '戻る',
   'Close' => 'クローズ',
