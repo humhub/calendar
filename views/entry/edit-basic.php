@@ -8,6 +8,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\form\widgets\ColorPicker;
 use humhub\modules\content\widgets\ContentTagDropDown;
+use humhub\modules\ui\form\widgets\ContentHiddenCheckbox;
 use humhub\modules\ui\form\widgets\ContentVisibilitySelect;
 use humhub\modules\ui\form\widgets\TimePicker;
 use humhub\widgets\ActiveForm;
@@ -81,8 +82,11 @@ use yii\jui\DatePicker;
             <?= $form->field($calendarEntryForm, 'reminder')->checkbox(['data-action-change' => 'toggleReminder']) ?>
         </div>
         <?php endif; ?>
+        <div class="col-sm-4">
+            <?= $form->field($calendarEntryForm, 'hidden')->widget(ContentHiddenCheckbox::class) ?>
+        </div>
         <?php if ($calendarEntryForm->canCreatePublicEntry()) :?>
-        <div class="col-sm-12">
+        <div class="col-sm-8">
             <?= $form->field($calendarEntryForm, 'is_public')->widget(ContentVisibilitySelect::class, ['contentOwner' => 'entry']) ?>
         </div>
         <?php endif; ?>

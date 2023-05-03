@@ -37,9 +37,16 @@ CalendarBaseAssets::register($this);
 
     <?= Tabs::widget([
         'viewPath' => '@calendar/views/common',
-        'params' => ['form' => $form, 'participationSettings' => $model->participationSettings, 'reminderSettings' => $model->reminderSettings, 'fullCalendarSettings' => $model->fullCalendarSettings],
+        'params' => [
+            'form' => $form,
+            'basicSettings' => $model->basicSettings,
+            'participationSettings' => $model->participationSettings,
+            'reminderSettings' => $model->reminderSettings,
+            'fullCalendarSettings' => $model->fullCalendarSettings
+        ],
         'items' => [
-            ['label' => Yii::t('CalendarModule.settings', 'Participation'), 'view' => '_settings_participation', 'linkOptions' => ['class' => 'tab-basic']],
+            ['label' => Yii::t('CalendarModule.settings', 'Basic'), 'view' => '_settings_basic', 'linkOptions' => ['class' => 'tab-basic']],
+            ['label' => Yii::t('CalendarModule.settings', 'Participation'), 'view' => '_settings_participation', 'linkOptions' => ['class' => 'tab-participation']],
             ['label' => Yii::t('CalendarModule.settings', 'Reminder'), 'view' => '_settings_reminder', 'linkOptions' => ['class' => 'tab-participation']],
             ['label' => Yii::t('CalendarModule.settings', 'Full calendar'), 'view' => '_settings_full_calendar', 'linkOptions' => ['class' => 'tab-full-calendar']],
         ]

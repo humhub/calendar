@@ -117,6 +117,11 @@ class CalendarEntryForm extends Model
     public $wall;
 
     /**
+     * @var ?int Hide a task on the wall stream
+     */
+    public ?int $hidden = null;
+
+    /**
      * Will create a new CalendarEntryForm instance with new CalendarEntry model.
      *
      * @param $contentContainer
@@ -158,8 +163,10 @@ class CalendarEntryForm extends Model
 
             $this->setFormDatesFromModel();
             $this->original = CalendarEntry::findOne(['id' => $this->entry->id]);
+            $this->hidden = $this->entry->content->hidden;
         } else {
             $this->entry->setDefaults();
+            $this->hidden = (new BasicSettings(['contentContainer' => $this->entry->content->getContainer()]))->contentHiddenDefault;
         }
 
         $this->reminderSettings = new ReminderSettings(['entry' => $this->entry]);
@@ -251,7 +258,7 @@ class CalendarEntryForm extends Model
         return [
             ['timeZone', 'in', 'range' => DateTimeZone::listIdentifiers()],
             [['topics', 'reminder', 'recurring'], 'safe'],
-            [['is_public', 'type_id', 'sendUpdateNotification'], 'integer'],
+            [['is_public', 'hidden',  'type_id', 'sendUpdateNotification'], 'integer'],
             [['start_date', 'end_date'], 'required'],
             [['start_time', 'end_time'], 'date', 'type' => 'time', 'format' => CalendarUtils::getTimeFormat()],
             ['start_date', CalendarDateFormatValidator::class, 'timeField' => 'start_time'],
@@ -358,6 +365,8 @@ class CalendarEntryForm extends Model
         } else {
             $this->entry->content->visibility = $this->is_public;
         }
+
+        $this->entry->content->hidden = $this->hidden;
 
         $result = $this->entry->load($data);
 

@@ -88,6 +88,10 @@ class FullCalendarSettings extends Model
 
     public function save()
     {
+        if (!$this->validate()) {
+            return false;
+        }
+
         $settings = $this->getSettings();
         $settings->set(self::SETTING_VIEW_MODE_KEY, $this->viewMode);
         return true;

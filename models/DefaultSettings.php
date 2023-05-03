@@ -16,6 +16,7 @@
 namespace humhub\modules\calendar\models;
 
 use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\models\forms\BasicSettings;
 use humhub\modules\calendar\models\participation\FullCalendarSettings;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
@@ -28,6 +29,11 @@ class DefaultSettings extends Model
      * @var ContentContainerActiveRecord
      */
     public $contentContainer;
+
+    /**
+     * @var BasicSettings
+     */
+    public $basicSettings;
 
     /**
      * @var ReminderSettings
@@ -53,6 +59,7 @@ class DefaultSettings extends Model
 
     private function initSettings()
     {
+        $this->basicSettings = new BasicSettings(['contentContainer' => $this->contentContainer]);
         $this->reminderSettings = new ReminderSettings(['container' => $this->contentContainer]);
         $this->participationSettings = new ParticipationSettings(['contentContainer' => $this->contentContainer]);
         $this->fullCalendarSettings = new FullCalendarSettings(['contentContainer' => $this->contentContainer]);
@@ -61,15 +68,18 @@ class DefaultSettings extends Model
 
     public function load($data, $formName = null)
     {
-        return $this->participationSettings->load($data) | $this->reminderSettings->load($data) | $this->fullCalendarSettings->load($data);
+        return $this->basicSettings->load($data) |
+            $this->participationSettings->load($data) |
+            $this->reminderSettings->load($data) |
+            $this->fullCalendarSettings->load($data);
     }
 
-    public function save()
+    public function save(): bool
     {
-        $this->reminderSettings->save();
-        $this->participationSettings->save();
-        $this->fullCalendarSettings->save();
-        return true;
+        return $this->basicSettings->save() &&
+            $this->participationSettings->save() &&
+            $this->reminderSettings->save() &&
+            $this->fullCalendarSettings->save();
     }
 
     public function isGlobal()

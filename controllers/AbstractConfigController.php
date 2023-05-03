@@ -8,19 +8,19 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
-use humhub\modules\calendar\models\participation\ParticipationSettings;
-use Yii;
-use humhub\modules\content\components\ContentContainerController;
-use yii\data\ActiveDataProvider;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\DefaultSettings;
+use humhub\modules\calendar\models\forms\BasicSettings;
+use humhub\modules\calendar\models\participation\ParticipationSettings;
+use humhub\modules\content\components\ContentContainerController;
+use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\HttpException;
 
 /**
- * 
+ *
  */
 abstract class AbstractConfigController extends ContentContainerController
 {
@@ -49,7 +49,7 @@ abstract class AbstractConfigController extends ContentContainerController
     public function actionIndex()
     {
         $model = new DefaultSettings(['contentContainer' => $this->contentContainer]);
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
         }
@@ -129,6 +129,15 @@ abstract class AbstractConfigController extends ContentContainerController
         }
 
         return $this->renderAjax(static::VIEW_CONFIG_EDIT_TYPE_MODAL, ['model' => $item]);
+    }
+
+    public function actionResetBasicConfig()
+    {
+        $this->forcePostRequest();
+        $model = new BasicSettings(['contentContainer' => $this->contentContainer]);
+        $model->reset();
+        $this->view->saved();
+        $this->redirect(Url::toConfig($this->contentContainer));
     }
 
     public function actionResetParticipationConfig()
