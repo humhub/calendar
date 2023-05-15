@@ -40,6 +40,7 @@ class SettingsCest
         $I->click('Next', '#globalModal');
 
         $I->waitForText('Participants',null, '#globalModal');
+        $I->waitForElementVisible('#calendarentry-participation_mode');
         $I->seeInField('#calendarentry-participation_mode', 0);
         $I->dontSeeElement('.participationOnly');
 
