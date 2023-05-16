@@ -24,7 +24,7 @@ class SettingsCest
         $I->waitForText('Calendar module configuration');
         $I->jsClick('.tab-participation');
         $I->waitForText('Default participation settings');
-        $I->selectOption('#participationsettings-participation_mode', 0);
+        $I->selectOption('#participationsettings-participation_mode', '0');
         $I->click('Save');
 
         $I->seeSuccess();
@@ -40,13 +40,13 @@ class SettingsCest
         $I->click('Next', '#globalModal');
 
         $I->waitForText('Participants',null, '#globalModal');
-        $I->seeInField('#calendarentry-participation_mode', 0);
+        $I->seeInField('#calendarentry-participation_mode', '0');
         $I->dontSeeElement('.participationOnly');
 
         $I->amOnSpace1('/calendar/container-config');
         $I->jsClick('.tab-participation');
         $I->waitForText('Default participation settings');
-        $I->selectOption('#participationsettings-participation_mode', 2);
+        $I->selectOption('#participationsettings-participation_mode', '2');
         $I->click('[for="participationsettings-allow_decline"]');
         $I->click('[for="participationsettings-allow_maybe"]');
 
@@ -61,7 +61,7 @@ class SettingsCest
         $I->createEventToday('Setting Event','Setting Description',null,null,false);
         $I->click('Next', '#globalModal');
         $I->waitForText('Participants',null, '#globalModal h4');
-        $I->seeInField('#calendarentry-participation_mode', 2);
+        $I->seeInField('#calendarentry-participation_mode', '2');
         $I->seeElement('.participationOnly');
         $I->dontSeeCheckboxIsChecked('#calendarentry-allow_decline');
         $I->dontSeeCheckboxIsChecked('#calendarentry-allow_decline');
@@ -75,7 +75,7 @@ class SettingsCest
 
         $I->jsClick('.tab-participation');
         $I->waitForText('Default participation settings');
-        $I->seeInField('#participationsettings-participation_mode', 0);
+        $I->seeInField('#participationsettings-participation_mode', '0');
 
         $I->amOnRoute(['/calendar/config']);
         $I->jsClick('.tab-participation');
@@ -86,7 +86,7 @@ class SettingsCest
 
         $I->jsClick('.tab-participation');
         $I->waitForText('Default participation settings');
-        $I->seeInField('#participationsettings-participation_mode', 2);
+        $I->seeInField('#participationsettings-participation_mode', '2');
 
         $I->seeCheckboxIsChecked('#participationsettings-allow_decline');
         $I->seeCheckboxIsChecked('#participationsettings-allow_decline');
