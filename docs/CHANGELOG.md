@@ -4,6 +4,7 @@ Changelog
 1.5.1  (Unreleased)
 --------------------
 - Enh #376: Added support for hidden tasks in stream
+- Enh #378: Use new content state service
 
 1.5.0  (May 1, 2023)
 --------------------
