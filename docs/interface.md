@@ -136,7 +136,8 @@ class CustomCalendarEvent extends CustomEvent implements CalendarEventIF {
     return new ActiveQueryContent(static::class);
  }
     
-  public static function getObjectModel() {
+  public static function getObjectModel(): string
+  {
     return CustomEvent::class;
   }
 }
