@@ -4,17 +4,18 @@ namespace humhub\modules\calendar\controllers;
 
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\notifications\Invited;
 use humhub\modules\calendar\widgets\ParticipantItem;
-use humhub\modules\calendar\helpers\Url;
-use humhub\modules\calendar\models\forms\CalendarEntryForm;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\user\models\User;
-use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\calendar\models\CalendarEntry;
 use humhub\widgets\ModalClose;
 use Throwable;
 use Yii;
@@ -56,6 +57,8 @@ class EntryController extends ContentContainerController
             throw new HttpException('404');
         }
 
+        $this->view->meta->setDescription(RichTextToPlainTextConverter::process($entry->getTitle() . ' - ' . $entry->getDescription()));
+
         return $this->renderEntry($entry, $cal);
     }
 
@@ -81,17 +84,17 @@ class EntryController extends ContentContainerController
     {
         $recurrenceRoot = $this->getCalendarEntry($parent_id);
 
-        if(!$recurrenceRoot) {
+        if (!$recurrenceRoot) {
             throw new NotFoundHttpException();
         }
 
         $recurrence = $recurrenceRoot->getRecurrenceQuery()->getRecurrenceInstance($recurrence_id);
 
-        if(!$recurrence) {
+        if (!$recurrence) {
             $recurrence = $recurrenceRoot->getRecurrenceQuery()->expandSingle($recurrence_id);
         }
 
-        if(!$recurrence) {
+        if (!$recurrence) {
             throw new NotFoundHttpException();
         }
 
@@ -171,7 +174,7 @@ class EntryController extends ContentContainerController
             throw new HttpException(403, 'Event is over!');
         }
 
-        $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int) $type);
+        $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int)$type);
 
         return $this->asJson(['success' => true]);
     }
@@ -215,7 +218,7 @@ class EntryController extends ContentContainerController
             $calendarEntryForm = CalendarEntryForm::createEntry($this->contentContainer, $start, $end, $view, $wall);
         } else {
             $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
-            if(!$calendarEntryForm->entry->content->canEdit()) {
+            if (!$calendarEntryForm->entry->content->canEdit()) {
                 throw new HttpException(403);
             }
         }
@@ -445,11 +448,11 @@ class EntryController extends ContentContainerController
     {
         $entry = $this->getCalendarEntry($id);
 
-        if(!$entry) {
+        if (!$entry) {
             throw new HttpException(404);
         }
 
-        if(!$entry->content->canEdit()) {
+        if (!$entry->content->canEdit()) {
             throw new HttpException(403);
         }
 
