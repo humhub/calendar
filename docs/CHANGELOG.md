@@ -4,6 +4,7 @@ Changelog
 1.5.1  (Unreleased)
 --------------------
 - Enh #376: Added support for hidden tasks in stream
+- Enh #387: Add title and description in Open Graph description on event pages
 
 1.5.0  (May 1, 2023)
 --------------------
@@ -19,19 +20,16 @@ Changelog
 - Fix #323: Menu configuration
 - Enh #333: Implement status selector for adding all space members
 
-
 1.4.0-beta.1  (November 7, 2022)
 --------------------------------
 - Enh #331: Implemented new HumHub v1.13 Content Form Support
-
 
 1.3.0 (November 7, 2022)
 ------------------------
 - Enh #328: Remove deprecated checkbox "regular" style
 - Fix #327: Don't send notifications for canceled event
 - Fix #334: Fix null in DateTime on PHP 8.1
-- Fix #340: Translation of "Delete" message string 
-
+- Fix #340: Translation of "Delete" message string
 
 1.2.5 (July 15, 2022)
 --------------------
@@ -40,7 +38,6 @@ Changelog
 - Enh #261: Filter by event types
 - Enh #312: Show tooltip for locked past events
 - Enh #324: Use `RichTextToEmailHtmlConverter` class to convert text to HTML
-
 
 1.2.3 (May 30, 2022)
 --------------------
@@ -61,13 +58,13 @@ Changelog
 ----------------------
 - Fix #283: Increase Location field max. length to 128 characters
 - Enh #269: Add Close Button to Calendar Entry Modal
-- Enh: Updated translations 
+- Enh: Updated translations
 
 1.2.0 (April 15, 2022)
 ----------------------
 - Enh #263: Added new participation option "Only by Invite"
 - Enh #263: Various UI improvements
-- Enh #263: Added participation edit dialog 
+- Enh #263: Added participation edit dialog
 - Enh: Use default timezone instead of deprecated server timezone
 - Fix #241: Fix filter "I'm attending" for recurrence events
 - Fix #276: Fix saving time when system date is transition to daylight
@@ -97,7 +94,7 @@ Changelog
 ---------------------
 - Enh: Added module snippet configuration "Include birthdays to dashboard snippet"
 - Enh #218: Change snippet default sort
-- Enh #235: Added REST API Module Support 
+- Enh #235: Added REST API Module Support
 
 1.1.6 (February 22, 2021)
 ---------------------
@@ -138,7 +135,7 @@ Changelog
 - Fix #211: Unable to move event to another space
 - Fix #188: Topic label not translatable
 - Fix #166: Archived events are not excluded from the calendar
-- Fix #99: Users with participation state maybe can attend to events with exceeded max participation count 
+- Fix #99: Users with participation state maybe can attend to events with exceeded max participation count
 
 1.1.0 (November 2, 2020)
 ---------------------
@@ -148,7 +145,6 @@ Changelog
 ---------------------
 - Enh: New attribute “Location” for calendar entry
 - Fix #198: Recurrence & max. Participants not checked #198
-
 
 1.0.12 (July 31, 2020)
 ---------------------
@@ -188,7 +184,7 @@ Changelog
 1.0.7 (March 26, 2020)
 ---------------------
 - Chng: Updated grunt version to 1.1.0
-- Chng: More stable event error handling 
+- Chng: More stable event error handling
 - Fix #167: Can not remove calendar type, once a calendar type is set
 - Fix #173: Event cannot be moved to another Space
 - Fix #175: Implemented fallback for failed `calendar_entry_participant` user foreign key
@@ -250,31 +246,25 @@ Changelog
 - Fix #78: Add date information to response activity
 - Enh #165: Improved mail html and text views
 
-
 0.7.5 (October 16, 2019)
 -----------------------
 - Fix: ExternalCalendarEntryQuery with either only start or only end not fails
-
 
 0.7.4 (October 16, 2019)
 -----------------------
 - Enh: Translation update
 
-
 0.7.3 (August 28, 2019)
 -----------------------
 - Fix: My events filter not working
-
 
 0.7.2 (August 22, 2019)
 -----------------------
 - Fix: `VCalendar::withEvents()` broken
 
-
 0.7.1 (August 22, 2019)
 -----------------------
 - Fix: Issue with PHP < 7 use of incompatible sabre/xml version
-
 
 0.7 (August 22, 2019)
 -----------------------
@@ -291,7 +281,6 @@ Changelog
 - Enh: Added rounded top border to global calendar view
 - Chng: Updated min version to 1.3.14
 
-
 0.6.23 (November 27, 2018)
 -----------------------
 - Enh: Use of new richtext
@@ -301,22 +290,18 @@ Changelog
 -----------------------
 - Fix: Hide permissions for space guest role
 
-
 0.6.21 (November 14, 2018)
 -----------------------
 - Fix: Same day events displaying wrong output date format
-
 
 0.6.20 (September 17, 2018)
 -----------------------
 - Enh: Added time information to force participation mail
 - Enh: Updated Translations
 
-
 0.6.19 (September 04, 2018)
 -----------------------
 - Fix: Other calendar configuration view not working
-
 
 0.6.18 (August 23, 2018)
 -----------------------
@@ -329,63 +314,51 @@ Changelog
 - Enh: Added move feature for HumHub >= 1.3.2
 - Fix: Global calendar types in space in space edit view
 
-
 0.6.17  (July 4, 2018)
 -----------------------
 - Chg: Added HumHub 1.3 compatibility (new space module handling)
-
 
 0.6.16  (July 2, 2018)
 -----------------------
 - Chg: PHP 7.2 compatibility fixes
 
-
 0.6.15  (May 29, 2018)
 -----------------------
 - Fix: Added missing "readable" filter in calendar view
 
-
 0.6.14  (May 11, 2018)
 -----------------------
 - Fix: Wrong translation text category for "Delete" link
-
 
 0.6.13  (May 08, 2018)
 -----------------------
 - Fix: Wrong translation text category for "Cancel event"
 - Enh: Updated translations
 
-
 0.6.12  (April 27, 2018)
 -----------------------
 - Fix: Removed FilterNotSupported error log
-
 
 0.6.11  (April 18, 2018)
 -----------------------
 - Fix: Calendar ics export timezone issue
 
-
 0.6.10  (April 18, 2018)
 -----------------------
 - Fix: Birthday calendar shows non visible users
-
 
 0.6.9  (April 17, 2018)
 -----------------------
 - Fix: Birthday calendar fixes
 - Enh: Added BirthdayQuery tests
 
-
 0.6.8  (April 17, 2018)
 -----------------------
 - Fix: Birthday calendar query
 
-
 0.6.6  (April 13, 2018)
 -----------------------
 - Enh: Updated translations
-
 
 0.6.5 - (April 13, 2018)
 ------------------------
@@ -400,15 +373,13 @@ Changelog
 - Enh: Added `AbstractCalendarQuery::filterDashboard()` to enable a custom filter for the upcoming events dashboard snippet
 - Enh: Added ICS export of single events (ASBaj)
 
-
-0.6.4 
+0.6.4
 -----
 - Fix: Minor Grammar fixes (@Felli)
 - Enh: Cleanup, remove optional part of parameter (@kristianlm)
-- Fix: Fixed typo (@acs-ferreira) 
+- Fix: Fixed typo (@acs-ferreira)
 - Fix: Cancel event deletion not working
 - Fix #114: Markdown file upload not attaching files
-
 
 0.6.3 - 27.10.2017
 ------------------
@@ -416,12 +387,10 @@ Changelog
 - Fix #38: Added `calendar_entry_participant` user foreign key
 - Fix #66: Only show Participation Badge if participation is allowed
 
-
 0.6.2 - 20.10.2017
 ------------------
 - Fix #84: Files are not attached to new calendar entries
 - Fix #91: Participants can't change state if max participant number is reached
-
 
 0.6.1 - 21.09.2017
 ------------------
@@ -430,18 +399,15 @@ Changelog
 - Enh: Added Calendar Picker if creating events in global calendar
 - Fix: Invalid translation keys
 
-
 0.5.6 - 01.09.2017
 ------------------
 - Fix: ICU 57.1 compatibility for time format HH.mm with whole day setting
 - Fix: Drag updates in day/week view are not working
 - Fix: Locale mapping between humhub and moment.js
 
-
 0.5.4 - 08.08.2017
 ------------------
 - Fix: ICU 57.1 compatibility for time format HH.mm
-
 
 0.5.2 - 08.08.2017
 ------------------
@@ -453,8 +419,7 @@ Changelog
 - Fix: TimeZone edit not working correctly
 - Fix: word break issue in wall entry
 
-
-0.5 
+0.5
 ----
 - Enh: Added timeZone setting in edit form
 - Enh: Added TimePicker with locale based time format
@@ -472,7 +437,6 @@ Changelog
 ------------------
 - Enh: Enable global calendar for guests
 - Fix: Hide follow filter if user following is disabled
-
 
 0.4.4 - 06.06.2017
 ------------------
