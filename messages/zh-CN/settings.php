@@ -1,7 +1,7 @@
 <?php
-
-return [
-    'Full calendar' => '',
-    'Participation' => '',
-    'Reminder' => '',
-];
+return array (
+  'Basic' => '基础',
+  'Full calendar' => '',
+  'Participation' => '',
+  'Reminder' => '',
+);

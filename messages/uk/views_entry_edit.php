@@ -9,7 +9,7 @@ return array (
   'Close' => 'Закрити',
   'Declined' => '',
   'Everybody can participate' => '',
-  'General' => '',
+  'General' => 'Загальне',
   'Invited' => '',
   'Next' => 'Далі',
   'No participants' => '',

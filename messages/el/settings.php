@@ -1,7 +1,7 @@
 <?php
-
-return [
-    'Participation' => 'Συμμετοχή',
-    'Reminder' => 'Υπενθύμιση',
-    'Full calendar' => '',
-];
+return array (
+  'Basic' => 'Βασικό',
+  'Full calendar' => '',
+  'Participation' => 'Συμμετοχή',
+  'Reminder' => 'Υπενθύμιση',
+);

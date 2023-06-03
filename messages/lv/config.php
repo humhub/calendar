@@ -11,6 +11,7 @@ return [
     'Adds an snippet with upcoming events to your users dashboard.' => '',
     'Calendar Configuration' => '',
     'Calendar default view mode settings' => '',
+    'Default basic settings' => '',
     'Default participation settings' => '',
     'Do you really want to delte this event type?' => '',
     'Event Type Configuration' => '',

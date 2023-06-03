@@ -35,5 +35,6 @@ return [
     'Upcoming events snippet' => 'Fragmento de eventos futuros',
     'View mode' => 'Modo de visualização',
     'Add \'Calendar\' to the main menu' => '',
+    'Default basic settings' => '',
     'Menu settings' => '',
 ];

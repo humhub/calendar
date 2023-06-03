@@ -29,6 +29,7 @@ return [
     'Add \'Calendar\' to the main menu' => '',
     'Calendar Configuration' => '',
     'Calendar default view mode settings' => '',
+    'Default basic settings' => '',
     'Default participation settings' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',

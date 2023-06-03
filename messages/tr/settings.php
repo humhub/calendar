@@ -1,7 +1,7 @@
 <?php
-
-return [
-    'Participation' => 'Katılım',
-    'Reminder' => 'Hatırlatıcı',
-    'Full calendar' => '',
-];
+return array (
+  'Basic' => 'Temel',
+  'Full calendar' => '',
+  'Participation' => 'Katılım',
+  'Reminder' => 'Hatırlatıcı',
+);

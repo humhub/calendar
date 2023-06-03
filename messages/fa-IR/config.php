@@ -12,6 +12,7 @@ return [
     'Calendar Configuration' => '',
     'Calendar default view mode settings' => '',
     'Create new type' => '',
+    'Default basic settings' => '',
     'Default participation settings' => '',
     'Do you really want to delte this event type?' => '',
     'Event Type Configuration' => '',
