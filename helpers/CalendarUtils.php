@@ -225,7 +225,7 @@ class CalendarUtils
             );
         }
 
-        return $date instanceof DateTime ? clone $date : new DateTime($date);
+        return $date instanceof DateTime ? clone $date : new DateTime((string)$date);
     }
 
     /**
