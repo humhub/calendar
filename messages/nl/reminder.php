@@ -6,7 +6,7 @@ return array (
   'Here you can configure default settings for all calendar events.' => 'Hier kunt u standaardinstellingen configureren voor alle agenda-gebeurtenissen.',
   'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => 'Hier kunt u globale standaardherinneringen configureren. Deze instellingen kunnen op ruimte- / acccountniveau worden overschreven.',
   'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => 'Hier kunt u de standaardherinneringsinstellingen voor deze gebeurtenis configureren. Gebruikers kunnen deze instellingen overschrijven via de link <strong>Herinnering instellen</strong>.',
+        <strong>Set reminder</strong> link.' => 'Hier kunt u de standaardherinneringsinstellingen voor deze gebeurtenis configureren. Gebruikers kunnen deze instellingen overschrijven via de koppeling <strong>Herinnering instellen</strong>.',
   'Hour' => 'Uur',
   'Minute' => 'Minuut',
   'No reminder' => 'Geen herinnering',

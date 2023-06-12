@@ -3,7 +3,7 @@ return array (
   '<strong>Add</strong> profile calendar' => '<strong>Ajouter</strong> un calendrier à votre profil',
   '<strong>Choose</strong> target calendar' => '<strong>Choisir</strong> le calendrier de destination',
   '<strong>Reminder</strong> settings' => 'Rappel',
-  'Add all Space members with status {status}' => 'Ajouter tous les membres de l’Espace ayant le statut {status}',
+  'Add all Space members with status {status}' => 'Ajouter tous les membres de l’Espace avec le statut {status}',
   'Add participants...' => 'Ajouter des participant·es…',
   'Added: {users}' => 'Ajoutés : {users}',
   'Additional Information for participants' => 'Informations supplémentaires pour les participant·es',
