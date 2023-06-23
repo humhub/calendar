@@ -54,7 +54,7 @@ return array (
   'Please select new participants.' => 'Selecteer nieuwe deelnemers.',
   'Profile Calendar' => 'Profiel agenda',
   'Public' => 'Publiek',
-  'Recurring' => 'Herhalende',
+  'Recurring' => 'Herhalend',
   'Reopen Event' => 'Heropen de gebeurtenis',
   'Saturday' => 'Zaterdag',
   'Set reminder' => 'Ingestelde herinnering',
@@ -73,6 +73,6 @@ return array (
   'You don\'t have permission to delete this event!' => 'U hebt geen toestemming om deze gebeurtenis te verwijderen!',
   'canceled' => 'geannuleerd',
   '{displayName} Birthday' => '{displayName} Verjaardag',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} heeft u zojuist aan {"{contentTitle}" in ruimte {spaceName} vanaf {time} toegevoegd.',
+  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} heeft u zojuist aan "{contentTitle}" in ruimte {spaceName} vanaf {time} toegevoegd.',
   '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} heeft u uitgenodigd voor gebeurtenis "{contentTitle}" in ruimte {spaceName} dat begint om {time}.',
 );
