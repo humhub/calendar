@@ -21,6 +21,7 @@ use DateTime;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\widgets\Label;
 use Yii;
 use yii\base\Component;
 
@@ -114,7 +115,7 @@ class CalendarDateFormatter extends Component
         $startTime = $this->getFormattedStartTime();
         $endTime = $this->getFormattedEndTime();
         if ($displayTimeZone) {
-            $endTime .= ' ' . Yii::$app->formatter->timeZone;
+            $endTime .= ' ' . Label::defaultType(Yii::$app->formatter->timeZone)->sm();
         }
 
         if (!$this->isSameDay()) {
