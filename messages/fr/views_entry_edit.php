@@ -15,7 +15,7 @@ return array (
   'No participants' => 'Pas de participants',
   'Only by Invite' => 'Uniquement sur invitation',
   'Participants' => 'Participant·es',
-  'Recurrence' => 'Répétions',
+  'Recurrence' => 'Récurrence',
   'Reminder' => 'Rappel',
   'Select event type...' => 'Sélectionner le type d\'événement...',
   'Settings' => 'Réglages',
