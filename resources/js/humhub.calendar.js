@@ -16,8 +16,6 @@ humhub.module('calendar', function (module, require, $) {
         var StreamEntry = require('stream').StreamEntry;
 
         var Calendar = Widget.extend();
-
-
         var Form = Widget.extend();
 
         Form.RECUR_EDIT_MODE_CREATE = 0;
@@ -26,6 +24,9 @@ humhub.module('calendar', function (module, require, $) {
         Form.RECUR_EDIT_MODE_ALL = 3;
 
         Form.prototype.init = function () {
+            var startPrefix = '#calendarentryform-start_';
+            var endPrefix = '#calendarentryform-end_';
+
             modal.global.$.find('.tab-basic').on('shown.bs.tab', function (e) {
                 $('#calendarentry-title').focus();
             });
@@ -34,21 +35,95 @@ humhub.module('calendar', function (module, require, $) {
                 $('#calendarentry-participation_mode').focus();
             });
 
-            this.$.find('#calendarentryform-start_date').on('change', function() {
-                var startTime =  $('#calendarentryform-start_date').datepicker('getDate').getTime();
-                var endTime = $('#calendarentryform-end_date').datepicker('getDate').getTime();
+            function isNeedChangeTime(arrStart, arrEnd) {
+                return arrEnd[0] * 1 <= arrStart[0] * 1 &&
+                    (arrEnd[1].includes('A') && (arrStart[1].includes('A') || arrStart[1].includes('P'))) ||
+                    (arrEnd[1].includes('P') && arrStart[1].includes('P'));
+            }
 
-                if(endTime < startTime) {
-                    $('#calendarentryform-end_date').val($('#calendarentryform-start_date').val())
+            function changeTime(prefix, arrTime) {
+                arrTime[0] = (arrTime[0] <= 9 ? '0' : '') + arrTime[0];
+
+                $(prefix + 'time').val(arrTime.join(':'));
+            }
+
+            this.$.find(startPrefix + 'date').on('change', function () {
+                var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
+                var endDate = $(endPrefix + 'date').datepicker('getDate').getTime();
+
+                if (endDate < startDate) {
+                    $(endPrefix + 'date').val($(startPrefix + 'date').val());
                 }
             });
 
-            this.$.find('#calendarentryform-end_date').on('change', function() {
-                var startTime =  $('#calendarentryform-start_date').datepicker('getDate').getTime();
-                var endTime = $('#calendarentryform-end_date').datepicker('getDate').getTime();
+            this.$.find(endPrefix + 'date').on('change', function () {
+                var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
+                var endDate = $(endPrefix + 'date').datepicker('getDate').getTime();
 
-                if(endTime < startTime) {
-                    $('#calendarentryform-start_date').val($('#calendarentryform-end_date').val())
+                if (endDate < startDate) {
+                    $(startPrefix + 'date').val($(endPrefix + 'date').val())
+                }
+            });
+
+            this.$.find(startPrefix + 'time').on('change', function () {
+                var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
+                var endDate = $(endPrefix + 'date').datepicker('getDate').getTime();
+                var arrStart = $(startPrefix + 'time').val().split(':');
+                var arrEnd = $(endPrefix + 'time').val().split(':');
+
+                if (startDate === endDate) {
+                    if (arrStart[1].includes('M')) {
+                        if (arrEnd[0] === '11' && arrEnd[1].includes('P')) {
+                        } else {
+                            if (isNeedChangeTime(arrStart, arrEnd)) {
+                                arrEnd[0] = arrStart[0] * 1 === 12 ? 1 : (arrStart[0] * 1) + 1;
+                                if (arrStart[0] * 1 === 11) {
+                                    arrEnd[1] = arrStart[1].includes('A')
+                                        ? arrStart[1].replace('A', 'P') : arrStart[1].replace('P', 'A');
+                                } else {
+                                    arrEnd[1] = arrStart[1].includes('A')
+                                        ? arrStart[1].replace('P', 'A') : arrStart[1].replace('A', 'P');
+                                }
+                                changeTime(endPrefix, arrEnd);
+                            }
+                        }
+                    } else {
+                        if (arrEnd[0] * 1 <= arrStart[0] * 1) {
+                            arrEnd[0] = arrStart[0] * 1 === 23 ? 0 : (arrStart[0] * 1) + 1;
+                            changeTime(endPrefix, arrEnd);
+                        }
+                    }
+                }
+            });
+
+            this.$.find(endPrefix + 'time').on('change', function () {
+                var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
+                var endDate = $(endPrefix + 'date').datepicker('getDate').getTime();
+                var arrStart = $(startPrefix + 'time').val().split(':');
+                var arrEnd = $(endPrefix + 'time').val().split(':');
+
+                if (startDate === endDate) {
+                    if (arrStart[1].includes('M')) {
+                        if (arrStart[0] === '12' && arrStart[1].includes('A')) {
+                        } else {
+                            if (isNeedChangeTime(arrStart, arrEnd)) {
+                                arrStart[0] = arrEnd[0] * 1 === 1 ? 12 : (arrEnd[0] * 1) - 1;
+                                if (arrEnd[0] * 1 === 12) {
+                                    arrStart[1] = arrEnd[1].includes('A')
+                                        ? arrEnd[1].replace('A', 'P') : arrEnd[1].replace('P', 'A');
+                                } else {
+                                    arrStart[1] = arrEnd[1].includes('A')
+                                        ? arrEnd[1].replace('P', 'A') : arrEnd[1].replace('A', 'P');
+                                }
+                                changeTime(startPrefix, arrStart);
+                            }
+                        }
+                    } else {
+                        if (arrEnd[0] * 1 <= arrStart[0] * 1) {
+                            arrStart[0] = arrEnd[0] * 1 === 0 ? 23 : (arrEnd[0] * 1) - 1;
+                            changeTime(startPrefix, arrStart);
+                        }
+                    }
                 }
             });
 
@@ -226,10 +301,9 @@ humhub.module('calendar', function (module, require, $) {
             modal.load(evt).then(function (response) {
                 modal.global.$.one('submitted', function () {
                     var calendar = getCalendar();
-                    if(calendar) {
+                    if (calendar) {
                         calendar.fetch();
                     }
-
                 });
             }).catch(function (e) {
                 module.log.error(e, true);

@@ -6,6 +6,7 @@ Changelog
 - Enh #376: Added support for hidden tasks in stream
 - Enh #387: Add title and description in Open Graph description on event pages
 - Enh #394: If the location is an URL, convert it to a clickable link
+- Enh #393: Automatically Update end time
 
 1.5.0  (May 1, 2023)
 --------------------
