@@ -6,6 +6,7 @@ Changelog
 - Enh #376: Added support for hidden tasks in stream
 - Enh #387: Add title and description in Open Graph description on event pages
 - Enh #394: If the location is an URL, convert it to a clickable link
+- Enh #371: Display reminder of user timezone
 
 1.5.0  (May 1, 2023)
 --------------------
