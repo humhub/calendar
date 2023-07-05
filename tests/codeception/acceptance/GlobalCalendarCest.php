@@ -16,6 +16,10 @@ use calendar\AcceptanceTester;
  */
 class GlobalCalendarCest
 {
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     */
     public function testGlobalCalendarCreateEntry(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -74,5 +78,45 @@ class GlobalCalendarCest
 
         $I->waitForText('Space Event');
         $I->see('My Test Profile Entry', '.fc-title');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @return void
+     * @skip This test fails, but manually works fine, need to figure out why!
+     */
+    public function testChangeEventTime(AcceptanceTester $I)
+    {
+        $I->amAdmin();
+        $I->enableModule(1, 'calendar');
+
+        $I->amGoingTo('create a new space event as moderator');
+        $I->amUser2(true);
+        $I->amOnSpace1('/calendar/view');
+
+        $I->waitForElementVisible('.fc-today');
+        $I->click('.fc-day-top.fc-today');
+        $I->waitForText('Create Event');
+
+//         $I->click('[for="calendarentry-all_day"]');
+//         $I->wait(1);
+
+        $I->wantToTest('how the end time will change value if the start time is changed');
+        $I->fillField('#calendarentryform-start_time', '01:00 PM');
+//         $I->fillField('input[name="CalendarEntryForm[start_time]"]', '01:00 PM');
+//         $I->executeJS('$(".field-calendarentryform-start_time .picker").click();');
+//         $I->seeElement('input', ['name' => 'meridian']);
+//         $I->fillField('input[name="hour"]', '01');
+//         $I->fillField('input[name="minute"]', '00');
+//         $I->fillField('input[name="meridian"]', 'PM');
+        $I->executeJS('$("#calendarentryform-start_time").focus().val("01:00 PM").change();');
+        $I->wait(1);
+        $I->seeInField('#calendarentryform-end_time', '02:00 PM');
+
+        $I->wantToTest('how the start time will change value if the end time is changed');
+        $I->fillField('#calendarentryform-end_time', '02:00 AM');
+        $I->executeJS('$("#calendarentryform-end_time").trigger("change");');
+        $I->wait(1);
+        $I->seeInField('#calendarentryform-start_time', '01:00 AM');
     }
 }

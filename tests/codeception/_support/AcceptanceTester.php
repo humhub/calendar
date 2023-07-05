@@ -15,33 +15,33 @@ namespace calendar;
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class AcceptanceTester extends \AcceptanceTester
 {
     use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
-   public function createEventToday($title = 'My Test Entry', $description = 'My Test Entry Description', $startTime = null, $endTime = null, $save = true)
-   {
-       $this->waitForElementVisible('.fc-today');
-       $this->click('.fc-day-top.fc-today');
-       $this->waitForText('Create Event');
+    /**
+     * Define custom actions here
+     */
+    public function createEventToday($title = 'My Test Entry', $description = 'My Test Entry Description', $startTime = null, $endTime = null, $save = true)
+    {
+        $this->waitForElementVisible('.fc-today');
+        $this->click('.fc-day-top.fc-today');
+        $this->waitForText('Create Event');
 
-       $this->fillField('CalendarEntry[title]', $title);
-       $this->fillField('#calendarentry-description .humhub-ui-richtext'  , $description);
+        $this->fillField('CalendarEntry[title]', $title);
+        $this->fillField('#calendarentry-description .humhub-ui-richtext'  , $description);
 
-       if($startTime) {
-           $this->click('[for="calendarentry-all_day"]');
-           $this->wait(1);
-           $this->fillField('#calendarentryform-start_time', $startTime);
-           $this->fillField('#calendarentryform-start_time', $endTime);
-       }
+        if ($startTime) {
+            $this->click('[for="calendarentry-all_day"]');
+            $this->wait(1);
+            $this->fillField('#calendarentryform-start_time', $startTime);
+            $this->fillField('#calendarentryform-end_time', $endTime);
+        }
 
-       if($save) {
-           $this->click('Next', '#globalModal');
-           $this->wait(1);
-       }
-   }
+        if ($save) {
+            $this->click('Next', '#globalModal');
+            $this->wait(1);
+        }
+    }
 }

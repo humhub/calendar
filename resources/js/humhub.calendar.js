@@ -35,10 +35,26 @@ humhub.module('calendar', function (module, require, $) {
                 $('#calendarentry-participation_mode').focus();
             });
 
+            function getTimeParams() {
+                return {
+                    startDate: $(startPrefix + 'date').datepicker('getDate').getTime(),
+                    endDate: $(endPrefix + 'date').datepicker('getDate').getTime(),
+                    arrStart: $(startPrefix + 'time').val().split(':'),
+                    arrEnd: $(endPrefix + 'time').val().split(':')
+                }
+            }
+
             function isNeedChangeTime(arrStart, arrEnd) {
                 return arrEnd[0] * 1 <= arrStart[0] * 1 &&
                     (arrEnd[1].includes('A') && (arrStart[1].includes('A') || arrStart[1].includes('P'))) ||
                     (arrEnd[1].includes('P') && arrStart[1].includes('P'));
+            }
+
+            function getNewAmPm(time, condition) {
+                if (condition) {
+                    return time.includes('A') ? time.replace('A', 'P') : time.replace('P', 'A');
+                }
+                return time.includes('A') ? time.replace('P', 'A') : time.replace('A', 'P');
             }
 
             function changeTime(prefix, arrTime) {
@@ -46,6 +62,50 @@ humhub.module('calendar', function (module, require, $) {
 
                 $(prefix + 'time').val(arrTime.join(':'));
             }
+
+            this.$.find(startPrefix + 'time').on('change', function () {
+                var p = getTimeParams();
+                var startDate = p.startDate;
+                var endDate = p.endDate;
+                var arrStart = p.arrStart;
+                var arrEnd = p.arrEnd;
+
+                if (startDate === endDate) {
+                    if (arrStart[1].includes('M')) {
+                        if (arrEnd[0] === '11' && arrEnd[1].includes('P')) {
+                        } else if (isNeedChangeTime(arrStart, arrEnd)) {
+                            arrEnd[0] = arrStart[0] * 1 === 12 ? 1 : (arrStart[0] * 1) + 1;
+                            arrEnd[1] = getNewAmPm(arrStart[1], arrStart[0] * 1 === 11);
+                            changeTime(endPrefix, arrEnd);
+                        }
+                    } else if (arrEnd[0] * 1 <= arrStart[0] * 1) {
+                        arrEnd[0] = arrStart[0] === '23' ? arrEnd[0] !== '23' ? 0 : arrEnd[0] * 1 : (arrStart[0] * 1) + 1;
+                        changeTime(endPrefix, arrEnd);
+                    }
+                }
+            });
+
+            this.$.find(endPrefix + 'time').on('change', function () {
+                var p = getTimeParams();
+                var startDate = p.startDate;
+                var endDate = p.endDate;
+                var arrStart = p.arrStart;
+                var arrEnd = p.arrEnd;
+
+                if (startDate === endDate) {
+                    if (arrStart[1].includes('M')) {
+                        if (arrStart[0] === '12' && arrStart[1].includes('A')) {
+                        } else if (isNeedChangeTime(arrStart, arrEnd)) {
+                            arrStart[0] = arrEnd[0] * 1 === 1 ? 12 : (arrEnd[0] * 1) - 1;
+                            arrStart[1] = getNewAmPm(arrEnd[1], arrEnd[0] * 1 === 12);
+                            changeTime(startPrefix, arrStart);
+                        }
+                    } else if (arrEnd[0] * 1 <= arrStart[0] * 1) {
+                        arrStart[0] = arrEnd[0] * 1 === 0 ? arrStart[0] * 1 !== 0 ? 23 : arrStart[0] * 1 : (arrEnd[0] * 1) - 1;
+                        changeTime(startPrefix, arrStart);
+                    }
+                }
+            });
 
             this.$.find(startPrefix + 'date').on('change', function () {
                 var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
@@ -62,68 +122,6 @@ humhub.module('calendar', function (module, require, $) {
 
                 if (endDate < startDate) {
                     $(startPrefix + 'date').val($(endPrefix + 'date').val())
-                }
-            });
-
-            this.$.find(startPrefix + 'time').on('change', function () {
-                var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
-                var endDate = $(endPrefix + 'date').datepicker('getDate').getTime();
-                var arrStart = $(startPrefix + 'time').val().split(':');
-                var arrEnd = $(endPrefix + 'time').val().split(':');
-
-                if (startDate === endDate) {
-                    if (arrStart[1].includes('M')) {
-                        if (arrEnd[0] === '11' && arrEnd[1].includes('P')) {
-                        } else {
-                            if (isNeedChangeTime(arrStart, arrEnd)) {
-                                arrEnd[0] = arrStart[0] * 1 === 12 ? 1 : (arrStart[0] * 1) + 1;
-                                if (arrStart[0] * 1 === 11) {
-                                    arrEnd[1] = arrStart[1].includes('A')
-                                        ? arrStart[1].replace('A', 'P') : arrStart[1].replace('P', 'A');
-                                } else {
-                                    arrEnd[1] = arrStart[1].includes('A')
-                                        ? arrStart[1].replace('P', 'A') : arrStart[1].replace('A', 'P');
-                                }
-                                changeTime(endPrefix, arrEnd);
-                            }
-                        }
-                    } else {
-                        if (arrEnd[0] * 1 <= arrStart[0] * 1) {
-                            arrEnd[0] = arrStart[0] * 1 === 23 ? 0 : (arrStart[0] * 1) + 1;
-                            changeTime(endPrefix, arrEnd);
-                        }
-                    }
-                }
-            });
-
-            this.$.find(endPrefix + 'time').on('change', function () {
-                var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
-                var endDate = $(endPrefix + 'date').datepicker('getDate').getTime();
-                var arrStart = $(startPrefix + 'time').val().split(':');
-                var arrEnd = $(endPrefix + 'time').val().split(':');
-
-                if (startDate === endDate) {
-                    if (arrStart[1].includes('M')) {
-                        if (arrStart[0] === '12' && arrStart[1].includes('A')) {
-                        } else {
-                            if (isNeedChangeTime(arrStart, arrEnd)) {
-                                arrStart[0] = arrEnd[0] * 1 === 1 ? 12 : (arrEnd[0] * 1) - 1;
-                                if (arrEnd[0] * 1 === 12) {
-                                    arrStart[1] = arrEnd[1].includes('A')
-                                        ? arrEnd[1].replace('A', 'P') : arrEnd[1].replace('P', 'A');
-                                } else {
-                                    arrStart[1] = arrEnd[1].includes('A')
-                                        ? arrEnd[1].replace('P', 'A') : arrEnd[1].replace('A', 'P');
-                                }
-                                changeTime(startPrefix, arrStart);
-                            }
-                        }
-                    } else {
-                        if (arrEnd[0] * 1 <= arrStart[0] * 1) {
-                            arrStart[0] = arrEnd[0] * 1 === 0 ? 23 : (arrEnd[0] * 1) - 1;
-                            changeTime(startPrefix, arrStart);
-                        }
-                    }
                 }
             });
 
