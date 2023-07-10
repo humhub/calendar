@@ -45,8 +45,6 @@ use yii\helpers\Html;
     <div class="pagination-container">
         <?= AjaxLinkPager::widget([
             'pagination' => $pagination,
-            'jsBeforeSend' => 'function(){}',
-            'jsSuccess' => 'function(html){ $("#globalModal #calendar-entry-participants-list").after(html).remove(); }',
         ]); ?>
         <?= Html::hiddenInput('calendar-entry-participants-count', $pagination->totalCount) ?>
     </div>
