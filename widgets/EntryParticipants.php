@@ -45,7 +45,7 @@ class EntryParticipants extends Widget
     private function getParticipantStateCount($state, $condition)
     {
         if(!$condition) {
-            return null;
+            return 0;
         }
 
         return  $this->calendarEntry->getParticipantCount($state);
