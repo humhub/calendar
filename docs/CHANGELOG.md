@@ -7,6 +7,7 @@ Changelog
 - Enh #387: Add title and description in Open Graph description on event pages
 - Enh #394: If the location is an URL, convert it to a clickable link
 - Enh #393: Automatically Update end time
+- Fix #400: When language is set to dutch attendees aren't shown properly
 
 1.5.0  (May 1, 2023)
 --------------------
