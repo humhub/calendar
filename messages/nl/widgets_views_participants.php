@@ -1,8 +1,8 @@
 <?php
 return array (
-  ':count Attending' => ':aantal aanwezig',
-  ':count Declined' => ':aantal afgewezen',
-  ':count Invited' => ':aantal uitgenodigd',
-  ':count Undecided' => ':aantal onbepaald',
+  ':count Attending' => ':count aanwezig',
+  ':count Declined' => ':count afgewezen',
+  ':count Invited' => ':count uitgenodigd',
+  ':count Undecided' => ':count onbepaald',
   'Participants' => 'Deelnemers',
 );
