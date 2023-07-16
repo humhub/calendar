@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.1  (Unreleased)
---------------------
+1.5.1  (July 16, 2023)
+----------------------
 - Enh #376: Added support for hidden tasks in stream
 - Enh #387: Add title and description in Open Graph description on event pages
 - Enh #394: If the location is an URL, convert it to a clickable link
