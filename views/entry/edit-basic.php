@@ -40,28 +40,22 @@ use yii\jui\DatePicker;
     <?php Yii::$app->formatter->timeZone = $calendarEntryForm->timeZone ?>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-xs-6">
             <?= $form->field($calendarEntryForm, 'start_date')->widget(DatePicker::class, ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]) ?>
         </div>
-        <div class="col-md-6 timeField" <?= !$calendarEntryForm->showTimeFields() ? 'style="opacity:0.2"' : '' ?>>
+        <div class="col-xs-6 timeField" <?= !$calendarEntryForm->showTimeFields() ? 'style="opacity:0.2"' : '' ?>>
             <?= $form->field($calendarEntryForm, 'start_time')->widget(TimePicker::class, ['disabled' => $calendarEntryForm->entry->all_day]); ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-xs-6">
             <?= $form->field($calendarEntryForm, 'end_date')->widget(DatePicker::class, ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]) ?>
         </div>
-        <div class="col-md-6 timeField" <?= !$calendarEntryForm->showTimeFields() ? 'style="opacity:0.2"' : '' ?>>
+        <div class="col-xs-6 timeField" <?= !$calendarEntryForm->showTimeFields() ? 'style="opacity:0.2"' : '' ?>>
             <?= $form->field($calendarEntryForm, 'end_time')->widget(TimePicker::class, ['disabled' => $calendarEntryForm->entry->all_day]); ?>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($calendarEntryForm->entry, 'location')->textInput() ?>
-        </div>
-        <div class="col-md-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
+		 <div class="col-xs-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
             <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
         </div>
     </div>
@@ -91,6 +85,8 @@ use yii\jui\DatePicker;
         </div>
         <?php endif; ?>
     </div>
+	
+	<?= $form->field($calendarEntryForm->entry, 'location')->textInput() ?>
 
     <?= $form->field($calendarEntryForm->entry, 'description')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Description'), 'pluginOptions' => ['maxHeight' => '300px']])->label(false) ?>
 
