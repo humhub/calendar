@@ -54,9 +54,9 @@ use yii\jui\DatePicker;
         </div>
         <div class="col-xs-6 timeField" <?= !$calendarEntryForm->showTimeFields() ? 'style="opacity:0.2"' : '' ?>>
             <?= $form->field($calendarEntryForm, 'end_time')->widget(TimePicker::class, ['disabled' => $calendarEntryForm->entry->all_day]); ?>
-        </div>
-		 <div class="col-xs-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
-            <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
+            <div class="timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
+                <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
+            </div>
         </div>
     </div>
 
