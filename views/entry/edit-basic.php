@@ -68,10 +68,8 @@ use yii\jui\DatePicker;
             </div>
             <?php endif; ?>
         </div>
-        <div class="col-xs-6">
-            <div class="timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
-                <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
-            </div>
+        <div class="col-xs-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
+            <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
         </div>
     </div>
 
