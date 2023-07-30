@@ -668,10 +668,6 @@ tbody,
     min-width: 140px;
 }
 
-#calendar-entry-form a.input-field-addon-sm {
-    margin-top: -5px;
-}
-
 #calendar-entry-form .ProseMirror-menubar-wrapper {
     z-index: 8;
 }
