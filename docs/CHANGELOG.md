@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.2 (Unreleased)
+------------------
+- Enh #405: Improve UI of create/edit form on mobile
+
 1.5.1  (July 16, 2023)
 ----------------------
 - Enh #376: Added support for hidden tasks in stream
