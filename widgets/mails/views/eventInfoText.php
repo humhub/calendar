@@ -33,12 +33,12 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event])
 
 <?php if ($event instanceof CalendarEventParticipationIF): ?>
     <?php if ($event->getOrganizer()): ?>
-        <?= Yii::t('CalendarModule.mail', 'Organized by {userName}', ['userName' => $event->getOrganizer()->displayName]) ?>
+        <?= Yii::t('CalendarModule.mail', 'Organized by {userName}', ['userName' => Html::encode($event->getOrganizer()->displayName)]) ?>
     <?php endif; ?>
 <?php endif; ?>
 
 <?php if (!empty($event->getLocation())): ?>
-    <?= Yii::t('CalendarModule.mail', 'Location:') ?> <?= $event->getLocation() ?>
+    <?= Yii::t('CalendarModule.mail', 'Location:') ?> <?= Html::encode($event->getLocation()) ?>
 <?php endif; ?>
 
 <?php if (!empty($event->getDescription())): ?>
