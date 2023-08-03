@@ -7,59 +7,59 @@
 
 use humhub\libs\Html;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
-use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;use humhub\modules\calendar\models\CalendarDateFormatter;
+use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
+use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
 
 /* @var $event CalendarEventIF */
 /* @var $url string */
-/* @var $extraInfo string*/
+/* @var $extraInfo string */
 
-if(!isset($url)) {
+if (!isset($url)) {
     $url = $event->getUrl();
 }
 
 $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
-
 ?>
 
 <div style="overflow:hidden">
     <table width="100%" style="table-layout:fixed;" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
-            <td colspan="2" style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left;">
+            <td colspan="2"
+                style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left;">
 
-                <?php if(!empty($event->getTitle()))  :?>
-                    <h1><?= Html::encode($event->getTitle())?></h1>
+                <?php if (!empty($event->getTitle())): ?>
+                    <h1><?= Html::encode($event->getTitle()) ?></h1>
                 <?php endif; ?>
 
-                <?php if(!empty($event->getStartDateTime())) : ?>
+                <?php if (!empty($event->getStartDateTime())): ?>
                     <?= Yii::t('CalendarModule.mail', '<strong>Starting</strong> {date}', [
                         'date' => $formatter->getFormattedTime()
                     ]) ?>
                     <br>
                 <?php endif; ?>
 
-                <?php if($event instanceof CalendarEventParticipationIF) : ?>
-                    <?php if($event->getOrganizer()) : ?>
+                <?php if ($event instanceof CalendarEventParticipationIF): ?>
+                    <?php if ($event->getOrganizer()) : ?>
                         <b><?= Yii::t('CalendarModule.mail', 'Organized by {userName}', ['userName' => Html::encode($event->getOrganizer()->displayName)]) ?></b>
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <?php if(!empty($event->getLocation())) : ?>
-                    <b><?= Yii::t('CalendarModule.mail', 'Location:') ?> <?= Html::encode($event->getLocation())?></b>
+                <?php if (!empty($event->getLocation())): ?>
+                    <b><?= Yii::t('CalendarModule.mail', 'Location:') ?> <?= Html::encode($event->getLocation()) ?></b>
                     <br>
                 <?php endif; ?>
 
-                <?php if(!empty($event->getDescription())) : ?>
+                <?php if (!empty($event->getDescription())): ?>
                     <p><?= RichTextToEmailHtmlConverter::process($event->getDescription()) ?></p>
                 <?php endif; ?>
 
-                <?php if(isset($extraInfo)) : ?>
+                <?php if (isset($extraInfo) && !empty($extraInfo)): ?>
                     <h2><?= Yii::t('CalendarModule.mail', 'Additional information:'); ?></h2>
                     <p><?= RichTextToEmailHtmlConverter::process($extraInfo) ?></p>
                 <?php endif; ?>
-
             </td>
         </tr>
     </table>

@@ -4,6 +4,7 @@ Changelog
 1.5.2 (Unreleased)
 ------------------
 - Enh #405: Improve UI of create/edit form on mobile
+- Fix #404: Invite notification - Empty block
 
 1.5.1  (July 16, 2023)
 ----------------------
