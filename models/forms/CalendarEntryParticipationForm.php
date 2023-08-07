@@ -164,11 +164,13 @@ class CalendarEntryParticipationForm extends Model
             return;
         }
 
-        foreach ($users as $user) {
-            $this->entry->participation->setParticipationStatus($user, $this->newParticipantStatus);
+        foreach ($users as $u => $user) {
+            if (!$this->entry->participation->setParticipationStatus($user, $this->newParticipantStatus)) {
+                unset($users[$u]);
+            }
         }
 
-        if ($this->newParticipantStatus == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED) {
+        if ($this->newParticipantStatus == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED && count($users)) {
             Invited::instance()->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($users);
         }
     }

@@ -130,7 +130,9 @@ class CalendarController extends BaseContentController
             return $this->returnError(400, 'Invalid respond type');
         }
 
-        $calendarEntry->setParticipationStatus(Yii::$app->user->getIdentity(), (int)$respondType);
+        if (!$calendarEntry->setParticipationStatus(Yii::$app->user->getIdentity(), (int)$respondType)) {
+            return $this->returnError(500, 'Participation cannot be changed.');
+        }
 
         return $this->returnSuccess('Participation successfully changed.');
     }

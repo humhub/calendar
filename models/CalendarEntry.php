@@ -776,9 +776,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      * @inheritDoc
      * @throws \Throwable
      */
-    public function setParticipationStatus(User $user, $status = self::PARTICIPATION_STATUS_ACCEPTED)
+    public function setParticipationStatus(User $user, $status = self::PARTICIPATION_STATUS_ACCEPTED): bool
     {
-        $this->participation->setParticipationStatus($user, $status);
+        return $this->participation->setParticipationStatus($user, $status);
     }
 
     /**

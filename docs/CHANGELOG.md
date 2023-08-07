@@ -5,6 +5,7 @@ Changelog
 ------------------
 - Enh #405: Improve UI of create/edit form on mobile
 - Fix #404: Invite notification - Empty block
+- Fix #408: Invite only users who can read the event
 
 1.5.1  (July 16, 2023)
 ----------------------

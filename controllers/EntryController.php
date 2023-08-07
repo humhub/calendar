@@ -174,9 +174,9 @@ class EntryController extends ContentContainerController
             throw new HttpException(403, 'Event is over!');
         }
 
-        $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int)$type);
-
-        return $this->asJson(['success' => true]);
+        return $this->asJson([
+            'success' => $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int)$type)
+        ]);
     }
 
     /**
@@ -325,7 +325,7 @@ class EntryController extends ContentContainerController
         return $this->addParticipants($entry, $status);
     }
 
-    private function addParticipants($entry, $status): Response
+    private function addParticipants(CalendarEntry $entry, $status): Response
     {
         $guids = Yii::$app->request->post('guids');
 
@@ -352,25 +352,43 @@ class EntryController extends ContentContainerController
         }
 
         $addedUserNames = [];
+        $skippedUserNames = [];
         $newParticipantsHtml = [];
-        foreach ($users as $user) {
-            $entry->participation->setParticipationStatus($user, $status);
-            $addedUserNames[] = $user->displayName;
-            $newParticipantsHtml[] = ParticipantItem::widget([
-                'entry' => $entry,
-                'user' => $user,
-            ]);
+        foreach ($users as $u => $user) {
+            if ($entry->participation->setParticipationStatus($user, $status)) {
+                $addedUserNames[] = $user->displayName;
+                $newParticipantsHtml[] = ParticipantItem::widget([
+                    'entry' => $entry,
+                    'user' => $user,
+                ]);
+            } else {
+                $skippedUserNames[] = $user->displayName;
+                unset($users[$u]);
+            }
         }
 
-        if ($isInvitation) {
+        if ($isInvitation && count($users)) {
             Invited::instance()->from(Yii::$app->user->getIdentity())->about($entry)->sendBulk($users);
         }
 
-        $messageOptions = ['users' => implode(', ', $addedUserNames)];
+        $successMessageParams = ['users' => implode(', ', $addedUserNames)];
+        $successMessage = empty($addedUserNames) ? '' : ($isInvitation
+            ? Yii::t('CalendarModule.base', 'Invited: {users}', $successMessageParams)
+            : Yii::t('CalendarModule.base', 'Added: {users}', $successMessageParams));
+
+        if (empty($skippedUserNames)) {
+            $warningMessage = '';
+        } else {
+            // If at least one user cannot be added/invited then display result as warning message
+            $warningMessage = empty($successMessage) ? '' : $successMessage . '. ';
+            $warningMessage .= Yii::t('CalendarModule.base', 'Skipped: {users}',
+                ['users' => implode(', ', $skippedUserNames)]);
+            $successMessage = '';
+        }
+
         return $this->asJson([
-            'success' => $isInvitation
-                ? Yii::t('CalendarModule.base', 'Invited: {users}', $messageOptions)
-                : Yii::t('CalendarModule.base', 'Added: {users}', $messageOptions),
+            'success' => $successMessage,
+            'warning' => $warningMessage,
             'html' => $newParticipantsHtml,
         ]);
     }
@@ -397,11 +415,13 @@ class EntryController extends ContentContainerController
             throw new HttpException(404, 'User not found!');
         }
 
-        $entry->participation->setParticipationStatus($user, $status);
+        $result = $entry->participation->setParticipationStatus($user, $status);
 
         return $this->asJson([
-            'success' => true,
-            'message' => Yii::t('CalendarModule.base', 'Status updated.'),
+            'success' => $result,
+            'message' => $result
+                ? Yii::t('CalendarModule.base', 'Status updated.')
+                : Yii::t('CalendarModule.base', 'Status cannot be updated.'),
         ]);
     }
 
