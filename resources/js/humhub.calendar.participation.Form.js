@@ -111,12 +111,14 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         }
 
         client.post(evt, {data: data}).then(function(response) {
-            if (response.success) {
-                status.success(response.success);
+            if (response.html) {
                 var list = form.closest('.calendar-entry-participants').find('#calendar-entry-participants-list ul.media-list');
                 var count = list.find('li').length;
                 list.append(response.html);
                 updateParticipantsCount(list.find('li').length - count);
+            }
+            if (response.success) {
+                status.success(response.success);
             } else if (response.warning) {
                 status.warn(response.warning);
             } else if (response.error) {
