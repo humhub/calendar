@@ -16,6 +16,7 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConvert
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\UserPicker;
 use humhub\widgets\ModalClose;
 use Throwable;
 use Yii;
@@ -302,6 +303,31 @@ class EntryController extends ContentContainerController
         ]);
     }
 
+    public function actionSearchParticipants(int $entryId, string $keyword)
+    {
+        $content = $this->getCalendarEntry($entryId)->content;
+
+        if (!$content->canEdit()) {
+            throw new HttpException(403);
+        }
+
+        $filterParams = [
+            'keyword' => $keyword,
+            'fillUser' => true,
+        ];
+
+        if (!$content->isPublic()) {
+            $filterParams['filter'] = function (array &$userData) use ($content) {
+                if (!$userData['disabled'] && !$content->canView($userData['id'])) {
+                    $userData['disabled'] = true;
+                    $userData['disabledText'] = Yii::t('CalendarModule.base', 'This user cannot view the private calendar entry');
+                }
+            };
+        }
+
+        return $this->asJson(UserPicker::filter($filterParams));
+    }
+
     public function actionAddParticipants()
     {
         $this->forcePostRequest();
@@ -352,7 +378,6 @@ class EntryController extends ContentContainerController
         }
 
         $addedUserNames = [];
-        $skippedUserNames = [];
         $newParticipantsHtml = [];
         foreach ($users as $u => $user) {
             if ($entry->participation->setParticipationStatus($user, $status)) {
@@ -362,7 +387,6 @@ class EntryController extends ContentContainerController
                     'user' => $user,
                 ]);
             } else {
-                $skippedUserNames[] = $user->displayName;
                 unset($users[$u]);
             }
         }
@@ -372,23 +396,11 @@ class EntryController extends ContentContainerController
         }
 
         $successMessageParams = ['users' => implode(', ', $addedUserNames)];
-        $successMessage = empty($addedUserNames) ? '' : ($isInvitation
-            ? Yii::t('CalendarModule.base', 'Invited: {users}', $successMessageParams)
-            : Yii::t('CalendarModule.base', 'Added: {users}', $successMessageParams));
-
-        if (empty($skippedUserNames)) {
-            $warningMessage = '';
-        } else {
-            // If at least one user cannot be added/invited then display result as warning message
-            $warningMessage = empty($successMessage) ? '' : $successMessage . '. ';
-            $warningMessage .= Yii::t('CalendarModule.base', 'Skipped: {users}',
-                ['users' => implode(', ', $skippedUserNames)]);
-            $successMessage = '';
-        }
 
         return $this->asJson([
-            'success' => $successMessage,
-            'warning' => $warningMessage,
+            'success' => $isInvitation
+                ? Yii::t('CalendarModule.base', 'Invited: {users}', $successMessageParams)
+                : Yii::t('CalendarModule.base', 'Added: {users}', $successMessageParams),
             'html' => $newParticipantsHtml,
         ]);
     }
