@@ -5,6 +5,7 @@ Changelog
 ------------------
 - Enh #405: Improve UI of create/edit form on mobile
 - Fix #404: Invite notification - Empty block
+- Fix #409: Fix autocorrector of the time inputs
 
 1.5.1  (July 16, 2023)
 ----------------------
