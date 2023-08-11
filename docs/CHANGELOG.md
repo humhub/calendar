@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.2 (Unreleased)
-------------------
+1.5.2 (August 11, 2023)
+-----------------------
 - Enh #405: Improve UI of create/edit form on mobile
 - Fix #404: Invite notification - Empty block
 - Fix #409: Fix autocorrector of the time inputs
