@@ -7,8 +7,6 @@
 humhub.module('calendar', function (module, require, $) {
         var Widget = require('ui.widget').Widget;
         var client = require('client');
-        var util = require('util');
-        var object = util.object;
         var modal = require('ui.modal');
         var action = require('action');
         var Content = require('content').Content;
@@ -24,9 +22,6 @@ humhub.module('calendar', function (module, require, $) {
         Form.RECUR_EDIT_MODE_ALL = 3;
 
         Form.prototype.init = function () {
-            var startPrefix = '#calendarentryform-start_';
-            var endPrefix = '#calendarentryform-end_';
-
             modal.global.$.find('.tab-basic').on('shown.bs.tab', function (e) {
                 $('#calendarentry-title').focus();
             });
@@ -35,98 +30,113 @@ humhub.module('calendar', function (module, require, $) {
                 $('#calendarentry-participation_mode').focus();
             });
 
-            function getTimeParams() {
+            this.initDateTimeCorrector();
+            this.initTimeInput();
+            this.initSubmitAction();
+        };
+
+        Form.prototype.initDateTimeCorrector = function () {
+            var startPrefix = '#calendarentryform-start_';
+            var endPrefix = '#calendarentryform-end_';
+
+            var convertTimeToMinutes = function(time) {
+                time = time.split(':');
+                var hours = parseInt(time[0]);
+                if (hours === 12 && time[1].includes('AM')) {
+                    hours = 0;
+                } else {
+                    hours += time[1].includes('PM') && hours < 12 ? 12 : 0;
+                }
+                return hours * 60 + parseInt(time[1]);
+            }
+
+            var convertMinutesToTime = function(time, mode) {
+                var minutes = time % 60;
+                var hours = (time - minutes) / 60;
+                var modeSuffix = '';
+                if (mode === '12h') {
+                    modeSuffix = hours < 12 ? ' AM' : ' PM';
+                    if (hours === 0) {
+                        hours = 12;
+                    } else if (hours > 12) {
+                        hours -= 12;
+                    }
+                }
+                if (hours < 10) {
+                    hours = '0' + hours;
+                }
+                if (minutes < 10) {
+                    minutes = '0' + minutes;
+                }
+                return hours + ':' + minutes + modeSuffix;
+            }
+
+            var getDateData = function() {
                 return {
-                    startDate: $(startPrefix + 'date').datepicker('getDate').getTime(),
-                    endDate: $(endPrefix + 'date').datepicker('getDate').getTime(),
-                    arrStart: $(startPrefix + 'time').val().split(':'),
-                    arrEnd: $(endPrefix + 'time').val().split(':')
+                    start: $(startPrefix + 'date').datepicker('getDate').getTime(),
+                    end: $(endPrefix + 'date').datepicker('getDate').getTime(),
                 }
             }
 
-            function isNeedChangeTime(arrStart, arrEnd) {
-                return arrEnd[0] * 1 <= arrStart[0] * 1 &&
-                    (arrEnd[1].includes('A') && (arrStart[1].includes('A') || arrStart[1].includes('P'))) ||
-                    (arrEnd[1].includes('P') && arrStart[1].includes('P'));
-            }
-
-            function getNewAmPm(time, condition) {
-                if (condition) {
-                    return time.includes('A') ? time.replace('A', 'P') : time.replace('P', 'A');
+            var getTimeData = function() {
+                return {
+                    start: convertTimeToMinutes($(startPrefix + 'time').val()),
+                    end: convertTimeToMinutes($(endPrefix + 'time').val()),
+                    mode: $(startPrefix + 'time').val().includes('M') ? '12h' : '24h',
                 }
-                return time.includes('A') ? time.replace('P', 'A') : time.replace('A', 'P');
             }
 
-            function changeTime(prefix, arrTime) {
-                arrTime[0] = (arrTime[0] <= 9 ? '0' : '') + arrTime[0];
+            var fixDateTime = function(prefix, time, mode) {
+                var dayMinutes = 24 * 60;
+                if (time < 0 || time >= dayMinutes) {
+                    // Shift date to +1/-1 day if time is out of day
+                    var date = new Date($(prefix + 'date').datepicker('getDate'));
+                    date.setDate(date.getDate() + (time < 0 ? -1 : 1));
+                    $(prefix + 'date').datepicker('setDate', date);
+                    time = time + (time < 0 ? dayMinutes : -dayMinutes);
+                }
+                $(prefix + 'time').val(convertMinutesToTime(time, mode));
+            }
 
-                $(prefix + 'time').val(arrTime.join(':'));
+            var validateTime = function () {
+                var date = getDateData();
+                if (date.start !== date.end) {
+                    return true;
+                }
+                var time = getTimeData();
+                return time.start >= time.end ? time : true;
             }
 
             this.$.find(startPrefix + 'time').on('change', function () {
-                var p = getTimeParams();
-                var startDate = p.startDate;
-                var endDate = p.endDate;
-                var arrStart = p.arrStart;
-                var arrEnd = p.arrEnd;
-
-                if (startDate === endDate) {
-                    if (arrStart[1].includes('M')) {
-                        if (arrEnd[0] === '11' && arrEnd[1].includes('P')) {
-                        } else if (isNeedChangeTime(arrStart, arrEnd)) {
-                            arrEnd[0] = arrStart[0] * 1 === 12 ? 1 : (arrStart[0] * 1) + 1;
-                            arrEnd[1] = getNewAmPm(arrStart[1], arrStart[0] * 1 === 11);
-                            changeTime(endPrefix, arrEnd);
-                        }
-                    } else if (arrEnd[0] * 1 <= arrStart[0] * 1) {
-                        arrEnd[0] = arrStart[0] === '23' ? arrEnd[0] !== '23' ? 0 : arrEnd[0] * 1 : (arrStart[0] * 1) + 1;
-                        changeTime(endPrefix, arrEnd);
-                    }
+                var time = validateTime();
+                if (time !== true) {
+                    fixDateTime(endPrefix, time.start + 60, time.mode);
                 }
             });
 
             this.$.find(endPrefix + 'time').on('change', function () {
-                var p = getTimeParams();
-                var startDate = p.startDate;
-                var endDate = p.endDate;
-                var arrStart = p.arrStart;
-                var arrEnd = p.arrEnd;
-
-                if (startDate === endDate) {
-                    if (arrStart[1].includes('M')) {
-                        if (arrStart[0] === '12' && arrStart[1].includes('A')) {
-                        } else if (isNeedChangeTime(arrStart, arrEnd)) {
-                            arrStart[0] = arrEnd[0] * 1 === 1 ? 12 : (arrEnd[0] * 1) - 1;
-                            arrStart[1] = getNewAmPm(arrEnd[1], arrEnd[0] * 1 === 12);
-                            changeTime(startPrefix, arrStart);
-                        }
-                    } else if (arrEnd[0] * 1 <= arrStart[0] * 1) {
-                        arrStart[0] = arrEnd[0] * 1 === 0 ? arrStart[0] * 1 !== 0 ? 23 : arrStart[0] * 1 : (arrEnd[0] * 1) - 1;
-                        changeTime(startPrefix, arrStart);
-                    }
+                var time = validateTime();
+                if (time !== true) {
+                    fixDateTime(startPrefix, time.end - 60, time.mode);
                 }
             });
 
-            this.$.find(startPrefix + 'date').on('change', function () {
-                var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
-                var endDate = $(endPrefix + 'date').datepicker('getDate').getTime();
+            var validateDate = function () {
+                var date = getDateData();
+                return date.start <= date.end;
+            }
 
-                if (endDate < startDate) {
+            this.$.find(startPrefix + 'date').on('change', function () {
+                if (!validateDate()) {
                     $(endPrefix + 'date').val($(startPrefix + 'date').val());
                 }
             });
 
             this.$.find(endPrefix + 'date').on('change', function () {
-                var startDate = $(startPrefix + 'date').datepicker('getDate').getTime();
-                var endDate = $(endPrefix + 'date').datepicker('getDate').getTime();
-
-                if (endDate < startDate) {
+                if (!validateDate()) {
                     $(startPrefix + 'date').val($(endPrefix + 'date').val())
                 }
             });
-
-            this.initTimeInput();
-            this.initSubmitAction();
         };
 
         Form.prototype.setEditMode = function (evt) {
@@ -150,7 +160,7 @@ humhub.module('calendar', function (module, require, $) {
             this.$.find('.calendar-entry-form-tabs').hide();
         };
 
-        Form.prototype.initTimeInput = function (evt) {
+        Form.prototype.initTimeInput = function () {
             var $timeFields = modal.global.$.find('.timeField');
             var $timeInputs = $timeFields.find('.form-control');
             $timeInputs.each(function () {
