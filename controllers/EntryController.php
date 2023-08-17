@@ -320,7 +320,7 @@ class EntryController extends ContentContainerController
             $filterParams['filter'] = function (array &$userData) use ($content) {
                 if (!$userData['disabled'] && !$content->canView($userData['id'])) {
                     $userData['disabled'] = true;
-                    $userData['disabledText'] = Yii::t('CalendarModule.base', 'This user cannot view the private calendar entry');
+                    $userData['disabledText'] = Yii::t('CalendarModule.base', 'Private events are only visible to you and, if the friendship system is activated, to your friends.');
                 }
             };
         }
