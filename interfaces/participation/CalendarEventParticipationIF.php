@@ -36,9 +36,10 @@ interface CalendarEventParticipationIF
     /**
      * @param User $user
      * @param $status int
+     * @return bool
      * @return
      */
-    public function setParticipationStatus(User $user, $status = self::PARTICIPATION_STATUS_ACCEPTED);
+    public function setParticipationStatus(User $user, $status = self::PARTICIPATION_STATUS_ACCEPTED): bool;
 
     /**
      * Array of external participant emails

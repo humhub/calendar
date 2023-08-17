@@ -56,10 +56,13 @@ class ForceParticipation extends ActiveJob
 
         $users = [];
         foreach ($remainingMemberships as $membership) {
-            $entry->participation->setParticipationStatus($membership->user, $status);
-            $users[] = $membership->user;
+            if ($entry->participation->setParticipationStatus($membership->user, $status)) {
+                $users[] = $membership->user;
+            }
         }
 
-        ForceAdd::instance()->from($originator)->about($entry)->sendBulk($users);
+        if (count($users)) {
+            ForceAdd::instance()->from($originator)->about($entry)->sendBulk($users);
+        }
     }
 }

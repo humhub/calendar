@@ -10,7 +10,6 @@ namespace humhub\modules\calendar\widgets;
 use humhub\components\Widget;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
-use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
@@ -53,22 +52,17 @@ class ParticipantAddForm extends Widget
      */
     public function run()
     {
-        if (!$this->model->entry->content->canEdit()) {
-            return '';
-        }
+        $content = $this->model->entry->content;
 
-        if (($this->model->entry->content->container instanceof Space) && !$this->model->entry->content->isPublic()) {
-            // Search only members for private Space
-            $searchUsersUrl = $this->model->entry->content->container->createUrl('/space/membership/search');
-        } else {
-            $searchUsersUrl = null;
+        if (!$content->canEdit()) {
+            return '';
         }
 
         return $this->render('participantAddForm', [
             'form' => $this->form,
             'model' => $this->model,
-            'searchUsersUrl' => $searchUsersUrl,
-            'addParticipantsUrl' => $this->model->entry->content->container->createUrl('/calendar/entry/add-participants'),
+            'searchUsersUrl' => $content->container->createUrl('/calendar/entry/search-participants', ['entryId' => $this->model->entry->id]),
+            'addParticipantsUrl' => $content->container->createUrl('/calendar/entry/add-participants'),
             'statuses' => ParticipantItem::getStatuses($this->model->entry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE)
         ]);
     }

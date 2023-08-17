@@ -80,18 +80,22 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
     /**
      * @param User $user
      * @param $status int
+     * @return bool
      * @throws \Throwable
      */
-    public function setParticipationStatus(User $user, $status = self::PARTICIPATION_STATUS_ACCEPTED)
+    public function setParticipationStatus(User $user, $status = self::PARTICIPATION_STATUS_ACCEPTED): bool
     {
         $participant = $this->findParticipant($user);
 
-        if($participant && $status == self::PARTICIPATION_STATUS_NONE) {
+        if ($participant && $status == self::PARTICIPATION_STATUS_NONE) {
             $participant->delete();
-            return;
+            return true;
         }
 
         if (!$participant) {
+            if (!$this->entry->content->canView($user)) {
+                return false;
+            }
             $participant = new CalendarEntryParticipant([
                 'user_id' => $user->id,
                 'calendar_entry_id' => $this->entry->id
@@ -99,7 +103,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         }
 
         $participant->participation_state = $status;
-        $participant->save();
+        return $participant->save();
     }
 
     public function getExternalParticipants($status = [])
