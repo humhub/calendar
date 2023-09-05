@@ -369,7 +369,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             $this->participation->setDefautls();
         }
 
-        if (RecurrenceHelper::isRecurrentRoot($this)) {
+        if (RecurrenceHelper::isRecurrentRoot($this) ||
+            (RecurrenceHelper::isRecurrentInstance($this) && $this->content->hidden)) {
             $this->streamChannel = null;
         }
 
@@ -933,6 +934,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         $this->content->created_by = $root->content->created_by;
         $this->content->visibility = $root->content->visibility;
+        $this->content->hidden = $root->content->hidden;
 
         if (!$original || empty($this->description) || $original->description === $this->description) {
             $this->description = $root->description;
