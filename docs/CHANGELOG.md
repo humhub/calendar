@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.3 (Unreleased)
+-----------------------
+- Enh #415: Fix recurring event visibility on stream
+
 1.5.2 (August 11, 2023)
 -----------------------
 - Enh #405: Improve UI of create/edit form on mobile
