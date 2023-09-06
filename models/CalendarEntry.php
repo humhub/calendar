@@ -934,7 +934,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         $this->content->created_by = $root->content->created_by;
         $this->content->visibility = $root->content->visibility;
-        $this->content->hidden = $root->content->hidden;
+        $this->content->hidden = $root->content->hidden ?? 0;
 
         if (!$original || empty($this->description) || $original->description === $this->description) {
             $this->description = $root->description;
