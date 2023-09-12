@@ -4,6 +4,7 @@ Changelog
 1.5.3 (Unreleased)
 -----------------------
 - Enh #415: Fix recurring event visibility on stream
+- Fix #380: Fix visibility of last recurring event with defined end date
 
 1.5.2 (August 11, 2023)
 -----------------------

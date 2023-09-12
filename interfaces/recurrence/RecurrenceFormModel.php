@@ -315,6 +315,8 @@ class RecurrenceFormModel extends Model
             $until = $this->endDate instanceof \DateTimeInterface
                 ? $this->endDate
                 : new DateTime($this->endDate, CalendarUtils::getStartTimeZone($this->entry));
+            $entryDateTime = $this->entry->getStartDateTime();
+            $until->setTime($entryDateTime->format('H'), $entryDateTime->format('i'));
             $this->rrule->setUntil($until);
         } else if ($this->end == static::ENDS_AFTER_OCCURRENCES) {
             $this->rrule->setCount($this->endOccurrences);
