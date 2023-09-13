@@ -251,6 +251,15 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/modal-participants', ['id' => $entry->id, 'state' => $state]);
     }
 
+    public static function toExportParticipations(string $type, CalendarEntry $entry, $state = null)
+    {
+        return $entry->content->container->createUrl('/calendar/entry/export-participants', [
+            'id' => $entry->id,
+            'state' => $state,
+            'type' => $type
+        ]);
+    }
+
     public static function toEnableModuleOnProfileConfig()
     {
         if(Yii::$app->user->isGuest) {

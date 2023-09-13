@@ -303,6 +303,17 @@ class EntryController extends ContentContainerController
         ]);
     }
 
+    /**
+     * Action to export participants
+     *
+     * @param integer|null $id
+     * @return string
+     */
+    public function actionExportParticipants($id = null)
+    {
+        $entry = $this->getCalendarEntry($id);
+    }
+
     public function actionSearchParticipants(int $entryId, string $keyword)
     {
         $content = $this->getCalendarEntry($entryId)->content;

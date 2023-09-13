@@ -6,6 +6,7 @@
  */
 
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
+use humhub\modules\calendar\widgets\ExportParticipantsButton;
 use humhub\modules\calendar\widgets\ParticipantAddForm;
 use humhub\modules\calendar\widgets\ParticipantFilter;
 use humhub\modules\calendar\widgets\ParticipantItem;
@@ -33,6 +34,10 @@ use yii\helpers\Html;
 <?php endif; ?>
 
 <?= Html::beginTag('div', ['id' => 'calendar-entry-participants-list']) ?>
+    <?php if ($pagination->totalCount) : ?>
+        <?= ExportParticipantsButton::widget(['entry' => $model->entry]) ?>
+    <?php endif; ?>
+
     <?= Html::beginTag('ul', ['class' => 'media-list']) ?>
         <?php foreach ($users as $user) : ?>
             <?= ParticipantItem::widget([
