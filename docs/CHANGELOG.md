@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.3 (Unreleased)
+-----------------------
+- Fix #421: The participants modal box replaces the content sub-menu icon with a loader
+
 1.5.2 (August 11, 2023)
 -----------------------
 - Enh #405: Improve UI of create/edit form on mobile
