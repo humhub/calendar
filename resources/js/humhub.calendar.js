@@ -252,7 +252,7 @@ humhub.module('calendar', function (module, require, $) {
         };
 
         CalendarEntry.prototype.reload = function (event) {
-            return this.parent().reload();
+            return this.parent().reload(false);
         };
 
         CalendarEntry.prototype.update = function (update) {
