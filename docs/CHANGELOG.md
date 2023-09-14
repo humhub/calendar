@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.3 (Unreleased)
------------------------
+1.5.3 (September 14, 2023)
+--------------------------
 - Enh #415: Fix recurring event visibility on stream
 - Fix #380: Fix visibility of last recurring event with defined end date
 - Enh #403: Export participants
