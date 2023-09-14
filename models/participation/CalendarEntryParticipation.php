@@ -2,6 +2,8 @@
 
 namespace humhub\modules\calendar\models\participation;
 
+use humhub\components\export\SpreadsheetExport;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\jobs\ForceParticipation;
@@ -9,6 +11,7 @@ use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\notifications\EventUpdated;
 use humhub\modules\calendar\permissions\ManageEntry;
+use humhub\modules\calendar\widgets\ParticipantFilter;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -16,7 +19,9 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
+use yii\web\Response;
 
 class CalendarEntryParticipation extends Model implements CalendarEventParticipationIF
 {
@@ -341,5 +346,41 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
     public function getOrganizer()
     {
         return $this->entry->getOwner();
+    }
+
+    public function exportParticipants(?int $state, string $type): Response
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => $this->findParticipants($state)->joinWith('profile')
+        ]);
+
+        $statuses = ParticipantFilter::getStatuses();
+
+        $columns = [
+            'profile.firstname',
+            'profile.lastname',
+            [
+                'label' => Yii::t('CalendarModule.base', 'Participation Status'),
+                'value' => function (User $user) use ($statuses) {
+                    return $statuses[$this->getParticipationStatus($user)] ?? '';
+                }
+            ]
+        ];
+        if (!Yii::$app->user->isGuest && Yii::$app->user->can(ManageUsers::class)) {
+            $columns[] = 'email';
+        }
+
+        $exporter = new SpreadsheetExport([
+            'dataProvider' => $dataProvider,
+            'columns' => $columns,
+            'resultConfig' => [
+                'fileBaseName' => Yii::t('CalendarModule.base', 'Participants')
+                    . (isset($statuses[$state]) ? '-' . $statuses[$state] : '')
+                    . '-' . $this->entry->title,
+                'writerType' => $type,
+            ]
+        ]);
+
+        return $exporter->export()->send();
     }
 }

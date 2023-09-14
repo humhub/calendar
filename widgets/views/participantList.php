@@ -6,6 +6,7 @@
  */
 
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
+use humhub\modules\calendar\widgets\ExportParticipantsButton;
 use humhub\modules\calendar\widgets\ParticipantAddForm;
 use humhub\modules\calendar\widgets\ParticipantFilter;
 use humhub\modules\calendar\widgets\ParticipantItem;
@@ -25,14 +26,18 @@ use yii\helpers\Html;
     <?= ParticipantAddForm::widget(['form' => $form, 'model' => $model]) ?>
 
     <?= ParticipantFilter::widget() ?>
+<?php endif; ?>
+
+<?= Html::beginTag('div', ['id' => 'calendar-entry-participants-list']) ?>
+    <?php if ($pagination->totalCount) : ?>
+        <?= ExportParticipantsButton::widget(['entry' => $model->entry]) ?>
+    <?php endif; ?>
 
     <p class="calendar-entry-participants-count"><?= $pagination->totalCount
         ? Yii::t('CalendarModule.views_entry_edit', '{count} Participants', ['count' => '<span>' . $pagination->totalCount . '</span>'])
         : Yii::t('CalendarModule.views_entry_edit', 'No participants')
     ?></p>
-<?php endif; ?>
 
-<?= Html::beginTag('div', ['id' => 'calendar-entry-participants-list']) ?>
     <?= Html::beginTag('ul', ['class' => 'media-list']) ?>
         <?php foreach ($users as $user) : ?>
             <?= ParticipantItem::widget([
