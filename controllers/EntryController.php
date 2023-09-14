@@ -24,6 +24,7 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\db\Expression;
 use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\RangeNotSatisfiableHttpException;
@@ -314,11 +315,17 @@ class EntryController extends ContentContainerController
      */
     public function actionExportParticipants(int $id, ?int $state, string $type)
     {
+        $entry = $this->getCalendarEntry($id);
+
+        if (!$entry->content->canEdit()) {
+            throw new ForbiddenHttpException('You cannot export participants of the event!');
+        }
+
         if (!in_array($type, ['csv', 'xlsx'])) {
             throw new BadRequestHttpException('Wrong export type "' . $type . '"');
         }
 
-        return $this->getCalendarEntry($id)->participation->exportParticipants($state, $type);
+        return $entry->participation->exportParticipants($state, $type);
     }
 
     public function actionSearchParticipants(int $entryId, string $keyword)

@@ -37,6 +37,14 @@ class ExportParticipantsButton extends Widget
     /**
      * @inheritdoc
      */
+    public function beforeRun()
+    {
+        return parent::beforeRun() && $this->entry->content->canEdit();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         echo $this->render('exportParticipantsButton', [
