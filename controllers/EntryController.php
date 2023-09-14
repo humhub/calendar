@@ -23,6 +23,7 @@ use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\db\Expression;
+use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\RangeNotSatisfiableHttpException;
@@ -306,12 +307,18 @@ class EntryController extends ContentContainerController
     /**
      * Action to export participants
      *
-     * @param integer|null $id
-     * @return string
+     * @param int $id
+     * @param int|null $state
+     * @param string $type File format type: 'csv' or 'xlsx'
+     * @return Response
      */
-    public function actionExportParticipants($id = null)
+    public function actionExportParticipants(int $id, ?int $state, string $type)
     {
-        $entry = $this->getCalendarEntry($id);
+        if (!in_array($type, ['csv', 'xlsx'])) {
+            throw new BadRequestHttpException('Wrong export type "' . $type . '"');
+        }
+
+        return $this->getCalendarEntry($id)->participation->exportParticipants($state, $type);
     }
 
     public function actionSearchParticipants(int $entryId, string $keyword)

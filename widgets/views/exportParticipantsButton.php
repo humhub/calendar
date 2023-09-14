@@ -11,7 +11,9 @@ use humhub\widgets\Button;
 /* @var array $options */
 ?>
 <div class="btn-group calendar-entry-participants-export-button pull-right">
-    <?= Button::info()->icon('download')->sm()->loader(false) ?>
+    <?= Button::info()->icon('download')->sm()
+        ->link($buttons[0]->getHref())
+        ->pjax(false)->loader(false) ?>
     <?= Button::info()->icon('caret-down')->sm()
         ->cssClass('dropdown-toggle')
         ->options(['data-toggle' => 'dropdown'])

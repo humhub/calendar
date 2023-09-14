@@ -719,9 +719,6 @@ tbody,
 }
 .calendar-entry-participants-export-button {
     margin: 18px 18px 0;
-    position: absolute;
-    top: -75px;
-    right: 0;
 }
 .calendar-entry-new-participants-form {
     padding: 18px 18px 4px;
