@@ -1,7 +1,7 @@
 {
     "id": "calendar",
     "name": "Calendar",
-    "description": "Calendar for spaces or user profiles.",
+    "description": "Create and manage events. Schedule single or recurrent events, create reminders and manage attendees effectively.",
     "keywords": ["calendar"],
     "version": "1.5.3",
     "humhub": {
