@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.4 - (Unreleased)
+-----------------------
+- Enh #424: Tests for `next` version
+
 1.5.3 (September 14, 2023)
 --------------------------
 - Enh #415: Fix recurring event visibility on stream
