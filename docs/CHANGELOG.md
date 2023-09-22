@@ -1,5 +1,6 @@
 Changelog
 =========
+- Enh #423: Add Create Button
 
 1.5.4 - (Unreleased)
 -----------------------

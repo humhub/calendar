@@ -102,6 +102,10 @@ html .fc,
     border: 1px solid #eeeeee !important;
 }
 
+/* Hide Create button when user can not create events */
+#calendar[data-can-create="0"] .fc-create-button {
+    display: none;
+}
 
 /* Content
 ------------------------------------------------------------------------*/
