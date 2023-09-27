@@ -35,11 +35,15 @@ class Url extends BaseUrl
 
     public static function toEditType(CalendarEntryType $model, ContentContainerActiveRecord $container = null)
     {
-        if($container) {
-            return $container->createUrl('/calendar/container-config/edit-type',  ['id' => $model->id] );
+        if ($model->container instanceof ContentContainerActiveRecord) {
+            return $model->container->createUrl('/calendar/container-config/edit-type',  ['id' => $model->id] );
         }
 
-        return static::to(['/calendar/config/edit-type', 'id' => $model->id]) ;
+        $params = ['/calendar/config/edit-type', 'id' => $model->id];
+        if ($container !== null) {
+            $params['guid'] = $container->guid;
+        }
+        return static::to($params);
     }
 
     public static function toCreateType(ContentContainerActiveRecord $container = null)
@@ -53,11 +57,15 @@ class Url extends BaseUrl
 
     public static function toDeleteType(CalendarEntryType $model, ContentContainerActiveRecord $container = null)
     {
-        if($container) {
-            return $container->createUrl('/calendar/container-config/delete-type', ['id' => $model->id]);
+        if ($model->container instanceof ContentContainerActiveRecord) {
+            return $model->container->createUrl('/calendar/container-config/delete-type', ['id' => $model->id]);
         }
 
-        return static::to(['/calendar/config/delete-type', 'id' => $model->id]);
+        $params = ['/calendar/config/delete-type', 'id' => $model->id];
+        if ($container !== null) {
+            $params['guid'] = $container->guid;
+        }
+        return static::to($params);
     }
 
     public static function toConfigCalendars(ContentContainerActiveRecord $container = null)

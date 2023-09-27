@@ -5,6 +5,7 @@ Changelog
 -----------------------
 - Enh #424: Tests for `next` version
 - Enh #423: Add Create Button
+- Enh #379: Allow managing of global event types from container side
 
 1.5.3 (September 14, 2023)
 --------------------------
