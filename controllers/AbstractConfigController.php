@@ -14,7 +14,9 @@ use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\models\forms\BasicSettings;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\models\ContentContainer;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\HttpException;
@@ -84,9 +86,11 @@ abstract class AbstractConfigController extends ContentContainerController
 
         $this->validateEntry($model);
 
-        $model->delete();
+        if ($model->delete()) {
+            $this->view->success(Yii::t('CalendarModule.base', 'Deleted'));
+        }
 
-        return $this->htmlRedirect(Url::toConfigTypes($this->contentContainer));
+        return $this->htmlRedirect(Url::toConfigTypes($this->contentContainer ?? $this->getContainerFromRequest()));
     }
 
     public function actionEditType($id = null)
@@ -100,7 +104,7 @@ abstract class AbstractConfigController extends ContentContainerController
 
         if($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
-            return $this->htmlRedirect(URL::toConfigTypes($this->contentContainer));
+            return $this->htmlRedirect(URL::toConfigTypes($this->contentContainer ?? $this->getContainerFromRequest()));
         }
 
         return $this->renderAjax(static::VIEW_CONFIG_EDIT_TYPE_MODAL, ['model' => $model]);
@@ -163,5 +167,11 @@ abstract class AbstractConfigController extends ContentContainerController
     protected function getContentContainerId()
     {
         return $this->contentContainer ? $this->contentContainer->contentcontainer_id : null;
+    }
+
+    protected function getContainerFromRequest(): ?ContentContainerActiveRecord
+    {
+        $guid = Yii::$app->request->get('guid', Yii::$app->request->post('guid'));
+        return $guid ? ContentContainer::findRecord($guid) : null;
     }
 }
