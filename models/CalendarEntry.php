@@ -1067,7 +1067,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
 
     public function canInvite(?User $user = null): bool
     {
-        return $this->isOwner($user);
+        return $this->content->canEdit($user);
     }
 
     public function isPast(): bool
