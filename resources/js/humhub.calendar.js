@@ -304,8 +304,6 @@ humhub.module('calendar', function (module, require, $) {
         };
 
         var editModal = function (evt) {
-            var streamEntry = Widget.closest(evt.$trigger);
-            streamEntry.loader();
             modal.load(evt).then(function (response) {
                 modal.global.$.one('submitted', function () {
                     var calendar = getCalendar();
