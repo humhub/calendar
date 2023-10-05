@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(Απενεργοποιημένο)',
-    '(global)' => '(παγκόσμια)',
     '<strong>Calendar</strong> module configuration' => '<strong>Ημερολόγιο</strong> διαμόρφωσης μονάδας',
     '<strong>Confirm</strong> Deletion' => '<strong>Επιβεβαίωση</strong> Διαγραφής',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Προσθέτει ένα απόσπασμα με τις επερχόμενες εκδηλώσεις στον πίνακα ελέγχου των χρηστών σας.',

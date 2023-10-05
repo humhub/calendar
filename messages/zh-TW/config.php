@@ -3,8 +3,6 @@
 return [
     'Delete' => '刪除帳戶',
     'Name' => '名稱',
-    '(disabled)' => '',
-    '(global)' => '',
     '<strong>Calendar</strong> module configuration' => '',
     '<strong>Confirm</strong> Deletion' => '',
     'Add \'Calendar\' to the main menu' => '',

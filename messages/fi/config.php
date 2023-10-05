@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(ei käytössä)',
-    '(global)' => '(Maailmanlaajuinen)',
     '<strong>Calendar</strong> module configuration' => '<strong>Kalenteri</strong> asetukset',
     '<strong>Confirm</strong> Deletion' => '<strong>Vahvista</strong> poisto',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Lisää widget käyttäjien etusivulle tulevista tapahtumista.',

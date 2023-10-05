@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(disabilitato)',
-    '(global)' => '(globale)',
     '<strong>Calendar</strong> module configuration' => 'Configurazione del modulo <strong>Calendario</strong>',
     '<strong>Confirm</strong> Deletion' => '<strong>Conferma</strong> Cancellazione',
     'Add \'Calendar\' to the main menu' => 'Aggiungi "Calendario" al menu principale',

@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(disabled)',
-    '(global)' => '(global)',
     '<strong>Calendar</strong> module configuration' => '<strong>Takvim</strong> modülü ayarları',
     'Calendar Configuration' => 'Takvim ayarları',
     'Create new type' => 'Yeni tür oluştur',

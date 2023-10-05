@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(ikke i bruk)',
-    '(global)' => '(global)',
     '<strong>Calendar</strong> module configuration' => 'Konfigurasjon <strong>Kalender</strong>modul',
     '<strong>Confirm</strong> Deletion' => '<strong>Bekreft</strong> sletting',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Legger til en snippet med nærstående aktivitet til Oversikt',

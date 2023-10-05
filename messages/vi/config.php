@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(không hoạt động)',
-    '(global)' => '(chung)',
     '<strong>Calendar</strong> module configuration' => 'Cấu hình module <strong>Lịch</strong>',
     '<strong>Confirm</strong> Deletion' => '<strong>Xác nhận</strong> Xóa',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Thêm block thông tin gồm các sự kiện sắp diễn ra trên trang chính của bạn',

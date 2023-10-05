@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(Inaktiverad)',
-    '(global)' => '(global)',
     '<strong>Calendar</strong> module configuration' => '<strong>Kalender</strong> inställningar för moduler',
     '<strong>Confirm</strong> Deletion' => '<strong>Bekräfta</strong> radering',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Lägger till en snippet med kommande aktiviteter på användarnas tidslinje.',

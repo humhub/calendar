@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(desabilitado)',
-    '(global)' => '(global)',
     '<strong>Calendar</strong> module configuration' => 'Módulo de configuração de <strong>Calendário</strong>',
     '<strong>Confirm</strong> Deletion' => '<strong>Confirmar</strong> exclusão',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Adiciona um fragmento com eventos futuros ao seu painel de usuários.',

@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(onemogućeno)',
-    '(global)' => '(globalno)',
     '<strong>Calendar</strong> module configuration' => '<strong>Kalendar</strong> postavke modula',
     '<strong>Confirm</strong> Deletion' => '<strong>Potvrdi</strong> brisanje',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Dodaje se isječak s nadolazećim događajima na upravljačku ploču.',

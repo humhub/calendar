@@ -4,8 +4,6 @@ return [
     'Create new type' => 'Opret ny type',
     'Delete' => 'Slet',
     'Name' => 'Navn',
-    '(disabled)' => '',
-    '(global)' => '',
     '<strong>Calendar</strong> module configuration' => '',
     '<strong>Confirm</strong> Deletion' => '',
     'Add \'Calendar\' to the main menu' => '',

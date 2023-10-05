@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '(disabled)' => '(พิการ)',
-    '(global)' => '(ทั่วโลก)',
     '<strong>Calendar</strong> module configuration' => '<strong>ปฏิทิน</strong> การกำหนดค่าโมดูล',
     '<strong>Confirm</strong> Deletion' => '<strong>ยืนยัน</strong> การลบ',
     'Adds an snippet with upcoming events to your users dashboard.' => 'เพิ่มข้อมูลโค้ดที่มีเหตุการณ์ที่จะเกิดขึ้นไปยังแดชบอร์ดผู้ใช้ของคุณ',
