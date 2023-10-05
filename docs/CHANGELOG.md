@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.4 - (Unreleased)
------------------------
+1.5.4 - (October 5, 2023)
+-------------------------
 - Enh #424: Tests for `next` version
 - Enh #423: Add Create Button
 - Fix #419: Don't use loader for wall entry menu on open modal window 
