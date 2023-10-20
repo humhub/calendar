@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Basic' => '',
-    'Full calendar' => '',
-    'Participation' => '',
-    'Reminder' => '',
-];
+return array (
+  'Basic' => 'Oinarrizkoa',
+  'Full calendar' => '',
+  'Participation' => '',
+  'Reminder' => '',
+);
