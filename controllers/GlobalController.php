@@ -11,7 +11,6 @@ use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryDummy;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;
-use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\widgets\FilterType;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\ContentContainer;
@@ -44,9 +43,9 @@ class GlobalController extends Controller
     public $calendarService;
 
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['login' => ['enable', 'select']]

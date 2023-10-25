@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.5 - (Unreleased)
+-------------------------
+- Fix #430: Fix visibility of the method `Controller::getAccessRules()`
+
 1.5.4 - (October 5, 2023)
 -------------------------
 - Enh #424: Tests for `next` version
