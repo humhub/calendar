@@ -24,7 +24,7 @@ class ContainerConfigController extends AbstractConfigController
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
           ['permission' => [ManageSpaces::class, ManageEntry::class]]

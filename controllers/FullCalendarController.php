@@ -12,9 +12,9 @@ use humhub\modules\content\models\Content;
 class FullCalendarController extends Controller
 {
     /**
-     * @inheritdocs
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['login'],
