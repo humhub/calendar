@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.5 - (October 26, 2023)
+--------------------------
+- Enh #429: Add additional data to participant export
+
 1.5.4 - (October 5, 2023)
 -------------------------
 - Enh #424: Tests for `next` version
