@@ -20,9 +20,9 @@ use humhub\widgets\ModalClose;
 class ReminderController extends ContentContainerController
 {
     /**
-     * @inheritdoc
+     * @return array
      */
-    protected function getAccessRules()
+    public function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY]
