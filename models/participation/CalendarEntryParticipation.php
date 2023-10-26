@@ -367,7 +367,15 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             ]
         ];
         if (!Yii::$app->user->isGuest && Yii::$app->user->can(ManageUsers::class)) {
-            $columns[] = 'email';
+            $columns[] = [
+                'label' => Yii::t('CalendarModule.base', 'Email'),
+                'value' => function (User $user) {
+                    return $user->email;
+                }
+            ];
+            $columns[] = 'profile.gender';
+            $columns[] = 'profile.city';
+            $columns[] = 'profile.country';
         }
 
         $exporter = new SpreadsheetExport([
