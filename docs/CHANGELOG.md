@@ -4,6 +4,7 @@ Changelog
 1.5.5 - (Unreleased)
 -------------------------
 - Fix #430: Fix visibility of the method `Controller::getAccessRules()`
+- Enh #429: Add additional data to participant export
 
 1.5.4 - (October 5, 2023)
 -------------------------
