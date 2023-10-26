@@ -28,9 +28,9 @@ class IcalController extends Controller
     const EXPORT_MIME = 'text/calendar';
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    protected function getAccessRules()
+    public function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY]
