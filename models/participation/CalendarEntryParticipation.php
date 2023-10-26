@@ -357,6 +357,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         $statuses = ParticipantFilter::getStatuses();
 
         $columns = [
+            'username',
             'profile.firstname',
             'profile.lastname',
             [
