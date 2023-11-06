@@ -25,6 +25,7 @@ return [
     'Do you want to install this module on your profile?' => '',
     'Download ICS' => '',
     'Edit Event' => '',
+    'Email' => '',
     'Enable' => '',
     'Enable Reminder' => '',
     'End Date' => '',

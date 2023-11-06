@@ -24,6 +24,7 @@ return [
     'Download ICS' => '',
     'Edit' => '',
     'Edit Event' => '',
+    'Email' => '',
     'Enable' => '',
     'Enable Reminder' => '',
     'End Date' => '',
