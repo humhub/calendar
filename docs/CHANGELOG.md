@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.7 (Unreleased)
+--------------------------
+- Fix #433: Fix memory usage on integrity check
+
 1.5.6 (October 26, 2023)
 --------------------------
 - Enh #429: Add additional data to participant export

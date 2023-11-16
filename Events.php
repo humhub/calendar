@@ -306,7 +306,7 @@ class Events
         $integrityController = $event->sender;
         $integrityController->showTestHeadline("Calendar Module (" . CalendarReminder::find()->count() . " reminder entries)");
 
-        foreach (CalendarReminder::find()->all() as $reminder) {
+        foreach (CalendarReminder::find()->each() as $reminder) {
             if ($reminder->isEntryLevelReminder() && !Content::findOne(['id' => $reminder->content_id])) {
                 if ($integrityController->showFix("Delete calendar reminder " . $reminder->id . " without existing entry relation!")) {
                     $reminder->delete();
@@ -316,7 +316,7 @@ class Events
 
         $integrityController->showTestHeadline("Calendar Module (" . CalendarReminderSent::find()->count() . " reminder sent entries)");
 
-        foreach (CalendarReminderSent::find()->all() as $reminderSent) {
+        foreach (CalendarReminderSent::find()->each() as $reminderSent) {
             if(!Content::findOne(['id' => $reminderSent->content_id])) {
                 if ($integrityController->showFix("Delete calendar reminder sent" . $reminderSent->id . " without existing entry relation!")) {
                     $reminderSent->delete();
@@ -332,13 +332,13 @@ class Events
             ->groupBy('parent_event_id, recurrence_id')
             ->having('COUNT(*) > 1')->asArray(true);
 
-        foreach ($duplicatedRecurrences->all() as $duplicatedRecurrenceArr) {
+        foreach ($duplicatedRecurrences->each() as $duplicatedRecurrenceArr) {
             $duplicateQuery = CalendarEntry::find()
                 ->where(['recurrence_id' => $duplicatedRecurrenceArr['recurrence_id']])
                 ->andWhere(['parent_event_id' => $duplicatedRecurrenceArr['parent_event_id']])
                 ->andWhere(['<>', 'id', $duplicatedRecurrenceArr['id']]);
 
-            foreach ($duplicateQuery->all() as $duplicate) {
+            foreach ($duplicateQuery->each() as $duplicate) {
                 if(RecurrenceHelper::isRecurrentInstance($duplicate) && $duplicate->id !== $duplicatedRecurrenceArr['id']) {
                     if ($integrityController->showFix('Delete duplicated recurrent event instance ' . $duplicate->id . '!')) {
                         $duplicate->hardDelete();
