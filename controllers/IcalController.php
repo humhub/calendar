@@ -1,21 +1,16 @@
 <?php
 
-
 namespace humhub\modules\calendar\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\components\Controller;
+use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
-use humhub\components\Controller;
-use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\helpers\RecurrenceHelper;
-use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\interfaces\event\CalendarEventIF;
-use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
-use humhub\modules\calendar\interfaces\VCalendar;
-use humhub\modules\content\models\Content;
 
 
 class IcalController extends Controller
@@ -53,57 +48,44 @@ class IcalController extends Controller
      */
     public function actionExport($id)
     {
-        $event = $this->getEvent($id);
+        $model = $this->getModel($id);
 
-        if(RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
-            /* @var $event RecurrentEventIF */
-            $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
+        $ics = $model->generateIcs();
+
+        if (empty($ics)) {
+            throw new HttpException(400, 'Selected content does not implement calendar interface');
         }
 
-        $uid = $event->getUid() ?: $this->uniqueId;
+        $uid = $model->getUid() ?: $this->uniqueId;
 
-        return Yii::$app->response->sendContentAsFile(VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone(true))->serialize(), $uid.'.ics', ['mimeType' => static::EXPORT_MIME]);
-
-    }
-
-    public function actionGenerateics()
-    {
-        $calendarEntry = $this->getCalendarEntry(Yii::$app->request->get('id'));
-        $ics = $calendarEntry->generateIcs();
-        return Yii::$app->response->sendContentAsFile($ics, uniqid() . '.ics', ['mimeType' => static::EXPORT_MIME]);
+        return Yii::$app->response->sendContentAsFile($ics, $uid.'.ics', ['mimeType' => static::EXPORT_MIME]);
     }
 
     /**
      * @param $id
-     * @return CalendarEventIF
+     * @return CalendarEntry
      * @throws HttpException
      * @throws \Throwable
      * @throws Exception
      */
-    public function getEvent($id)
+    public function getModel($id)
     {
         $content = Content::findOne(['id' => $id]);
 
-        if(!$content) {
+        if (!$content) {
             throw new NotFoundHttpException();
         }
 
-        if(!$content->canView()) {
+        if (!$content->canView()) {
             throw new HttpException(403);
         }
 
         $model = $content->getModel();
 
-        if(!$model) {
+        if (!$model) {
             throw new NotFoundHttpException();
         }
 
-        $event = CalendarUtils::getCalendarEvent($model);
-
-        if(!$event) {
-            throw new HttpException(400, 'Selected content does not implement calendar interface');
-        }
-
-        return $event;
+        return $model;
     }
 }

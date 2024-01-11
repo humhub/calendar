@@ -11,6 +11,7 @@ use humhub\libs\Html;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
+use yii\mail\MessageInterface;
 
 /**
  * Notification for an invited participant
@@ -63,5 +64,22 @@ class Invited extends BaseNotification
             'displayName' =>  Html::encode($this->originator->displayName),
             'contentTitle' => $this->getContentInfo($this->source, false)
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeMailSend(MessageInterface $message)
+    {
+        $ics = $this->source->generateIcs();
+
+        if (!empty($ics)) {
+            $message->attachContent($ics, [
+                'fileName' => $this->source->getUid() . '.ics',
+                'contentType' => 'text/calendar'
+            ]);
+        }
+
+        return true;
     }
 }
