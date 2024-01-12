@@ -5,13 +5,13 @@ namespace humhub\modules\calendar\controllers;
 use DateTime;
 use humhub\components\Controller;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryDummy;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;
-use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\widgets\FilterType;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\ContentContainer;
@@ -22,7 +22,6 @@ use humhub\modules\user\models\User;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use Yii;
-use humhub\modules\calendar\helpers\Url;
 use yii\web\HttpException;
 
 /**
@@ -95,16 +94,18 @@ class GlobalController extends Controller
         $contentContainerSelection = [];
         $user = Yii::$app->user->getIdentity();
 
-        $contentContainerSelection[$user->contentcontainer_id] = Yii::t('CalendarModule.base', 'Profile Calendar');
+        if ($user->moduleManager->canEnable('calendar')) {
+            $contentContainerSelection[$user->contentcontainer_id] = Yii::t('CalendarModule.base', 'Profile Calendar');
+        }
 
         $calendarMemberSpaceQuery = Membership::getUserSpaceQuery(Yii::$app->user->getIdentity());
 
-        if(!ContentContainerModuleManager::getDefaultState(Space::class, 'calendar')) {
+        if (!ContentContainerModuleManager::getDefaultState(Space::class, 'calendar')) {
             $calendarMemberSpaceQuery->leftJoin('contentcontainer_module',
                 'contentcontainer_module.module_id = :calendar AND contentcontainer_module.contentcontainer_id = space.contentcontainer_id',
                 [':calendar' => 'calendar']
             )->andWhere('contentcontainer_module.module_id IS NOT NULL')
-            ->andWhere(['contentcontainer_module.module_state' => ContentContainerModuleState::STATE_ENABLED]);
+                ->andWhere(['contentcontainer_module.module_state' => ContentContainerModuleState::STATE_ENABLED]);
         }
 
         foreach ($calendarMemberSpaceQuery->all() as $space) {
@@ -214,7 +215,7 @@ class GlobalController extends Controller
         $output = [];
 
         if (!Yii::$app->user->isGuest) {
-            $settings =  $this->getUserSettings();
+            $settings = $this->getUserSettings();
 
             $selectors = Yii::$app->request->get('selectors', []);
             $filters = Yii::$app->request->get('filters', []);
