@@ -31,7 +31,7 @@ use yii\bootstrap\ActiveForm;
     <div class="modal-body">
         <div class="alert alert-danger">
             <strong>
-                <?= Yii::t('CalendarModule.base', 'Please first enable the calendar module in a space!') ?>
+                <?= Yii::t('CalendarModule.base', 'Before a target calendar can be selected, the module must be activated in at least one Space.') ?>
             </strong>
         </div>
     </div>
