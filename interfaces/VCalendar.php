@@ -42,7 +42,7 @@ class VCalendar extends Model
 
 
     /**
-     * @param CalendarEventIF[] $items
+     * @param CalendarEventIF|CalendarEventIF[] $items
      * @return VCalendar
      */
     public static function withEvents($items, $tz = null)

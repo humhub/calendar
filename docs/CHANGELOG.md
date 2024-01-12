@@ -4,6 +4,7 @@ Changelog
 1.5.7 (Unreleased)
 --------------------------
 - Fix #433: Fix memory usage on integrity check
+- Enh #435: Attach ICS file to invitation email
 
 1.5.6 (October 26, 2023)
 --------------------------
