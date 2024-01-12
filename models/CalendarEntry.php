@@ -13,6 +13,7 @@ use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationI
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
+use humhub\modules\calendar\interfaces\VCalendar;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
@@ -634,11 +635,20 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         return null;
     }
 
-    public function generateIcs()
+    public function generateIcs(): ?string
     {
-        $timezone = Yii::$app->settings->get('defaultTimeZone');
-        $ics = new ICS($this->title, $this->description, $this->start_datetime, $this->end_datetime, null, null, $timezone, $this->all_day);
-        return $ics;
+        $event = CalendarUtils::getCalendarEvent($this);
+
+        if (!$event) {
+            return null;
+        }
+
+        if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
+            /* @var $event RecurrentEventIF */
+            $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
+        }
+
+        return VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone(true))->serialize();
     }
 
     public function afterMove(ContentContainerActiveRecord $container = null)

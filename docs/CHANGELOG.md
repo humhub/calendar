@@ -1,10 +1,14 @@
 Changelog
 =========
 
-1.5.7 (Unreleased)
---------------------------
+Unreleased
+------------------------
+Fix #437: Hide the profile calendar if the module is not available for users
+
+1.5.7 (January 12, 2024)
+------------------------
 - Fix #433: Fix memory usage on integrity check
-- Fix #437: Hide the profile calendar if the module is not available for users
+- Enh #435: Attach ICS file to invitation email
 
 1.5.6 (October 26, 2023)
 --------------------------
