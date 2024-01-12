@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.7 (Unreleased)
---------------------------
+1.5.7 (January 12, 2024)
+------------------------
 - Fix #433: Fix memory usage on integrity check
 - Enh #435: Attach ICS file to invitation email
 
