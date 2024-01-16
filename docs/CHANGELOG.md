@@ -5,6 +5,7 @@ Unreleased
 ------------------------
 Fix #437: Hide the profile calendar if the module is not available for users
 Fix #439: Attach ICS files to "forced invites"
+Fix #441: Send event update notifcation to invitees
 
 1.5.7 (January 12, 2024)
 ------------------------

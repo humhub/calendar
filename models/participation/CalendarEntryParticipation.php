@@ -162,6 +162,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
     public function sendUpdateNotification($notificationClass = EventUpdated::class)
     {
         $participants = $this->findParticipants([
+            CalendarEntryParticipant::PARTICIPATION_STATE_INVITED,
             CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
             CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED])->all();
 
