@@ -115,22 +115,6 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public $moduleId = 'calendar';
 
     /**
-     * Participation Modes
-     */
-    const PARTICIPATION_MODE_NONE = 0;
-    const PARTICIPATION_MODE_INVITE = 1;
-    const PARTICIPATION_MODE_ALL = 2;
-
-    /**
-     * @var array all given participation modes as array
-     */
-    public static $participationModes = [
-        self::PARTICIPATION_MODE_NONE,
-        self::PARTICIPATION_MODE_INVITE,
-        self::PARTICIPATION_MODE_ALL
-    ];
-
-    /**
      * Filters
      */
     const FILTER_PARTICIPATE = 1;
@@ -250,7 +234,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             [['end_datetime'], 'date', 'format' => $dateFormat],
             [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
             [['title'], 'string', 'max' => 200],
-            [['participation_mode'], 'in', 'range' => self::$participationModes],
+            [['participation_mode'], 'in', 'range' => CalendarEntryParticipation::$participationModes],
             [['end_datetime'], 'validateEndTime'],
             [['recurrence_id'], 'validateRecurrenceId'],
             [['description', 'participant_info'], 'safe'],
@@ -512,20 +496,20 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         if ($this->content->container instanceof Space) {
             switch ($this->participation_mode) {
-                case static::PARTICIPATION_MODE_NONE:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_NONE:
                     return Membership::getSpaceMembersQuery($this->content->container);
-                case static::PARTICIPATION_MODE_ALL:
-                case static::PARTICIPATION_MODE_INVITE:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_ALL:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_INVITE:
                     return $this->participation->findParticipants([
                         CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
                         CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE]);
             }
         } elseif ($this->content->container instanceof User) {
             switch ($this->participation_mode) {
-                case static::PARTICIPATION_MODE_NONE:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_NONE:
                     return User::find()->where(['id' => $this->content->container->id]);
-                case static::PARTICIPATION_MODE_INVITE:
-                case static::PARTICIPATION_MODE_ALL:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_INVITE:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_ALL:
                     return $this->participation->findParticipants([
                         CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
                         CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE])

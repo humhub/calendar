@@ -8,6 +8,7 @@
 namespace humhub\modules\calendar\models\forms;
 
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\notifications\Invited;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User;
@@ -142,9 +143,9 @@ class CalendarEntryParticipationForm extends Model
     public static function getModeItems(): array
     {
         return [
-            CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
-            CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.views_entry_edit', 'Only by Invite'),
-            CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
+            CalendarEntryParticipation::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
+            CalendarEntryParticipation::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.views_entry_edit', 'Only by Invite'),
+            CalendarEntryParticipation::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
         ];
     }
 
