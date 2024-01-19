@@ -9,6 +9,7 @@ use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
+use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\notifications\Invited;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\content\components\ContentContainerController;
@@ -129,7 +130,7 @@ class EntryController extends ContentContainerController
      */
     protected function renderModalParticipation(CalendarEntry $entry, ?string $activeTab = null, bool $isNewRecord = false): string
     {
-        if ($activeTab === 'list' && $entry->participation_mode == CalendarEntry::PARTICIPATION_MODE_NONE) {
+        if ($activeTab === 'list' && $entry->participation_mode == CalendarEntryParticipation::PARTICIPATION_MODE_NONE) {
             $activeTab = null;
         }
 

@@ -52,7 +52,7 @@ class ParticipationSettings extends Model
 
     private function initSettings()
     {
-        $this->participation_mode = (int) $this->getSetting(self::SETTING_PARTICIPATION_MODE, CalendarEntry::PARTICIPATION_MODE_ALL);
+        $this->participation_mode = (int) $this->getSetting(self::SETTING_PARTICIPATION_MODE, CalendarEntryParticipation::PARTICIPATION_MODE_ALL);
         $this->allow_decline = (int) $this->getSetting(self::SETTING_ALLOW_DECLINE, 1);
         $this->allow_maybe = (int) $this->getSetting(self::SETTING_ALLOW_MAYBE, 1);
     }
@@ -84,7 +84,7 @@ class ParticipationSettings extends Model
     {
         return [
             [['allow_decline', 'allow_maybe'], 'integer'],
-            [['participation_mode'], 'in', 'range' => CalendarEntry::$participationModes],
+            [['participation_mode'], 'in', 'range' => CalendarEntryParticipation::$participationModes],
         ];
     }
 
@@ -102,7 +102,7 @@ class ParticipationSettings extends Model
      */
     public function isParticipationAllowed()
     {
-        return $this->participation_mode != CalendarEntry::PARTICIPATION_MODE_NONE;
+        return $this->participation_mode != CalendarEntryParticipation::PARTICIPATION_MODE_NONE;
     }
 
     public function save()

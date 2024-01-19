@@ -29,6 +29,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      * Participation Modes
      */
     const PARTICIPATION_MODE_NONE = 0;
+    const PARTICIPATION_MODE_INVITE = 1;
     const PARTICIPATION_MODE_ALL = 2;
 
     /**
@@ -36,6 +37,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public static $participationModes = [
         self::PARTICIPATION_MODE_NONE,
+        self::PARTICIPATION_MODE_INVITE,
         self::PARTICIPATION_MODE_ALL
     ];
 
@@ -210,7 +212,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public function addAllUsers($status = null)
     {
-        if ($this->entry->participation_mode == static::PARTICIPATION_MODE_ALL && $this->canAddAll()) {
+        if ($this->entry->participation_mode != static::PARTICIPATION_MODE_NONE && $this->canAddAll()) {
             Yii::$app->queue->push(new ForceParticipation([
                 'entry_id' => $this->entry->id,
                 'originator_id' => Yii::$app->user->getId(),

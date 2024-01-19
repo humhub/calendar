@@ -2,10 +2,14 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit\reminder;
 
+use calendar\CalendarUnitTest;
+use DateInterval;
+use DateTime;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
+use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 use humhub\modules\calendar\models\reminder\ReminderService;
-use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\models\Content;
@@ -13,12 +17,6 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
-use calendar\CalendarUnitTest;
-use DateInterval;
-use DateTime;
-use humhub\modules\calendar\Events;
-use humhub\modules\calendar\models\reminder\CalendarReminder;
-use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 
 class ReminderProcessTest  extends CalendarUnitTest
 {
@@ -442,7 +440,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
         $this->assertTrue($reminder->save());
         $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
-        $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
+        $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
         $entry->setParticipationStatus(User::findOne(['id' => 1]));
@@ -491,7 +489,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertTrue($reminder->save());
 
         $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
-        $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
+        $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
         $entry->setParticipationStatus(User::findOne(['id' => 1]));
@@ -530,7 +528,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
         $this->assertTrue($reminder->save());
         $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
-        $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
+        $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
         $entry->setParticipationStatus(User::findOne(['id' => 1]));
@@ -567,7 +565,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
         $this->assertTrue($reminder->save());
         $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
-        $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_NONE;
+        $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_NONE;
         $entry->saveEvent();
 
         (new ReminderService())->sendAllReminder();

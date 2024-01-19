@@ -10,6 +10,7 @@ namespace humhub\modules\calendar\widgets;
 use humhub\components\Widget;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -50,7 +51,7 @@ class ParticipantItem extends Widget
      */
     public static function getStatuses(?CalendarEntry $entry = null, $exclude = null): array
     {
-        if ($entry && $entry->participation_mode == CalendarEntry::PARTICIPATION_MODE_INVITE) {
+        if ($entry && $entry->participation_mode == CalendarEntryParticipation::PARTICIPATION_MODE_INVITE) {
             $statuses = [];
         } else {
             $statuses = [
