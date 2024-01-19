@@ -9,7 +9,7 @@ namespace humhub\modules\calendar\models\forms;
 
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
-use humhub\modules\calendar\notifications\Invited;
+use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -172,7 +172,7 @@ class CalendarEntryParticipationForm extends Model
         }
 
         if ($this->newParticipantStatus == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED && count($users)) {
-            Invited::instance()->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($users);
+            ParticipantAdded::instance()->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($users);
         }
     }
 }

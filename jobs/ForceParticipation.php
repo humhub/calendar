@@ -11,7 +11,7 @@ namespace humhub\modules\calendar\jobs;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
-use humhub\modules\calendar\notifications\ForceAdd;
+use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -62,7 +62,7 @@ class ForceParticipation extends ActiveJob
         }
 
         if (count($users)) {
-            ForceAdd::instance()->from($originator)->about($entry)->sendBulk($users);
+            ParticipantAdded::instance()->from($originator)->about($entry)->sendBulk($users);
         }
     }
 }

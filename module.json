@@ -3,7 +3,7 @@
     "name": "Calendar",
     "description": "Calendar for spaces or user profiles.",
     "keywords": ["calendar"],
-    "version": "1.5.8",
+    "version": "1.5.9",
     "humhub": {
         "minVersion": "1.14"
     },

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.9 (Unreleased)
+------------------------
+- Fix #443: Fix email subject on invite/add users
+
 1.5.8 (January 19, 2024)
 ------------------------
 - Fix #437: Hide the profile calendar if the module is not available for users
