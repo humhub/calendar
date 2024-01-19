@@ -79,7 +79,7 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
             return;
         }
 
-        if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->isEnabled) {
+        if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->settings->get('enable')) {
             $this->_query->innerJoin('user_friendship', 'user.id=user_friendship.friend_user_id AND user_friendship.user_id=:userId',
                 [':userId' => Yii::$app->user->id]);
         } else {
@@ -115,7 +115,7 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
         $friendshipSubQuery = (new Query())->select('user_friendship.friend_user_id')->from('user_friendship')->where(['user_friendship.user_id' => Yii::$app->user->id]);
         $followerSubQuery = (new Query())->select('user_follow.object_id')->from('user_follow')->where(['user_follow.user_id' => Yii::$app->user->id])->andWhere(['object_model' => User::class]);
 
-        if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->isEnabled) {
+        if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->settings->get('enable')) {
             $conditions[] = ['in', 'profile.user_id', $friendshipSubQuery];
             $conditions[] = ['in', 'profile.user_id', $followerSubQuery];
         } else {
