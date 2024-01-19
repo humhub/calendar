@@ -10,7 +10,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
-use humhub\modules\calendar\notifications\Invited;
+use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
@@ -418,7 +418,7 @@ class EntryController extends ContentContainerController
         }
 
         if ($isInvitation && count($users)) {
-            Invited::instance()->from(Yii::$app->user->getIdentity())->about($entry)->sendBulk($users);
+            ParticipantAdded::instance()->from(Yii::$app->user->getIdentity())->about($entry)->sendBulk($users);
         }
 
         $successMessageParams = ['users' => implode(', ', $addedUserNames)];
