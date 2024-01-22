@@ -1,8 +1,10 @@
 <?php
 
-use humhub\modules\calendar\widgets\CalendarFilterBar;
-use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\widgets\CalendarControls;
+use humhub\modules\calendar\widgets\CalendarFilterBar;
+use humhub\modules\calendar\widgets\ConfigureButton;
+use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 
 /* @var $this \humhub\modules\ui\view\components\View */
@@ -12,28 +14,36 @@ use humhub\modules\ui\view\helpers\ThemeHelper;
 $isFluid = ThemeHelper::isFluid();
 $containerClass = $isFluid ? 'container-fluid' : 'container';
 $aspectRatio = $isFluid ? 1.9 : 1.5;
-
 ?>
+
 <div class="<?= $containerClass ?>">
     <div class="panel panel-default">
-        <div class="panel-body" style="background-color:<?= $this->theme->variable('background-color-secondary'); ?>border-radius:4px;">
-            <?= CalendarFilterBar::widget([
-                    'selectors' => $selectors,
-                    'filters' => $filters
-            ])?>
-        </div>
-        <div class="panel panel-default" style="margin-bottom:0px">
-            <div class="panel-body">
-                <?= FullCalendar::widget([
-                    'canWrite' => !Yii::$app->user->isGuest,
-                    'aspectRatio' => $aspectRatio,
-                    'selectors' => $selectors,
-                    'filters' => $filters,
-                    'loadUrl' => Url::toAjaxLoad(),
-                    'editUrl' => $editUrl,
+        <div class="panel-heading">
+            <strong><?= Yii::t('CalendarModule.base', 'Calendar') ?></strong>
+
+            <div class="calendar-option-buttons pull-right">
+                <?= CalendarControls::widget([
+                    'widgets' => [
+                        [ConfigureButton::class, [], ['sortOrder' => 100]]
+                    ]
                 ]) ?>
             </div>
         </div>
-
+        <div class="panel-body">
+            <?= CalendarFilterBar::widget([
+                'selectors' => $selectors,
+                'filters' => $filters
+            ]) ?>
+        </div>
+        <div class="panel-body">
+            <?= FullCalendar::widget([
+                'canWrite' => !Yii::$app->user->isGuest,
+                'aspectRatio' => $aspectRatio,
+                'selectors' => $selectors,
+                'filters' => $filters,
+                'loadUrl' => Url::toAjaxLoad(),
+                'editUrl' => $editUrl,
+            ]) ?>
+        </div>
     </div>
 </div>
