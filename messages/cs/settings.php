@@ -1,7 +1,7 @@
 <?php
 return array (
   'Basic' => 'Základní',
-  'Full calendar' => '',
-  'Participation' => '',
-  'Reminder' => '',
+  'Full calendar' => 'Úplný kalendář',
+  'Participation' => 'Účast',
+  'Reminder' => 'Připomínka',
 );
