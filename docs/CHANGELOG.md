@@ -5,6 +5,7 @@ Changelog
 ------------------------
 - Fix #443: Fix email subject on invite/add users
 - Fix #447: Global calendar header redesign
+- Enh #440: Extend list of fields for updating of sequence
 
 1.5.8 (January 19, 2024)
 ------------------------
