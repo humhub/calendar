@@ -508,17 +508,27 @@ class CalendarEntryForm extends Model
 
     public function sequenceCheck()
     {
-        if(!$this->original) {
+        if (!$this->original) {
             return;
         }
 
-        $incrementSequence = $this->original->getStartDateTime() != $this->entry->getStartDateTime();
-        $incrementSequence = $incrementSequence || $this->original->getEndDateTime() != $this->entry->getEndDateTime();
-        $incrementSequence = $incrementSequence || $this->original->getRrule() !== $this->entry->getRrule();
-        $incrementSequence = $incrementSequence || $this->original->getExdate() !== $this->entry->getExdate();
-        $incrementSequence = $incrementSequence || $this->original->getEventStatus() !== $this->entry->getEventStatus();
-
-        if($incrementSequence) {
+        if ($this->original->getTitle() !== $this->entry->getTitle() ||
+            $this->original->getDescription() !== $this->entry->getDescription() ||
+            $this->original->getStartDateTime() != $this->entry->getStartDateTime() ||
+            $this->original->getEndDateTime() != $this->entry->getEndDateTime() ||
+            $this->original->isAllDay() !== $this->entry->isAllDay() ||
+            $this->original->participation_mode !== $this->entry->participation_mode ||
+            $this->original->getColor() !== $this->entry->getColor() ||
+            $this->original->allow_decline !== $this->entry->allow_decline ||
+            $this->original->allow_maybe !== $this->entry->allow_maybe ||
+            $this->original->getTimezone() !== $this->entry->getTimezone() ||
+            $this->original->participant_info !== $this->entry->participant_info ||
+            $this->original->getEventStatus() !== $this->entry->getEventStatus() ||
+            $this->original->max_participants !== $this->entry->max_participants ||
+            $this->original->getRrule() !== $this->entry->getRrule() ||
+            $this->original->getExdate() !== $this->entry->getExdate() ||
+            $this->original->getLocation() !== $this->entry->getLocation()
+        ) {
             CalendarUtils::incrementSequence($this->entry);
             $this->entry->saveEvent();
         }
