@@ -1,7 +1,7 @@
 {
     "id": "calendar",
     "name": "Calendar",
-    "description": "Calendar for spaces or user profiles.",
+    "description": "Create one-time or recurring events, invite and manage attendees, and keep track of all your events with the Calendar module.",
     "keywords": ["calendar"],
     "version": "1.5.9",
     "humhub": {
@@ -19,5 +19,5 @@
             "name": "Julian Harrer"
         }
     ],
-    "screenshots": ["resources/screen1.jpg", "resources/screen2.jpg", "resources/screen3.jpg"]
+    "screenshots": ["resources/screen1.png", "resources/screen2.png", "resources/screen3.png", "resources/screen4.png", "resources/screen5.png", "resources/screen6.png", "resources/screen7.png", "resources/screen8.png", "resources/screen9.png"]
 }
