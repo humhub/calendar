@@ -1,25 +1,22 @@
-[![Test Status](https://github.com/humhub/calendar/workflows/PHP%20Codeception%20Tests/badge.svg)](https://github.com/humhub/calendar/actions)
-
 # Calendar
 
-Create events on profile or space level and allow other modules add calendar events to your calendar. This module
-serves as basic calendar module and can be used in combination with the following modules:
+Manage events easily with the Calendar module, a comprehensive solution for organizing events within your company or organization. Seamlessly integrated across profiles and spaces, the module enhances your scheduling experience by integrating with other available modules.
 
- - [Task](https://www.humhub.com/marketplace/tasks/)
- - [Meetings](https://www.humhub.com/marketplace/meeting/)
- - [External Calendar](https://www.humhub.com/en/marketplace/external_calendar/)
- - and others..
- 
-## Overview
+## Key Features
 
- - Global event overview
- - Event participation management
- - Recurrent events
- - Event reminder
- - Event information as description and files
- - Global and Space level default settings
- - ICS export
+- **Global Event Overview:** Complete overview of all events across your network, make sure no important dates are missed.
+- **Participant Management:** Manage event participation, keep track of attendees, and ensure smooth coordination.
+- **Recurring Events:** Automate repetitive scheduling tasks and save time.
+- **Event Reminders:** Ensure you never miss an important event.
+- **Event Details:** Provide necessary information and resources by including attachments and detailed descriptions.
+- **Customizable Settings:** Customize the calendar with global and space-level default settings to suit your needs.
+- **ICS Export:** Export events to ICS format and easily share them with external calendars.
 
+## Available integrations
+
+ - [Task](https://marketplace.humhub.com/module/tasks/description)
+ - [Meetings](https://marketplace.humhub.com/module/meeting/description)
+ - [External Calendar](https://marketplace.humhub.com/module/external_calendar/description)
  
 ## Further Information
 
