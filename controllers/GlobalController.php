@@ -88,13 +88,53 @@ class GlobalController extends Controller
         ]);
     }
 
+    /**
+     * @return array|mixed calendar selector settings
+     * @throws \Throwable
+     */
+    private function getSelectorSettings()
+    {
+        if (Yii::$app->user->isGuest) {
+            return [];
+        }
+
+        return $this->getUserSettings()->getSerialized('lastSelectors', []);
+    }
+
+    /**
+     * @return \humhub\modules\content\components\ContentContainerSettingsManager
+     */
+    public function getUserSettings()
+    {
+        if (Yii::$app->user->isGuest) {
+            return null;
+        }
+
+        /* @var $module \humhub\modules\calendar\Module */
+        $module = Yii::$app->getModule('calendar');
+        return $module->settings->user();
+    }
+
+    /**
+     * @return array|mixed calendar filter settings
+     * @throws \Throwable
+     */
+    private function getFilterSettings()
+    {
+        if (Yii::$app->user->isGuest) {
+            return [];
+        }
+
+        return $this->getUserSettings()->getSerialized('lastFilters', []);
+    }
+
     public function actionSelect($start = null, $end = null)
     {
         /* @var $user User */
         $contentContainerSelection = [];
         $user = Yii::$app->user->getIdentity();
 
-        if ($user->moduleManager->canEnable('calendar')) {
+        if ($user->moduleManager->isEnabled('calendar') || $user->moduleManager->canEnable('calendar')) {
             $contentContainerSelection[$user->contentcontainer_id] = Yii::t('CalendarModule.base', 'Profile Calendar');
         }
 
@@ -159,46 +199,6 @@ class GlobalController extends Controller
         Yii::$app->request->setQueryParams($params);
 
         return Yii::$app->runAction('/calendar/entry/edit', $params);
-    }
-
-    /**
-     * @return array|mixed calendar selector settings
-     * @throws \Throwable
-     */
-    private function getSelectorSettings()
-    {
-        if (Yii::$app->user->isGuest) {
-            return [];
-        }
-
-        return $this->getUserSettings()->getSerialized('lastSelectors', []);
-    }
-
-    /**
-     * @return array|mixed calendar filter settings
-     * @throws \Throwable
-     */
-    private function getFilterSettings()
-    {
-        if (Yii::$app->user->isGuest) {
-            return [];
-        }
-
-        return $this->getUserSettings()->getSerialized('lastFilters', []);
-    }
-
-    /**
-     * @return \humhub\modules\content\components\ContentContainerSettingsManager
-     */
-    public function getUserSettings()
-    {
-        if (Yii::$app->user->isGuest) {
-            return null;
-        }
-
-        /* @var $module \humhub\modules\calendar\Module */
-        $module = Yii::$app->getModule('calendar');
-        return $module->settings->user();
     }
 
     /**
