@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Day' => '',
+  'Day' => 'День',
   'List' => 'Список',
-  'Month' => '',
+  'Month' => 'Месяц',
   'Today' => 'Сегодня',
-  'Week' => '',
-  'Year' => '',
+  'Week' => 'Неделя',
+  'Year' => 'Год',
 );

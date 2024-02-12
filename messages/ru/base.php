@@ -76,7 +76,7 @@ return array (
   'Wednesday' => '',
   'You cannot invite participants!' => '',
   'You don\'t have permission to delete this event!' => 'У вас нет доступа для удаления этого события!',
-  'canceled' => '',
+  'canceled' => 'отменено',
   'disabled' => 'инвалид',
   'global' => '',
   '{displayName} Birthday' => '',
