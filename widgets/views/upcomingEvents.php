@@ -23,25 +23,35 @@ $extraMenus = Html::tag('li', $link);
     <div class="panel-body" style="padding:0;">
         <hr style="margin:0">
         <ul class="media-list">
-            <?php foreach ($calendarEntries as $entry) : ?>
-                <?php $formatter = new CalendarDateFormatter(['calendarItem' => $entry]); ?>
-                <?php $color = ($entry->color) ? $entry->color : $this->theme->variable('info') ?>
-                <a href="<?= $entry->getUrl() ?>">
-                    <li style="border-left: 3px solid <?= Html::encode($color) ?>">
-                        <div class="media">
-                            <div class="media-body  text-break">
-                                <?=  $entry->getBadge() ?>
-                                <strong>
-                                    <?= Helpers::trimText(Html::encode($entry->getTitle()), 60) ?>
-                                </strong>
-
-                                <br />
-                                <span class="time"><?= $formatter->getFormattedTime('medium') ?></span>
-                            </div>
+            <?php if (empty($calendarEntries)) { ?>
+                <li style="border-left: 3px solid ">
+                    <div class="media">
+                        <div class="media-body  text-break">
+                            <?= Yii::t('CalendarModule.base', 'There are no events yet.') ?>
                         </div>
-                    </li>
-                </a>
-            <?php endforeach; ?>
+                    </div>
+                </li>
+            <?php } else { ?>
+                <?php foreach ($calendarEntries as $entry) : ?>
+                    <?php $formatter = new CalendarDateFormatter(['calendarItem' => $entry]); ?>
+                    <?php $color = ($entry->color) ? $entry->color : $this->theme->variable('info') ?>
+                    <a href="<?= $entry->getUrl() ?>">
+                        <li style="border-left: 3px solid <?= Html::encode($color) ?>">
+                            <div class="media">
+                                <div class="media-body  text-break">
+                                    <?=  $entry->getBadge() ?>
+                                    <strong>
+                                        <?= Helpers::trimText(Html::encode($entry->getTitle()), 60) ?>
+                                    </strong>
+
+                                    <br />
+                                    <span class="time"><?= $formatter->getFormattedTime('medium') ?></span>
+                                </div>
+                            </div>
+                        </li>
+                    </a>
+                <?php endforeach; ?>
+            <?php } ?>
         </ul>
     </div>
 
