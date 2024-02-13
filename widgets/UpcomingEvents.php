@@ -47,10 +47,6 @@ class UpcomingEvents extends Widget
 
         $calendarEntries = $calendarService->getUpcomingEntries($this->contentContainer, $settings->upcomingEventsSnippetDuration, $settings->upcomingEventsSnippetMaxItems, $filters);
 
-        if (empty($calendarEntries)) {
-            return;
-        }
-
         return $this->render('upcomingEvents', ['calendarEntries' => $calendarEntries, 'calendarUrl' => Url::toCalendar($this->contentContainer)]);
     }
 
