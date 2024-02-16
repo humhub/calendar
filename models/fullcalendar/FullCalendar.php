@@ -81,6 +81,11 @@ class FullCalendar
            // $result['rrule'] = $entry->getRrule();
            // $result['exdate'] = $entry->getExdate();
         }
+        
+        // Add CSS class for canceled events
+        if($entry instanceof CalendarEventStatusIF && $entry->getEventStatus() === CalendarEventStatusIF::STATUS_CANCELLED) {
+            $result['className'] = 'canceled';
+        }
 
         return $result;
     }
