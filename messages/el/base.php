@@ -60,6 +60,7 @@ return [
     'Additional Information for participants' => '',
     'Allow option \'Decline\'' => '',
     'Allow option \'Undecided\'' => '',
+    'Before a target calendar can be selected, the module must be activated in at least one Space.' => '',
     'Cannot remove the participant!' => '',
     'Deleted' => '',
     'Download ICS' => '',
@@ -82,5 +83,7 @@ return [
     'The event has already ended.' => '',
     'You cannot invite participants!' => '',
     'global' => '',
+    '{displayName} just added you to event "{contentTitle}".' => '',
     '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
+    '{displayName} just invited you to event "{contentTitle}".' => '',
 ];

@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Basic' => '',
-    'Full calendar' => '',
-    'Participation' => '',
-    'Reminder' => '',
-];
+return array (
+  'Basic' => 'Osnovno',
+  'Full calendar' => '',
+  'Participation' => 'Učestvovanje',
+  'Reminder' => 'Podsetnik',
+);

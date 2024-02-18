@@ -1,11 +1,12 @@
 <?php
-return array (
-  '<strong>Filter</strong> events' => '',
-  '<strong>Select</strong> calendars' => '',
-  'Followed spaces' => '',
-  'Followed users' => '',
-  'I\'m attending' => '',
-  'My events' => '',
-  'My profile' => 'የግል መረጃዬ',
-  'My spaces' => '',
-);
+
+return [
+    'My profile' => 'የግል መረጃዬ',
+    'Filter events' => '',
+    'Followed spaces' => '',
+    'Followed users' => '',
+    'I\'m attending' => '',
+    'My events' => '',
+    'My spaces' => '',
+    'Select calendars' => '',
+];

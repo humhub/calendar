@@ -1,12 +1,12 @@
 <?php
 
 return [
-    '<strong>Filter</strong> events' => '',
-    '<strong>Select</strong> calendars' => '',
+    'Filter events' => '',
     'Followed spaces' => '',
     'Followed users' => '',
     'I\'m attending' => '',
     'My events' => '',
     'My profile' => '',
     'My spaces' => '',
+    'Select calendars' => '',
 ];

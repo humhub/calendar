@@ -1,6 +1,5 @@
 <?php
-
-return [
-    '<strong>Upcoming</strong> events ' => '',
-    'Open Calendar' => '',
-];
+return array (
+  '<strong>Upcoming</strong> events ' => '<strong>Predstojeći</strong> događaji',
+  'Open Calendar' => 'Otvori kalendar',
+);

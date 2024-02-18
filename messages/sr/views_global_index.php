@@ -1,12 +1,12 @@
 <?php
 
 return [
-    '<strong>Filter</strong> events' => '',
-    '<strong>Select</strong> calendars' => '',
-    'Followed spaces' => '',
-    'Followed users' => '',
-    'I\'m attending' => '',
-    'My events' => '',
-    'My profile' => '',
-    'My spaces' => '',
+    'Followed spaces' => 'Zapraćeni prostori',
+    'Followed users' => 'Zapraćeni korisnici',
+    'I\'m attending' => 'Ja prisustvujem',
+    'My events' => 'Moji događaji',
+    'My profile' => 'Moj profil',
+    'My spaces' => 'Moji prostori',
+    'Filter events' => '',
+    'Select calendars' => '',
 ];

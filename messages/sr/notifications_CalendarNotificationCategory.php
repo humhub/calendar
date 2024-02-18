@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Calendar' => '',
-    'Receive Calendar related Notifications.' => '',
-];
+return array (
+  'Calendar' => 'Kalendar',
+  'Receive Calendar related Notifications.' => 'Primajte obaveštenja vezane uz kalendar.',
+);
