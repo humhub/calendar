@@ -126,13 +126,7 @@ class FullCalendar
 
     private static function getTitle(CalendarEventIF $entry)
     {
-        $title = $entry->getTitle();
-
-        if($entry instanceof CalendarEventStatusIF && $entry->getEventStatus() === CalendarEventStatusIF::STATUS_CANCELLED) {
-            $title .= ' ('.Yii::t('CalendarModule.base', 'canceled').')';
-        }
-
-        return $title;
+        return $entry->getTitle();
     }
 
     /**
