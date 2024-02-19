@@ -322,6 +322,13 @@ a.fc-event,
     line-height: 50%; /* */
 }
 
+/* Canceled Events */
+.fc-view .canceled .fc-content,
+.fc-view .canceled .fc-content div,
+.fc-view .canceled.fc-list-item {
+  text-decoration: line-through;
+}
+
 
 /* Horizontal Events
 ------------------------------------------------------------------------*/
