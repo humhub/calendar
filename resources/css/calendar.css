@@ -323,7 +323,7 @@ a.fc-event,
 }
 
 /* Canceled Events */
-.fc-view .canceled .fc-content {
+.fc-view .canceled .fc-content, .fc-view .canceled.fc-list-item {
   text-decoration: line-through;
 }
 
