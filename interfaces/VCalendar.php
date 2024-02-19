@@ -147,6 +147,10 @@ class VCalendar extends Model
             'DTEND' => $dtEnd,
             'SUMMARY' => $item->getTitle(),
         ];
+        
+        if (isset($item->closed) && $item->closed) {
+            $result['STATUS'] = 'CANCELLED';
+        }
 
         if (!empty($item->getLocation())) {
             $result['LOCATION'] = $item->getLocation();
