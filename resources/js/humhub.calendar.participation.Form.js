@@ -10,6 +10,7 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
     var client = require('client');
     var status = require('ui.status');
     var calendar = require('calendar');
+    var modal = require('ui.modal');
 
     var Form = Widget.extend();
 
@@ -32,22 +33,21 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
                 }
             });
         }
+    }
 
-        var $modalBody = $('#globalModal .modal-body');
-        $modalBody.on('click', '#calendar-entry-participants-list .pagination a', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+    Form.prototype.changeParticipantsListPage = function (evt) {
+        var that = this;
+        evt.preventDefault();
+        modal.footerLoader();
 
-            var data = $(this).data();
-
-            client.get(data.actionUrl).then(function(response) {
-                var $participantsList = $(response.html).filter('#calendar-entry-participants-list');
-                $modalBody.find('#calendar-entry-participants-list').replaceWith($participantsList);
-            }).catch(function(e) {
-                module.log.error(e, true);
-            }).finally(function () {
-                evt.finish();
-            });
+        client.get(evt).then(function(response) {
+            var $participantsList = $(response.html).filter('#calendar-entry-participants-list');
+            that.$.find('#calendar-entry-participants-list').replaceWith($participantsList);
+        }).catch(function(e) {
+            module.log.error(e, true);
+        }).finally(function () {
+            loader.reset(modal.global.getFooter());
+            evt.finish();
         });
     }
 

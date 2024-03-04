@@ -50,6 +50,7 @@ use yii\helpers\Html;
     <div class="pagination-container">
         <?= AjaxLinkPager::widget([
             'pagination' => $pagination,
+            'linkOptions' => ['data' => ['action-click' => 'changeParticipantsListPage']]
         ]); ?>
         <?= Html::hiddenInput('calendar-entry-participants-count', $pagination->totalCount) ?>
     </div>
