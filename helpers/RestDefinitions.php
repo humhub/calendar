@@ -35,6 +35,7 @@ class RestDefinitions
             'participant_info' => $entry->participant_info,
             'closed' => (int)$entry->closed,
             'max_participants' => (int)$entry->max_participants,
+            'location' => $entry->location,
             'content' => ContentDefinitions::getContent($entry->content),
             'participants' => static::getParticipantUsers($entry->getParticipantEntries()->with('user')->all())
         ];
