@@ -7,6 +7,9 @@ Changelog
 - Fix #447: Global calendar header redesign
 - Enh #440: Extend list of fields for updating of sequence
 - Fix #453: Profile Calendar not available when adding an event from the global Calendar when the module is enabled in the profile
+- Enh #457: Strikethrough cancelled events in calendar view
+- Enh #460: Add cancelled status in ICS files
+- Fix #402: Fix layout after change page of participants list
 
 1.5.8 (January 19, 2024)
 ------------------------
