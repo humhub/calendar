@@ -17,6 +17,7 @@ namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 
 class ContainerConfigController extends AbstractConfigController
 {
@@ -25,6 +26,6 @@ class ContainerConfigController extends AbstractConfigController
      */
     protected function getAccessRules()
     {
-        return [[ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN]]];
+        return [[ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN, User::USERGROUP_SELF]]];
     }
 }
