@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.9 (Unreleased)
-------------------------
+1.5.9 (March 14, 2024)
+----------------------
 - Fix #443: Fix email subject on invite/add users
 - Fix #447: Global calendar header redesign
 - Enh #440: Extend list of fields for updating of sequence
@@ -10,6 +10,7 @@ Changelog
 - Enh #457: Strikethrough cancelled events in calendar view
 - Enh #460: Add cancelled status in ICS files
 - Fix #402: Fix layout after change page of participants list
+- Fix #469: Space configuration checks permissions insufficiently 
 
 1.5.8 (January 19, 2024)
 ------------------------
