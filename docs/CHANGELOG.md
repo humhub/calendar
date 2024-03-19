@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.10 (Unreleased)
+----------------------
+- Fix #470: Fix obsolete notifications
+
 1.5.9 (March 14, 2024)
 ----------------------
 - Fix #443: Fix email subject on invite/add users
