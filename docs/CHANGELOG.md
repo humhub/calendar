@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.10 (Unreleased)
-----------------------
+1.5.10 (March 19, 2024)
+-----------------------
 - Fix #470: Fix obsolete notifications
 
 1.5.9 (March 14, 2024)
