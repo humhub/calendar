@@ -16,10 +16,10 @@ return array (
   'Only by Invite' => '',
   'Participants' => '',
   'Recurrence' => '',
-  'Reminder' => '',
+  'Reminder' => 'Gogorarazpena',
   'Select event type...' => '',
   'Settings' => 'Ezarpenak',
-  'Title' => '',
+  'Title' => 'Izenburua',
   'Undecided' => '',
   '{count} Participants' => '',
 );
