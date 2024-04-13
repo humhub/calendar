@@ -6,6 +6,7 @@ use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\ConfigureButton;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\ui\view\helpers\ThemeHelper;
+use humhub\widgets\FooterMenu;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $selectors array */
@@ -47,3 +48,5 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
         </div>
     </div>
 </div>
+
+<?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]) ?>
