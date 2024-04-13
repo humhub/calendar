@@ -3,7 +3,7 @@ Changelog
 
 Unreleased
 ------------------------
-- Enh: Add footer to global calendar
+- Enh #473: Add footer to global calendar
 
 1.5.10 (March 19, 2024)
 -----------------------
