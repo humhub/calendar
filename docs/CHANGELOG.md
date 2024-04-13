@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Unreleased
+------------------------
+- Enh #473: Add footer to global calendar
+
 1.5.10 (March 19, 2024)
 -----------------------
 - Fix #470: Fix obsolete notifications
@@ -14,7 +18,7 @@ Changelog
 - Enh #457: Strikethrough cancelled events in calendar view
 - Enh #460: Add cancelled status in ICS files
 - Fix #402: Fix layout after change page of participants list
-- Fix #469: Space configuration checks permissions insufficiently 
+- Fix #469: Space configuration checks permissions insufficiently
 
 1.5.8 (January 19, 2024)
 ------------------------
