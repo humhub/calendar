@@ -1,9 +1,10 @@
 Changelog
 =========
 
-Unreleased
-------------------------
+1.5.11 (Unreleased)
+-----------------------
 - Enh #473: Add footer to global calendar
+- Fix #474: Fix checking for past event when it is created from different time zone
 
 1.5.10 (March 19, 2024)
 -----------------------
