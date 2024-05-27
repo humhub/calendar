@@ -5,6 +5,7 @@ Changelog
 -----------------------
 - Enh #473: Add footer to global calendar
 - Fix #474: Fix checking for past event when it is created from different time zone
+- Fix #478: Revert missed controls on space calendar
 
 1.5.10 (March 19, 2024)
 -----------------------

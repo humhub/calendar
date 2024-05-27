@@ -1,6 +1,8 @@
 <?php
 
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\widgets\CalendarControls;
+use humhub\modules\calendar\widgets\ConfigureButton;
 use humhub\modules\calendar\widgets\FilterType;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\widgets\FadeIn;
@@ -9,6 +11,7 @@ use humhub\widgets\FadeIn;
 /* @var $canAddEntries bool */
 /* @var $selectors array */
 /* @var $filters array */
+/* @var $showControls bool */
 /* @var $showSelectors bool */
 /* @var $showFilters bool */
 /* @var $showTypes bool */
@@ -18,6 +21,15 @@ use humhub\widgets\FadeIn;
 <div class="row calendar-options">
     <div class="col-md-12">
         <div id="calendar-overview-loader"></div>
+        <?php if ($showControls) : ?>
+            <div class="calendar-option-buttons">
+                <?= CalendarControls::widget([
+                    'widgets' => [
+                        [ConfigureButton::class, [], ['sortOrder' => 100]],
+                    ],
+                ]) ?>
+            </div>
+        <?php endif; ?>
         <?php if ($showSelectors) : ?>
             <div class="calendar-selectors">
                 <div class="help-block" style="padding-left:10px;">
