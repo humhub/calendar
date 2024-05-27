@@ -21,6 +21,7 @@ class CalendarFilterBar extends Widget
     public $filters = [];
     public $selectors = [];
 
+    public $showControls = true;
     public $showFilter = true;
     public $showSelectors = true;
     public $showTypes = true;
@@ -29,8 +30,8 @@ class CalendarFilterBar extends Widget
 
     public function run()
     {
-        if(Yii::$app->user->isGuest) {
-            return;
+        if (Yii::$app->user->isGuest) {
+            return '';
         }
 
         return $this->render('calendarFilterBar', [
@@ -39,7 +40,8 @@ class CalendarFilterBar extends Widget
             'selectors' => $this->selectors,
             'showFilters' => $this->showFilter,
             'showSelectors' => $this->showSelectors,
-            'showTypes' => $this->showTypes
+            'showTypes' => $this->showTypes,
+            'showControls' => $this->showControls,
         ]);
     }
 }
