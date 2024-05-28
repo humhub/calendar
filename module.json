@@ -3,9 +3,9 @@
     "name": "Calendar",
     "description": "Create one-time or recurring events, invite and manage attendees, and keep track of all your events with the Calendar module.",
     "keywords": ["calendar"],
-    "version": "1.5.11",
+    "version": "1.6.0",
     "humhub": {
-        "minVersion": "1.14"
+        "minVersion": "1.17"
     },
     "homepage": "https://github.com/humhub/calendar",
     "authors": [
