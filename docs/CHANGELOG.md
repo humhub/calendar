@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.6.0  (Unreleased)
+------------------------
+- Fix #481: Update module resources path
+
 1.5.11 (Unreleased)
 -----------------------
 - Enh #473: Add footer to global calendar
