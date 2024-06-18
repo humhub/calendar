@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Calendars' => '',
+  'Calendars' => 'Календари',
   'Defaults' => 'По-умолчанию',
-  'Event Types' => '',
+  'Event Types' => 'Типы событий',
   'Menu' => 'Меню',
-  'Snippet' => '',
+  'Snippet' => 'Виджет',
 );

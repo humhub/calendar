@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Day' => '',
+  'Day' => 'يوم',
   'List' => 'قائمة',
-  'Month' => '',
-  'Today' => '',
-  'Week' => '',
-  'Year' => '',
+  'Month' => 'شهر',
+  'Today' => 'اليوم',
+  'Week' => 'أسبوع',
+  'Year' => 'سنة',
 );

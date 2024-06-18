@@ -1,7 +1,7 @@
 <?php
 return array (
   'Basic' => 'الأساسي',
-  'Full calendar' => '',
-  'Participation' => '',
-  'Reminder' => '',
+  'Full calendar' => 'التقويم الكامل',
+  'Participation' => 'المشاركة',
+  'Reminder' => 'التذكير',
 );

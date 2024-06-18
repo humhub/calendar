@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Calendars' => '',
-  'Defaults' => '',
-  'Event Types' => '',
+  'Calendars' => 'التقويمات',
+  'Defaults' => 'الافتراضيات',
+  'Event Types' => 'أنواع الأحداث',
   'Menu' => 'القائمة',
-  'Snippet' => '',
+  'Snippet' => 'المقتطف',
 );

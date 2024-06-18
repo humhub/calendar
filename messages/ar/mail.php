@@ -1,9 +1,8 @@
 <?php
-
-return [
-    '<strong>Starting</strong> {date}' => '',
-    'Additional information:' => '',
-    'Location:' => '',
-    'Organized by {userName}' => '',
-    'View Online: {url}' => '',
-];
+return array (
+  '<strong>Starting</strong> {date}' => '<strong>البدء</strong> {date}',
+  'Additional information:' => 'معلومات إضافية:',
+  'Location:' => 'الموقع:',
+  'Organized by {userName}' => 'تم التنظيم بواسطة {userName}',
+  'View Online: {url}' => 'عرض عبر الإنترنت: {url}',
+);

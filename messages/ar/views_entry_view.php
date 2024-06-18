@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Additional information' => '',
+  'Additional information' => 'معلومات إضافية',
   'All' => 'الكل',
-  'Attend' => '',
+  'Attend' => 'حضور',
   'Decline' => 'رفض',
   'Filter' => 'تصفية',
-  'Maybe' => '',
-  'Participants' => '',
-  'You are invited, please select your role:' => '',
+  'Maybe' => 'ربما',
+  'Participants' => 'المشاركون',
+  'You are invited, please select your role:' => 'أنت مدعو، من فضلك اختر دوراً:',
 );
