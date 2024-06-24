@@ -9,8 +9,6 @@
 namespace  humhub\modules\calendar\notifications;
 
 use humhub\libs\Html;
-use humhub\modules\content\notifications\ContentCreatedNotificationCategory;
-use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\space\models\Space;
 use Yii;
 
@@ -20,43 +18,25 @@ use Yii;
  * Date: 21.07.2017
  * Time: 23:12
  */
-class EventUpdated extends BaseNotification
+class EventUpdated extends BaseEventNotification
 {
-    /**
-     * @inheritdoc
-     */
-    public $moduleId = 'calendar';
-
-    /**
-     * @inheritdoc
-     */
-    public $viewName = 'participationInfoNotification';
-
-    /**
-     * @inheritdoc
-     */
-    public function category()
-    {
-        return new CalendarNotificationCategory();
-    }
-
     /**
      * @inheritdoc
      */
     public function html()
     {
-        if($this->source->content->container instanceof Space) {
-            return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} just updated event "{contentTitle}" in space {spaceName}.', [
-                'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => $this->getContentInfo($this->source, false),
-                'spaceName' =>  Html::encode($this->source->content->container->displayName)
-            ]);
-        } else {
-            return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} just updated event "{contentTitle}".', [
-                'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => $this->getContentInfo($this->source, false)
-            ]);
+        $params = [
+            'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            'contentTitle' => $this->getContentInfo($this->source, false),
+        ];
+
+        if ($this->source->content->container instanceof Space) {
+            return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} just updated event "{contentTitle}" in space {spaceName}.', array_merge([
+                'spaceName' =>  Html::encode($this->source->content->container->displayName),
+            ]));
         }
+
+        return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} just updated event "{contentTitle}".', $params);
     }
 
     /**
@@ -66,7 +46,7 @@ class EventUpdated extends BaseNotification
     {
         return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} just updated event {contentTitle}.', [
             'displayName' => Html::encode($this->originator->displayName),
-            'contentTitle' => $this->getContentInfo($this->source, false)
+            'contentTitle' => $this->getContentInfo($this->source, false),
         ]);
     }
 }

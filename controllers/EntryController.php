@@ -10,6 +10,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
+use humhub\modules\calendar\notifications\MarkAttend;
 use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\content\components\ContentContainerController;
@@ -39,7 +40,6 @@ use yii\web\Response;
  */
 class EntryController extends ContentContainerController
 {
-
     /**
      * @inheritdoc
      */
@@ -57,8 +57,8 @@ class EntryController extends ContentContainerController
     {
         $entry = $this->getCalendarEntry($id);
 
-        if (!$entry) {
-            throw new HttpException('404');
+        if (!$entry->content->canView()) {
+            throw new ForbiddenHttpException('You have no permission to view the event!');
         }
 
         $this->view->meta->setDescription(RichTextToPlainTextConverter::process($entry->getTitle() . ' - ' . $entry->getDescription()));
@@ -149,7 +149,7 @@ class EntryController extends ContentContainerController
                     'update-url' => $this->contentContainer->createUrl('/calendar/entry/update-participant-status'),
                     'remove-url' => $this->contentContainer->createUrl('/calendar/entry/remove-participant'),
                     'filter-url' => $this->contentContainer->createUrl('/calendar/entry/participants-list'),
-                ]
+                ],
             ],
         ]);
     }
@@ -166,21 +166,25 @@ class EntryController extends ContentContainerController
     {
         $calendarEntry = $this->getCalendarEntry($id);
 
-        if (!$calendarEntry) {
-            throw new HttpException('404');
-        }
-
         if (!$calendarEntry->canRespond(Yii::$app->user->identity)) {
-            throw new HttpException(403);
+            throw new ForbiddenHttpException('You cannot be a participant of the event!');
         }
 
         if ($calendarEntry->isPast()) {
-            throw new HttpException(403, 'Event is over!');
+            throw new ForbiddenHttpException('Event is over!');
         }
 
-        return $this->asJson([
-            'success' => $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int)$type)
-        ]);
+        if (!$calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int)$type)) {
+            throw new ForbiddenHttpException('You cannot be a participant of the event!');
+        }
+
+        if ($type == CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED) {
+            MarkAttend::instance()->from(Yii::$app->user->identity)
+                ->about($calendarEntry)
+                ->sendBulk([Yii::$app->user->identity]);
+        }
+
+        return $this->asJson(['success' => true]);
     }
 
     /**
@@ -257,7 +261,7 @@ class EntryController extends ContentContainerController
         return $this->renderAjax('edit', [
             'calendarEntryForm' => $calendarEntryForm,
             'contentContainer' => $this->contentContainer,
-            'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer, $calendarEntryForm->wall)
+            'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer, $calendarEntryForm->wall),
         ]);
     }
 
@@ -282,7 +286,7 @@ class EntryController extends ContentContainerController
     /**
      * Action to render modal window with participation settings and active tab "Participants of the event"
      *
-     * @param integer|null $id
+     * @param int|null $id
      * @return string
      */
     public function actionModalParticipants($id = null)
@@ -294,7 +298,7 @@ class EntryController extends ContentContainerController
      * Action to render only participants list
      * Used for filtering and pagination
      *
-     * @param integer|null $id
+     * @param int|null $id
      * @return string
      */
     public function actionParticipantsList($id = null)
@@ -565,7 +569,7 @@ class EntryController extends ContentContainerController
         $entry = CalendarEntry::find()->contentContainer($this->contentContainer)->readable()->where(['calendar_entry.id' => $id])->one();
 
         if (!$entry) {
-            throw new HttpException(404);
+            throw new NotFoundHttpException();
         }
 
         return $entry;
