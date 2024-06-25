@@ -28,8 +28,8 @@ class ParticipantAdded extends BaseEventNotification
         ];
 
         return $this->isInvited()
-            ? Yii::t('CalendarModule.base', '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.', $params)
-            : Yii::t('CalendarModule.base', '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.', $params);
+            ? Yii::t('CalendarModule.base', '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.', $params)
+            : Yii::t('CalendarModule.base', '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.', $params);
     }
 
     /**
@@ -43,8 +43,8 @@ class ParticipantAdded extends BaseEventNotification
         ];
 
         return $this->isInvited()
-            ? Yii::t('CalendarModule.base', '{displayName} just invited you to event "{contentTitle}".', $params)
-            : Yii::t('CalendarModule.base', '{displayName} just added you to event "{contentTitle}".', $params);
+            ? Yii::t('CalendarModule.base', '{displayName} invited you to the event "{contentTitle}".', $params)
+            : Yii::t('CalendarModule.base', '{displayName} added you to the event "{contentTitle}".', $params);
     }
 
     private function isInvited(): bool

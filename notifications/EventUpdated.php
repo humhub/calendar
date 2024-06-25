@@ -31,12 +31,12 @@ class EventUpdated extends BaseEventNotification
         ];
 
         if ($this->source->content->container instanceof Space) {
-            return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} just updated event "{contentTitle}" in space {spaceName}.', array_merge([
+            return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} updated the event "{contentTitle}" in the space {spaceName}.', array_merge([
                 'spaceName' =>  Html::encode($this->source->content->container->displayName),
             ]));
         }
 
-        return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} just updated event "{contentTitle}".', $params);
+        return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} updated the event "{contentTitle}".', $params);
     }
 
     /**
@@ -44,7 +44,7 @@ class EventUpdated extends BaseEventNotification
      */
     public function getMailSubject()
     {
-        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} just updated event {contentTitle}.', [
+        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} updated the event "{contentTitle}".', [
             'displayName' => Html::encode($this->originator->displayName),
             'contentTitle' => $this->getContentInfo($this->source, false),
         ]);
