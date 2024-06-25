@@ -5,14 +5,15 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace  humhub\modules\calendar\notifications;
+namespace humhub\modules\calendar\notifications\base;
 
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\notifications\CalendarNotificationCategory;
 use humhub\modules\notification\components\BaseNotification;
 use yii\mail\MessageInterface;
 
 /* @property CalendarEntry $source */
-abstract class BaseEventNotification extends BaseNotification
+abstract class EventNotification extends BaseNotification
 {
     /**
      * @inheritdoc
