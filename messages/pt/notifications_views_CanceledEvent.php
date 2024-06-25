@@ -4,7 +4,7 @@ return [
     '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.' => '{displayName} cancelou o evento "{contentTitle}" no espaço {spaceName}.',
     '{displayName} canceled the event "{contentTitle}".' => '{displayName} cancelou o evento "{contentTitle}".',
     '{displayName} updated the event "{contentTitle}" in the space {spaceName}.' => '{displayName} atualizou o evento "{contentTitle}" no espaço {spaceName}.',
-    '{displayName} updated event "{contentTitle}".' => '{displayName} acabou de atualizar o evento {contentTitle}.',
+    '{displayName} updated event "{contentTitle}".' => '{displayName} acabou de atualizar o evento "{contentTitle}".',
     '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.' => '{displayName} reabriu o evento "{contentTitle}" no espaço {spaceName}.',
     '{displayName} reopened the event "{contentTitle}".' => '{displayName} reabriu o evento "{contentTitle}".',
 ];
