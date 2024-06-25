@@ -35,30 +35,28 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
                 <?php endif; ?>
 
                 <?php if (!empty($event->getStartDateTime())): ?>
-                    <?= Yii::t('CalendarModule.mail', '<strong>Starting</strong> {date}', [
-                        'date' => $formatter->getFormattedTime()
-                    ]) ?>
-                    <br>
+                    <strong><?= Yii::t('CalendarModule.mail', 'Starting') ?>:</strong>
+                    <?= $formatter->getFormattedTime() ?><br><br>
                 <?php endif; ?>
 
-                <?php if ($event instanceof CalendarEventParticipationIF): ?>
-                    <?php if ($event->getOrganizer()) : ?>
-                        <b><?= Yii::t('CalendarModule.mail', 'Organized by {userName}', ['userName' => Html::encode($event->getOrganizer()->displayName)]) ?></b>
-                    <?php endif; ?>
+                <?php if ($event instanceof CalendarEventParticipationIF && $event->getOrganizer()): ?>
+                    <strong><?= Yii::t('CalendarModule.mail', 'Organizer') ?>:</strong>
+                    <?= Html::encode($event->getOrganizer()->displayName) ?><br><br>
                 <?php endif; ?>
 
                 <?php if (!empty($event->getLocation())): ?>
-                    <b><?= Yii::t('CalendarModule.mail', 'Location:') ?> <?= Html::encode($event->getLocation()) ?></b>
-                    <br>
+                    <strong><?= Yii::t('CalendarModule.mail', 'Location') ?>:</strong>
+                    <?= Html::encode($event->getLocation()) ?><br><br>
                 <?php endif; ?>
 
                 <?php if (!empty($event->getDescription())): ?>
-                    <p><?= RichTextToEmailHtmlConverter::process($event->getDescription()) ?></p>
+                    <strong><?= Yii::t('CalendarModule.mail', 'Description') ?>:</strong><br>
+                    <?= RichTextToEmailHtmlConverter::process($event->getDescription()) ?><br>
                 <?php endif; ?>
 
                 <?php if (isset($extraInfo) && !empty($extraInfo)): ?>
-                    <h2><?= Yii::t('CalendarModule.mail', 'Additional information:'); ?></h2>
-                    <p><?= RichTextToEmailHtmlConverter::process($extraInfo) ?></p>
+                    <strong><?= Yii::t('CalendarModule.mail', 'Participants info') ?>:</strong><br>
+                    <?= RichTextToEmailHtmlConverter::process($extraInfo) ?><br>
                 <?php endif; ?>
             </td>
         </tr>
