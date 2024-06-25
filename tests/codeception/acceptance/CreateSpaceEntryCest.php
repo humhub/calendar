@@ -138,8 +138,8 @@ class CreateSpaceEntryCest
         $I->amUser1(true);
 
         $I->expectTo('see the add and cancel notification');
-        $I->seeInNotifications('Admin Tester just added you to event');
-        $I->seeInNotifications('Admin Tester canceled event');
+        $I->seeInNotifications('Admin Tester added you to the event');
+        $I->seeInNotifications('Admin Tester canceled the event');
 
         $I->wantTo('make sure normal users can\'t see the add all space members feature');
         $I->amOnSpace(1, '/calendar/view/index');

@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '{displayName} canceled event "{contentTitle}" in space {spaceName}.' => '{displayName} ha cancellato l\'evento "{contentTitle}" nello spazio {spaceName}.',
-    '{displayName} canceled event "{contentTitle}".' => '{displayName} ha cancellato l\'evento "{contentTitle}".',
-    '{displayName} just updated event "{contentTitle}" in space {spaceName}.' => '{displayName} ha aggiornato l\'evento  "{contentTitle}" nello spazio {spaceName}.',
-    '{displayName} just updated event {contentTitle}.' => '{displayName} ha appena aggiornato l\'evento {contentTitle}.',
-    '{displayName} reopened event "{contentTitle}" in space {spaceName}.' => '{displayName} ha riaperto l\'evento "{contentTitle}" nello spazio {spaceName}.',
-    '{displayName} reopened event "{contentTitle}".' => '{displayName} ha riaperto l\'evento "{contentTitle}".',
+    '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.' => '{displayName} ha cancellato l\'evento "{contentTitle}" nello spazio {spaceName}.',
+    '{displayName} canceled the event "{contentTitle}".' => '{displayName} ha cancellato l\'evento "{contentTitle}".',
+    '{displayName} updated the event "{contentTitle}" in the space {spaceName}.' => '{displayName} ha aggiornato l\'evento  "{contentTitle}" nello spazio {spaceName}.',
+    '{displayName} updated the event "{contentTitle}".' => '{displayName} ha appena aggiornato l\'evento {contentTitle}.',
+    '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.' => '{displayName} ha riaperto l\'evento "{contentTitle}" nello spazio {spaceName}.',
+    '{displayName} reopened the event "{contentTitle}".' => '{displayName} ha riaperto l\'evento "{contentTitle}".',
 ];

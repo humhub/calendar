@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '{displayName} canceled event "{contentTitle}" in space {spaceName}.' => '{displayName} törölte a(z) "{contentTitle}" eseményt a(z) {spaceName} közösségben.',
-    '{displayName} canceled event "{contentTitle}".' => '{displayName} törölte a(z) "{contentTitle}" eseményt.',
-    '{displayName} just updated event "{contentTitle}" in space {spaceName}.' => '{displayName} frissítette a(z) "{contentTitle}" eseményt a(z) {spaceName} közösségben.',
-    '{displayName} just updated event {contentTitle}.' => '{displayName} frissítette a(z) {contentTitle} eseményt.',
-    '{displayName} reopened event "{contentTitle}" in space {spaceName}.' => '{displayName} újranyitotta a(z) "{contentTitle}" eseményt a(z) {spaceName} közösségben.',
-    '{displayName} reopened event "{contentTitle}".' => '{displayName} újranyitotta a(z) "{contentTitle}" eseményt',
+    '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.' => '{displayName} törölte a(z) "{contentTitle}" eseményt a(z) {spaceName} közösségben.',
+    '{displayName} canceled the event "{contentTitle}".' => '{displayName} törölte a(z) "{contentTitle}" eseményt.',
+    '{displayName} updated the event "{contentTitle}" in the space {spaceName}.' => '{displayName} frissítette a(z) "{contentTitle}" eseményt a(z) {spaceName} közösségben.',
+    '{displayName} updated the event "{contentTitle}".' => '{displayName} frissítette a(z) {contentTitle} eseményt.',
+    '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.' => '{displayName} újranyitotta a(z) "{contentTitle}" eseményt a(z) {spaceName} közösségben.',
+    '{displayName} reopened the event "{contentTitle}".' => '{displayName} újranyitotta a(z) "{contentTitle}" eseményt',
 ];
