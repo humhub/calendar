@@ -9,6 +9,7 @@
 namespace  humhub\modules\calendar\notifications;
 
 use humhub\libs\Html;
+use humhub\modules\calendar\notifications\base\EventNotification;
 use humhub\modules\space\models\Space;
 use Yii;
 
@@ -18,7 +19,7 @@ use Yii;
  * Date: 21.07.2017
  * Time: 23:12
  */
-class ReopenedEvent extends BaseEventNotification
+class ReopenedEvent extends EventNotification
 {
     /**
      * @inheritdoc

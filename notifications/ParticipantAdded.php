@@ -9,9 +9,10 @@ namespace  humhub\modules\calendar\notifications;
 
 use humhub\libs\Html;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
+use humhub\modules\calendar\notifications\base\EventNotification;
 use Yii;
 
-class ParticipantAdded extends BaseEventNotification
+class ParticipantAdded extends EventNotification
 {
     public ?int $participationStatus = null;
 
