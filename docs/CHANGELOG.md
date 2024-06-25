@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.12 (June 25, 2024)
+----------------------
+- Fix #487: Base event notification broken
+
 1.5.11 (June 24, 2024)
 ----------------------
 - Enh #473: Add footer to global calendar
