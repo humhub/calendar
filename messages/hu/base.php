@@ -81,8 +81,8 @@ return array (
   'disabled' => 'Tiltva',
   'global' => 'globális',
   '{displayName} Birthday' => '{displayName} születésnapja',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} hozzáadott téged, a(z) "{contentTitle}" eseményhez a(z) {spaceName} közösségben, mely ekkor lesz megtartva: {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} felvett téged a(z) „{contentTitle}” eseményhez.',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} meghívta Önt a(z) "{contentTitle}" eseményre a(z) {spaceName} Közösségben {time} időponttól kezdődően.',
-  '{displayName} just invited you to event "{contentTitle}".' => '{displayName} meghívott a(z) „{contentTitle}” eseményre.',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} hozzáadott téged, a(z) "{contentTitle}" eseményhez a(z) {spaceName} közösségben, mely ekkor lesz megtartva: {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} felvett téged a(z) „{contentTitle}” eseményhez.',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} meghívta Önt a(z) "{contentTitle}" eseményre a(z) {spaceName} Közösségben {time} időponttól kezdődően.',
+  '{displayName} invited you to the event "{contentTitle}".' => '{displayName} meghívott a(z) „{contentTitle}” eseményre.',
 );

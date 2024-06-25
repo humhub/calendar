@@ -81,8 +81,8 @@ return array (
   'disabled' => 'инвалид',
   'global' => '',
   '{displayName} Birthday' => 'День рождения у {displayName}',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} только что добавил вас на мероприятие "{contentTitle}" в сообществе {spaceName}, которое начинается в {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} только что добавил вас на мероприятие "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} только что пригласил вас на мероприятие "{contentTitle}" в сообществе {spaceName}, которое начинается в {time}.',
-  '{displayName} just invited you to event "{contentTitle}".' => '{displayName} только что пригласил вас на мероприятие "{contentTitle}".',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} только что добавил вас на мероприятие "{contentTitle}" в сообществе {spaceName}, которое начинается в {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} только что добавил вас на мероприятие "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} только что пригласил вас на мероприятие "{contentTitle}" в сообществе {spaceName}, которое начинается в {time}.',
+  '{displayName} invited you to the event "{contentTitle}".' => '{displayName} только что пригласил вас на мероприятие "{contentTitle}".',
 );

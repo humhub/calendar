@@ -81,8 +81,8 @@ return array (
   'disabled' => 'discapacitat',
   'global' => '',
   '{displayName} Birthday' => 'Aniversari de {displayName}',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} t\'ha afegit a un esdeveniment "{contentTitle}" a l\'espai {spaceName} que comença a {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} t\'ha afegit a l\'esdeveniment "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} t\'ha convidat a un esdeveniment "{contentTitle}" a l\'espai {spaceName} que comença a {time}.',
-  '{displayName} just invited you to event "{contentTitle}".' => '{displayName} t\'ha convidat a l\'esdeveniment "{contentTitle}".',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} t\'ha afegit a un esdeveniment "{contentTitle}" a l\'espai {spaceName} que comença a {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} t\'ha afegit a l\'esdeveniment "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} t\'ha convidat a un esdeveniment "{contentTitle}" a l\'espai {spaceName} que comença a {time}.',
+  '{displayName} invited you to the event "{contentTitle}".' => '{displayName} t\'ha convidat a l\'esdeveniment "{contentTitle}".',
 );

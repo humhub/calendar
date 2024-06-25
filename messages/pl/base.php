@@ -81,8 +81,8 @@ return array (
   'disabled' => 'wyłączony',
   'global' => '',
   '{displayName} Birthday' => 'Urodziny {displayName}',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} właśnie dodał(a) Cię do wydarzenia "{contentTitle} w strefie {spaceName}, które startuje o {time}',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} dodał/a Cię do wydarzenia "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
-  '{displayName} just invited you to event "{contentTitle}".' => '',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} właśnie dodał(a) Cię do wydarzenia "{contentTitle} w strefie {spaceName}, które startuje o {time}',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} dodał/a Cię do wydarzenia "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '',
+  '{displayName} invited you to the event "{contentTitle}".' => '',
 );

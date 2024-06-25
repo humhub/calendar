@@ -81,8 +81,8 @@ return array (
   'disabled' => 'хора с увреждания',
   'global' => '',
   '{displayName} Birthday' => 'Рожден ден на {displayName}',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} току-що ви добави към събитие "{contentTitle}" в раздел {spaceName}, започващо в {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} току-що ви добави към събитие "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
-  '{displayName} just invited you to event "{contentTitle}".' => '',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} току-що ви добави към събитие "{contentTitle}" в раздел {spaceName}, започващо в {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} току-що ви добави към събитие "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '',
+  '{displayName} invited you to the event "{contentTitle}".' => '',
 );

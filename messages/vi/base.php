@@ -81,8 +81,8 @@ return array (
   'disabled' => 'tàn tật',
   'global' => '',
   '{displayName} Birthday' => 'Sinh nhật {displayName}',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} vừa mới thêm bạn vào sự kiện "{contentTitle}" trong diễn đàn {spaceName} bắt đầu từ {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} vừa thêm bạn vào sự kiện "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
-  '{displayName} just invited you to event "{contentTitle}".' => '',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} vừa mới thêm bạn vào sự kiện "{contentTitle}" trong diễn đàn {spaceName} bắt đầu từ {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} vừa thêm bạn vào sự kiện "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '',
+  '{displayName} invited you to the event "{contentTitle}".' => '',
 );

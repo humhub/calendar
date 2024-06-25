@@ -81,8 +81,8 @@ return array (
   'disabled' => 'معطل',
   'global' => 'عام',
   '{displayName} Birthday' => '{displayName} يوم ميلاد',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => 'أضافك {displayName} للتو إلى الحدث "{contentTitle}" في المساحة {spaceName} بدءًا من {time}',
-  '{displayName} just added you to event "{contentTitle}".' => 'لقد أضافك {displayName} للتو إلى الحدث "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => 'دعاك {displayName} للتو إلى الحدث "{contentTitle}" في الباحة {spaceName} بدءًا من {time}.',
-  '{displayName} just invited you to event "{contentTitle}".' => 'لقد دعاك {displayName} للتو إلى الحدث "{contentTitle}".',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => 'أضافك {displayName} للتو إلى الحدث "{contentTitle}" في المساحة {spaceName} بدءًا من {time}',
+  '{displayName} added you to the event "{contentTitle}".' => 'لقد أضافك {displayName} للتو إلى الحدث "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => 'دعاك {displayName} للتو إلى الحدث "{contentTitle}" في الباحة {spaceName} بدءًا من {time}.',
+  '{displayName} invited you to the event "{contentTitle}".' => 'لقد دعاك {displayName} للتو إلى الحدث "{contentTitle}".',
 );

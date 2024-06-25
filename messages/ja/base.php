@@ -81,8 +81,8 @@ return array (
   'disabled' => '無効',
   'global' => 'グローバル',
   '{displayName} Birthday' => '{displayName}さんの誕生日',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => 'たった今 {displayName} さんはあなたを{time}に始まる、スペース"{spaceName}"のイベント"{contentTitle}"に追加しました 。',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} イベント "{contentTitle}" に追加しました',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} さんが {time} から始まるスペース {spaceName} のイベント ”{contentTitle}" にあなたを招待しました。',
-  '{displayName} just invited you to event "{contentTitle}".' => '{displayName} イベント "{contentTitle}" に招待しました',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => 'たった今 {displayName} さんはあなたを{time}に始まる、スペース"{spaceName}"のイベント"{contentTitle}"に追加しました 。',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} イベント "{contentTitle}" に追加しました',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} さんが {time} から始まるスペース {spaceName} のイベント ”{contentTitle}" にあなたを招待しました。',
+  '{displayName} invited you to the event "{contentTitle}".' => '{displayName} イベント "{contentTitle}" に招待しました',
 );

@@ -81,8 +81,8 @@ return array (
   'disabled' => 'désactivé',
   'global' => 'global',
   '{displayName} Birthday' => 'Anniversaire de {displayName}',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} vous a ajouté à l\'événement "{contentTitle}" dans l\'espace {spaceName} et qui débute à {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} vient de vous ajouter à l’événement « {contentTitle} ».',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} vient de vous inviter à l’événement "{contentTitle}" dans l’espace {spaceName} ; l’événement commence à {time}.',
-  '{displayName} just invited you to event "{contentTitle}".' => '{displayName} vient de vous inviter à l’événement « {contentTitle} ».',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} vous a ajouté à l\'événement "{contentTitle}" dans l\'espace {spaceName} et qui débute à {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} vient de vous ajouter à l’événement « {contentTitle} ».',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} vient de vous inviter à l’événement "{contentTitle}" dans l’espace {spaceName} ; l’événement commence à {time}.',
+  '{displayName} invited you to the event "{contentTitle}".' => '{displayName} vient de vous inviter à l’événement « {contentTitle} ».',
 );

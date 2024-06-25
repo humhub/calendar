@@ -81,8 +81,8 @@ return array (
   'disabled' => 'Desativado',
   'global' => '',
   '{displayName} Birthday' => 'Aniversário de {displayName}',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} adicionou-te ao evento "{contentTitle}" no espaço {spaceName} com início às {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} adicionou-te ao evento "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} convidou-te para o evento "{contentTitle}" no espaço {spaceName} que terá início às {time}.',
-  '{displayName} just invited you to event "{contentTitle}".' => '{displayName} convidou-te para o evento "{contentTitle}".',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} adicionou-te ao evento "{contentTitle}" no espaço {spaceName} com início às {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} adicionou-te ao evento "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} convidou-te para o evento "{contentTitle}" no espaço {spaceName} que terá início às {time}.',
+  '{displayName} invited you to the event "{contentTitle}".' => '{displayName} convidou-te para o evento "{contentTitle}".',
 );

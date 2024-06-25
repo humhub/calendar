@@ -81,8 +81,8 @@ return array (
   'disabled' => 'Inaktiverad',
   'global' => 'global',
   '{displayName} Birthday' => '{displayName} Födelsedag',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} lade precis till dig till aktiviteten "{contentTitle}" i forumet {spaceName} startar {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} lade just till dig till "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} bjöd precis in dig till eventet "{contentTitle}" i forumet {spaceName} som börjar kl. {time}.',
-  '{displayName} just invited you to event "{contentTitle}".' => '{displayName} har precis bjudit in dig till eventet "{contentTitle}".',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} lade precis till dig till aktiviteten "{contentTitle}" i forumet {spaceName} startar {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} lade just till dig till "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} bjöd precis in dig till eventet "{contentTitle}" i forumet {spaceName} som börjar kl. {time}.',
+  '{displayName} invited you to the event "{contentTitle}".' => '{displayName} har precis bjudit in dig till eventet "{contentTitle}".',
 );

@@ -81,8 +81,8 @@ return array (
   'disabled' => 'liikuntarajoitteinen',
   'global' => '',
   '{displayName} Birthday' => '{displayName} Syntymäpäivä',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '{displayName} lisäsi sinut tapahtumaan "{contentTitle} {time}" sivulla {spaceName}',
-  '{displayName} just added you to event "{contentTitle}".' => '{displayName} lisäsi sinut juuri tapahtumaan "{contentTitle}"',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
-  '{displayName} just invited you to event "{contentTitle}".' => '',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} lisäsi sinut tapahtumaan "{contentTitle} {time}" sivulla {spaceName}',
+  '{displayName} added you to the event "{contentTitle}".' => '{displayName} lisäsi sinut juuri tapahtumaan "{contentTitle}"',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '',
+  '{displayName} invited you to the event "{contentTitle}".' => '',
 );

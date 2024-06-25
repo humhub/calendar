@@ -81,8 +81,8 @@ return array (
   'disabled' => 'άτομα με ειδικές ανάγκες',
   'global' => '',
   '{displayName} Birthday' => 'Γενέθλια του χρήστη {displayName}',
-  '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.' => 'Ο/Η {displayName} μόλις σας πρόσθεσε στην εκδήλωση "{contentTitle}" του χώρου  {spaceName} ξεκινώντας από {time}.',
-  '{displayName} just added you to event "{contentTitle}".' => 'Ο/η {displayName} Μόλις σας πρόσθεσε στην εκδήλωση "{contentTitle}".',
-  '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.' => '',
-  '{displayName} just invited you to event "{contentTitle}".' => '',
+  '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => 'Ο/Η {displayName} μόλις σας πρόσθεσε στην εκδήλωση "{contentTitle}" του χώρου  {spaceName} ξεκινώντας από {time}.',
+  '{displayName} added you to the event "{contentTitle}".' => 'Ο/η {displayName} Μόλις σας πρόσθεσε στην εκδήλωση "{contentTitle}".',
+  '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '',
+  '{displayName} invited you to the event "{contentTitle}".' => '',
 );
