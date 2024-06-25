@@ -64,7 +64,7 @@ class EventUpdated extends BaseNotification
      */
     public function getMailSubject()
     {
-        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} updated event "{contentTitle}".', [
+        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} updated the event "{contentTitle}".', [
             'displayName' => Html::encode($this->originator->displayName),
             'contentTitle' => $this->getContentInfo($this->source, false)
         ]);
