@@ -61,16 +61,30 @@ humhub.module('calendar.reminder.Form', function (module, require, $) {
     Form.prototype.add = function(evt) {
         var $triggerRow = evt.$trigger.closest('.row');
         var $lastIndex = parseInt($triggerRow.attr('data-reminder-index'));
-        var $newRow = $triggerRow.clone().attr('data-reminder-index', ++$lastIndex);
-
-        $newRow.find('[name]').each(function() {
-            var name = $(this).attr('name').replace(/CalendarReminder\[[0-9]]/, 'CalendarReminder['+$lastIndex+']');
-            $(this).attr('name', name);
-        });
+        var $newRow = $triggerRow.clone()
+            .attr('data-reminder-index', $lastIndex + 1)
+            .find('[name]')
+            .each(function() {
+                $(this).attr('name', $(this).attr('name').replace(/CalendarReminder\[[0-9]]/, 'CalendarReminder[' + ($lastIndex + 1) + ']'));
+            })
+            .end()
+            .find('select')
+            .each(function() {
+                var currentId = $(this).attr('id');
+                var newId = currentId.replace(/\d+/, $lastIndex + 1);
+                $(this).attr({'id': newId});
+            })
+            .end()
+            .find('span')
+            .remove()
+            .end();
 
         $newRow.insertAfter($triggerRow);
 
-        evt.$trigger.data('action-click', 'delete')
+        $newRow.find('select').select2();
+
+        evt.$trigger
+            .data('action-click', 'delete')
             .removeClass('btn-primary')
             .addClass('btn-danger')
             .find('i')
