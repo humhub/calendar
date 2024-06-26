@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\tests\codeception\unit\entry;
-
 
 use calendar\CalendarUnitTest;
 use humhub\modules\calendar\helpers\CalendarUtils;
@@ -92,13 +90,13 @@ class LocaleTest extends CalendarUnitTest
                 'end_time' => $endTime,
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]), "Error loading form with locale $locale");
         $this->assertTrue($form->save(), "Error saving form with locale $locale");
         $entry = CalendarEntry::findOne(['id' => $form->entry->id]);
         $this->assertEquals($start, $entry->getStartDateTime(), "Invalid start time with locale $locale");
 
-        $expectedEnd = ($allDay) ? $end->modify('+1 day')->setTime(0,0,0) : $end;
+        $expectedEnd = ($allDay) ? $end->modify('+1 day')->setTime(0, 0, 0) : $end;
 
         $this->assertEquals($expectedEnd, $entry->getEndDateTime(), "Invalid end time with locale $locale");
     }
@@ -115,7 +113,7 @@ class LocaleTest extends CalendarUnitTest
                 'title' => 'Test title',
                 'all_day' => '0',
                 'description' => 'TestDescription',
-                'participation_mode' => 2
+                'participation_mode' => 2,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
@@ -125,7 +123,7 @@ class LocaleTest extends CalendarUnitTest
                 'end_time' => '3:00 PM',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($calendarForm->save());

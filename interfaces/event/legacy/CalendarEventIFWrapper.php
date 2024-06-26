@@ -15,13 +15,12 @@
 
 namespace humhub\modules\calendar\interfaces\event\legacy;
 
-
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\widgets\Label;
 use Yii;
-use \DateTime;
+use DateTime;
 use yii\base\Model;
 
 /**
@@ -31,26 +30,26 @@ use yii\base\Model;
  */
 class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalendarEventIF
 {
-    const OPTION_START = 'start';
-    const OPTION_END = 'end';
-    const OPTION_TITLE = 'title';
-    const OPTION_COLOR = 'color';
-    const OPTION_ALL_DAY = 'allDay';
-    const OPTION_UPDATE_URL = 'updateUrl';
-    const OPTION_VIEW_URL = 'viewUrl';
-    const OPTION_VIEW_MODE = 'viewMode';
-    const OPTION_OPEN_URL = 'openUrl';
-    const OPTION_ICON = 'icon';
-    const OPTION_BADGE = 'badge';
-    const OPTION_EDITABLE = 'editable';
-    const OPTION_TIMEZONE = 'timezone';
-    const OPTION_UID = 'uid';
-    const OPTION_RRULE = 'rrule';
-    const OPTION_EXDATE = 'exdate';
-    const OPTION_LOCATION = 'location';
-    const OPTION_DESCRIPTION = 'description';
-    const OPTION_LAST_MODIFIED = 'lastModified';
-    const OPTION_SEQUENCE = 'sequence';
+    public const OPTION_START = 'start';
+    public const OPTION_END = 'end';
+    public const OPTION_TITLE = 'title';
+    public const OPTION_COLOR = 'color';
+    public const OPTION_ALL_DAY = 'allDay';
+    public const OPTION_UPDATE_URL = 'updateUrl';
+    public const OPTION_VIEW_URL = 'viewUrl';
+    public const OPTION_VIEW_MODE = 'viewMode';
+    public const OPTION_OPEN_URL = 'openUrl';
+    public const OPTION_ICON = 'icon';
+    public const OPTION_BADGE = 'badge';
+    public const OPTION_EDITABLE = 'editable';
+    public const OPTION_TIMEZONE = 'timezone';
+    public const OPTION_UID = 'uid';
+    public const OPTION_RRULE = 'rrule';
+    public const OPTION_EXDATE = 'exdate';
+    public const OPTION_LOCATION = 'location';
+    public const OPTION_DESCRIPTION = 'description';
+    public const OPTION_LAST_MODIFIED = 'lastModified';
+    public const OPTION_SEQUENCE = 'sequence';
 
     /**
      * @var DummyEventQuery
@@ -113,7 +112,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
 
     public function isAllDay()
     {
-        return $this->getOption(static::OPTION_ALL_DAY,  false);
+        return $this->getOption(static::OPTION_ALL_DAY, false);
     }
 
     public function getUpdateUrl()
@@ -283,7 +282,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
      *
      * @param DateTime $start
      * @param DateTime $end
-     * @return boolean|string
+     * @return bool|string
      */
     public function updateTime(DateTime $start, DateTime $end)
     {

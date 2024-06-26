@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces\recurrence\widgets;
-
 
 use humhub\modules\calendar\assets\RecurrenceFormAssets;
 use humhub\modules\calendar\helpers\Url;
@@ -50,7 +48,7 @@ class RecurrenceFormWidget extends JsWidget
         return $this->render('@calendar/views/common/recurrenceForm', [
             'model' => $model,
             'form' => $this->form,
-            'options' => $this->getOptions()
+            'options' => $this->getOptions(),
         ]);
     }
 
@@ -59,7 +57,7 @@ class RecurrenceFormWidget extends JsWidget
         if ($this->picker) {
             return [
                 'picker-selector' => $this->picker,
-                'update-monthly-recurrence-test' => Url::toUpdateMonthlyRecurrenceSelection()
+                'update-monthly-recurrence-test' => Url::toUpdateMonthlyRecurrenceSelection(),
             ];
         }
 

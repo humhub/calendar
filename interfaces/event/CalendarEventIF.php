@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\widgets\Label;
@@ -91,7 +90,7 @@ interface CalendarEventIF
      * Defines whether or not this event is an spans over an whole day.
      * Note all_day events should omit any timezone translations.
      *
-     * @return boolean
+     * @return bool
      */
     public function isAllDay();
 

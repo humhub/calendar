@@ -15,9 +15,9 @@ class RecurrenceFormAssets extends AssetBundle
     public $defer = true;
 
     public $publishOptions = [
-        'forceCopy' => false
+        'forceCopy' => false,
     ];
-    
+
     public $sourcePath = '@calendar/resources';
 
     public $js = [

@@ -15,7 +15,6 @@ use humhub\modules\space\models\Space;
 
 class RecurrenceServiceTest extends RecurrenceUnitTest
 {
-
     /**
      * @var CalendarService
      */
@@ -36,7 +35,7 @@ class RecurrenceServiceTest extends RecurrenceUnitTest
         $this->becomeUser('Admin');
         $this->space = Space::findOne(['id' => 1]);
 
-        $today = (new DateTime())->setTime(0,0,0);
+        $today = (new DateTime())->setTime(0, 0, 0);
 
         $this->rootEvent = $this->createEntry($today, 1, 'Recurrent Event', $this->space);
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=1');
@@ -62,7 +61,7 @@ class RecurrenceServiceTest extends RecurrenceUnitTest
         $this->becomeUser('Admin');
         $this->space = Space::findOne(['id' => 1]);
 
-        $today = (new DateTime())->setTime(0,0,0);
+        $today = (new DateTime())->setTime(0, 0, 0);
 
         $this->rootEvent = $this->createEntry($today, 1, 'Recurrent Event', $this->space);
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=1');
@@ -115,7 +114,7 @@ class RecurrenceServiceTest extends RecurrenceUnitTest
         $admin = $this->becomeUser('Admin');
         $this->space = Space::findOne(['id' => 1]);
 
-        $today = (new DateTime())->setTime(0,0,0);
+        $today = (new DateTime())->setTime(0, 0, 0);
 
         $this->rootEvent = $this->createEntry($today, 1, 'Recurrent Event', $this->space);
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=1');

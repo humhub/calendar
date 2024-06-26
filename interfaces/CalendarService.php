@@ -49,12 +49,12 @@ class CalendarService extends Component
     /**
      * Used for assembling all available item types provided by other modules
      */
-    const EVENT_GET_ITEM_TYPES = 'getItemTypes';
+    public const EVENT_GET_ITEM_TYPES = 'getItemTypes';
 
     /**
      * Used for assembling all calendar items of other modules
      */
-    const EVENT_FIND_ITEMS = 'findItems';
+    public const EVENT_FIND_ITEMS = 'findItems';
 
     /**
      * @var array
@@ -99,7 +99,8 @@ class CalendarService extends Component
         return static::$resultCache[$containerKey] = $result;
     }
 
-    public static function flushCache() {
+    public static function flushCache()
+    {
         static::$resultCache = [];
     }
 
@@ -129,7 +130,7 @@ class CalendarService extends Component
             'end' => $end ? clone $end : null,
             'filters' => $filters,
             'limit' => $limit,
-            'expand' => $expand
+            'expand' => $expand,
         ]);
 
         $this->trigger(static::EVENT_FIND_ITEMS, $event);
@@ -202,7 +203,7 @@ class CalendarService extends Component
     {
         $start = new DateTime('now', CalendarUtils::getUserTimeZone());
         $end = ($daysInFuture > 0) ? (new DateTime('now', CalendarUtils::getUserTimeZone()))
-                ->add(new DateInterval('P'.$daysInFuture.'D')) : null;
+                ->add(new DateInterval('P' . $daysInFuture . 'D')) : null;
 
         return $this->getCalendarItems($start, $end, $filters, $contentContainer, $limit, $expand);
     }

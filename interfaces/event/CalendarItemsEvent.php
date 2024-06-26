@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-
 use DateTime;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\Event;
@@ -43,12 +42,12 @@ class CalendarItemsEvent extends Event
     public $end;
 
     /**
-     * @var integer result limit
+     * @var int result limit
      */
     public $limit;
 
     /**
-     * @var boolean whether or not to expand recurring events
+     * @var bool whether or not to expand recurring events
      */
     public $expand;
 

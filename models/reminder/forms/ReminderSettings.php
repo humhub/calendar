@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\reminder\forms;
-
 
 use Yii;
 use Throwable;
@@ -15,9 +13,9 @@ use yii\db\StaleObjectException;
 
 class ReminderSettings extends Model
 {
-    const REMINDER_TYPE_NONE = 0;
-    const REMINDER_TYPE_DEFAULT = 1;
-    const REMINDER_TYPE_CUSTOM = 2;
+    public const REMINDER_TYPE_NONE = 0;
+    public const REMINDER_TYPE_DEFAULT = 1;
+    public const REMINDER_TYPE_CUSTOM = 2;
 
     /**
      * @var ContentContainerActiveRecord
@@ -40,17 +38,17 @@ class ReminderSettings extends Model
     public $reminders;
 
     /**
-     * @var boolean whether or not the defaults are currently loaded
+     * @var bool whether or not the defaults are currently loaded
      */
     private $isDefaultsLoaded;
 
     /**
-     * @var boolean whether or not there are global or space level defaults available
+     * @var bool whether or not there are global or space level defaults available
      */
     private $hasDefaults;
 
     /**
-     * @var integer
+     * @var int
      */
     public $reminderType;
 
@@ -98,7 +96,7 @@ class ReminderSettings extends Model
 
         if($this->hasDefaults && $this->isDefaultsLoaded()) {
             $this->reminderType = static::REMINDER_TYPE_DEFAULT;
-        } else if($this->isDisabled()) {
+        } elseif($this->isDisabled()) {
             $this->reminderType = static::REMINDER_TYPE_NONE;
         } else {
             $this->reminderType = static::REMINDER_TYPE_CUSTOM;
@@ -159,7 +157,7 @@ class ReminderSettings extends Model
 
         if($this->isReminderType(static::REMINDER_TYPE_DEFAULT) || $this->isReminderType(static::REMINDER_TYPE_NONE)) {
             $this->reminders = [];
-        } else if(isset($data[CalendarReminder::instance()->formName()])) {
+        } elseif(isset($data[CalendarReminder::instance()->formName()])) {
             $this->reminders = [];
             $reminderLoaded = true;
             $maxReminders = $this->getMaxReminders();
@@ -266,20 +264,20 @@ class ReminderSettings extends Model
 
     public function initReminder($disabled = false)
     {
-       if($this->entry) {
-           $result = $disabled
-               ? CalendarReminder::initDisableEntryLevelDefaults($this->entry, $this->user)
-               : CalendarReminder::initEntryLevel(null, null, $this->entry, $this->user);
-       } else if($this->container) {
-           $result = $disabled
-               ? CalendarReminder::initDisableContainerDefaults($this->container)
-               : CalendarReminder::initContainerDefault(null, null, $this->container);
-       } else {
-           // There is no disabled global reminder
-           $result = CalendarReminder::initGlobalDefault(null, null);
-       }
+        if($this->entry) {
+            $result = $disabled
+                ? CalendarReminder::initDisableEntryLevelDefaults($this->entry, $this->user)
+                : CalendarReminder::initEntryLevel(null, null, $this->entry, $this->user);
+        } elseif($this->container) {
+            $result = $disabled
+                ? CalendarReminder::initDisableContainerDefaults($this->container)
+                : CalendarReminder::initContainerDefault(null, null, $this->container);
+        } else {
+            // There is no disabled global reminder
+            $result = CalendarReminder::initGlobalDefault(null, null);
+        }
 
-       return $result;
+        return $result;
     }
 
     public function isDefaultsLoaded()

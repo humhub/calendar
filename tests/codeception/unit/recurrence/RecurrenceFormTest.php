@@ -67,9 +67,9 @@ class RecurrenceFormTest extends CalendarUnitTest
     {
         $this->initForm();
         $this->form->load([
-                'interval' => 2,
-                'frequency' => Frequency::WEEKLY,
-                'weekDays' => [CalendarUtils::DOW_SUNDAY, CalendarUtils::DOW_MONDAY]
+            'interval' => 2,
+            'frequency' => Frequency::WEEKLY,
+            'weekDays' => [CalendarUtils::DOW_SUNDAY, CalendarUtils::DOW_MONDAY],
 
         ], '');
 
@@ -79,7 +79,7 @@ class RecurrenceFormTest extends CalendarUnitTest
 
     public function testEditWeeklyRule()
     {
-        $this->initForm( 'FREQ=WEEKLY;INTERVAL=2;BYDAY=SU,MO');
+        $this->initForm('FREQ=WEEKLY;INTERVAL=2;BYDAY=SU,MO');
         $this->assertEquals(2, $this->form->interval);
         $this->assertEquals(Frequency::WEEKLY, $this->form->frequency);
         $this->assertCount(2, $this->form->weekDays);
@@ -94,7 +94,7 @@ class RecurrenceFormTest extends CalendarUnitTest
         $this->form->load([
             'interval' => 2,
             'frequency' => Frequency::MONTHLY,
-            'monthDaySelection' => RecurrenceFormModel::MONTHLY_BY_DAY_OF_MONTH
+            'monthDaySelection' => RecurrenceFormModel::MONTHLY_BY_DAY_OF_MONTH,
         ], '');
 
         $this->assertTrue($this->form->save());
@@ -117,7 +117,7 @@ class RecurrenceFormTest extends CalendarUnitTest
             'interval' => 2,
             'frequency' => Frequency::MONTHLY,
             'monthDaySelection' => RecurrenceFormModel::MONTHLY_BY_OCCURRENCE,
-            'weekDays' => [CalendarUtils::DOW_SUNDAY, CalendarUtils::DOW_MONDAY] // SHOULD BE IGNORED
+            'weekDays' => [CalendarUtils::DOW_SUNDAY, CalendarUtils::DOW_MONDAY], // SHOULD BE IGNORED
         ], '');
 
         $this->assertTrue($this->form->save());
@@ -141,7 +141,7 @@ class RecurrenceFormTest extends CalendarUnitTest
             'frequency' => Frequency::MONTHLY,
             'monthDaySelection' => RecurrenceFormModel::MONTHLY_BY_OCCURRENCE,
             'end' => RecurrenceFormModel::ENDS_ON_DATE,
-            'endDate' => '12/11/22'
+            'endDate' => '12/11/22',
         ], '');
 
         $this->assertTrue($this->form->save());
@@ -167,7 +167,7 @@ class RecurrenceFormTest extends CalendarUnitTest
             'frequency' => Frequency::MONTHLY,
             'monthDaySelection' => RecurrenceFormModel::MONTHLY_BY_OCCURRENCE,
             'end' => RecurrenceFormModel::ENDS_AFTER_OCCURRENCES,
-            'endOccurrences' => 20
+            'endOccurrences' => 20,
         ], '');
 
         $this->assertTrue($this->form->save());
@@ -207,7 +207,7 @@ class RecurrenceFormTest extends CalendarUnitTest
             'frequency' => Frequency::MONTHLY,
             'monthDaySelection' => RecurrenceFormModel::MONTHLY_LAST_DAY_OF_MONTH,
             'end' => RecurrenceFormModel::ENDS_AFTER_OCCURRENCES,
-            'endOccurrences' => 2
+            'endOccurrences' => 2,
         ], '');
 
         $this->assertTrue($this->form->save());

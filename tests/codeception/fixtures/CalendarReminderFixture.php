@@ -15,8 +15,8 @@ class CalendarReminderFixture extends ActiveFixture
 {
     public $modelClass = CalendarReminder::class;
     public $dataFile = '@calendar/tests/codeception/fixtures/data/calendarReminder.php';
-    
-     public $depends = [
-        CalendarReminderSentFixture::class
+
+    public $depends = [
+        CalendarReminderSentFixture::class,
     ];
 }

@@ -48,7 +48,7 @@ class GlobalController extends Controller
     public function getAccessRules()
     {
         return [
-            ['login' => ['enable', 'select']]
+            ['login' => ['enable', 'select']],
         ];
     }
 
@@ -84,7 +84,7 @@ class GlobalController extends Controller
             'selectors' => $this->getSelectorSettings(),
             'filters' => $this->getFilterSettings(),
             'canConfigure' => $moduleEnabled,
-            'editUrl' => Url::to(['/calendar/entry/edit'])
+            'editUrl' => Url::to(['/calendar/entry/edit']),
         ]);
     }
 
@@ -141,9 +141,10 @@ class GlobalController extends Controller
         $calendarMemberSpaceQuery = Membership::getUserSpaceQuery(Yii::$app->user->getIdentity());
 
         if (!ContentContainerModuleManager::getDefaultState(Space::class, 'calendar')) {
-            $calendarMemberSpaceQuery->leftJoin('contentcontainer_module',
+            $calendarMemberSpaceQuery->leftJoin(
+                'contentcontainer_module',
                 'contentcontainer_module.module_id = :calendar AND contentcontainer_module.contentcontainer_id = space.contentcontainer_id',
-                [':calendar' => 'calendar']
+                [':calendar' => 'calendar'],
             )->andWhere('contentcontainer_module.module_id IS NOT NULL')
                 ->andWhere(['contentcontainer_module.module_state' => ContentContainerModuleState::STATE_ENABLED]);
         }
@@ -254,7 +255,7 @@ class GlobalController extends Controller
             'header' => Yii::t('CalendarModule.base', '<strong>Add</strong> profile calendar'),
             'body' => Yii::t('CalendarModule.base', 'In order to add events to your profile, you have to enable the calendar module first.'),
             'footer' => $enableButton . $nextButton . $cancelButton,
-            'centerText' => true
+            'centerText' => true,
         ]);
     }
 
@@ -276,7 +277,7 @@ class GlobalController extends Controller
             'header' => Yii::t('CalendarModule.base', '<strong>Add</strong> profile calendar'),
             'body' => Yii::t('CalendarModule.base', 'Do you want to install this module on your profile?'),
             'footer' => $enableButton . $nextButton . $cancelButton,
-            'centerText' => true
+            'centerText' => true,
         ]);
     }
 

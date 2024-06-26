@@ -17,7 +17,6 @@ use Yii;
 
 class LegacyCalendarEntryTest extends CalendarUnitTest
 {
-
     public function testLegacyAllDayEventWithTimezonetranslationSingleDaySpan()
     {
         Yii::$app->timeZone = 'Europe/Berlin';
@@ -37,7 +36,7 @@ class LegacyCalendarEntryTest extends CalendarUnitTest
             'start_datetime' => '2019-11-12 23:00:00', // Should be 2019-11-13 00:00:00
             'end_datetime' => '2019-11-13 22:59:00', // Should be 2019-11-14 00:00:00
             'time_zone' => 'Europe/Bucharest',
-            'all_day' => 1
+            'all_day' => 1,
         ]);
 
         $entry = CalendarEntry::findOne(['id' => $calendarForm->entry->id]);
@@ -67,7 +66,7 @@ class LegacyCalendarEntryTest extends CalendarUnitTest
             'start_datetime' => '2019-11-12 23:00:00', // Should be 2019-11-13 00:00:00
             'end_datetime' => '2019-11-14 22:59:00', // Should be 2019-11-14 00:00:00
             'time_zone' => 'Europe/Bucharest',
-            'all_day' => 1
+            'all_day' => 1,
         ]);
 
         $entry = CalendarEntry::findOne(['id' => $calendarForm->entry->id]);
@@ -96,7 +95,7 @@ class LegacyCalendarEntryTest extends CalendarUnitTest
         $calendarForm->entry->updateAttributes([
             'start_datetime' => '2019-11-12 00:00:00', // Should be 2019-11-13 00:00:00
             'end_datetime' => '2019-11-12 23:59:00', // Should be 2019-11-14 00:00:00
-            'all_day' => 1
+            'all_day' => 1,
         ]);
 
         $entry = CalendarEntry::findOne(['id' => $calendarForm->entry->id]);
@@ -125,7 +124,7 @@ class LegacyCalendarEntryTest extends CalendarUnitTest
         $calendarForm->entry->updateAttributes([
             'start_datetime' => '2019-11-12 00:00:00', // Should be 2019-11-13 00:00:00
             'end_datetime' => '2019-11-13 23:59:00', // Should be 2019-11-14 00:00:00
-            'all_day' => 1
+            'all_day' => 1,
         ]);
 
         $entry = CalendarEntry::findOne(['id' => $calendarForm->entry->id]);

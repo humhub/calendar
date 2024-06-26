@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\integration;
-
 
 use DateTime;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
@@ -14,7 +12,6 @@ use yii\helpers\Html;
 
 class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
 {
-
     /**
      * @var BirthdayUserModel
      */
@@ -31,7 +28,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
      */
     public function getUid()
     {
-        return 'birthday'.$this->model->guid;
+        return 'birthday' . $this->model->guid;
     }
 
     /**
@@ -47,7 +44,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
      * Defines whether or not this event is an spans over an whole day.
      * Note all_day events should omit any timezone translations.
      *
-     * @return boolean
+     * @return bool
      */
     public function isAllDay()
     {
@@ -268,7 +265,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
      *
      * @param DateTime $start
      * @param DateTime $end
-     * @return boolean|string
+     * @return bool|string
      */
     public function updateTime(DateTime $start, DateTime $end)
     {

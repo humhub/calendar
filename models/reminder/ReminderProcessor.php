@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\reminder;
-
 
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
@@ -122,7 +120,7 @@ class ReminderProcessor extends Model
                 continue;
             }
 
-            $entryKey = get_class($entry).':'.$entry->id;
+            $entryKey = get_class($entry) . ':' . $entry->id;
             if(!isset($entryHandled[$entryKey])) {
                 $this->handleEntryLevelReminder($entry);
                 $entryHandled[$entryKey] = true;
@@ -275,7 +273,7 @@ class ReminderProcessor extends Model
         if($entry->getStartDateTime() >= new \DateTime()) {
             Remind::instance()->from($entry->getContentRecord()->createdBy)->about($entry)->sendBulk($recipients);
         } else {
-            Yii::warning('Calendar reminder for past event detected with id: '.$reminder->id.' reminder not sent and disabled.');
+            Yii::warning('Calendar reminder for past event detected with id: ' . $reminder->id . ' reminder not sent and disabled.');
         }
 
         $reminder->acknowledge($entry);

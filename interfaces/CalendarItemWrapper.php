@@ -15,14 +15,13 @@
 
 namespace humhub\modules\calendar\interfaces;
 
-
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\widgets\Label;
 use Yii;
-use \DateTime;
+use DateTime;
 use yii\base\Model;
 
 /**

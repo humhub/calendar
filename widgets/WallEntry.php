@@ -16,7 +16,7 @@ class WallEntry extends WallStreamModuleEntryWidget
      */
     public $createRoute = '/calendar/entry/add-from-wall';
 
-    const VIEW_CONTEXT_FULLCALENDAR = 'fullCalendar';
+    public const VIEW_CONTEXT_FULLCALENDAR = 'fullCalendar';
 
     /**
      * @var CalendarEntry
@@ -32,7 +32,7 @@ class WallEntry extends WallStreamModuleEntryWidget
      * @inheritdoc
      */
     public $editRoute = "/calendar/entry/edit";
-    
+
     /**
      * @inheritdoc
      */
@@ -107,7 +107,7 @@ class WallEntry extends WallStreamModuleEntryWidget
             'calendarEntry' => $entry,
             'collapse' => $this->collapse,
             'participantSate' => $entry->getParticipationStatus(Yii::$app->user->identity),
-            'contentContainer' => $entry->content->container
+            'contentContainer' => $entry->content->container,
         ]);
     }
 
@@ -119,5 +119,3 @@ class WallEntry extends WallStreamModuleEntryWidget
         return $this->model->title;
     }
 }
-
-?>

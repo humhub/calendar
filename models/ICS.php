@@ -17,8 +17,8 @@ use Yii;
  */
 class ICS
 {
-    const DT_FORMAT_TIME = 'php:His';
-    const DT_FORMAT_DAY = 'php:Ymd';
+    public const DT_FORMAT_TIME = 'php:His';
+    public const DT_FORMAT_DAY = 'php:Ymd';
 
     protected $summary;
     protected $description;
@@ -79,7 +79,7 @@ class ICS
             'DTSTAMP:' . $this->formatTimestamp('now'),
             'UID:' . uniqid(),
             'END:VEVENT',
-            'END:VCALENDAR'
+            'END:VCALENDAR',
         ];
         return $ics_props;
     }
@@ -90,7 +90,7 @@ class ICS
         $result =  Yii::$app->formatter->asDate($dt, self::DT_FORMAT_DAY);
 
         if(!$allDay) {
-            $result .= "T".  Yii::$app->formatter->asTime($dt, self::DT_FORMAT_TIME);
+            $result .= "T" . Yii::$app->formatter->asTime($dt, self::DT_FORMAT_TIME);
         }
 
         return $result;
@@ -98,6 +98,6 @@ class ICS
 
     private function escapeString($str)
     {
-        return preg_replace('/([\,;])/','\\\$1', $str);
+        return preg_replace('/([\,;])/', '\\\$1', $str);
     }
 }

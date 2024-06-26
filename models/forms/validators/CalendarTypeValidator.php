@@ -16,7 +16,7 @@ use yii\validators\Validator;
 
 /**
  * Validates a date time field
- * 
+ *
  * @package humhub\modules\calendar\models\forms\validators
  */
 class CalendarTypeValidator extends Validator

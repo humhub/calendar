@@ -39,7 +39,7 @@ class ForceParticipation extends ActiveJob
 
         if(!$entry || !$originator || !($entry->content->container instanceof Space) ||
             !CalendarEntryParticipation::isAllowedStatus($status)) {
-            throw new InvalidConfigException('Could not force calendar event participation due to invalid config ('.$this->entry_id.', '.$this->originator_id.', '.$status.')');
+            throw new InvalidConfigException('Could not force calendar event participation due to invalid config (' . $this->entry_id . ', ' . $this->originator_id . ', ' . $status . ')');
         }
 
         $subQuery = CalendarEntryParticipant::find()

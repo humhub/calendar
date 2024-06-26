@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\space\models\Space;
 use Yii;

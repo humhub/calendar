@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\widgets;
 
-
 use humhub\modules\calendar\helpers\Url;
 use Yii;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -23,7 +22,6 @@ use humhub\widgets\SettingsTabs;
 
 class GlobalConfigMenu extends SettingsTabs
 {
-
     /**
      * @inheritdoc
      */
@@ -37,25 +35,25 @@ class GlobalConfigMenu extends SettingsTabs
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Defaults'),
                 'url' => Url::toConfig(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'index'),
-                'sortOrder' => 10
+                'sortOrder' => 10,
             ],
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
                 'url' =>  Url::toConfigTypes(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'types'),
-                'sortOrder' => 20
+                'sortOrder' => 20,
             ],
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Snippet'),
                 'url' =>  Url::toConfigSnippets(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'snippet'),
-                'sortOrder' => 30
+                'sortOrder' => 30,
             ],
             [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Menu'),
                 'url' =>  Url::toConfigMenu(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'menu'),
-                'sortOrder' => 40
+                'sortOrder' => 40,
             ],
         ];
 
@@ -64,7 +62,7 @@ class GlobalConfigMenu extends SettingsTabs
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Calendars'),
                 'url' => Url::toConfigCalendars(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'calendars'),
-                'sortOrder' => 25
+                'sortOrder' => 25,
             ];
         }
 

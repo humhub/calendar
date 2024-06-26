@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces\event;
 
 /**

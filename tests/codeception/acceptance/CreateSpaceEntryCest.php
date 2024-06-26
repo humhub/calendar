@@ -14,7 +14,6 @@ use humhub\modules\space\models\Space;
 
 class CreateSpaceEntryCest
 {
-
     public function testInstallAndCreatEntry(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -48,10 +47,10 @@ class CreateSpaceEntryCest
         $I->amGoingTo('Save my new calendar entry');
         $I->click('Next', '#globalModal');
         $I->expectTo('see my event loaded into my modal');
-        $I->waitForText('My Test Entry',null, '#globalModal');
-        $I->waitForText('Next',null, '#globalModal');
+        $I->waitForText('My Test Entry', null, '#globalModal');
+        $I->waitForText('Next', null, '#globalModal');
         $I->click('Next', '#globalModal');
-        $I->waitForText('Save',null, '#globalModal');
+        $I->waitForText('Save', null, '#globalModal');
         $I->click('Save', '#globalModal');
 
         $I->wait(1);
@@ -91,7 +90,7 @@ class CreateSpaceEntryCest
 
         $I->expect('All space members to be attending');
         $I->click('New Test Event');
-        $I->waitForText('2 Invited', null,'#globalModal');
+        $I->waitForText('2 Invited', null, '#globalModal');
         $I->amOnSpace(1, '/calendar/view/index');
 
         $I->wantToTest('Adding a new space member and using then using the add all members again');
@@ -110,7 +109,7 @@ class CreateSpaceEntryCest
         $I->waitForElementVisible('.fc-event');
         $I->jsClick('.fc-event');
 
-        $I->waitForText('New Test Event',null, '#globalModal');
+        $I->waitForText('New Test Event', null, '#globalModal');
         $I->click('Invite', '#globalModal .modal-footer');
 
         $I->waitForText('Participants', null, '#globalModal');
@@ -122,7 +121,7 @@ class CreateSpaceEntryCest
 
         $memberCount = Membership::getSpaceMembersQuery(Space::findOne(['id' => 1]))->count();
 
-        $I->waitForText($memberCount.' Invited', null,'#globalModal');
+        $I->waitForText($memberCount . ' Invited', null, '#globalModal');
 
         $I->amUser1(true);
         $I->waitForText('You are invited, please select your role:');

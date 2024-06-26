@@ -39,8 +39,8 @@ class CloseLink extends WallEntryControlLink
 
         $this->options = [
             'data-action-click' => 'toggleClose',
-            'data-action-target' =>"[data-calendar-entry='".$this->entry->id."']",
-            'data-action-url' => Url::toEntryToggleClose($this->entry)
+            'data-action-target' => "[data-calendar-entry='" . $this->entry->id . "']",
+            'data-action-url' => Url::toEntryToggleClose($this->entry),
         ];
 
         parent::init();

@@ -26,10 +26,10 @@ use yii\web\HttpException;
  */
 abstract class AbstractConfigController extends ContentContainerController
 {
-    const VIEW_CONFIG_DEFAULT = '@calendar/views/common/defaultConfig';
-    const VIEW_CONFIG_TYPE = '@calendar/views/common/typesConfig';
-    const VIEW_CONFIG_EDIT_TYPE_MODAL = '@calendar/views/common/editTypeModal';
-    const VIEW_CONFIG_CALENDARS = '@calendar/views/common/calendarsConfig';
+    public const VIEW_CONFIG_DEFAULT = '@calendar/views/common/defaultConfig';
+    public const VIEW_CONFIG_TYPE = '@calendar/views/common/typesConfig';
+    public const VIEW_CONFIG_EDIT_TYPE_MODAL = '@calendar/views/common/editTypeModal';
+    public const VIEW_CONFIG_CALENDARS = '@calendar/views/common/calendarsConfig';
 
     /**
      * @var CalendarService
@@ -57,7 +57,7 @@ abstract class AbstractConfigController extends ContentContainerController
         }
 
         return $this->render(static::VIEW_CONFIG_DEFAULT, [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
@@ -68,13 +68,13 @@ abstract class AbstractConfigController extends ContentContainerController
             : CalendarEntryType::findGlobal();
 
         $typeDataProvider = new ActiveDataProvider([
-            'query' => $query
+            'query' => $query,
         ]);
 
         return $this->render(static::VIEW_CONFIG_TYPE, [
             'typeDataProvider' => $typeDataProvider,
             'createUrl' => URL::toCreateType($this->contentContainer),
-            'contentContainer' => $this->contentContainer
+            'contentContainer' => $this->contentContainer,
         ]);
     }
 
@@ -115,7 +115,7 @@ abstract class AbstractConfigController extends ContentContainerController
         $types = $this->calendarService->getCalendarItemTypes($this->contentContainer);
         return $this->render(static::VIEW_CONFIG_CALENDARS, [
             'contentContainer' => $this->contentContainer,
-            'calendars' => $types
+            'calendars' => $types,
         ]);
     }
 

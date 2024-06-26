@@ -92,7 +92,7 @@ class FullCalendar extends JsWidget
         ];
     }
 
-    const LOCALE_MAPPING = [
+    public const LOCALE_MAPPING = [
         'nb-no' => 'nb',
         'fa-ir' => 'fa',
     ];
@@ -111,7 +111,7 @@ class FullCalendar extends JsWidget
     {
         if ($this->contentContainer && !Yii::$app->user->isGuest) {
             return (new CalendarEntry($this->contentContainer))->content->canEdit();
-        } else if (!Yii::$app->user->isGuest) {
+        } elseif (!Yii::$app->user->isGuest) {
             return Yii::$app->user->getIdentity()->isCurrentUser();
         }
 

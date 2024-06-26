@@ -25,7 +25,7 @@ class ReminderController extends ContentContainerController
     public function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
         ];
     }
 
@@ -54,7 +54,7 @@ class ReminderController extends ContentContainerController
             throw new HttpException(400);
         }
 
-        $reminderSettings = new ReminderSettings(['entry' =>$model, 'user' => Yii::$app->user->getIdentity()]);
+        $reminderSettings = new ReminderSettings(['entry' => $model, 'user' => Yii::$app->user->getIdentity()]);
 
         if($reminderSettings->load(Yii::$app->request->post()) && $reminderSettings->save()) {
             return ModalClose::widget(['saved' => true]);

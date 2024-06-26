@@ -17,8 +17,8 @@ class m240319_152508_fix_notification extends Migration
             ['class' => 'humhub\\modules\\calendar\\notifications\\ParticipantAdded'],
             ['IN', 'class', [
                 'humhub\\modules\\calendar\\notifications\\Invited',
-                'humhub\\modules\\calendar\\notifications\\ForceAdd'
-            ]]
+                'humhub\\modules\\calendar\\notifications\\ForceAdd',
+            ]],
         );
     }
 

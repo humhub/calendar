@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\Event;
 
@@ -32,7 +31,8 @@ class CalendarItemTypesEvent extends Event
      * @param $key string|CalendarTypeIF
      * @param $options CalendarTypeIF
      */
-    public function addType($key, $options) {
+    public function addType($key, $options)
+    {
         if($key instanceof CalendarTypeIF) {
             $this->result[$key->getKey()] = $key;
         } else {
@@ -40,11 +40,13 @@ class CalendarItemTypesEvent extends Event
         }
     }
 
-    public function hasType($key) {
+    public function hasType($key)
+    {
         return array_key_exists($key, $this->result);
     }
 
-    public function getTypes() {
+    public function getTypes()
+    {
         return $this->result;
     }
 }

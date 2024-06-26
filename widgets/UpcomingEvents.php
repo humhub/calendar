@@ -18,7 +18,6 @@ use humhub\modules\calendar\helpers\Url;
  */
 class UpcomingEvents extends Widget
 {
-
     /**
      * ContentContainer to limit events to. (Optional)
      *

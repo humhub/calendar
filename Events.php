@@ -379,7 +379,7 @@ class Events
             } catch (\Throwable $e) {
                 Yii::error($e);
                 $controller->stdout('error.' . PHP_EOL, Console::FG_RED);
-                $controller->stderr("\n".$e->getTraceAsString()."\n", Console::BOLD);
+                $controller->stderr("\n" . $e->getTraceAsString() . "\n", Console::BOLD);
             }
             $module->settings->set('lastReminderRunTS', time());
         }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\reminder;
-
 
 use DateTime;
 use humhub\components\ActiveRecord;
@@ -87,23 +85,23 @@ use yii\db\Expression;
  *
  * @package humhub\modules\calendar\models
  *
- * @property integer $id
- * @property integer $value
- * @property integer $unit
+ * @property int $id
+ * @property int $value
+ * @property int $unit
  * @property string $content_id
- * @property integer $contentcontainer_id
- * @property integer $active
- * @property integer $disabled
+ * @property int $contentcontainer_id
+ * @property int $active
+ * @property int $disabled
  * @property-read Content $entryContent
  */
 class CalendarReminder extends ActiveRecord
 {
-    const UNIT_HOUR = 1;
-    const UNIT_DAY = 2;
-    const UNIT_WEEK = 3;
-    const UNIT_MINUTE = 4;
+    public const UNIT_HOUR = 1;
+    public const UNIT_DAY = 2;
+    public const UNIT_WEEK = 3;
+    public const UNIT_MINUTE = 4;
 
-    const MAX_VALUES = [
+    public const MAX_VALUES = [
         self::UNIT_MINUTE => 60,
         self::UNIT_HOUR => 24,
         self::UNIT_DAY => 31,
@@ -149,7 +147,7 @@ class CalendarReminder extends ActiveRecord
         $rules = [
             [['unit'], 'in', 'range' => [static::UNIT_MINUTE, static::UNIT_HOUR, static::UNIT_DAY, static::UNIT_WEEK]],
             [['value'], 'number', 'min' => 1],
-            [['value'], 'validateValue']
+            [['value'], 'validateValue'],
         ];
 
         if ($this->active && !$this->disabled) {
@@ -167,7 +165,7 @@ class CalendarReminder extends ActiveRecord
 
         $max = static::MAX_VALUES[$this->unit];
         if(!$this->validateMaxRange()) {
-            $this->addError('value',"Only values from 1 to $max are allowed");
+            $this->addError('value', "Only values from 1 to $max are allowed");
         }
     }
 
@@ -185,7 +183,7 @@ class CalendarReminder extends ActiveRecord
         if($this->validateMaxRange()) {
             return;
         }
-        
+
         switch ($this->unit) {
             case static::UNIT_MINUTE:
                 $this->unit = static::UNIT_HOUR;
@@ -232,7 +230,7 @@ class CalendarReminder extends ActiveRecord
             'value' => $value,
             'contentcontainer_id' => $container->contentcontainer_id,
             'active' => 1,
-            'disabled' => 0
+            'disabled' => 0,
         ]);
     }
 
@@ -502,7 +500,7 @@ class CalendarReminder extends ActiveRecord
 
         if($user === false) {
             $query->andWhere(['IS' ,'contentcontainer_id', new Expression('NULL')]);
-        } else if($user instanceof User) {
+        } elseif($user instanceof User) {
             $query->andWhere(['contentcontainer_id' => $user->contentcontainer_id]);
         } else {
             //$query->andWhere(['contentcontainer_id' => $model->getContentRecord()->contentcontainer_id]);
@@ -591,7 +589,7 @@ class CalendarReminder extends ActiveRecord
         }
 
         // add tolerance for cron delay....
-        return '-'.$this->value.' '.$modifyUnit;
+        return '-' . $this->value . ' ' . $modifyUnit;
     }
 
     /**

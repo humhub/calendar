@@ -122,11 +122,11 @@ class CalendarController extends BaseContentController
         }
 
         if (! in_array((int)$respondType, [
-                CalendarEntryParticipant::PARTICIPATION_STATE_NONE,
-                CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED,
-                CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
-                CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
-            ], true)) {
+            CalendarEntryParticipant::PARTICIPATION_STATE_NONE,
+            CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED,
+            CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
+            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
+        ], true)) {
             return $this->returnError(400, 'Invalid respond type');
         }
 

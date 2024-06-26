@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\helpers;
-
 
 use DateTime;
 use DateTimeZone;
@@ -13,7 +11,7 @@ use Sabre\VObject\Component\VEvent;
 
 class RecurrenceHelper
 {
-    const ICAL_TIME_FORMAT = 'Ymd\THis';
+    public const ICAL_TIME_FORMAT = 'Ymd\THis';
 
     public static function getRecurrenceIds(CalendarEventIF $event, DateTime $start, DateTime $end)
     {

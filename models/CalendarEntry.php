@@ -41,20 +41,20 @@ use yii\helpers\Html;
  * This is the model class for table "calendar_entry".
  *
  * The followings are the available columns in table 'calendar_entry':
- * @property integer $id
+ * @property int $id
  * @property string $title
  * @property string $description
  * @property string $start_datetime
  * @property string $end_datetime
- * @property integer $all_day
- * @property integer $participation_mode
+ * @property int $all_day
+ * @property int $participation_mode
  * @property string $color
  * @property string $uid
- * @property integer $allow_decline
- * @property integer $allow_maybe
+ * @property int $allow_decline
+ * @property int $allow_maybe
  * @property string $participant_info
- * @property integer $closed
- * @property integer $max_participants
+ * @property int $closed
+ * @property int $max_participants
  * @property string $rrule
  * @property string $recurrence_id
  * @property int $parent_event_id
@@ -67,8 +67,13 @@ use yii\helpers\Html;
  * @property-read bool $reminder
  * @property-read CalendarEntry|null $recurrenceRoot
  */
-class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, FullCalendarEventIF,
-    CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
+class CalendarEntry extends ContentActiveRecord implements
+    Searchable,
+    RecurrentEventIF,
+    FullCalendarEventIF,
+    CalendarEventStatusIF,
+    CalendarEventReminderIF,
+    CalendarEventParticipationIF
 {
     /**
      * @inheritdoc
@@ -118,10 +123,10 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     /**
      * Filters
      */
-    const FILTER_PARTICIPATE = 1;
-    const FILTER_NOT_RESPONDED = 3;
-    const FILTER_RESPONDED = 4;
-    const FILTER_MINE = 5;
+    public const FILTER_PARTICIPATE = 1;
+    public const FILTER_NOT_RESPONDED = 3;
+    public const FILTER_RESPONDED = 4;
+    public const FILTER_MINE = 5;
 
     /**
      * @var CalendarEntryParticipation
@@ -277,16 +282,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             $endDT->modify('+1 day')->setTime(0, 0, 0);
             $this->updateAttributes([
                 'start_datetime' => CalendarUtils::toDBDateFormat($startDT),
-                'end_datetime' => CalendarUtils::toDBDateFormat($endDT)
+                'end_datetime' => CalendarUtils::toDBDateFormat($endDT),
             ]);
-        } else if (!CalendarUtils::isAllDay($this->start_datetime, $this->end_datetime, true)) {
+        } elseif (!CalendarUtils::isAllDay($this->start_datetime, $this->end_datetime, true)) {
             // Translate from 23:59 end dates to 00:00 end dates
             $start = $this->getStartDateTime();
             $end = $this->getEndDateTime()->modify('+1 hour');
             CalendarUtils::ensureAllDay($start, $end);
             $this->updateAttributes([
                 'start_datetime' => CalendarUtils::toDBDateFormat($start),
-                'end_datetime' => CalendarUtils::toDBDateFormat($end)
+                'end_datetime' => CalendarUtils::toDBDateFormat($end),
             ]);
         }
 
@@ -572,7 +577,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     }
 
     /**
-     * @return boolean weather or not this item spans exactly over a whole day
+     * @return bool weather or not this item spans exactly over a whole day
      */
     public function isAllDay()
     {
@@ -580,7 +585,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             $this->all_day = 1;
         }
 
-        return (boolean)$this->all_day;
+        return (bool)$this->all_day;
     }
 
     /**

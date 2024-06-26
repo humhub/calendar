@@ -14,7 +14,6 @@ use yii\helpers\Html;
 use  humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\user\models\User;
 
-
 /**
  * Created by PhpStorm.
  * User: buddha
@@ -29,9 +28,9 @@ class BirthdayCalendar extends Component
     /**
      * Default color of meeting type calendar items.
      */
-    const DEFAULT_COLOR = '#59D6E4';
+    public const DEFAULT_COLOR = '#59D6E4';
 
-    const ITEM_TYPE_KEY = 'birthday';
+    public const ITEM_TYPE_KEY = 'birthday';
 
     /**
      * @param $event CalendarItemTypesEvent

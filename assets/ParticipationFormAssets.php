@@ -17,7 +17,7 @@ class ParticipationFormAssets extends AssetBundle
      * @inheritdoc
      */
     public $publishOptions = [
-        'forceCopy' => false
+        'forceCopy' => false,
     ];
 
     /**

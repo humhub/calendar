@@ -20,35 +20,34 @@ use Yii;
  */
 class CalendarUtils
 {
-
     /**
      * Database Field - Validators
      */
-    const REGEX_DBFORMAT_DATE = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
-    const REGEX_DBFORMAT_DATETIME = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';
+    public const REGEX_DBFORMAT_DATE = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
+    public const REGEX_DBFORMAT_DATETIME = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';
 
     private static $userTimezone;
     private static $userTimezoneString;
 
-    const DATE_FORMAT_ATOM = 'Y-m-d\TH:i:sP';
-    const DB_DATE_FORMAT = 'Y-m-d H:i:s';
-    const DATE_FORMAT_SHORT = 'Y-m-d';
-    const DATE_FORMAT_SHORT_NO_TIME = '!Y-m-d';
+    public const DATE_FORMAT_ATOM = 'Y-m-d\TH:i:sP';
+    public const DB_DATE_FORMAT = 'Y-m-d H:i:s';
+    public const DATE_FORMAT_SHORT = 'Y-m-d';
+    public const DATE_FORMAT_SHORT_NO_TIME = '!Y-m-d';
 
-    const TIME_FORMAT_SHORT_PHP = 'H:i';
-    const TIME_FORMAT_SHORT = 'php:'.self::TIME_FORMAT_SHORT_PHP;
-    const TIME_FORMAT_SHORT_MERIDIEM_PHP = 'h:i A';
-    const TIME_FORMAT_SHORT_MERIDIEM = 'php:'.self::TIME_FORMAT_SHORT_MERIDIEM_PHP;
+    public const TIME_FORMAT_SHORT_PHP = 'H:i';
+    public const TIME_FORMAT_SHORT = 'php:' . self::TIME_FORMAT_SHORT_PHP;
+    public const TIME_FORMAT_SHORT_MERIDIEM_PHP = 'h:i A';
+    public const TIME_FORMAT_SHORT_MERIDIEM = 'php:' . self::TIME_FORMAT_SHORT_MERIDIEM_PHP;
 
-    const ICAL_TIME_FORMAT        = 'Ymd\THis';
+    public const ICAL_TIME_FORMAT        = 'Ymd\THis';
 
-    const DOW_SUNDAY = 1;
-    const DOW_MONDAY = 2;
-    const DOW_TUESDAY = 3;
-    const DOW_WEDNESDAY = 4;
-    const DOW_THURSDAY = 5;
-    const DOW_FRIDAY = 6;
-    const DOW_SATURDAY = 7;
+    public const DOW_SUNDAY = 1;
+    public const DOW_MONDAY = 2;
+    public const DOW_TUESDAY = 3;
+    public const DOW_WEDNESDAY = 4;
+    public const DOW_THURSDAY = 5;
+    public const DOW_FRIDAY = 6;
+    public const DOW_SATURDAY = 7;
 
     /**
      * @param $value
@@ -102,7 +101,7 @@ class CalendarUtils
      * Checks whether the given value is a db date format or not.
      *
      * @param string $value the date value
-     * @return boolean
+     * @return bool
      */
     protected static function isInDbFormat($value)
     {
@@ -191,8 +190,8 @@ class CalendarUtils
             $endDt->modify('+1 day');
         }
 
-        $startDt->setTime(0,0,0);
-        $endDt->setTime(0,0,0);
+        $startDt->setTime(0, 0, 0);
+        $endDt->setTime(0, 0, 0);
     }
 
     /**
@@ -221,7 +220,7 @@ class CalendarUtils
         if($date instanceof \DateTimeImmutable) {
             return DateTime::createFromFormat(
                 static::DATE_FORMAT_ATOM,
-                $date->format(static::DATE_FORMAT_ATOM)
+                $date->format(static::DATE_FORMAT_ATOM),
             );
         }
 
@@ -408,13 +407,15 @@ class CalendarUtils
         return $format;
     }
 
-    public static function generateEventUid(CalendarEventIF $event, $type = 'event') {
+    public static function generateEventUid(CalendarEventIF $event, $type = 'event')
+    {
         return static::generateUUid($event->getEventType()->getKey());
     }
 
-    public static function generateUUid($type = 'event') {
+    public static function generateUUid($type = 'event')
+    {
         Module::registerAutoloader();
-        return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
+        return 'humhub-' . $type . '-' . UUIDUtil::getUUID();
     }
 
     /**
@@ -445,7 +446,7 @@ class CalendarUtils
     {
         if($entry instanceof EditableEventIF) {
             $sequence = $entry->getSequence();
-            $entry->setSequence( ($sequence === null) ? 0 : ++$sequence);
+            $entry->setSequence(($sequence === null) ? 0 : ++$sequence);
         }
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\recurrence;
 
 use Exception;
@@ -17,7 +16,6 @@ use DateTime;
 use DateTimeZone;
 use humhub\modules\calendar\interfaces\VCalendar;
 use Sabre\VObject\Component\VEvent;
-
 
 class CalendarRecurrenceExpand extends Model
 {
@@ -47,9 +45,9 @@ class CalendarRecurrenceExpand extends Model
 
         if ($this->event->isAllDay()) {
             $this->targetTimezone = new DateTimeZone('UTC');
-        } else if (!$this->targetTimezone) {
+        } elseif (!$this->targetTimezone) {
             $this->targetTimezone = CalendarUtils::getUserTimeZone();
-        } else if (is_string($this->targetTimezone)) {
+        } elseif (is_string($this->targetTimezone)) {
             $this->targetTimezone = new DateTimeZone($this->targetTimezone);
         }
 
@@ -125,7 +123,7 @@ class CalendarRecurrenceExpand extends Model
      * @return RecurrentEventIF[]
      * @throws Exception
      */
-    public static function expandUpcoming(RecurrentEventIF $event, $count = 1, $start = null , $save = true)
+    public static function expandUpcoming(RecurrentEventIF $event, $count = 1, $start = null, $save = true)
     {
         $from = new DateTime();
         $startIndex = 0;
@@ -133,10 +131,10 @@ class CalendarRecurrenceExpand extends Model
         if($start instanceof \DateTimeInterface) {
             $from = $start;
             $startIndex = 0;
-        } else if(is_bool($start)) {
+        } elseif(is_bool($start)) {
             $save = $start;
             $startIndex = 0;
-        } else if(is_int($start)) {
+        } elseif(is_int($start)) {
             $startIndex = $start;
         }
 
@@ -160,7 +158,7 @@ class CalendarRecurrenceExpand extends Model
         $result = [];
 
         // Add startIndex to count
-       $count += $startIndex;
+        $count += $startIndex;
 
         try {
             for ($i = 0; $i < $count && $it->valid(); $i++) {
@@ -182,7 +180,7 @@ class CalendarRecurrenceExpand extends Model
 
     private static function assureRootEvent(RecurrentEventIF $event)
     {
-        return RecurrenceHelper::isRecurrentRoot($event) ?  $event : $event->getRecurrenceQuery()->getRecurrenceRoot();
+        return RecurrenceHelper::isRecurrentRoot($event) ? $event : $event->getRecurrenceQuery()->getRecurrenceRoot();
     }
 
     private static function stripTimezones(Component $component, $timeZone)
@@ -238,7 +236,7 @@ class CalendarRecurrenceExpand extends Model
         // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
         // Note: VCalendar expand will translate all dates with time to UTC
         $vCalendar = (new VCalendar())->add($this->event, false);
-        $expandedVCalendar = $vCalendar->getInstance()->expand($start, $end, $this->event->isAllDay() ? null :$this->eventTimeZone);
+        $expandedVCalendar = $vCalendar->getInstance()->expand($start, $end, $this->event->isAllDay() ? null : $this->eventTimeZone);
         return $expandedVCalendar->select('VEVENT');
     }
 
@@ -300,13 +298,15 @@ class CalendarRecurrenceExpand extends Model
 
         $model = $root->createRecurrence(
             CalendarUtils::toDBDateFormat($dtStart),
-            CalendarUtils::toDBDateFormat($dtEnd)
+            CalendarUtils::toDBDateFormat($dtEnd),
         );
 
         $model->syncEventData($root, null);
 
-        RecurrenceHelper::syncRecurrentEventData($root, $model,
-            RecurrenceHelper::getRecurrenceIdFromVEvent($vEventUTC, $root->getTimezone())
+        RecurrenceHelper::syncRecurrentEventData(
+            $root,
+            $model,
+            RecurrenceHelper::getRecurrenceIdFromVEvent($vEventUTC, $root->getTimezone()),
         );
 
         if ($save) {

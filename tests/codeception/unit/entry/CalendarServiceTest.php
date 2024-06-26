@@ -52,7 +52,7 @@ class CalendarServiceTest extends CalendarUnitTest
         $entryStart->modify('-1 day');
 
         // Entry from '2019-12-29 00:00:00' - '2020-12-30 00:00:00' should not be included in search
-        $this->createEntry($entryStart , 1, 'e1', $s1);
+        $this->createEntry($entryStart, 1, 'e1', $s1);
         $entries = $this->service->getCalendarItems($searchDateStart, $searchDateEnd);
         $this->assertCount(0, $entries);
     }
@@ -117,7 +117,7 @@ class CalendarServiceTest extends CalendarUnitTest
         $entryStart->modify('-1 day');
 
         // Entry from '2019-12-29 00:00:00' - '2020-12-30 00:00:00' should not be included in search
-        $this->createEntry($entryStart , 1, 'e1', $s1);
+        $this->createEntry($entryStart, 1, 'e1', $s1);
         $entries = $this->service->getCalendarItems($searchDateStart, $searchDateEnd);
         $this->assertCount(0, $entries);
     }
@@ -156,9 +156,9 @@ class CalendarServiceTest extends CalendarUnitTest
 
     /**
      * [] = Event {} = Search
-     * 
+     *
      * [------{]------}
-     * 
+     *
      * @throws \Exception
      */
     public function testNonAllDayStartIncludedBoundary()
@@ -172,7 +172,7 @@ class CalendarServiceTest extends CalendarUnitTest
         // Entry from '2019-12-29T00:00:00' - '2019-12-29T00:00:00' should be included in search
         $entryStart = new DateTime('2019-12-28T12:00:00');
         $entryEnd = new DateTime('2019-12-29T00:01:00');
-        
+
         $entry1 = $this->createEntry($entryStart, $entryEnd, 'e1', $s1);
         $entries = $this->service->getCalendarItems($searchDateStart, $searchDateEnd);
         $this->assertCount(1, $entries);

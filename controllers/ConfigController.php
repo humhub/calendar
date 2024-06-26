@@ -40,7 +40,7 @@ class ConfigController extends AbstractConfigController
         }
 
         return $this->render('snippet', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
@@ -53,7 +53,7 @@ class ConfigController extends AbstractConfigController
         }
 
         return $this->render('menu', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 

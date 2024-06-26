@@ -48,7 +48,7 @@ class ExportParticipantsButton extends Widget
     public function run()
     {
         echo $this->render('exportParticipantsButton', [
-            'buttons' => $this->getButtons()
+            'buttons' => $this->getButtons(),
         ]);
     }
 
@@ -63,7 +63,7 @@ class ExportParticipantsButton extends Widget
                 ->icon('file-code-o'),
             Button::none(Yii::t('CalendarModule.base', 'Export as {type}', ['type' => 'xlsx']))
                 ->link(Url::toExportParticipations('xlsx', $this->entry, $this->state))
-                ->icon('file-excel-o')
+                ->icon('file-excel-o'),
         ];
     }
 }

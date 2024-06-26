@@ -19,7 +19,6 @@ use Yii;
  */
 class ResponseAttend extends BaseActivity implements ConfigurableActivityInterface
 {
-
     public $viewName = 'response_attend';
     public $moduleId = 'calendar';
 

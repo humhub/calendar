@@ -12,11 +12,11 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 
 class CalendarEventMailInfo extends \humhub\components\Widget
 {
-    const RENDER_TYPE_TEXT = 'text';
-    const RENDER_TYPE_HTML = 'html';
+    public const RENDER_TYPE_TEXT = 'text';
+    public const RENDER_TYPE_HTML = 'html';
 
-    const VIEW_HTML = 'eventInfoHtml';
-    const VIEW_Text = 'eventInfoText';
+    public const VIEW_HTML = 'eventInfoHtml';
+    public const VIEW_Text = 'eventInfoText';
 
     /**
      * @var CalendarEventIF
@@ -47,23 +47,23 @@ class CalendarEventMailInfo extends \humhub\components\Widget
      */
     public $extraInfo;
 
-    public static function  html($event, $url = null, $extraInfo = null)
+    public static function html($event, $url = null, $extraInfo = null)
     {
         return static::widget([
             'event' => $event,
             'url' => $url,
             'type' => static::RENDER_TYPE_HTML,
-            'extraInfo' => $extraInfo
+            'extraInfo' => $extraInfo,
         ]);
     }
 
-    public static function  text($event, $url = null,  $extraInfo = null)
+    public static function text($event, $url = null, $extraInfo = null)
     {
         return static::widget([
             'event' => $event,
             'url' => $url,
             'type' => static::RENDER_TYPE_TEXT,
-            'extraInfo' => $extraInfo
+            'extraInfo' => $extraInfo,
         ]);
     }
 

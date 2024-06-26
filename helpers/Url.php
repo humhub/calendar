@@ -36,7 +36,7 @@ class Url extends BaseUrl
     public static function toEditType(CalendarEntryType $model, ContentContainerActiveRecord $container = null)
     {
         if ($model->container instanceof ContentContainerActiveRecord) {
-            return $model->container->createUrl('/calendar/container-config/edit-type',  ['id' => $model->id] );
+            return $model->container->createUrl('/calendar/container-config/edit-type', ['id' => $model->id]);
         }
 
         $params = ['/calendar/config/edit-type', 'id' => $model->id];
@@ -49,7 +49,7 @@ class Url extends BaseUrl
     public static function toCreateType(ContentContainerActiveRecord $container = null)
     {
         if($container) {
-            return $container->createUrl('/calendar/container-config/edit-type' );
+            return $container->createUrl('/calendar/container-config/edit-type');
         }
 
         return static::to(['/calendar/config/edit-type']) ;
@@ -264,7 +264,7 @@ class Url extends BaseUrl
         return $entry->content->container->createUrl('/calendar/entry/export-participants', [
             'id' => $entry->id,
             'state' => $state,
-            'type' => $type
+            'type' => $type,
         ]);
     }
 

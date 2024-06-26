@@ -17,20 +17,20 @@ use yii\base\Model;
  * This is the model class for table "calendar_entry".
  *
  * The followings are the available columns in table 'calendar_entry':
- * @property integer $id
+ * @property int $id
  * @property string $title
  * @property string $description
  * @property string $start_datetime
  * @property string $end_datetime
- * @property integer $all_day
- * @property integer $participation_mode
+ * @property int $all_day
+ * @property int $participation_mode
  * @property string $color
  * @property string $uid
- * @property integer $allow_decline
- * @property integer $allow_maybe
+ * @property int $allow_decline
+ * @property int $allow_maybe
  * @property string $participant_info
- * @property integer closed
- * @property integer max_participants
+ * @property int closed
+ * @property int max_participants
  * @property string rrule
  * @property string recurrence_id
  * @property int parent_event_id
@@ -91,7 +91,7 @@ class CalendarEntryDummy extends Model implements CalendarEventIF, RecurrentEven
      * Defines whether or not this event is an spans over an whole day.
      * Note all_day events should omit any timezone translations.
      *
-     * @return boolean
+     * @return bool
      */
     public function isAllDay()
     {
@@ -233,7 +233,7 @@ class CalendarEntryDummy extends Model implements CalendarEventIF, RecurrentEven
      */
     public function getCalendarOptions()
     {
-       return [];
+        return [];
     }
 
     /**

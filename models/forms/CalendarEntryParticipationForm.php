@@ -29,7 +29,7 @@ class CalendarEntryParticipationForm extends Model
     public $sendUpdateNotification = 0;
 
     /**
-     * @var integer if set to true all space participants will be added to the event
+     * @var int if set to true all space participants will be added to the event
      */
     public $forceJoin = 0;
 
@@ -49,12 +49,12 @@ class CalendarEntryParticipationForm extends Model
     public $newParticipants;
 
     /**
-     * @var integer
+     * @var int
      */
     public $newParticipantStatus;
 
     /**
-     * @var integer
+     * @var int
      */
     public $newForceStatus;
 
@@ -145,7 +145,7 @@ class CalendarEntryParticipationForm extends Model
         return [
             CalendarEntryParticipation::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
             CalendarEntryParticipation::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.views_entry_edit', 'Only by Invite'),
-            CalendarEntryParticipation::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
+            CalendarEntryParticipation::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate'),
         ];
     }
 

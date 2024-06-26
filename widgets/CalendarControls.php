@@ -7,7 +7,6 @@
 
 namespace humhub\modules\calendar\widgets;
 
-
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\widgets\BaseStack;

@@ -19,7 +19,6 @@ use Yii;
  */
 class ResponseDeclined extends BaseActivity implements ConfigurableActivityInterface
 {
-
     public $viewName = 'response_declined';
     public $moduleId = 'calendar';
 
