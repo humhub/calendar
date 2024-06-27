@@ -1,17 +1,15 @@
 <?php
 
-
 namespace humhub\modules\calendar\integration;
-
 
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use Yii;
 
 class BirthdayCalendarType implements CalendarTypeIF
 {
-    const ITEM_TYPE_KEY = 'birthday';
+    public const ITEM_TYPE_KEY = 'birthday';
 
-    const DEFAULT_COLOR = '#59D6E4';
+    public const DEFAULT_COLOR = '#59D6E4';
 
     /**
      * Returns a unique key of this type of event.

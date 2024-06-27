@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\participation;
-
 
 use humhub\components\SettingsManager;
 use humhub\modules\calendar\Module;
@@ -12,12 +10,12 @@ use yii\base\Model;
 
 class FullCalendarSettings extends Model
 {
-    const SETTING_LIST_WEEK = 'listWeek';
-    const SETTING_GRID_DAY = 'timeGridDay';
-    const SETTING_GRID_WEEK = 'timeGridWeek';
-    const SETTING_GRID_MONTH = 'dayGridMonth';
-    const SETTING_LIST_YEAR = 'listYear';
-    const SETTING_VIEW_MODE_KEY = 'defaults.fullCalendarViewMode';
+    public const SETTING_LIST_WEEK = 'listWeek';
+    public const SETTING_GRID_DAY = 'timeGridDay';
+    public const SETTING_GRID_WEEK = 'timeGridWeek';
+    public const SETTING_GRID_MONTH = 'dayGridMonth';
+    public const SETTING_LIST_YEAR = 'listYear';
+    public const SETTING_VIEW_MODE_KEY = 'defaults.fullCalendarViewMode';
 
     /**
      * @var ContentContainerActiveRecord

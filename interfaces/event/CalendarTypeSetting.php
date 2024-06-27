@@ -15,7 +15,6 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -33,12 +32,12 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  */
 class CalendarTypeSetting extends Model implements CalendarTypeIF
 {
-    const COLOR_VALIDATON_PATTERN = '/^#(?:[0-9a-fA-F]{3}){1,2}$/';
+    public const COLOR_VALIDATON_PATTERN = '/^#(?:[0-9a-fA-F]{3}){1,2}$/';
 
     /**
      * Fallback color used in case no default color was provided
      */
-    const COLOR_FALLBACK = '#44B5F6';
+    public const COLOR_FALLBACK = '#44B5F6';
 
     /**
      * @var CalendarTypeIF
@@ -83,12 +82,12 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
      */
     public function isEnabled()
     {
-        $settingKey = $this->getKey().'_item_enabled';
+        $settingKey = $this->getKey() . '_item_enabled';
         if($this->contentContainer) {
-            return (boolean) $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, true);
+            return (bool) $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, true);
         }
 
-        return (boolean) $this->getSettings()->get($settingKey, true);
+        return (bool) $this->getSettings()->get($settingKey, true);
     }
 
 
@@ -103,7 +102,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
 
     public function updateEnabled($isEnabled)
     {
-        $settingKey = $this->getKey().'_item_enabled';
+        $settingKey = $this->getKey() . '_item_enabled';
         if($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->set($settingKey, $isEnabled);
         }
@@ -141,7 +140,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
      */
     public function getColor()
     {
-        $settingKey = $this->getKey().'_item_color';
+        $settingKey = $this->getKey() . '_item_color';
         if($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, $this->getDefaultColor());
         }
@@ -154,7 +153,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
      */
     public function updateColor($color)
     {
-        $settingKey = $this->getKey().'_item_color';
+        $settingKey = $this->getKey() . '_item_color';
         if($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->set($settingKey, $color);
         } else {

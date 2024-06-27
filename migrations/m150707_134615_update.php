@@ -7,7 +7,6 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 
 class m150707_134615_update extends Migration
 {
-
     public function up()
     {
         // Namespace Classes

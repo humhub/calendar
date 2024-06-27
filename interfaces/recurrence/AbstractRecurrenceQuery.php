@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces\recurrence;
 
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
@@ -66,17 +65,18 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
                 ['or',
                     ['and',
                         ['<', $this->startField, $start->format('Y-m-d H:i:s')],
-                        ['>', $this->endField, $end->format('Y-m-d H:i:s')]
+                        ['>', $this->endField, $end->format('Y-m-d H:i:s')],
                     ],
                     ['and',
                         ['>=', $this->startField, $start->format('Y-m-d H:i:s')],
-                        ['<', $this->endField, $end->format('Y-m-d H:i:s')]
+                        ['<', $this->endField, $end->format('Y-m-d H:i:s')],
                     ],
                     ['and',
                         ['>', $this->endField, $start->format('Y-m-d H:i:s')],
-                        ['<=', $this->endField, $end->format('Y-m-d H:i:s')]
-                    ]
-                ]);
+                        ['<=', $this->endField, $end->format('Y-m-d H:i:s')],
+                    ],
+                ],
+            );
         }
         return $query;
     }
@@ -97,7 +97,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
         if($this->isRecurrenceSupported()) {
             return ['and',
                 $this->rruleField . ' IS NOT NULL',
-                $this->parentEventIdField . ' IS NULL'
+                $this->parentEventIdField . ' IS NULL',
             ];
         }
 
@@ -110,14 +110,14 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
      * @param DateTime|null $end
      * @return array|CalendarReminder[]|CalendarReminderSent[]|ActiveRecord[]
      */
-     public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null)
-     {
-            if($this->event instanceof EditableEventIF) {
-                return $this->findRecurrenceInstances($start, $end)->andWhere(['>', $this->sequenceField, 0])->all();
-            }
+    public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null)
+    {
+        if($this->event instanceof EditableEventIF) {
+            return $this->findRecurrenceInstances($start, $end)->andWhere(['>', $this->sequenceField, 0])->all();
+        }
 
-            return [];
-     }
+        return [];
+    }
 
     /**
      * This function can be used for subclasses to expand e.g. recurrent events by adding all expanded events to the

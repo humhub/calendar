@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.13 (Unreleased)
+----------------------
+- Enh #489: Use PHP CS Fixer
+
 1.5.12 (June 25, 2024)
 ----------------------
 - Fix #487: Base event notification broken

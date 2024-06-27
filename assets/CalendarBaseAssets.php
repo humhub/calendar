@@ -15,9 +15,9 @@ class CalendarBaseAssets extends AssetBundle
     public $defer = true;
 
     public $publishOptions = [
-        'forceCopy' => false
+        'forceCopy' => false,
     ];
-    
+
     public $sourcePath = '@calendar/resources';
 
     public $css = [
@@ -25,6 +25,6 @@ class CalendarBaseAssets extends AssetBundle
     ];
 
     public $js = [
-        'js/humhub.calendar.min.js'
+        'js/humhub.calendar.min.js',
     ];
 }

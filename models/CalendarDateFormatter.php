@@ -26,7 +26,6 @@ use yii\base\Component;
 
 class CalendarDateFormatter extends Component
 {
-
     /**
      * @var CalendarEventIF
      */
@@ -107,14 +106,14 @@ class CalendarDateFormatter extends Component
         return $result;
     }
 
-    protected  function getFormattedNonAllDay($format = 'long')
+    protected function getFormattedNonAllDay($format = 'long')
     {
         $result = $this->getFormattedStartDate($format);
         if(!$this->isSameDay()) {
-            $result .= ', '.$this->getFormattedStartTime().  ' - ';
-            $result .= $this->getFormattedEndDate($format).', '.$this->getFormattedEndTime();
+            $result .= ', ' . $this->getFormattedStartTime() . ' - ';
+            $result .= $this->getFormattedEndDate($format) . ', ' . $this->getFormattedEndTime();
         } else {
-            $result .= ' ('.$this->getFormattedStartTime().' - '.$this->getFormattedEndTime().')';
+            $result .= ' (' . $this->getFormattedStartTime() . ' - ' . $this->getFormattedEndTime() . ')';
         }
 
         return $result;
@@ -129,12 +128,12 @@ class CalendarDateFormatter extends Component
             $start->setTimezone(CalendarUtils::getUserTimeZone());
             $end->setTimezone(CalendarUtils::getUserTimeZone());
         }
-        
+
         return $start->format('Y-m-d')
             === $end->format('Y-m-d');
     }
 
-    protected  function getFormattedAllDay($format = 'long')
+    protected function getFormattedAllDay($format = 'long')
     {
         $result = $this->getFormattedStartDate($format);
 
@@ -168,7 +167,7 @@ class CalendarDateFormatter extends Component
     public function getOffsetDays()
     {
         $s = new DateTime($this->calendarItem->getStartDateTime());
-        return $s->diff(new DateTime)->days;
+        return $s->diff(new DateTime())->days;
     }
 
     public static function getTimezoneLabel($timeZone)

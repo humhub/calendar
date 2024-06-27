@@ -6,7 +6,6 @@ use Recurr\Rule;
 
 class RRuleHelper
 {
-
     /**
      * @param $rrule
      * @param $until

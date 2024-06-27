@@ -7,7 +7,6 @@
 
 namespace humhub\modules\calendar\widgets;
 
-
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\user\models\User;
 use humhub\widgets\ModalButton;

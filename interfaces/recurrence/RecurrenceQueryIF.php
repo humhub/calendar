@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces\recurrence;
-
 
 use DateTime;
 
@@ -33,5 +31,5 @@ interface RecurrenceQueryIF
 
     public function expandEvent($from = null, $to = null, $save = false, &$expandResult = []);
 
-    public function expandUpcoming($count, $from = null,  $save = false);
+    public function expandUpcoming($count, $from = null, $save = false);
 }

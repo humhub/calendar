@@ -16,7 +16,6 @@ use Yii;
  */
 class EntryParticipants extends Widget
 {
-
     /**
      * @var CalendarEntry
      */
@@ -74,5 +73,5 @@ class EntryParticipants extends Widget
         }
 
         return $button;
-   }
+    }
 }

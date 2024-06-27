@@ -17,18 +17,18 @@ class CalendarAsset extends AssetBundle
     public $defer = true;
 
     public $publishOptions = [
-        'forceCopy' => false
+        'forceCopy' => false,
     ];
-    
+
     public $sourcePath = '@calendar/resources/js';
 
     public $js = [
-        'humhub.calendar.Calendar.min.js'
+        'humhub.calendar.Calendar.min.js',
     ];
 
     public $depends = [
         FullCalendarAssets::class,
-        CalendarBaseAssets::class
+        CalendarBaseAssets::class,
     ];
 
     /**
@@ -44,7 +44,7 @@ class CalendarAsset extends AssetBundle
                 'button.week' => Yii::t('CalendarModule.calendar', 'Week'),
                 'button.day' => Yii::t('CalendarModule.calendar', 'Day'),
                 'button.list' => Yii::t('CalendarModule.calendar', 'List'),
-            ]
+            ],
         ]);
         return parent::register($view);
     }

@@ -14,14 +14,12 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use Yii;
 
-
 /**
  * Class DownloadIcsLink
  * @package humhub\modules\calendar\widgets
  */
 class DownloadIcsLink extends Widget
 {
-
     /**
      * @var CalendarEventIF
      */

@@ -14,14 +14,12 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\widgets\ModalButton;
 use Yii;
 
-
 /**
  * Class DownloadIcsLink
  * @package humhub\modules\calendar\widgets
  */
 class ReminderLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */

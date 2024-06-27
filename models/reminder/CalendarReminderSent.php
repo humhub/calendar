@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\reminder;
-
 
 use humhub\components\ActiveRecord;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;

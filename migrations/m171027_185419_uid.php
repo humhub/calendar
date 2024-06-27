@@ -12,7 +12,7 @@ class m171027_185419_uid extends Migration
 {
     public function safeUp()
     {
-       $this->addColumn('calendar_entry', 'uid', $this->string(100));
+        $this->addColumn('calendar_entry', 'uid', $this->string(100));
     }
 
     public function safeDown()

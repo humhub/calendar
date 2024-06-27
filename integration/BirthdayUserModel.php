@@ -6,8 +6,8 @@
  */
 
 namespace humhub\modules\calendar\integration;
-use humhub\modules\user\models\User;
 
+use humhub\modules\user\models\User;
 
 /**
  * Class BirthdayProfileModel

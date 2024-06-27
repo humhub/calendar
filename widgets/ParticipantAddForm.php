@@ -63,7 +63,7 @@ class ParticipantAddForm extends Widget
             'model' => $this->model,
             'searchUsersUrl' => $content->container->createUrl('/calendar/entry/search-participants', ['entryId' => $this->model->entry->id]),
             'addParticipantsUrl' => $content->container->createUrl('/calendar/entry/add-participants'),
-            'statuses' => ParticipantItem::getStatuses($this->model->entry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE)
+            'statuses' => ParticipantItem::getStatuses($this->model->entry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE),
         ]);
     }
 }

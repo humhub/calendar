@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces\event;
-
 
 use humhub\components\SettingsManager;
 use Yii;
@@ -17,27 +15,27 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
     /**
      * @var string Color option key
      */
-    const OPTION_DEFAULT_COLOR = 'color';
+    public const OPTION_DEFAULT_COLOR = 'color';
 
     /**
      * @var string Icon option key
      */
-    const OPTION_ICON = 'icon';
+    public const OPTION_ICON = 'icon';
 
     /**
      * @var string description
      */
-    const OPTION_DESCRIPTION = 'description';
+    public const OPTION_DESCRIPTION = 'description';
 
     /**
      * @var string Icon type key
      */
-    const OPTION_KEY = 'key';
+    public const OPTION_KEY = 'key';
 
     /**
      * @var string Title option key
      */
-    const OPTION_TITLE = 'title';
+    public const OPTION_TITLE = 'title';
 
     public $options = [];
 

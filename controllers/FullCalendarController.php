@@ -19,10 +19,10 @@ class FullCalendarController extends Controller
         return [
             ['login'],
             ['json'],
-            ['post']
+            ['post'],
         ];
     }
-    
+
     public function actionUpdate($id)
     {
         $this->forcePostRequest();

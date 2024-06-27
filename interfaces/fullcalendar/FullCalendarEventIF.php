@@ -10,12 +10,12 @@ interface FullCalendarEventIF extends CalendarEventIF
     /**
      * Used when the detail view should be opened within a modal
      */
-    const VIEW_MODE_MODAL = 'modal';
+    public const VIEW_MODE_MODAL = 'modal';
 
     /**
      * Used when the detail view should be opened by redirect link
      */
-    const VIEW_MODE_REDIRECT = 'redirect';
+    public const VIEW_MODE_REDIRECT = 'redirect';
 
     /**
      * Whether or not this calendar event supports drag/drop and resizing in the calendar view and the current
@@ -53,7 +53,7 @@ interface FullCalendarEventIF extends CalendarEventIF
      *
      * @param DateTime $start
      * @param DateTime $end
-     * @return boolean|string
+     * @return bool|string
      */
     public function updateTime(DateTime $start, DateTime $end);
 

@@ -12,7 +12,6 @@ use yii\base\Exception;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
-
 class IcalController extends Controller
 {
     /**
@@ -20,7 +19,7 @@ class IcalController extends Controller
      */
     public $calendarService;
 
-    const EXPORT_MIME = 'text/calendar';
+    public const EXPORT_MIME = 'text/calendar';
 
     /**
      * @return array
@@ -28,7 +27,7 @@ class IcalController extends Controller
     public function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
         ];
     }
 
@@ -58,7 +57,7 @@ class IcalController extends Controller
 
         $uid = $model->getUid() ?: $this->uniqueId;
 
-        return Yii::$app->response->sendContentAsFile($ics, $uid.'.ics', ['mimeType' => static::EXPORT_MIME]);
+        return Yii::$app->response->sendContentAsFile($ics, $uid . '.ics', ['mimeType' => static::EXPORT_MIME]);
     }
 
     /**

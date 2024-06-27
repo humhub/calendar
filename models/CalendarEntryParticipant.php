@@ -10,21 +10,21 @@ use humhub\modules\calendar\models\CalendarEntry;
  * This is the model class for table "calendar_entry_participant".
  *
  * The followings are the available columns in table 'calendar_entry_participant':
- * @property integer $id
- * @property integer $calendar_entry_id
- * @property integer $user_id
- * @property integer $participation_state
+ * @property int $id
+ * @property int $calendar_entry_id
+ * @property int $user_id
+ * @property int $participation_state
  */
 class CalendarEntryParticipant extends ActiveRecord
 {
     // NONE means user hasn't responded or removed a previous response.
     // NONE is usually not stored explicitly, instead, no matches in
     // calendar_entry_participant implies NONE.
-    const PARTICIPATION_STATE_NONE = 0;
-    const PARTICIPATION_STATE_DECLINED = 1;
-    const PARTICIPATION_STATE_MAYBE = 2;
-    const PARTICIPATION_STATE_ACCEPTED = 3;
-    const PARTICIPATION_STATE_INVITED = 4;
+    public const PARTICIPATION_STATE_NONE = 0;
+    public const PARTICIPATION_STATE_DECLINED = 1;
+    public const PARTICIPATION_STATE_MAYBE = 2;
+    public const PARTICIPATION_STATE_ACCEPTED = 3;
+    public const PARTICIPATION_STATE_INVITED = 4;
 
     /**
      * @return string the associated database table name
@@ -77,7 +77,7 @@ class CalendarEntryParticipant extends ActiveRecord
     {
         $activity = null;
         if ($this->participation_state == self::PARTICIPATION_STATE_ACCEPTED) {
-            $activity = new \humhub\modules\calendar\activities\ResponseAttend;
+            $activity = new \humhub\modules\calendar\activities\ResponseAttend();
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_MAYBE) {
             $activity = new \humhub\modules\calendar\activities\ResponseMaybe();
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_DECLINED) {

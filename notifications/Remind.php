@@ -54,7 +54,7 @@ class Remind extends BaseNotification
         if($this->source instanceof CalendarEventReminderIF) {
             return Yii::t('CalendarModule.reminder', 'You have an <strong>{type}</strong> coming up: {title}', [
                 'type' => Html::encode($this->getEventType()),
-                'title' => RichText::preview($this->source->getTitle(), 25)
+                'title' => RichText::preview($this->source->getTitle(), 25),
             ]);
         }
 
@@ -81,7 +81,7 @@ class Remind extends BaseNotification
         if($this->source instanceof CalendarEventReminderIF) {
             return Yii::t('CalendarModule.reminder', 'Upcoming {type}: {title}', [
                 'type' => $this->getEventType(),
-                'title' => $this->source->getTitle()
+                'title' => $this->source->getTitle(),
             ]);
         }
 

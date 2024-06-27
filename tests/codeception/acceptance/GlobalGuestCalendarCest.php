@@ -30,7 +30,7 @@ class GlobalGuestCalendarCest
         $I->jsClick('#calendarentryform-is_public');
         $I->click('Next', '#globalModal');
 
-        $I->waitForText('Public Event',null, '.fc-event-container');
+        $I->waitForText('Public Event', null, '.fc-event-container');
         $I->click('Next', '#globalModal');
         $I->click('Save', '#globalModal');
 
@@ -42,7 +42,7 @@ class GlobalGuestCalendarCest
         $I->wait(1);
 
         $I->createEventToday('Private Event', 'Private Event Description');
-        $I->waitForText('Next',null, '#globalModal');
+        $I->waitForText('Next', null, '#globalModal');
         $I->click('Next', '#globalModal');
         $I->click('Save', '#globalModal');
         $I->seeSuccess();
@@ -52,8 +52,8 @@ class GlobalGuestCalendarCest
         $I->logout();
         $I->amOnRoute(['/calendar/global']);
         $I->wait(3);
-        $I->dontSee('Public Event',null, '.fc-event-container');
-        $I->dontSee('Private Event',null, '.fc-event-container');
+        $I->dontSee('Public Event', null, '.fc-event-container');
+        $I->dontSee('Private Event', null, '.fc-event-container');
     }
 
     public function testGlobalGuestViewPublicSpace(AcceptanceTester $I)
@@ -72,7 +72,7 @@ class GlobalGuestCalendarCest
         $I->jsClick('#calendarentryform-is_public');
         $I->click('Next', '#globalModal');
 
-        $I->waitForText('Public Event',null, '.fc-event-container');
+        $I->waitForText('Public Event', null, '.fc-event-container');
         $I->wait(1);
         $I->click('Next', '#globalModal');
         $I->click('Save', '#globalModal');
@@ -92,8 +92,8 @@ class GlobalGuestCalendarCest
 
         $I->logout();
         $I->amOnRoute(['/calendar/global']);
-        $I->waitForText('Public Event',null, '.fc-event-container');
-        $I->dontSee('Private Event',null, '.fc-event-container');
+        $I->waitForText('Public Event', null, '.fc-event-container');
+        $I->dontSee('Private Event', null, '.fc-event-container');
 
         $I->wantToTest('if a guest can opent the event');
         $I->click('.fc-event-container');

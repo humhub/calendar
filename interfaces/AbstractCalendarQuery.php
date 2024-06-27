@@ -24,5 +24,4 @@ use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery as BaseCalend
  */
 abstract class AbstractCalendarQuery extends BaseCalendarQuery
 {
-
 }

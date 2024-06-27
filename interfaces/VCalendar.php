@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces;
-
 
 use DateTime;
 use Exception;
@@ -23,10 +21,10 @@ use Sabre\VObject;
  */
 class VCalendar extends Model
 {
-    const PRODID = '-//HumHub Org//HumHub Calendar 0.7//EN';
-    const PARTICIPATION_STATUS_ACCEPTED = 'ACCEPTED';
-    const PARTICIPATION_STATUS_DECLINED = 'DECLINED';
-    const PARTICIPATION_STATUS_TENTATIVE = 'TENTATIVE';
+    public const PRODID = '-//HumHub Org//HumHub Calendar 0.7//EN';
+    public const PARTICIPATION_STATUS_ACCEPTED = 'ACCEPTED';
+    public const PARTICIPATION_STATUS_DECLINED = 'DECLINED';
+    public const PARTICIPATION_STATUS_TENTATIVE = 'TENTATIVE';
 
     /**
      * @var
@@ -54,8 +52,7 @@ class VCalendar extends Model
             $items = [$items];
         }
 
-        foreach ($items as $item)
-        {
+        foreach ($items as $item) {
             if(is_array($item)) {
                 $item = new CalendarEventIFWrapper(['options' => $item]);
             }
@@ -130,7 +127,7 @@ class VCalendar extends Model
 
         if ($item->isAllDay() && $dtend->format('H:i') === '23:59') {
             // Translate for legacy events
-            $dtend->modify('+1 hour')->setTime(0,0,0);
+            $dtend->modify('+1 hour')->setTime(0, 0, 0);
         }
 
         $dtStart = clone $item->getStartDateTime();
@@ -147,7 +144,7 @@ class VCalendar extends Model
             'DTEND' => $dtEnd,
             'SUMMARY' => $item->getTitle(),
         ];
-        
+
         if (isset($item->closed) && $item->closed) {
             $result['STATUS'] = 'CANCELLED';
         }
@@ -175,7 +172,7 @@ class VCalendar extends Model
                 if ($initRecurrenceChildren) {
                     $recurrenceItems = $item->getRecurrenceInstances()->all();
                 }
-            } else if (RecurrenceHelper::isRecurrentInstance($item)) {
+            } elseif (RecurrenceHelper::isRecurrentInstance($item)) {
                 $recurrenceId = new DateTime($item->getRecurrenceId());
                 $recurrenceId->setTimezone(CalendarUtils::getStartTimeZone($item));
                 $result['RECURRENCE-ID'] = $recurrenceId;
@@ -269,7 +266,7 @@ class VCalendar extends Model
         $result = $user->getDisplayName();
 
         if($user->email) {
-            $result .= ':MAILTO:'.$user->email;
+            $result .= ':MAILTO:' . $user->email;
         }
 
         return $result;
@@ -280,17 +277,21 @@ class VCalendar extends Model
      * with daylight transitions covering the given date range.
      *
      * @param string Timezone ID as used in PHP's Date functions
-     * @param integer Unix timestamp with first date/time in this timezone
-     * @param integer Unix timestap with last date/time in this timezone
+     * @param int Unix timestamp with first date/time in this timezone
+     * @param int Unix timestap with last date/time in this timezone
      *
      * @return mixed A Sabre\VObject\Component object representing a VTIMEZONE definition
      *               or false if no timezone information is available
      * @throws Exception
      */
-    function generate_vtimezone($tzid, $from = 0, $to = 0)
+    public function generate_vtimezone($tzid, $from = 0, $to = 0)
     {
-        if (!$from) $from = time();
-        if (!$to) $to = $from;
+        if (!$from) {
+            $from = time();
+        }
+        if (!$to) {
+            $to = $from;
+        }
         try {
             $tz = new \DateTimeZone($tzid);
         } catch (Exception $e) {

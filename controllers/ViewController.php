@@ -21,7 +21,6 @@ use yii\base\InvalidConfigException;
  */
 class ViewController extends ContentContainerController
 {
-
     /**
      * @inheritdoc
      */
@@ -75,7 +74,7 @@ class ViewController extends ContentContainerController
         // Don't expand recurrence event on filter by "I'm attending" because this option is selected per each date separately
         $expand = !in_array(AbstractCalendarQuery::FILTER_PARTICIPATE, $filters);
 
-        foreach ($this->calendarService->getCalendarItems( new DateTime($start), new DateTime($end), $filters, $this->contentContainer, null, $expand, $types) as $entry) {
+        foreach ($this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), $filters, $this->contentContainer, null, $expand, $types) as $entry) {
             $result[] = FullCalendar::getFullCalendarArray($entry);
         }
 

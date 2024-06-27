@@ -7,7 +7,6 @@
 
 namespace humhub\modules\calendar\models\fullcalendar;
 
-
 use humhub\components\ActiveRecord;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\Url;
@@ -46,7 +45,7 @@ class FullCalendar
             'start' => static::toFullCalendarFormat($entry->getStartDateTime(), $entry->isAllDay()),
             'end' => static::toFullCalendarFormat(static::getEndDate($entry), $entry->isAllDay()),
             'eventDurationEditable' => true,
-            'eventStartEditable' => true
+            'eventStartEditable' => true,
         ];
 
         if($entry instanceof ContentActiveRecord) {
@@ -78,10 +77,10 @@ class FullCalendar
         }
 
         if($entry instanceof RecurrentEventIF) {
-           // $result['rrule'] = $entry->getRrule();
-           // $result['exdate'] = $entry->getExdate();
+            // $result['rrule'] = $entry->getRrule();
+            // $result['exdate'] = $entry->getExdate();
         }
-        
+
         // Add CSS class for canceled events
         if($entry instanceof CalendarEventStatusIF && $entry->getEventStatus() === CalendarEventStatusIF::STATUS_CANCELLED) {
             $result['className'] = 'canceled';
@@ -118,7 +117,7 @@ class FullCalendar
         if($entry->isAllDay()) {
             // Note: In fullcalendar the end time is the moment AFTER the event.
             // But we store the exact event time 00:00:00 - 23:59:59 so add some time to the full day event.
-            $endDateTime->add(new \DateInterval('PT2H'))->setTime(0,0,0);
+            $endDateTime->add(new \DateInterval('PT2H'))->setTime(0, 0, 0);
         }
 
         return $endDateTime;
