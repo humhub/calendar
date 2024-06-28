@@ -1,9 +1,10 @@
 Changelog
 =========
 
-1.5.13 (Unreleased)
+1.6.0 (Unreleased)
 ----------------------
 - Enh #489: Use PHP CS Fixer
+- Enh #492: Add colors for event types in pickers
 
 1.5.12 (June 25, 2024)
 ----------------------
