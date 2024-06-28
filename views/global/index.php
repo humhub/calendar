@@ -3,6 +3,7 @@
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\widgets\CalendarControls;
 use humhub\modules\calendar\widgets\CalendarFilterBar;
+use humhub\modules\calendar\widgets\CalendarTypeLegend;
 use humhub\modules\calendar\widgets\ConfigureButton;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\ui\view\helpers\ThemeHelper;
@@ -11,6 +12,7 @@ use humhub\widgets\FooterMenu;
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $selectors array */
 /* @var $filters array */
+/* @var $editUrl string */
 
 $isFluid = ThemeHelper::isFluid();
 $containerClass = $isFluid ? 'container-fluid' : 'container';
@@ -48,6 +50,8 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
             ]) ?>
         </div>
     </div>
+
+    <?= CalendarTypeLegend::widget() ?>
 </div>
 
 <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]) ?>
