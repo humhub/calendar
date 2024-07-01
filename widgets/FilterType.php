@@ -43,4 +43,13 @@ class FilterType extends ContentTagPicker
 
         parent::init();
     }
+
+    /**
+     * @inheritdoc
+     * @param CalendarEntryType $item
+     */
+    protected function getItemImage($item)
+    {
+        return $item->color;
+    }
 }

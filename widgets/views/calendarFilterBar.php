@@ -32,7 +32,7 @@ use humhub\widgets\FadeIn;
         <?php endif; ?>
         <?php if ($showSelectors) : ?>
             <div class="calendar-selectors">
-                <div class="help-block" style="padding-left:10px;">
+                <div class="help-block">
                     <?= Yii::t('CalendarModule.views_global_index', 'Select calendars') ?>
                 </div>
                 <div style="display:inline-block; float:left;margin-right:10px;">
@@ -82,7 +82,7 @@ use humhub\widgets\FadeIn;
                 <div class="help-block" style="padding-left:10px;">
                     <?= Yii::t('CalendarModule.views_global_index', 'Filter events') ?>
                 </div>
-                <div style="display:inline-block;margin-right:10px;">
+                <div style="display:inline-block;margin:0 10px">
                     <div class="checkbox">
                         <label class="calendar_filter_participate">
                             <input type="checkbox" name="filter" class="filterCheckbox"
@@ -104,7 +104,7 @@ use humhub\widgets\FadeIn;
         <?php endif ?>
         <?php if ($showTypes) : ?>
             <div class="calendar-types"
-                 style="<?= $showSelectors || $showFilters ? 'border-left:2px solid ' . $this->theme->variable('default') : '' ?>">
+                 style="width:300px;max-width:100%;<?= $showSelectors || $showFilters ? 'border-left:2px solid ' . $this->theme->variable('default') : '' ?>">
                 <div class="help-block" style="padding-left:10px;">
                     <?= Yii::t('CalendarModule.base', 'Filter by types') ?>
                 </div>

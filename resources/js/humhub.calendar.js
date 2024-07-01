@@ -231,8 +231,8 @@ humhub.module('calendar', function (module, require, $) {
 
         Form.prototype.changeEventType = function (evt) {
             var $selected = evt.$trigger.find(':selected');
-            if ($selected.data('type-color')) {
-                $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('type-color'));
+            if ($selected.data('color')) {
+                $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('color'));
                 $('.colorpicker-element').data('colorpicker').update();
             }
         };

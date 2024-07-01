@@ -3,5 +3,5 @@ name: PHP CS Fixer
 on: push
 
 jobs:
-  tests:
+  fixers:
     uses: humhub/actions/.github/workflows/module-php-cs-fixer.yml@main
