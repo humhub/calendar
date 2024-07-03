@@ -1,6 +1,11 @@
 Changelog
 =========
 
+
+1.6.1 (July 3, 2024)
+--------------------
+- Enh: Updated translations
+
 1.6.0 (July 1, 2024)
 --------------------
 - Enh #489: Use PHP CS Fixer
