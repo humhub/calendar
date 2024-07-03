@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Day' => '',
-  'List' => '리스트',
-  'Month' => '',
-  'Today' => '',
-  'Week' => '',
-  'Year' => '',
+  'Day' => 'Deň',
+  'List' => 'Zoznam',
+  'Month' => 'Mesiac',
+  'Today' => 'Dnes',
+  'Week' => 'Týždeň',
+  'Year' => 'Rok',
 );

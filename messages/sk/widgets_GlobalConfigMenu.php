@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Calendars' => '',
-  'Defaults' => '',
-  'Event Types' => '',
+  'Calendars' => 'Kalendáre',
+  'Defaults' => 'Predvolené',
+  'Event Types' => 'Typy udalostí',
   'Menu' => 'Ponuka',
-  'Snippet' => '',
+  'Snippet' => 'Úryvok',
 );

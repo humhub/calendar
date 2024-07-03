@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Additional information' => '',
+  'Additional information' => 'Ďalšie Informácie',
   'All' => 'Všetko',
-  'Attend' => '',
+  'Attend' => 'Zúčastniť sa',
   'Decline' => 'Odmietnuť',
   'Filter' => 'Filter',
-  'Maybe' => '',
-  'Participants' => '',
-  'You are invited, please select your role:' => '',
+  'Maybe' => 'Možno',
+  'Participants' => 'Účastníci',
+  'You are invited, please select your role:' => 'Ste pozvaný, vyberte si svoju rolu:',
 );
