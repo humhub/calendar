@@ -11,7 +11,7 @@ use humhub\modules\calendar\models\CalendarEntryType;
 ?>
 <div class="panel panel-default calendar-type-legend">
     <div class="panel-heading">
-        <strong><?= Yii::t('CalendarModule.base', 'Calendar Types') ?></strong>
+        <strong><?= Yii::t('CalendarModule.base', 'Event Types') ?></strong>
     </div>
     <div class="panel-body">
         <?php foreach ($calendarTypes as $calendarType) : ?>
