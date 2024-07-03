@@ -86,6 +86,7 @@ return [
     '{displayName} added you to the event "{contentTitle}".' => 'لقد أضافك {displayName} للتو إلى الحدث "{contentTitle}".',
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => 'دعاك {displayName} للتو إلى الحدث "{contentTitle}" في الباحة {spaceName} بدءًا من {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => 'لقد دعاك {displayName} للتو إلى الحدث "{contentTitle}".',
+    'Event Types' => '',
     'You have been registered for the event "{contentTitle}" in {spaceName}, starting at {time}' => '',
     'You have been registered for the event "{contentTitle}", starting at {time}.' => '',
     'You have been registered for the event "{contentTitle}".' => '',

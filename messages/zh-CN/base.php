@@ -43,6 +43,7 @@ return [
     'Enable Reminder' => '',
     'End Time' => '',
     'Event Type' => '',
+    'Event Types' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'Friday' => '',

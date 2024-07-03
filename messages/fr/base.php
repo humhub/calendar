@@ -86,6 +86,7 @@ return [
     '{displayName} added you to the event "{contentTitle}".' => '{displayName} vient de vous ajouter à l’événement « {contentTitle} ».',
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} vient de vous inviter à l’événement "{contentTitle}" dans l’espace {spaceName} ; l’événement commence à {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} vient de vous inviter à l’événement « {contentTitle} ».',
+    'Event Types' => '',
     'You have been registered for the event "{contentTitle}" in {spaceName}, starting at {time}' => '',
     'You have been registered for the event "{contentTitle}", starting at {time}.' => '',
     'You have been registered for the event "{contentTitle}".' => '',

@@ -68,6 +68,7 @@ return [
     'Edit Event' => '',
     'Email' => '',
     'Enable Reminder' => '',
+    'Event Types' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'Invited: {users}' => '',

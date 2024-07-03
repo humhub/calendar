@@ -35,6 +35,7 @@ return [
     'End time must be after start time!' => '',
     'Event' => '',
     'Event Type' => '',
+    'Event Types' => '',
     'Event not found!' => '',
     'Export as {type}' => '',
     'Files' => '',

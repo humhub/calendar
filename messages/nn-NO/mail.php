@@ -1,9 +1,10 @@
 <?php
 
 return [
-    '<strong>Starting</strong> {date}' => '',
-    'Additional information:' => '',
-    'Location:' => '',
-    'Organized by {userName}' => '',
+    'Description' => '',
+    'Location' => '',
+    'Organizer' => '',
+    'Participants info' => '',
+    'Starting' => '',
     'View Online: {url}' => '',
 ];

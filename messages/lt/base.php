@@ -53,6 +53,7 @@ return [
     'Enable Reminder' => '',
     'End Time' => '',
     'Event Type' => '',
+    'Event Types' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',

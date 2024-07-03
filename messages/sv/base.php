@@ -86,6 +86,7 @@ return [
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} bjöd precis in dig till eventet "{contentTitle}" i forumet {spaceName} som börjar kl. {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} har precis bjudit in dig till eventet "{contentTitle}".',
     'Before a target calendar can be selected, the module must be activated in at least one Space.' => '',
+    'Event Types' => '',
     'You have been registered for the event "{contentTitle}" in {spaceName}, starting at {time}' => '',
     'You have been registered for the event "{contentTitle}", starting at {time}.' => '',
     'You have been registered for the event "{contentTitle}".' => '',

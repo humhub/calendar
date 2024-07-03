@@ -49,6 +49,7 @@ return [
     'Edit Event' => '',
     'Enable Reminder' => '',
     'Event Type' => '',
+    'Event Types' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'Friday' => '',

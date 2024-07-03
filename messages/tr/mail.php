@@ -1,8 +1,10 @@
 <?php
-return array (
-  '<strong>Starting</strong> {date}' => '',
-  'Additional information:' => 'Ek bilgi:',
-  'Location:' => 'Konum:',
-  'Organized by {userName}' => '{userName} Tarafından düzenlendi',
-  'View Online: {url}' => '',
-);
+
+return [
+    'Description' => '',
+    'Location' => '',
+    'Organizer' => '',
+    'Participants info' => '',
+    'Starting' => '',
+    'View Online: {url}' => '',
+];

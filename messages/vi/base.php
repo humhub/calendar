@@ -66,6 +66,7 @@ return [
     'Download ICS' => '',
     'Edit Event' => '',
     'Enable Reminder' => '',
+    'Event Types' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'Invited: {users}' => '',

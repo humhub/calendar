@@ -79,6 +79,7 @@ return [
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} convidou-te para o evento "{contentTitle}".',
     'Add all Space members with status {status}' => '',
     'Before a target calendar can be selected, the module must be activated in at least one Space.' => '',
+    'Event Types' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'Participation Status' => '',

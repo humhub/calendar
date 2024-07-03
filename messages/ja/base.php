@@ -86,6 +86,7 @@ return [
     '{displayName} added you to the event "{contentTitle}".' => '{displayName} イベント "{contentTitle}" に追加しました',
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} さんが {time} から始まるスペース {spaceName} のイベント ”{contentTitle}" にあなたを招待しました。',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} イベント "{contentTitle}" に招待しました',
+    'Event Types' => '',
     'You have been registered for the event "{contentTitle}" in {spaceName}, starting at {time}' => '',
     'You have been registered for the event "{contentTitle}", starting at {time}.' => '',
     'You have been registered for the event "{contentTitle}".' => '',
