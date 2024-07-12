@@ -12,6 +12,7 @@ humhub.module('calendar', function (module, require, $) {
         var Content = require('content').Content;
         var event = require('event');
         var StreamEntry = require('stream').StreamEntry;
+        var status = require('ui.status');
 
         var Calendar = Widget.extend();
         var Form = Widget.extend();
@@ -325,10 +326,18 @@ humhub.module('calendar', function (module, require, $) {
             streamEntry.loader();
             modal.confirm().then(function (confirm) {
                 if (confirm) {
-                    client.post(evt).then(function () {
-                        modal.global.close();
+                    client.post(evt).then(function (response) {
+                        if (response.success) {
+                            status.success(response.message);
+                            modal.global.close();
+                        } else if (response.message) {
+                            status.error(response.message);
+                        }
                     }).catch(function (e) {
                         module.log.error(e, true);
+                        if (e.message) {
+                            status.error(e.message);
+                        }
                     });
                 } else {
                     var streamEntry = Widget.closest(evt.$trigger);

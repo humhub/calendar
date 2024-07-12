@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.6.2 (Unreleased)
+--------------------
+- Enh #495: Display info after delete event entry
 
 1.6.1 (July 3, 2024)
 --------------------
