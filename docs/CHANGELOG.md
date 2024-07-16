@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.6.2 (Unreleased)
+--------------------
+- Enh #495: Fix column `exdate` to delete more than 16 recurrence event entries
 
 1.6.1 (July 3, 2024)
 --------------------

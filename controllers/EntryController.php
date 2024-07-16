@@ -544,10 +544,20 @@ class EntryController extends ContentContainerController
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to delete this event!"));
         }
 
-        $calendarEntry->delete();
+        if (!$calendarEntry->delete()) {
+            return Yii::$app->request->isAjax
+                ? $this->asJson([
+                    'success' => false,
+                    'message' => Yii::t('CalendarModule.base', 'Event could not be deleted!'),
+                ])
+                : $this->redirect(Url::toEntry($calendarEntry));
+        }
 
         return Yii::$app->request->isAjax
-            ? $this->asJson(['success' => true])
+            ? $this->asJson([
+                'success' => true,
+                'message' => Yii::t('CalendarModule.base', 'Event has been be deleted!'),
+            ])
             : $this->redirect(Url::toCalendar($this->contentContainer));
     }
 
