@@ -62,7 +62,9 @@ class ReminderSettings extends Model
     protected function initReminders()
     {
         $this->reminders = $this->loadReminder();
-        $this->reminders[] = new CalendarReminder();
+        if (count($this->reminders) < $this->getMaxReminders()) {
+            $this->reminders[] = new CalendarReminder();
+        }
     }
 
     protected function loadReminder($defaults = true)
@@ -231,7 +233,9 @@ class ReminderSettings extends Model
             $this->initReminder(1)->save();
         }
 
-        $this->reminders[] = new CalendarReminder();
+        if (count($this->reminders) < $this->getMaxReminders()) {
+            $this->reminders[] = new CalendarReminder();
+        }
 
         if($this->isGlobalSettings() || $this->isContainerLevelSettings()) {
             CalendarReminder::flushDefautlts();
