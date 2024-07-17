@@ -3,6 +3,7 @@ Changelog
 
 1.6.3 (Unreleased)
 ---------------------
+- Fix #477: Hide the settings button when module is not available for a container
 - Enh #466: Fix period selector on default reminder settings
 
 1.6.2 (July 16, 2024)
