@@ -45,6 +45,8 @@ return [
     'Enable Reminder' => '',
     'Event Type' => '',
     'Event Types' => '',
+    'Event could not be deleted!' => '',
+    'Event has been be deleted!' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'Friday' => '',

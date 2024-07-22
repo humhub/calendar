@@ -82,6 +82,8 @@ return [
     'Add all Space members with status {status}' => '',
     'Before a target calendar can be selected, the module must be activated in at least one Space.' => '',
     'Event Types' => '',
+    'Event could not be deleted!' => '',
+    'Event has been be deleted!' => '',
     'Export as {type}' => '',
     'Participation Status' => '',
     'Private events are only visible to you and, if the friendship system is activated, to your friends.' => '',

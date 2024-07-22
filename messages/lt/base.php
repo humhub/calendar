@@ -54,6 +54,8 @@ return [
     'End Time' => '',
     'Event Type' => '',
     'Event Types' => '',
+    'Event could not be deleted!' => '',
+    'Event has been be deleted!' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',

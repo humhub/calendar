@@ -35,6 +35,8 @@ return [
     'Event' => '',
     'Event Type' => '',
     'Event Types' => '',
+    'Event could not be deleted!' => '',
+    'Event has been be deleted!' => '',
     'Event not found!' => '',
     'Export as {type}' => '',
     'Files' => '',

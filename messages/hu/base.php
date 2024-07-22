@@ -86,6 +86,8 @@ return [
     'global' => 'globális',
     '{displayName} Birthday' => '{displayName} születésnapja',
     'Event Types' => '',
+    'Event could not be deleted!' => '',
+    'Event has been be deleted!' => '',
     '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '',
     '{displayName} added you to the event "{contentTitle}".' => '',
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '',

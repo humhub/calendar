@@ -86,6 +86,8 @@ return [
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} только что пригласил вас на мероприятие "{contentTitle}" в сообществе {spaceName}, которое начинается в {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} только что пригласил вас на мероприятие "{contentTitle}".',
     'Event Types' => '',
+    'Event could not be deleted!' => '',
+    'Event has been be deleted!' => '',
     'You have been registered for the event "{contentTitle}" in {spaceName}, starting at {time}' => '',
     'You have been registered for the event "{contentTitle}", starting at {time}.' => '',
     'You have been registered for the event "{contentTitle}".' => '',

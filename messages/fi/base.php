@@ -66,6 +66,8 @@ return [
     'Edit Event' => '',
     'Enable Reminder' => '',
     'Event Types' => '',
+    'Event could not be deleted!' => '',
+    'Event has been be deleted!' => '',
     'Export as {type}' => '',
     'Filter by types' => '',
     'Invalid date or time format!' => '',
