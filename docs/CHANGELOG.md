@@ -5,6 +5,7 @@ Changelog
 ---------------------
 - Fix #477: Hide the settings button when module is not available for a container
 - Enh #466: Fix period selector on default reminder settings
+- Fix: Add autofocus on event edit and event type edit (for HumHub 1.17 - see https://github.com/humhub/humhub/issues/7136)
 
 1.6.2 (July 16, 2024)
 ---------------------

@@ -4,10 +4,10 @@ use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\Module;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\widgets\ContentTagDropDown;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\form\widgets\ColorPicker;
-use humhub\modules\content\widgets\ContentTagDropDown;
 use humhub\modules\ui\form\widgets\ContentHiddenCheckbox;
 use humhub\modules\ui\form\widgets\ContentVisibilitySelect;
 use humhub\modules\ui\form\widgets\TimePicker;
@@ -34,7 +34,7 @@ use yii\jui\DatePicker;
                                     {input}
                                 </div>
                                 {error}{hint}'
-        ])->textInput(['placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title')])->label(false) ?>
+        ])->textInput(['placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title'), 'autofocus' => ''])->label(false) ?>
     </div>
 
     <?php Yii::$app->formatter->timeZone = $calendarEntryForm->timeZone ?>
@@ -58,18 +58,18 @@ use yii\jui\DatePicker;
     </div>
 
     <div class="row">
-        <div class="col-xs-6"  style="padding: 0">
+        <div class="col-xs-6" style="padding: 0">
             <div class="col-sm-6">
                 <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
             </div>
             <?php if (Module::isRecurrenceActive()) : ?>
-            <div class="col-sm-6">
-                <?= $form->field($calendarEntryForm, 'recurring')->checkbox(['data-action-change' => 'toggleRecurring']) ?>
-            </div>
+                <div class="col-sm-6">
+                    <?= $form->field($calendarEntryForm, 'recurring')->checkbox(['data-action-change' => 'toggleRecurring']) ?>
+                </div>
             <?php endif; ?>
         </div>
         <div class="col-xs-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
-            <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm])?>
+            <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm]) ?>
         </div>
     </div>
 
@@ -80,20 +80,20 @@ use yii\jui\DatePicker;
             <?= $form->field($calendarEntryForm->entry, 'location')->textInput() ?>
         </div>
     </div>
-    
+
     <div class="row">
         <?php if ($calendarEntryForm->recurring || $calendarEntryForm->isFutureEvent()) : ?>
-        <div class="col-sm-3">
-            <?= $form->field($calendarEntryForm, 'reminder')->checkbox(['data-action-change' => 'toggleReminder']) ?>
-        </div>
+            <div class="col-sm-3">
+                <?= $form->field($calendarEntryForm, 'reminder')->checkbox(['data-action-change' => 'toggleReminder']) ?>
+            </div>
         <?php endif; ?>
         <div class="col-sm-3">
             <?= $form->field($calendarEntryForm, 'hidden')->widget(ContentHiddenCheckbox::class) ?>
         </div>
-        <?php if ($calendarEntryForm->canCreatePublicEntry()) :?>
-        <div class="col-sm-6">
-            <?= $form->field($calendarEntryForm, 'is_public')->widget(ContentVisibilitySelect::class, ['contentOwner' => 'entry']) ?>
-        </div>
+        <?php if ($calendarEntryForm->canCreatePublicEntry()) : ?>
+            <div class="col-sm-6">
+                <?= $form->field($calendarEntryForm, 'is_public')->widget(ContentVisibilitySelect::class, ['contentOwner' => 'entry']) ?>
+            </div>
         <?php endif; ?>
     </div>
 
