@@ -34,7 +34,7 @@ class EventUpdated extends EventNotification
         if ($this->source->content->container instanceof Space) {
             return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} updated the event "{contentTitle}" in the space {spaceName}.', array_merge([
                 'spaceName' =>  Html::encode($this->source->content->container->displayName),
-            ]));
+            ], $params));
         }
 
         return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} updated the event "{contentTitle}".', $params);
