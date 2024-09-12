@@ -59,18 +59,18 @@ class CalendarUtils
      */
     public static function parseDateTimeString($value, $timeValue = null, $timeFormat = null, $timeZone = 'UTC')
     {
-        if(static::isInDbFormat($value)) {
+        if (static::isInDbFormat($value)) {
             $date = DateTime::createFromFormat(static::DATE_FORMAT_SHORT_NO_TIME, $value, static::getDateTimeZone('UTC'));
             $ts = $date->getTimestamp();
         } else {
             $ts = DateHelper::parseDateTimeToTimestamp($value);
         }
 
-        if(!$ts) {
+        if (!$ts) {
             return false;
         }
 
-        if($timeValue) {
+        if ($timeValue) {
             $ts += static::parseTime($timeValue, $timeFormat);
         }
 
@@ -83,7 +83,7 @@ class CalendarUtils
          * We check for year 1980 regarding a Bug in HumHub 1.3 which returned unix epoch date for invalid date formats with time
          * This was fixed in HumHub 1.4
          */
-        if($result < new \DateTime('1980-01-01')) {
+        if ($result < new \DateTime('1980-01-01')) {
             $result = false;
         }
 
@@ -117,10 +117,10 @@ class CalendarUtils
     {
         $result = false;
 
-        if($format) {
+        if ($format) {
             try {
                 $dt = DateTime::createFromFormat(static::parseFormat($format), $value ?? '');
-                if($dt === false) {
+                if ($dt === false) {
                     return false;
                 }
                 // Use 1st January for time seconds extracting because today date has an issue
@@ -132,11 +132,11 @@ class CalendarUtils
             }
         }
 
-        if(!$format && !$result) {
+        if (!$format && !$result) {
             $result = static::parseTime($value, static::TIME_FORMAT_SHORT);
         }
 
-        if(!$format && !$result) {
+        if (!$format && !$result) {
             $result = static::parseTime($value, static::TIME_FORMAT_SHORT_MERIDIEM);
         }
 
@@ -161,23 +161,23 @@ class CalendarUtils
         $start = static::getDateTime($start);
         $end = static::getDateTime($end);
 
-        if($start >= $end) {
+        if ($start >= $end) {
             return false;
         }
 
         $startCondition = static::getTimeString($start) === '00:00';
 
-        if(!$startCondition) {
+        if (!$startCondition) {
             return false;
         }
 
         $endTime = static::getTimeString($end);
 
-        if($endDateMomentAfter === null) {
+        if ($endDateMomentAfter === null) {
             return $endTime === '00:00' || $endTime === '23:59';
         }
 
-        if($endDateMomentAfter) {
+        if ($endDateMomentAfter) {
             return $endTime === '00:00';
         }
 
@@ -186,7 +186,7 @@ class CalendarUtils
 
     public static function ensureAllDay(DateTime $startDt, DateTime $endDt)
     {
-        if($startDt->format('Y-m-d') === $endDt->format('Y-m-d')) {
+        if ($startDt->format('Y-m-d') === $endDt->format('Y-m-d')) {
             $endDt->modify('+1 day');
         }
 
@@ -217,7 +217,7 @@ class CalendarUtils
      */
     public static function getDateTime($date)
     {
-        if($date instanceof \DateTimeImmutable) {
+        if ($date instanceof \DateTimeImmutable) {
             return DateTime::createFromFormat(
                 static::DATE_FORMAT_ATOM,
                 $date->format(static::DATE_FORMAT_ATOM),
@@ -233,7 +233,7 @@ class CalendarUtils
      */
     public static function getDateTimeZone($tz = null)
     {
-        if(!$tz) {
+        if (!$tz) {
             return null;
         }
 
@@ -249,7 +249,7 @@ class CalendarUtils
     {
         $result = $event->getEndTimezone();
 
-        if(!$result) {
+        if (!$result) {
             $result = $event->getTimezone();
         }
 
@@ -260,7 +260,7 @@ class CalendarUtils
     {
         $date = ($recurrentId instanceof \DateTimeInterface) ? $recurrentId : new DateTime($recurrentId, new DateTimeZone('UTC'));
 
-        if($targetTZ) {
+        if ($targetTZ) {
             $date->setTimezone(new DateTimeZone($targetTZ));
         }
 
@@ -278,16 +278,16 @@ class CalendarUtils
      */
     public static function getUserTimeZone($asString = false)
     {
-        if(!static::$userTimezone) {
+        if (!static::$userTimezone) {
             $tz =  Yii::$app->user->isGuest
                 ? Yii::$app->timeZone
                 : Yii::$app->user->getTimeZone();
 
-            if(!$tz) {
+            if (!$tz) {
                 $tz = Yii::$app->timeZone;
             }
 
-            if($tz) {
+            if ($tz) {
                 static::$userTimezoneString = $tz;
                 static::$userTimezone = new DateTimeZone($tz);
             }
@@ -305,7 +305,7 @@ class CalendarUtils
     {
         $date = static::getDateTime($date);
 
-        if(!$fixedTZ) {
+        if (!$fixedTZ) {
             $date->setTimezone(new DateTimeZone(Yii::$app->timeZone));
         }
 
@@ -340,14 +340,14 @@ class CalendarUtils
     public static function getDayOfWeek($dow)
     {
         $dows = static::getDaysOfWeek();
-        if(isset($dow, $dows)) {
+        if (isset($dow, $dows)) {
             return $dows[$dow];
         }
     }
 
     public static function translateToUserTimezone($date, $fromTZ = null, $format = self::DB_DATE_FORMAT)
     {
-        if(!$fromTZ) {
+        if (!$fromTZ) {
             $fromTZ = static::getSystemTimeZone();
         }
         return static::translateTimezone($date, $fromTZ, static::getUserTimeZone(), $format);
@@ -355,7 +355,7 @@ class CalendarUtils
 
     public static function translateToSystemTimezone($date, $fromTZ = null, $format = self::DB_DATE_FORMAT)
     {
-        if(!$fromTZ) {
+        if (!$fromTZ) {
             $fromTZ = static::getUserTimeZone();
         }
 
@@ -386,7 +386,7 @@ class CalendarUtils
 
     private static function clearTimezone($date, $newTZ = null)
     {
-        if($newTZ) {
+        if ($newTZ) {
             $newTZ = static::getDateTimeZone($newTZ);
         }
 
@@ -424,17 +424,17 @@ class CalendarUtils
      */
     public static function getCalendarEvent($model)
     {
-        if($model instanceof Content) {
+        if ($model instanceof Content) {
             $model = $model->getModel();
         }
 
-        if($model instanceof CalendarEventIF) {
+        if ($model instanceof CalendarEventIF) {
             return $model;
         }
 
-        if(method_exists($model, 'getCalendarEvent')) {
+        if (method_exists($model, 'getCalendarEvent')) {
             $event = $model->getCalendarEvent();
-            if($event instanceof CalendarEventIF) {
+            if ($event instanceof CalendarEventIF) {
                 return $event;
             }
         }
@@ -444,7 +444,7 @@ class CalendarUtils
 
     public static function incrementSequence(CalendarEventIF $entry)
     {
-        if($entry instanceof EditableEventIF) {
+        if ($entry instanceof EditableEventIF) {
             $sequence = $entry->getSequence();
             $entry->setSequence(($sequence === null) ? 0 : ++$sequence);
         }

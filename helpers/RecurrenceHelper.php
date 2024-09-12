@@ -26,7 +26,7 @@ class RecurrenceHelper
 
     public static function getRecurrenceIdFromVEvent(VEvent $vEvent, $eventTZ)
     {
-        if(is_string($eventTZ)) {
+        if (is_string($eventTZ)) {
             $eventTZ = new DateTimeZone($eventTZ);
         }
 
@@ -56,13 +56,13 @@ class RecurrenceHelper
      */
     public static function getRecurrentId($recurrentId, $targetTZ = null)
     {
-        if($recurrentId instanceof CalendarEventIF) {
+        if ($recurrentId instanceof CalendarEventIF) {
             $recurrentId = $recurrentId->getStartDateTime();
         }
 
         $date = ($recurrentId instanceof \DateTimeInterface) ? $recurrentId : new DateTime($recurrentId, new DateTimeZone('UTC'));
 
-        if($targetTZ) {
+        if ($targetTZ) {
             $date->setTimezone(CalendarUtils::getDateTimeZone($targetTZ));
         }
 
@@ -71,7 +71,7 @@ class RecurrenceHelper
 
     public static function isRecurrent(CalendarEventIF $evt)
     {
-        if(!$evt instanceof RecurrentEventIF) {
+        if (!$evt instanceof RecurrentEventIF) {
             return false;
         }
 
@@ -80,7 +80,7 @@ class RecurrenceHelper
 
     public static function isRecurrentInstance(CalendarEventIF $evt)
     {
-        if(!$evt instanceof RecurrentEventIF) {
+        if (!$evt instanceof RecurrentEventIF) {
             return false;
         }
 
@@ -89,7 +89,7 @@ class RecurrenceHelper
 
     public static function isRecurrentRoot(CalendarEventIF $evt)
     {
-        if(!$evt instanceof RecurrentEventIF) {
+        if (!$evt instanceof RecurrentEventIF) {
             return false;
         }
 
@@ -99,7 +99,7 @@ class RecurrenceHelper
     public static function recurrenceIdToDate($recurrenceId, $format = CalendarUtils::DB_DATE_FORMAT)
     {
         $date = DateTime::createFromFormat(static::ICAL_TIME_FORMAT, $recurrenceId ?? '');
-        if($format) {
+        if ($format) {
             return $date->format($format);
         }
 
@@ -116,7 +116,7 @@ class RecurrenceHelper
         $instance->setUid($root->getUid());
         $instance->setRecurrenceRootId($root->getId());
         $instance->setRrule($root->getRrule());
-        if($recurrence_id) {
+        if ($recurrence_id) {
             $instance->setRecurrenceId($recurrence_id);
         }
     }
@@ -129,13 +129,13 @@ class RecurrenceHelper
     public static function addExdates(RecurrentEventIF $root, RecurrentEventIF $exdate)
     {
         $exdateStr = $root->getExdate();
-        if(empty($exdateStr)) {
+        if (empty($exdateStr)) {
             return $exdate->getRecurrenceId();
         }
 
         $exdateArr = explode(',', $exdateStr);
 
-        if(!in_array($exdate->getRecurrenceId(), $exdateArr)) {
+        if (!in_array($exdate->getRecurrenceId(), $exdateArr)) {
             $exdateArr[] = $exdate->getRecurrenceId();
         }
 

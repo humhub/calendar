@@ -42,7 +42,7 @@ class CalendarReminderSent extends ActiveRecord
     public static function findByReminder(CalendarReminder $reminder, CalendarEventReminderIF $entry = null)
     {
         $condition = ['reminder_id' => $reminder->id];
-        if($entry) {
+        if ($entry) {
             $condition['content_id'] = $entry->getContentRecord()->id;
         }
 

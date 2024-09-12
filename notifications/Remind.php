@@ -6,7 +6,7 @@
  *
  */
 
-namespace  humhub\modules\calendar\notifications;
+namespace humhub\modules\calendar\notifications;
 
 use humhub\libs\Html;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
@@ -51,7 +51,7 @@ class Remind extends BaseNotification
     public function html()
     {
         /* @var $record CalendarEventReminderIF */
-        if($this->source instanceof CalendarEventReminderIF) {
+        if ($this->source instanceof CalendarEventReminderIF) {
             return Yii::t('CalendarModule.reminder', 'You have an <strong>{type}</strong> coming up: {title}', [
                 'type' => Html::encode($this->getEventType()),
                 'title' => RichText::preview($this->source->getTitle(), 25),
@@ -63,9 +63,9 @@ class Remind extends BaseNotification
 
     public function getEventType()
     {
-        if($this->source instanceof CalendarEventReminderIF) {
+        if ($this->source instanceof CalendarEventReminderIF) {
             $type = $this->source->getEventType();
-            if($type) {
+            if ($type) {
                 return $type->getTitle();
             }
         }
@@ -78,7 +78,7 @@ class Remind extends BaseNotification
      */
     public function getMailSubject()
     {
-        if($this->source instanceof CalendarEventReminderIF) {
+        if ($this->source instanceof CalendarEventReminderIF) {
             return Yii::t('CalendarModule.reminder', 'Upcoming {type}: {title}', [
                 'type' => $this->getEventType(),
                 'title' => $this->source->getTitle(),

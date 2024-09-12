@@ -11,7 +11,7 @@ namespace humhub\modules\calendar\integration;
 use Yii;
 use yii\base\Component;
 use yii\helpers\Html;
-use  humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
+use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\user\models\User;
 
 /**

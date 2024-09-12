@@ -17,7 +17,7 @@ class Url extends BaseUrl
 {
     public static function toConfig(ContentContainerActiveRecord $container = null)
     {
-        if($container) {
+        if ($container) {
             return $container->createUrl('/calendar/container-config');
         }
 
@@ -26,7 +26,7 @@ class Url extends BaseUrl
 
     public static function toConfigTypes(ContentContainerActiveRecord $container = null)
     {
-        if($container) {
+        if ($container) {
             return $container->createUrl('/calendar/container-config/types');
         }
 
@@ -48,7 +48,7 @@ class Url extends BaseUrl
 
     public static function toCreateType(ContentContainerActiveRecord $container = null)
     {
-        if($container) {
+        if ($container) {
             return $container->createUrl('/calendar/container-config/edit-type');
         }
 
@@ -70,7 +70,7 @@ class Url extends BaseUrl
 
     public static function toConfigCalendars(ContentContainerActiveRecord $container = null)
     {
-        if($container) {
+        if ($container) {
             return $container->createUrl('/calendar/container-config/calendars');
         }
 
@@ -89,7 +89,7 @@ class Url extends BaseUrl
 
     public static function toCalendar(ContentContainerActiveRecord $container = null)
     {
-        if($container) {
+        if ($container) {
             return $container->createUrl('/calendar/view/index');
         }
 
@@ -103,7 +103,7 @@ class Url extends BaseUrl
 
     public static function toEditItemType(CalendarTypeIF $type, ContentContainerActiveRecord $container = null)
     {
-        if($container) {
+        if ($container) {
             return $container->createUrl('/calendar/container-config/edit-calendars', ['key' => $type->getKey()]);
         }
 
@@ -121,7 +121,7 @@ class Url extends BaseUrl
 
     public static function toParticipationSettingsReset(ContentContainerActiveRecord $container = null)
     {
-        if($container) {
+        if ($container) {
             return $container->createUrl('/calendar/container-config/reset-participation-config');
         }
 
@@ -130,7 +130,7 @@ class Url extends BaseUrl
 
     public static function toAjaxLoad(ContentContainerActiveRecord $container = null)
     {
-        if($container) {
+        if ($container) {
             return $container->createUrl('/calendar/view/load-ajax');
         }
 
@@ -144,7 +144,7 @@ class Url extends BaseUrl
 
     public static function toEditEntry(CalendarEntry $entry, $cal = null, ContentContainerActiveRecord $container = null, $wall = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $entry->content->container;
         }
 
@@ -177,16 +177,16 @@ class Url extends BaseUrl
 
     public static function toEntry(CalendarEntry $entry, $cal = 0, ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $entry->content->container;
         }
 
         $params =  ['id' => $entry->id];
-        if($cal) {
+        if ($cal) {
             $params['cal'] = 1;
         }
 
-        if(RecurrenceHelper::isRecurrentInstance($entry)) {
+        if (RecurrenceHelper::isRecurrentInstance($entry)) {
             $params['parent_id'] = $entry->parent_event_id;
             $params['recurrence_id'] = $entry->recurrence_id;
             return $container->createUrl('/calendar/entry/view-recurrence', $params);
@@ -198,12 +198,12 @@ class Url extends BaseUrl
 
     public static function toEntryDelete(CalendarEntry $entry, $cal = 0, ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $entry->content->container;
         }
 
         $params =  ['id' => $entry->id];
-        if($cal) {
+        if ($cal) {
             $params['cal'] = 1;
         }
 
@@ -212,7 +212,7 @@ class Url extends BaseUrl
 
     public static function toEntryToggleClose(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $entry->content->container;
         }
 
@@ -221,7 +221,7 @@ class Url extends BaseUrl
 
     public static function toEntryDownloadICS(ContentActiveRecord $entry, ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $entry->content->container;
         }
 
@@ -230,7 +230,7 @@ class Url extends BaseUrl
 
     public static function toUserLevelReminderConfig(CalendarEventReminderIF $entry, ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $entry->getContentRecord()->container;
         }
 
@@ -239,7 +239,7 @@ class Url extends BaseUrl
 
     public static function toEntryRespond(CalendarEntry $entry, $state, ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $entry->content->container;
         }
 
@@ -252,7 +252,7 @@ class Url extends BaseUrl
 
     public static function toParticipationUserList(CalendarEntry $entry, $state = null, ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $entry->content->container;
         }
 
@@ -270,7 +270,7 @@ class Url extends BaseUrl
 
     public static function toEnableModuleOnProfileConfig()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return null;
         }
 

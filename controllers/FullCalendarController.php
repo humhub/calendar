@@ -29,11 +29,11 @@ class FullCalendarController extends Controller
 
         $content = Content::findOne(['id' => $id]);
 
-        if(!$content) {
+        if (!$content) {
             throw new HttpException(404);
         }
 
-        if(!$content->canEdit()) {
+        if (!$content->canEdit()) {
             throw new HttpException(403);
         }
 
@@ -42,25 +42,25 @@ class FullCalendarController extends Controller
 
         $event = CalendarUtils::getCalendarEvent($model);
 
-        if(!$event) {
+        if (!$event) {
             throw new HttpException(400, 'Invalid model given.');
         }
 
-        if(!$event->isUpdatable()) {
+        if (!$event->isUpdatable()) {
             throw new HttpException(400, 'Event can not be updated by current user.');
         }
 
         $start = new DateTime(Yii::$app->request->post('start'));
         $end = new DateTime(Yii::$app->request->post('end'));
 
-        if(!$event->isAllDay()) {
+        if (!$event->isAllDay()) {
             $start->setTimezone(CalendarUtils::getSystemTimeZone());
             $end->setTimezone(CalendarUtils::getSystemTimeZone());
         }
 
         $result = $event->updateTime($start, $end);
 
-        if(is_bool($result)) {
+        if (is_bool($result)) {
             return $this->asJson(['success' => $result]);
         }
 

@@ -43,7 +43,7 @@ class EntryParticipants extends Widget
 
     private function getParticipantStateCount($state, $condition)
     {
-        if(!$condition) {
+        if (!$condition) {
             return 0;
         }
 
@@ -52,10 +52,10 @@ class EntryParticipants extends Widget
 
     public static function participateButton(CalendarEntry $calendarEntry, $state, $label)
     {
-        if($state == CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE && !$calendarEntry->allow_maybe) {
+        if ($state == CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE && !$calendarEntry->allow_maybe) {
             return null;
         }
-        if($state == CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED && !$calendarEntry->allow_decline) {
+        if ($state == CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED && !$calendarEntry->allow_decline) {
             return null;
         }
 

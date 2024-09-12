@@ -67,11 +67,11 @@ class ItemTypeInterfaceTest extends CalendarUnitTest
         $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event) {
             $container = $event->contentContainer;
 
-            if(!$container || $container->id === 1) {
+            if (!$container || $container->id === 1) {
                 $event->addType(TestEventType::ITEM_TYPE, new TestEventType());
             }
 
-            if(!$container || $container->id === 2) {
+            if (!$container || $container->id === 2) {
                 $event->addType(OtherTestEventType::ITEM_TYPE, new OtherTestEventType());
             }
         });
@@ -117,7 +117,7 @@ class ItemTypeInterfaceTest extends CalendarUnitTest
     {
         $found = false;
         foreach ($result as $type) {
-            if($type->getKey() === $searchType) {
+            if ($type->getKey() === $searchType) {
                 $found = $type;
             }
         }

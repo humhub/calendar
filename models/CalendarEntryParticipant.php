@@ -88,7 +88,7 @@ class CalendarEntryParticipant extends ActiveRecord
             throw new \yii\base\Exception("Invalid participation state: " . $this->participation_state);
         }
 
-        if($activity) {
+        if ($activity) {
             $activity->source = $this->calendarEntry;
             $activity->originator = $this->user;
             $activity->create();

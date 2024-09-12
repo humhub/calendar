@@ -68,7 +68,7 @@ class CalendarEntryTypeSetting extends CalendarTypeSetting
      */
     public function getDefaultColor()
     {
-        if($this->contentContainer instanceof  Space) {
+        if ($this->contentContainer instanceof  Space) {
             return $this->contentContainer->color;
         }
 

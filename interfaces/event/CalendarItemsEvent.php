@@ -62,7 +62,7 @@ class CalendarItemsEvent extends Event
     public function addItems($itemType, $items)
     {
         $items = is_array($items) ? $items : [$items];
-        if(!isset($this->items[$itemType])) {
+        if (!isset($this->items[$itemType])) {
             $this->items[$itemType] = $items;
         } else {
             $this->items[$itemType] = array_merge($this->items[$itemType], $items);

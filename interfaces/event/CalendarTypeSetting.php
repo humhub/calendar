@@ -83,7 +83,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
     public function isEnabled()
     {
         $settingKey = $this->getKey() . '_item_enabled';
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             return (bool) $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, true);
         }
 
@@ -103,7 +103,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
     public function updateEnabled($isEnabled)
     {
         $settingKey = $this->getKey() . '_item_enabled';
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->set($settingKey, $isEnabled);
         }
 
@@ -115,7 +115,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
      */
     public function getDefaultColor()
     {
-        if($this->type->getDefaultColor()) {
+        if ($this->type->getDefaultColor()) {
             return $this->type->getDefaultColor();
         }
 
@@ -141,7 +141,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
     public function getColor()
     {
         $settingKey = $this->getKey() . '_item_color';
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->getInherit($settingKey, $this->getDefaultColor());
         }
 
@@ -154,7 +154,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
     public function updateColor($color)
     {
         $settingKey = $this->getKey() . '_item_color';
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             return $this->getSettings()->contentContainer($this->contentContainer)->set($settingKey, $color);
         } else {
             return $this->getSettings()->set($settingKey, $color);
@@ -163,7 +163,7 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
 
     public function save()
     {
-        if($this->validate()) {
+        if ($this->validate()) {
             $this->updateColor($this->color);
             $this->updateEnabled($this->enabled);
             return true;

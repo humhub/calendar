@@ -51,7 +51,7 @@ class LocaleTest extends CalendarUnitTest
         $start = new \DateTime('2019-11-13 00:00:00');
         $end = new \DateTime('2019-11-13 00:00:00');
 
-        foreach(Yii::$app->params['availableLanguages'] as $locale => $name) {
+        foreach (Yii::$app->params['availableLanguages'] as $locale => $name) {
             $this->assertLocale($locale, $start, $end, 1);
         }
     }
@@ -61,7 +61,7 @@ class LocaleTest extends CalendarUnitTest
         $start = new \DateTime('2019-11-13 13:00:00');
         $end = new \DateTime('2019-11-14 15:00:00');
 
-        foreach(Yii::$app->params['availableLanguages'] as $locale => $name) {
+        foreach (Yii::$app->params['availableLanguages'] as $locale => $name) {
             $this->assertLocale($locale, $start, $end);
         }
     }

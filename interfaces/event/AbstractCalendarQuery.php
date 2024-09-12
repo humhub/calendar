@@ -259,7 +259,7 @@ abstract class AbstractCalendarQuery extends Component
      */
     private static function autoAssignUid($entry, $query)
     {
-        if($entry instanceof EditableEventIF && empty($entry->getUid())) {
+        if ($entry instanceof EditableEventIF && empty($entry->getUid())) {
             $entry->setUid(CalendarUtils::generateEventUid($entry));
             $entry->saveEvent();
             return;
@@ -790,12 +790,12 @@ abstract class AbstractCalendarQuery extends Component
      */
     protected function setupDateCriteria()
     {
-        if($this->_from) {
+        if ($this->_from) {
             $fromTime = clone $this->_from;
             $fromTime->setTimezone(CalendarUtils::getSystemTimeZone());
         }
 
-        if($this->_to) {
+        if ($this->_to) {
             $toTime = clone $this->_to->setTimezone(CalendarUtils::getSystemTimeZone());
             $toTime->setTimezone(CalendarUtils::getSystemTimeZone());
         }
@@ -803,21 +803,21 @@ abstract class AbstractCalendarQuery extends Component
         if ($this->_openRange && $this->_from && $this->_to) {
             //Search for all dates with start and/or end within the given range
 
-            if($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
+            if ($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
                 $this->_query->andFilterWhere(['or',
                     ['and', $this->getStartCriteria($this->_from, '<'), $this->getEndCriteria($this->_to, '>')],
                     ['and', $this->getStartCriteria($this->_from, '>='), $this->getStartCriteria($this->_to, '<')],
                     ['and', $this->getEndCriteria($this->_from, '>'), $this->getEndCriteria($this->_to, '<=')],
                     $this->isRecurrenceRootCondition(),
                 ]);
-            } elseif($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
+            } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
                 $this->_query->andFilterWhere(['or',
                     ['and', $this->getStartCriteria($fromTime, '<'), $this->getEndCriteria($toTime, '>')],
                     ['and', $this->getStartCriteria($fromTime, '>='), $this->getStartCriteria($toTime, '<')],
                     ['and', $this->getEndCriteria($fromTime, '>'), $this->getEndCriteria($toTime, '<=')],
                     $this->isRecurrenceRootCondition(),
                 ]);
-            } elseif($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
+            } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
                 $this->_query->andFilterWhere(
                     ['or',
                         ['or',
@@ -844,11 +844,11 @@ abstract class AbstractCalendarQuery extends Component
             }
         } else {
             if ($this->_from) {
-                if($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
+                if ($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
                     $this->_query->andWhere(['or', $this->getStartCriteria($this->_from, '>='), $this->isRecurrenceRootCondition()]);
-                } elseif($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
+                } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
                     $this->_query->andWhere(['or', $this->getStartCriteria($fromTime, '>='), $this->isRecurrenceRootCondition()]);
-                } elseif($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
+                } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
                     $this->_query->andWhere(
                         ['or',
                             ['and', [$this->allDayField => 0], $this->getStartCriteria($fromTime, '>=')],
@@ -860,11 +860,11 @@ abstract class AbstractCalendarQuery extends Component
             }
 
             if ($this->_to) {
-                if($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
+                if ($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
                     $this->_query->andWhere(['or', $this->getEndCriteria($this->_to, '<='), $this->isRecurrenceRootCondition()]);
-                } elseif($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
+                } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
                     $this->_query->andWhere(['or', $this->getEndCriteria($toTime, '<='), $this->isRecurrenceRootCondition()]);
-                } elseif($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
+                } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
                     $this->_query->andWhere(
                         ['or',
                             ['and', [$this->allDayField => 0], $this->getEndCriteria($toTime, '<=')],
@@ -912,7 +912,7 @@ abstract class AbstractCalendarQuery extends Component
 
     protected function getDateFormat()
     {
-        if(!empty($this->dateFormat)) {
+        if (!empty($this->dateFormat)) {
             return $this->dateFormat;
         }
 
@@ -1007,7 +1007,7 @@ abstract class AbstractCalendarQuery extends Component
     protected function filterArchived()
     {
         if ($this->_query instanceof ActiveQueryContent) {
-            if(!$this->isJoinedWith('content')) {
+            if (!$this->isJoinedWith('content')) {
                 $this->_query->joinWith('content');
             }
             $this->_query->andWhere('content.archived = 0');
@@ -1024,7 +1024,7 @@ abstract class AbstractCalendarQuery extends Component
         }
 
         if ($this->_query instanceof ActiveQueryContent) {
-            if(!$this->isJoinedWith('content')) {
+            if (!$this->isJoinedWith('content')) {
                 $this->_query->joinWith('content');
             }
             $this->_query->innerJoin('content_tag_relation', 'content_tag_relation.content_id = content.id');
@@ -1043,12 +1043,12 @@ abstract class AbstractCalendarQuery extends Component
     {
         $joinWith = $this->_query->joinWith;
 
-        if(empty($joinWith)) {
+        if (empty($joinWith)) {
             return false;
         }
 
         foreach ($joinWith as $join) {
-            if(isset($join[0][0]) && $join[0][0] === $relation) {
+            if (isset($join[0][0]) && $join[0][0] === $relation) {
                 return true;
             }
         }

@@ -40,7 +40,7 @@ class UpcomingEvents extends Widget
 
         $filters = [];
 
-        if(!$this->contentContainer) {
+        if (!$this->contentContainer) {
             $filters[] = CalendarEntryQuery::FILTER_DASHBOARD;
         }
 

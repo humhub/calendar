@@ -27,7 +27,7 @@ class ReminderLink extends Widget
 
     public function run()
     {
-        if(!$this->entry || !$this->entry instanceof ContentActiveRecord || !$this->entry instanceof CalendarEventIF) {
+        if (!$this->entry || !$this->entry instanceof ContentActiveRecord || !$this->entry instanceof CalendarEventIF) {
             return;
         }
 

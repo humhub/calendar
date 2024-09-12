@@ -95,14 +95,14 @@ abstract class AbstractConfigController extends ContentContainerController
 
     public function actionEditType($id = null)
     {
-        if($id) {
+        if ($id) {
             $model = CalendarEntryType::find()->where(['id' => $id])->one();
             $this->validateEntry($model);
         } else {
             $model = new CalendarEntryType($this->contentContainer);
         }
 
-        if($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
             return $this->htmlRedirect(URL::toConfigTypes($this->contentContainer ?? $this->getContainerFromRequest()));
         }
@@ -123,11 +123,11 @@ abstract class AbstractConfigController extends ContentContainerController
     {
         $item = $this->calendarService->getItemType($key, $this->contentContainer);
 
-        if(!$item) {
+        if (!$item) {
             throw new HttpException(404);
         }
 
-        if($item->load(Yii::$app->request->post()) && $item->save()) {
+        if ($item->load(Yii::$app->request->post()) && $item->save()) {
             $this->view->saved();
             return $this->htmlRedirect(URL::toConfigCalendars($this->contentContainer));
         }
@@ -155,11 +155,11 @@ abstract class AbstractConfigController extends ContentContainerController
 
     protected function validateEntry(CalendarEntryType $type = null)
     {
-        if(!$type) {
+        if (!$type) {
             throw new HttpException(404);
         }
 
-        if($type->contentcontainer_id !== $this->getContentContainerId()) {
+        if ($type->contentcontainer_id !== $this->getContentContainerId()) {
             throw new HttpException(400);
         }
     }

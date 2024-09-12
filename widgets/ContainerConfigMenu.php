@@ -34,7 +34,7 @@ class ContainerConfigMenu extends SettingsTabs
     public function getFirstVisibleItem()
     {
         foreach ($this->items as $item) {
-            if(!isset($item['visible']) || $item['visible'] === true) {
+            if (!isset($item['visible']) || $item['visible'] === true) {
                 return $item;
             }
         }
@@ -49,11 +49,11 @@ class ContainerConfigMenu extends SettingsTabs
     {
         $this->contentContainer = ContentContainerHelper::getCurrent();
 
-        if(!$this->contentContainer && !Yii::$app->user->isGuest) {
+        if (!$this->contentContainer && !Yii::$app->user->isGuest) {
             $this->contentContainer = Yii::$app->user->identity;
         }
 
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             $this->initItems();
         }
 
@@ -81,7 +81,7 @@ class ContainerConfigMenu extends SettingsTabs
             ],
         ];
 
-        if(!empty($calendarService->getCalendarItemTypes($this->contentContainer))) {
+        if (!empty($calendarService->getCalendarItemTypes($this->contentContainer))) {
             $this->items[] = [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Calendars'),
                 'url' => Url::toConfigCalendars($this->contentContainer),

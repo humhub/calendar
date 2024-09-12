@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.6.4 (Unreleased)
+-----------------------
+- Enh #502: Replace theme variables with CSS variables
+
 1.6.3 (August 23, 2024)
 -----------------------
 - Fix #477: Hide the settings button when module is not available for a container

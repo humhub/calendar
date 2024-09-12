@@ -199,7 +199,7 @@ class Events
         try {
             $eventModel = static::getCalendarEvent($event->sender->object);
 
-            if(!$eventModel) {
+            if (!$eventModel) {
                 return;
             }
 
@@ -208,11 +208,11 @@ class Events
             }
 
             /* @var $eventModel CalendarEventIF */
-            if($eventModel->getStartDateTime() <= new DateTime()) {
+            if ($eventModel->getStartDateTime() <= new DateTime()) {
                 return;
             }
 
-            if($eventModel instanceof CalendarEventReminderIF && !RecurrenceHelper::isRecurrentRoot($eventModel)) {
+            if ($eventModel instanceof CalendarEventReminderIF && !RecurrenceHelper::isRecurrentRoot($eventModel)) {
                 $event->sender->addWidget(ReminderLink::class, ['entry' => $eventModel]);
             }
         } catch (\Throwable $e) {
@@ -226,13 +226,13 @@ class Events
      */
     private static function getCalendarEvent($model)
     {
-        if($model instanceof CalendarEventIF) {
+        if ($model instanceof CalendarEventIF) {
             return $model;
         }
 
-        if(method_exists($model, 'getCalendarEvent')) {
+        if (method_exists($model, 'getCalendarEvent')) {
             $event = $model->getCalendarEvent();
-            if($event instanceof CalendarEventIF) {
+            if ($event instanceof CalendarEventIF) {
                 return $event;
             }
         }
@@ -253,9 +253,9 @@ class Events
     {
         try {
             $model = CalendarUtils::getCalendarEvent($event->sender);
-            if($model && ($model instanceof EditableEventIF)) {
+            if ($model && ($model instanceof EditableEventIF)) {
                 /** @var $model EditableEventIF **/
-                if(empty($model->getUid())) {
+                if (empty($model->getUid())) {
                     $model->setUid(CalendarUtils::generateEventUid($model));
                 }
             }
@@ -274,17 +274,17 @@ class Events
         try {
             $model = CalendarUtils::getCalendarEvent($event->sender);
 
-            if(!$model || !($model instanceof CalendarEventReminderIF)) {
+            if (!$model || !($model instanceof CalendarEventReminderIF)) {
                 return;
             }
 
-            foreach(CalendarReminder::getEntryLevelReminder($model) as $reminder) {
+            foreach (CalendarReminder::getEntryLevelReminder($model) as $reminder) {
                 $reminder->delete();
             }
 
-            if($model instanceof RecurrentEventIF) {
+            if ($model instanceof RecurrentEventIF) {
                 // When deleting duplicates we want to prevent automatic exdate settings.
-                if(!static::$duplicateIntegrityRun) {
+                if (!static::$duplicateIntegrityRun) {
                     $model->getRecurrenceQuery()->onDelete();
                 }
             }
@@ -317,7 +317,7 @@ class Events
         $integrityController->showTestHeadline("Calendar Module (" . CalendarReminderSent::find()->count() . " reminder sent entries)");
 
         foreach (CalendarReminderSent::find()->each() as $reminderSent) {
-            if(!Content::findOne(['id' => $reminderSent->content_id])) {
+            if (!Content::findOne(['id' => $reminderSent->content_id])) {
                 if ($integrityController->showFix("Delete calendar reminder sent" . $reminderSent->id . " without existing entry relation!")) {
                     $reminderSent->delete();
                 }
@@ -339,7 +339,7 @@ class Events
                 ->andWhere(['<>', 'id', $duplicatedRecurrenceArr['id']]);
 
             foreach ($duplicateQuery->each() as $duplicate) {
-                if(RecurrenceHelper::isRecurrentInstance($duplicate) && $duplicate->id !== $duplicatedRecurrenceArr['id']) {
+                if (RecurrenceHelper::isRecurrentInstance($duplicate) && $duplicate->id !== $duplicatedRecurrenceArr['id']) {
                     if ($integrityController->showFix('Delete duplicated recurrent event instance ' . $duplicate->id . '!')) {
                         $duplicate->hardDelete();
                     }
@@ -370,7 +370,7 @@ class Events
         $module = Yii::$app->getModule('calendar');
         $lastRunTS = $module->settings->get('lastReminderRunTS');
 
-        if(!$lastRunTS || ((time() - $lastRunTS) >= $module->getRemidnerProcessIntervalS())) {
+        if (!$lastRunTS || ((time() - $lastRunTS) >= $module->getRemidnerProcessIntervalS())) {
             try {
                 $controller = $event->sender;
                 $controller->stdout("Running reminder process... ");

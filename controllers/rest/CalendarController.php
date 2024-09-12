@@ -86,7 +86,7 @@ class CalendarController extends BaseContentController
         }
 
         $calendarEntryForm = new CalendarEntryForm(['entry' => $calendarEntry]);
-        if(! $calendarEntryForm->entry->content->canEdit()) {
+        if (! $calendarEntryForm->entry->content->canEdit()) {
             return $this->returnError(403, 'You are not allowed to update this calendar entry!');
         }
 

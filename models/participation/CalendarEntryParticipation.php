@@ -51,15 +51,15 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         $defaultSettings = new ParticipationSettings(['contentContainer' => $this->entry->content->container]);
 
         // Default participiation Mode
-        if($this->entry->participation_mode === null) {
+        if ($this->entry->participation_mode === null) {
             $this->entry->participation_mode = $defaultSettings->participation_mode;
         }
 
-        if($this->entry->allow_maybe === null) {
+        if ($this->entry->allow_maybe === null) {
             $this->entry->allow_maybe = $defaultSettings->allow_maybe;
         }
 
-        if($this->entry->allow_decline === null) {
+        if ($this->entry->allow_decline === null) {
             $this->entry->allow_decline = $defaultSettings->allow_decline;
         }
     }
@@ -134,11 +134,11 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public function findParticipants($status = [])
     {
-        if(is_int($status)) {
+        if (is_int($status)) {
             $status = [$status];
         }
 
-        if(empty($status)) {
+        if (empty($status)) {
             return $this->entry->hasMany(User::class, ['id' => 'user_id'])->via('participantEntries');
         }
 
@@ -173,7 +173,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
 
     public function afterMove(ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             return;
         }
 
@@ -336,7 +336,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
 
     public function isShowParticipationInfo(User $user = null)
     {
-        if(empty($this->entry->participant_info) || !$this->isEnabled()) {
+        if (empty($this->entry->participant_info) || !$this->isEnabled()) {
             return false;
         }
 
