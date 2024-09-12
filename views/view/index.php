@@ -12,20 +12,19 @@ use humhub\modules\ui\view\helpers\ThemeHelper;
 /* @var $contentContainer ContentContainerActiveRecord */
 ?>
 <div class="panel panel-default">
-    <div class="panel-body" style="background-color:<?= $this->theme->variable('background-color-secondary') ?>">
+    <div class="panel-body" style="background-color: var(--background-color-secondary)">
         <?= CalendarFilterBar::widget([
             'filters' => $filters,
-            'showSelectors' => false
-            ]) ?>
+            'showSelectors' => false,
+        ]) ?>
     </div>
     <div class="panel-body">
         <?= FullCalendar::widget([
             'canWrite' => $canAddEntries,
             'loadUrl' => Url::toAjaxLoad($contentContainer),
             'contentContainer' => $contentContainer,
-            'aspectRatio' => ThemeHelper::isFluid() ? 2 : 1.7
-        ]);
-        ?>
+            'aspectRatio' => ThemeHelper::isFluid() ? 2 : 1.7,
+        ]) ?>
     </div>
 </div>
 

@@ -15,7 +15,7 @@ use yii\web\View;
 /* @var $collapse boolean */
 /* @var $this View */
 
-$color = $this->theme->variable('text-color-secondary');
+$color = 'var(--text-color-secondary)';
 ?>
 
 <div class="media event calendar-wall-entry" style="margin-top:20px;" data-action-component="calendar.CalendarEntry"

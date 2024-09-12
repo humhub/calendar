@@ -78,7 +78,7 @@ use humhub\widgets\FadeIn;
         <?php endif ?>
         <?php if ($showFilters) : ?>
             <div class="calendar-filters"
-                 style="<?= ($showSelectors) ? 'border-left:2px solid ' . $this->theme->variable('default') : '' ?>">
+                 style="<?= ($showSelectors) ? 'border-left:2px solid var(--default)' : '' ?>">
                 <div class="help-block" style="padding-left:10px;">
                     <?= Yii::t('CalendarModule.views_global_index', 'Filter events') ?>
                 </div>
@@ -104,7 +104,7 @@ use humhub\widgets\FadeIn;
         <?php endif ?>
         <?php if ($showTypes) : ?>
             <div class="calendar-types"
-                 style="width:300px;max-width:100%;<?= $showSelectors || $showFilters ? 'border-left:2px solid ' . $this->theme->variable('default') : '' ?>">
+                 style="width:300px;max-width:100%;<?= $showSelectors || $showFilters ? 'border-left:2px solid var(--default)' : '' ?>">
                 <div class="help-block" style="padding-left:10px;">
                     <?= Yii::t('CalendarModule.base', 'Filter by types') ?>
                 </div>
