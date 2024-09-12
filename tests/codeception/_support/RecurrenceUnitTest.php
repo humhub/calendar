@@ -37,7 +37,7 @@ class RecurrenceUnitTest extends CalendarUnitTest
         $this->setDefaults($this->rootEvent, $rrule);
         $this->assertTrue($this->rootEvent->save());
 
-        if($expand) {
+        if ($expand) {
             $this->recurrences = $this->expand(true);
         }
     }
@@ -60,7 +60,7 @@ class RecurrenceUnitTest extends CalendarUnitTest
      */
     protected function expand($save = false, $entry = null, $fromDay = 1, $toDay = 7)
     {
-        if(!$entry) {
+        if (!$entry) {
             $entry = $this->rootEvent;
         }
         $expandStart = (new DateTime())->setDate(2019, 12, $fromDay)->setTime(0, 0, 0);

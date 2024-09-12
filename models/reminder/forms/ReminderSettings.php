@@ -69,7 +69,7 @@ class ReminderSettings extends Model
 
     protected function loadReminder($defaults = true)
     {
-        if($this->entry) {
+        if ($this->entry) {
             return CalendarReminder::getEntryLevelReminder($this->entry, $this->user, $defaults);
         }
 
@@ -78,11 +78,11 @@ class ReminderSettings extends Model
 
     public function getDefaults()
     {
-        if($this->isDefaultsLoaded) {
+        if ($this->isDefaultsLoaded) {
             return $this->reminders;
         }
 
-        if($this->entry) {
+        if ($this->entry) {
             return CalendarReminder::getEntryLevelDefaults($this->entry, $this->user);
         }
 
@@ -96,9 +96,9 @@ class ReminderSettings extends Model
         $this->isDefaultsLoaded();
         $this->hasDefaults();
 
-        if($this->hasDefaults && $this->isDefaultsLoaded()) {
+        if ($this->hasDefaults && $this->isDefaultsLoaded()) {
             $this->reminderType = static::REMINDER_TYPE_DEFAULT;
-        } elseif($this->isDisabled()) {
+        } elseif ($this->isDisabled()) {
             $this->reminderType = static::REMINDER_TYPE_NONE;
         } else {
             $this->reminderType = static::REMINDER_TYPE_CUSTOM;
@@ -107,13 +107,13 @@ class ReminderSettings extends Model
 
     private function isDisabled()
     {
-        if(count($this->reminders) === 1 && $this->reminders[0]->isNewRecord) {
+        if (count($this->reminders) === 1 && $this->reminders[0]->isNewRecord) {
             return true;
         }
 
         // check for explicitly disabled reminders
         foreach ($this->reminders as $reminder) {
-            if($reminder->disabled) {
+            if ($reminder->disabled) {
                 return true;
             }
         }
@@ -153,13 +153,13 @@ class ReminderSettings extends Model
 
         $reminderLoaded = false;
 
-        if(!$parentLoad) {
+        if (!$parentLoad) {
             return false;
         }
 
-        if($this->isReminderType(static::REMINDER_TYPE_DEFAULT) || $this->isReminderType(static::REMINDER_TYPE_NONE)) {
+        if ($this->isReminderType(static::REMINDER_TYPE_DEFAULT) || $this->isReminderType(static::REMINDER_TYPE_NONE)) {
             $this->reminders = [];
-        } elseif(isset($data[CalendarReminder::instance()->formName()])) {
+        } elseif (isset($data[CalendarReminder::instance()->formName()])) {
             $this->reminders = [];
             $reminderLoaded = true;
             $maxReminders = $this->getMaxReminders();
@@ -169,7 +169,7 @@ class ReminderSettings extends Model
                 $reminder->ensureValidValue();
                 $this->reminders[] = $reminder;
 
-                if(count($this->reminders) >= $maxReminders) {
+                if (count($this->reminders) >= $maxReminders) {
                     break;
                 }
             }
@@ -180,7 +180,7 @@ class ReminderSettings extends Model
 
     private function translate(CalendarReminder $reminder)
     {
-        if($reminder->unit === CalendarReminder::UNIT_DAY) {
+        if ($reminder->unit === CalendarReminder::UNIT_DAY) {
 
         }
     }
@@ -214,13 +214,13 @@ class ReminderSettings extends Model
 
         $result = [];
         foreach ($this->reminders as $newReminder) {
-            if($this->entry) {
+            if ($this->entry) {
                 $newReminder->content_id = $this->entry->getContentRecord()->id;
             }
 
             $newReminder = $this->findReminder($newReminder, $preservedReminders) ?: $newReminder;
 
-            if(!empty($newReminder->value)) {
+            if (!empty($newReminder->value)) {
                 $newReminder->save();
                 $result[] = $newReminder;
             }
@@ -229,7 +229,7 @@ class ReminderSettings extends Model
         $this->reminders = $result;
 
         // Check for disabled reminder if not global settings
-        if(empty($this->reminders) && $this->hasDefaults && !$this->isReminderTypeUseDefault() && !$this->isGlobalSettings()) {
+        if (empty($this->reminders) && $this->hasDefaults && !$this->isReminderTypeUseDefault() && !$this->isGlobalSettings()) {
             $this->initReminder(1)->save();
         }
 
@@ -237,7 +237,7 @@ class ReminderSettings extends Model
             $this->reminders[] = new CalendarReminder();
         }
 
-        if($this->isGlobalSettings() || $this->isContainerLevelSettings()) {
+        if ($this->isGlobalSettings() || $this->isContainerLevelSettings()) {
             CalendarReminder::flushDefautlts();
         }
 
@@ -253,7 +253,7 @@ class ReminderSettings extends Model
     public function findReminder(CalendarReminder $reminder, $reminders)
     {
         foreach ($reminders as $existingReminder) {
-            if($existingReminder->compare($reminder)) {
+            if ($existingReminder->compare($reminder)) {
                 return $existingReminder;
             }
         }
@@ -268,11 +268,11 @@ class ReminderSettings extends Model
 
     public function initReminder($disabled = false)
     {
-        if($this->entry) {
+        if ($this->entry) {
             $result = $disabled
                 ? CalendarReminder::initDisableEntryLevelDefaults($this->entry, $this->user)
                 : CalendarReminder::initEntryLevel(null, null, $this->entry, $this->user);
-        } elseif($this->container) {
+        } elseif ($this->container) {
             $result = $disabled
                 ? CalendarReminder::initDisableContainerDefaults($this->container)
                 : CalendarReminder::initContainerDefault(null, null, $this->container);
@@ -286,23 +286,23 @@ class ReminderSettings extends Model
 
     public function isDefaultsLoaded()
     {
-        if($this->isDefaultsLoaded !== null) {
+        if ($this->isDefaultsLoaded !== null) {
             return $this->isDefaultsLoaded;
         }
 
-        if(empty($this->reminders) || $this->isGlobalSettings()) {
+        if (empty($this->reminders) || $this->isGlobalSettings()) {
             return $this->isDefaultsLoaded = false;
         }
 
-        if($this->reminders[0]->isNewRecord) {
+        if ($this->reminders[0]->isNewRecord) {
             return $this->isDefaultsLoaded = false;
         }
 
-        if($this->isContainerLevelSettings()) {
+        if ($this->isContainerLevelSettings()) {
             return $this->isDefaultsLoaded = !$this->reminders[0]->isContainerLevelReminder();
         }
 
-        if($this->isUserLevelEntrySettings()) {
+        if ($this->isUserLevelEntrySettings()) {
             return $this->isDefaultsLoaded = !$this->reminders[0]->isUserLevelReminder();
         }
 
@@ -327,20 +327,20 @@ class ReminderSettings extends Model
 
     public function hasDefaults()
     {
-        if($this->hasDefaults !== null) {
+        if ($this->hasDefaults !== null) {
             return $this->hasDefaults;
         }
 
 
-        if($this->isGlobalSettings()) {
+        if ($this->isGlobalSettings()) {
             return  $this->hasDefaults = false;
         }
 
-        if($this->isEntryLevelSettings()) {
+        if ($this->isEntryLevelSettings()) {
             return $this->hasDefaults = !empty(CalendarReminder::getEntryLevelDefaults($this->entry, $this->user));
         }
 
-        if($this->isContainerLevelSettings()) {
+        if ($this->isContainerLevelSettings()) {
             return $this->hasDefaults = !empty(CalendarReminder::getDefaults());
         }
 
@@ -363,7 +363,7 @@ class ReminderSettings extends Model
         // Delete old reminders not existing in newReminders
         $preservedReminders = [];
         foreach ($oldReminders as $oldReminder) {
-            if(!$preserve || !$this->findReminder($oldReminder, $this->reminders)) {
+            if (!$preserve || !$this->findReminder($oldReminder, $this->reminders)) {
                 $oldReminder->delete();
             } else {
                 $preservedReminders[] = $oldReminder;
@@ -401,7 +401,7 @@ class ReminderSettings extends Model
     {
         $result = [static::REMINDER_TYPE_NONE => Yii::t('CalendarModule.reminder', 'No reminder')];
 
-        if($this->hasDefaults) {
+        if ($this->hasDefaults) {
             $result[static::REMINDER_TYPE_DEFAULT] =  Yii::t('CalendarModule.reminder', 'Use default reminder');
         }
 

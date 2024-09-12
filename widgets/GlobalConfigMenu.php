@@ -57,7 +57,7 @@ class GlobalConfigMenu extends SettingsTabs
             ],
         ];
 
-        if(!empty($calendarService->getCalendarItemTypes())) {
+        if (!empty($calendarService->getCalendarItemTypes())) {
             $this->items[] = [
                 'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Calendars'),
                 'url' => Url::toConfigCalendars(),

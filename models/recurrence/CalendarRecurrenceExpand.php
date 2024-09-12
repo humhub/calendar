@@ -128,13 +128,13 @@ class CalendarRecurrenceExpand extends Model
         $from = new DateTime();
         $startIndex = 0;
 
-        if($start instanceof \DateTimeInterface) {
+        if ($start instanceof \DateTimeInterface) {
             $from = $start;
             $startIndex = 0;
-        } elseif(is_bool($start)) {
+        } elseif (is_bool($start)) {
             $save = $start;
             $startIndex = 0;
-        } elseif(is_int($start)) {
+        } elseif (is_int($start)) {
             $startIndex = $start;
         }
 
@@ -162,7 +162,7 @@ class CalendarRecurrenceExpand extends Model
 
         try {
             for ($i = 0; $i < $count && $it->valid(); $i++) {
-                if($i >= $startIndex) {
+                if ($i >= $startIndex) {
                     $vEvent = static::stripTimezones($it->getEventObject(), $eventTimeZone);
                     $recurrenceId = RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $event->getTimezone());
                     $existingModel = $event->getRecurrenceQuery()->getRecurrenceInstance($recurrenceId);
@@ -193,8 +193,7 @@ class CalendarRecurrenceExpand extends Model
                 // first.
                 $dt[0] = $dt[0]->setTimeZone(new DateTimeZone('UTC'));
                 $componentChild->setDateTimes($dt);
-            } elseif
-            ($componentChild instanceof Component) {
+            } elseif ($componentChild instanceof Component) {
                 static::stripTimezones($componentChild);
             }
         }
@@ -289,7 +288,7 @@ class CalendarRecurrenceExpand extends Model
         $dtStart = CalendarUtils::getDateTime($vEventUTC->DTSTART->getDateTime());
         $dtEnd = CalendarUtils::getDateTime($vEventUTC->DTEND->getDateTime());
 
-        if($root->isAllDay()) {
+        if ($root->isAllDay()) {
             CalendarUtils::ensureAllDay($dtStart, $dtEnd);
         } else {
             $dtStart->setTimezone(CalendarUtils::getSystemTimeZone());

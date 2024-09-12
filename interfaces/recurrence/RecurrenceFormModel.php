@@ -80,7 +80,7 @@ class RecurrenceFormModel extends Model
     {
         parent::init();
         $this->initRrule($this->entry->getRrule());
-        if(RecurrenceHelper::isRecurrentRoot($this->entry)) {
+        if (RecurrenceHelper::isRecurrentRoot($this->entry)) {
             // Force edit mode all on root events
             $this->recurrenceEditMode = static::EDIT_MODE_ALL;
         }
@@ -88,11 +88,11 @@ class RecurrenceFormModel extends Model
 
     private function getMonthDaySelectionByRRule(Rule $rule)
     {
-        if((int) $this->frequency !== Frequency::MONTHLY) {
+        if ((int) $this->frequency !== Frequency::MONTHLY) {
             return static::MONTHLY_BY_DAY_OF_MONTH;
         }
 
-        if($rule->getBySetPosition() !== null) {
+        if ($rule->getBySetPosition() !== null) {
             return static::MONTHLY_BY_OCCURRENCE;
         }
 
@@ -194,7 +194,7 @@ class RecurrenceFormModel extends Model
 
     public function validateModel($attribute, $params)
     {
-        if($this->recurrenceEditMode === static::EDIT_MODE_ALL && !RecurrenceHelper::isRecurrentRoot($this->entry)) {
+        if ($this->recurrenceEditMode === static::EDIT_MODE_ALL && !RecurrenceHelper::isRecurrentRoot($this->entry)) {
             // Currently the edit mode all is only valid if the root event itself is given due to load complexity...
             throw new HttpException(400, 'No root event given for edit mode all!');
         }
@@ -259,12 +259,12 @@ class RecurrenceFormModel extends Model
             return false;
         }
 
-        if(!$this->entry->getUid()) {
+        if (!$this->entry->getUid()) {
             $this->entry->setUid(CalendarUtils::generateEventUid($this->entry));
             $this->entry->saveEvent();
         }
 
-        switch($this->recurrenceEditMode) {
+        switch ($this->recurrenceEditMode) {
             case static::EDIT_MODE_THIS:
                 // We only want to save this instance, so we ignore rrule changes
                 return true;
@@ -410,7 +410,7 @@ class RecurrenceFormModel extends Model
         ];
 
         // If the date is not in the fifth week of the month
-        if(!$this->isFifthWeekOfMonth($this->getMonthlyPositionOfStart())) {
+        if (!$this->isFifthWeekOfMonth($this->getMonthlyPositionOfStart())) {
             $result[self::MONTHLY_BY_OCCURRENCE] = Yii::t('CalendarModule.recurrence', 'Monthly on the {position} {dayOfWeek}', [
                 'position' => $this->getMonthlyPositionOfStartFormatted(),
                 'dayOfWeek' => $this->getStartDayOfWeekFormatted(),
@@ -418,7 +418,7 @@ class RecurrenceFormModel extends Model
         }
 
         // If the day is in the last week of month we add the possibility for 'last' day of month
-        if($this->isLastWeekDayOfMonth()) {
+        if ($this->isLastWeekDayOfMonth()) {
             $result[self::MONTHLY_LAST_DAY_OF_MONTH] = Yii::t('CalendarModule.recurrence', 'Monthly on the {position} {dayOfWeek}', [
                 'position' =>  Yii::t('CalendarModule.recurrence', 'last'),
                 'dayOfWeek' => $this->getStartDayOfWeekFormatted(),

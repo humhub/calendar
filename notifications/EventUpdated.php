@@ -6,7 +6,7 @@
  *
  */
 
-namespace  humhub\modules\calendar\notifications;
+namespace humhub\modules\calendar\notifications;
 
 use humhub\libs\Html;
 use humhub\modules\calendar\notifications\base\EventNotification;

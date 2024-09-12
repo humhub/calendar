@@ -77,7 +77,7 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     protected function filterDashboard()
     {
-        if(SnippetModuleSettings::instance()->includeBirthdayToDashboard()) {
+        if (SnippetModuleSettings::instance()->includeBirthdayToDashboard()) {
             return;
         }
 

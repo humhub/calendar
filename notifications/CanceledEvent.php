@@ -6,7 +6,7 @@
  *
  */
 
-namespace  humhub\modules\calendar\notifications;
+namespace humhub\modules\calendar\notifications;
 
 use humhub\libs\Html;
 use humhub\modules\content\notifications\ContentCreatedNotificationCategory;
@@ -45,7 +45,7 @@ class CanceledEvent extends BaseNotification
      */
     public function html()
     {
-        if($this->source->content->container instanceof Space) {
+        if ($this->source->content->container instanceof Space) {
             return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                 'contentTitle' => $this->getContentInfo($this->source, false),

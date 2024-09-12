@@ -94,7 +94,7 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
 
     private function participantJoin()
     {
-        if(!$this->praticipantJoined) {
+        if (!$this->praticipantJoined) {
             $this->_query->leftJoin('calendar_entry_participant', 'calendar_entry.id=calendar_entry_participant.calendar_entry_id AND calendar_entry_participant.user_id=:userId', [':userId' => $this->_user->id]);
             $this->praticipantJoined = true;
         }

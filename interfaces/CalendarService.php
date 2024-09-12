@@ -83,7 +83,7 @@ class CalendarService extends Component
     {
         $containerKey = ($contentContainer) ? $contentContainer->contentcontainer_id : 'global';
 
-        if(isset(static::$resultCache[$containerKey])) {
+        if (isset(static::$resultCache[$containerKey])) {
             return static::$resultCache[$containerKey];
         }
 
@@ -135,14 +135,14 @@ class CalendarService extends Component
 
         $this->trigger(static::EVENT_FIND_ITEMS, $event);
 
-        foreach($event->getItems() as $itemTypeKey => $items) {
+        foreach ($event->getItems() as $itemTypeKey => $items) {
             $itemType = $this->getItemType($itemTypeKey, $contentContainer);
 
-            if($itemType && $itemType->isEnabled()) {
+            if ($itemType && $itemType->isEnabled()) {
                 foreach ($items as $item) {
-                    if(is_array($item)) {
+                    if (is_array($item)) {
                         $result[] = new CalendarEventIFWrapper(['itemType' => $itemType, 'options' => $item]);
-                    } elseif($item instanceof CalendarEventIF) {
+                    } elseif ($item instanceof CalendarEventIF) {
                         $result[] = $item;
                     }
 
@@ -163,22 +163,22 @@ class CalendarService extends Component
 
     public function getEventColor(CalendarEventIF $event)
     {
-        if($event->getColor()) {
+        if ($event->getColor()) {
             return $event->getColor();
         }
 
         $type = $event->getEventType();
 
-        if(!$type) {
+        if (!$type) {
             return null;
         }
 
         $typeSettings = null;
 
-        if($event instanceof ContentActiveRecord) {
+        if ($event instanceof ContentActiveRecord) {
             /* @var $content Content */
             $content = $event->content;
-            if($content->contentcontainer_id === null) {
+            if ($content->contentcontainer_id === null) {
                 $typeSettings = $this->getItemType($type->getKey());
             } else {
                 $container = isset(static::$containerCache[$content->contentcontainer_id])
@@ -217,7 +217,7 @@ class CalendarService extends Component
     {
         $itemTypes = $this->getCalendarItemTypes($contentContainer);
         foreach ($itemTypes as $itemType) {
-            if($itemType->key === $key) {
+            if ($itemType->key === $key) {
                 return $itemType;
             }
         }

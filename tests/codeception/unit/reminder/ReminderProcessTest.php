@@ -462,7 +462,7 @@ class ReminderProcessTest extends CalendarUnitTest
 
     private function assertCheck($reminder, $entry)
     {
-        if(!CalendarReminderSent::check($reminder, $entry)) {
+        if (!CalendarReminderSent::check($reminder, $entry)) {
             $test = 'asdf';
         }
         $this->assertTrue(CalendarReminderSent::check($reminder, $entry));

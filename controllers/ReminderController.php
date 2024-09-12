@@ -40,23 +40,23 @@ class ReminderController extends ContentContainerController
     {
         $content = Content::findOne(['id' => $id]);
 
-        if(!$content) {
+        if (!$content) {
             throw new HttpException(404);
         }
 
-        if(!$content->canView()) {
+        if (!$content->canView()) {
             throw new HttpException(403);
         }
 
         $model = CalendarUtils::getCalendarEvent($content);
 
-        if(!$model || !($model instanceof CalendarEventReminderIF)) {
+        if (!$model || !($model instanceof CalendarEventReminderIF)) {
             throw new HttpException(400);
         }
 
         $reminderSettings = new ReminderSettings(['entry' => $model, 'user' => Yii::$app->user->getIdentity()]);
 
-        if($reminderSettings->load(Yii::$app->request->post()) && $reminderSettings->save()) {
+        if ($reminderSettings->load(Yii::$app->request->post()) && $reminderSettings->save()) {
             return ModalClose::widget(['saved' => true]);
         }
 

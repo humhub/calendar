@@ -33,7 +33,7 @@ class CalendarItemTypesEvent extends Event
      */
     public function addType($key, $options)
     {
-        if($key instanceof CalendarTypeIF) {
+        if ($key instanceof CalendarTypeIF) {
             $this->result[$key->getKey()] = $key;
         } else {
             $this->result[$key] = $options;

@@ -153,7 +153,7 @@ class CalendarEntryForm extends Model
         $this->timeZone = $this->entry->time_zone;
         $this->is_public = $this->entry->content->visibility;
 
-        if(!$this->entry->isNewRecord) {
+        if (!$this->entry->isNewRecord) {
             $type = $this->entry->getEventType();
             if ($type) {
                 $this->type_id = $type->id;
@@ -227,7 +227,7 @@ class CalendarEntryForm extends Model
 
     private function translateFromMomentAfterToFormEndDate(DateTime $dt)
     {
-        if(!$this->isAllDay()) {
+        if (!$this->isAllDay()) {
             return $dt;
         }
         return $dt->modify('-1 day')->setTime(0, 0, 0);
@@ -235,7 +235,7 @@ class CalendarEntryForm extends Model
 
     private function translateFromFormToMomentAfterEndDate(DateTime $dt)
     {
-        if(!$this->isAllDay()) {
+        if (!$this->isAllDay()) {
             return $dt;
         }
         return $dt->modify('+1 day')->setTime(0, 0, 0);
@@ -243,7 +243,7 @@ class CalendarEntryForm extends Model
 
     public function setDefaultTime()
     {
-        if($this->isAllDay()) {
+        if ($this->isAllDay()) {
             $withMeridiam = Yii::$app->formatter->isShowMeridiem();
             $this->start_time = $withMeridiam ? '10:00 AM' : '10:00';
             $this->end_time =  $withMeridiam ? '12:00 PM' : '12:00';
@@ -310,7 +310,7 @@ class CalendarEntryForm extends Model
         $startDt = CalendarUtils::getDateTime($start);
         $endDt = CalendarUtils::getDateTime($end);
 
-        if($translateTimeZone) {
+        if ($translateTimeZone) {
             $startDt = CalendarUtils::translateTimezone($startDt, CalendarUtils::getSystemTimeZone(), $this->timeZone);
             $endDt = CalendarUtils::translateTimezone($endDt, CalendarUtils::getSystemTimeZone(), $this->timeZone);
         }
@@ -328,7 +328,7 @@ class CalendarEntryForm extends Model
         $startDt = $this->getStartDateTime();
         $endDt =  $this->getEndDateTime();
 
-        if($this->entry->isAllDay()) {
+        if ($this->entry->isAllDay()) {
             $this->entry->start_datetime = CalendarUtils::toDBDateFormat($startDt);
             $this->entry->end_datetime = CalendarUtils::toDBDateFormat($this->translateFromFormToMomentAfterEndDate($endDt));
         } else {
@@ -351,7 +351,7 @@ class CalendarEntryForm extends Model
      */
     public function load($data, $formName = null)
     {
-        if(empty($data)) {
+        if (empty($data)) {
             return false;
         }
 
@@ -360,7 +360,7 @@ class CalendarEntryForm extends Model
         }
 
         $container = $this->entry->content->container;
-        if(!$this->canCreatePublicEntry()) {
+        if (!$this->canCreatePublicEntry()) {
             $this->entry->content->visibility = Content::VISIBILITY_PRIVATE;
         } else {
             $this->entry->content->visibility = $this->is_public;
@@ -374,7 +374,7 @@ class CalendarEntryForm extends Model
             $this->type_id = null;
         }
 
-        if($this->isAllDay()) {
+        if ($this->isAllDay()) {
             $this->start_time = null;
             $this->end_time = null;
         }
@@ -397,17 +397,17 @@ class CalendarEntryForm extends Model
         $isStartDateError = !empty($this->getErrors('start_date'));
         $isEndDateError = !empty($this->getErrors('end_date'));
 
-        if(!$isStartDateError && !$isEndDateError) {
+        if (!$isStartDateError && !$isEndDateError) {
             return;
         }
 
         $startDate = $this->getStartDateTime();
         $endDate = $this->getEndDateTime();
 
-        if(!$startDate) {
-            if($this->original) {
+        if (!$startDate) {
+            if ($this->original) {
                 $startDate = $this->original->getStartDateTime();
-            } elseif($endDate instanceof DateTime) {
+            } elseif ($endDate instanceof DateTime) {
                 $startDate = clone $endDate;
             } else {
                 $startDate = new DateTime();
@@ -415,16 +415,16 @@ class CalendarEntryForm extends Model
         }
 
         $endDate = $this->getEndDateTime();
-        if(!$endDate) {
-            if($this->original) {
+        if (!$endDate) {
+            if ($this->original) {
                 $endDate = $this->translateFromMomentAfterToFormEndDate($this->original->getEndDateTime());
-            } elseif($startDate instanceof DateTime) {
+            } elseif ($startDate instanceof DateTime) {
                 $endDate = clone $startDate;
             } else {
                 $endDate = new DateTime();
             }
 
-            if($endDate < $startDate) {
+            if ($endDate < $startDate) {
                 $endDate = $startDate;
             }
         }
@@ -549,7 +549,7 @@ class CalendarEntryForm extends Model
         $timeZone = $this->isAllDay() ? 'UTC' : $this->timeZone;
         $startDT = CalendarUtils::parseDateTimeString($this->start_date, $this->start_time, null, $timeZone);
 
-        if($startDT && $this->isAllDay()) {
+        if ($startDT && $this->isAllDay()) {
             $startDT->setTime(0, 0, 0);
         }
         return $startDT;
@@ -559,7 +559,7 @@ class CalendarEntryForm extends Model
     {
         $timeZone = $this->isAllDay() ? 'UTC' : $this->timeZone;
         $endDT = CalendarUtils::parseDateTimeString($this->end_date, $this->end_time, null, $timeZone);
-        if($endDT && $this->isAllDay()) {
+        if ($endDT && $this->isAllDay()) {
             $endDT->setTime(0, 0, 0);
         }
         return $endDT;

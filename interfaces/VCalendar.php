@@ -48,12 +48,12 @@ class VCalendar extends Model
         $instance = (new static());
         $instance->addTimeZone($tz);
 
-        if(!is_array($items)) {
+        if (!is_array($items)) {
             $items = [$items];
         }
 
         foreach ($items as $item) {
-            if(is_array($item)) {
+            if (is_array($item)) {
                 $item = new CalendarEventIFWrapper(['options' => $item]);
             }
             $instance->addVEvent($item);
@@ -65,7 +65,7 @@ class VCalendar extends Model
 
     public function addTimeZone($tz)
     {
-        if($tz && is_string($tz)) {
+        if ($tz && is_string($tz)) {
             $this->vcalendar->add($this->generate_vtimezone($tz));
         }
         return $this;
@@ -186,7 +186,7 @@ class VCalendar extends Model
         }
 
         $lastModified = $item->getLastModified();
-        if($lastModified) {
+        if ($lastModified) {
             $result['LAST-MODIFIED'] = $lastModified;
         }
 
@@ -216,10 +216,10 @@ class VCalendar extends Model
 
         $module = Module::instance();
 
-        if($item instanceof CalendarEventParticipationIF) {
-            if($module->icsOrganizer) {
+        if ($item instanceof CalendarEventParticipationIF) {
+            if ($module->icsOrganizer) {
                 $organizer = $item->getOrganizer();
-                if($organizer instanceof User) {
+                if ($organizer instanceof User) {
                     $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
                 }
             }
@@ -244,7 +244,7 @@ class VCalendar extends Model
 
     private function setLegacyRecurrentData($item, &$result)
     {
-        if(!$item instanceof CalendarEventIFWrapper) {
+        if (!$item instanceof CalendarEventIFWrapper) {
             return;
         }
 
@@ -265,7 +265,7 @@ class VCalendar extends Model
     {
         $result = $user->getDisplayName();
 
-        if($user->email) {
+        if ($user->email) {
             $result .= ':MAILTO:' . $user->email;
         }
 

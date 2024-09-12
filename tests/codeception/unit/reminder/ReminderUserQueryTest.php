@@ -169,7 +169,7 @@ class ReminderUserQueryTest extends CalendarUnitTest
     {
         $found = false;
         foreach ($participants as $participant) {
-            if($user->is($participant)) {
+            if ($user->is($participant)) {
                 $found = true;
                 break;
             }

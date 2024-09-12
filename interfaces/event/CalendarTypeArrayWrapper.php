@@ -46,7 +46,7 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
      */
     public function getDefaultColor()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_DEFAULT_COLOR])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_DEFAULT_COLOR])) {
             return $this->options[static::OPTION_DEFAULT_COLOR];
         }
 
@@ -58,7 +58,7 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
      */
     public function getTitle()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_TITLE])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_TITLE])) {
             return $this->options[static::OPTION_TITLE];
         }
 
@@ -67,7 +67,7 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
 
     public function getIcon()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_ICON])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_ICON])) {
             return $this->options[static::OPTION_ICON];
         }
 
@@ -76,7 +76,7 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
 
     public function getDescription()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_DESCRIPTION])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_DESCRIPTION])) {
             return $this->options[static::OPTION_DESCRIPTION];
         }
 
@@ -85,11 +85,11 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
 
     public function getKey()
     {
-        if($this->key) {
+        if ($this->key) {
             return $this->key;
         }
 
-        if(!empty($this->options) && isset($this->options[static::OPTION_KEY])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_KEY])) {
             return $this->options[static::OPTION_KEY];
         }
 

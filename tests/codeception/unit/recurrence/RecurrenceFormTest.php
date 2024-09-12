@@ -32,7 +32,7 @@ class RecurrenceFormTest extends CalendarUnitTest
     {
         parent::_before();
 
-        if(!$date) {
+        if (!$date) {
             $date = $this->getEntryDate();
         }
 

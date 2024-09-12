@@ -29,7 +29,7 @@ class CloseLink extends WallEntryControlLink
 
     public function init()
     {
-        if($this->entry->closed) {
+        if ($this->entry->closed) {
             $this->label = Yii::t('CalendarModule.base', 'Reopen Event');
             $this->icon = 'fa-check';
         } else {
