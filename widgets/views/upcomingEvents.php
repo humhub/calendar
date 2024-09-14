@@ -1,12 +1,13 @@
 <?php
 
 use humhub\libs\Helpers;
-use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 
-/* @var $calendarEntries CalendarEntry[] */
+/* @var $calendarEntries CalendarEventIF[] */
 /* @var $calendarUrl string */
 
 $link = Html::a(Icon::get('arrow-circle-right') . ' ' . Yii::t('CalendarModule.widgets_views_nextEvents', 'Open Calendar'), $calendarUrl);
@@ -32,7 +33,7 @@ $extraMenus = Html::tag('li', $link);
                                     <?= Helpers::trimText(Html::encode($entry->getTitle()), 60) ?>
                                 </strong>
                                 <br>
-                                <span class="time"><?= $entry->formatter->getFormattedTime('medium') ?></span>
+                                <span class="time"><?= (new CalendarDateFormatter(['calendarItem' => $entry]))->getFormattedTime('medium') ?></span>
                             </div>
                         </div>
                     </li>
