@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'Description' => '',
-    'Location' => '',
-    'Organizer' => '',
-    'Participants info' => '',
-    'Starting' => '',
-    'View Online: {url}' => '',
-];
+return array (
+  'Description' => 'Kuvaus',
+  'Location' => 'Sijainti',
+  'Organizer' => '',
+  'Participants info' => '',
+  'Starting' => '',
+  'View Online: {url}' => '',
+);

@@ -24,7 +24,7 @@ return array (
   'Interval of upcoming events' => '',
   'Max event items' => '',
   'Menu settings' => '',
-  'Name' => '',
+  'Name' => 'izena',
   'One month' => '',
   'One week' => '',
   'One year' => '',

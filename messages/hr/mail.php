@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'View Online: {url}' => 'Pregledajte na mreži: {url}',
-    'Description' => '',
-    'Location' => '',
-    'Organizer' => '',
-    'Participants info' => '',
-    'Starting' => '',
-];
+return array (
+  'Description' => 'Opis',
+  'Location' => 'Lokacija',
+  'Organizer' => '',
+  'Participants info' => '',
+  'Starting' => '',
+  'View Online: {url}' => 'Pregledajte na mreži: {url}',
+);

@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'View Online: {url}' => 'ดูออนไลน์: {url}',
-    'Description' => '',
-    'Location' => '',
-    'Organizer' => '',
-    'Participants info' => '',
-    'Starting' => '',
-];
+return array (
+  'Description' => 'คำอธิบาย',
+  'Location' => 'ที่ตั้ง',
+  'Organizer' => '',
+  'Participants info' => '',
+  'Starting' => '',
+  'View Online: {url}' => 'ดูออนไลน์: {url}',
+);

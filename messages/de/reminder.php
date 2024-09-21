@@ -14,7 +14,7 @@ return array (
   'Upcoming {type}: {title}' => 'Anstehend {type}: {title}',
   'Use default reminder' => 'Voreinstellungen verwenden',
   'Week' => 'Woche',
-  'You have an <strong>{type}</strong> coming up' => 'Es steht ein <strong>{type}</strong> an',
-  'You have an <strong>{type}</strong> coming up: {title}' => 'Es steht ein <strong>{type}</strong> an: {title}',
+  'You have an <strong>{type}</strong> coming up' => '<strong>{type}</strong> steht an',
+  'You have an <strong>{type}</strong> coming up: {title}' => '<strong>{type}</strong> steht an: {title}',
   'Your reminder settings for event: <strong>\'{title}\'</strong>' => 'Deine eingestellten Erinnerungen für den Termin: <strong>\'{title}\'</strong>',
 );

@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'View Online: {url}' => 'Zobacz online: {url}',
-    'Description' => '',
-    'Location' => '',
-    'Organizer' => '',
-    'Participants info' => '',
-    'Starting' => '',
-];
+return array (
+  'Description' => 'Opis',
+  'Location' => 'Lokalizacja',
+  'Organizer' => '',
+  'Participants info' => '',
+  'Starting' => '',
+  'View Online: {url}' => 'Zobacz online: {url}',
+);

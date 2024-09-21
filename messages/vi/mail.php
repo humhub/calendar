@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'View Online: {url}' => 'Xem trực tuyến: {url}',
-    'Description' => '',
-    'Location' => '',
-    'Organizer' => '',
-    'Participants info' => '',
-    'Starting' => '',
-];
+return array (
+  'Description' => 'Miêu tả',
+  'Location' => 'Địa điểm',
+  'Organizer' => '',
+  'Participants info' => '',
+  'Starting' => '',
+  'View Online: {url}' => 'Xem trực tuyến: {url}',
+);

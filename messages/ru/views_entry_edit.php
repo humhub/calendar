@@ -4,7 +4,7 @@ return array (
   '<strong>Edit</strong> Event' => '<strong>Изменить</strong> событие',
   '<strong>Edit</strong> recurring event' => '<strong>Изменить</strong> повторяющееся событие',
   'Are you sure want to remove the participant from the event?' => 'Вы уверены, что хотите удалить участника с мероприятия?',
-  'Attending' => '',
+  'Attending' => 'Участвует',
   'Back' => 'Назад',
   'Close' => 'Закрыть',
   'Declined' => '',
