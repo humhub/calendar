@@ -7,9 +7,9 @@
  */
 
 use humhub\libs\Html;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use yii\bootstrap\ActiveForm;
 
 /* @var $contentContainerSelection array */
 /* @var $submitUrl array */

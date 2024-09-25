@@ -9,9 +9,9 @@
 /* @var $model \humhub\modules\calendar\models\SnippetModuleSettings */
 
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\widgets\Button;
-use yii\widgets\ActiveForm;
 ?>
 
 <div class="panel panel-default">

@@ -4,6 +4,7 @@ Changelog
 1.6.4 (Unreleased)
 -----------------------
 - Enh #502: Replace theme variables with CSS variables
+- Enh #504: Update Active Form for Bootstrap 5
 
 1.6.3 (August 23, 2024)
 -----------------------
