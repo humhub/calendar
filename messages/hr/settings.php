@@ -1,7 +1,7 @@
 <?php
 return array (
   'Basic' => 'Osnovno',
-  'Full calendar' => '',
+  'Full calendar' => 'Cijeli kalendar',
   'Participation' => 'Sudjelovanje',
   'Reminder' => 'Podsjetnik',
 );

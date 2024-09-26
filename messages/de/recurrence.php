@@ -1,6 +1,6 @@
 <?php
 return array (
-  'After (occurrences)' => 'Nach (Dauer)',
+  'After (occurrences)' => 'Nach (Anzahl)',
   'Day' => 'Tag',
   'Days' => 'Tage',
   'Delete all events' => 'Alle Termine löschen',
