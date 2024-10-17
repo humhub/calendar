@@ -39,11 +39,11 @@ class CalendarAsset extends AssetBundle
     {
         $view->registerJsConfig('calendar.Calendar', [
             'text' => [
-                'button.today' => Yii::t('CalendarModule.calendar', 'Today'),
-                'button.month' => Yii::t('CalendarModule.calendar', 'Month'),
-                'button.week' => Yii::t('CalendarModule.calendar', 'Week'),
-                'button.day' => Yii::t('CalendarModule.calendar', 'Day'),
-                'button.list' => Yii::t('CalendarModule.calendar', 'List'),
+                'button.today' => Yii::t('CalendarModule.base', 'Today'),
+                'button.month' => Yii::t('CalendarModule.base', 'Month'),
+                'button.week' => Yii::t('CalendarModule.base', 'Week'),
+                'button.day' => Yii::t('CalendarModule.base', 'Day'),
+                'button.list' => Yii::t('CalendarModule.base', 'List'),
             ],
         ]);
         return parent::register($view);

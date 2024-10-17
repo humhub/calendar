@@ -55,14 +55,14 @@ class ParticipantItem extends Widget
             $statuses = [];
         } else {
             $statuses = [
-                CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED => Yii::t('CalendarModule.views_entry_edit', 'Attending'),
-                CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE => Yii::t('CalendarModule.views_entry_edit', 'Undecided'),
-                CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED => Yii::t('CalendarModule.views_entry_edit', 'Declined'),
+                CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED => Yii::t('CalendarModule.views', 'Attending'),
+                CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE => Yii::t('CalendarModule.views', 'Undecided'),
+                CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED => Yii::t('CalendarModule.views', 'Declined'),
             ];
         }
 
         if (!$entry || $entry->canInvite()) {
-            $statuses[CalendarEntryParticipant::PARTICIPATION_STATE_INVITED] = Yii::t('CalendarModule.views_entry_edit', 'Invited');
+            $statuses[CalendarEntryParticipant::PARTICIPATION_STATE_INVITED] = Yii::t('CalendarModule.views', 'Invited');
         }
 
         if (!empty($exclude) && !empty($statuses)) {

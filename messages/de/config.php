@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => '<strong>Kalender</strong>-Modul-Einstellungen',
   '<strong>Confirm</strong> Deletion' => 'Löschen <strong>bestätigen</strong>',
   'Add \'Calendar\' to the main menu' => 'Füge "Kalender" zur Hauptnavigation hinzu',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Fügt ein Widget mit anstehenden Terminen zur Übersicht deiner Benutzer hinzu.',
+  'Basic' => 'Allgemein',
   'Calendar Configuration' => 'Kalenderkonfiguration',
   'Calendar default view mode settings' => 'Standardansicht für Kalender',
   'Create new type' => 'Neue Kategorie erstellen',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Löschen',
   'Do you really want to delte this event type?' => 'Möchtest du diese Kategorie wirklich löschen?',
   'Event Type Configuration' => 'Event Kategorien',
+  'Full calendar' => 'Kalenderansicht',
   'Half a year' => 'Ein halbes Jahr',
   'Here you can configure default settings for new calendar events.' => 'Hier kannst du die Standard-Einstellungen für neue Termine bearbeiten.',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => 'Hier kannst du die Standard-Einstellungen für neue Termine bearbeiten. Diese können aber noch von den Standard-Einstellungen für einen Space oder ein Profil überschrieben werden.',
@@ -29,9 +31,11 @@ return array (
   'One week' => 'Eine Woche',
   'One year' => 'Ein Jahr',
   'Only show top menu item and snippet if the module is installed in the users profile' => 'Zeige den Menüeintrag und „Nächste Termine“ nur bei aktiviertem Kalender-Modul im Benutzerprofil',
+  'Participation' => 'Teilnahmemodus',
+  'Reminder' => 'Erinnerung',
   'Reset' => 'Zurücksetzen',
   'Show snippet' => 'Zeige Widget „Nächste Termine“',
   'There are currently no event types available.' => 'Im Moment stehen keine Kategorien zur Verfügung.',
   'Upcoming events snippet' => 'Widget „Nächste Termine“',
   'View mode' => 'Ansicht',
-);
+];

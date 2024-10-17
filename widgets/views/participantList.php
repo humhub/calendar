@@ -34,8 +34,8 @@ use yii\helpers\Html;
     <?php endif; ?>
 
     <p class="calendar-entry-participants-count"><?= $pagination->totalCount
-        ? Yii::t('CalendarModule.views_entry_edit', '{count} Participants', ['count' => '<span>' . $pagination->totalCount . '</span>'])
-        : Yii::t('CalendarModule.views_entry_edit', 'No participants')
+        ? Yii::t('CalendarModule.views', '{count} Participants', ['count' => '<span>' . $pagination->totalCount . '</span>'])
+        : Yii::t('CalendarModule.views', 'No participants')
     ?></p>
 
     <?= Html::beginTag('ul', ['class' => 'media-list']) ?>

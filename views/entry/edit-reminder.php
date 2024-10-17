@@ -13,7 +13,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <div class="modal-body">
 
     <div class="help-block">
-        <?= Yii::t('CalendarModule.reminder', 'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
+        <?= Yii::t('CalendarModule.base', 'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
         <strong>Set reminder</strong> link.')?>
     </div>
 

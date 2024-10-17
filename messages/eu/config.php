@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => '',
   '<strong>Confirm</strong> Deletion' => '',
   'Add \'Calendar\' to the main menu' => '',
   'Adds an snippet with upcoming events to your users dashboard.' => '',
+  'Basic' => 'Oinarrizkoa',
   'Calendar Configuration' => '',
   'Calendar default view mode settings' => '',
   'Create new type' => '',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Ezabatu',
   'Do you really want to delte this event type?' => '',
   'Event Type Configuration' => '',
+  'Full calendar' => '',
   'Half a year' => '',
   'Here you can configure default settings for new calendar events.' => '',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => '',
@@ -29,9 +31,11 @@ return array (
   'One week' => '',
   'One year' => '',
   'Only show top menu item and snippet if the module is installed in the users profile' => '',
+  'Participation' => '',
+  'Reminder' => 'Gogorarazpena',
   'Reset' => '',
   'Show snippet' => '',
   'There are currently no event types available.' => '',
   'Upcoming events snippet' => '',
   'View mode' => '',
-);
+];

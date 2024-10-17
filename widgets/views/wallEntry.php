@@ -64,7 +64,7 @@ $color = 'var(--text-color-secondary)';
             <?= Icon::get('info-circle')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
             <div class="event-info-section-content">
                 <h1>
-                    <?= Yii::t('CalendarModule.views_entry_view', 'Additional information') ?>
+                    <?= Yii::t('CalendarModule.views', 'Additional information') ?>
                 </h1>
                 <div data-ui-markdown data-ui-show-more>
                     <?= RichText::output($calendarEntry->participant_info) ?>
@@ -102,18 +102,18 @@ $color = 'var(--text-color-secondary)';
     <?php if ($calendarEntry->participation->canRespond(Yii::$app->user->identity)): ?>
         <div class="event-participation-buttons clearfix">
             <?php if ($calendarEntry->participation->isInvited() && !$calendarEntry->isPast()) : ?>
-                <div class="text-warning"><?= Icon::get('warning') . Yii::t('CalendarModule.views_entry_view', 'You are invited, please select your role:') ?></div>
+                <div class="text-warning"><?= Icon::get('warning') . Yii::t('CalendarModule.views', 'You are invited, please select your role:') ?></div>
             <?php endif ?>
 
             <?php if ($calendarEntry->participation->maxParticipantCheck() || $calendarEntry->participation->isParticipant(Yii::$app->user->identity, false)) : ?>
-                <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views_entry_view', "Attend")) ?>
+                <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED, Yii::t('CalendarModule.views', "Attend")) ?>
             <?php endif ?>
 
             <?php if ($calendarEntry->participation->maxParticipantCheck() || $calendarEntry->participation->isParticipant(Yii::$app->user->identity, true)) : ?>
-                <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, Yii::t('CalendarModule.views_entry_view', "Maybe")) ?>
+                <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE, Yii::t('CalendarModule.views', "Maybe")) ?>
             <?php endif ?>
 
-            <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views_entry_view', "Decline")) ?>
+            <?= EntryParticipants::participateButton($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED, Yii::t('CalendarModule.views', "Decline")) ?>
         </div>
     <?php endif; ?>
 </div>

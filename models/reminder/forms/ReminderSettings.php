@@ -133,10 +133,10 @@ class ReminderSettings extends Model
     public static function getUnitSelection()
     {
         return [
-            CalendarReminder::UNIT_MINUTE => Yii::t('CalendarModule.reminder', 'Minute'),
-            CalendarReminder::UNIT_HOUR => Yii::t('CalendarModule.reminder', 'Hour'),
-            CalendarReminder::UNIT_DAY => Yii::t('CalendarModule.reminder', 'Day'),
-            CalendarReminder::UNIT_WEEK => Yii::t('CalendarModule.reminder', 'Week'),
+            CalendarReminder::UNIT_MINUTE => Yii::t('CalendarModule.base', 'Minute'),
+            CalendarReminder::UNIT_HOUR => Yii::t('CalendarModule.base', 'Hour'),
+            CalendarReminder::UNIT_DAY => Yii::t('CalendarModule.base', 'Day'),
+            CalendarReminder::UNIT_WEEK => Yii::t('CalendarModule.base', 'Week'),
         ];
     }
 
@@ -399,13 +399,13 @@ class ReminderSettings extends Model
 
     public function getReminderTypeOptions()
     {
-        $result = [static::REMINDER_TYPE_NONE => Yii::t('CalendarModule.reminder', 'No reminder')];
+        $result = [static::REMINDER_TYPE_NONE => Yii::t('CalendarModule.base', 'No reminder')];
 
         if ($this->hasDefaults) {
-            $result[static::REMINDER_TYPE_DEFAULT] =  Yii::t('CalendarModule.reminder', 'Use default reminder');
+            $result[static::REMINDER_TYPE_DEFAULT] =  Yii::t('CalendarModule.base', 'Use default reminder');
         }
 
-        $result[static::REMINDER_TYPE_CUSTOM] =  Yii::t('CalendarModule.reminder', 'Custom reminder');
+        $result[static::REMINDER_TYPE_CUSTOM] =  Yii::t('CalendarModule.base', 'Custom reminder');
 
         return $result;
     }

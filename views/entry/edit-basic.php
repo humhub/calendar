@@ -34,7 +34,7 @@ use yii\jui\DatePicker;
                                     {input}
                                 </div>
                                 {error}{hint}'
-        ])->textInput(['placeholder' => Yii::t('CalendarModule.views_entry_edit', 'Title'), 'autofocus' => ''])->label(false) ?>
+        ])->textInput(['placeholder' => Yii::t('CalendarModule.views', 'Title'), 'autofocus' => ''])->label(false) ?>
     </div>
 
     <?php Yii::$app->formatter->timeZone = $calendarEntryForm->timeZone ?>
@@ -103,7 +103,7 @@ use yii\jui\DatePicker;
         'tagClass' => CalendarEntryType::class,
         'contentContainer' => $contentContainer,
         'includeGlobal' => true,
-        'prompt' => Yii::t('CalendarModule.views_entry_edit', 'Select event type...'),
+        'prompt' => Yii::t('CalendarModule.views', 'Select event type...'),
         'options' => ['data-action-change' => 'changeEventType']
     ])->label(false) ?>
 

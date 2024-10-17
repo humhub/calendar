@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => '<strong>Kalendar</strong> postavke modula',
   '<strong>Confirm</strong> Deletion' => '<strong>Potvrdi</strong> brisanje',
   'Add \'Calendar\' to the main menu' => '',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Dodaje se isečak s nadolazećim događajima na upravljačku ploču.',
+  'Basic' => 'Osnovno',
   'Calendar Configuration' => 'Konfiguracija kalendara',
   'Calendar default view mode settings' => '',
   'Create new type' => 'Kreiraj novu tip',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Obriši',
   'Do you really want to delte this event type?' => 'Želite li zaista da uklonite ovu vrstu događaja?',
   'Event Type Configuration' => 'Konfiguracija vrste događaja',
+  'Full calendar' => '',
   'Half a year' => 'Pola godine',
   'Here you can configure default settings for new calendar events.' => 'Ovde možete konfigurirati zadane postavke za nove kalendarske događaje.',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => 'Ovdje možete da konfigurišete podrazumevane postavke za nove kalendarske događaje. Ove postavke mogu da se promene na nivou prostora / profila.',
@@ -29,9 +31,11 @@ return array (
   'One week' => 'Jedana nedelja',
   'One year' => 'Jedna godina',
   'Only show top menu item and snippet if the module is installed in the users profile' => 'Prikaži samo gornju stavku izbornika i isečak ako je modul instaliran u korisničkom profilu',
+  'Participation' => 'Učestvovanje',
+  'Reminder' => 'Podsetnik',
   'Reset' => 'Reset',
   'Show snippet' => 'Prikaži isečak',
   'There are currently no event types available.' => 'Trenutačno nema dostupnih tipova događaja.',
   'Upcoming events snippet' => 'Isečak nadolazećih događaja',
   'View mode' => '',
-);
+];

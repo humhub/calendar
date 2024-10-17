@@ -47,12 +47,12 @@ class CreateEntry extends \humhub\libs\BasePermission
 
     public function getTitle()
     {
-        return Yii::t('CalendarModule.permissions', 'Create entry');
+        return Yii::t('CalendarModule.base', 'Create entry');
     }
 
     public function getDescription()
     {
-        return Yii::t('CalendarModule.permissions', 'Allows the user to create new calendar entries');
+        return Yii::t('CalendarModule.base', 'Allows the user to create new calendar entries');
     }
 
 }

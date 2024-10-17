@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => 'Konfigurácia modulu <strong>Kalendár</strong>',
   '<strong>Confirm</strong> Deletion' => '<strong>Potvrdiť</strong> Odstránenie',
   'Add \'Calendar\' to the main menu' => 'Pridajte „Kalendár“ do hlavnej ponuky',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Pridá úryvok s nadchádzajúcimi udalosťami na váš informačný panel používateľov.',
+  'Basic' => 'Základné',
   'Calendar Configuration' => 'Konfigurácia Kalendára',
   'Calendar default view mode settings' => 'Predvolené nastavenia režimu zobrazenia kalendára',
   'Create new type' => 'Vytvoriť nový typ',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Odstrániť',
   'Do you really want to delte this event type?' => 'Naozaj chcete odstrániť tento typ udalosti?',
   'Event Type Configuration' => 'Konfigurácia typu udalosti',
+  'Full calendar' => 'Plný kalendár',
   'Half a year' => 'Pol roka',
   'Here you can configure default settings for new calendar events.' => 'Tu môžete nakonfigurovať predvolené nastavenia pre nové udalosti kalendára.',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => 'Tu môžete nakonfigurovať predvolené nastavenia pre nové udalosti kalendára. Tieto nastavenia je možné prepísať na úrovni priestoru/profilu.',
@@ -29,9 +31,11 @@ return array (
   'One week' => 'Jeden týždeň',
   'One year' => 'Jeden rok',
   'Only show top menu item and snippet if the module is installed in the users profile' => 'Zobrazovať položku hornej ponuky a úryvok iba vtedy, ak je modul nainštalovaný v profile používateľa',
+  'Participation' => 'Účasť',
+  'Reminder' => 'Pripomienka',
   'Reset' => 'Resetovať',
   'Show snippet' => 'Zobraziť úryvok',
   'There are currently no event types available.' => 'Momentálne nie sú k dispozícii žiadne typy udalostí.',
   'Upcoming events snippet' => 'Útržok nadchádzajúcej udalosti',
   'View mode' => 'Režim zobrazenia',
-);
+];

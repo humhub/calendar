@@ -37,7 +37,7 @@ class ReopenedEvent extends EventNotification
         ];
 
         if ($this->source->content->container instanceof Space) {
-            return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.', array_merge([
+            return Yii::t('CalendarModule.notification', '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.', array_merge([
                 'spaceName' =>  Html::encode($this->source->content->container->displayName),
             ]));
         }
@@ -50,7 +50,7 @@ class ReopenedEvent extends EventNotification
      */
     public function getMailSubject()
     {
-        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} reopened the event "{contentTitle}".', [
+        return Yii::t('CalendarModule.notification', '{displayName} reopened the event "{contentTitle}".', [
             'displayName' => Html::encode($this->originator->displayName),
             'contentTitle' => $this->getContentInfo($this->source, false),
         ]);

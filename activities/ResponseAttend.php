@@ -27,7 +27,7 @@ class ResponseAttend extends BaseActivity implements ConfigurableActivityInterfa
      */
     public function getTitle()
     {
-        return Yii::t('CalendarModule.activities', 'Calendar: attend');
+        return Yii::t('CalendarModule.notification', 'Calendar: attend');
     }
 
     /**
@@ -35,6 +35,6 @@ class ResponseAttend extends BaseActivity implements ConfigurableActivityInterfa
      */
     public function getDescription()
     {
-        return Yii::t('CalendarModule.activities', 'Whenever someone participates in an event.');
+        return Yii::t('CalendarModule.notification', 'Whenever someone participates in an event.');
     }
 }

@@ -52,13 +52,13 @@ class Remind extends BaseNotification
     {
         /* @var $record CalendarEventReminderIF */
         if ($this->source instanceof CalendarEventReminderIF) {
-            return Yii::t('CalendarModule.reminder', 'You have an <strong>{type}</strong> coming up: {title}', [
+            return Yii::t('CalendarModule.base', 'You have an <strong>{type}</strong> coming up: {title}', [
                 'type' => Html::encode($this->getEventType()),
                 'title' => RichText::preview($this->source->getTitle(), 25),
             ]);
         }
 
-        return Yii::t('CalendarModule.reminder', 'You have an <strong>{type}</strong> coming up', ['type' => $this->getEventType()]);
+        return Yii::t('CalendarModule.base', 'You have an <strong>{type}</strong> coming up', ['type' => $this->getEventType()]);
     }
 
     public function getEventType()
@@ -79,12 +79,12 @@ class Remind extends BaseNotification
     public function getMailSubject()
     {
         if ($this->source instanceof CalendarEventReminderIF) {
-            return Yii::t('CalendarModule.reminder', 'Upcoming {type}: {title}', [
+            return Yii::t('CalendarModule.base', 'Upcoming {type}: {title}', [
                 'type' => $this->getEventType(),
                 'title' => $this->source->getTitle(),
             ]);
         }
 
-        return Yii::t('CalendarModule.reminder', 'Upcoming {type}', ['type' => $this->getEventType()]);
+        return Yii::t('CalendarModule.base', 'Upcoming {type}', ['type' => $this->getEventType()]);
     }
 }

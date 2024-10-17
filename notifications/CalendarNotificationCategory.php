@@ -29,7 +29,7 @@ class CalendarNotificationCategory extends NotificationCategory
      */
     public function getTitle()
     {
-        return Yii::t('CalendarModule.notifications_CalendarNotificationCategory', 'Calendar');
+        return Yii::t('CalendarModule.notification', 'Calendar');
     }
 
     /**
@@ -37,6 +37,6 @@ class CalendarNotificationCategory extends NotificationCategory
      */
     public function getDescription()
     {
-        return Yii::t('CalendarModule.notifications_CalendarNotificationCategory', 'Receive Calendar related Notifications.');
+        return Yii::t('CalendarModule.notification', 'Receive Calendar related Notifications.');
     }
 }

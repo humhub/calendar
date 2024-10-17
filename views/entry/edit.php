@@ -15,15 +15,15 @@ use humhub\widgets\ModalDialog;
 CalendarBaseAssets::register($this);
 
 if ($calendarEntryForm->entry->isNewRecord) {
-    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Create</strong> Event');
-    $saveButtonText = Yii::t('CalendarModule.views_entry_edit', 'Next');
+    $header = Yii::t('CalendarModule.views', '<strong>Create</strong> Event');
+    $saveButtonText = Yii::t('CalendarModule.views', 'Next');
 } else {
-    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> Event');
+    $header = Yii::t('CalendarModule.views', '<strong>Edit</strong> Event');
     $saveButtonText = null;
 }
 
 if(RecurrenceHelper::isRecurrent($calendarEntryForm->entry)) {
-    $header = Yii::t('CalendarModule.views_entry_edit', '<strong>Edit</strong> recurring event');
+    $header = Yii::t('CalendarModule.views', '<strong>Edit</strong> recurring event');
 }
 
 $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $this->theme->variable('info') : $calendarEntryForm->entry->color;
@@ -44,18 +44,18 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
                     'params' => ['form' => $form, 'calendarEntryForm' => $calendarEntryForm, 'contentContainer' => $contentContainer],
                     'items' => [
                         [
-                            'label' => Yii::t('CalendarModule.views_entry_edit', 'General'),
+                            'label' => Yii::t('CalendarModule.views', 'General'),
                             'view' => 'edit-basic',
                             'linkOptions' => ['class' => 'tab-basic'],
                         ],
                         [
-                            'label' => Yii::t('CalendarModule.views_entry_edit', 'Reminder'),
+                            'label' => Yii::t('CalendarModule.views', 'Reminder'),
                             'view' => 'edit-reminder',
                             'linkOptions' => ['class' => 'tab-reminder'],
                             'headerOptions' => $calendarEntryForm->showReminderTab() ? [] : ['style' => 'display:none'],
                         ],
                         [
-                            'label' => Yii::t('CalendarModule.views_entry_edit', 'Recurrence'),
+                            'label' => Yii::t('CalendarModule.views', 'Recurrence'),
                             'view' => 'edit-recurrence',
                             'linkOptions' => ['class' => 'tab-recurrence'],
                             'headerOptions' => $calendarEntryForm->showRecurrenceTab() ? [] : ['style' => 'display:none'],

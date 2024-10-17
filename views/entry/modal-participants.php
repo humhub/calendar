@@ -30,7 +30,7 @@ $hiddenStyle = ['style' => 'display:none'];
 $visibleStyle = [];
 ?>
 <?php ModalDialog::begin([
-    'header' =>'<strong>' . Yii::t('CalendarModule.views_entry_view', 'Participants') . '</strong>',
+    'header' =>'<strong>' . Yii::t('CalendarModule.views', 'Participants') . '</strong>',
     'size' => 'large',
 ]) ?>
     <?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
@@ -43,14 +43,14 @@ $visibleStyle = [];
                 ],
                 'items' => [
                     [
-                        'label' => Yii::t('CalendarModule.views_entry_edit', 'Settings'),
+                        'label' => Yii::t('CalendarModule.views', 'Settings'),
                         'view' => 'edit-participation',
                         'linkOptions' => ['class' => 'tab-participation'],
                         'active' => (empty($activeTab) || $activeTab === 'settings'),
                         'visible' => $calendarEntryParticipationForm->entry->content->canEdit()
                     ],
                     [
-                        'label' => Yii::t('CalendarModule.views_entry_edit', 'Participants'),
+                        'label' => Yii::t('CalendarModule.views', 'Participants'),
                         'view' => 'edit-participants',
                         'linkOptions' => ['class' => 'tab-participants'],
                         'headerOptions' => $isParticipationEnabled ? $visibleStyle : $hiddenStyle,
@@ -63,17 +63,17 @@ $visibleStyle = [];
 
             <div class="modal-footer">
                 <?php if ($isNewRecord) : ?>
-                    <?= ModalButton::defaultType(Yii::t('CalendarModule.views_entry_edit', 'Back'))
+                    <?= ModalButton::defaultType(Yii::t('CalendarModule.views', 'Back'))
                             ->action('back', $editUrl)
                             ->id('calendar-entry-participation-button-back')
                             ->loader(false) ?>
-                    <?= ModalButton::primary(Yii::t('CalendarModule.views_entry_edit', 'Next'))
+                    <?= ModalButton::primary(Yii::t('CalendarModule.views', 'Next'))
                             ->action('next')
                             ->id('calendar-entry-participation-button-next')
                             ->options($isParticipationEnabled ? $visibleStyle : $hiddenStyle)
                             ->loader(false) ?>
                 <?php else : ?>
-                    <?= ModalButton::cancel(Yii::t('CalendarModule.views_entry_edit', 'Close'))
+                    <?= ModalButton::cancel(Yii::t('CalendarModule.views', 'Close'))
                             ->id('calendar-entry-participation-button-close') ?>
                 <?php endif; ?>
                 <?php if ($calendarEntryParticipationForm->entry->content->canEdit()) : ?>

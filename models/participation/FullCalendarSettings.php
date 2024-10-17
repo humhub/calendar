@@ -110,11 +110,11 @@ class FullCalendarSettings extends Model
     public function getViewModeItems()
     {
         return [
-            self::SETTING_LIST_YEAR => Yii::t('CalendarModule.calendar', 'Year'),
-            self::SETTING_GRID_MONTH => Yii::t('CalendarModule.calendar', 'Month'),
-            self::SETTING_GRID_WEEK => Yii::t('CalendarModule.calendar', 'Week'),
-            self::SETTING_GRID_DAY => Yii::t('CalendarModule.calendar', 'Day'),
-            self::SETTING_LIST_WEEK => Yii::t('CalendarModule.calendar', 'List'),
+            self::SETTING_LIST_YEAR => Yii::t('CalendarModule.base', 'Year'),
+            self::SETTING_GRID_MONTH => Yii::t('CalendarModule.base', 'Month'),
+            self::SETTING_GRID_WEEK => Yii::t('CalendarModule.base', 'Week'),
+            self::SETTING_GRID_DAY => Yii::t('CalendarModule.base', 'Day'),
+            self::SETTING_LIST_WEEK => Yii::t('CalendarModule.base', 'List'),
         ];
     }
 }
