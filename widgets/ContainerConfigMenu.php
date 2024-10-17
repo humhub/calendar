@@ -68,13 +68,13 @@ class ContainerConfigMenu extends SettingsTabs
 
         $this->items = [
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Defaults'),
+                'label' => Yii::t('CalendarModule.views', 'Defaults'),
                 'url' => Url::toConfig($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'index'),
                 'visible' => $canConfigure,
             ],
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
+                'label' => Yii::t('CalendarModule.views', 'Event Types'),
                 'url' => Url::toConfigTypes($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'types'),
                 'visible' => $canConfigure,
@@ -83,7 +83,7 @@ class ContainerConfigMenu extends SettingsTabs
 
         if (!empty($calendarService->getCalendarItemTypes($this->contentContainer))) {
             $this->items[] = [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Calendars'),
+                'label' => Yii::t('CalendarModule.views', 'Calendars'),
                 'url' => Url::toConfigCalendars($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'calendars'),
                 'visible' => $canConfigure,

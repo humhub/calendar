@@ -10,13 +10,13 @@ use yii\helpers\Html;
 /* @var $calendarEntries CalendarEventIF[] */
 /* @var $calendarUrl string */
 
-$link = Html::a(Icon::get('arrow-circle-right') . ' ' . Yii::t('CalendarModule.widgets_views_nextEvents', 'Open Calendar'), $calendarUrl);
+$link = Html::a(Icon::get('arrow-circle-right') . ' ' . Yii::t('CalendarModule.views', 'Open Calendar'), $calendarUrl);
 $extraMenus = Html::tag('li', $link);
 ?>
 <div class="panel calendar-upcoming-snippet" id="calendar-upcoming-events-snippet">
 
     <div class="panel-heading">
-        <?= Icon::get('calendar') ?> <?= Yii::t('CalendarModule.widgets_views_nextEvents', '<strong>Upcoming</strong> events ') ?>
+        <?= Icon::get('calendar') ?> <?= Yii::t('CalendarModule.views', '<strong>Upcoming</strong> events ') ?>
         <?= PanelMenu::widget(['id' => 'calendar-upcoming-events-snippet', 'extraMenus' => $extraMenus]) ?>
     </div>
 

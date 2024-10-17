@@ -42,7 +42,7 @@ use yii\helpers\Html;
             <div class="media-body">
                 <?= Button::danger()->sm()
                     ->icon('remove')
-                    ->confirm(null, Yii::t('CalendarModule.views_entry_edit', 'Are you sure want to remove the participant from the event?'))
+                    ->confirm(null, Yii::t('CalendarModule.views', 'Are you sure want to remove the participant from the event?'))
                     ->action('remove') ?>
             </div>
         <?php endif; ?>

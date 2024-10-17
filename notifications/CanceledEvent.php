@@ -46,7 +46,7 @@ class CanceledEvent extends BaseNotification
     public function html()
     {
         if ($this->source->content->container instanceof Space) {
-            return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.', [
+            return Yii::t('CalendarModule.notification', '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                 'contentTitle' => $this->getContentInfo($this->source, false),
                 'spaceName' =>  Html::encode($this->source->content->container->displayName),
@@ -64,7 +64,7 @@ class CanceledEvent extends BaseNotification
      */
     public function getMailSubject()
     {
-        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} canceled the event "{contentTitle}".', [
+        return Yii::t('CalendarModule.notification', '{displayName} canceled the event "{contentTitle}".', [
             'displayName' => Html::encode($this->originator->displayName),
             'contentTitle' => $this->getContentInfo($this->source, false),
         ]);

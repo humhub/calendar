@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => 'Módulo de configuração de <strong>Calendário</strong>',
   '<strong>Confirm</strong> Deletion' => '<strong>Confirmar</strong> exclusão',
   'Add \'Calendar\' to the main menu' => 'Adicione \'Calendário\' ao menu principal',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Adiciona um fragmento com eventos futuros ao seu painel de usuários.',
+  'Basic' => 'Básico',
   'Calendar Configuration' => 'Configuração de calendário',
   'Calendar default view mode settings' => 'Configurações do modo de visualização padrão do calendário',
   'Create new type' => 'Criar novo tipo',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Apagar',
   'Do you really want to delte this event type?' => 'Você realmente quer apagar esse tipo de evento?',
   'Event Type Configuration' => 'Configuração de Tipo de Evento',
+  'Full calendar' => 'Calendário completo',
   'Half a year' => 'Metade de um ano',
   'Here you can configure default settings for new calendar events.' => 'Aqui você pode definir configurações padrão para novos eventos de calendário.',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => 'Aqui você pode definir configurações padrão para novos eventos de calendário. Essas configurações podem ser sobrescritas em nível de perfil/espaço.',
@@ -29,9 +31,11 @@ return array (
   'One week' => 'Uma semana',
   'One year' => 'Um ano',
   'Only show top menu item and snippet if the module is installed in the users profile' => 'Somente exibir o menu superior e o fragmento se o módulo de calendário estiver instalado no perfil do usuário',
+  'Participation' => 'Participação',
+  'Reminder' => 'Lembrete',
   'Reset' => 'Redefinir',
   'Show snippet' => 'Exibir fragmento',
   'There are currently no event types available.' => 'No momento não há tipos de evento disponíveis.',
   'Upcoming events snippet' => 'Fragmento de eventos futuros',
   'View mode' => 'Modo de visualização',
-);
+];

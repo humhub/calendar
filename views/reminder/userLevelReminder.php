@@ -20,7 +20,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     <?php $form = ActiveForm::begin() ?>
         <div class="modal-body">
             <div class="help-block">
-                <?= Yii::t('CalendarModule.reminder', 'Your reminder settings for event: <strong>\'{title}\'</strong>', [
+                <?= Yii::t('CalendarModule.base', 'Your reminder settings for event: <strong>\'{title}\'</strong>', [
                         'title' => Html::encode($reminderSettings->entry->getTitle())
                 ])?>
             </div>

@@ -32,25 +32,25 @@ class GlobalConfigMenu extends SettingsTabs
 
         $this->items = [
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Defaults'),
+                'label' => Yii::t('CalendarModule.views', 'Defaults'),
                 'url' => Url::toConfig(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'index'),
                 'sortOrder' => 10,
             ],
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
+                'label' => Yii::t('CalendarModule.views', 'Event Types'),
                 'url' =>  Url::toConfigTypes(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'types'),
                 'sortOrder' => 20,
             ],
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Snippet'),
+                'label' => Yii::t('CalendarModule.views', 'Snippet'),
                 'url' =>  Url::toConfigSnippets(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'snippet'),
                 'sortOrder' => 30,
             ],
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Menu'),
+                'label' => Yii::t('CalendarModule.views', 'Menu'),
                 'url' =>  Url::toConfigMenu(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'menu'),
                 'sortOrder' => 40,
@@ -59,7 +59,7 @@ class GlobalConfigMenu extends SettingsTabs
 
         if (!empty($calendarService->getCalendarItemTypes())) {
             $this->items[] = [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Calendars'),
+                'label' => Yii::t('CalendarModule.views', 'Calendars'),
                 'url' => Url::toConfigCalendars(),
                 'active' => $this->isCurrentRoute('calendar', 'config', 'calendars'),
                 'sortOrder' => 25,

@@ -38,27 +38,27 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
                 <?php endif; ?>
 
                 <?php if (!empty($event->getStartDateTime())): ?>
-                    <strong><?= Yii::t('CalendarModule.mail', 'Starting') ?>:</strong>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Starting') ?>:</strong>
                     <?= $formatter->getFormattedTime() ?><br><br>
                 <?php endif; ?>
 
                 <?php if ($event instanceof CalendarEventParticipationIF && $event->getOrganizer()): ?>
-                    <strong><?= Yii::t('CalendarModule.mail', 'Organizer') ?>:</strong>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Organizer') ?>:</strong>
                     <?= Html::encode($event->getOrganizer()->displayName) ?><br><br>
                 <?php endif; ?>
 
                 <?php if (!empty($event->getLocation())): ?>
-                    <strong><?= Yii::t('CalendarModule.mail', 'Location') ?>:</strong>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Location') ?>:</strong>
                     <?= Html::encode($event->getLocation()) ?><br><br>
                 <?php endif; ?>
 
                 <?php if (!empty($event->getDescription())): ?>
-                    <strong><?= Yii::t('CalendarModule.mail', 'Description') ?>:</strong><br>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Description') ?>:</strong><br>
                     <?= RichTextToEmailHtmlConverter::process($event->getDescription()) ?><br>
                 <?php endif; ?>
 
                 <?php if (isset($extraInfo) && !empty($extraInfo)): ?>
-                    <strong><?= Yii::t('CalendarModule.mail', 'Participants info') ?>:</strong><br>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Participants info') ?>:</strong><br>
                     <?= RichTextToEmailHtmlConverter::process($extraInfo) ?><br>
                 <?php endif; ?>
             </td>

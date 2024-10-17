@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => '<strong>Календарь</strong> настройки модуля',
   '<strong>Confirm</strong> Deletion' => '<strong>Подтвердите</strong> удаление',
   'Add \'Calendar\' to the main menu' => 'Добавить \\\'Календарь\\\' в главное меню',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Добавляет виджет с предстоящими событиями на панель пользователей.',
+  'Basic' => 'Основные',
   'Calendar Configuration' => '',
   'Calendar default view mode settings' => '',
   'Create new type' => '',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Удалить',
   'Do you really want to delte this event type?' => '',
   'Event Type Configuration' => '',
+  'Full calendar' => '',
   'Half a year' => '',
   'Here you can configure default settings for new calendar events.' => 'Здесь вы можете настроить параметры по умолчанию для новых событий календаря.',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => 'Здесь вы можете настроить параметры по умолчанию для новых событий календаря. Эти настройки можно перезаписать на уровне сообщества/профиля.',
@@ -29,9 +31,11 @@ return array (
   'One week' => 'Одна неделя',
   'One year' => 'Один год',
   'Only show top menu item and snippet if the module is installed in the users profile' => 'Показывать в боковой панели и верхнем меню только в том случае, если модуль установлен в профиле пользователя.',
+  'Participation' => '',
+  'Reminder' => 'Напоминание',
   'Reset' => 'Сброс',
   'Show snippet' => 'Показать виджет',
   'There are currently no event types available.' => '',
   'Upcoming events snippet' => '',
   'View mode' => '',
-);
+];

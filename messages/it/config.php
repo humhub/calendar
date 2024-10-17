@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => 'Configurazione del modulo <strong>Calendario</strong>',
   '<strong>Confirm</strong> Deletion' => '<strong>Conferma</strong> Cancellazione',
   'Add \'Calendar\' to the main menu' => 'Aggiungi "Calendario" al menu principale',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Aggiunge un snippet con i prossimi eventi al dashboard degli utenti.',
+  'Basic' => 'Di base',
   'Calendar Configuration' => 'Configurazione calendario',
   'Calendar default view mode settings' => 'Impostazioni della modalità di visualizzazione predefinita del calendario',
   'Create new type' => 'Crea un nuovo tipo',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Cancella',
   'Do you really want to delte this event type?' => 'Vuoi davvero cancellare questo tipo di evento?',
   'Event Type Configuration' => 'Configurazione Tipo di Evento',
+  'Full calendar' => 'Calendario completo',
   'Half a year' => 'Semestre',
   'Here you can configure default settings for new calendar events.' => 'Qui è possibile configurare le impostazioni predefinite per i nuovi eventi del calendario.',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => 'Qui è possibile configurare le impostazioni predefinite per i nuovi eventi del calendario. Queste impostazioni possono essere sovrascritte a livello di spazio/profilo.',
@@ -29,9 +31,11 @@ return array (
   'One week' => 'Una settimana',
   'One year' => 'Un anno',
   'Only show top menu item and snippet if the module is installed in the users profile' => 'Mostra solo la voce di menu superiore e lo snippet solo se il modulo è installato nel profilo utente',
+  'Participation' => 'Partecipazione',
+  'Reminder' => 'Promemoria',
   'Reset' => 'Reimposta',
   'Show snippet' => 'Mostra snippet',
   'There are currently no event types available.' => 'Attualmente non sono disponibili tipi di eventi.',
   'Upcoming events snippet' => 'snippet Eventi Imminenti',
   'View mode' => 'Modalità di visualizzazione',
-);
+];

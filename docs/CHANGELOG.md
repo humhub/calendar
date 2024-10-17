@@ -5,6 +5,7 @@ Changelog
 -----------------------
 - Enh #502: Replace theme variables with CSS variables
 - Enh #504: Update Active Form for Bootstrap 5
+- Enh #508: Reduce translation message categories
 
 1.6.3 (August 23, 2024)
 -----------------------

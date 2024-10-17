@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => 'Configuración del módulo de <strong>Calendario</strong>',
   '<strong>Confirm</strong> Deletion' => '<strong>Confirme</strong> borrado',
   'Add \'Calendar\' to the main menu' => 'Añadir «Calendario» al menú principal',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Añade un snippet con próximos eventos al panel de control de sus usuarios.',
+  'Basic' => 'Básica',
   'Calendar Configuration' => 'Configuración de Calendario',
   'Calendar default view mode settings' => 'Configuración del modo de vista por defecto del calendario',
   'Create new type' => 'Crear tipo nuevo',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Borrar',
   'Do you really want to delte this event type?' => '¿Está seguro de querer borrar este tipo de evento?',
   'Event Type Configuration' => 'Configuración de tipo de evento',
+  'Full calendar' => 'Calendario completo',
   'Half a year' => 'Medio año',
   'Here you can configure default settings for new calendar events.' => 'Aquí puede configurar valores por defecto para nuevos eventos de calendario.',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => 'Aquí puede configurar valores por defecto para nuevos eventos de calendario. Estos valores pueden modificarse en los espacios/perfiles.',
@@ -29,9 +31,11 @@ return array (
   'One week' => 'Una semana',
   'One year' => 'Un año',
   'Only show top menu item and snippet if the module is installed in the users profile' => 'Mostrar sólo el elemento y el fragmento del menú superior si el módulo está instalado en el perfil del usuario',
+  'Participation' => 'Participación',
+  'Reminder' => 'Recordatorio',
   'Reset' => 'Recomponer',
   'Show snippet' => 'Mostrar snippet',
   'There are currently no event types available.' => 'Ahora mismo no hay tipos de evento disponibles.',
   'Upcoming events snippet' => 'Snippet de próximos eventos',
   'View mode' => 'Modo de vista',
-);
+];

@@ -1,0 +1,26 @@
+<?php
+return [
+  'Calendar' => 'カレンダー',
+  'Calendar: Invite' => 'カレンダー：招待',
+  'Calendar: attend' => 'カレンダー：出席',
+  'Calendar: decline' => 'カレンダー：辞退',
+  'Calendar: maybe' => 'カレンダー：多分',
+  'Description' => '説明',
+  'Location' => '場所',
+  'Organizer' => '主催者',
+  'Participants info' => '参加者情報',
+  'Receive Calendar related Notifications.' => 'カレンダー関連の通知を受け取ります。',
+  'Starting' => '開始',
+  'View Online: {url}' => 'オンラインで表示：{url}',
+  'Whenever someone declines to participate in an event.' => '誰かがイベントへの参加を辞退する時。',
+  'Whenever someone invites to participate in an event.' => '誰かがイベントに参加するよう招待する時。',
+  'Whenever someone may be participating in an event.' => '誰かがイベントに参加している場合はいつでも。',
+  'Whenever someone participates in an event.' => '誰かがイベントに参加する度に。',
+  '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.' => '{displayName} は、スペース {spaceName} のイベント "{contentTitle}" をキャンセルしました。',
+  '{displayName} canceled the event "{contentTitle}".' => '{displayName} がイベント "{contentTitle}" をキャンセルしました。',
+  '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.' => '{displayName} は、スペース {spaceName} でイベント "{contentTitle}" を再開しました。',
+  '{displayName} reopened the event "{contentTitle}".' => '{displayName} がイベント "{contentTitle}" を再開しました。',
+  '{displayName} updated the event "{contentTitle}" in the space {spaceName}.' => '{displayName} がスペース {spaceName} のイベント 
+ "{contentTitle}" を更新しました。',
+  '{displayName} updated the event "{contentTitle}".' => '{displayName} がイベント {contentTitle} を更新しました。',
+];

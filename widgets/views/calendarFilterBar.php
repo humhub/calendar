@@ -33,7 +33,7 @@ use humhub\widgets\FadeIn;
         <?php if ($showSelectors) : ?>
             <div class="calendar-selectors">
                 <div class="help-block">
-                    <?= Yii::t('CalendarModule.views_global_index', 'Select calendars') ?>
+                    <?= Yii::t('CalendarModule.views', 'Select calendars') ?>
                 </div>
                 <div style="display:inline-block; float:left;margin-right:10px;">
                     <div class="checkbox">
@@ -41,7 +41,7 @@ use humhub\widgets\FadeIn;
                             <input type="checkbox" name="selector" class="selectorCheckbox"
                                    value="<?= ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE; ?>"
                                    <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, $selectors)): ?>checked="checked"<?php endif; ?>>
-                            <?= Yii::t('CalendarModule.views_global_index', 'My profile'); ?>
+                            <?= Yii::t('CalendarModule.views', 'My profile'); ?>
                         </label>
                     </div>
                     <div class="checkbox">
@@ -49,7 +49,7 @@ use humhub\widgets\FadeIn;
                             <input type="checkbox" name="selector" class="selectorCheckbox"
                                    value="<?= ActiveQueryContent::USER_RELATED_SCOPE_SPACES; ?>"
                                    <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_SPACES, $selectors)): ?>checked="checked"<?php endif; ?>>
-                            <?= Yii::t('CalendarModule.views_global_index', 'My spaces'); ?>
+                            <?= Yii::t('CalendarModule.views', 'My spaces'); ?>
                         </label>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ use humhub\widgets\FadeIn;
                                 <input type="checkbox" name="selector" class="selectorCheckbox"
                                        value="<?= ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES; ?>"
                                        <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES, $selectors)): ?>checked="checked"<?php endif; ?>>
-                                <?= Yii::t('CalendarModule.views_global_index', 'Followed spaces'); ?>
+                                <?= Yii::t('CalendarModule.views', 'Followed spaces'); ?>
                             </label>
                         </div>
                         <div class="checkbox">
@@ -69,7 +69,7 @@ use humhub\widgets\FadeIn;
                                 <input type="checkbox" name="selector" class="selectorCheckbox"
                                        value="<?= ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS; ?>"
                                        <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS, $selectors)): ?>checked="checked"<?php endif; ?>>
-                                <?= Yii::t('CalendarModule.views_global_index', 'Followed users'); ?>
+                                <?= Yii::t('CalendarModule.views', 'Followed users'); ?>
                             </label>
                         </div>
                     </div>
@@ -80,7 +80,7 @@ use humhub\widgets\FadeIn;
             <div class="calendar-filters"
                  style="<?= ($showSelectors) ? 'border-left:2px solid var(--default)' : '' ?>">
                 <div class="help-block" style="padding-left:10px;">
-                    <?= Yii::t('CalendarModule.views_global_index', 'Filter events') ?>
+                    <?= Yii::t('CalendarModule.views', 'Filter events') ?>
                 </div>
                 <div style="display:inline-block;margin:0 10px">
                     <div class="checkbox">
@@ -88,7 +88,7 @@ use humhub\widgets\FadeIn;
                             <input type="checkbox" name="filter" class="filterCheckbox"
                                    value="<?= CalendarEntry::FILTER_PARTICIPATE; ?>"
                                    <?php if (in_array(CalendarEntry::FILTER_PARTICIPATE, $filters)): ?>checked="checked"<?php endif; ?>>
-                            <?= Yii::t('CalendarModule.views_global_index', 'I\'m attending'); ?>
+                            <?= Yii::t('CalendarModule.views', 'I\'m attending'); ?>
                         </label>
                     </div>
                     <div class="checkbox">
@@ -96,7 +96,7 @@ use humhub\widgets\FadeIn;
                             <input type="checkbox" name="filter" class="filterCheckbox"
                                    value="<?= CalendarEntry::FILTER_MINE; ?>"
                                    <?php if (in_array(CalendarEntry::FILTER_MINE, $filters)): ?>checked="checked"<?php endif; ?>>
-                            <?= Yii::t('CalendarModule.views_global_index', 'My events'); ?>
+                            <?= Yii::t('CalendarModule.views', 'My events'); ?>
                         </label>
                     </div>
                 </div>

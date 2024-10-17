@@ -24,25 +24,25 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event])
 <?= $event->getTitle() ?>
 
 <?php if (!empty($event->getStartDateTime())): ?>
-    <?= Yii::t('CalendarModule.mail', 'Starting') ?>: <?= $formatter->getFormattedTime() ?>
+    <?= Yii::t('CalendarModule.notification', 'Starting') ?>: <?= $formatter->getFormattedTime() ?>
 <?php endif; ?>
 
 <?php if ($event instanceof CalendarEventParticipationIF && $event->getOrganizer()): ?>
-    <?= Yii::t('CalendarModule.mail', 'Organizer') ?>: <?= Html::encode($event->getOrganizer()->displayName) ?>
+    <?= Yii::t('CalendarModule.notification', 'Organizer') ?>: <?= Html::encode($event->getOrganizer()->displayName) ?>
 <?php endif; ?>
 
 <?php if (!empty($event->getLocation())): ?>
-    <?= Yii::t('CalendarModule.mail', 'Location') ?>: <?= Html::encode($event->getLocation()) ?>
+    <?= Yii::t('CalendarModule.notification', 'Location') ?>: <?= Html::encode($event->getLocation()) ?>
 <?php endif; ?>
 
 <?php if (!empty($event->getDescription())): ?>
-    <?= Yii::t('CalendarModule.mail', 'Description') ?>:
+    <?= Yii::t('CalendarModule.notification', 'Description') ?>:
     <?= RichText::preview($event->getDescription()) ?>
 <?php endif; ?>
 
 <?php if (isset($extraInfo) && !empty($extraInfo)): ?>
-    <?= Yii::t('CalendarModule.mail', 'Participants info') ?>:
+    <?= Yii::t('CalendarModule.notification', 'Participants info') ?>:
     <?= RichText::preview($extraInfo) ?>
 <?php endif; ?>
 
-<?= Yii::t('CalendarModule.mail', 'View Online: {url}', ['url' => $url]); ?>
+<?= Yii::t('CalendarModule.notification', 'View Online: {url}', ['url' => $url]); ?>

@@ -16,20 +16,20 @@ use humhub\widgets\ModalDialog;
 /* @var $model CalendarEntryType|CalendarTypeSetting */
 
 if ($model instanceof CalendarTypeSetting) {
-    $title = Yii::t('CalendarModule.views_container-config_typesConfig', '<strong>Edit</strong> calendar');
+    $title = Yii::t('CalendarModule.views', '<strong>Edit</strong> calendar');
     $titleAttribute = 'title';
     $titleDisabled = true;
 } else {
     $title = ($model->isNewRecord)
-        ? Yii::t('CalendarModule.views_container-config_typesConfig', '<strong>Create</strong> new event type')
-        : Yii::t('CalendarModule.views_container-config_typesConfig', '<strong>Edit</strong> event type');
+        ? Yii::t('CalendarModule.views', '<strong>Create</strong> new event type')
+        : Yii::t('CalendarModule.views', '<strong>Edit</strong> event type');
     $titleAttribute = 'name';
     $titleDisabled = false;
 }
 
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('CalendarModule.views_container-config_typesConfig', $title)]); ?>
+<?php ModalDialog::begin(['header' => Yii::t('CalendarModule.views', $title)]); ?>
 <?php $form = ActiveForm::begin() ?>
 <div class="modal-body">
     <div id="event-type-color-field" class="form-group space-color-chooser-edit" style="margin-top: 5px;">

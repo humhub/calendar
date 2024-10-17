@@ -1,9 +1,10 @@
 <?php
-return array (
+return [
   '<strong>Calendar</strong> module configuration' => '<strong>Kalender</strong> inställningar för moduler',
   '<strong>Confirm</strong> Deletion' => '<strong>Bekräfta</strong> radering',
   'Add \'Calendar\' to the main menu' => 'Lägg till "Kalender" till huvudmenyn',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Lägger till en snippet med kommande aktiviteter på användarnas tidslinje.',
+  'Basic' => 'Grund',
   'Calendar Configuration' => 'Kalenderinställningar',
   'Calendar default view mode settings' => 'Standardinställningar för kalenderns visningsläge',
   'Create new type' => 'Skapa ny typ',
@@ -12,6 +13,7 @@ return array (
   'Delete' => 'Radera',
   'Do you really want to delte this event type?' => 'Vill du verkligen radera denna aktivitetstyp',
   'Event Type Configuration' => 'Konfiguration av aktivitetstyp',
+  'Full calendar' => 'Fullständig kalender',
   'Half a year' => 'Halvår',
   'Here you can configure default settings for new calendar events.' => 'Här kan du konfigurera standardinställningar för nya kalenderhändelser.',
   'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => 'Här kan du konfigurera standardinställningar för nya kalenderhändelser. Dessa inställningar kan skrivas över på nätverks- / profilnivå.',
@@ -29,9 +31,11 @@ return array (
   'One week' => 'En vecka',
   'One year' => 'Ett år',
   'Only show top menu item and snippet if the module is installed in the users profile' => 'Visa endast som toppmeny och snippet om modulen är installerad i användarprofilen',
+  'Participation' => 'Deltagande',
+  'Reminder' => 'Påminnelse',
   'Reset' => 'Återställ',
   'Show snippet' => 'Visa snippet',
   'There are currently no event types available.' => 'Det finns just nu inga aktivitetstyper',
   'Upcoming events snippet' => 'Kommande Snippet händelser',
   'View mode' => 'Visningsläge',
-);
+];

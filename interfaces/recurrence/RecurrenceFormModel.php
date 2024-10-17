@@ -186,9 +186,9 @@ class RecurrenceFormModel extends Model
     public function attributeLabels()
     {
         return [
-            'frequency' => Yii::t('CalendarModule.recurrence', 'Repeat every'),
-            'weekDays' => Yii::t('CalendarModule.recurrence', 'on weekdays'),
-            'end' => Yii::t('CalendarModule.recurrence', 'End'),
+            'frequency' => Yii::t('CalendarModule.base', 'Repeat every'),
+            'weekDays' => Yii::t('CalendarModule.base', 'on weekdays'),
+            'end' => Yii::t('CalendarModule.base', 'End'),
         ];
     }
 
@@ -200,7 +200,7 @@ class RecurrenceFormModel extends Model
         }
 
         if (!($this->entry instanceof RecurrentEventIF)) {
-            $this->addError('frequency', Yii::t('CalendarModule.recurrence', 'This event does not support recurrent events'));
+            $this->addError('frequency', Yii::t('CalendarModule.base', 'This event does not support recurrent events'));
         }
     }
 
@@ -221,13 +221,13 @@ class RecurrenceFormModel extends Model
         try {
             $this->setRuleInterval();
         } catch (\Exception $e) {
-            $this->addError('interval', Yii::t('CalendarModule.recurrence', 'Invalid interval given'));
+            $this->addError('interval', Yii::t('CalendarModule.base', 'Invalid interval given'));
         }
 
         try {
             $this->setRuleFrequency();
         } catch (\Exception $e) {
-            $this->addError('frequency', Yii::t('CalendarModule.recurrence', 'Invalid frequency given'));
+            $this->addError('frequency', Yii::t('CalendarModule.base', 'Invalid frequency given'));
         }
 
         try {
@@ -239,9 +239,9 @@ class RecurrenceFormModel extends Model
 
         } catch (\Exception $e) {
             if ($this->interval == Frequency::MONTHLY) {
-                $this->addError('monthDaySelection', Yii::t('CalendarModule.recurrence', 'Invalid day of month given'));
+                $this->addError('monthDaySelection', Yii::t('CalendarModule.base', 'Invalid day of month given'));
             } elseif ($this->interval == Frequency::WEEKLY) {
-                $this->addError('weekDays', Yii::t('CalendarModule.recurrence', 'Invalid week day selection'));
+                $this->addError('weekDays', Yii::t('CalendarModule.base', 'Invalid week day selection'));
             }
         }
     }
@@ -404,14 +404,14 @@ class RecurrenceFormModel extends Model
     public function getMonthDaySelection()
     {
         $result = [
-            self::MONTHLY_BY_DAY_OF_MONTH => Yii::t('CalendarModule.recurrence', 'Monthly on day {dayOfMonth}', [
+            self::MONTHLY_BY_DAY_OF_MONTH => Yii::t('CalendarModule.base', 'Monthly on day {dayOfMonth}', [
                 'dayOfMonth' => $this->getStartDayOfMonth(),
             ]),
         ];
 
         // If the date is not in the fifth week of the month
         if (!$this->isFifthWeekOfMonth($this->getMonthlyPositionOfStart())) {
-            $result[self::MONTHLY_BY_OCCURRENCE] = Yii::t('CalendarModule.recurrence', 'Monthly on the {position} {dayOfWeek}', [
+            $result[self::MONTHLY_BY_OCCURRENCE] = Yii::t('CalendarModule.base', 'Monthly on the {position} {dayOfWeek}', [
                 'position' => $this->getMonthlyPositionOfStartFormatted(),
                 'dayOfWeek' => $this->getStartDayOfWeekFormatted(),
             ]);
@@ -419,8 +419,8 @@ class RecurrenceFormModel extends Model
 
         // If the day is in the last week of month we add the possibility for 'last' day of month
         if ($this->isLastWeekDayOfMonth()) {
-            $result[self::MONTHLY_LAST_DAY_OF_MONTH] = Yii::t('CalendarModule.recurrence', 'Monthly on the {position} {dayOfWeek}', [
-                'position' =>  Yii::t('CalendarModule.recurrence', 'last'),
+            $result[self::MONTHLY_LAST_DAY_OF_MONTH] = Yii::t('CalendarModule.base', 'Monthly on the {position} {dayOfWeek}', [
+                'position' =>  Yii::t('CalendarModule.base', 'last'),
                 'dayOfWeek' => $this->getStartDayOfWeekFormatted(),
             ]);
         }
@@ -437,11 +437,11 @@ class RecurrenceFormModel extends Model
     public function getIntervalTypesSelection()
     {
         return [
-            static::FREQUENCY_NEVER => Yii::t('CalendarModule.recurrence', 'Never'),
-            Frequency::DAILY => Yii::t('CalendarModule.recurrence', 'Day'),
-            Frequency::WEEKLY => Yii::t('CalendarModule.recurrence', 'Week'),
-            Frequency::MONTHLY => Yii::t('CalendarModule.recurrence', 'Month'),
-            Frequency::YEARLY => Yii::t('CalendarModule.recurrence', 'Year'),
+            static::FREQUENCY_NEVER => Yii::t('CalendarModule.base', 'Never'),
+            Frequency::DAILY => Yii::t('CalendarModule.base', 'Day'),
+            Frequency::WEEKLY => Yii::t('CalendarModule.base', 'Week'),
+            Frequency::MONTHLY => Yii::t('CalendarModule.base', 'Month'),
+            Frequency::YEARLY => Yii::t('CalendarModule.base', 'Year'),
         ];
 
     }
@@ -450,20 +450,20 @@ class RecurrenceFormModel extends Model
     {
         return [
             Frequency::DAILY => [
-                'data-singular' => Yii::t('CalendarModule.recurrence', 'Day'),
-                'data-plural' => Yii::t('CalendarModule.recurrence', 'Days'),
+                'data-singular' => Yii::t('CalendarModule.base', 'Day'),
+                'data-plural' => Yii::t('CalendarModule.base', 'Days'),
             ],
             Frequency::WEEKLY => [
-                'data-singular' => Yii::t('CalendarModule.recurrence', 'Week'),
-                'data-plural' => Yii::t('CalendarModule.recurrence', 'Weeks'),
+                'data-singular' => Yii::t('CalendarModule.base', 'Week'),
+                'data-plural' => Yii::t('CalendarModule.base', 'Weeks'),
             ],
             Frequency::MONTHLY => [
-                'data-singular' => Yii::t('CalendarModule.recurrence', 'Month'),
-                'data-plural' => Yii::t('CalendarModule.recurrence', 'Months'),
+                'data-singular' => Yii::t('CalendarModule.base', 'Month'),
+                'data-plural' => Yii::t('CalendarModule.base', 'Months'),
             ],
             Frequency::YEARLY => [
-                'data-singular' => Yii::t('CalendarModule.recurrence', 'Year'),
-                'data-plural' => Yii::t('CalendarModule.recurrence', 'Years'),
+                'data-singular' => Yii::t('CalendarModule.base', 'Year'),
+                'data-plural' => Yii::t('CalendarModule.base', 'Years'),
             ],
         ];
     }
@@ -499,24 +499,24 @@ class RecurrenceFormModel extends Model
     {
         switch ($this->getMonthlyPositionOfStart()) {
             case 2:
-                return Yii::t('CalendarModule.recurrence', 'second');
+                return Yii::t('CalendarModule.base', 'second');
             case 3:
-                return Yii::t('CalendarModule.recurrence', 'third');
+                return Yii::t('CalendarModule.base', 'third');
             case 4:
-                return Yii::t('CalendarModule.recurrence', 'forth');
+                return Yii::t('CalendarModule.base', 'forth');
             case 5:
-                return Yii::t('CalendarModule.recurrence', 'last');
+                return Yii::t('CalendarModule.base', 'last');
             default:
-                return Yii::t('CalendarModule.recurrence', 'first');
+                return Yii::t('CalendarModule.base', 'first');
         }
     }
 
     public function getEndTypeSelection()
     {
         return [
-            static::ENDS_NEVER => Yii::t('CalendarModule.recurrence', 'Never'),
-            static::ENDS_ON_DATE => Yii::t('CalendarModule.recurrence', 'On date'),
-            static::ENDS_AFTER_OCCURRENCES => Yii::t('CalendarModule.recurrence', 'After (occurrences)'),
+            static::ENDS_NEVER => Yii::t('CalendarModule.base', 'Never'),
+            static::ENDS_ON_DATE => Yii::t('CalendarModule.base', 'On date'),
+            static::ENDS_AFTER_OCCURRENCES => Yii::t('CalendarModule.base', 'After (occurrences)'),
         ];
     }
 

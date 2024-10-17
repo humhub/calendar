@@ -27,7 +27,7 @@ class ResponseDeclined extends BaseActivity implements ConfigurableActivityInter
      */
     public function getTitle()
     {
-        return Yii::t('CalendarModule.activities', 'Calendar: decline');
+        return Yii::t('CalendarModule.notification', 'Calendar: decline');
     }
 
     /**
@@ -35,6 +35,6 @@ class ResponseDeclined extends BaseActivity implements ConfigurableActivityInter
      */
     public function getDescription()
     {
-        return Yii::t('CalendarModule.activities', 'Whenever someone declines to participate in an event.');
+        return Yii::t('CalendarModule.notification', 'Whenever someone declines to participate in an event.');
     }
 }
