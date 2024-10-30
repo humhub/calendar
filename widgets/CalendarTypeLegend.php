@@ -9,6 +9,7 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\calendar\models\CalendarEntryTypeReadable;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
 class CalendarTypeLegend extends Widget
@@ -34,8 +35,8 @@ class CalendarTypeLegend extends Widget
     public function getCalendarTypes(): array
     {
         $query = $this->contentContainer
-            ? CalendarEntryType::findByContainer($this->contentContainer, true)
-            : CalendarEntryType::find();
+            ? CalendarEntryTypeReadable::findByContainer($this->contentContainer, true)
+            : CalendarEntryTypeReadable::find();
 
         return $query->all();
     }
