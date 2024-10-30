@@ -9,7 +9,6 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\CalendarEntryType;
-use humhub\modules\calendar\models\CalendarEntryTypeReadable;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\widgets\ContentTagPicker;
 
@@ -21,7 +20,7 @@ class FilterType extends ContentTagPicker
     /**
      * @inheritdoc
      */
-    public $itemClass = CalendarEntryTypeReadable::class;
+    public $itemClass = CalendarEntryType::class;
 
     /**
      * @inheritdoc
