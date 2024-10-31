@@ -37,6 +37,6 @@ class CalendarTypeLegend extends Widget
             ? CalendarEntryType::findByContainer($this->contentContainer, true)
             : CalendarEntryType::find();
 
-        return $query->all();
+        return $query->readable()->all();
     }
 }

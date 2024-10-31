@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.0 (Unreleased)
+-----------------------
+- Fix #509: Fix event type visibility
+
 1.6.4 (Unreleased)
 -----------------------
 - Enh #502: Replace theme variables with CSS variables
