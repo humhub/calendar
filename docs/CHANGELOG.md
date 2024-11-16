@@ -4,6 +4,7 @@ Changelog
 1.7.0 (Unreleased)
 -----------------------
 - Fix #509: Fix event type visibility
+- Enh: Move the widget wall entry links to a view and surround the links with a div having a dedicated class
 
 1.6.4 (Unreleased)
 -----------------------

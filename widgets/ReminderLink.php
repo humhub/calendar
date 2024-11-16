@@ -8,11 +8,8 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\widgets\ModalButton;
-use Yii;
 
 /**
  * Class DownloadIcsLink
@@ -31,6 +28,8 @@ class ReminderLink extends Widget
             return;
         }
 
-        return ModalButton::asLink(Yii::t('CalendarModule.base', 'Set reminder'))->load(Url::toUserLevelReminderConfig($this->entry))->loader(true);
+        return $this->render('reminderLink', [
+            'entry' => $this->entry,
+        ]);
     }
 }
