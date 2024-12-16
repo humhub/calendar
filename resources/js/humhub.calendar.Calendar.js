@@ -171,7 +171,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             header: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'create dayGridMonth,timeGridWeek,timeGridDay,listYear'
+                right: 'create dayGridMonth,timeGridWeek,timeGridDay,listMonth'
             },
             buttonText: buttonText,
             plugins: ['dayGrid', 'timeGrid', 'list', 'interaction', 'bootstrap', 'moment', 'momentTimezone'],
@@ -197,7 +197,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 right: 'today'
             };
             options.footer = {
-                center: 'dayGridMonth,timeGridWeek,timeGridDay,listYear',
+                center: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
                 right: 'create'
             };
         }
