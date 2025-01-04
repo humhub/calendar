@@ -39,4 +39,7 @@ return [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
     ],
+    'urlManagerRules' => [
+        'calendar' => 'calendar/global'
+    ]
 ];
