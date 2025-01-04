@@ -14,6 +14,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 class Module extends ContentContainerModule
 {
+    public $defaultRoute = 'view';
     /**
      * @var bool feature switch for recurrence events
      */
