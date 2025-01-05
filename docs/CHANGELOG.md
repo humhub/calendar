@@ -5,6 +5,7 @@ Changelog
 -----------------------
 - Fix #509: Fix event type visibility
 - Enh #512: Surround the widget wall entry links with a dedicated HTML class
+- Enh #516: Improved calendar page URLs
 
 1.6.4 (Unreleased)
 -----------------------
