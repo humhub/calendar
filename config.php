@@ -40,6 +40,6 @@ return [
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
     ],
     'urlManagerRules' => [
-        'calendar' => 'calendar/global'
-    ]
+        'calendar' => 'calendar/global',
+    ],
 ];
