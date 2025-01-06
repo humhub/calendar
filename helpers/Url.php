@@ -90,7 +90,7 @@ class Url extends BaseUrl
     public static function toCalendar(ContentContainerActiveRecord $container = null)
     {
         if ($container) {
-            return $container->createUrl('/calendar/view/index');
+            return $container->createUrl('/calendar');
         }
 
         return static::toGlobalCalendar();
@@ -98,7 +98,7 @@ class Url extends BaseUrl
 
     public static function toGlobalCalendar()
     {
-        return static::to(['/calendar/global/index']);
+        return static::to(['/calendar']);
     }
 
     public static function toEditItemType(CalendarTypeIF $type, ContentContainerActiveRecord $container = null)
