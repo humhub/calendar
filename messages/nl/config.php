@@ -1,8 +1,8 @@
 <?php
 return [
-  '<strong>Calendar</strong> module configuration' => '<strong>Agenda strong&gt;moduleconfiguratie</strong>',
+  '<strong>Calendar</strong> module configuration' => '<strong>Agenda</strong>moduleconfiguratie',
   '<strong>Confirm</strong> Deletion' => '<strong>Bevestig strong&gt; verwijderen</strong>',
-  'Add \'Calendar\' to the main menu' => 'Voeg \'Agenda\' toe aan het hoofdmenu',
+  'Add \'Calendar\' to the main menu' => 'Voeg <i>Agenda</i> toe aan het hoofdmenu',
   'Adds an snippet with upcoming events to your users dashboard.' => 'Voegt een fragment toe met aankomende gebeurtenissen aan het gebruikersprikbord.',
   'Basic' => 'Basis',
   'Calendar Configuration' => 'Kalender configuratie',
