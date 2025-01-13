@@ -379,6 +379,9 @@ class CalendarEntryForm extends Model
             $this->end_time = null;
         }
 
+        $this->start_date = $this->normalizeFormattedDate($this->start_date);
+        $this->end_date = $this->normalizeFormattedDate($this->end_date);
+
         $startDT = $this->getStartDateTime();
         $endDt = $this->getEndDateTime();
 
@@ -573,7 +576,7 @@ class CalendarEntryForm extends Model
          * but IntlDateFormatter::parse() fails to handle it properly, causing a parsing error.
          * To ensure successful parsing, we normalize the date string by removing 'г.'.
          */
-        if (Yii::$app->formatter->locale === 'bg') {
+        if (Yii::$app->formatter->locale == 'bg') {
             return str_replace(' г.', '', $formattedDate);
         }
 
