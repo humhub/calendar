@@ -7,6 +7,7 @@ Changelog
 - Enh #512: Surround the widget wall entry links with a dedicated HTML class
 - Enh #516: Improved calendar page URLs
 - Fix #519: Fix issue where `IntlDateFormatter::parse()` failed to parse Bulgarian dates.
+- Fix #520: Fix global calendar url when prettyUrl is disabled 
 
 1.6.4 (Unreleased)
 -----------------------
