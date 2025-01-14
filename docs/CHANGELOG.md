@@ -1,16 +1,13 @@
 Changelog
 =========
 
-1.7.0 (Unreleased)
------------------------
+1.7.0 (January 14, 2025)
+------------------------
 - Fix #509: Fix event type visibility
 - Enh #512: Surround the widget wall entry links with a dedicated HTML class
 - Enh #516: Improved calendar page URLs
 - Fix #519: Fix issue where `IntlDateFormatter::parse()` failed to parse Bulgarian dates.
 - Fix #520: Fix global calendar url when prettyUrl is disabled 
-
-1.6.4 (Unreleased)
------------------------
 - Enh #502: Replace theme variables with CSS variables
 - Enh #504: Update Active Form for Bootstrap 5
 - Enh #508: Reduce translation message categories
