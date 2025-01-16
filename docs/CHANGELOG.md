@@ -1,6 +1,10 @@
 Changelog
 =========
 
+TBA
+------------------------
+- Fix #521: Fix global calendar url
+
 1.7.0 (January 14, 2025)
 ------------------------
 - Fix #509: Fix event type visibility
