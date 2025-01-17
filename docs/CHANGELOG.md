@@ -1,7 +1,7 @@
 Changelog
 =========
 
-TBA
+1.7.1 (January 17, 2025)
 ------------------------
 - Fix #521: Fix global calendar url
 
