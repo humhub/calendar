@@ -98,7 +98,7 @@ class Url extends BaseUrl
 
     public static function toGlobalCalendar()
     {
-        return static::to(['calendar/global']);
+        return static::to(['/calendar/global']);
     }
 
     public static function toEditItemType(CalendarTypeIF $type, ContentContainerActiveRecord $container = null)
