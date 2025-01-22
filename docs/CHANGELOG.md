@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.2 (Unreleased)
+------------------------
+- Fix #525: Fix Space calendar header
+
 1.7.1 (January 17, 2025)
 ------------------------
 - Fix #521: Fix global calendar url
