@@ -37,16 +37,15 @@ class GlobalCalendarCest
         $I->see('Select calendars');
         $I->waitForText('Space Event', null, '#calendar');
 
-        // Active space and profile filter
+        // Active space filter
         $I->click('.calendar_my_spaces');
-        $I->click('.calendar_my_profile');
 
         $I->wait(2);
 
         $I->waitForText('Space Event', null, '#calendar');
 
         $I->wantToTest('the global calendar filters');
-        $I->amGoingTo('deselect the space clalendar filter');
+        $I->amGoingTo('deselect the space calendar filter');
         $I->click('.calendar_my_spaces');
         $I->wait(2);
         $I->cantSee('Space Event', '#calendar');
@@ -75,7 +74,10 @@ class GlobalCalendarCest
         $I->waitForText('My Test Profile Entry', null, '.fc-event-container');
 
         $I->waitForElementVisible('.calendar_my_spaces');
+
+        // Active space and profile filter (which should now be visible, as we have activated the profile calendar module by creating a new event)
         $I->click('.calendar_my_spaces');
+        $I->click('.calendar_my_profile');
 
         $I->waitForText('Space Event');
         $I->see('My Test Profile Entry', '.fc-title');
