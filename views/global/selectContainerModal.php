@@ -12,6 +12,7 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
 /* @var $contentContainerSelection array */
+/* @var $canSelectProfileCalendar bool */
 /* @var $submitUrl array */
 
 ?>
@@ -20,7 +21,11 @@ use humhub\widgets\ModalDialog;
 <?php if ($contentContainerSelection): ?>
     <?php $form = ActiveForm::begin() ?>
     <div class="modal-body">
-        <?= Html::dropDownList('contentContainerId', null, $contentContainerSelection, ['class' => 'form-control', 'data-ui-select2' => '']) ?>
+        <?= Html::dropDownList('contentContainerId', null, $contentContainerSelection, [
+            'class' => 'form-control',
+            'data-ui-select2' => '',
+            'prompt' => $canSelectProfileCalendar ? null : Yii::t('CalendarModule.base', 'Select space...'),
+        ]) ?>
     </div>
     <div class="modal-footer">
         <?= ModalButton::submitModal($submitUrl, Yii::t('CalendarModule.base', 'Next')) ?>

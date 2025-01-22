@@ -131,10 +131,11 @@ class GlobalController extends Controller
     public function actionSelect($start = null, $end = null)
     {
         /* @var $user User */
-        $contentContainerSelection = [];
         $user = Yii::$app->user->getIdentity();
+        $canSelectProfileCalendar = $user->moduleManager->isEnabled('calendar') || $user->moduleManager->canEnable('calendar');
 
-        if ($user->moduleManager->isEnabled('calendar') || $user->moduleManager->canEnable('calendar')) {
+        $contentContainerSelection = [];
+        if ($canSelectProfileCalendar) {
             $contentContainerSelection[$user->contentcontainer_id] = Yii::t('CalendarModule.base', 'Profile Calendar');
         }
 
@@ -157,6 +158,7 @@ class GlobalController extends Controller
 
         return $this->renderAjax('selectContainerModal', [
             'contentContainerSelection' => $contentContainerSelection,
+            'canSelectProfileCalendar' => $canSelectProfileCalendar,
             'submitUrl' => Url::to(['/calendar/global/select-submit', 'start' => $start, 'end' => $end]),
         ]);
     }
