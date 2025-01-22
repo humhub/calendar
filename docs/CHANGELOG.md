@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.2 (Unreleased)
+------------------------
+- Fix #523: Global calendar: display the "My profile" filter only when the module is enabled in for the User account
+
 1.7.1 (January 17, 2025)
 ------------------------
 - Fix #521: Fix global calendar url
