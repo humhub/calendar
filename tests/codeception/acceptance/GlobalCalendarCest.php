@@ -75,11 +75,14 @@ class GlobalCalendarCest
 
         $I->waitForElementVisible('.calendar_my_spaces');
 
+        $I->reloadPage();
+
+        $I->waitForText('Space Event');
+
         // Active space and profile filter (which should now be visible, as we have activated the profile calendar module by creating a new event)
         $I->click('.calendar_my_spaces');
         $I->click('.calendar_my_profile');
 
-        $I->waitForText('Space Event');
         $I->see('My Test Profile Entry', '.fc-title');
     }
 
