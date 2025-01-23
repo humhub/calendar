@@ -24,7 +24,9 @@ use humhub\widgets\ModalDialog;
         <?= Html::dropDownList('contentContainerId', null, $contentContainerSelection, [
             'class' => 'form-control',
             'data-ui-select2' => '',
-            'prompt' => $canSelectProfileCalendar ? null : Yii::t('CalendarModule.base', 'Select space...'),
+            'prompt' => $canSelectProfileCalendar ?
+                Yii::t('CalendarModule.base', 'Select space...') :
+                Yii::t('CalendarModule.base', 'Select calendar...'),
         ]) ?>
     </div>
     <div class="modal-footer">
