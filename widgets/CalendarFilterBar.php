@@ -10,6 +10,9 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\content\models\ContentTag;
 use Yii;
 
 /**
@@ -33,6 +36,13 @@ class CalendarFilterBar extends Widget
         if (Yii::$app->user->isGuest) {
             return '';
         }
+
+        $currentContentContainer = ContentContainerHelper::getCurrent();
+        $typesQuery = ContentTag::find()->where(['type' => CalendarEntryType::class]);
+        if ($currentContentContainer) {
+            $typesQuery->andWhere(['contentcontainer_id' => $currentContentContainer->contentcontainer_id]);
+        }
+        $this->showTypes = $this->showTypes && $typesQuery->exists();
 
         return $this->render('calendarFilterBar', [
             'filters' => $this->filters,
