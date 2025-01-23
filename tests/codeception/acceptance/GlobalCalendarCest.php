@@ -54,6 +54,8 @@ class GlobalCalendarCest
         $I->click('.fc-today');
         $I->expectTo('see the choose calendar modal');
         $I->waitForText('Choose target calendar');
+        $I->click('.select2-selection--single');
+        $I->click('.select2-results__option:nth-child(2)');
         $I->click('Next', '#globalModal');
 
 
