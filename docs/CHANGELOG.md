@@ -4,6 +4,7 @@ Changelog
 1.7.2 (Unreleased)
 ------------------------
 - Fix #525: Fix Space calendar header
+- Enh #526: New event from the global calendar: display "Select space..." or "Select calendar..." prompt instead of first Space
 - Enh: Show the "Filter by types" filter only if a list a type is available
 
 1.7.1 (January 17, 2025)
