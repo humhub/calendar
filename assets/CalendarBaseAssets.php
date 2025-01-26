@@ -38,12 +38,15 @@ class CalendarBaseAssets extends AssetBundle
      */
     public static function register($view)
     {
-        $container = Yii::$app->controller->contentContainer;
-        $defaultEventColor = $container ? (new CalendarEntryTypeSetting(['type' => new CalendarEntryType(), 'contentContainer' => $container]))->getColor() : '';
-        
-        $view->registerJsConfig('calendar', [
-            'defaultEventColor' => $defaultEventColor,
-        ]);
+        // set defaultEventColor if we are in a content container
+        if (isset(Yii::$app->controller->contentContainer)) {
+            $container = Yii::$app->controller->contentContainer;
+            $defaultEventColor = (new CalendarEntryTypeSetting(['type' => new CalendarEntryType(), 'contentContainer' => $container]))->getColor();
+            
+            $view->registerJsConfig('calendar', [
+                'defaultEventColor' => $defaultEventColor,
+            ]);
+        }
         return parent::register($view);
     }
 }
