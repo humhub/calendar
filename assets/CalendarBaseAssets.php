@@ -8,7 +8,11 @@
 
 namespace humhub\modules\calendar\assets;
 
+use humhub\modules\calendar\interfaces\event\CalendarEntryTypeSetting;
+use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\ui\view\components\View;
 use yii\web\AssetBundle;
+use Yii;
 
 class CalendarBaseAssets extends AssetBundle
 {
@@ -27,4 +31,19 @@ class CalendarBaseAssets extends AssetBundle
     public $js = [
         'js/humhub.calendar.min.js',
     ];
+    
+    /**
+     * @param View $view
+     * @return AssetBundle
+     */
+    public static function register($view)
+    {
+        $container = Yii::$app->controller->contentContainer;
+        $defaultEventColor = $container ? (new CalendarEntryTypeSetting(['type' => new CalendarEntryType(), 'contentContainer' => $container]))->getColor() : '';
+        
+        $view->registerJsConfig('calendar', [
+            'defaultEventColor' => $defaultEventColor,
+        ]);
+        return parent::register($view);
+    }
 }
