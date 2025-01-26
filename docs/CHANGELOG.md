@@ -1,16 +1,24 @@
 Changelog
 =========
 
-1.7.0 (Unreleased)
------------------------
+1.7.2 (Unreleased)
+------------------------
+- Fix #525: Fix Space calendar header
+- Enh #526: New event from the global calendar: display "Select space..." or "Select calendar..." prompt instead of first Space
+- Enh #528: Show the "Filter by types" filter only if a list a type is available
+- Fix #523: Global calendar: display the "My profile" filter only when the module is enabled in for the User account
+
+1.7.1 (January 17, 2025)
+------------------------
+- Fix #521: Fix global calendar url
+
+1.7.0 (January 14, 2025)
+------------------------
 - Fix #509: Fix event type visibility
 - Enh #512: Surround the widget wall entry links with a dedicated HTML class
 - Enh #516: Improved calendar page URLs
 - Fix #519: Fix issue where `IntlDateFormatter::parse()` failed to parse Bulgarian dates.
 - Fix #520: Fix global calendar url when prettyUrl is disabled 
-
-1.6.4 (Unreleased)
------------------------
 - Enh #502: Replace theme variables with CSS variables
 - Enh #504: Update Active Form for Bootstrap 5
 - Enh #508: Reduce translation message categories
