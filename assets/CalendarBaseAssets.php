@@ -31,7 +31,7 @@ class CalendarBaseAssets extends AssetBundle
     public $js = [
         'js/humhub.calendar.min.js',
     ];
-    
+
     /**
      * @param View $view
      * @return AssetBundle
@@ -42,7 +42,7 @@ class CalendarBaseAssets extends AssetBundle
         if (isset(Yii::$app->controller->contentContainer)) {
             $container = Yii::$app->controller->contentContainer;
             $defaultEventColor = (new CalendarEntryTypeSetting(['type' => new CalendarEntryType(), 'contentContainer' => $container]))->getColor();
-            
+
             $view->registerJsConfig('calendar', [
                 'defaultEventColor' => $defaultEventColor,
             ]);
