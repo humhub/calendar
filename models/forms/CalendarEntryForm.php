@@ -379,6 +379,9 @@ class CalendarEntryForm extends Model
             $this->end_time = null;
         }
 
+        $this->start_date = $this->normalizeFormattedDate($this->start_date);
+        $this->end_date = $this->normalizeFormattedDate($this->end_date);
+
         $startDT = $this->getStartDateTime();
         $endDt = $this->getEndDateTime();
 
@@ -563,5 +566,20 @@ class CalendarEntryForm extends Model
             $endDT->setTime(0, 0, 0);
         }
         return $endDT;
+    }
+
+    private function normalizeFormattedDate($formattedDate)
+    {
+        /**
+         * If the locale is 'bg' (Bulgarian), remove the 'г.' suffix from the date string.
+         * This suffix is automatically added by IntlDateFormatter::format() to indicate "year" in Bulgarian,
+         * but IntlDateFormatter::parse() fails to handle it properly, causing a parsing error.
+         * To ensure successful parsing, we normalize the date string by removing 'г.'.
+         */
+        if (Yii::$app->formatter->locale == 'bg') {
+            return str_replace(' г.', '', $formattedDate);
+        }
+
+        return $formattedDate;
     }
 }

@@ -36,14 +36,16 @@ use humhub\widgets\FadeIn;
                     <?= Yii::t('CalendarModule.views', 'Select calendars') ?>
                 </div>
                 <div style="display:inline-block; float:left;margin-right:10px;">
-                    <div class="checkbox">
-                        <label class="calendar_my_profile">
-                            <input type="checkbox" name="selector" class="selectorCheckbox"
-                                   value="<?= ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE; ?>"
-                                   <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, $selectors)): ?>checked="checked"<?php endif; ?>>
-                            <?= Yii::t('CalendarModule.views', 'My profile'); ?>
-                        </label>
-                    </div>
+                    <?php if (Yii::$app->user->identity->moduleManager->isEnabled('calendar')): ?>
+                        <div class="checkbox">
+                            <label class="calendar_my_profile">
+                                <input type="checkbox" name="selector" class="selectorCheckbox"
+                                       value="<?= ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE; ?>"
+                                       <?php if (in_array(ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, $selectors)): ?>checked="checked"<?php endif; ?>>
+                                <?= Yii::t('CalendarModule.views', 'My profile'); ?>
+                            </label>
+                        </div>
+                    <?php endif; ?>
                     <div class="checkbox">
                         <label class="calendar_my_spaces">
                             <input type="checkbox" name="selector" class="selectorCheckbox"

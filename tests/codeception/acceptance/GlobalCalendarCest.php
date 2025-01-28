@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -36,24 +37,12 @@ class GlobalCalendarCest
         $I->see('Select calendars');
         $I->waitForText('Space Event', null, '#calendar');
 
-        // Active space and profile filter
-        $I->click('.calendar_my_spaces');
-        $I->click('.calendar_my_profile');
-
-        $I->wait(2);
-
-        $I->waitForText('Space Event', null, '#calendar');
-
-        $I->wantToTest('the global calendar filters');
-        $I->amGoingTo('deselect the space clalendar filter');
-        $I->click('.calendar_my_spaces');
-        $I->wait(2);
-        $I->cantSee('Space Event', '#calendar');
-
         $I->amGoingTo('activate the profile calendar module by creating a new event');
         $I->click('.fc-today');
         $I->expectTo('see the choose calendar modal');
         $I->waitForText('Choose target calendar');
+        $I->click('.select2-selection--single');
+        $I->click('.select2-results__option:nth-child(2)');
         $I->click('Next', '#globalModal');
 
 
@@ -72,12 +61,19 @@ class GlobalCalendarCest
 
         //$I->wait(1);
         $I->waitForText('My Test Profile Entry', null, '.fc-event-container');
-
-        $I->waitForElementVisible('.calendar_my_spaces');
-        $I->click('.calendar_my_spaces');
-
-        $I->waitForText('Space Event');
         $I->see('My Test Profile Entry', '.fc-title');
+
+        // Active space filter
+        $I->amGoingTo('Select the space calendar filter');
+        $I->click('.calendar_my_spaces');
+        $I->wait(2);
+        $I->waitForText('Space Event', null, '#calendar');
+
+        $I->wantToTest('the global calendar filters');
+        $I->amGoingTo('deselect the space calendar filter');
+        $I->click('.calendar_my_spaces');
+        $I->wait(2);
+        $I->waitForText('Space Event', null, '#calendar');
     }
 
     /**

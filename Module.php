@@ -15,6 +15,11 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 class Module extends ContentContainerModule
 {
     /**
+     * @var string the default route of this module.
+     */
+    public $defaultRoute = 'view';
+
+    /**
      * @var bool feature switch for recurrence events
      */
     public $recurrenceActive = true;
