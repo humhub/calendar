@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.7.2 (Unreleased)
+1.7.2 (January 28, 2025)
 ------------------------
 - Fix #525: Fix Space calendar header
 - Enh #526: New event from the global calendar: display "Select space..." or "Select calendar..." prompt instead of first Space
