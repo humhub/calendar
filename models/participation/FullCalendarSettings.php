@@ -41,7 +41,7 @@ class FullCalendarSettings extends Model
     private function initSettings()
     {
         $this->viewMode = $this->getSetting(self::SETTING_VIEW_MODE_KEY, static::SETTING_GRID_MONTH);
-        
+
         // Handle removed view modes
         if ($this->viewMode === 'listWeek' || $this->viewMode === 'listYear') {
             $this->viewMode = 'listMonth';
