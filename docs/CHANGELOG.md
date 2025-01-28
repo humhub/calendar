@@ -7,6 +7,7 @@ Changelog
 - Enh #526: New event from the global calendar: display "Select space..." or "Select calendar..." prompt instead of first Space
 - Enh #528: Show the "Filter by types" filter only if a list a type is available
 - Fix #523: Global calendar: display the "My profile" filter only when the module is enabled in for the User account
+- Enh #532: Update event color when category is unselected
 
 1.7.1 (January 17, 2025)
 ------------------------

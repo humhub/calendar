@@ -235,6 +235,9 @@ humhub.module('calendar', function (module, require, $) {
             if ($selected.data('color')) {
                 $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('color'));
                 $('.colorpicker-element').data('colorpicker').update();
+            } else if (module.config['defaultEventColor']) {
+                $('.colorpicker-element').data('colorpicker').color.setColor(module.config['defaultEventColor']);
+                $('.colorpicker-element').data('colorpicker').update();
             }
         };
 
