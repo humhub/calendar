@@ -16,6 +16,7 @@ Changelog
 ------------------------
 - Fix #509: Fix event type visibility
 - Enh #512: Surround the widget wall entry links with a dedicated HTML class
+- Enh #514: Replace the view modes listWeek and listYear with listMonth
 - Enh #516: Improved calendar page URLs
 - Fix #519: Fix issue where `IntlDateFormatter::parse()` failed to parse Bulgarian dates.
 - Fix #520: Fix global calendar url when prettyUrl is disabled 
