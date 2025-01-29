@@ -7,6 +7,7 @@ Changelog
 - Enh #526: New event from the global calendar: display "Select space..." or "Select calendar..." prompt instead of first Space
 - Enh #528: Show the "Filter by types" filter only if a list a type is available
 - Fix #523: Global calendar: display the "My profile" filter only when the module is enabled in for the User account
+- Enh #514: Replace the view modes listWeek and listYear with listMonth
 - Enh #532: Update event color when category is unselected
 
 1.7.1 (January 17, 2025)
@@ -17,7 +18,6 @@ Changelog
 ------------------------
 - Fix #509: Fix event type visibility
 - Enh #512: Surround the widget wall entry links with a dedicated HTML class
-- Enh #514: Replace the view modes listWeek and listYear with listMonth
 - Enh #516: Improved calendar page URLs
 - Fix #519: Fix issue where `IntlDateFormatter::parse()` failed to parse Bulgarian dates.
 - Fix #520: Fix global calendar url when prettyUrl is disabled 
