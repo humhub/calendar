@@ -3,10 +3,12 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
+use humhub\libs\ParameterEvent;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\MenuSettings;
+use humhub\modules\calendar\modules\custom_pages\elements\CalendarsElement;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
@@ -409,6 +411,11 @@ class Events
             ['pattern' => 'calendar/entry/<id:\d+>/respond', 'route' => 'calendar/rest/calendar/respond', 'verb' => 'POST'],
 
         ], 'calendar');
+    }
+
+    public static function onCustomPagesTemplateElementAvailableTypes(ParameterEvent $event)
+    {
+        $event->parameters['types'][] = CalendarsElement::class;
     }
 
 }
