@@ -3,12 +3,11 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
-use humhub\libs\ParameterEvent;
+use humhub\modules\calendar\extensions\custom_pages\elements\CalendarsElement;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\MenuSettings;
-use humhub\modules\calendar\modules\custom_pages\elements\CalendarsElement;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
@@ -413,9 +412,11 @@ class Events
         ], 'calendar');
     }
 
-    public static function onCustomPagesTemplateElementAvailableTypes(ParameterEvent $event)
+    public static function onCustomPagesTemplateElementTypeServiceInit($event)
     {
-        $event->parameters['types'][] = CalendarsElement::class;
+        /* @var \humhub\modules\custom_pages\modules\template\services\ElementTypeService $elementTypeService */
+        $elementTypeService = $event->sender;
+        $elementTypeService->addType(CalendarsElement::class);
     }
 
 }

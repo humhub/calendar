@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\calendar\modules\custom_pages\elements;
+namespace humhub\modules\calendar\extensions\custom_pages\elements;
 
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\custom_pages\modules\template\elements\BaseRecordsElement;
@@ -23,7 +23,7 @@ use yii\db\ActiveQuery;
 class CalendarsElement extends BaseRecordsElement
 {
     public const RECORD_CLASS = CalendarEntry::class;
-    public string $subFormView = '@calendar/modules/custom_pages/elements/views/calendars';
+    public string $subFormView = '@calendar/extensions/custom_pages/elements/views/calendars';
 
     /**
      * @inheritdoc
@@ -84,14 +84,12 @@ class CalendarsElement extends BaseRecordsElement
      */
     protected function filterStatic(ActiveQuery $query): ActiveQuery
     {
-        return $query->andWhere(['id' => $this->static]);
+        return $query->andWhere(['calendar_entry.id' => $this->static]);
     }
 
     protected function filterTopic(ActiveQuery $query): ActiveQuery
     {
-        return $query->leftJoin('contentcontainer_tag_relation', 'contentcontainer_tag_relation.contentcontainer_id = space.contentcontainer_id')
-            ->leftJoin('contentcontainer_tag', 'contentcontainer_tag.id = contentcontainer_tag_relation.tag_id')
-            ->andWhere(['contentcontainer_tag.contentcontainer_class' => CalendarEntry::class])
-            ->andWhere(['contentcontainer_tag.name' => $this->topic]);
+        return $query->leftJoin('content_tag_relation', 'content_tag_relation.content_id = content.id')
+            ->andWhere(['content_tag_relation.tag_id' => $this->topic]);
     }
 }

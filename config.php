@@ -38,7 +38,7 @@ return [
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronRun']],
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
-        ['class' => 'humhub\modules\custom_pages\modules\template\models\TemplateElement', 'event' => 'availableTypes', 'callback' => [Events::class, 'onCustomPagesTemplateElementAvailableTypes']],
+        ['class' => 'humhub\modules\custom_pages\modules\template\services\ElementTypeService', 'event' => 'init', 'callback' => [Events::class, 'onCustomPagesTemplateElementTypeServiceInit']],
     ],
     'urlManagerRules' => [
         'calendar' => 'calendar/global',
