@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
+use humhub\modules\calendar\extensions\custom_pages\elements\CalendarElement;
 use humhub\modules\calendar\extensions\custom_pages\elements\CalendarsElement;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -416,6 +417,7 @@ class Events
     {
         /* @var \humhub\modules\custom_pages\modules\template\services\ElementTypeService $elementTypeService */
         $elementTypeService = $event->sender;
+        $elementTypeService->addType(CalendarElement::class);
         $elementTypeService->addType(CalendarsElement::class);
     }
 

@@ -14,7 +14,7 @@ use Yii;
 use yii\db\ActiveQuery;
 
 /**
- * Class to manage content records of the elements with Spaces list
+ * Class to manage content records of the elements with Calendar events list
  *
  * Dynamic attributes:
  * @property array $topic
@@ -30,7 +30,7 @@ class CalendarsElement extends BaseRecordsElement
      */
     public function getLabel(): string
     {
-        return Yii::t('CalendarModule.base', 'Calendars');
+        return Yii::t('CalendarModule.base', 'Calendar events');
     }
 
     /**
