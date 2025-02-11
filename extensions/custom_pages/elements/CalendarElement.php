@@ -10,21 +10,17 @@ namespace humhub\modules\calendar\extensions\custom_pages\elements;
 
 use humhub\libs\Html;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordElement;
 use Yii;
 
 /**
- * Class to manage content records of the Calendar event
+ * Class to manage content record of the Calendar event
  *
- * Dynamic attributes:
- * @property string $id
+ * @property-read CalendarEntry|null $record
  */
-class CalendarElement extends BaseElementContent
+class CalendarElement extends BaseContentRecordElement
 {
-    /**
-     * @var CalendarEntry|null|false
-     */
-    private $calendarEntry;
+    protected const RECORD_CLASS = CalendarEntry::class;
 
     /**
      * @inheritdoc
@@ -32,16 +28,6 @@ class CalendarElement extends BaseElementContent
     public function getLabel(): string
     {
         return Yii::t('CalendarModule.template', 'Calendar event');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getDynamicAttributes(): array
-    {
-        return [
-            'id' => null,
-        ];
     }
 
     /**
@@ -57,24 +43,9 @@ class CalendarElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
-        return [
-            [['id'], 'integer'],
-        ];
-    }
-
-    public function isEmpty(): bool
-    {
-        return parent::isEmpty() || !$this->getCalendarEntry();
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function render($options = [])
     {
-        $result = Html::encode($this->getCalendarEntry()->title);
+        $result = Html::encode($this->record->title);
 
         if ($this->isEditMode($options)) {
             return $this->wrap('span', $result, $options);
@@ -86,42 +57,8 @@ class CalendarElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function renderEmpty($options = [])
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getFormView(): string
     {
         return '@calendar/extensions/custom_pages/elements/views/calendar';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setAttributes($values, $safeOnly = true)
-    {
-        if (isset($values['id'])) {
-            $values['id'] = is_array($values['id']) ? array_shift($values['id']) : null;
-        }
-
-        parent::setAttributes($values, $safeOnly);
-    }
-
-    private function getCalendarEntry()
-    {
-        if ($this->calendarEntry === null) {
-            if (!empty($this->id)) {
-                $this->calendarEntry = CalendarEntry::findOne($this->id);
-            }
-            if (!$this->calendarEntry) {
-                $this->calendarEntry = false;
-            }
-        }
-
-        return $this->calendarEntry;
     }
 }
