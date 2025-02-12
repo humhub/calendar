@@ -18,7 +18,7 @@ use Yii;
  *
  * @property-read CalendarEntry|null $record
  */
-class CalendarElement extends BaseContentRecordElement
+class CalendarEntryElement extends BaseContentRecordElement
 {
     protected const RECORD_CLASS = CalendarEntry::class;
 
