@@ -19,14 +19,8 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     <?= $form->field($model, 'static')->widget(CalendarEntryPicker::class) ?>
 </div>
 
-<div class="records-content-form-fields" data-type="space">
+<div class="records-content-form-fields" data-type="options">
     <?= $form->field($model, 'space')->widget(SpacePickerField::class) ?>
-</div>
-
-<div class="records-content-form-fields" data-type="topic">
     <?= $form->field($model, 'topic')->widget(TopicPicker::class) ?>
-</div>
-
-<div class="records-content-form-fields" data-type="topic">
     <?= $form->field($model, 'limit') ?>
 </div>

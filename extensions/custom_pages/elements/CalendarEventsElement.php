@@ -75,8 +75,7 @@ class CalendarEventsElement extends BaseRecordsElement
     public function getTypes(): array
     {
         return array_merge(parent::getTypes(), [
-            'space' => Yii::t('CalendarModule.base', 'Calendars from specific spaces'),
-            'topic' => Yii::t('CalendarModule.base', 'Calendars with specific topics'),
+            'options' => Yii::t('CalendarModule.base', 'Calendar events with specific criteria'),
         ]);
     }
 
@@ -85,7 +84,7 @@ class CalendarEventsElement extends BaseRecordsElement
      */
     protected function isConfigured(): bool
     {
-        return parent::isConfigured() || $this->type === 'space';
+        return parent::isConfigured() || $this->type === 'options';
     }
 
     /**
@@ -96,8 +95,7 @@ class CalendarEventsElement extends BaseRecordsElement
         $query = CalendarEntry::find()->readable();
 
         return match ($this->type) {
-            'space' => $this->filterSpace($query),
-            'topic' => $this->filterTopic($query),
+            'options' => $this->filterOptions($query),
             default => $this->filterStatic($query),
         };
     }
@@ -110,17 +108,18 @@ class CalendarEventsElement extends BaseRecordsElement
         return $query->andWhere(['calendar_entry.id' => $this->static]);
     }
 
-    protected function filterSpace(ActiveQuery $query): ActiveQuery
+    protected function filterOptions(ActiveQuery $query): ActiveQuery
     {
-        return empty($this->space)
+        empty($this->space)
             ? $query->andWhere(['IS NOT', 'space.id', null])
             : $query->andWhere(['space.guid' => $this->space]);
-    }
 
-    protected function filterTopic(ActiveQuery $query): ActiveQuery
-    {
-        return $query->leftJoin('content_tag_relation', 'content_tag_relation.content_id = content.id')
-            ->andWhere(['content_tag_relation.tag_id' => $this->topic]);
+        if (!empty($this->topic)) {
+            $query->leftJoin('content_tag_relation', 'content_tag_relation.content_id = content.id')
+                ->andWhere(['content_tag_relation.tag_id' => $this->topic]);
+        }
+
+        return $query;
     }
 
     /**
