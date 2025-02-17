@@ -24,5 +24,6 @@ use humhub\modules\user\widgets\UserPickerField;
     <?= $form->field($model, 'space')->widget(SpacePickerField::class) ?>
     <?= $form->field($model, 'author')->widget(UserPickerField::class) ?>
     <?= $form->field($model, 'topic')->widget(TopicPicker::class) ?>
+    <?= $form->field($model, 'filter')->checkboxList($model->getContentFilterOptions()) ?>
     <?= $form->field($model, 'limit') ?>
 </div>
