@@ -22,7 +22,7 @@ class CalendarEventsElement extends BaseContentRecordsElement
 {
     public const FILTER_PARTICIPANT = 'participant';
     public const RECORD_CLASS = CalendarEntry::class;
-    public string $subFormView = '@calendar/extensions/custom_pages/elements/views/calendars';
+    public string $contentFormView = '@calendar/extensions/custom_pages/elements/views/calendars';
 
     /**
      * @inheritdoc
