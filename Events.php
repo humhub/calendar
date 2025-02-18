@@ -3,6 +3,8 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
+use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEntryElement;
+use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEventsElement;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
@@ -409,6 +411,14 @@ class Events
             ['pattern' => 'calendar/entry/<id:\d+>/respond', 'route' => 'calendar/rest/calendar/respond', 'verb' => 'POST'],
 
         ], 'calendar');
+    }
+
+    public static function onCustomPagesTemplateElementTypeServiceInit($event)
+    {
+        /* @var \humhub\modules\custom_pages\modules\template\services\ElementTypeService $elementTypeService */
+        $elementTypeService = $event->sender;
+        $elementTypeService->addType(CalendarEntryElement::class);
+        $elementTypeService->addType(CalendarEventsElement::class);
     }
 
 }

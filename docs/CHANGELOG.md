@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.3 (Unreleased)
+------------------------
+- Enh #537: Implement template element for custom pages
+
 1.7.2 (January 28, 2025)
 ------------------------
 - Fix #525: Fix Space calendar header
