@@ -424,10 +424,14 @@ class Events
 
     public static function onContentAfterSoftDelete(ContentEvent $event): void
     {
-        // It may be called from wall stream but recurrent entry must be deleted hardly
+        // It may be called from wall stream
         if ($event->content->object_model === CalendarEntry::class) {
+            /* @var CalendarEntry $calendarEntry */
             $calendarEntry = $event->content->getModel();
-            if ($calendarEntry && RecurrenceHelper::isRecurrentInstance($calendarEntry)) {
+            if ($calendarEntry &&
+                RecurrenceHelper::isRecurrentInstance($calendarEntry) &&
+                $calendarEntry->getRecurrenceRoot()?->content?->state === Content::STATE_PUBLISHED) {
+                // Child recurrent entry must be deleted hardly if the parent entry is not soft deleted
                 $calendarEntry->hardDelete();
             }
         }
