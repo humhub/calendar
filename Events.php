@@ -9,6 +9,7 @@ use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\MenuSettings;
+use humhub\modules\content\events\ContentEvent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
@@ -419,6 +420,14 @@ class Events
         $elementTypeService = $event->sender;
         $elementTypeService->addType(CalendarEntryElement::class);
         $elementTypeService->addType(CalendarEventsElement::class);
+    }
+
+    public static function onContentAfterSoftDelete(ContentEvent $event): void
+    {
+        if ($event->content->object_model === CalendarEntry::class) {
+            // Delete the Calendar Entry properly, especially when it is a recurrent child event then it must be hard deleted
+            $event->content->getModel()?->delete();
+        }
     }
 
 }

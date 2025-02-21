@@ -2,6 +2,7 @@
 
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\components\Application;
+use humhub\modules\content\models\Content;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\ProfileMenu;
@@ -39,6 +40,7 @@ return [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
         ['class' => 'humhub\modules\custom_pages\modules\template\services\ElementTypeService', 'event' => 'init', 'callback' => [Events::class, 'onCustomPagesTemplateElementTypeServiceInit']],
+        ['class' => Content::class, 'event' => Content::EVENT_AFTER_SOFT_DELETE, 'callback' => [Events::class, 'onContentAfterSoftDelete']],
     ],
     'urlManagerRules' => [
         'calendar' => 'calendar/global',
