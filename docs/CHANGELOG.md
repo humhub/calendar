@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.7.3 (Unreleased)
-------------------------
+1.7.3 (February 25, 2025)
+-------------------------
 - Enh #537: Implement template element for custom pages
 - Enh #538: Fix deletion of recurrent calendar entry from wall stream
 
