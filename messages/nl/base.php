@@ -98,6 +98,8 @@ return [
   'Reopen Event' => 'Heropen de gebeurtenis',
   'Repeat every' => 'Herhaal elke',
   'Saturday' => 'Zaterdag',
+  'Select calendar...' => 'Kies een agenda',
+  'Select space...' => 'Kies een ruimte ...',
   'Set reminder' => 'Ingestelde herinnering',
   'Start Date' => 'Startdatum',
   'Start Time' => 'Starttijd',

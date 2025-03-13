@@ -98,6 +98,8 @@ return [
   'Reopen Event' => 'Reprendre l’événement',
   'Repeat every' => 'Répéter tous les',
   'Saturday' => 'Samedi',
+  'Select calendar...' => 'Sélectionnez un calendrier...',
+  'Select space...' => 'Sélectionnez un espace...',
   'Set reminder' => 'Régler un rappel',
   'Start Date' => 'Date de début',
   'Start Time' => 'Heure de début',

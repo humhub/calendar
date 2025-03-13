@@ -99,6 +99,8 @@ return [
     'Reopen Event' => '',
     'Repeat every' => '',
     'Saturday' => '',
+    'Select calendar...' => '',
+    'Select space...' => '',
     'Set reminder' => '',
     'Start Date' => '',
     'Start Time' => '',

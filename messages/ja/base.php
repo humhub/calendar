@@ -98,6 +98,8 @@ return [
   'Reopen Event' => 'イベントを再公開',
   'Repeat every' => '繰り返す間隔',
   'Saturday' => '土曜',
+  'Select calendar...' => 'カレンダーを選択...',
+  'Select space...' => 'スペースを選択...',
   'Set reminder' => 'リマインダーを設定',
   'Start Date' => '開始日',
   'Start Time' => '開始時間',
