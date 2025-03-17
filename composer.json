@@ -3,15 +3,20 @@
   "description": "HumHub calendar module",
   "type": "library",
   "require": {
+    "yiisoft/yii2": "dev-master",
     "sabre/vobject": "^4",
     "simshaun/recurr": "^4",
     "sabre/xml": "^2",
-    "sabre/uri": "^2"
+    "sabre/uri": "^2",
+    "sabre/dav": "dev-master"
   },
   "config": {
     "process-timeout": 1800,
     "platform": {
       "php": "7.4"
+    },
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
     }
   },
   "repositories": [
