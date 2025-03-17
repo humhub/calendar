@@ -9,6 +9,7 @@
     "sabre/xml": "^2",
     "sabre/uri": "^2",
     "sabre/dav": "dev-master"
+    "sabre/dav": "~4.6.0",
   },
   "config": {
     "process-timeout": 1800,

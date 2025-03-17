@@ -3,47 +3,38 @@
 namespace humhub\modules\calendar\controllers;
 
 use Sabre\CalDAV\CalendarRoot;
-use Sabre\DAV\Auth\Plugin;
 use Sabre\DAVACL\PrincipalCollection;
-use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
-use Sabre\DAV;
-use Sabre\CalDAV;
-use Sabre\DAV\Auth\Backend\AbstractBackend;
-use Sabre\DAVACL\PrincipalBackend\PDO as PrincipalPDO;
-use Sabre\CalDAV\Backend\PDO as CalendarPDO;
-use yii\web\Response;
-use humhub\modules\user\models\User;
+use Sabre\DAV\Server;
+use Sabre\DAV\Sharing\Plugin as DAVPlugin;
+use Sabre\CalDAV\SharingPlugin as CalDAVPlugin;
+use Sabre\DAV\Browser\Plugin as BrowserPlugin;
+use humhub\modules\calendar\helpers\dav\CalendarBackend;
+use humhub\modules\calendar\helpers\dav\PrincipalBackend;
 
 class CalDavController extends Controller
 {
     public function actionIndex()
     {
-        Yii::$app->response->format = Response::FORMAT_RAW;
-        Yii::$app->response->headers->set('Content-Type', 'text/xml; charset=utf-8');
-
-        $pdo = Yii::$app->db->pdo;
-
-        $authBackend = new TokenAuthBackend();
-
-        $principalBackend = new PrincipalPDO($pdo);
-
-        $calendarBackend = new CalendarPDO($pdo);
+        $principalBackend = new PrincipalBackend();
+        $calendarBackend = new CalendarBackend();
 
         $tree = [
             new PrincipalCollection($principalBackend),
             new CalendarRoot($principalBackend, $calendarBackend),
         ];
 
-        $server = new DAV\Server($tree);
+        $server = new Server($tree);
 
-        $server->setBaseUri('/calendar/caldav');
+        $server->setBaseUri(Url::to(['/calendar/cal-dav/index']));
 
-        $server->addPlugin(new Plugin($authBackend, 'HumHub CalDAV'));
-        $server->addPlugin(new CalDAV\Plugin());
-        $server->addPlugin(new DAVACL\Plugin());
+        $server->addPlugin(new DAVPlugin);
+        $server->addPlugin(new CalDAVPlugin());
+        $server->addPlugin(new BrowserPlugin());
 
-        $server->exec();
+        $server->start();
+
         return null;
     }
 }
