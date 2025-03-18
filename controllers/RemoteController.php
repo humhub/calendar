@@ -4,6 +4,7 @@ namespace humhub\modules\calendar\controllers;
 
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\DAVACL\PrincipalCollection;
+use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
 use Sabre\DAV\Server;
@@ -13,9 +14,9 @@ use Sabre\DAV\Browser\Plugin as BrowserPlugin;
 use humhub\modules\calendar\helpers\dav\CalendarBackend;
 use humhub\modules\calendar\helpers\dav\PrincipalBackend;
 
-class CalDavController extends Controller
+class RemoteController extends Controller
 {
-    public function actionIndex()
+    public function actionCalDav($token)
     {
         $principalBackend = new PrincipalBackend();
         $calendarBackend = new CalendarBackend();
@@ -27,14 +28,14 @@ class CalDavController extends Controller
 
         $server = new Server($tree);
 
-        $server->setBaseUri(Url::to(['/calendar/cal-dav/index']));
+        $server->setBaseUri(Url::to(['/calendar/remote/cal-dav', 'token' => $token]));
 
         $server->addPlugin(new DAVPlugin);
         $server->addPlugin(new CalDAVPlugin());
-        $server->addPlugin(new BrowserPlugin());
-
+        if (YII_DEBUG) {
+            $server->addPlugin(new BrowserPlugin());
+        }
         $server->start();
-
-        return null;
+        Yii::$app->response->isSent = true;
     }
 }

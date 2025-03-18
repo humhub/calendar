@@ -59,12 +59,12 @@ class ConfigController extends AbstractConfigController
         ]);
     }
 
-    public function actionExport()
+    public function actionExport($token)
     {
         return $this->renderAjax('export', [
-            'ical_url' => Url::to(['/calendar/export/ical'], true),
-            'caldav_winlin_url' => Url::to(['/calendar/cal-dav/index'], true),
-            'caldav_macos_url' => Url::to(['/calendar/cal-dav/index'], true),
+            'ical_url' => Url::to(['/calendar/export/ical', 'token' => $token, 'path' => ''], true),
+            'caldav_winlin_url' => Url::to(['/calendar/remote/cal-dav', 'token' => $token, 'path' => ''], true),
+            'caldav_macos_url' => Url::to(['/calendar/remote/cal-dav', 'token' => $token], true),
         ]);
     }
 

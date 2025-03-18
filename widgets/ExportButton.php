@@ -27,15 +27,28 @@ class ExportButton extends Widget
      */
     public $container;
 
+    public function init()
+    {
+        $this->container = ContentContainerHelper::getCurrent();
+
+        if (!$this->container) {
+            $this->container = Yii::$app->user->identity;
+        }
+
+        parent::init();
+    }
+
     public function run()
     {
         if(Yii::$app->user->isGuest) {
             return;
         }
 
+        $token = $this->container->guid;
+
         return ModalButton::defaultType()
             ->icon('download')
-            ->load(Url::to(['/calendar/config/export']))
+            ->load(Url::to(['/calendar/config/export', 'token' => $token]))
             ->tooltip(Yii::t('CalendarModule.views', 'Export'));
     }
 }

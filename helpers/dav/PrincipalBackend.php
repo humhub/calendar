@@ -16,7 +16,7 @@ class PrincipalBackend extends AbstractBackend
         $users = User::find()->all();
         foreach ($users as $user) {
             $principals[] = [
-                'uri' => 'principals/users/' . $user->id,
+                'uri' => 'principals/users/' . $user->guid,
                 '{DAV:}displayname' => $user->displayName,
                 '{http://sabredav.org/ns}email-address' => $user->email,
             ];
@@ -28,7 +28,7 @@ class PrincipalBackend extends AbstractBackend
     public function getPrincipalByPath($path)
     {
         $userId = basename($path);
-        $user = User::findOne(['id' => $userId]);
+        $user = User::findOne(['guid' => $userId]);
 
         if (!$user) {
             return null;

@@ -41,5 +41,6 @@ return [
     ],
     'urlManagerRules' => [
         'calendar' => 'calendar/global',
+        ['pattern' => 'remote/caldav/<token:[\w\-]+>/<path:.*>', 'route' => 'calendar/remote/cal-dav', 'defaults' => ['path' => '']],
     ],
 ];
