@@ -4,8 +4,13 @@ namespace humhub\modules\calendar\helpers\dav;
 
 use humhub\helpers\ArrayHelper;
 use humhub\libs\StringHelper;
+use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
+use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\calendar\interfaces\VCalendar;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\content\components\ContentContainerModuleManager;
@@ -27,7 +32,7 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
     {
         $userId = basename($principalUri);
 
-        $user = User::findOne(['id' => $userId]);
+        $user = User::findOne(['username' => $userId]);
 
         $contentContainers = [];
         if ($user->moduleManager->isEnabled('calendar') || $user->moduleManager->canEnable('calendar')) {
@@ -75,12 +80,13 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
 
     public function getCalendarObjects($calendarId)
     {
+//        die;
         if (StringHelper::startsWith($calendarId, 'profile')) {
             $contentContainer = User::findOne(['guid' => substr($calendarId, 8)]);
         } elseif (StringHelper::startsWith($calendarId, 'space')) {
             $contentContainer = Space::findOne(['guid' => substr($calendarId, 6)]);
         } else {
-            return null;
+            throw new NotFound('Calendar not found');
         }
 
         /** @var CalendarService $calendarService */
@@ -88,16 +94,26 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
 
         return ArrayHelper::getColumn(
             $calendarService->getCalendarItems(null, null, [], $contentContainer),
-            function(CalendarEntry $entry) use ($calendarId) {
-                $ics = $entry->generateIcs();
+            function(CalendarEventIF $entry) use ($calendarId) {
+
+                $ics = $entry instanceof CalendarEntry ? $entry->generateIcs() : '';
+
+                if (empty($ics)) {
+                    if (RecurrenceHelper::isRecurrent($entry) && !RecurrenceHelper::isRecurrentRoot($entry)) {
+
+                        /* @var $entry RecurrentEventIF */
+                        $entry = $entry->getRecurrenceQuery()->getRecurrenceRoot();
+                    }
+                    var_dump(VCalendar::withEvents($entry, CalendarUtils::getSystemTimeZone(true))->serialize());die;
+                }
 
                 return [
                     'id'            => $entry->uid,
                     'uri'           => $entry->uid . '.ics',
                     'calendarid'    => $calendarId,
                     'calendardata'  => $ics,
-                    'lastmodified'  => strtotime($entry->start_datetime),
-//                    'etag'          => md5($entry->updated_at),
+                    'lastmodified'  => strtotime($entry->updated_at),
+                    'etag'          => md5($entry->updated_at),
                     'size'          => strlen($ics),
                     'componenttype' => 'VEVENT',
                     'firstoccurence' => strtotime($entry->start_datetime),
@@ -109,10 +125,11 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
     public function getCalendarObject($calendarId, $objectUri)
     {
         $eventId = basename($objectUri, '.ics');
-        $event = CalendarEntry::findOne(['id' => $eventId]);
+
+        $event = CalendarEntry::findOne(['uid' => $eventId]);
 
         if (!$event) {
-            throw new NotFound("Event not found");
+            throw new NotFound('Event not found');
         }
 
         $ics = $event->generateIcs();

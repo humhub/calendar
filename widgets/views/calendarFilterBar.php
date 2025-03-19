@@ -3,6 +3,7 @@
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\widgets\CalendarControls;
 use humhub\modules\calendar\widgets\ConfigureButton;
+use humhub\modules\calendar\widgets\ExportButton;
 use humhub\modules\calendar\widgets\FilterType;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\widgets\FadeIn;
@@ -25,6 +26,7 @@ use humhub\widgets\FadeIn;
             <div class="calendar-option-buttons">
                 <?= CalendarControls::widget([
                     'widgets' => [
+                        [ExportButton::class, [], ['sortOrder' => 10]],
                         [ConfigureButton::class, [], ['sortOrder' => 100]],
                     ],
                 ]) ?>

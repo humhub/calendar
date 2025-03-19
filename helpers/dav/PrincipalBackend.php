@@ -16,7 +16,7 @@ class PrincipalBackend extends AbstractBackend
         $users = User::find()->all();
         foreach ($users as $user) {
             $principals[] = [
-                'uri' => 'principals/users/' . $user->guid,
+                'uri' => 'principals/users/' . $user->username,
                 '{DAV:}displayname' => $user->displayName,
                 '{http://sabredav.org/ns}email-address' => $user->email,
             ];
@@ -27,15 +27,15 @@ class PrincipalBackend extends AbstractBackend
 
     public function getPrincipalByPath($path)
     {
-        $userId = basename($path);
-        $user = User::findOne(['guid' => $userId]);
+        $username = basename($path);
+        $user = User::findOne(['username' => $username]);
 
         if (!$user) {
             return null;
         }
 
         return [
-            'uri' => 'principals/users/' . $user->id,
+            'uri' => 'principals/users/' . $user->username,
             '{DAV:}displayname' => $user->displayName,
             '{http://sabredav.org/ns}email-address' => $user->email,
         ];
@@ -76,5 +76,17 @@ class PrincipalBackend extends AbstractBackend
         }
 
         return $principals;
+    }
+
+    public function getPrincipalAcl($path)
+    {
+        // Example: Give read access to users who are part of the calendar
+        return [
+            [
+                'principal' => 'principals/users/' . $path,
+                'privilege' => '{DAV:}read',
+                'grant' => true,
+            ]
+        ];
     }
 }

@@ -28,7 +28,6 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
             <div class="calendar-option-buttons pull-right">
                 <?= CalendarControls::widget([
                     'widgets' => [
-                        [ExportButton::class, [], ['sortOrder' => 10]],
                         [ConfigureButton::class, [], ['sortOrder' => 100]],
                     ],
                 ]) ?>
