@@ -22,6 +22,7 @@ use Sabre\CalDAV\Backend\AbstractBackend;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Exception\NotImplemented;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 use Yii;
@@ -104,7 +105,7 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
                         /* @var $entry RecurrentEventIF */
                         $entry = $entry->getRecurrenceQuery()->getRecurrenceRoot();
                     }
-                    var_dump(VCalendar::withEvents($entry, CalendarUtils::getSystemTimeZone(true))->serialize());die;
+//                    var_dump(VCalendar::withEvents($entry, CalendarUtils::getSystemTimeZone(true))->serialize());die;
                 }
 
                 return [
@@ -193,12 +194,13 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
 
     public function createCalendar($principalUri, $calendarUri, array $properties)
     {
-        throw new MethodNotAllowed('Calendar creation is not supported.');
+        return 0;
+        throw new NotImplemented('Calendar creation is not supported.');
     }
 
     public function deleteCalendar($calendarId)
     {
-        throw new MethodNotAllowed('Calendar deletion is not supported.');
+        throw new NotImplemented('Calendar deletion is not supported.');
     }
 
     public function updateCalendarObject($calendarId, $objectUri, $calendarData)

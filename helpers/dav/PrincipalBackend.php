@@ -16,9 +16,12 @@ class PrincipalBackend extends AbstractBackend
         $users = User::find()->all();
         foreach ($users as $user) {
             $principals[] = [
-                'uri' => 'principals/users/' . $user->username,
+                'uri' => 'principals/' . $user->username,
                 '{DAV:}displayname' => $user->displayName,
                 '{http://sabredav.org/ns}email-address' => $user->email,
+                '{urn:ietf:params:xml:ns:caldav}calendar-home-set' => [
+                    'href' => '/calendars/' . $user->username . '/'
+                ],
             ];
         }
 
@@ -35,9 +38,12 @@ class PrincipalBackend extends AbstractBackend
         }
 
         return [
-            'uri' => 'principals/users/' . $user->username,
+            'uri' => 'principals/' . $user->username,
             '{DAV:}displayname' => $user->displayName,
             '{http://sabredav.org/ns}email-address' => $user->email,
+            '{urn:ietf:params:xml:ns:caldav}calendar-home-set' => [
+                'href' => '/calendars/' . $user->username . '/'
+            ],
         ];
     }
 
@@ -72,7 +78,7 @@ class PrincipalBackend extends AbstractBackend
 
         $users = $query->all();
         foreach ($users as $user) {
-            $principals[] = 'principals/users/' . $user->id;
+            $principals[] = 'principals/' . $user->id;
         }
 
         return $principals;
@@ -83,7 +89,7 @@ class PrincipalBackend extends AbstractBackend
         // Example: Give read access to users who are part of the calendar
         return [
             [
-                'principal' => 'principals/users/' . $path,
+                'principal' => 'principals/' . $path,
                 'privilege' => '{DAV:}read',
                 'grant' => true,
             ]
