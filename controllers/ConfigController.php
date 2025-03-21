@@ -12,6 +12,7 @@ use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use Yii;
+use yii\helpers\Url;
 
 class ConfigController extends AbstractConfigController
 {
@@ -55,6 +56,15 @@ class ConfigController extends AbstractConfigController
 
         return $this->render('menu', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionExport($token)
+    {
+        return $this->renderAjax('export', [
+            'ical_url' => Url::to(['/calendar/export/ical', 'token' => $token, 'path' => ''], true),
+            'caldav_winlin_url' => Url::to(['/calendar/remote/cal-dav', 'token' => $token, 'path' => ''], true),
+            'caldav_macos_url' => Url::to(['/calendar/remote/cal-dav', 'token' => $token], true),
         ]);
     }
 
