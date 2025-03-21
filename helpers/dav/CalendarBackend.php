@@ -6,13 +6,12 @@ use humhub\helpers\ArrayHelper;
 use humhub\libs\StringHelper;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\integration\BirthdayCalendarEntry;
 use humhub\modules\calendar\interfaces\CalendarService;
-use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\VCalendar;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Membership;
@@ -20,10 +19,10 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use Sabre\CalDAV\Backend\SyncSupport;
+use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\NotImplemented;
-use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 use Yii;
 
@@ -39,7 +38,7 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         if ($user->moduleManager->isEnabled('calendar') || $user->moduleManager->canEnable('calendar')) {
             $contentContainers[] = [
                 'id' => "profile-{$user->guid}",
-                'name' => Yii::t('CalendarModule.base', 'Humhub {name} Calendar', ['name' => 'Profile']),
+                'name' => Yii::t('CalendarModule.base', '{name} Calendar', ['name' => 'Profile']),
             ];
         }
 
@@ -60,33 +59,36 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
             if ((new CalendarEntry($space))->content->canEdit()) {
                 $contentContainers[] = [
                     'id' => "space-{$space->guid}",
-                    'name' => Yii::t('CalendarModule.base', 'Humhub {name} Calendar', ['name' => $space->name]),
+                    'name' => Yii::t('CalendarModule.base', '{name} Calendar', ['name' => $space->name]),
                 ];
             }
         }
 
-        return ArrayHelper::getColumn($contentContainers, function(array $contentContainer) use ($principalUri) {
+        return ArrayHelper::getColumn($contentContainers, function(array $contentContainer) use ($principalUri, $user) {
             $id = ArrayHelper::getValue($contentContainer, 'id');
 
             return [
-                'id'           => $id,
-                'uri'          => "humhub-calendar-$id",
+                'id' => "$id",
+                'uri' => "$id",
                 'principaluri' => $principalUri,
-                'displayname'  => ArrayHelper::getValue($contentContainer, 'name'),
-                'timezone'     => 'UTC',
-                'components'   => ['VEVENT'],
+                '{DAV:}displayname' => ArrayHelper::getValue($contentContainer, 'name'),
+                '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT']),
+                '{http://sabredav.org/ns}read-only' => 0,
             ];
         });
     }
 
     public function getCalendarObjects($calendarId)
     {
-//        die;
         if (StringHelper::startsWith($calendarId, 'profile')) {
             $contentContainer = User::findOne(['guid' => substr($calendarId, 8)]);
         } elseif (StringHelper::startsWith($calendarId, 'space')) {
             $contentContainer = Space::findOne(['guid' => substr($calendarId, 6)]);
         } else {
+            $contentContainer = null;
+        }
+
+        if (!$contentContainer) {
             throw new NotFound('Calendar not found');
         }
 
@@ -96,16 +98,21 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         return ArrayHelper::getColumn(
             $calendarService->getCalendarItems(null, null, [], $contentContainer),
             function(CalendarEventIF $entry) use ($calendarId) {
-
-                $ics = $entry instanceof CalendarEntry ? $entry->generateIcs() : '';
-
-                if (empty($ics)) {
+                if ($entry instanceof BirthdayCalendarEntry) {
                     if (RecurrenceHelper::isRecurrent($entry) && !RecurrenceHelper::isRecurrentRoot($entry)) {
 
                         /* @var $entry RecurrentEventIF */
                         $entry = $entry->getRecurrenceQuery()->getRecurrenceRoot();
                     }
-//                    var_dump(VCalendar::withEvents($entry, CalendarUtils::getSystemTimeZone(true))->serialize());die;
+                    $ics = VCalendar::withEvents($entry, CalendarUtils::getSystemTimeZone(true))->serialize();
+                    $updatedAt = $entry->model->updated_at;
+                    $start = $entry->model->updated_at;
+                    $end = $entry->model->updated_at;
+                } else {
+                    $ics = $entry->generateIcs();
+                    $updatedAt = $entry->updated_at;
+                    $start = $entry->start_datetime;
+                    $end = $entry->end_datetime;
                 }
 
                 return [
@@ -113,12 +120,12 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
                     'uri'           => $entry->uid . '.ics',
                     'calendarid'    => $calendarId,
                     'calendardata'  => $ics,
-                    'lastmodified'  => strtotime($entry->updated_at),
-                    'etag'          => md5($entry->updated_at),
+                    'lastmodified'  => strtotime($updatedAt),
+                    'etag'          => md5($updatedAt),
                     'size'          => strlen($ics),
                     'componenttype' => 'VEVENT',
-                    'firstoccurence' => strtotime($entry->start_datetime),
-                    'lastoccurence'  => strtotime($entry->end_datetime),
+//                    'firstoccurence' => strtotime($start),
+//                    'lastoccurence'  => strtotime($end),
                 ];
         });
     }
@@ -194,7 +201,6 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
 
     public function createCalendar($principalUri, $calendarUri, array $properties)
     {
-        return 0;
         throw new NotImplemented('Calendar creation is not supported.');
     }
 

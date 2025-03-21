@@ -22,6 +22,9 @@ class PrincipalBackend extends AbstractBackend
                 '{urn:ietf:params:xml:ns:caldav}calendar-home-set' => [
                     'href' => '/calendars/' . $user->username . '/'
                 ],
+                '{urn:ietf:params:xml:ns:caldav}calendar-resource-uri' => [
+                    ['href' => '/calendars/' . $user->username . '/']
+                ],
             ];
         }
 
