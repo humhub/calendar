@@ -59,7 +59,7 @@ class CalendarEventsElement extends BaseContentRecordsElement
         return array_merge(parent::attributeLabels(), [
             'static' => Yii::t('CalendarModule.base', 'Select calendars'),
             'sortOrder' => Yii::t('CalendarModule.base', 'Sorting'),
-            'nextDays' => Yii::t('CalendarModule.base', 'Display events for the next number of days'),
+            'nextDays' => Yii::t('CalendarModule.base', 'Display events within the next X days'),
         ]);
     }
 
@@ -69,7 +69,7 @@ class CalendarEventsElement extends BaseContentRecordsElement
     public function attributeHints()
     {
         return array_merge(parent::attributeHints(), [
-            'nextDays' => Yii::t('CalendarModule.base', 'Leave empty to don\'t limit. Use 0 to limit only for today.'),
+            'nextDays' => Yii::t('CalendarModule.base', 'Leave empty to list all events. Enter 0 to display only today\'s events.'),
         ]);
     }
 
