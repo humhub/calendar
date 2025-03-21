@@ -16,3 +16,11 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <div class="records-content-form-fields" data-type="static">
     <?= $form->field($model, 'static')->widget(CalendarEntryPicker::class) ?>
 </div>
+
+<div class="records-content-form-fields" data-type="options">
+    <?= $form->field($model, 'nextDays') ?>
+    <?= $form->field($model, 'sortOrder')->radioList([
+        $model::SORT_DATE_OLD => Yii::t('CalendarModule.base', 'From Oldest to Newest'),
+        $model::SORT_DATE_NEW => Yii::t('CalendarModule.base', 'From Newest to Oldest'),
+    ]) ?>
+</div>

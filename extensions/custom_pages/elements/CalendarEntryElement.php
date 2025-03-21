@@ -27,7 +27,7 @@ class CalendarEntryElement extends BaseContentRecordElement
      */
     public function getLabel(): string
     {
-        return Yii::t('CalendarModule.template', 'Calendar event');
+        return Yii::t('CalendarModule.base', 'Calendar event');
     }
 
     /**
@@ -36,7 +36,7 @@ class CalendarEntryElement extends BaseContentRecordElement
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('CalendarModule.template', 'Select calendar event'),
+            'id' => Yii::t('CalendarModule.base', 'Select calendar event'),
         ];
     }
 
