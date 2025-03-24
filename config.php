@@ -43,6 +43,6 @@ return [
         'calendar' => 'calendar/global',
         '/.well-known/caldav' => 'calendar/remote/well-known',
         ['pattern' => 'remote/caldav/<path:.*>', 'route' => 'calendar/remote/cal-dav', 'defaults' => ['path' => '']],
-//        ['pattern' => 'remote/caldav/<token:[\w\-]+>/<path:.*>', 'route' => 'calendar/remote/cal-dav', 'defaults' => ['path' => '']],
+        ['pattern' => 'remote/ical/<token:[\w\-]+>', 'route' => 'calendar/remote/ical'],
     ],
 ];

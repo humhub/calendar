@@ -80,6 +80,8 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
 
     public function getCalendarObjects($calendarId)
     {
+        $calendarId = trim($calendarId, '/');
+
         if (StringHelper::startsWith($calendarId, 'profile')) {
             $contentContainer = User::findOne(['guid' => substr($calendarId, 8)]);
         } elseif (StringHelper::startsWith($calendarId, 'space')) {
@@ -133,6 +135,8 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
     public function getCalendarObject($calendarId, $objectUri)
     {
         $eventId = basename($objectUri, '.ics');
+
+//        var_dump($objectUri);die;
 
         $event = CalendarEntry::findOne(['uid' => $eventId]);
 

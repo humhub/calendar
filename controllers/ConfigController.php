@@ -62,9 +62,7 @@ class ConfigController extends AbstractConfigController
     public function actionExport($token)
     {
         return $this->renderAjax('export', [
-            'ical_url' => Url::to(['/calendar/export/ical', 'token' => $token, 'path' => ''], true),
-            'caldav_winlin_url' => Url::to(['/calendar/remote/cal-dav', 'token' => $token, 'path' => ''], true),
-            'caldav_macos_url' => Url::to(['/calendar/remote/cal-dav', 'token' => $token], true),
+            'ical_url' => Url::to(['/calendar/remote/ical', 'token' => $token], true),
         ]);
     }
 

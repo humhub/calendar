@@ -9,14 +9,10 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\calendar\helpers\ICalHelper;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\helpers\ContentContainerHelper;
-use humhub\modules\content\models\ContentContainerModuleState;
-use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
-use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use Yii;
 
@@ -44,11 +40,9 @@ class ExportButton extends Widget
             return;
         }
 
-        $token = $this->container->guid;
-
         return ModalButton::defaultType()
             ->icon('download')
-            ->load(Url::to(['/calendar/config/export', 'token' => $token]))
+            ->load(Url::to(['/calendar/config/export', 'token' => $this->container->contentContainerRecord->guid]))
             ->tooltip(Yii::t('CalendarModule.views', 'Export'));
     }
 }
