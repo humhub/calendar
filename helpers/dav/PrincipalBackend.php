@@ -81,7 +81,7 @@ class PrincipalBackend extends AbstractBackend
 
         $users = $query->all();
         foreach ($users as $user) {
-            $principals[] = 'principals/' . $user->id;
+            $principals[] = 'principals/' . $user->username;
         }
 
         return $principals;
