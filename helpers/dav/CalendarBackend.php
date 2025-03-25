@@ -21,6 +21,7 @@ use humhub\modules\user\models\User;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
+use Sabre\DAV\Exception\Conflict;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\NotImplemented;
@@ -88,7 +89,7 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         $contentContainer = $this->getContentContainerForCalendar($calendarId);
 
         if (!$contentContainer) {
-            throw new NotFound('Calendar not found');
+            throw new NotFound();
         }
 
         /** @var CalendarService $calendarService */
@@ -120,7 +121,7 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         }
 
         if (!$event) {
-            throw new NotFound('Event not found');
+            throw new NotFound();
         }
 
         return $this->prepareEvent($event, $calendarId);
@@ -142,18 +143,12 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
     {
         $eventId = basename($objectUri, '.ics');
 
-        $eventData = $this->parseVevent($calendarData);
+        if (CalendarEntry::find()->where(['guid' => $eventId])->exists()) {
+            throw new Conflict();
+        }
 
         $event = new CalendarEntry($this->getContentContainerForCalendar($calendarId));
-        $event->title = ArrayHelper::getValue($eventData, 'SUMMARY');
-        $event->description = ArrayHelper::getValue($eventData, 'DESCRIPTION');
-        $event->start_datetime = (new DateTime(ArrayHelper::getValue($eventData, 'DTSTART')))->format('Y-m-d H:i:s');
-        $event->end_datetime = (new DateTime(ArrayHelper::getValue($eventData, 'DTEND')))->format('Y-m-d H:i:s');
-        $event->all_day = 0;
-        $event->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
-//        $event->participant_info = null;
-        $event->location = ArrayHelper::getValue($eventData, 'LOCATION');
-        $event->uid = ArrayHelper::getValue($eventData, 'UID', $eventId);
+        $this->mapVeventToEvent($calendarData, $event);
         $event->save();
 
         $etag = md5($event->getLastModified()->getTimestamp());
@@ -161,9 +156,24 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         return "\"$etag\"";
     }
 
+
+    public function updateCalendarObject($calendarId, $objectUri, $calendarData)
+    {
+        $eventId = basename($objectUri, '.ics');
+        $event = CalendarEntry::findOne(['guid' => $eventId]);
+
+        if (!$event) {
+            throw new NotFound();
+        }
+
+        $this->mapVeventToEvent($calendarData, $event);
+        $event->save();
+
+    }
+
     public function updateCalendar($calendarId, PropPatch $propPatch)
     {
-        throw new MethodNotAllowed('Calendar update is not supported.');
+        throw new MethodNotAllowed();
     }
 
     public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
@@ -173,38 +183,13 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
 
     public function createCalendar($principalUri, $calendarUri, array $properties)
     {
-        throw new NotImplemented('Calendar creation is not supported.');
+        throw new NotImplemented();
     }
 
     public function deleteCalendar($calendarId)
     {
-        throw new NotImplemented('Calendar deletion is not supported.');
+        throw new NotImplemented();
     }
-
-    public function updateCalendarObject($calendarId, $objectUri, $calendarData)
-    {
-        $eventId = basename($objectUri, '.ics');
-        $event = CalendarEntry::findOne(['id' => $eventId]);
-
-        if (!$event) {
-            throw new NotFound("Event not found.");
-        }
-
-        // Parse iCalendar data and update event details
-        if (preg_match('/SUMMARY:(.*)/', $calendarData, $matches)) {
-            $event->title = trim($matches[1]);
-        }
-        if (preg_match('/DTSTART:(\d+T\d+Z)/', $calendarData, $matches)) {
-            $event->start_datetime = gmdate('Y-m-d H:i:s', strtotime($matches[1]));
-        }
-        if (preg_match('/DTEND:(\d+T\d+Z)/', $calendarData, $matches)) {
-            $event->end_datetime = gmdate('Y-m-d H:i:s', strtotime($matches[1]));
-        }
-
-        $event->save();
-    }
-
-
 
     protected function prepareEvent(CalendarEventIF|CalendarEntry|BirthdayCalendarEntry $event, string $calendarId) : array
     {
@@ -229,11 +214,11 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
         ];
     }
 
-    protected function parseVevent(string $data) : array
+    protected function mapVeventToEvent(string $data, CalendarEventIF $event)
     {
         $data = Reader::read($data)->select('VEVENT')[0]->children();
 
-        return ArrayHelper::map(
+        $eventData = ArrayHelper::map(
             $data,
             function(Property $property) {
                 return $property->name;
@@ -242,6 +227,16 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
                 return $property->getValue();
             }
         );
+
+        $event->title = ArrayHelper::getValue($eventData, 'SUMMARY');
+        $event->description = ArrayHelper::getValue($eventData, 'DESCRIPTION');
+        $event->start_datetime = (new DateTime(ArrayHelper::getValue($eventData, 'DTSTART')))->format('Y-m-d H:i:s');
+        $event->end_datetime = (new DateTime(ArrayHelper::getValue($eventData, 'DTEND')))->format('Y-m-d H:i:s');
+        $event->all_day = 0;
+        $event->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
+//        $event->participant_info = null;
+        $event->location = ArrayHelper::getValue($eventData, 'LOCATION');
+        $event->uid = ArrayHelper::getValue($eventData, 'UID', $event->getUid());
     }
 
     protected function getContentContainerForCalendar(string $calendarId) : ?ContentContainerActiveRecord
