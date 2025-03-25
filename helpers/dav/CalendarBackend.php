@@ -4,13 +4,11 @@ namespace humhub\modules\calendar\helpers\dav;
 
 use humhub\helpers\ArrayHelper;
 use humhub\libs\StringHelper;
-use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\integration\BirthdayCalendarEntry;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
-use humhub\modules\calendar\interfaces\VCalendar;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\ContentContainerModuleState;
@@ -99,64 +97,56 @@ class CalendarBackend extends AbstractBackend implements SyncSupport
 
         return ArrayHelper::getColumn(
             $calendarService->getCalendarItems(null, null, [], $contentContainer),
-            function(CalendarEventIF $entry) use ($calendarId) {
-                if ($entry instanceof BirthdayCalendarEntry) {
-                    if (RecurrenceHelper::isRecurrent($entry) && !RecurrenceHelper::isRecurrentRoot($entry)) {
-
-                        /* @var $entry RecurrentEventIF */
-                        $entry = $entry->getRecurrenceQuery()->getRecurrenceRoot();
-                    }
-                    $ics = VCalendar::withEvents($entry, CalendarUtils::getSystemTimeZone(true))->serialize();
-                    $updatedAt = $entry->model->updated_at;
-                    $start = $entry->model->updated_at;
-                    $end = $entry->model->updated_at;
-                } else {
-                    $ics = $entry->generateIcs();
-                    $updatedAt = $entry->updated_at;
-                    $start = $entry->start_datetime;
-                    $end = $entry->end_datetime;
-                }
-
-                return [
-                    'id'            => $entry->uid,
-                    'uri'           => $entry->uid . '.ics',
-                    'calendarid'    => $calendarId,
-                    'calendardata'  => $ics,
-                    'lastmodified'  => strtotime($updatedAt),
-                    'etag'          => md5($updatedAt),
-                    'size'          => strlen($ics),
-                    'componenttype' => 'VEVENT',
-//                    'firstoccurence' => strtotime($start),
-//                    'lastoccurence'  => strtotime($end),
-                ];
-        });
+            function(CalendarEventIF $event) use ($calendarId) {
+                return $this->prepareEvent($event, $calendarId);
+            }
+        );
     }
 
     public function getCalendarObject($calendarId, $objectUri)
     {
         $eventId = basename($objectUri, '.ics');
 
-//        var_dump($objectUri);die;
+        if (StringHelper::startsWith($eventId, 'birthday')) {
+            $userGuid = substr($eventId, 8);
+            $birthdayUser = User::findOne(['guid' => $userGuid]);
 
-        $event = CalendarEntry::findOne(['uid' => $eventId]);
+            if ($birthdayUser) {
+                $event = new BirthdayCalendarEntry(['model' => $birthdayUser]);
+            } else {
+                $event = null;
+            }
+        } else {
+            $event = CalendarEntry::findOne(['uid' => $eventId]);
+        }
 
         if (!$event) {
             throw new NotFound('Event not found');
         }
 
+        return $this->prepareEvent($event, $calendarId);
+    }
+
+    protected function prepareEvent(CalendarEventIF|CalendarEntry|BirthdayCalendarEntry $event, string $calendarId) : array
+    {
+        if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
+            /* @var $event RecurrentEventIF */
+            $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
+        }
+
         $ics = $event->generateIcs();
 
         return [
-            'id'            => $event->id,
-            'uri'           => $event->id . '.ics',
+            'id'            => $event->uid,
+            'uri'           => $event->uid . '.ics',
             'calendarid'    => $calendarId,
             'calendardata'  => $ics,
-            'lastmodified'  => strtotime($event->updated_at),
-            'etag'          => md5($event->updated_at),
+            'lastmodified'  => $event->getLastModified() ? $event->getLastModified()->getTimestamp() : null,
+            'etag'          => $event->getLastModified() ? md5($event->getLastModified()->getTimestamp()) : null,
             'size'          => strlen($ics),
             'componenttype' => 'VEVENT',
-            'firstoccurence' => strtotime($event->start_datetime),
-            'lastoccurence'  => strtotime($event->end_datetime),
+            'firstoccurence' => $event->getStartDateTime()->getTimestamp(),
+            'lastoccurence'  => $event->getEndDateTime()->getTimestamp(),
         ];
     }
 

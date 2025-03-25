@@ -15,17 +15,6 @@ class UserPassAuthBackend extends AbstractBasic
      */
     protected function validateUserPass($username, $password)
     {
-        $login = new Login();
-        $login->username = $username;
-        $login->password = $password;
-
-        if ($login->validate()) {
-            $authClientService = new AuthClientService($login->authClient);
-            $authClientService->autoMapToExistingUser();
-            Yii::$app->user->login($authClientService->getUser());
-
-            return true;
-        }
-        return false;
+        return !Yii::$app->user->isGuest;
     }
 }

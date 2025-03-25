@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\integration;
 
 use DateTime;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\widgets\Label;
@@ -317,5 +318,10 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
     public function getFullCalendarOptions()
     {
         return [];
+    }
+
+    public function generateIcs()
+    {
+        return CalendarUtils::geterateIcs($this);
     }
 }
