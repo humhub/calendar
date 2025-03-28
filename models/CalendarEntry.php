@@ -633,12 +633,7 @@ class CalendarEntry extends ContentActiveRecord implements
             return null;
         }
 
-        if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
-            /* @var $event RecurrentEventIF */
-            $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
-        }
-
-        return VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone(true))->serialize();
+        return CalendarUtils::geterateIcs($event);
     }
 
     public function afterMove(ContentContainerActiveRecord $container = null)
