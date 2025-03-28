@@ -10,6 +10,7 @@ use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientService;
 use Sabre\CalDAV\CalendarRoot;
+use Sabre\CalDAV\Schedule\IMipPlugin;
 use Sabre\DAVACL\PrincipalCollection;
 use Yii;
 use yii\filters\auth\HttpBasicAuth;
@@ -63,7 +64,7 @@ class RemoteController extends Controller
         ];
     }
 
-    public function actionCalDav($token = null)
+    public function actionCalDav()
     {
         $principalBackend = new PrincipalBackend();
         $calendarBackend = new CalendarBackend();
@@ -80,6 +81,7 @@ class RemoteController extends Controller
         $server->addPlugin(new SchedulePlugin());
         $server->addPlugin(new SharingPlugin());
         $server->addPlugin(new CalDAVPlugin());
+        $server->addPlugin(new IMipPlugin('noreply@example.org'));
         $aclPlugin = new ACLPlugin();
         $aclPlugin->adminPrincipals[] = 'principals/admin';
         /*$aclPlugin->setDefaultAcl([
@@ -98,6 +100,7 @@ class RemoteController extends Controller
 
         if (YII_DEBUG) {
             $server->addPlugin(new BrowserPlugin());
+            $server->debugExceptions = true;
         }
         $server->start();
         Yii::$app->response->isSent = true;

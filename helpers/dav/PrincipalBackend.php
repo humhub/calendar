@@ -98,4 +98,9 @@ class PrincipalBackend extends AbstractBackend
             ]
         ];
     }
+
+    public function findByUri($uri, $principalPrefix)
+    {
+        return parent::findByUri($uri, $principalPrefix);
+    }
 }

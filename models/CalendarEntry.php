@@ -63,7 +63,6 @@ use yii\helpers\Html;
  * @property CalendarEntryParticipant[] $participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  * @property string $location
- * @property string $updated_at
  * @property-read bool $recurring
  * @property-read bool $reminder
  * @property-read CalendarEntry|null $recurrenceRoot
