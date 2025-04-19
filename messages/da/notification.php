@@ -6,7 +6,7 @@ return [
   'Calendar: decline' => '',
   'Calendar: maybe' => '',
   'Description' => 'Beskrivelse',
-  'Location' => '',
+  'Location' => 'Beliggenhed',
   'Organizer' => '',
   'Participants info' => '',
   'Receive Calendar related Notifications.' => '',
