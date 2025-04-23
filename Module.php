@@ -50,6 +50,8 @@ class Module extends ContentContainerModule
      */
     public $resourcesPath = 'resources';
 
+    public string $customPagesDefaultTemplatesPath = 'extensions/custom_pages/defaultTemplates.php';
+
     /**
      * @inheritdoc
      */
@@ -193,5 +195,31 @@ class Module extends ContentContainerModule
     public function getContentClasses(): array
     {
         return [CalendarEntry::class];
+    }
+
+    public function enable()
+    {
+        parent::enable() && $this->importCustomPagesDefaultTemplates();
+    }
+
+    public function update()
+    {
+        parent::update();
+        $this->importCustomPagesDefaultTemplates();
+    }
+
+    private function importCustomPagesDefaultTemplates(): bool
+    {
+        if (!Yii::$app->getModule('custom_pages')->isEnabled ||
+            !class_exists('humhub\modules\custom_pages\modules\template\services\ImportService')) {
+            return true;
+        }
+
+        $importService = new \humhub\modules\custom_pages\modules\template\services\ImportService();
+        if (!method_exists($importService, 'importDefaultTemplates')) {
+            return true;
+        }
+
+        return $importService->importDefaultTemplates($this);
     }
 }
