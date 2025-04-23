@@ -210,7 +210,9 @@ class Module extends ContentContainerModule
 
     private function importCustomPagesDefaultTemplates(): bool
     {
-        if (!Yii::$app->getModule('custom_pages')->isEnabled ||
+        $customPagesModule = Yii::$app->getModule('custom_pages');
+        if (!$customPagesModule ||
+            !$customPagesModule->isEnabled ||
             !class_exists('humhub\modules\custom_pages\modules\template\services\ImportService')) {
             return true;
         }
