@@ -429,7 +429,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
                         break;
                 }
 
-                $participant->save();
+//                $participant->save();
             }
         }
     }

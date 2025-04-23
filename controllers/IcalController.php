@@ -8,12 +8,22 @@ use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\models\Content;
 use Yii;
+use yii\base\Event;
 use yii\base\Exception;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 class IcalController extends Controller
 {
+    public function beforeAction($action)
+    {
+        Yii::$app->on('beforeTwoFaCheck', function (Event $event) use ($action) {
+            $event->handled = $action->id === 'export';
+        });
+
+        return parent::beforeAction($action);
+    }
+
     /**
      * @var CalendarService
      */

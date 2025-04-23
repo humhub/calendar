@@ -13,6 +13,7 @@ use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\Schedule\IMipPlugin;
 use Sabre\DAVACL\PrincipalCollection;
 use Yii;
+use yii\base\Event;
 use yii\filters\auth\HttpBasicAuth;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
@@ -37,6 +38,10 @@ class RemoteController extends Controller
             // Allow `REPORT` and `PROPFIND` request for guests
             return true;
         }
+
+        Yii::$app->on('twofa.beforeCheck', function (Event $event) use ($action) {
+            $event->handled = true;
+        });
 
         return parent::beforeAction($action);
     }
