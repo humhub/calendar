@@ -216,10 +216,12 @@ class Module extends ContentContainerModule
         }
 
         $importService = new \humhub\modules\custom_pages\modules\template\services\ImportService();
-        if (!method_exists($importService, 'importFromFolder')) {
+        if (!method_exists($importService, 'allowUpdateDefaultTemplates')) {
             return true;
         }
 
-        return $importService->importFromFolder(Yii::getAlias('@calendar/resources/custom-pages-templates'));
+        return $importService
+            ->allowUpdateDefaultTemplates()
+            ->importFromFolder(Yii::getAlias('@calendar/resources/custom-pages-templates'));
     }
 }
