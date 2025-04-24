@@ -4,13 +4,13 @@ namespace humhub\modules\calendar;
 
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\modules\calendar\models\CalendarEntryType;
-use Yii;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use Yii;
 
 class Module extends ContentContainerModule
 {
@@ -49,8 +49,6 @@ class Module extends ContentContainerModule
      * @inheritdoc
      */
     public $resourcesPath = 'resources';
-
-    public string $customPagesDefaultTemplatesPath = 'extensions/custom_pages/defaultTemplates.php';
 
     /**
      * @inheritdoc
@@ -218,10 +216,10 @@ class Module extends ContentContainerModule
         }
 
         $importService = new \humhub\modules\custom_pages\modules\template\services\ImportService();
-        if (!method_exists($importService, 'importDefaultTemplates')) {
+        if (!method_exists($importService, 'importFromFolder')) {
             return true;
         }
 
-        return $importService->importDefaultTemplates($this);
+        return $importService->importFromFolder(Yii::getAlias('@calendar/resources/custom-pages-templates'));
     }
 }

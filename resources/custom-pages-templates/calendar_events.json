@@ -1,0 +1,32 @@
+{
+  "name": "calendar_events",
+  "engine": "twig",
+  "description": "Default template for calendar events.",
+  "source": "\u003Cul class=\"calendar-events\"\u003E\r\n{% for item in events.items %}\r\n\t\u003Cli class=\"calendar-event\" style=\"margin-bottom:10px\"\u003E\r\n\t\t\u003Ca class=\"cc-event-item\" title=\"{{ item.title }}\" href=\"{{ item.url }}\"\u003E\r\n\t\t\t\u003Cspan style=\"background:{{ item.color }};display:inline-block;border-radius:3px;height:24px;vertical-align:middle\"\u003E\r\n\t\t\t\t\u003Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"22\" height=\"22\" viewBox=\"0 0 22 22\" fill=\"none\"\u003E\r\n\t\t\t\t\t\u003Cpath d=\"M14.666 2.75V6.41667M7.33268 2.75V6.41667M3.66602 10.0833H18.3327M3.66602 6.41667C3.66602 5.93044 3.85917 5.46412 4.20299 5.1203C4.5468 4.77649 5.01312 4.58333 5.49935 4.58333H16.4993C16.9856 4.58333 17.4519 4.77649 17.7957 5.1203C18.1395 5.46412 18.3327 5.93044 18.3327 6.41667V17.4167C18.3327 17.9029 18.1395 18.3692 17.7957 18.713C17.4519 19.0568 16.9856 19.25 16.4993 19.25H5.49935C5.01312 19.25 4.5468 19.0568 4.20299 18.713C3.85917 18.3692 3.66602 17.9029 3.66602 17.4167V6.41667ZM10.0827 14.6667C10.0827 14.9098 10.1793 15.1429 10.3512 15.3148C10.5231 15.4868 10.7562 15.5833 10.9993 15.5833C11.2425 15.5833 11.4756 15.4868 11.6475 15.3148C11.8194 15.1429 11.916 14.9098 11.916 14.6667C11.916 14.4236 11.8194 14.1904 11.6475 14.0185C11.4756 13.8466 11.2425 13.75 10.9993 13.75C10.7562 13.75 10.5231 13.8466 10.3512 14.0185C10.1793 14.1904 10.0827 14.4236 10.0827 14.6667Z\" stroke=\"white\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /\u003E\r\n              \t\u003C/svg\u003E\r\n\t\t\t\u003C/span\u003E\r\n\r\n\t\t\t\u003Cstrong\u003E{{ item.title }}\u003C/strong\u003E\r\n\t\t\t\u003Cp\u003E{{ item.description|u.truncate(70, '...') }}\u003C/p\u003E\r\n\r\n\t\t\t\u003Cspan class=\"label label-info\"\u003E\r\n\t\t\t{% if item.start_datetime|date(\"Y-m-d\") == item.end_datetime|date(\"Y-m-d\") %}\r\n\t\t\t\t{% if item.start_datetime|date(\"H:i\") == \"00:00\" %}\r\n\t\t\t\t\t{{ item.start_datetime|date(\"M. d, Y\") }}\r\n\t\t\t\t{% else %}\r\n\t\t\t\t\t{{ item.start_datetime|date(\"M. d, Y \\\\a\\\\t H:i\") }}\r\n\t\t\t\t{% endif %}\r\n\t\t\t{% else %}\r\n\t\t\t\t{% if item.start_datetime|date(\"H:i\") == \"00:00\" and item.end_datetime|date(\"H:i\") == \"00:00\" %}\r\n\t\t\t\t\t{{ item.start_datetime|date(\"M. d, Y\") }}\r\n\t\t\t\t{% else %}\r\n\t\t\t\t\t{{ item.start_datetime|date(\"M. d \\\\a\\\\t H:i\") }} - {{ item.end_datetime|date(\"M. d, Y \\\\a\\\\t H:i\") }}\r\n\t\t\t\t{% endif %}\r\n\t\t\t{% endif %}\r\n\t\t\t\u003C/span\u003E\r\n\r\n\t\t\t{% if item.location %}\r\n\t\t\t\t\u003Cspan class=\"label label-warning\"\u003E{{ item.location }}\u003C/span\u003E\r\n\t\t\t{% endif %}\r\n\t\t\u003C/a\u003E\r\n\t\u003C/li\u003E\r\n{% endfor %}\r\n\u003C/ul\u003E",
+  "allow_for_spaces": 0,
+  "type": "layout",
+  "is_default": 1,
+  "elements": [
+    {
+      "name": "events",
+      "content_type": "humhub\\modules\\calendar\\extensions\\custom_pages\\elements\\CalendarEventsElement",
+      "title": "",
+      "dyn_attributes": "{\"type\":1,\"space\":\"\",\"author\":\"\",\"topic\":\"\",\"filter\":[\"participant\"],\"limit\":10,\"nextDays\":7,\"sortOrder\":\"date_old\"}",
+      "elementContent": {
+        "dyn_attributes": {
+          "type": "options",
+          "space": "",
+          "author": "",
+          "topic": "",
+          "filter": [
+            "participant"
+          ],
+          "limit": "10",
+          "static": "",
+          "nextDays": "7",
+          "sortOrder": "date_old"
+        }
+      }
+    }
+  ]
+}
