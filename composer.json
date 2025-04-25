@@ -3,19 +3,14 @@
   "description": "HumHub calendar module",
   "type": "library",
   "require": {
-    "yiisoft/yii2": "dev-master",
     "sabre/vobject": "^4",
     "simshaun/recurr": "^4",
     "sabre/xml": "^2",
     "sabre/uri": "^2",
-    "sabre/dav": "dev-master"
-    "sabre/dav": "~4.6.0",
+    "sabre/dav": "~4.6.0"
   },
   "config": {
     "process-timeout": 1800,
-    "platform": {
-      "php": "7.4"
-    },
     "allow-plugins": {
       "yiisoft/yii2-composer": true
     }
@@ -24,6 +19,10 @@
     {
       "type": "composer",
       "url": "https://asset-packagist.org"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/humhub/humhub"
     }
   ],
   "minimum-stability": "dev"
