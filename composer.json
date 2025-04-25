@@ -10,19 +10,12 @@
     "sabre/dav": "~4.6.0"
   },
   "config": {
-    "process-timeout": 1800,
-    "allow-plugins": {
-      "yiisoft/yii2-composer": true
-    }
+    "process-timeout": 1800
   },
   "repositories": [
     {
       "type": "composer",
       "url": "https://asset-packagist.org"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/humhub/humhub"
     }
   ],
   "minimum-stability": "dev"
