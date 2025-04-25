@@ -208,20 +208,8 @@ class Module extends ContentContainerModule
 
     private function importCustomPagesDefaultTemplates(): bool
     {
-        $customPagesModule = Yii::$app->getModule('custom_pages');
-        if (!$customPagesModule ||
-            !$customPagesModule->isEnabled ||
-            !class_exists('humhub\modules\custom_pages\modules\template\services\ImportService')) {
-            return true;
-        }
-
-        $importService = new \humhub\modules\custom_pages\modules\template\services\ImportService();
-        if (!method_exists($importService, 'allowUpdateDefaultTemplates')) {
-            return true;
-        }
-
-        return $importService
-            ->allowUpdateDefaultTemplates()
-            ->importFromFolder(Yii::getAlias('@calendar/resources/custom-pages-templates'));
+        $importServiceClassName = '\humhub\modules\custom_pages\modules\template\services\ImportService';
+        return !method_exists($importServiceClassName, 'importDefaultTemplates') ||
+            $importServiceClassName::instance()->importDefaultTemplates();
     }
 }
