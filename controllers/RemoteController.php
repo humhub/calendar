@@ -34,6 +34,8 @@ class RemoteController extends Controller
 {
     public function beforeAction($action)
     {
+        Yii::$app->errorHandler->errorAction = 'calendar/remote/error';
+
         if ($action->id == 'well-known') {
             // Allow `REPORT` and `PROPFIND` request for guests
             return true;
@@ -51,6 +53,7 @@ class RemoteController extends Controller
         return [
             [
                 'class' => HttpBasicAuth::class,
+                'except' => ['error'],
                 'auth' => function($username, $password) {
                     $login = new Login();
                     $login->username = $username;
@@ -67,6 +70,13 @@ class RemoteController extends Controller
                 }
             ]
         ];
+    }
+
+    public function actionError()
+    {
+        // ToDo: Handle other errors
+        $this->response->statusCode = 401;
+        return;
     }
 
     public function actionCalDav()
