@@ -12,8 +12,10 @@ use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationI
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\Module;
 use humhub\modules\user\models\User;
+use humhub\modules\content\models\Content;
 use yii\base\Model;
 use Sabre\VObject;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class VCalendar serves as wrapper around sabledavs vobject api.
@@ -155,6 +157,14 @@ class VCalendar extends Model
 
         if (!empty($item->getDescription())) {
             $result['DESCRIPTION'] = $item->getDescription();
+        }
+
+        if (isset($item->content->visibility)) {
+            $result['CLASS'] = ArrayHelper::getValue([
+                Content::VISIBILITY_PRIVATE => 'PRIVATE',
+                Content::VISIBILITY_PUBLIC => 'PUBLIC',
+                Content::VISIBILITY_OWNER => 'CONFIDENTIAL',
+            ], $item->content->visibility);
         }
 
         if ($item instanceof RecurrentEventIF && RecurrenceHelper::isRecurrent($item)) {

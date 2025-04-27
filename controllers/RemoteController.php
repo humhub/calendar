@@ -28,12 +28,40 @@ use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAVACL\Plugin as ACLPlugin;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use yii\rest\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
+use yii\web\UnauthorizedHttpException;
 
 class RemoteController extends Controller
 {
+    /**
+     * @todo need to be removed after core release
+     */
+    public function actionError()
+    {
+        $exception = Yii::$app->errorHandler->exception;
+
+        // Take control of error action only when called from Calendar Clients
+        if (in_array(Yii::$app->request->headers->get('Accept'), ['text/xml', 'application/xml'])) {
+            if ($exception instanceof ForbiddenHttpException || $exception instanceof UnauthorizedHttpException) {
+                $this->response->statusCode = 401;
+                $this->response->content = Response::$httpStatuses[401];
+            } else {
+                $this->response->statusCode = $exception->getCode();
+                $this->response->content = Response::$httpStatuses[$exception->getCode()];
+            }
+
+            return $this->response;
+        }
+
+        // Call core error action
+        return Yii::$app->runAction('error/index');
+    }
+
     public function beforeAction($action)
     {
+
         if ($action->id == 'well-known') {
             // Allow `REPORT` and `PROPFIND` request for guests
             return true;
@@ -51,6 +79,7 @@ class RemoteController extends Controller
         return [
             [
                 'class' => HttpBasicAuth::class,
+                'except' => ['error'],
                 'auth' => function($username, $password) {
                     $login = new Login();
                     $login->username = $username;

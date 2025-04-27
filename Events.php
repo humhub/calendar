@@ -43,6 +43,9 @@ class Events
      */
     public static function onBeforeRequest()
     {
+
+        Yii::$app->errorHandler->errorAction = 'calendar/remote/error';
+
         try {
             static::registerAutoloader();
             Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);

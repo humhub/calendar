@@ -15,6 +15,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModuleManager;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -210,7 +211,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         ];
     }
 
-    protected function mapVeventToEvent(string $data, CalendarEventIF $event)
+    protected function mapVeventToEvent(string $data, CalendarEntry $event)
     {
         $data = Reader::read($data)->select('VEVENT')[0]->children();
 
@@ -230,9 +231,16 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $event->end_datetime = (new DateTime(ArrayHelper::getValue($eventData, 'DTEND')))->format('Y-m-d H:i:s');
         $event->all_day = 0;
         $event->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
-//        $event->participant_info = null;
         $event->location = ArrayHelper::getValue($eventData, 'LOCATION');
         $event->uid = ArrayHelper::getValue($eventData, 'UID', $event->getUid());
+
+        if (($class = ArrayHelper::getValue($eventData, 'CLASS')) && in_array($class, ['PUBLIC', 'CONFIDENTIAL', 'PRIVATE'])) {
+            $event->getContentRecord()->visibility = ArrayHelper::getValue([
+                'PRIVATE' => Content::VISIBILITY_PRIVATE,
+                'PUBLIC' => Content::VISIBILITY_PUBLIC,
+                'CONFIDENTIAL' => Content::VISIBILITY_OWNER,
+            ], $class);
+        }
     }
 
     protected function getContentContainerForCalendar(string $calendarId) : ?ContentContainerActiveRecord
