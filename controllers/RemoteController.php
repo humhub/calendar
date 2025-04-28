@@ -79,7 +79,7 @@ class RemoteController extends Controller
         return [
             [
                 'class' => HttpBasicAuth::class,
-                'except' => ['error'],
+                'except' => ['error', 'ical'],
                 'auth' => function($username, $password) {
                     $login = new Login();
                     $login->username = $username;
