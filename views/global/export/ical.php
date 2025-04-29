@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use humhub\widgets\Link;
 
 /**
- * @var string $ical_url
+ * @var string $iCalUrl
  */
 
 ?>
@@ -15,9 +15,9 @@ use humhub\widgets\Link;
     </p>
     <div class="form-group">
         <?= Html::label(Yii::t('CalendarModule.export', 'iCal URL')); ?>
-        <?= Html::textInput(null, $ical_url, ['disabled' => true, 'class' => 'form-control']) ?>
+        <?= Html::textInput(null, $iCalUrl, ['disabled' => true, 'class' => 'form-control']) ?>
         <div class="text-right help-block">
-            <div id="url_1" class="hidden"><?= $ical_url ?></div>
+            <div id="url_1" class="hidden"><?= $iCalUrl ?></div>
             <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_1')->icon('fa-clipboard')->style('color:#777') ?>
         </div>
     </div>

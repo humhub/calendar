@@ -1,33 +1,32 @@
 <?php
-
-use humhub\modules\external_calendar\assets\Assets;
-use humhub\widgets\ModalDialog;
-use humhub\modules\external_calendar\models\CalendarExport;
-use humhub\widgets\ModalButton;
-use humhub\widgets\Tabs;
-
 /**
- * @var $this \humhub\modules\ui\view\components\View
- * @var $ical_url string
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2022 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\calendar\models\ExportSettings;
+use humhub\modules\calendar\widgets\GlobalConfigMenu;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
 
+/* @var $model ExportSettings */
 ?>
+<div class="panel panel-default">
+    <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration') ?></div>
 
-<?php ModalDialog::begin(['header' => Yii::t('CalendarModule.export', '<strong>Calendar</strong> export')]) ?>
+    <?= GlobalConfigMenu::widget() ?>
 
-<?= Tabs::widget([
-    'viewPath' => '@calendar/views/config/export',
-    'params' => ['ical_url' => $ical_url],
-    'items' => [
-        ['label' => Yii::t('CalendarModule.base', 'iCal'), 'view' => 'ical', 'active' => true],
-        ['label' => Yii::t('CalendarModule.base', 'CalDAV'), 'view' => 'caldav']
-    ]
-]); ?>
+    <div class="panel-body">
+        <?php $form = ActiveForm::begin(); ?>
 
-<div class="modal-footer">
-    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
+        <h4><?= Yii::t('CalendarModule.config', 'Export settings') ?></h4>
+        <hr>
+
+        <?= $form->field($model, 'jwtKey')->textInput(); ?>
+        <?= $form->field($model, 'jwtExpire')->textInput(); ?>
+
+        <?= Button::save()->submit() ?>
+        <?php ActiveForm::end(); ?>
+    </div>
 </div>
-<?php ModalDialog::end() ?>
-
-

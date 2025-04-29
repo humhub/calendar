@@ -9,10 +9,10 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\calendar\models\ExportSettings;
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use Yii;
-use yii\helpers\Url;
 
 class ConfigController extends AbstractConfigController
 {
@@ -59,11 +59,16 @@ class ConfigController extends AbstractConfigController
         ]);
     }
 
-    public function actionExport($token)
+    public function actionExport()
     {
-        return $this->renderAjax('export', [
-            'ical_url' => Url::to(['/calendar/remote/ical', 'token' => $token], true),
+        $model = new ExportSettings();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('export', [
+            'model' => $model,
         ]);
     }
-
 }

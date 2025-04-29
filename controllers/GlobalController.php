@@ -5,11 +5,13 @@ namespace humhub\modules\calendar\controllers;
 use DateTime;
 use humhub\components\Controller;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\ical\IcalTokenService;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryDummy;
+use humhub\modules\calendar\models\ExportSettings;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\FilterType;
@@ -293,5 +295,16 @@ class GlobalController extends Controller
     public function actionFindFilterTypes($keyword)
     {
         return $this->asJson(FilterType::search($keyword, null, true));
+    }
+
+    public function actionExport($guid)
+    {
+        return $this->renderAjax('export', [
+            'jwtEnabled' => !empty(ExportSettings::instance()->jwtKey),
+            'iCalUrl' => Url::to([
+                '/calendar/remote/ical',
+                'token' => IcalTokenService::instance()->encrypt($guid)
+            ], true),
+        ]);
     }
 }

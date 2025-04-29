@@ -4,6 +4,7 @@ namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\dav\UserPassAuthBackend;
+use humhub\modules\calendar\helpers\ical\IcalTokenService;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\forms\Login;
@@ -147,7 +148,7 @@ class RemoteController extends Controller
 
     public function actionIcal($token)
     {
-        $contentContainer = ContentContainer::findOne(['guid' => $token]);
+        $contentContainer = ContentContainer::findOne(['guid' => IcalTokenService::instance()->decrypt($token)]);
 
         if (!$contentContainer) {
             throw new NotFoundHttpException();
