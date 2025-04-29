@@ -14,6 +14,7 @@ use humhub\modules\calendar\notifications\MarkAttend;
 use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\actions\StreamEntryResponse;
@@ -534,7 +535,8 @@ class EntryController extends ContentContainerController
     {
         $this->forcePostRequest();
 
-        $calendarEntry = $this->getCalendarEntry($id);
+        // Allow to delete the entry even if it was already soft deleted before by unknown issue
+        $calendarEntry = $this->getCalendarEntry($id, Content::STATE_DELETED);
 
         if (!$calendarEntry) {
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
@@ -565,18 +567,24 @@ class EntryController extends ContentContainerController
      * Returns a readable calendar entry by given id
      *
      * @param int $id
+     * @param array|string|null $allowedStateFilters
      * @return CalendarEntry
      * @throws Throwable
      * @throws Exception
      */
-    protected function getCalendarEntry($id): CalendarEntry
+    protected function getCalendarEntry($id, $allowedStateFilters = null): CalendarEntry
     {
         if (!$id) {
             throw new HttpException(404);
         }
 
+        $query = CalendarEntry::find()->contentContainer($this->contentContainer);
+        if ($allowedStateFilters) {
+            $query->stateFilterCondition[] = ['content.state' => $allowedStateFilters];
+        }
+
         /* @var CalendarEntry $entry */
-        $entry = CalendarEntry::find()->contentContainer($this->contentContainer)->readable()->where(['calendar_entry.id' => $id])->one();
+        $entry = $query->readable()->where(['calendar_entry.id' => $id])->one();
 
         if (!$entry) {
             throw new NotFoundHttpException();

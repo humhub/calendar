@@ -1,12 +1,23 @@
 Changelog
 =========
 
-1.7.2 (Unreleased)
+1.7.4 (Unreleased)
+-------------------------
+- Enh #542: Add filters for template element of the custom pages module
+
+1.7.3 (February 25, 2025)
+-------------------------
+- Enh #537: Implement template element for custom pages
+- Enh #538: Fix deletion of recurrent calendar entry from wall stream
+
+1.7.2 (January 28, 2025)
 ------------------------
 - Fix #525: Fix Space calendar header
 - Enh #526: New event from the global calendar: display "Select space..." or "Select calendar..." prompt instead of first Space
 - Enh #528: Show the "Filter by types" filter only if a list a type is available
 - Fix #523: Global calendar: display the "My profile" filter only when the module is enabled in for the User account
+- Enh #514: Replace the view modes listWeek and listYear with listMonth
+- Enh #532: Update event color when category is unselected
 
 1.7.1 (January 17, 2025)
 ------------------------

@@ -3,10 +3,13 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
+use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEntryElement;
+use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEventsElement;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\MenuSettings;
+use humhub\modules\content\events\ContentEvent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
@@ -412,6 +415,29 @@ class Events
             ['pattern' => 'calendar/entry/<id:\d+>/respond', 'route' => 'calendar/rest/calendar/respond', 'verb' => 'POST'],
 
         ], 'calendar');
+    }
+
+    public static function onCustomPagesTemplateElementTypeServiceInit($event)
+    {
+        /* @var \humhub\modules\custom_pages\modules\template\services\ElementTypeService $elementTypeService */
+        $elementTypeService = $event->sender;
+        $elementTypeService->addType(CalendarEntryElement::class);
+        $elementTypeService->addType(CalendarEventsElement::class);
+    }
+
+    public static function onContentAfterSoftDelete(ContentEvent $event): void
+    {
+        // It may be called from wall stream
+        if ($event->content->object_model === CalendarEntry::class) {
+            /* @var CalendarEntry $calendarEntry */
+            $calendarEntry = $event->content->getModel();
+            if ($calendarEntry &&
+                RecurrenceHelper::isRecurrentInstance($calendarEntry) &&
+                $calendarEntry->getRecurrenceRoot()?->content?->state === Content::STATE_PUBLISHED) {
+                // Child recurrent entry must be deleted hardly if the parent entry is not soft deleted
+                $calendarEntry->hardDelete();
+            }
+        }
     }
 
 }

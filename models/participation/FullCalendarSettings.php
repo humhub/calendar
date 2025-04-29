@@ -10,11 +10,10 @@ use yii\base\Model;
 
 class FullCalendarSettings extends Model
 {
-    public const SETTING_LIST_WEEK = 'listWeek';
     public const SETTING_GRID_DAY = 'timeGridDay';
     public const SETTING_GRID_WEEK = 'timeGridWeek';
     public const SETTING_GRID_MONTH = 'dayGridMonth';
-    public const SETTING_LIST_YEAR = 'listYear';
+    public const SETTING_LIST_MONTH = 'listMonth';
     public const SETTING_VIEW_MODE_KEY = 'defaults.fullCalendarViewMode';
 
     /**
@@ -42,6 +41,11 @@ class FullCalendarSettings extends Model
     private function initSettings()
     {
         $this->viewMode = $this->getSetting(self::SETTING_VIEW_MODE_KEY, static::SETTING_GRID_MONTH);
+
+        // Handle removed view modes
+        if ($this->viewMode === 'listWeek' || $this->viewMode === 'listYear') {
+            $this->viewMode = 'listMonth';
+        }
     }
 
     /**
@@ -110,11 +114,10 @@ class FullCalendarSettings extends Model
     public function getViewModeItems()
     {
         return [
-            self::SETTING_LIST_YEAR => Yii::t('CalendarModule.base', 'Year'),
             self::SETTING_GRID_MONTH => Yii::t('CalendarModule.base', 'Month'),
             self::SETTING_GRID_WEEK => Yii::t('CalendarModule.base', 'Week'),
             self::SETTING_GRID_DAY => Yii::t('CalendarModule.base', 'Day'),
-            self::SETTING_LIST_WEEK => Yii::t('CalendarModule.base', 'List'),
+            self::SETTING_LIST_MONTH => Yii::t('CalendarModule.base', 'List'),
         ];
     }
 }
