@@ -6,29 +6,16 @@ use Sabre\DAV\PropPatch;
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 use humhub\modules\user\models\User;
 use Sabre\DAV\Exception\MethodNotAllowed;
+use humhub\modules\user\models\UserFilter;
+use yii\helpers\ArrayHelper;
 
 class PrincipalBackend extends AbstractBackend
 {
     public function getPrincipalsByPrefix($prefix)
     {
-        $principals = [];
-
-        $users = User::find()->all();
-        foreach ($users as $user) {
-            $principals[] = [
-                'uri' => 'principals/' . $user->username,
-                '{DAV:}displayname' => $user->displayName,
-                '{http://sabredav.org/ns}email-address' => $user->email,
-                '{urn:ietf:params:xml:ns:caldav}calendar-home-set' => [
-                    'href' => '/calendars/' . $user->username . '/'
-                ],
-                '{urn:ietf:params:xml:ns:caldav}calendar-resource-uri' => [
-                    ['href' => '/calendars/' . $user->username . '/']
-                ],
-            ];
-        }
-
-        return $principals;
+        return ArrayHelper::getColumn(User::find()->all(), function(User $user) {
+            return $this->userToPrincipal($user);
+        });
     }
 
     public function getPrincipalByPath($path)
@@ -40,14 +27,7 @@ class PrincipalBackend extends AbstractBackend
             return null;
         }
 
-        return [
-            'uri' => 'principals/' . $user->username,
-            '{DAV:}displayname' => $user->displayName,
-            '{http://sabredav.org/ns}email-address' => $user->email,
-            '{urn:ietf:params:xml:ns:caldav}calendar-home-set' => [
-                'href' => '/calendars/' . $user->username . '/'
-            ],
-        ];
+        return $this->userToPrincipal($user);
     }
 
     public function updatePrincipal($path, PropPatch $propPatch)
@@ -102,5 +82,20 @@ class PrincipalBackend extends AbstractBackend
     public function findByUri($uri, $principalPrefix)
     {
         return parent::findByUri($uri, $principalPrefix);
+    }
+
+    private function userToPrincipal(User $user)
+    {
+        return [
+            'uri' => 'principals/' . $user->username,
+            '{DAV:}displayname' => $user->displayName,
+            '{http://sabredav.org/ns}email-address' => $user->email,
+            '{urn:ietf:params:xml:ns:caldav}calendar-home-set' => [
+                'href' => '/calendars/' . $user->username . '/'
+            ],
+            '{urn:ietf:params:xml:ns:caldav}calendar-resource-uri' => [
+                ['href' => '/calendars/' . $user->username . '/']
+            ],
+        ];
     }
 }

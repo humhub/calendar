@@ -9,6 +9,7 @@ use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\UserFilter;
 use humhub\modules\user\services\AuthClientService;
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\Schedule\IMipPlugin;
@@ -33,6 +34,7 @@ use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
+use humhub\modules\admin\permissions\ManageUsers;
 
 class RemoteController extends Controller
 {
@@ -118,19 +120,9 @@ class RemoteController extends Controller
         $server->addPlugin(new CalDAVPlugin());
         $server->addPlugin(new IMipPlugin('noreply@example.org'));
         $aclPlugin = new ACLPlugin();
-        $aclPlugin->adminPrincipals[] = 'principals/admin';
-        /*$aclPlugin->setDefaultAcl([
-            [
-                'principal' => 'principals/admin',
-                'privilege' => '{DAV:}read',
-                'protected' => true,
-            ],
-            [
-                'principal' => '{DAV:}authenticated',
-                'privilege' => '{DAV:}read',
-                'protected' => true,
-            ],
-        ]);*/
+        if (Yii::$app->user->can(ManageUsers::class)) {
+            $aclPlugin->adminPrincipals[] = 'principals/' . Yii::$app->user->identity->username;
+        }
         $server->addPlugin($aclPlugin);
 
         if (YII_DEBUG) {
