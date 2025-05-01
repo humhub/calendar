@@ -50,7 +50,7 @@ class Events
          * @todo Temporary workaround – should be removed after the core release.x
          * @see \humhub\modules\calendar\controllers\CalDavController::actionError
          */
-        Yii::$app->errorHandler->errorAction = 'calendar/remote/error';
+        Yii::$app->errorHandler->errorAction = 'calendar/cal-dav/error';
 
         try {
             static::registerAutoloader();

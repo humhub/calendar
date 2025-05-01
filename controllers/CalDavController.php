@@ -115,7 +115,7 @@ class CalDavController extends Controller
         ];
 
         $server = new Server($tree);
-        $server->setBaseUri(Url::to(['/calendar/remote/cal-dav']));
+        $server->setBaseUri(Url::to(['/calendar/cal-dav/index']));
         $server->addPlugin(new AuthPlugin(new UserPassAuthBackend()));
         $server->addPlugin(new DAVPlugin);
         $server->addPlugin(new SchedulePlugin());

@@ -48,7 +48,7 @@ class ExportController extends Controller
     public function actionModal($guid)
     {
         return $this->renderAjax('modal', [
-            'token' => IcalTokenService::instance()->encrypt($guid)
+            'token' => IcalTokenService::instance()->encrypt(Yii::$app->user->id, $guid)
         ]);
     }
 
@@ -80,15 +80,19 @@ class ExportController extends Controller
 
     public function actionCalendar($token)
     {
-        $contentContainer = ContentContainer::findOne(['guid' => IcalTokenService::instance()->decrypt($token)]);
+        $data = IcalTokenService::instance()->decrypt($token);
 
-        if (!$contentContainer) {
+        if (!$data) {
             throw new NotFoundHttpException();
         }
 
+        [$userId, $guid] = $data;
+
+        $contentContainer = ContentContainer::findOne(['guid' => $guid]);
+
         // Login as owner of the content container only for this request
         Yii::$app->user->enableSession = false;
-        Yii::$app->user->login(User::findOne(['id' => $contentContainer->owner_user_id]));
+        Yii::$app->user->login(User::findOne(['id' => $userId]));
 
         $events = $this->calendarService->getCalendarItems(null, null, [], $contentContainer->polymorphicRelation);
         $ics = CalendarUtils::generateIcal($events);

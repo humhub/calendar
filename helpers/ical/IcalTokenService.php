@@ -16,13 +16,14 @@ class IcalTokenService extends BaseObject implements StaticInstanceInterface
 {
     use StaticInstanceTrait;
 
-    public function encrypt(string $guid): string
+    public function encrypt(int $uid, string $guid): string
     {
         $issuedAt = time();
         $data = [
             'iat' => $issuedAt,
             'iss' => Yii::$app->settings->get('baseUrl'),
             'nbf' => $issuedAt,
+            'uid' => $uid,
             'guid' => $guid,
         ];
 
@@ -34,16 +35,16 @@ class IcalTokenService extends BaseObject implements StaticInstanceInterface
         return JWT::encode($data, $config->jwtKey, 'HS256');
     }
 
-    public function decrypt(string $token): ?string
+    public function decrypt(string $token): ?array
     {
         try {
             $config = ExportSettings::instance();
             $validData = JWT::decode($token, new Key($config->jwtKey, 'HS256'));
-            if (empty($validData->guid)) {
+            if (empty($validData->uid) || empty($validData->guid)) {
                 throw new \RuntimeException();
             }
 
-            return $validData->guid;
+            return [$validData->uid, $validData->guid];
         } catch (Exception $e) {
             return null;
         }
