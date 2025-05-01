@@ -44,8 +44,8 @@ return [
     ],
     'urlManagerRules' => [
         'calendar' => 'calendar/global',
-        '/.well-known/caldav' => 'calendar/remote/well-known',
-        ['pattern' => 'remote/caldav/<path:.*>', 'route' => 'calendar/remote/cal-dav', 'defaults' => ['path' => '']],
-        ['pattern' => 'remote/ical/<token:[\w\-]+>', 'route' => 'calendar/remote/ical'],
+        '/.well-known/caldav' => 'calendar/cal-dav/well-known',
+        ['pattern' => 'remote/caldav/<path:.*>', 'route' => 'calendar/cal-dav/index', 'defaults' => ['path' => '']],
+        ['pattern' => 'remote/ical/<token:[a-zA-Z0-9\-_\.%]+>', 'route' => 'calendar/export/calendar'],
     ],
 ];

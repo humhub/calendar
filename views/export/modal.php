@@ -8,25 +8,20 @@ use humhub\widgets\Tabs;
 
 /**
  * @var $this \humhub\modules\ui\view\components\View
- * @var $jwtEnabled bool
- * @var $iCalUrl string
+ * @var $token string
  */
-
-$tabs = [];
-
-if ($jwtEnabled) {
-    $tabs[] = ['label' => Yii::t('CalendarModule.base', 'iCal'), 'view' => 'ical'];
-}
-$tabs[] = ['label' => Yii::t('CalendarModule.base', 'CalDAV'), 'view' => 'caldav'];
 
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('CalendarModule.export', '<strong>Calendar</strong> export')]) ?>
 
 <?= Tabs::widget([
-    'viewPath' => '@calendar/views/global/export',
-    'params' => ['iCalUrl' => $iCalUrl],
-    'items' => $tabs,
+    'viewPath' => '@calendar/views/export/modal',
+    'params' => ['token' => $token],
+    'items' => [
+        ['label' => Yii::t('CalendarModule.base', 'iCal'), 'view' => 'ical'],
+        ['label' => Yii::t('CalendarModule.base', 'CalDAV'), 'view' => 'caldav']
+    ],
 ]); ?>
 
 <div class="modal-footer">

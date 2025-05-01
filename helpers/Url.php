@@ -230,7 +230,7 @@ class Url extends BaseUrl
             $container = $entry->content->container;
         }
 
-        return $container->createUrl('/calendar/ical/export', ['id' => $entry->content->id]);
+        return $container->createUrl('/calendar/export/event', ['id' => $entry->content->id]);
     }
 
     public static function toUserLevelReminderConfig(CalendarEventReminderIF $entry, ContentContainerActiveRecord $container = null)

@@ -314,15 +314,4 @@ class GlobalController extends Controller
 
         return $this->asJson($output);
     }
-
-    public function actionExport($guid)
-    {
-        return $this->renderAjax('export', [
-            'jwtEnabled' => !empty(ExportSettings::instance()->jwtKey),
-            'iCalUrl' => Url::to([
-                '/calendar/remote/ical',
-                'token' => IcalTokenService::instance()->encrypt($guid)
-            ], true),
-        ]);
-    }
 }

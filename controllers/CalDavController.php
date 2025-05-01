@@ -2,10 +2,7 @@
 
 namespace humhub\modules\calendar\controllers;
 
-use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\dav\UserPassAuthBackend;
-use humhub\modules\calendar\helpers\ical\IcalTokenService;
-use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\User;
@@ -17,7 +14,6 @@ use Sabre\DAVACL\PrincipalCollection;
 use Yii;
 use yii\base\Event;
 use yii\filters\auth\HttpBasicAuth;
-use yii\helpers\Inflector;
 use yii\helpers\Url;
 use Sabre\DAV\Server;
 use Sabre\DAV\Sharing\Plugin as DAVPlugin;
@@ -31,15 +27,18 @@ use Sabre\DAVACL\Plugin as ACLPlugin;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use yii\rest\Controller;
 use yii\web\ForbiddenHttpException;
-use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
 use humhub\modules\admin\permissions\ManageUsers;
 
-class RemoteController extends Controller
+class CalDavController extends Controller
 {
     /**
-     * @todo need to be removed after core release
+     * @todo Temporary workaround – should be removed after the core release.
+     *
+     * The issue is that the current ErrorController redirects to the login page
+     * instead of returning a proper 401 error when the request is sent as an API call
+     * (e.g., with Accept: application/xml or application/json).
      */
     public function actionError()
     {
@@ -82,7 +81,7 @@ class RemoteController extends Controller
         return [
             [
                 'class' => HttpBasicAuth::class,
-                'except' => ['error', 'ical'],
+                'only' => ['index'],
                 'auth' => function($username, $password) {
                     $login = new Login();
                     $login->username = $username;
@@ -101,7 +100,7 @@ class RemoteController extends Controller
         ];
     }
 
-    public function actionCalDav()
+    public function actionIndex()
     {
         $principalBackend = new PrincipalBackend();
         $calendarBackend = new CalendarBackend();
@@ -136,30 +135,5 @@ class RemoteController extends Controller
     public function actionWellKnown()
     {
         return $this->redirect(['cal-dav']);
-    }
-
-    public function actionIcal($token)
-    {
-        $contentContainer = ContentContainer::findOne(['guid' => IcalTokenService::instance()->decrypt($token)]);
-
-        if (!$contentContainer) {
-            throw new NotFoundHttpException();
-        }
-
-        // Login as owner of the content container only for this request
-        Yii::$app->user->enableSession = false;
-        Yii::$app->user->login(User::findOne(['id' => $contentContainer->owner_user_id]));
-
-        /** @var CalendarService $calendarService */
-        $calendarService = Yii::$app->moduleManager->getModule('calendar')->get(CalendarService::class);
-
-        $events = $calendarService->getCalendarItems(null, null, [], $contentContainer->polymorphicRelation);
-        $ics = CalendarUtils::generateIcal($events);
-
-        return Yii::$app->response->sendContentAsFile(
-            $ics,
-            Inflector::slug($contentContainer->polymorphicRelation->displayName, '_') . '.ics',
-            ['mimeType' => 'text/calendar']
-        );
     }
 }
