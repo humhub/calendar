@@ -138,6 +138,6 @@ class CalDavController extends Controller
 
     public function actionWellKnown()
     {
-        return $this->redirect(['cal-dav']);
+        return $this->redirect(['index']);
     }
 }
