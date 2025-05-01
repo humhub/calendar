@@ -39,6 +39,10 @@ class CalDavController extends Controller
      * The issue is that the current ErrorController redirects to the login page
      * instead of returning a proper 401 error when the request is sent as an API call
      * (e.g., with Accept: application/xml or application/json).
+     * This workaround is needed not only for calendar module actions, but also for the `/` endpoint,
+     * since some calendar clients make generic root-level requests during the sync process.
+     * For this reason, the error action is overridden for the entire HumHub instance,
+     * not just within the calendar module.
      */
     public function actionError()
     {

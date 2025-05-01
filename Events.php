@@ -46,7 +46,10 @@ class Events
      */
     public static function onBeforeRequest()
     {
-
+        /**
+         * @todo Temporary workaround – should be removed after the core release.x
+         * @see \humhub\modules\calendar\controllers\CalDavController::actionError
+         */
         Yii::$app->errorHandler->errorAction = 'calendar/remote/error';
 
         try {
