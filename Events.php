@@ -33,6 +33,7 @@ use humhub\modules\calendar\helpers\Url;
 use Yii;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
+use yii\web\Application;
 
 /**
  * Description of CalendarEvents
@@ -50,7 +51,9 @@ class Events
          * @todo Temporary workaround – should be removed after the core release.x
          * @see \humhub\modules\calendar\controllers\CalDavController::actionError
          */
-        Yii::$app->errorHandler->errorAction = 'calendar/cal-dav/error';
+        if (Yii::$app instanceof Application) {
+            Yii::$app->errorHandler->errorAction = 'calendar/cal-dav/error';
+        }
 
         try {
             static::registerAutoloader();

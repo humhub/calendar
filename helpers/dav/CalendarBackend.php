@@ -21,7 +21,6 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Sabre\CalDAV\Backend\AbstractBackend;
-use Sabre\CalDAV\Backend\SchedulingSupport;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV\Exception\Conflict;
 use Sabre\DAV\Exception\MethodNotAllowed;
@@ -32,8 +31,22 @@ use Yii;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Property;
 
-class CalendarBackend extends AbstractBackend implements SchedulingSupport
+class CalendarBackend extends AbstractBackend
 {
+    private const PARTICIPATION_STATE_NONE = null;
+    private const PARTICIPATION_STATE_ACCEPTED = 'ACCEPTED';
+    private const PARTICIPATION_STATE_DECLINED = 'DECLINED';
+    private const PARTICIPATION_STATE_MAYBE = 'TENTATIVE';
+    private const PARTICIPATION_STATE_INVITED = 'NEEDS-ACTION';
+
+    private const PARTICIPATION_STATE_MAP = [
+        self::PARTICIPATION_STATE_NONE => CalendarEntryParticipant::PARTICIPATION_STATE_NONE,
+        self::PARTICIPATION_STATE_ACCEPTED => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
+        self::PARTICIPATION_STATE_DECLINED => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED,
+        self::PARTICIPATION_STATE_MAYBE => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
+        self::PARTICIPATION_STATE_INVITED => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED,
+    ];
+
     public function getCalendarsForUser($principalUri)
     {
         $userId = basename($principalUri);
@@ -152,6 +165,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $event = new CalendarEntry($this->getContentContainerForCalendar($calendarId));
         $this->mapVeventToEvent($calendarData, $event);
         $event->save();
+        $this->syncParticipants($calendarData, $event);
 
         $etag = md5($event->getLastModified()->getTimestamp());
 
@@ -170,6 +184,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
         $this->mapVeventToEvent($calendarData, $event);
         $event->save();
+        $this->syncParticipants($calendarData, $event);
 
     }
 
@@ -256,188 +271,33 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         return $contentContainer;
     }
 
-    public function getSchedulingObject($principalUri, $objectUri)
+    protected function syncParticipants(string $objectData, CalendarEntry $event)
     {
-        $username = basename($principalUri);
-        $user = User::findOne(['username' => $username]);
-        if (!$user) {
-            return null;
-        }
+        $vevent = Reader::read($objectData)->select('VEVENT')[0];
 
-        $eventId = basename($objectUri, '.ics');
-        $event = CalendarEntry::findOne(['uid' => $eventId]);
-        if (!$event) {
-            return null;
-        }
-
-        $calendars = $this->getCalendarsForUser($principalUri);
-        $calendarIds = ArrayHelper::getColumn($calendars, 'id');
-        $eventCalendarId = $this->getCalendarIdForEvent($event);
-        if (!in_array($eventCalendarId, $calendarIds)) {
-            return null;
-        }
-
-        $ics = $event->generateIcs();
-        return [
-            'uri' => $objectUri,
-            'calendardata' => $ics,
-            'lastmodified' => $event->getLastModified() ? $event->getLastModified()->getTimestamp() : time(),
-            'etag' => '"' . md5($ics) . '"',
-            'size' => strlen($ics),
-        ];
-    }
-
-    public function getSchedulingObjects($principalUri)
-    {
-        $username = basename($principalUri);
-        $user = User::findOne(['username' => $username]);
-        if (!$user) {
-            return [];
-        }
-
-        $calendars = $this->getCalendarsForUser($principalUri);
-        $result = [];
-
-        /** @var CalendarService $calendarService */
-        $calendarService = Yii::$app->moduleManager->getModule('calendar')->get(CalendarService::class);
-
-        foreach ($calendars as $calendar) {
-            $calendarId = $calendar['id'];
-            $contentContainer = $this->getContentContainerForCalendar($calendarId);
-            if (!$contentContainer) {
-                continue;
-            }
-
-            $events = $calendarService->getCalendarItems(null, null, [], $contentContainer);
-            foreach ($events as $event) {
-                $ics = $event->generateIcs();
-                $result[] = [
-                    'uri' => $event->uid . '.ics',
-                    'calendardata' => $ics,
-                    'lastmodified' => $event->getLastModified() ? $event->getLastModified()->getTimestamp() : time(),
-                    'etag' => '"' . md5($ics) . '"',
-                    'size' => strlen($ics),
-                ];
-            }
-        }
-
-        return $result;
-    }
-
-    public function deleteSchedulingObject($principalUri, $objectUri)
-    {
-        $username = basename($principalUri);
-        $user = User::findOne(['username' => $username]);
-        if (!$user) {
-            return;
-        }
-
-        $eventId = basename($objectUri, '.ics');
-        $event = CalendarEntry::findOne(['uid' => $eventId]);
-        if (!$event) {
-            return;
-        }
-
-        $calendars = $this->getCalendarsForUser($principalUri);
-        $calendarIds = ArrayHelper::getColumn($calendars, 'id');
-        $eventCalendarId = $this->getCalendarIdForEvent($event);
-        if (!in_array($eventCalendarId, $calendarIds)) {
-            return;
-        }
-
-        if ($event->content->canEdit()) {
-            $event->delete();
-        }
-    }
-
-    public function createSchedulingObject($principalUri, $objectUri, $objectData)
-    {
-        $username = basename($principalUri);
-        $user = User::findOne(['username' => $username]);
-        if (!$user) {
-            return;
-        }
-
-        $calendars = $this->getCalendarsForUser($principalUri);
-        if (empty($calendars)) {
-            return;
-        }
-
-        $calendarId = $calendars[0]['id'];
-        $contentContainer = $this->getContentContainerForCalendar($calendarId);
-        if (!$contentContainer) {
-            return;
-        }
-
-        $eventId = basename($objectUri, '.ics');
-        $existingEvent = CalendarEntry::findOne(['uid' => $eventId]);
-
-        if ($existingEvent) {
-            $eventCalendarId = $this->getCalendarIdForEvent($existingEvent);
-            if (in_array($eventCalendarId, ArrayHelper::getColumn($calendars, 'id'))) {
-                $this->mapVeventToEvent($objectData, $existingEvent);
-                $existingEvent->save();
-            }
-        } else {
-            $event = new CalendarEntry($contentContainer);
-            $this->mapVeventToEvent($objectData, $event);
-            $event->uid = $eventId;
-            $event->save();
-        }
-
-        $this->syncParticipants($existingEvent, $objectData);
-    }
-
-    protected function getCalendarIdForEvent(CalendarEntry $event): string
-    {
-        $container = $event->content->container;
-        if ($container instanceof User) {
-            return "profile-{$container->guid}";
-        } elseif ($container instanceof Space) {
-            return "space-{$container->guid}";
-        }
-        return '';
-    }
-
-    protected function syncParticipants(CalendarEntry $event, string $objectData)
-    {
-        $vcalendar = Reader::read($objectData)->select('VEVENT')[0];
-
-        $vevent = $vcalendar->VEVENT[0];
-
-        CalendarEntryParticipant::deleteAll(['calendar_entry_id' => $event->id]);
-
-        if ($vevent->ATTENDEE) {
+        if (!empty($vevent->ATTENDEE) && is_iterable($vevent->ATTENDEE)) {
             foreach ($vevent->ATTENDEE as $attendee) {
+                $state = ArrayHelper::getValue($attendee, 'PARTSTAT')->getValue();
                 $email = $attendee->getValue();
+
                 if (strpos($email, 'mailto:') === 0) {
                     $email = substr($email, 7);
                 }
 
-                $user = User::findOne(['email' => $email]);
-                $participant = new CalendarEntryParticipant([
-                    'calendar_entry_id' => $event->id,
-                    'user_id' => $user ? $user->id : null,
-                    //'email' => $user ? null : $email, TODO: add email field
-                ]);
-
-                $partStat = $attendee['PARTSTAT'] ? (string)$attendee['PARTSTAT'] : 'NEEDS-ACTION';
-                switch (strtoupper($partStat)) {
-                    case 'ACCEPTED':
-                        $participant->participation_state = CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED;
-                        break;
-                    case 'DECLINED':
-                        $participant->participation_state = CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED;
-                        break;
-                    case 'TENTATIVE':
-                        $participant->participation_state = CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE;
-                        break;
-                    default:
-                        $participant->participation_state = CalendarEntryParticipant::PARTICIPATION_STATE_INVITED;
-                        break;
+                if ($email == $event->getOrganizer()->email) {
+                    continue;
                 }
 
-//                $participant->save();
+                $user = User::findOne(['email' => $email]);
+                $initialAttributes = [
+                    'calendar_entry_id' => $event->id,
+                    'user_id' => $user ? $user->id : null,
+                    'external_user_email' => $user ? null : $email,
+                ];
+
+                $participant = CalendarEntryParticipant::findOne($initialAttributes) ?: new CalendarEntryParticipant($initialAttributes);
+                $participant->participation_state = ArrayHelper::getValue(self::PARTICIPATION_STATE_MAP, $state, CalendarEntryParticipant::PARTICIPATION_STATE_NONE);
+                $participant->save();
             }
         }
     }

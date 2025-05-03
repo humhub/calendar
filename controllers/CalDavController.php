@@ -9,7 +9,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserFilter;
 use humhub\modules\user\services\AuthClientService;
 use Sabre\CalDAV\CalendarRoot;
-use Sabre\CalDAV\Schedule\IMipPlugin;
 use Sabre\DAVACL\PrincipalCollection;
 use Yii;
 use yii\base\Event;
@@ -18,7 +17,6 @@ use yii\helpers\Url;
 use Sabre\DAV\Server;
 use Sabre\DAV\Sharing\Plugin as DAVPlugin;
 use Sabre\CalDAV\SharingPlugin as SharingPlugin;
-use Sabre\CalDAV\Schedule\Plugin as SchedulePlugin;
 use Sabre\DAV\Browser\Plugin as BrowserPlugin;
 use humhub\modules\calendar\helpers\dav\CalendarBackend;
 use humhub\modules\calendar\helpers\dav\PrincipalBackend;
@@ -118,10 +116,8 @@ class CalDavController extends Controller
         $server->setBaseUri(Url::to(['/calendar/cal-dav/index']));
         $server->addPlugin(new AuthPlugin(new UserPassAuthBackend()));
         $server->addPlugin(new DAVPlugin);
-        $server->addPlugin(new SchedulePlugin());
         $server->addPlugin(new SharingPlugin());
         $server->addPlugin(new CalDAVPlugin());
-        $server->addPlugin(new IMipPlugin('noreply@example.org'));
         $aclPlugin = new ACLPlugin();
         if (Yii::$app->user->can(ManageUsers::class)) {
             $aclPlugin->adminPrincipals[] = 'principals/' . Yii::$app->user->identity->username;
