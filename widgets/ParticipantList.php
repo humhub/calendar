@@ -9,7 +9,6 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
@@ -61,19 +60,6 @@ class ParticipantList extends Widget
             $usersQuery->andWhere(['participation_state' => $state]);
         }
 
-        $externalParticipants = CalendarEntryParticipant::find()
-            ->select([
-                'external_user_email',
-                'participation_state',
-            ])
-            ->where([
-                'AND',
-                ['=', 'calendar_entry_id', $this->model->entry->id],
-                ['=', 'participation_state', $state],
-                ['IS', 'user_id', null]
-            ])
-            ->all();
-
         $countQuery = clone $usersQuery;
         $pagination = new Pagination([
             'totalCount' => $countQuery->count(),
@@ -86,7 +72,6 @@ class ParticipantList extends Widget
             'form' => $this->form,
             'model' => $this->model,
             'users' => $usersQuery->all(),
-            'externalParticipants' => $externalParticipants,
             'pagination' => $pagination,
         ]);
     }

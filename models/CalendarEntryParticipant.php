@@ -13,7 +13,6 @@ use humhub\modules\calendar\models\CalendarEntry;
  * @property int $id
  * @property int $calendar_entry_id
  * @property int $user_id
- * @property string $external_user_email
  * @property int $participation_state
  */
 class CalendarEntryParticipant extends ActiveRecord
@@ -41,13 +40,8 @@ class CalendarEntryParticipant extends ActiveRecord
     public function rules()
     {
         return [
-            [['calendar_entry_id'], 'required'],
-            [['user_id'], 'required', 'when' => function() {
-                return empty($this->external_user_email);
-            }],
+            [['calendar_entry_id', 'user_id'], 'required'],
             [['calendar_entry_id', 'user_id', 'participation_state'], 'integer'],
-            [['external_user_email'], 'email'],
-            [['external_user_email'], 'string', 'max' => 255],
         ];
     }
 
@@ -75,7 +69,6 @@ class CalendarEntryParticipant extends ActiveRecord
             'id' => 'ID',
             'calendar_entry_id' => 'Calendar Entry',
             'user_id' => 'User',
-            'external_user_email' => 'External User Email',
             'participation_state' => 'Participation State',
         ];
     }

@@ -5,7 +5,6 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\widgets\ExportParticipantsButton;
 use humhub\modules\calendar\widgets\ParticipantAddForm;
@@ -20,10 +19,8 @@ use yii\helpers\Html;
 /* @var ActiveForm $form */
 /* @var CalendarEntryParticipationForm $model */
 /* @var User[] $users */
-/* @var CalendarEntryParticipant[] $externalParticipants */
 /* @var Pagination $pagination */
 /* @var array $options */
-
 ?>
 <?php if ($form instanceof ActiveForm) : ?>
     <?= ParticipantAddForm::widget(['form' => $form, 'model' => $model]) ?>
@@ -57,23 +54,4 @@ use yii\helpers\Html;
         ]); ?>
         <?= Html::hiddenInput('calendar-entry-participants-count', $pagination->totalCount) ?>
     </div>
-
-    <?php if (!empty($externalParticipants)): ?>
-        <p class="calendar-entry-participants-count"><?= Yii::t('CalendarModule.views', '{count} External Participants', ['count' => '<span>' . count($externalParticipants) . '</span>']) ?></p>
-
-        <?= Html::beginTag('ul', ['class' => 'media-list']) ?>
-        <?php foreach ($externalParticipants as $externalParticipant) : ?>
-            <?= Html::beginTag('li', ['data-user-id' => $user->id]) ?>
-            <div class="media">
-                <div class="media-body">
-                    <h4 class="media-heading"><?= Html::encode($externalParticipant->external_user_email) ?></h4>
-                </div>
-                <div class="media-body">
-                    <span class="label label-default"><?= ParticipantItem::getStatusTitle($externalParticipant->participation_state) ?></span>
-                </div>
-            </div>
-            <?= Html::endTag('li') ?>
-        <?php endforeach; ?>
-        <?= Html::endTag('ul') ?>
-    <?php endif; ?>
 <?= Html::endTag('div') ?>

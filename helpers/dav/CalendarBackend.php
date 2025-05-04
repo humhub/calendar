@@ -289,10 +289,14 @@ class CalendarBackend extends AbstractBackend
                 }
 
                 $user = User::findOne(['email' => $email]);
+
+                if (!$user) {
+                    continue;
+                }
+
                 $initialAttributes = [
                     'calendar_entry_id' => $event->id,
-                    'user_id' => $user ? $user->id : null,
-                    'external_user_email' => $user ? null : $email,
+                    'user_id' => $user->id,
                 ];
 
                 $participant = CalendarEntryParticipant::findOne($initialAttributes) ?: new CalendarEntryParticipant($initialAttributes);
