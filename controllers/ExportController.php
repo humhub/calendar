@@ -79,11 +79,17 @@ class ExportController extends Controller
 
         [$userId, $guid] = $data;
 
+        $user = User::find()->active()->andWhere(['guid' => $guid])->one();
+
+        if (!$user) {
+            throw new NotFoundHttpException();
+        }
+
         $contentContainer = ContentContainer::findOne(['guid' => $guid]);
 
-        // Login as owner of the content container only for this request
+        // Login only for this request
         Yii::$app->user->enableSession = false;
-        Yii::$app->user->login(User::findOne(['id' => $userId]));
+        Yii::$app->user->login($user);
 
         $events = $this->calendarService->getCalendarItems(null, null, [], $contentContainer->polymorphicRelation);
         $ics = CalendarUtils::generateIcal($events);
