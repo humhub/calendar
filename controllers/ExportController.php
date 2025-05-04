@@ -22,15 +22,6 @@ class ExportController extends Controller
     private const EXPORT_MIME = 'text/calendar';
     private ?CalendarService $calendarService;
 
-    public function beforeAction($action)
-    {
-        Yii::$app->on('beforeTwoFaCheck', function (Event $event) use ($action) {
-            $event->handled = $action->id === 'export';
-        });
-
-        return parent::beforeAction($action);
-    }
-
     public function init()
     {
         parent::init();

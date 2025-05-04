@@ -9,6 +9,7 @@ use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\event\CalendarEntryTypeSetting;
 use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
+use humhub\modules\calendar\interfaces\event\CalendarIcsGeneratableEventIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
@@ -73,7 +74,8 @@ class CalendarEntry extends ContentActiveRecord implements
     FullCalendarEventIF,
     CalendarEventStatusIF,
     CalendarEventReminderIF,
-    CalendarEventParticipationIF
+    CalendarEventParticipationIF,
+    CalendarIcsGeneratableEventIF
 {
     /**
      * @inheritdoc
