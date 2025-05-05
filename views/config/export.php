@@ -26,6 +26,9 @@ use humhub\widgets\Button;
         <?= $form->field($model, 'jwtKey')->textInput(); ?>
         <?= $form->field($model, 'jwtExpire')->textInput(); ?>
 
+        <hr>
+        <?= $form->field($model, 'includeUserInfo')->checkbox(); ?>
+
         <?= Button::save()->submit() ?>
         <?php ActiveForm::end(); ?>
     </div>

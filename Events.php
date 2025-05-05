@@ -8,6 +8,7 @@ use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEventsEleme
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\ExportSettings;
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\content\events\ContentEvent;
 use humhub\modules\space\models\Space;
@@ -34,6 +35,7 @@ use Yii;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
 use yii\web\Application;
+use humhub\components\ModuleEvent;
 
 /**
  * Description of CalendarEvents
@@ -446,4 +448,10 @@ class Events
         }
     }
 
+    public static function onModuleEnabled(ModuleEvent $event)
+    {
+        if ($event->moduleId === 'calendar') {
+            ExportSettings::instance()->save();
+        }
+    }
 }

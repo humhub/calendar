@@ -224,20 +224,14 @@ class VCalendar extends Model
             }
         }
 
-        $module = Module::instance();
-
-        if ($item instanceof CalendarEventParticipationIF) {
-            if ($module->icsOrganizer) {
-                $organizer = $item->getOrganizer();
-                if ($organizer instanceof User) {
-                    $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
-                }
+        if ($item instanceof CalendarEventParticipationIF && Module::instance()->settings->get('includeUserInfo', false)) {
+            $organizer = $item->getOrganizer();
+            if ($organizer instanceof User) {
+                $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
             }
 
-
-            /** This should be configurable because its may not be desired.
             foreach ($item->findParticipants([CalendarEventParticipationIF::PARTICIPATION_STATUS_ACCEPTED])->limit(20)->all() as $user) {
-                /* @var $user User
+                /* @var $user User */
                 $evt->add('ATTENDEE', $this->getCN($user));
             }
 
@@ -246,7 +240,6 @@ class VCalendar extends Model
                     $evt->add('ATTENDEE', 'MAILTO:'.$email);
                 }
             }
-            **/
         }
 
         return $this;
