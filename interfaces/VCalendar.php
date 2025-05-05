@@ -230,15 +230,9 @@ class VCalendar extends Model
                 $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
             }
 
-            foreach ($item->findParticipants([CalendarEventParticipationIF::PARTICIPATION_STATUS_ACCEPTED])->limit(20)->all() as $user) {
+            foreach ($item->findParticipants()->limit(20)->all() as $user) {
                 /* @var $user User */
-                $evt->add('ATTENDEE', $this->getCN($user));
-            }
-
-            if(!empty($item->getExternalParticipants())) {
-                foreach ($item->getExternalParticipants() as $email) {
-                    $evt->add('ATTENDEE', 'MAILTO:'.$email);
-                }
+                $evt->add('ATTENDEE', ['CN' => $this->getCN($user)]);
             }
         }
 
