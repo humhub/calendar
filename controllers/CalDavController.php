@@ -23,6 +23,7 @@ use humhub\modules\calendar\helpers\dav\PrincipalBackend;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAVACL\Plugin as ACLPlugin;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
+use Sabre\CalDAV\Schedule\Plugin as SchedulePlugin;
 use yii\rest\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
@@ -118,6 +119,7 @@ class CalDavController extends Controller
         $server->addPlugin(new DAVPlugin);
         $server->addPlugin(new SharingPlugin());
         $server->addPlugin(new CalDAVPlugin());
+        $server->addPlugin(new SchedulePlugin());
         $aclPlugin = new ACLPlugin();
         if (Yii::$app->user->can(ManageUsers::class)) {
             $aclPlugin->adminPrincipals[] = 'principals/' . Yii::$app->user->identity->username;

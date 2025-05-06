@@ -21,6 +21,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Sabre\CalDAV\Backend\AbstractBackend;
+use Sabre\CalDAV\Backend\SchedulingSupport;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV\Exception\Conflict;
 use Sabre\DAV\Exception\MethodNotAllowed;
@@ -31,7 +32,7 @@ use Yii;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Property;
 
-class CalendarBackend extends AbstractBackend
+class CalendarBackend extends AbstractBackend implements SchedulingSupport
 {
     private const PARTICIPATION_STATE_NONE = null;
     private const PARTICIPATION_STATE_ACCEPTED = 'ACCEPTED';
@@ -145,9 +146,11 @@ class CalendarBackend extends AbstractBackend
     public function deleteCalendarObject($calendarId, $objectUri)
     {
         $eventId = basename($objectUri, '.ics');
+        $event = CalendarEntry::findOne(['uid' => $eventId]);
 
-        $event = CalendarEntry::findOne(['id' => $eventId]);
-
+        if (!$event) {
+            throw new NotFound();
+        }
 
         if ($event && $event->content->canEdit()) {
             $event->delete();
@@ -274,22 +277,21 @@ class CalendarBackend extends AbstractBackend
     protected function syncParticipants(string $objectData, CalendarEntry $event)
     {
         $vevent = Reader::read($objectData)->select('VEVENT')[0];
+        $attendees = [];
 
         if (!empty($vevent->ATTENDEE) && is_iterable($vevent->ATTENDEE)) {
             foreach ($vevent->ATTENDEE as $attendee) {
-                $state = ArrayHelper::getValue($attendee, 'PARTSTAT')->getValue();
+                $partStat = ArrayHelper::getValue($attendee, 'PARTSTAT')?->getValue() ?: null;
                 $email = $attendee->getValue();
 
                 if (strpos($email, 'mailto:') === 0) {
                     $email = substr($email, 7);
                 }
-
                 if ($email == $event->getOrganizer()->email) {
                     continue;
                 }
 
                 $user = User::findOne(['email' => $email]);
-
                 if (!$user) {
                     continue;
                 }
@@ -298,11 +300,57 @@ class CalendarBackend extends AbstractBackend
                     'calendar_entry_id' => $event->id,
                     'user_id' => $user->id,
                 ];
+                $participant = CalendarEntryParticipant::findOne($initialAttributes);
+                if (!$participant) {
+                    $participant = CalendarEntryParticipant::findOne($initialAttributes) ?: new CalendarEntryParticipant($initialAttributes);
+                    $participant->participation_state = ArrayHelper::getValue(self::PARTICIPATION_STATE_MAP, $partStat, CalendarEntryParticipant::PARTICIPATION_STATE_NONE);
+                    $participant->save();
+                }
+                $attendees[] = $participant->id;
+            }
 
-                $participant = CalendarEntryParticipant::findOne($initialAttributes) ?: new CalendarEntryParticipant($initialAttributes);
-                $participant->participation_state = ArrayHelper::getValue(self::PARTICIPATION_STATE_MAP, $state, CalendarEntryParticipant::PARTICIPATION_STATE_NONE);
-                $participant->save();
+            $cleanUpCondition = [
+                'AND',
+                ['=', 'calendar_entry_id', $event->id],
+            ];
+            if (!empty($attendees)) {
+                $cleanUpCondition[] = ['NOT IN', 'id', $attendees];
+            }
+            CalendarEntryParticipant::deleteAll($cleanUpCondition);
+        }
+    }
+
+    public function getSchedulingObject($principalUri, $objectUri)
+    {
+        return null;
+    }
+
+    public function getSchedulingObjects($principalUri)
+    {
+        return [];
+    }
+
+    public function deleteSchedulingObject($principalUri, $objectUri)
+    {
+        throw new NotImplemented();
+    }
+
+    public function createSchedulingObject($principalUri, $objectUri, $objectData)
+    {
+        $vcalendar = Reader::read($objectData);
+
+        $responses = [];
+        if ($vcalendar->VEVENT->ATTENDEE) {
+            foreach ($vcalendar->VEVENT->ATTENDEE as $attendee) {
+                $email = str_replace('mailto:', '', $attendee->getValue());
+                $responses[] = [
+                    'href' => "mailto:{$email}",
+                    'status' => '2.0;Success',
+                    'calendarData' => null,
+                ];
             }
         }
+
+        return $responses;
     }
 }
