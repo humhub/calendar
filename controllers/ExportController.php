@@ -11,7 +11,6 @@ use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\Event;
 use yii\helpers\Inflector;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;

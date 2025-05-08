@@ -10,6 +10,7 @@ modules:
     enabled:
       - Filesystem
       - Yii2
+      - Asserts
       - tests\codeception\_support\TestHelper
       - tests\codeception\_support\DynamicFixtureHelper
       - tests\codeception\_support\HumHubHelper

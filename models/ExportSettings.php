@@ -30,6 +30,10 @@ class ExportSettings extends Model
         $this->jwtKey = $this->module->settings->get('jwtKey', $this->jwtKey);
         $this->jwtExpire = $this->module->settings->get('jwtExpiration', $this->jwtExpire);
         $this->includeUserInfo = $this->module->settings->get('includeUserInfo', $this->module->icsOrganizer);
+
+        if (YII_ENV_TEST) {
+            $this->jwtKey = 'test-key';
+        }
     }
 
     public function rules()
