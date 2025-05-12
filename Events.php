@@ -422,6 +422,11 @@ class Events
         $elementTypeService->addType(CalendarEventsElement::class);
     }
 
+    public static function onCustomPagesImportServiceDefaultTemplates(\humhub\modules\custom_pages\modules\template\events\DefaultTemplateEvent $event)
+    {
+        $event->addPath('@calendar/resources/custom-pages-templates');
+    }
+
     public static function onContentAfterSoftDelete(ContentEvent $event): void
     {
         // It may be called from wall stream
