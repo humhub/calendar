@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.7.4 (Unreleased)
--------------------------
+1.7.4 (May 12, 2025)
+--------------------
 - Enh #542: Add filters for template element of the custom pages module
 
 1.7.3 (February 25, 2025)
