@@ -15,6 +15,7 @@ use humhub\modules\calendar\Events;
 use humhub\modules\content\widgets\WallEntryLinks;
 use humhub\commands\IntegrityController;
 use humhub\commands\CronController;
+use humhub\components\ModuleManager;
 
 return [
     'id' => 'calendar',
@@ -41,8 +42,12 @@ return [
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
         ['class' => 'humhub\modules\custom_pages\modules\template\services\ElementTypeService', 'event' => 'init', 'callback' => [Events::class, 'onCustomPagesTemplateElementTypeServiceInit']],
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_SOFT_DELETE, 'callback' => [Events::class, 'onContentAfterSoftDelete']],
+        ['class' => ModuleManager::class, 'event' => ModuleManager::EVENT_BEFORE_MODULE_ENABLE, 'callback' => [Events::class, 'onModuleEnabled']],
     ],
     'urlManagerRules' => [
         'calendar' => 'calendar/global',
+        '/.well-known/caldav' => 'calendar/cal-dav/well-known',
+        ['pattern' => 'remote/caldav/<path:.*>', 'route' => 'calendar/cal-dav/index', 'defaults' => ['path' => '']],
+        ['pattern' => 'remote/ical/<token:[a-zA-Z0-9\-_\.%]+>', 'route' => 'calendar/export/calendar'],
     ],
 ];

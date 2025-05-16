@@ -8,6 +8,7 @@ use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEventsEleme
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\models\ExportSettings;
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\content\events\ContentEvent;
 use humhub\modules\space\models\Space;
@@ -33,6 +34,8 @@ use humhub\modules\calendar\helpers\Url;
 use Yii;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
+use yii\web\Application;
+use humhub\components\ModuleEvent;
 
 /**
  * Description of CalendarEvents
@@ -46,6 +49,14 @@ class Events
      */
     public static function onBeforeRequest()
     {
+        /**
+         * @todo Temporary workaround – should be removed after the core release.x
+         * @see \humhub\modules\calendar\controllers\CalDavController::actionError
+         */
+        if (Yii::$app instanceof Application) {
+            Yii::$app->errorHandler->errorAction = 'calendar/cal-dav/error';
+        }
+
         try {
             static::registerAutoloader();
             Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
@@ -437,4 +448,10 @@ class Events
         }
     }
 
+    public static function onModuleEnabled(ModuleEvent $event)
+    {
+        if ($event->moduleId === 'calendar') {
+            ExportSettings::instance()->save();
+        }
+    }
 }
