@@ -54,13 +54,14 @@ class CalDavController extends Controller
         $exception = Yii::$app->errorHandler->exception;
 
         // Take control of error action only when called from Calendar Clients
-        if (in_array(Yii::$app->request->headers->get('Accept'), ['text/xml', 'application/xml'])) {
+        if (in_array(Yii::$app->request->headers->get('Accept'), ['*/*', 'text/xml', 'application/xml'])) {
             if ($exception instanceof ForbiddenHttpException || $exception instanceof UnauthorizedHttpException) {
                 $this->response->statusCode = 401;
                 $this->response->content = Response::$httpStatuses[401];
             } else {
-                $this->response->statusCode = $exception->getCode();
-                $this->response->content = Response::$httpStatuses[$exception->getCode()];
+                $code = $exception->getCode() ?: 401;
+                $this->response->statusCode = $code;
+                $this->response->content = Response::$httpStatuses[$code];
             }
 
             return $this->response;

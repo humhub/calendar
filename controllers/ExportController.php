@@ -28,6 +28,8 @@ class ExportController extends Controller
         $this->calendarService =  Yii::$app->getModule('calendar')->get(CalendarService::class);
     }
 
+    public $access = ControllerAccess::class;
+
     public function getAccessRules()
     {
         return [
