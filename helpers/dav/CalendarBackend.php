@@ -199,7 +199,28 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
     public function updateCalendar($calendarId, PropPatch $propPatch)
     {
-        throw new MethodNotAllowed();
+        $contentContainer = $this->getContentContainerForCalendar($calendarId);
+
+        if (!$contentContainer) {
+            throw new NotFound();
+        }
+
+        $supportedProperties = [
+            '{http://apple.com/ns/ical/}calendar-color',
+            '{http://apple.com/ns/ical/}calendar-order',
+        ];
+
+
+        $propPatch->handle($supportedProperties, function($mutations) use ($supportedProperties) {
+            foreach ($mutations as $propertyName => $propertyValue) {
+                if (in_array($propertyName, $supportedProperties)) {
+                    // Ignore calendar-order
+                    return true;
+                }
+            }
+
+            return false;
+        });
     }
 
     public function createCalendar($principalUri, $calendarUri, array $properties)
@@ -239,15 +260,14 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
     {
         $data = Reader::read($data)->select('VEVENT')[0]->children();
 
-        $eventData = ArrayHelper::map(
-            $data,
-            function(Property $property) {
-                return $property->name;
-            },
-            function(Property $property) {
-                return $property->getValue();
+        $eventData = [];
+        foreach ($data as $property) {
+            if (!$property instanceof Property) {
+                continue;
             }
-        );
+
+            $eventData[$property->name] = $property->getValue();
+        }
 
         $event->title = ArrayHelper::getValue($eventData, 'SUMMARY');
         $event->description = ArrayHelper::getValue($eventData, 'DESCRIPTION');
