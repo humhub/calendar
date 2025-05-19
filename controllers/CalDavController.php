@@ -112,33 +112,38 @@ class CalDavController extends Controller
 
     public function actionIndex()
     {
-        $principalBackend = new PrincipalBackend();
-        $calendarBackend = new CalendarBackend();
+        try {
+            $principalBackend = new PrincipalBackend();
+            $calendarBackend = new CalendarBackend();
 
-        $tree = [
-            new PrincipalCollection($principalBackend),
-            new CalendarRoot($principalBackend, $calendarBackend),
-        ];
+            $tree = [
+                new PrincipalCollection($principalBackend),
+                new CalendarRoot($principalBackend, $calendarBackend),
+            ];
 
-        $server = new Server($tree);
-        $server->setBaseUri(Url::to(['/calendar/cal-dav/index']));
-        $server->addPlugin(new AuthPlugin(new UserPassAuthBackend()));
-        $server->addPlugin(new DAVPlugin);
-        $server->addPlugin(new SharingPlugin());
-        $server->addPlugin(new CalDAVPlugin());
-        $server->addPlugin(new SchedulePlugin());
-        $aclPlugin = new ACLPlugin();
-        if (Yii::$app->user->can(ManageUsers::class)) {
-            $aclPlugin->adminPrincipals[] = 'principals/' . Yii::$app->user->identity->username;
+            $server = new Server($tree);
+            $server->setBaseUri(Url::to(['/calendar/cal-dav/index']));
+            $server->addPlugin(new AuthPlugin(new UserPassAuthBackend()));
+            $server->addPlugin(new DAVPlugin);
+            $server->addPlugin(new SharingPlugin());
+            $server->addPlugin(new CalDAVPlugin());
+            $server->addPlugin(new SchedulePlugin());
+            $aclPlugin = new ACLPlugin();
+            if (Yii::$app->user->can(ManageUsers::class)) {
+                $aclPlugin->adminPrincipals[] = 'principals/' . Yii::$app->user->identity->username;
+            }
+            $server->addPlugin($aclPlugin);
+
+            if (YII_DEBUG) {
+                $server->addPlugin(new BrowserPlugin());
+                $server->debugExceptions = true;
+            }
+            $server->start();
+            Yii::$app->response->isSent = true;
+        } catch (\Throwable $e) {
+            Yii::error($e);
+            throw $e;
         }
-        $server->addPlugin($aclPlugin);
-
-        if (YII_DEBUG) {
-            $server->addPlugin(new BrowserPlugin());
-            $server->debugExceptions = true;
-        }
-        $server->start();
-        Yii::$app->response->isSent = true;
     }
 
     public function actionWellKnown()
