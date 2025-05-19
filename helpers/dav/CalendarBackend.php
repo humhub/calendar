@@ -214,7 +214,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $propPatch->handle($supportedProperties, function($mutations) use ($supportedProperties) {
             foreach ($mutations as $propertyName => $propertyValue) {
                 if (in_array($propertyName, $supportedProperties)) {
-                    // Ignore calendar-order
+                    // Ignore calendar-order and calendar-color for apple calendar
                     return true;
                 }
             }
