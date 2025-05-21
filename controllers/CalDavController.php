@@ -100,8 +100,11 @@ class CalDavController extends Controller
                     if ($login->validate()) {
                         $authClientService = new AuthClientService($login->authClient);
                         $authClientService->autoMapToExistingUser();
+                        $user = $authClientService->getUser();
 
-                        return $authClientService->getUser();
+                        if ($user->isActive()) {
+                            return $user;
+                        }
                     }
 
                     return null;
@@ -149,5 +152,25 @@ class CalDavController extends Controller
     public function actionWellKnown()
     {
         return $this->redirect(['index']);
+    }
+
+    public function actionTest()
+    {
+        $login = new Login();
+        $login->username = 'sara.schuster@example.com';
+        $login->password = 'adminadmin';
+
+        if ($login->validate()) {
+            $authClientService = new AuthClientService($login->authClient);
+            $authClientService->autoMapToExistingUser();
+
+            var_dump($authClientService->getUser());
+
+            return $authClientService->getUser();
+        }
+
+        var_dump($login->firstErrors);
+
+        die;
     }
 }
