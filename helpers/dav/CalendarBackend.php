@@ -17,7 +17,6 @@ use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModuleManager;
@@ -30,9 +29,9 @@ use Sabre\CalDAV\Backend\AbstractBackend;
 use Sabre\CalDAV\Backend\SchedulingSupport;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV\Exception\Conflict;
-use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\NotImplemented;
+use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\PropPatch;
 use Yii;
 use Sabre\VObject\Reader;
@@ -40,19 +39,10 @@ use Sabre\VObject\Property;
 
 class CalendarBackend extends AbstractBackend implements SchedulingSupport
 {
-    private const PARTICIPATION_STATE_NONE = null;
-    private const PARTICIPATION_STATE_ACCEPTED = 'ACCEPTED';
-    private const PARTICIPATION_STATE_DECLINED = 'DECLINED';
-    private const PARTICIPATION_STATE_MAYBE = 'TENTATIVE';
-    private const PARTICIPATION_STATE_INVITED = 'NEEDS-ACTION';
-
-    private const PARTICIPATION_STATE_MAP = [
-        self::PARTICIPATION_STATE_NONE => CalendarEntryParticipant::PARTICIPATION_STATE_NONE,
-        self::PARTICIPATION_STATE_ACCEPTED => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
-        self::PARTICIPATION_STATE_DECLINED => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED,
-        self::PARTICIPATION_STATE_MAYBE => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
-        self::PARTICIPATION_STATE_INVITED => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED,
-    ];
+    private function sync(): EventSync
+    {
+        return Yii::createObject(EventSync::class);
+    }
 
     public function getCalendarsForUser($principalUri)
     {
@@ -173,8 +163,19 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
         $event = new CalendarEntry($this->getContentContainerForCalendar($calendarId));
         $this->mapVeventToEvent($calendarData, $event);
-        $event->save();
-        $this->syncParticipants($calendarData, $event);
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $event->save();
+            $this->sync()->from($calendarData)->to($event);
+
+            $transaction->commit();
+        } catch (\Throwable $e) {
+            Yii::error($e);
+            $transaction->rollBack();
+
+            throw new ServiceUnavailable;
+        }
 
         $etag = md5($event->getLastModified()->getTimestamp());
 
@@ -192,8 +193,19 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         }
 
         $this->mapVeventToEvent($calendarData, $event);
-        $event->save();
-        $this->syncParticipants($calendarData, $event);
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $event->save();
+            $this->sync()->from($calendarData)->to($event);
+
+            $transaction->commit();
+        } catch (\Throwable $e) {
+            Yii::error($e);
+            $transaction->rollBack();
+
+            throw new ServiceUnavailable;
+        }
 
     }
 
@@ -298,52 +310,6 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         }
 
         return $contentContainer;
-    }
-
-    protected function syncParticipants(string $objectData, CalendarEntry $event)
-    {
-        $vevent = Reader::read($objectData)->select('VEVENT')[0];
-        $attendees = [];
-
-        if (!empty($vevent->ATTENDEE) && is_iterable($vevent->ATTENDEE)) {
-            foreach ($vevent->ATTENDEE as $attendee) {
-                $partStat = ArrayHelper::getValue($attendee, 'PARTSTAT')?->getValue() ?: null;
-                $email = $attendee->getValue();
-
-                if (strpos($email, 'mailto:') === 0) {
-                    $email = substr($email, 7);
-                }
-                if ($email == $event->getOrganizer()->email) {
-                    continue;
-                }
-
-                $user = User::findOne(['email' => $email]);
-                if (!$user) {
-                    continue;
-                }
-
-                $initialAttributes = [
-                    'calendar_entry_id' => $event->id,
-                    'user_id' => $user->id,
-                ];
-                $participant = CalendarEntryParticipant::findOne($initialAttributes);
-                if (!$participant) {
-                    $participant = CalendarEntryParticipant::findOne($initialAttributes) ?: new CalendarEntryParticipant($initialAttributes);
-                    $participant->participation_state = ArrayHelper::getValue(self::PARTICIPATION_STATE_MAP, $partStat, CalendarEntryParticipant::PARTICIPATION_STATE_NONE);
-                    $participant->save();
-                }
-                $attendees[] = $participant->id;
-            }
-
-            $cleanUpCondition = [
-                'AND',
-                ['=', 'calendar_entry_id', $event->id],
-            ];
-            if (!empty($attendees)) {
-                $cleanUpCondition[] = ['NOT IN', 'id', $attendees];
-            }
-            CalendarEntryParticipant::deleteAll($cleanUpCondition);
-        }
     }
 
     public function getSchedulingObject($principalUri, $objectUri)
