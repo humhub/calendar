@@ -8,10 +8,8 @@
 
 use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\models\CalendarEntryType;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\form\widgets\ColorPicker;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $model CalendarEntryType|CalendarTypeSetting */
 
@@ -29,29 +27,26 @@ if ($model instanceof CalendarTypeSetting) {
 
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('CalendarModule.views', $title)]); ?>
-<?php $form = ActiveForm::begin() ?>
-<div class="modal-body">
-    <div id="event-type-color-field" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
-        <?= ColorPicker::widget(['model' => $model, 'container' => 'event-type-color-field']); ?>
-        <?= $form->field($model, $titleAttribute, ['template' => '
-                                {label}
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i></i>
-                                    </span>
-                                    {input}
-                                </div>
-                                {error}{hint}'
-        ])->textInput(['disabled' => $titleDisabled, 'placeholder' => Yii::t('CalendarModule.config', 'Name'), 'maxlength' => 100, 'autofocus' => ''])->label(false) ?>
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('CalendarModule.views', $title),
+    'footer' => ModalButton::save() . ModalButton::cancel(),
+]) ?>
+    <div id="event-type-color-field" class="input-group mb-3 space-color-chooser-edit">
+        <div class="input-group-prepend">
+            <?= $form->field($model, 'color')
+                ->colorInput(['style' => 'border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius)'])
+                ->label(false) ?>
+        </div>
+        <?= $form->field($model, $titleAttribute, ['options' => ['class' => 'flex-grow-1']])
+            ->textInput([
+                'disabled' => $titleDisabled,
+                'placeholder' => Yii::t('CalendarModule.config', 'Name'),
+                'maxlength' => 100,
+                'autofocus' => '',
+                'style' => 'margin-left: -1px; border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0',
+            ])->label(false) ?>
     </div>
     <?php if ($model instanceof CalendarTypeSetting && $model->canBeDisabled()) : ?>
         <?= $form->field($model, 'enabled')->checkbox() ?>
     <?php endif; ?>
-</div>
-<div class="modal-footer">
-    <?= ModalButton::submitModal(); ?>
-    <?= ModalButton::cancel(); ?>
-</div>
-<?php ActiveForm::end() ?>
-<?php ModalDialog::end() ?>
+<?php Modal::endFormDialog() ?>

@@ -6,9 +6,9 @@
  */
 
 use humhub\modules\calendar\models\forms\BasicSettings;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\ContentHiddenCheckbox;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $basicSettings BasicSettings */
 /* @var $form ActiveForm */
@@ -17,7 +17,7 @@ use humhub\widgets\Button;
     <h4>
         <?= Yii::t('CalendarModule.config', 'Default basic settings'); ?>
         <?php if ($basicSettings->showResetButton()) : ?>
-            <?= Button::defaultType(Yii::t('CalendarModule.config', 'Reset'))
+            <?= Button::light(Yii::t('CalendarModule.config', 'Reset'))
                 ->action('client.pjax.post', $basicSettings->getResetButtonUrl())->link()->right()->sm()?>
         <?php endif; ?>
     </h4>

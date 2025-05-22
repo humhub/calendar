@@ -19,7 +19,7 @@ use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 use humhub\widgets\ModalDialog;
 use Yii;
 use yii\web\HttpException;

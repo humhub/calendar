@@ -11,8 +11,8 @@ use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\Tabs;
 
 /* @var $this yii\web\View */

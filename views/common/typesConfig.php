@@ -11,14 +11,9 @@
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $createUrl string */
 
-use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\widgets\ActiveForm;
-use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
-use humhub\widgets\Tabs;
-use \yii\helpers\Html;
 use yii\widgets\ListView;
 
 ?>

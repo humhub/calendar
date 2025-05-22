@@ -3,7 +3,7 @@
 use humhub\modules\calendar\assets\ParticipationFormAssets;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\web\View;
 
 /* @var $this View */
@@ -20,7 +20,7 @@ ParticipationFormAssets::register($this);
     <h4>
         <?= Yii::t('CalendarModule.config', 'Default participation settings'); ?>
         <?php if ($participationSettings->showResetButton()) : ?>
-            <?= Button::defaultType(Yii::t('CalendarModule.config', 'Reset'))
+            <?= Button::light(Yii::t('CalendarModule.config', 'Reset'))
                 ->action('client.pjax.post', $participationSettings->getResetButtonUrl())->link()->right()->sm()?>
         <?php endif; ?>
     </h4>

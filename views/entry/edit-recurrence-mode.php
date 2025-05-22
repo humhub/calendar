@@ -4,8 +4,8 @@ use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\modules\calendar\helpers\Url;
 
@@ -20,11 +20,11 @@ $root = $entry->getRecurrenceQuery()->getRecurrenceRoot();
 
 ?>
 
-<?php if(RecurrenceHelper::isRecurrentInstance($entry)) : ?>
+<?php if (RecurrenceHelper::isRecurrentInstance($entry)) : ?>
 
     <?= $form->field($model, 'recurrenceEditMode')->hiddenInput(['id' => 'recurrenceEditMode'])->label(false) ?>
 
-    <div class="modal-body recurrence-edit-type">
+    <div class="recurrence-edit-type">
 
         <?= Button::info(Yii::t('CalendarModule.base', 'Edit this event'))
             ->options(['data-edit-mode' => RecurrenceFormModel::EDIT_MODE_THIS ])

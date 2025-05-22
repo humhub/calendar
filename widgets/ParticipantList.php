@@ -10,8 +10,8 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\data\Pagination;
 

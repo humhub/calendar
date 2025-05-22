@@ -6,9 +6,9 @@
  */
 
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 
 /* @var ActiveForm $form */
