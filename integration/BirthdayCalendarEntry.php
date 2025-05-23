@@ -5,7 +5,7 @@ namespace humhub\modules\calendar\integration;
 use DateTime;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
@@ -178,15 +178,12 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
     }
 
     /**
-     * (optional) A badge/label used in snippets
-     *
-     * @return Label|string|null
-     * @throws \Exception
+     * @inheritdoc
      */
     public function getBadge()
     {
         $type = $this->getEventType();
-        return Label::asColor($this->getColor(), $type->getTitle())->icon($type->getIcon())->right();
+        return Badge::instance($type->getTitle(), $this->getColor())->icon($type->getIcon())->right();
     }
 
     /**

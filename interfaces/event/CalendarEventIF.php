@@ -17,9 +17,7 @@
 namespace humhub\modules\calendar\interfaces\event;
 
 use DateTime;
-use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\widgets\Label;
-use DateTimeInterface;
+use humhub\widgets\bootstrap\Badge;
 
 /**
  * This interface serves as the base interface for all types of calendar events.
@@ -190,7 +188,7 @@ interface CalendarEventIF
     /**
      * (optional) A badge/label used in snippets
      *
-     * @return Label|string|null
+     * @return Badge|string|null
      */
     public function getBadge();
 

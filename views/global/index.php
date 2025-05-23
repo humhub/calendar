@@ -9,7 +9,6 @@ use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\widgets\FooterMenu;
 
-/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $selectors array */
 /* @var $filters array */
 /* @var $editUrl string */

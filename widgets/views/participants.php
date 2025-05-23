@@ -1,9 +1,9 @@
 <?php
 
-use humhub\widgets\ModalButton;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $calendarEntry CalendarEntry */
 /* @var $countAttending integer */

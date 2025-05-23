@@ -10,9 +10,9 @@ use humhub\modules\calendar\widgets\ExportParticipantsButton;
 use humhub\modules\calendar\widgets\ParticipantAddForm;
 use humhub\modules\calendar\widgets\ParticipantFilter;
 use humhub\modules\calendar\widgets\ParticipantItem;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User as User;
 use humhub\widgets\AjaxLinkPager;
+use humhub\widgets\form\ActiveForm;
 use yii\data\Pagination;
 use yii\helpers\Html;
 

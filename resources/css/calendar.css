@@ -718,8 +718,7 @@ tbody,
     padding-right: 24px;
 }
 .calendar-entry-new-participants-form button.btn, .calendar-entry-participants .media-list button.btn {
-    height: 32px;
-    margin-top: 3px;
+    height: 34px;
 }
 .calendar-entry-participants-count {
     padding: 18px 18px 36px;
@@ -741,7 +740,7 @@ tbody,
 .calendar-entry-new-participants-form .form-group .checkbox label {
     padding-left: 0;
 }
-.calendar-entry-new-participants-form .form-group.field-calendarentryparticipationform-newforcestatus {
+.calendar-entry-new-participants-form .field-calendarentryparticipationform-newforcestatus {
     display: inline-block;
 }
 .calendar-entry-participants-filters {

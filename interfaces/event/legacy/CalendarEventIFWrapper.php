@@ -19,6 +19,7 @@ namespace humhub\modules\calendar\interfaces\event\legacy;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\Label;
 use Yii;
 use DateTime;
@@ -150,7 +151,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
      */
     public function getBadge()
     {
-        $default = $this->itemType ? Label::asColor($this->getColor(), $this->itemType->getTitle())->icon($this->getIcon())->right() : '';
+        $default = $this->itemType ? Badge::instance($this->itemType->getTitle(), $this->getColor())->icon($this->getIcon())->right() : '';
         return $this->getOption(static::OPTION_BADGE, $default);
     }
 
