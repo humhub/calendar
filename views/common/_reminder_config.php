@@ -5,12 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\calendar\assets\ReminderFormAssets;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use yii\web\View;
 
 /* @var $this View */
 /* @var $settings ReminderSettings */
@@ -25,8 +25,8 @@ $options = [
     'data' => [
         'ui-widget' => 'calendar.reminder.Form',
         'ui-init' => 1,
-        'max-reminder' => Yii::$app->getModule('calendar')->maxReminder
-    ]
+        'max-reminder' => Yii::$app->getModule('calendar')->maxReminder,
+    ],
 ];
 
 ReminderFormAssets::register($this);
@@ -52,11 +52,11 @@ ReminderFormAssets::register($this);
                 </div>
                 <div class="col-md-7">
                     <?= Button::danger()->action('delete')
-                        ->icon('fa-times')->xs()->visible(!$reminder->isNewRecord)
+                        ->icon('fa-times')->sm()->visible(!$reminder->isNewRecord)
                         ->style('margin: 7px 0')->loader(false) ?>
 
                     <?= Button::primary()->action('add')
-                        ->icon('fa-plus')->xs()->visible($reminder->isNewRecord)
+                        ->icon('fa-plus')->sm()->visible($reminder->isNewRecord)
                         ->style('margin: 7px 0')->loader(false) ?>
                 </div>
             </div>

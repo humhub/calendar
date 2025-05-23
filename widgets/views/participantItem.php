@@ -7,9 +7,9 @@
 
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\widgets\ParticipantItem;
-use humhub\modules\user\models\User as User;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
 /* @var CalendarEntry $entry */

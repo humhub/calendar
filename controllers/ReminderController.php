@@ -8,6 +8,7 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\widgets\modal\ModalClose;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\access\ControllerAccess;
@@ -16,7 +17,6 @@ use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\Content;
-use humhub\widgets\ModalClose;
 
 class ReminderController extends ContentContainerController
 {

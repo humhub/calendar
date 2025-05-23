@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var Button[] $buttons */
 /* @var array $options */

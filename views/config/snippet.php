@@ -5,14 +5,16 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-/* @var $this yii\web\View */
-/* @var $model \humhub\modules\calendar\models\SnippetModuleSettings */
 
+use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\SortOrderField;
+use yii\web\View;
 
+/* @var $this View */
+/* @var $model SnippetModuleSettings */
 ?>
 
 <div class="panel panel-default">
@@ -42,9 +44,10 @@ use humhub\widgets\form\ActiveForm;
 
         <?= $form->field($model, 'showIfInstalled')
             ->checkbox()
-            ->hint(Yii::t('CalendarModule.config',
-                'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.'));
-        ?>
+            ->hint(Yii::t(
+                'CalendarModule.config',
+                'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.',
+            )) ?>
 
         <?= Button::save()->submit() ?>
         <?php ActiveForm::end(); ?>

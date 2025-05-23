@@ -7,7 +7,7 @@
  */
 
 use humhub\modules\admin\permissions\ManageModules;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Html;
 
@@ -28,10 +28,10 @@ use yii\helpers\Html;
             <span class="form-control" readonly>
                 <?= Html::encode($title) ?>
                 <?php if ($disabled) : ?>
-                    <?= Label::warning(Yii::t('CalendarModule.base', 'disabled')) ?>
+                    <?= Badge::warning(Yii::t('CalendarModule.base', 'disabled')) ?>
                 <?php endif; ?>
                 <?php if ($isSpaceGlobal) : ?>
-                    <?= Label::info(Yii::t('CalendarModule.base', 'global')) ?>
+                    <?= Badge::info(Yii::t('CalendarModule.base', 'global')) ?>
                 <?php endif; ?>
             </span>
             <?php if (!$isSpaceGlobal || Yii::$app->user->can([ManageModules::class])) : ?>

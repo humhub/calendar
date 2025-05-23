@@ -4,18 +4,18 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Tabs;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\Tabs;
+use yii\web\View;
 
-/* @var $this yii\web\View */
+/* @var $this View */
 /* @var $model DefaultSettings */
 
 CalendarBaseAssets::register($this);
@@ -42,7 +42,7 @@ CalendarBaseAssets::register($this);
             'basicSettings' => $model->basicSettings,
             'participationSettings' => $model->participationSettings,
             'reminderSettings' => $model->reminderSettings,
-            'fullCalendarSettings' => $model->fullCalendarSettings
+            'fullCalendarSettings' => $model->fullCalendarSettings,
         ],
         'items' => [
             ['label' => Yii::t('CalendarModule.config', 'Basic'), 'view' => '_settings_basic', 'linkOptions' => ['class' => 'tab-basic']],

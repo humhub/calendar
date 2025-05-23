@@ -2,12 +2,12 @@
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalButton;
 use humhub\modules\calendar\helpers\Url;
+use humhub\widgets\modal\ModalButton;
+use yii\web\View;
 
 /* @var $this View */
 /* @var $model RecurrenceFormModel */

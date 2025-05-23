@@ -6,9 +6,9 @@
  */
 
 use humhub\modules\calendar\models\forms\BasicSettings;
-use humhub\modules\ui\form\widgets\ContentHiddenCheckbox;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\ContentHiddenCheckbox;
 
 /* @var $basicSettings BasicSettings */
 /* @var $form ActiveForm */

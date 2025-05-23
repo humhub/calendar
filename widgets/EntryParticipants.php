@@ -4,9 +4,9 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\calendar\helpers\Url;
-use humhub\widgets\Button;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**
@@ -61,8 +61,8 @@ class EntryParticipants extends Widget
 
         $participantSate = $calendarEntry->getParticipationStatus(Yii::$app->user->identity);
 
-        $button = Button::info($label)
-            ->icon($participantSate === $state ? 'fa-check-circle' : null);
+        $button = Button::info($label);
+        $participantSate === $state && $button->icon('fa-check-circle');
         if ($calendarEntry->isPast()) {
             $button->tooltip(Yii::t('CalendarModule.base', 'The event has already ended.'))
                 ->cssClass('active fc-disabled-cursor')

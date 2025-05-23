@@ -13,7 +13,7 @@
 
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 use yii\widgets\ListView;
 
 ?>
@@ -22,7 +22,7 @@ use yii\widgets\ListView;
 
     <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
 
-    <?php if($contentContainer === null) : ?>
+    <?php if ($contentContainer === null) : ?>
         <?= GlobalConfigMenu::widget() ?>
     <?php else: ?>
         <?= ContainerConfigMenu::widget()?>

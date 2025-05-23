@@ -218,9 +218,7 @@ class CalendarEntryDummy extends Model implements CalendarEventIF, RecurrentEven
     }
 
     /**
-     * (optional) A badge/label used in snippets
-     *
-     * @return Label|string|null
+     * @inheritdoc
      */
     public function getBadge()
     {

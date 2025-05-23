@@ -2,13 +2,15 @@
 use humhub\modules\calendar\assets\CalendarBaseAssets;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\widgets\bootstrap\Tabs;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
+use yii\web\View;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $calendarEntryForm CalendarEntryForm */
-/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $contentContainer ContentContainerActiveRecord */
 /* @var $editUrl string */
 
 CalendarBaseAssets::register($this);

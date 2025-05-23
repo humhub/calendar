@@ -30,11 +30,11 @@ $visibleStyle = [];
 
 $formButtons = $isNewRecord
     ? ModalButton::light(Yii::t('CalendarModule.views', 'Back'))
-        ->action('back', $editUrl)
+        ->action('back', $editUrl, '#calendar-entry-participation-form')
         ->id('calendar-entry-participation-button-back')
         ->loader(false)
     . ModalButton::primary(Yii::t('CalendarModule.views', 'Next'))
-        ->action('next')
+        ->action('next', null, '#calendar-entry-participation-form')
         ->id('calendar-entry-participation-button-next')
         ->options($isParticipationEnabled ? $visibleStyle : $hiddenStyle)
         ->loader(false)

@@ -7,7 +7,7 @@ use humhub\modules\calendar\widgets\EntryParticipants;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
 use yii\web\View;
 
 /* @var $calendarEntry CalendarEntry */
@@ -35,7 +35,7 @@ $color = 'var(--text-color-secondary)';
                     <small>(<?= Yii::t('CalendarModule.base', 'Recurring') ?>)</small>
                 <?php endif; ?>
                 <?php if ($calendarEntry->closed) : ?>
-                    &nbsp;<?= Label::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
+                    &nbsp;<?= Badge::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
                 <?php endif; ?>
             </h1>
         </div>

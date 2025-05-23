@@ -7,10 +7,10 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\ContentTagDropDown;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\topic\widgets\TopicPicker;
-use humhub\modules\ui\form\widgets\ContentHiddenCheckbox;
-use humhub\modules\ui\form\widgets\ContentVisibilitySelect;
 use humhub\modules\ui\form\widgets\TimePicker;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\ContentHiddenCheckbox;
+use humhub\widgets\form\ContentVisibilitySelect;
 use humhub\widgets\TimeZoneDropdownAddition;
 use yii\jui\DatePicker;
 

@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
 /* @var string $state */
@@ -15,7 +15,7 @@ use yii\helpers\Html;
     <div class="calendar-entry-participants-filter-title"><?= Yii::t('CalendarModule.views', 'Filter') ?></div>
     <?php foreach ($statuses as $statusKey => $statusTitle) :
         echo Button::info($statusTitle)
-            ->cssClass($statusKey == $state ? 'active' : '')->xs()
+            ->cssClass($statusKey == $state ? 'active' : '')->sm()
             ->action('filterState')
             ->options(['data-state' => $statusKey])
             ->loader(false);

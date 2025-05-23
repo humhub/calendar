@@ -10,7 +10,6 @@ namespace humhub\modules\calendar\assets;
 
 use humhub\modules\calendar\interfaces\event\CalendarEntryTypeSetting;
 use humhub\modules\calendar\models\CalendarEntryType;
-use humhub\modules\ui\view\components\View;
 use yii\web\AssetBundle;
 use Yii;
 
@@ -33,8 +32,7 @@ class CalendarBaseAssets extends AssetBundle
     ];
 
     /**
-     * @param View $view
-     * @return AssetBundle
+     * @inheritdoc
      */
     public static function register($view)
     {

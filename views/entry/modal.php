@@ -6,9 +6,9 @@
  */
 
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\modal\Modal;
+use yii\web\View;
 
 /* @var $this View */
 /* @var $entry CalendarEntry */

@@ -1,7 +1,7 @@
 <?php
 
 use humhub\components\View;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\ui\form\widgets\DatePicker;
