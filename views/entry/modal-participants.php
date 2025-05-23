@@ -55,6 +55,7 @@ if ($calendarEntryParticipationForm->entry->content->canEdit()) {
     <?= Html::beginTag('div', $widgetOptions) ?>
         <?= Tabs::widget([
             'viewPath' => '@calendar/views/entry',
+            'isSubMenu' => true,
             'params' => ['form' => $form, 'calendarEntryParticipationForm' => $calendarEntryParticipationForm, 'renderWrapper' => true],
             'options' => [
                 'id' => 'calendar-entry-participation-tabs',

@@ -45,6 +45,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
     <div class="calendar-entry-form-tabs"<?= RecurrenceHelper::isRecurrentInstance($calendarEntryForm->entry) ? ' hidden' : ''  ?>>
         <?= Tabs::widget([
             'viewPath' => '@calendar/views/entry',
+            'isSubMenu' => true,
             'params' => ['form' => $form, 'calendarEntryForm' => $calendarEntryForm, 'contentContainer' => $contentContainer],
             'items' => [
                 [

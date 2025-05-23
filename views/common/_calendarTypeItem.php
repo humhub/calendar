@@ -21,11 +21,11 @@ use yii\helpers\Html;
 ?>
 <div class="media" style="margin-top:5px;">
     <div class="media-body">
-        <div class="input-group mb-3">
+        <div class="input-group">
             <span class="input-group-text">
                 <i style="display:inline-block;width:16px;height:16px;background-color: <?= Html::encode($color)?>"></i>
             </span>
-            <span class="form-control" readonly>
+            <span class="input-group-text flex-fill">
                 <?= Html::encode($title) ?>
                 <?php if ($disabled) : ?>
                     <?= Badge::warning(Yii::t('CalendarModule.base', 'disabled')) ?>
@@ -42,7 +42,7 @@ use yii\helpers\Html;
                         Yii::t('CalendarModule.config', '<strong>Confirm</strong> Deletion'),
                         Yii::t('CalendarModule.config', 'Do you really want to delte this event type?'),
                         Yii::t('CalendarModule.config', 'Delete'),
-                    )->icon('fa-times')->sm() ?>
+                    )->icon('fa-times')->sm()->cssClass('ms-2') ?>
                 <?php endif ?>
             </span>
             <?php endif; ?>

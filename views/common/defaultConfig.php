@@ -37,6 +37,7 @@ CalendarBaseAssets::register($this);
 
     <?= Tabs::widget([
         'viewPath' => '@calendar/views/common',
+        'isSubMenu' => true,
         'params' => [
             'form' => $form,
             'basicSettings' => $model->basicSettings,

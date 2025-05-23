@@ -44,13 +44,13 @@ ReminderFormAssets::register($this);
             <?php endif; ?>
 
             <div class="row" data-reminder-index="<?= $index ?>">
-                <div class="col-md-3">
+                <div class="col-lg-3">
                     <?= $form->field($reminder, "[$index]unit")->dropDownList(ReminderSettings::getUnitSelection())->label(false) ?>
                 </div>
-                <div class="col-md-2">
+                <div class="col-lg-2">
                     <?= $form->field($reminder, "[$index]value")->textInput(['type' => 'number', 'min' => 1, 'max' => 100])->label(false) ?>
                 </div>
-                <div class="col-md-7">
+                <div class="col-lg-7">
                     <?= Button::danger()->action('delete')
                         ->icon('fa-times')->sm()->visible(!$reminder->isNewRecord)
                         ->style('margin: 7px 0')->loader(false) ?>
@@ -72,10 +72,10 @@ ReminderFormAssets::register($this);
                      <?php continue; ?>
                 <?php endif; ?>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-lg-3">
                         <?= $form->field($reminder, "[$index]unit")->dropDownList(ReminderSettings::getUnitSelection(), ['disabled' => true])->label(false) ?>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-lg-2">
                         <?= $form->field($reminder, "[$index]value")->textInput(['type' => 'number', 'min' => 1, 'max' => 100, 'disabled' => true])->label(false) ?>
                     </div>
                 </div>

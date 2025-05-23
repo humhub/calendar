@@ -18,8 +18,8 @@ use yii\helpers\Html;
 /* @var array $statuses */
 ?>
 <?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form']) ?>
-    <div class="media">
-        <div class="media-body">
+    <div class="d-flex flex-row">
+        <div class="flex-fill pe-1">
             <?= UserPickerField::widget([
                 'model' => $model,
                 'attribute' => 'newParticipants',
@@ -28,10 +28,10 @@ use yii\helpers\Html;
                 'url' => $searchUsersUrl,
             ]) ?>
         </div>
-        <div class="media-body">
+        <div class="pe-1">
             <?= $form->field($model, 'newParticipantStatus')->dropDownList($statuses)->label(false) ?>
         </div>
-        <div class="media-body">
+        <div>
             <?= Button::info()->sm()
                 ->icon('send')
                 ->action('add', $addParticipantsUrl) ?>

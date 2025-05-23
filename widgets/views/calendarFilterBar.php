@@ -19,7 +19,7 @@ use humhub\widgets\FadeIn;
 
 <?php FadeIn::begin() ?>
 <div class="row calendar-options">
-    <div class="col-md-12">
+    <div class="col-lg-12">
         <div id="calendar-overview-loader"></div>
         <?php if ($showControls) : ?>
             <div class="calendar-option-buttons">
