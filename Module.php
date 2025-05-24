@@ -42,6 +42,8 @@ class Module extends ContentContainerModule
 
     /**
      * @var bool whether or not to include the ORGANIZER in ICS export
+     * @deprecated since 1.7.4
+     * @see `Include Organizer and Participant Info in Exports` option in Calendar Module Admin UI
      */
     public $icsOrganizer = false;
 
