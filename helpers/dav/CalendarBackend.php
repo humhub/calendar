@@ -29,6 +29,7 @@ use Sabre\CalDAV\Backend\AbstractBackend;
 use Sabre\CalDAV\Backend\SchedulingSupport;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV\Exception\Conflict;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\NotImplemented;
 use Sabre\DAV\Exception\ServiceUnavailable;
@@ -164,6 +165,10 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $event = new CalendarEntry($this->getContentContainerForCalendar($calendarId));
         $this->mapVeventToEvent($calendarData, $event);
 
+        if (!$event->content->canEdit()) {
+            throw new Forbidden();
+        }
+
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $event->save();
@@ -193,6 +198,10 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         }
 
         $this->mapVeventToEvent($calendarData, $event);
+
+        if (!$event->content->canEdit()) {
+            throw new Forbidden();
+        }
 
         $transaction = Yii::$app->db->beginTransaction();
         try {
