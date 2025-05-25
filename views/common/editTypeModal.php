@@ -31,7 +31,7 @@ if ($model instanceof CalendarTypeSetting) {
     'title' => Yii::t('CalendarModule.views', $title),
     'footer' => ModalButton::save() . ModalButton::cancel(),
 ]) ?>
-    <div id="event-type-color-field" class="input-group mb-3 space-color-chooser-edit">
+    <div id="event-type-color-field" class="input-group mb-3 input-color-group">
         <div class="input-group-prepend">
             <?= $form->field($model, 'color')
                 ->colorInput(['style' => 'border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius)'])

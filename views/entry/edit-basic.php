@@ -18,7 +18,7 @@ use yii\jui\DatePicker;
 /* @var $calendarEntryForm CalendarEntryForm */
 /* @var $contentContainer ContentContainerActiveRecord */
 ?>
-<div id="event-color-field" class="input-group mb-3 mt-3 space-color-chooser-edit">
+<div id="event-color-field" class="input-group mb-3 mt-3 input-color-group">
     <div class="input-group-prepend">
         <?= $form->field($calendarEntryForm->entry, 'color')
             ->colorInput(['style' => 'border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius)'])
