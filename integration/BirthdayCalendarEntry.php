@@ -3,8 +3,11 @@
 namespace humhub\modules\calendar\integration;
 
 use DateTime;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
+use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
+use humhub\modules\content\components\ContentContainerController;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
 use yii\base\Model;
@@ -150,7 +153,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
      */
     public function getColor()
     {
-        return null;
+        return $this->getTypeSetting()?->getColor();
     }
 
     /**
@@ -183,7 +186,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
     public function getBadge()
     {
         $type = $this->getEventType();
-        return Badge::instance($type->getTitle(), $this->getColor())->icon($type->getIcon())->right();
+        return Badge::instance($type->getTitle())->cssBgColor($this->getColor())->icon($type->getIcon())->right();
     }
 
     /**
@@ -314,5 +317,18 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
     public function getFullCalendarOptions()
     {
         return [];
+    }
+
+    public function getTypeSetting(): ?CalendarTypeSetting
+    {
+        /* @var CalendarService $calendarService */
+        $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
+
+        // Get current space container or current user container for global calendar
+        $container = Yii::$app->controller instanceof ContentContainerController
+            ? Yii::$app->controller->contentContainer
+            : (Yii::$app->user->isGuest ? null : Yii::$app->user->getIdentity());
+
+        return $calendarService->getItemType($this->getEventType()->getKey(), $container);
     }
 }

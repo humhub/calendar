@@ -151,7 +151,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
      */
     public function getBadge()
     {
-        $default = $this->itemType ? Badge::instance($this->itemType->getTitle(), $this->getColor())->icon($this->getIcon())->right() : '';
+        $default = $this->itemType ? Badge::instance($this->itemType->getTitle())->cssBgColor($this->getColor())->icon($this->getIcon())->right() : '';
         return $this->getOption(static::OPTION_BADGE, $default);
     }
 
