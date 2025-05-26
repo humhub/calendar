@@ -28,30 +28,30 @@ use yii\helpers\Html;
     <?= ParticipantFilter::widget() ?>
 <?php endif; ?>
 
-<?= Html::beginTag('div', ['id' => 'calendar-entry-participants-list']) ?>
+<?= Html::beginTag('div', ['id' => 'calendar-entry-participants-list', 'class' => 'mt-3']) ?>
     <?php if ($pagination->totalCount) : ?>
         <?= ExportParticipantsButton::widget(['entry' => $model->entry]) ?>
     <?php endif; ?>
 
-    <p class="calendar-entry-participants-count"><?= $pagination->totalCount
+    <p class="calendar-entry-participants-count my-4"><?= $pagination->totalCount
         ? Yii::t('CalendarModule.views', '{count} Participants', ['count' => '<span>' . $pagination->totalCount . '</span>'])
         : Yii::t('CalendarModule.views', 'No participants')
     ?></p>
 
-    <?= Html::beginTag('ul', ['class' => 'media-list']) ?>
+    <?= Html::beginTag('div', ['class' => 'hh-list']) ?>
         <?php foreach ($users as $user) : ?>
             <?= ParticipantItem::widget([
                 'entry' => $model->entry,
                 'user' => $user,
-            ])?>
+            ]) ?>
         <?php endforeach; ?>
-    <?= Html::endTag('ul') ?>
+    <?= Html::endTag('div') ?>
 
     <div class="pagination-container">
         <?= AjaxLinkPager::widget([
             'pagination' => $pagination,
             'linkOptions' => ['data' => ['action-click' => 'changeParticipantsListPage']]
-        ]); ?>
+        ]) ?>
         <?= Html::hiddenInput('calendar-entry-participants-count', $pagination->totalCount) ?>
     </div>
 <?= Html::endTag('div') ?>

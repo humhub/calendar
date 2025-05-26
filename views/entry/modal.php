@@ -16,7 +16,7 @@ use yii\web\View;
 /* @var $inviteUrl string  */
 ?>
 <?php Modal::beginDialog([
-    'size' => 'large',
+    'size' => Modal::SIZE_LARGE,
     'closable' => true,
     'showClose' => true,
     'footer' => ($editUrl ? Button::primary(Yii::t('CalendarModule.base', 'Edit'))

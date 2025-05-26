@@ -33,7 +33,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
 
 <?php $form = Modal::beginFormDialog([
     'header' => $header,
-    'size' => 'large',
+    'size' => Modal::SIZE_LARGE,
     'closable' => false,
     'footer' => ModalButton::cancel() . ModalButton::save($saveButtonText, $editUrl),
     'form' => ['enableClientValidation' => false],

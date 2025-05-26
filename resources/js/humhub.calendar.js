@@ -233,11 +233,9 @@ humhub.module('calendar', function (module, require, $) {
         Form.prototype.changeEventType = function (evt) {
             var $selected = evt.$trigger.find(':selected');
             if ($selected.data('color')) {
-                $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('color'));
-                $('.colorpicker-element').data('colorpicker').update();
+                this.$.find('#calendarentry-color').val($selected.data('color'));
             } else if (module.config['defaultEventColor']) {
-                $('.colorpicker-element').data('colorpicker').color.setColor(module.config['defaultEventColor']);
-                $('.colorpicker-element').data('colorpicker').update();
+                this.$.find('#calendarentry-color').val(module.config['defaultEventColor']);
             }
         };
 

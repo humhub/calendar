@@ -29,22 +29,17 @@ if ($model instanceof CalendarTypeSetting) {
 
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('CalendarModule.views', $title),
-    'footer' => ModalButton::save() . ModalButton::cancel(),
+    'footer' => ModalButton::cancel() . ModalButton::save(),
 ]) ?>
-    <div id="event-type-color-field" class="input-group mb-3 input-color-group">
-        <div class="input-group-prepend">
-            <?= $form->field($model, 'color')
-                ->colorInput(['style' => 'border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius)'])
-                ->label(false) ?>
-        </div>
-        <?= $form->field($model, $titleAttribute, ['options' => ['class' => 'flex-grow-1']])
+    <div id="event-type-color-field" class="input-group input-color-group">
+        <?= $form->field($model, 'color')->colorInput() ?>
+        <?= $form->field($model, $titleAttribute)
             ->textInput([
                 'disabled' => $titleDisabled,
                 'placeholder' => Yii::t('CalendarModule.config', 'Name'),
                 'maxlength' => 100,
                 'autofocus' => '',
-                'style' => 'margin-left: -1px; border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0',
-            ])->label(false) ?>
+            ]) ?>
     </div>
     <?php if ($model instanceof CalendarTypeSetting && $model->canBeDisabled()) : ?>
         <?= $form->field($model, 'enabled')->checkbox() ?>

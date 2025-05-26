@@ -16,35 +16,34 @@ use yii\helpers\Html;
 /* @var User $user */
 /* @var array $statuses */
 ?>
-<?= Html::beginTag('li', ['data-user-id' => $user->id]) ?>
-    <div class="media">
-        <a href="<?= $user->getUrl() ?>" data-modal-close="1" class="media-body">
-            <?= Image::widget([
-                'user' => $user,
-                'link' => false,
-                'width' => 32,
-                'htmlOptions' => ['class' => 'media-object'],
-            ]) ?>
-            <h4 class="media-heading"><?= Html::encode($user->displayName) ?></h4>
-            <h5><?= Html::encode($user->displayNameSub) ?></h5>
-        </a>
-        <div class="media-body">
-            <?php if ($entry->content->canEdit()) : ?>
-                <?= Html::dropDownList('status', $entry->participation->getParticipationStatus($user), $statuses, [
-                    'data-action-change' => 'update',
-                    'class' => 'form-control',
-                ]) ?>
-            <?php else : ?>
-                <span class="label label-default"><?= ParticipantItem::getStatusTitle($entry->participation->getParticipationStatus($user)) ?></span>
-            <?php endif; ?>
+<?= Html::beginTag('div', ['data-user-id' => $user->id, 'class' => 'd-flex align-items-center']) ?>
+    <a href="<?= $user->getUrl() ?>" data-modal-close="1" class="d-flex flex-grow-1">
+        <?= Image::widget([
+            'user' => $user,
+            'link' => false,
+            'width' => 32,
+        ]) ?>
+        <div class="ms-1">
+            <h4 class="m-0"><?= Html::encode($user->displayName) ?></h4>
+            <h5 class="mt-1 mb-0"><?= Html::encode($user->displayNameSub) ?></h5>
         </div>
+    </a>
+    <div class="ms-1">
         <?php if ($entry->content->canEdit()) : ?>
-            <div class="media-body">
-                <?= Button::danger()->sm()
-                    ->icon('remove')
-                    ->confirm(null, Yii::t('CalendarModule.views', 'Are you sure want to remove the participant from the event?'))
-                    ->action('remove') ?>
-            </div>
+            <?= Html::dropDownList('status', $entry->participation->getParticipationStatus($user), $statuses, [
+                'data-action-change' => 'update',
+                'class' => 'form-control',
+            ]) ?>
+        <?php else : ?>
+            <span class="label label-default"><?= ParticipantItem::getStatusTitle($entry->participation->getParticipationStatus($user)) ?></span>
         <?php endif; ?>
     </div>
-<?= Html::endTag('li') ?>
+    <?php if ($entry->content->canEdit()) : ?>
+        <div class="ms-1">
+            <?= Button::danger()->sm()
+                ->icon('remove')
+                ->confirm(null, Yii::t('CalendarModule.views', 'Are you sure want to remove the participant from the event?'))
+                ->action('remove') ?>
+        </div>
+    <?php endif; ?>
+<?= Html::endTag('div') ?>

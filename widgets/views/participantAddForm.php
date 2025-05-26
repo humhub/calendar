@@ -17,7 +17,7 @@ use yii\helpers\Html;
 /* @var string $addParticipantsUrl */
 /* @var array $statuses */
 ?>
-<?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form']) ?>
+<?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form pt-3']) ?>
     <div class="d-flex flex-row">
         <div class="flex-fill pe-1">
             <?= UserPickerField::widget([
@@ -45,4 +45,4 @@ use yii\helpers\Html;
     <?php endif; ?>
 <?= Html::endTag('div') ?>
 
-<?= Html::tag('hr', '', ['style' => 'margin:10px 18px']) ?>
+<?= Html::tag('hr', '', ['class' => 'my-3']) ?>

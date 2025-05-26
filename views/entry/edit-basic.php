@@ -18,18 +18,13 @@ use yii\jui\DatePicker;
 /* @var $calendarEntryForm CalendarEntryForm */
 /* @var $contentContainer ContentContainerActiveRecord */
 ?>
-<div id="event-color-field" class="input-group mb-3 mt-3 input-color-group">
-    <div class="input-group-prepend">
-        <?= $form->field($calendarEntryForm->entry, 'color')
-            ->colorInput(['style' => 'border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius)'])
-            ->label(false) ?>
-    </div>
-    <?= $form->field($calendarEntryForm->entry, 'title', ['options' => ['class' => 'flex-grow-1']])
+<div id="event-color-field" class="input-group mt-3 input-color-group">
+    <?= $form->field($calendarEntryForm->entry, 'color')->colorInput() ?>
+    <?= $form->field($calendarEntryForm->entry, 'title')
         ->textInput([
             'placeholder' => Yii::t('CalendarModule.views', 'Title'),
             'autofocus' => '',
-            'style' => 'margin-left: -1px; border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0',
-        ])->label(false) ?>
+        ]) ?>
 </div>
 
 <?php Yii::$app->formatter->timeZone = $calendarEntryForm->timeZone ?>

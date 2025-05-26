@@ -17,10 +17,9 @@ use humhub\widgets\modal\ModalButton;
 
     <?php $title = Yii::t('CalendarModule.views', ':count Attending', [':count' => $countAttending]); ?>
     <?php if ($countAttending > 0) : ?>
-        <?= ModalButton::instance($title)
+        <?= ModalButton::asLink($title)
             ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED))
-            ->action('calendar.editModal')
-            ->link()?>
+            ->action('calendar.editModal') ?>
     <?php else : ?>
         <?= $title; ?>
     <?php endif ?>
@@ -29,10 +28,9 @@ use humhub\widgets\modal\ModalButton;
          &middot;
         <?php $title = Yii::t('CalendarModule.views', ':count Undecided', [':count' => $countMaybe]); ?>
         <?php if ($countMaybe > 0) : ?>
-            <?= ModalButton::instance($title)
+            <?= ModalButton::asLink($title)
                 ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE))
-                ->action('calendar.editModal')
-                ->link() ?>
+                ->action('calendar.editModal') ?>
         <?php else : ?>
             <?= $title; ?>
         <?php endif ?>
@@ -42,10 +40,9 @@ use humhub\widgets\modal\ModalButton;
          &middot;
         <?php $title = Yii::t('CalendarModule.views', ':count Declined', [':count' => $countDeclined]); ?>
         <?php if ($countDeclined > 0) : ?>
-            <?= ModalButton::instance($title)
+            <?= ModalButton::asLink($title)
                 ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED))
-                ->action('calendar.editModal')
-                ->link() ?>
+                ->action('calendar.editModal') ?>
         <?php else : ?>
             <?= $title; ?>
         <?php endif ?>
@@ -53,10 +50,9 @@ use humhub\widgets\modal\ModalButton;
 
     &middot; <?php $title = Yii::t('CalendarModule.views', ':count Invited', [':count' => $countInvited]); ?>
     <?php if ($countInvited > 0) : ?>
-        <?= ModalButton::instance($title)
+        <?= ModalButton::asLink($title)
             ->load(Url::toParticipationUserList($calendarEntry, CalendarEntryParticipant::PARTICIPATION_STATE_INVITED))
-            ->action('calendar.editModal')
-            ->link() ?>
+            ->action('calendar.editModal') ?>
     <?php else : ?>
         <?= $title; ?>
     <?php endif ?>
