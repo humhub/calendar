@@ -52,9 +52,17 @@ class CalDavController extends Controller
     public function actionError()
     {
         $exception = Yii::$app->errorHandler->exception;
+        $accept = Yii::$app->request->headers->get('Accept', []);
+
+        if (is_string($accept)) {
+            $accept = array_map('trim', explode(',', $accept));
+            $accept = array_map(function($type) {
+                return strtok($type, ';');
+            }, $accept);
+        }
 
         // Take control of error action only when called from Calendar Clients
-        if (in_array(Yii::$app->request->headers->get('Accept'), ['*/*', 'text/xml', 'application/xml'])) {
+        if (!empty(array_intersect($accept, ['*/*', 'text/xml', 'application/xml'. 'text/calendar', 'application/ics', 'text/plain']))) {
             if ($exception instanceof ForbiddenHttpException || $exception instanceof UnauthorizedHttpException) {
                 $this->response->statusCode = 401;
                 $this->response->content = Response::$httpStatuses[401];
