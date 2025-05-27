@@ -42,7 +42,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
 
     <?= $this->render('edit-recurrence-mode', ['form' => $form, 'model' => $calendarEntryForm->recurrenceForm]) ?>
 
-    <div class="calendar-entry-form-tabs"<?= RecurrenceHelper::isRecurrentInstance($calendarEntryForm->entry) ? ' hidden' : ''  ?>>
+    <div class="calendar-entry-form-tabs<?= RecurrenceHelper::isRecurrentInstance($calendarEntryForm->entry) ? ' d-none' : '' ?>">
         <?= Tabs::widget([
             'viewPath' => '@calendar/views/entry',
             'isSubMenu' => true,
@@ -51,19 +51,17 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
                 [
                     'label' => Yii::t('CalendarModule.views', 'General'),
                     'view' => 'edit-basic',
-                    'linkOptions' => ['class' => 'tab-basic'],
+                    'headerOptions' => ['class' => 'tab-basic'],
                 ],
                 [
                     'label' => Yii::t('CalendarModule.views', 'Reminder'),
                     'view' => 'edit-reminder',
-                    'linkOptions' => ['class' => 'tab-reminder'],
-                    'headerOptions' => $calendarEntryForm->showReminderTab() ? [] : ['style' => 'display:none'],
+                    'headerOptions' => ['class' => 'tab-reminder' . ($calendarEntryForm->showReminderTab() ? '' : ' d-none')],
                 ],
                 [
                     'label' => Yii::t('CalendarModule.views', 'Recurrence'),
                     'view' => 'edit-recurrence',
-                    'linkOptions' => ['class' => 'tab-recurrence'],
-                    'headerOptions' => $calendarEntryForm->showRecurrenceTab() ? [] : ['style' => 'display:none'],
+                    'headerOptions' => ['class' => 'tab-recurrence' . ($calendarEntryForm->showRecurrenceTab() ? '' : ' d-none')],
                 ],
             ],
         ]); ?>

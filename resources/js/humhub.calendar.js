@@ -143,22 +143,18 @@ humhub.module('calendar', function (module, require, $) {
         Form.prototype.setEditMode = function (evt) {
             var mode = evt.$trigger.data('editMode');
 
-            if (mode == Form.RECUR_EDIT_MODE_THIS) {
-                $('.field-calendarentryform-is_public').hide();
-            } else {
-                $('.field-calendarentryform-is_public').show();
-            }
+            $('.field-calendarentryform-is_public').toggleClass('d-none', mode == Form.RECUR_EDIT_MODE_THIS);
 
-            this.$.find('.calendar-edit-mode-back').show();
-            this.$.find('.recurrence-edit-type').hide();
-            this.$.find('.calendar-entry-form-tabs').show();
+            this.$.find('.calendar-edit-mode-back').removeClass('d-none');
+            this.$.find('.recurrence-edit-type').addClass('d-none');
+            this.$.find('.calendar-entry-form-tabs').removeClass('d-none');
             this.$.find('#recurrenceEditMode').val(mode);
         };
 
-        Form.prototype.showEditModes = function (evt) {
-            this.$.find('.calendar-edit-mode-back').hide();
-            this.$.find('.recurrence-edit-type').show();
-            this.$.find('.calendar-entry-form-tabs').hide();
+        Form.prototype.showEditModes = function () {
+            this.$.find('.calendar-edit-mode-back').addClass('d-none');
+            this.$.find('.recurrence-edit-type').removeClass('d-none');
+            this.$.find('.calendar-entry-form-tabs').addClass('d-none');
         };
 
         Form.prototype.initTimeInput = function () {
@@ -206,7 +202,6 @@ humhub.module('calendar', function (module, require, $) {
                 });
                 $timeFields.css('opacity', '0.2');
                 $timeZoneInput.hide();
-
             } else {
                 $timeInputs.each(function () {
                     var $this = $(this);
@@ -240,11 +235,11 @@ humhub.module('calendar', function (module, require, $) {
         };
 
         Form.prototype.toggleRecurring = function (evt) {
-            $('.calendar-entry-form-tabs .tab-recurrence').parent().toggle(evt.$trigger.is(':checked'));
+            $('.calendar-entry-form-tabs .tab-recurrence').toggleClass('d-none', !evt.$trigger.is(':checked'));
         };
 
         Form.prototype.toggleReminder = function (evt) {
-            $('.calendar-entry-form-tabs .tab-reminder').parent().toggle(evt.$trigger.is(':checked'));
+            $('.calendar-entry-form-tabs .tab-reminder').toggleClass('d-none', !evt.$trigger.is(':checked'));
         };
 
         var CalendarEntry = Content.extend();

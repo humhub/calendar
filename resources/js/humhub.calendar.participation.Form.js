@@ -20,16 +20,16 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         this.nextButton = $('#calendar-entry-participation-button-next');
         this.backButton = $('#calendar-entry-participation-button-back');
 
-        this.tabSettings = $('#calendar-entry-participation-tabs li:first');
-        this.tabParticipants = $('#calendar-entry-participation-tabs li:last');
+        this.tabSettings = $('#calendar-entry-participation-tabs li.tab-participation');
+        this.tabParticipants = $('#calendar-entry-participation-tabs li.tab-participants');
 
         this.isNewRecord = this.backButton.length;
         if (this.isNewRecord) {
             $('#calendar-entry-participation-tabs li a').click(function () {
                 if ($('#calendar-entry-participation-tabs li:visible').length > 1) {
                     var isTabSettingsActive = $(this).closest('li').index() === 0;
-                    that.saveButton.toggle(!isTabSettingsActive);
-                    that.nextButton.toggle(isTabSettingsActive);
+                    that.saveButton.toggleClass('d-none', isTabSettingsActive);
+                    that.nextButton.toggleClass('d-none', !isTabSettingsActive);
                 }
             });
         }
@@ -163,10 +163,10 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         } else {
             this.$.find('.participationOnly').fadeIn('fast');
         }
-        this.tabParticipants.toggle(!noParticipants);
+        this.tabParticipants.toggleClass('d-none', noParticipants);
         if (this.isNewRecord) {
-            this.saveButton.toggle(noParticipants);
-            this.nextButton.toggle(!noParticipants);
+            this.saveButton.toggleClass('d-none', !noParticipants);
+            this.nextButton.toggleClass('d-none', noParticipants);
         }
     };
 
@@ -177,16 +177,16 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
 
     Form.prototype.next = function (evt) {
         this.tabParticipants.find('a').tab('show');
-        this.nextButton.hide();
-        this.saveButton.show();
+        this.nextButton.addClass('d-none');
+        this.saveButton.removeClass('d-none');
         evt.finish();
     }
 
     Form.prototype.back = function (evt) {
         if (this.tabParticipants.find('a').hasClass('active')) {
             this.tabSettings.find('a').tab('show');
-            this.saveButton.hide();
-            this.nextButton.show();
+            this.saveButton.addClass('d-none');
+            this.nextButton.removeClass('d-none');
         } else {
             loader.set(evt.$trigger, {size: '10px', css: {padding: '0px'}});
             calendar.editModal(evt);

@@ -4,9 +4,11 @@ use humhub\modules\calendar\assets\ParticipationFormAssets;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\web\View;
 
 /* @var $this View */
+/* @var $form ActiveForm */
 /* @var $participationSettings ParticipationSettings */
 
 $helpBlock = $participationSettings->isGlobal()
@@ -30,7 +32,7 @@ ParticipationFormAssets::register($this);
     </div>
 
     <?= $form->field($participationSettings, 'participation_mode')->dropDownList(CalendarEntryParticipationForm::getModeItems(), ['data-action-change' => 'changeParticipationMode']) ?>
-    <div class="participationOnly" style="<?= $participationSettings->isParticipationAllowed() ? '' : 'display:none' ?>">
+    <div class="participationOnly<?= $participationSettings->isParticipationAllowed() ? '' : ' d-none' ?>">
         <?= $form->field($participationSettings, 'allow_decline')->checkbox() ?>
         <?= $form->field($participationSettings, 'allow_maybe')->checkbox() ?>
     </div>

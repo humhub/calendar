@@ -25,8 +25,6 @@ use yii\web\View;
 ParticipationFormAssets::register($this);
 
 $isParticipationEnabled = $calendarEntryParticipationForm->entry->participation->isEnabled();
-$hiddenStyle = ['style' => 'display:none'];
-$visibleStyle = [];
 
 $formButtons = $isNewRecord
     ? ModalButton::light(Yii::t('CalendarModule.views', 'Back'))
@@ -36,14 +34,14 @@ $formButtons = $isNewRecord
     . ModalButton::primary(Yii::t('CalendarModule.views', 'Next'))
         ->action('next', null, '#calendar-entry-participation-form')
         ->id('calendar-entry-participation-button-next')
-        ->options($isParticipationEnabled ? $visibleStyle : $hiddenStyle)
+        ->cssClass($isParticipationEnabled ? '' : 'd-none')
         ->loader(false)
     : ModalButton::cancel(Yii::t('CalendarModule.views', 'Close'))
         ->id('calendar-entry-participation-button-close');
 if ($calendarEntryParticipationForm->entry->content->canEdit()) {
     $formButtons .= ModalButton::save(null, $saveUrl)
         ->id('calendar-entry-participation-button-save')
-        ->options(!$isNewRecord || !$isParticipationEnabled ? $visibleStyle : $hiddenStyle);
+        ->cssClass(!$isNewRecord || !$isParticipationEnabled ? '' : 'd-none');
 }
 ?>
 <?php $form = Modal::beginFormDialog([
@@ -64,15 +62,14 @@ if ($calendarEntryParticipationForm->entry->content->canEdit()) {
                 [
                     'label' => Yii::t('CalendarModule.views', 'Settings'),
                     'view' => 'edit-participation',
-                    'linkOptions' => ['class' => 'tab-participation'],
+                    'headerOptions' => ['class' => 'tab-participation'],
                     'active' => (empty($activeTab) || $activeTab === 'settings'),
                     'visible' => $calendarEntryParticipationForm->entry->content->canEdit(),
                 ],
                 [
                     'label' => Yii::t('CalendarModule.views', 'Participants'),
                     'view' => 'edit-participants',
-                    'linkOptions' => ['class' => 'tab-participants'],
-                    'headerOptions' => $isParticipationEnabled ? $visibleStyle : $hiddenStyle,
+                    'headerOptions' => ['class' => 'tab-participants' . ($isParticipationEnabled ? '' : ' d-none')],
                     'active' => ($activeTab === 'list'),
                 ],
             ],

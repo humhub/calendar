@@ -17,7 +17,7 @@ $entry = $calendarEntryParticipationForm->entry;
 <?= $form->field($entry, 'participation_mode')
     ->dropDownList(CalendarEntryParticipationForm::getModeItems(), ['data-action-change' => 'changeParticipationMode']) ?>
 
-<div class="participationOnly" style="<?= $entry->participation->isEnabled() ? '' : 'display:none' ?>">
+<div class="participationOnly<?= $entry->participation->isEnabled() ? '' : ' d-none' ?>">
     <?= $form->field($entry, 'max_participants')->textInput() ?>
     <?= $form->field($entry, 'allow_decline')->checkbox() ?>
     <?= $form->field($entry, 'allow_maybe')->checkbox() ?>

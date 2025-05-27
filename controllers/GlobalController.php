@@ -19,6 +19,7 @@ use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use humhub\widgets\ModalDialog;
 use Yii;
@@ -250,14 +251,12 @@ class GlobalController extends Controller
             ->action('content.container.enableModule', Url::toEnableProfileModule($user));
 
         $nextButton = ModalButton::primary(Yii::t('CalendarModule.base', 'Next'))
-            ->load(Url::toCreateEntry($user, $start, $end))->style('display:none')->cssClass('disable')->loader(true);
+            ->load(Url::toCreateEntry($user, $start, $end))->cssClass('disable d-none');
 
-
-        return ModalDialog::widget([
-            'header' => Yii::t('CalendarModule.base', '<strong>Add</strong> profile calendar'),
+        return Modal::widget([
+            'title' => Yii::t('CalendarModule.base', '<strong>Add</strong> profile calendar'),
             'body' => Yii::t('CalendarModule.base', 'In order to add events to your profile, you have to enable the calendar module first.'),
-            'footer' => $enableButton . $nextButton . $cancelButton,
-            'centerText' => true,
+            'footer' => $cancelButton . $enableButton . $nextButton,
         ]);
     }
 
@@ -270,16 +269,14 @@ class GlobalController extends Controller
             ->action('content.container.enableModule', Url::toEnableProfileModule($user));
 
         $nextButton = ModalButton::primary(Yii::t('CalendarModule.base', 'Next'))
-            ->link(Url::toConfig($user))->style('display:none')
-            ->cssClass('disable')
-            ->loader(true)
+            ->link(Url::toConfig($user))
+            ->cssClass('disable d-none')
             ->close();
 
-        return ModalDialog::widget([
-            'header' => Yii::t('CalendarModule.base', '<strong>Add</strong> profile calendar'),
+        return Modal::widget([
+            'title' => Yii::t('CalendarModule.base', '<strong>Add</strong> profile calendar'),
             'body' => Yii::t('CalendarModule.base', 'Do you want to install this module on your profile?'),
-            'footer' => $enableButton . $nextButton . $cancelButton,
-            'centerText' => true,
+            'footer' => $cancelButton . $enableButton . $nextButton,
         ]);
     }
 
