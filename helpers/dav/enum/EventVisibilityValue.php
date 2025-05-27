@@ -10,7 +10,7 @@ namespace humhub\modules\calendar\helpers\dav\enum;
 
 enum EventVisibilityValue: string
 {
-    case VAL_VISIBILITY_PUBLIC = 'PUBLIC';
-    case VAL_VISIBILITY_CONFIDENTIAL = 'CONFIDENTIAL';
-    case VAL_VISIBILITY_PRIVATE = 'PRIVATE';
+    case PUBLIC = 'PUBLIC';
+    case CONFIDENTIAL = 'CONFIDENTIAL';
+    case PRIVATE = 'PRIVATE';
 }

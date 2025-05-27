@@ -312,11 +312,11 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $event->uid = $properties->get(EventProperty::UID, $event->getUid());
 
         if (($visibility = $properties->get(EventProperty::VISIBILITY)) && $visibility instanceof EventVisibilityValue) {
-            $event->getContentRecord()->visibility = ArrayHelper::getValue([
-                'PRIVATE' => Content::VISIBILITY_PRIVATE,
-                'PUBLIC' => Content::VISIBILITY_PUBLIC,
-                'CONFIDENTIAL' => Content::VISIBILITY_OWNER,
-            ], $visibility->value);
+            $event->getContentRecord()->visibility = match ($visibility) {
+                EventVisibilityValue::PRIVATE => Content::VISIBILITY_PRIVATE,
+                EventVisibilityValue::PUBLIC => Content::VISIBILITY_PUBLIC,
+                EventVisibilityValue::CONFIDENTIAL => Content::VISIBILITY_OWNER,
+            };
         }
     }
 
