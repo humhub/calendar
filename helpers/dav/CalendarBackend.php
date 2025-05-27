@@ -8,9 +8,11 @@
 
 namespace humhub\modules\calendar\helpers\dav;
 
-use DateTime;
 use humhub\helpers\ArrayHelper;
 use humhub\libs\StringHelper;
+use humhub\modules\calendar\helpers\dav\enum\EventProperty;
+use humhub\modules\calendar\helpers\dav\enum\EventVirtualProperty;
+use humhub\modules\calendar\helpers\dav\enum\EventVisibilityValue;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\integration\BirthdayCalendarEntry;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -25,6 +27,7 @@ use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use Sabre\CalDAV\Backend\SchedulingSupport;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
@@ -36,13 +39,18 @@ use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\PropPatch;
 use Yii;
 use Sabre\VObject\Reader;
-use Sabre\VObject\Property;
+use yii\db\ActiveRecord;
 
 class CalendarBackend extends AbstractBackend implements SchedulingSupport
 {
     private function sync(): EventSync
     {
         return Yii::createObject(EventSync::class);
+    }
+
+    private function properties(): EventProperties
+    {
+        return Yii::createObject(EventProperties::class);
     }
 
     public function getCalendarsForUser($principalUri)
@@ -162,6 +170,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             throw new Conflict();
         }
 
+        /** @var ActiveRecord|CalendarEntry $event */
         $event = new CalendarEntry($this->getContentContainerForCalendar($calendarId));
         $this->mapVeventToEvent($calendarData, $event);
 
@@ -172,6 +181,9 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $event->save();
+            if ($event->hasErrors()) {
+                throw new \RuntimeException();
+            }
             $this->sync()->from($calendarData)->to($event);
 
             $transaction->commit();
@@ -191,6 +203,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
     public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
         $eventId = basename($objectUri, '.ics');
+        /** @var ActiveRecord|CalendarEntry $event */
         $event = CalendarEntry::findOne(['uid' => $eventId]);
 
         if (!$event) {
@@ -206,6 +219,9 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $event->save();
+            if ($event->hasErrors()) {
+                throw new \RuntimeException();
+            }
             $this->sync()->from($calendarData)->to($event);
 
             $transaction->commit();
@@ -277,34 +293,30 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         ];
     }
 
-    protected function mapVeventToEvent(string $data, CalendarEntry $event)
+    protected function mapVeventToEvent(string $data, CalendarEntry|ActiveRecord $event)
     {
-        $data = Reader::read($data)->select('VEVENT')[0]->children();
+        $properties = $this->properties()->from($data);
 
-        $eventData = [];
-        foreach ($data as $property) {
-            if (!$property instanceof Property) {
-                continue;
-            }
-
-            $eventData[$property->name] = $property->getValue();
+        if (
+            $event->isNewRecord ||
+            RichTextToPlainTextConverter::process($event->description) != $properties->get(EventProperty::DESCRIPTION)
+        ) {
+            $event->description = $properties->get(EventVirtualProperty::DESCRIPTION_NORMALIZED);
         }
-
-        $event->title = ArrayHelper::getValue($eventData, 'SUMMARY');
-        $event->description = ArrayHelper::getValue($eventData, 'DESCRIPTION');
-        $event->start_datetime = (new DateTime(ArrayHelper::getValue($eventData, 'DTSTART')))->format('Y-m-d H:i:s');
-        $event->end_datetime = (new DateTime(ArrayHelper::getValue($eventData, 'DTEND')))->format('Y-m-d H:i:s');
-        $event->all_day = 0;
+        $event->title = $properties->get(EventProperty::TITLE);
+        $event->all_day = $properties->get(EventVirtualProperty::ALL_DAY);
+        $event->start_datetime = $properties->get(EventProperty::START_DATE)->format('Y-m-d H:i:s');
+        $event->end_datetime = $properties->get(EventProperty::END_DATE)->format('Y-m-d H:i:s');
         $event->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
-        $event->location = ArrayHelper::getValue($eventData, 'LOCATION');
-        $event->uid = ArrayHelper::getValue($eventData, 'UID', $event->getUid());
+        $event->location = $properties->get(EventProperty::LOCATION);
+        $event->uid = $properties->get(EventProperty::UID, $event->getUid());
 
-        if (($class = ArrayHelper::getValue($eventData, 'CLASS')) && in_array($class, ['PUBLIC', 'CONFIDENTIAL', 'PRIVATE'])) {
+        if (($visibility = $properties->get(EventProperty::VISIBILITY)) && $visibility instanceof EventVisibilityValue) {
             $event->getContentRecord()->visibility = ArrayHelper::getValue([
                 'PRIVATE' => Content::VISIBILITY_PRIVATE,
                 'PUBLIC' => Content::VISIBILITY_PUBLIC,
                 'CONFIDENTIAL' => Content::VISIBILITY_OWNER,
-            ], $class);
+            ], $visibility->value);
         }
     }
 
@@ -338,11 +350,11 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
     public function createSchedulingObject($principalUri, $objectUri, $objectData)
     {
-        $vcalendar = Reader::read($objectData);
+        $vCalendar = Reader::read($objectData);
 
         $responses = [];
-        if ($vcalendar->VEVENT->ATTENDEE) {
-            foreach ($vcalendar->VEVENT->ATTENDEE as $attendee) {
+        if (!empty($vCalendar->VEVENT->ATTENDEE)) {
+            foreach ($vCalendar->VEVENT->ATTENDEE as $attendee) {
                 $email = str_replace('mailto:', '', $attendee->getValue());
                 $responses[] = [
                     'href' => "mailto:{$email}",

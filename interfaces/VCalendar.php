@@ -16,6 +16,8 @@ use humhub\modules\content\models\Content;
 use yii\base\Model;
 use Sabre\VObject;
 use yii\helpers\ArrayHelper;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+
 
 /**
  * Class VCalendar serves as wrapper around sabledavs vobject api.
@@ -156,7 +158,7 @@ class VCalendar extends Model
         }
 
         if (!empty($item->getDescription())) {
-            $result['DESCRIPTION'] = $item->getDescription();
+            $result['DESCRIPTION'] = RichTextToPlainTextConverter::process($item->getDescription());
         }
 
         if (isset($item->content->visibility)) {

@@ -35,6 +35,7 @@ use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 
 class CalDavController extends Controller
 {
@@ -160,25 +161,5 @@ class CalDavController extends Controller
     public function actionWellKnown()
     {
         return $this->redirect(['index']);
-    }
-
-    public function actionTest()
-    {
-        $login = new Login();
-        $login->username = 'sara.schuster@example.com';
-        $login->password = 'adminadmin';
-
-        if ($login->validate()) {
-            $authClientService = new AuthClientService($login->authClient);
-            $authClientService->autoMapToExistingUser();
-
-            var_dump($authClientService->getUser());
-
-            return $authClientService->getUser();
-        }
-
-        var_dump($login->firstErrors);
-
-        die;
     }
 }
