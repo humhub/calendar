@@ -20,7 +20,6 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\widgets\bootstrap\Badge;
-use humhub\widgets\Label;
 use Yii;
 use DateTime;
 use yii\base\Model;

@@ -6,8 +6,8 @@ use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\widgets\form\ActiveForm;
 use Recurr\Frequency;
-use yii\widgets\ActiveForm;
 
 /* @var $this View */
 /* @var $form ActiveForm */

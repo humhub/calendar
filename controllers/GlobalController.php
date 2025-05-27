@@ -21,7 +21,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
-use humhub\widgets\ModalDialog;
 use Yii;
 use yii\web\HttpException;
 

@@ -45,7 +45,7 @@ if ($calendarEntryParticipationForm->entry->content->canEdit()) {
 }
 ?>
 <?php $form = Modal::beginFormDialog([
-    'header' => '<strong>' . Yii::t('CalendarModule.views', 'Participants') . '</strong>',
+    'title' => Yii::t('CalendarModule.views', 'Participants'),
     'size' => Modal::SIZE_LARGE,
     'form' => ['enableClientValidation' => false],
     'footer' => $formButtons,

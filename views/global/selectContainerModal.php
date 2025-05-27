@@ -15,7 +15,7 @@ use humhub\widgets\modal\ModalButton;
 /* @var $submitUrl array */
 ?>
 <?php Modal::beginFormDialog([
-    'header' => Yii::t('CalendarModule.base', '<strong>Choose</strong> target calendar'),
+    'title' => Yii::t('CalendarModule.base', '<strong>Choose</strong> target calendar'),
     'size' => Modal::SIZE_DEFAULT,
     'footer' => $contentContainerSelection
         ? ModalButton::save(Yii::t('CalendarModule.base', 'Next'), $submitUrl)

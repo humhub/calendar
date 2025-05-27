@@ -32,7 +32,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
 ?>
 
 <?php $form = Modal::beginFormDialog([
-    'header' => $header,
+    'title' => $header,
     'size' => Modal::SIZE_LARGE,
     'closable' => false,
     'footer' => ModalButton::cancel() . ModalButton::save($saveButtonText, $editUrl),
