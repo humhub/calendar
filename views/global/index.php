@@ -23,7 +23,7 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
         <div class="panel-heading">
             <strong><?= Yii::t('CalendarModule.base', 'Calendar') ?></strong>
 
-            <div class="calendar-option-buttons pull-right">
+            <div class="float-end">
                 <?= CalendarControls::widget([
                     'widgets' => [
                         [ConfigureButton::class, [], ['sortOrder' => 100]],

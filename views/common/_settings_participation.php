@@ -27,7 +27,7 @@ ParticipationFormAssets::register($this);
         <?php endif; ?>
     </h4>
 
-    <div class="help-block">
+    <div class="form-text">
         <?= $helpBlock ?>
     </div>
 

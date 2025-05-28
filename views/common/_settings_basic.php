@@ -22,7 +22,7 @@ use humhub\widgets\form\ContentHiddenCheckbox;
         <?php endif; ?>
     </h4>
 
-    <div class="help-block">
+    <div class="form-text">
         <?= $basicSettings->isGlobal()
             ? Yii::t('CalendarModule.config', 'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.')
             : Yii::t('CalendarModule.config', 'Here you can configure default settings for new calendar events.') ?>

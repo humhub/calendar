@@ -9,6 +9,7 @@ use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
@@ -29,13 +30,13 @@ use yii\helpers\Html;
         </div>
     </a>
     <div class="ms-1">
-        <?php if ($entry->content->canEdit()) : ?>
+        <?php if (!$entry->content->canEdit()) : ?>
             <?= Html::dropDownList('status', $entry->participation->getParticipationStatus($user), $statuses, [
                 'data-action-change' => 'update',
                 'class' => 'form-control',
             ]) ?>
         <?php else : ?>
-            <span class="label label-default"><?= ParticipantItem::getStatusTitle($entry->participation->getParticipationStatus($user)) ?></span>
+            <?= Badge::light(ParticipantItem::getStatusTitle($entry->participation->getParticipationStatus($user))) ?>
         <?php endif; ?>
     </div>
     <?php if ($entry->content->canEdit()) : ?>

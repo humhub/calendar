@@ -10,7 +10,7 @@ use humhub\widgets\bootstrap\Button;
 /* @var Button[] $buttons */
 /* @var array $options */
 ?>
-<div class="btn-group dropdown calendar-entry-participants-export-button pull-right">
+<div class="btn-group dropdown calendar-entry-participants-export-button float-end">
     <?= Button::info()->icon('download')->sm()
         ->link($buttons[0]->getHref())
         ->pjax(false)->loader(false) ?>

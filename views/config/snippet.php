@@ -30,7 +30,7 @@ use yii\web\View;
             <?= Yii::t('CalendarModule.config', 'Upcoming events snippet') ?>
         </h4>
         
-        <div class="help-block">
+        <div class="form-text">
             <?= Yii::t('CalendarModule.config', 'Adds an snippet with upcoming events to your users dashboard.') ?>
         </div>
         

@@ -20,13 +20,13 @@ use Recurr\Frequency;
 
     <label class="control-label"><?= $model->getAttributeLabel('frequency') ?></label>
     <div class="row">
-        <div class="col-lg-2 hideIfNoRecurrence" style="padding-right:0">
+        <div class="col-lg-2 hideIfNoRecurrence pe-0">
             <?= $form->field($model, 'interval')->input('number', ['min' => 1, 'data-action-change' => 'updatedValue'])->label(false) ?>
         </div>
         <div class="col-lg-4">
             <?= $form->field($model, 'frequency')->dropDownList($model->getIntervalTypesSelection(), [
                 'options' => $model->getIntervalTypesSelectionData(),
-                'data-action-change' => 'updatedType'
+                'data-action-change' => 'updatedType',
             ])->label(false) ?>
         </div>
         <div class="col-lg-6">

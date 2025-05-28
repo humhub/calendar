@@ -18,9 +18,9 @@ use yii\web\View;
 $color = 'var(--text-color-secondary)';
 ?>
 
-<div class="media event calendar-wall-entry" style="margin-top:20px;" data-action-component="calendar.CalendarEntry"
+<div class="event calendar-wall-entry mt-3" data-action-component="calendar.CalendarEntry"
      data-calendar-entry="<?= $calendarEntry->id ?>">
-    <div class="event-info-section clearfix" style="margin-bottom:10px">
+    <div class="event-info-section clearfix mb-2">
         <?= Icon::get('file-text')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
 
         <div class="event-info-section-content">
