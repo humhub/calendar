@@ -208,7 +208,7 @@ class Module extends ContentContainerModule
 
     private function importCustomPagesDefaultTemplates(): bool
     {
-        $importServiceClassName = '\humhub\modules\custom_pages\modules\template\services\ImportService';
+        $importServiceClassName = '\humhub\modules\custom_pages\modules\template\services\TemplateImportService';
         return !method_exists($importServiceClassName, 'importDefaultTemplates') ||
             $importServiceClassName::instance()->importDefaultTemplates();
     }

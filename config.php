@@ -40,7 +40,7 @@ return [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
         ['class' => 'humhub\modules\custom_pages\modules\template\services\ElementTypeService', 'event' => 'init', 'callback' => [Events::class, 'onCustomPagesTemplateElementTypeServiceInit']],
-        ['class' => 'humhub\modules\custom_pages\modules\template\services\ImportService', 'event' => 'defaultTemplates', 'callback' => [Events::class, 'onCustomPagesImportServiceDefaultTemplates']],
+        ['class' => 'humhub\modules\custom_pages\modules\template\services\TemplateImportService', 'event' => 'defaultTemplates', 'callback' => [Events::class, 'onCustomPagesImportServiceDefaultTemplates']],
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_SOFT_DELETE, 'callback' => [Events::class, 'onContentAfterSoftDelete']],
     ],
     'urlManagerRules' => [
