@@ -102,6 +102,7 @@ class EventSync extends BaseObject
         } else {
             $this->event->rrule = null;
         }
+        $this->event->save();
     }
 
     public function __destruct()

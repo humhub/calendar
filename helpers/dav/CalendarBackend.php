@@ -15,6 +15,7 @@ use humhub\modules\calendar\helpers\dav\enum\EventVirtualProperty;
 use humhub\modules\calendar\helpers\dav\enum\EventVisibilityValue;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\integration\BirthdayCalendarEntry;
+use humhub\modules\calendar\integration\BirthdayCalendarQuery;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -130,7 +131,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
         if (StringHelper::startsWith($eventId, 'birthday')) {
             $userGuid = substr($eventId, 8);
-            $birthdayUser = User::findOne(['guid' => $userGuid]);
+            $birthdayUser = BirthdayCalendarQuery::find()->filterByGuid($userGuid)->one();
 
             if ($birthdayUser) {
                 $event = new BirthdayCalendarEntry(['model' => $birthdayUser]);
