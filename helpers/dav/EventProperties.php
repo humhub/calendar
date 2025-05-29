@@ -27,19 +27,16 @@ class EventProperties extends BaseObject
 
     public function from(string $calendar): self
     {
-        $properties = Reader::read($calendar)->select('VEVENT')[0]->children();
+        $vevent = Reader::read($calendar)->VEVENT;
 
-        $this->properties = ArrayHelper::index(
-            array_filter($properties, fn($property) => $property instanceof Property),
-            function(Property $property) {
-                return $property->name;
-            }
-        );
+        foreach (EventProperty::cases() as $property) {
+            $this->properties[$property->value] = $vevent->{$property->value};
+        }
 
         return $this;
     }
 
-    public function get(EventProperty|EventVirtualProperty $propertyKey, $default = null): mixed
+    public function get(EventProperty|EventVirtualProperty $propertyKey, $default = null, $raw = false): mixed
     {
         if ($propertyKey == EventVirtualProperty::ALL_DAY) {
             $startDateTime = ArrayHelper::getValue($this->properties, EventProperty::START_DATE->value);
@@ -71,8 +68,18 @@ class EventProperties extends BaseObject
                 return EventVisibilityValue::from($property->getValue());
             }
 
+            if ($propertyKey == EventProperty::CATEGORIES) {
+                return ArrayHelper::getColumn(iterator_to_array($property), function(Property $property) {
+                    return $property->getValue();
+                });
+            }
         }
 
-        return $property->getValue();
+
+        if ($property == $default) {
+            return $property;
+        }
+
+        return $raw ? $property : $property->getValue();
     }
 }

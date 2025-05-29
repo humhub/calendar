@@ -17,4 +17,7 @@ enum EventProperty: string
     case LOCATION = 'LOCATION';
     case UID = 'UID';
     case VISIBILITY = 'CLASS';
+    case ATTENDEES = 'ATTENDEE';
+    case RECURRENCE = 'RRULE';
+    case CATEGORIES = 'CATEGORIES';
 }

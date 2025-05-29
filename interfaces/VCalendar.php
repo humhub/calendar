@@ -11,6 +11,7 @@ use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\Module;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
 use humhub\modules\content\models\Content;
 use yii\base\Model;
@@ -236,6 +237,12 @@ class VCalendar extends Model
                 /* @var $user User */
                 $evt->add('ATTENDEE', ['CN' => $this->getCN($user)]);
             }
+        }
+
+        $topics = Topic::findByContent($item->content)->all();
+
+        foreach ($topics as $topic) {
+            $evt->add('CATEGORIES', $topic->name);
         }
 
         return $this;

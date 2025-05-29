@@ -39,7 +39,6 @@ use Sabre\DAV\Exception\NotImplemented;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\PropPatch;
 use Yii;
-use Sabre\VObject\Reader;
 use yii\db\ActiveRecord;
 
 class CalendarBackend extends AbstractBackend implements SchedulingSupport
@@ -185,10 +184,14 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             if ($event->hasErrors()) {
                 throw new \RuntimeException();
             }
-            $this->sync()->from($calendarData)->to($event);
+            $this->sync()->from($this->properties()->from($calendarData))->to($event);
 
             $transaction->commit();
         } catch (\Throwable $e) {
+            if (YII_DEBUG) {
+                throw $e;
+            }
+
             Yii::error($e);
             $transaction->rollBack();
 
@@ -223,10 +226,14 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             if ($event->hasErrors()) {
                 throw new \RuntimeException();
             }
-            $this->sync()->from($calendarData)->to($event);
+            $this->sync()->from($this->properties()->from($calendarData))->to($event);
 
             $transaction->commit();
         } catch (\Throwable $e) {
+            if (YII_DEBUG) {
+                throw $e;
+            }
+
             Yii::error($e);
             $transaction->rollBack();
 
@@ -348,12 +355,10 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
     public function createSchedulingObject($principalUri, $objectUri, $objectData)
     {
-        $vCalendar = Reader::read($objectData);
-
         $responses = [];
-        if (!empty($vCalendar->VEVENT->ATTENDEE)) {
-            foreach ($vCalendar->VEVENT->ATTENDEE as $attendee) {
-                $email = str_replace('mailto:', '', $attendee->getValue());
+        if (!empty($attendees = $this->properties()->from($objectData)->get(EventProperty::ATTENDEES))) {
+            foreach ($attendees as $attendee) {
+                $email = str_replace('mailto:', '', $attendee);
                 $responses[] = [
                     'href' => "mailto:{$email}",
                     'status' => '2.0;Success',

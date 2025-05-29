@@ -8,11 +8,12 @@
 
 namespace humhub\modules\calendar\helpers\dav;
 
+use humhub\modules\calendar\helpers\dav\enum\EventProperty;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use Sabre\VObject\Reader;
-use Sabre\VObject\Component\VEvent;
+use humhub\modules\topic\models\Topic;
 use yii\base\BaseObject;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use humhub\modules\user\models\User;
 
@@ -32,29 +33,30 @@ class EventSync extends BaseObject
         self::PARTICIPATION_STATE_INVITED => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED,
     ];
 
-    private ?VEvent $vEvent;
-    private ?CalendarEntry $event;
+    private null|EventProperties $eventProperties;
+    private null|CalendarEntry|ActiveRecord $event;
 
-    public function from(string $calendar): self
+    public function from(EventProperties $eventProperties): self
     {
-        $this->vEvent = Reader::read($calendar)->select('VEVENT')[0];
+        $this->eventProperties = $eventProperties;
 
         return $this;
     }
 
-    public function to(CalendarEntry $event): self
+    public function to(CalendarEntry $event)
     {
         $this->event = $event;
-
-        return $this;
+        $this->sync();
     }
 
     private function participants(): void
     {
-        if (!empty($this->vEvent->ATTENDEE) && is_iterable($this->vEvent->ATTENDEE)) {
+        $attendeesRaw = $this->eventProperties->get(EventProperty::ATTENDEES, null, true);
+
+        if (!empty($attendeesRaw) && is_iterable($attendeesRaw)) {
             $attendees = [];
 
-            foreach ($this->vEvent->ATTENDEE as $attendee) {
+            foreach ($attendeesRaw as $attendee) {
                 $partStat = ArrayHelper::getValue($attendee, 'PARTSTAT')?->getValue() ?: null;
                 $email = $attendee->getValue();
 
@@ -96,18 +98,34 @@ class EventSync extends BaseObject
 
     private function recurrence(): void
     {
-        if (!empty($this->vEvent->RRULE)) {
-            $this->event->rrule = $this->vEvent->RRULE->getValue();
-            $this->event->recurrence_id = null; // Assuming root event has null recurrence_id
-        } else {
-            $this->event->rrule = null;
-        }
+        $this->event->rrule = $this->eventProperties->get(EventProperty::RECURRENCE);
         $this->event->save();
     }
 
-    public function __destruct()
+    private function categories()
+    {
+        $categories = $this->eventProperties->get(EventProperty::CATEGORIES, null, 0);
+
+        $existingTopics = Topic::findByContainer($this->event->content->container, true)
+            ->andWhere(['content_tag.name' => $categories])
+            ->indexBy('content_tag.name')
+            ->column();
+
+        $categories = ArrayHelper::getColumn($categories, function($category) use ($existingTopics) {
+            if ($existingTopic = ArrayHelper::getValue($existingTopics, $category)) {
+                return $existingTopic;
+            }
+
+            return "_add:$category";
+        });
+
+        Topic::attach($this->event->content, $categories);
+    }
+
+    public function sync()
     {
         $this->participants();
         $this->recurrence();
+        $this->categories();
     }
 }
