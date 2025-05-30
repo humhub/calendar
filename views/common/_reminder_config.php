@@ -5,12 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\calendar\assets\ReminderFormAssets;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use yii\web\View;
 
 /* @var $this View */
 /* @var $settings ReminderSettings */
@@ -25,8 +25,8 @@ $options = [
     'data' => [
         'ui-widget' => 'calendar.reminder.Form',
         'ui-init' => 1,
-        'max-reminder' => Yii::$app->getModule('calendar')->maxReminder
-    ]
+        'max-reminder' => Yii::$app->getModule('calendar')->maxReminder,
+    ],
 ];
 
 ReminderFormAssets::register($this);
@@ -44,19 +44,19 @@ ReminderFormAssets::register($this);
             <?php endif; ?>
 
             <div class="row" data-reminder-index="<?= $index ?>">
-                <div class="col-md-3">
+                <div class="col-lg-3">
                     <?= $form->field($reminder, "[$index]unit")->dropDownList(ReminderSettings::getUnitSelection())->label(false) ?>
                 </div>
-                <div class="col-md-2">
+                <div class="col-lg-2">
                     <?= $form->field($reminder, "[$index]value")->textInput(['type' => 'number', 'min' => 1, 'max' => 100])->label(false) ?>
                 </div>
-                <div class="col-md-7">
+                <div class="col-lg-7">
                     <?= Button::danger()->action('delete')
-                        ->icon('fa-times')->xs()->visible(!$reminder->isNewRecord)
+                        ->icon('fa-times')->sm()->visible(!$reminder->isNewRecord)
                         ->style('margin: 7px 0')->loader(false) ?>
 
                     <?= Button::primary()->action('add')
-                        ->icon('fa-plus')->xs()->visible($reminder->isNewRecord)
+                        ->icon('fa-plus')->sm()->visible($reminder->isNewRecord)
                         ->style('margin: 7px 0')->loader(false) ?>
                 </div>
             </div>
@@ -72,10 +72,10 @@ ReminderFormAssets::register($this);
                      <?php continue; ?>
                 <?php endif; ?>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-lg-3">
                         <?= $form->field($reminder, "[$index]unit")->dropDownList(ReminderSettings::getUnitSelection(), ['disabled' => true])->label(false) ?>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-lg-2">
                         <?= $form->field($reminder, "[$index]value")->textInput(['type' => 'number', 'min' => 1, 'max' => 100, 'disabled' => true])->label(false) ?>
                     </div>
                 </div>

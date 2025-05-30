@@ -5,15 +5,15 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\ui\mail\DefaultMailStyle;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
+use yii\web\View;
 
 /* @var $this View */
 /* @var $event CalendarEventIF */

@@ -16,8 +16,8 @@ use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\modal\ModalButton;
 use Yii;
 
 class ConfigureButton extends Widget
@@ -68,10 +68,10 @@ class ConfigureButton extends Widget
     public function run()
     {
         if ($this->container instanceof User && !Yii::$app->user->getIdentity()->moduleManager->isEnabled('calendar')) {
-            return ModalButton::defaultType()->load(Url::toEnableModuleOnProfileConfig())->icon('fa-cog')->visible($this->canConfigure());
+            return ModalButton::light()->load(Url::toEnableModuleOnProfileConfig())->icon('fa-cog')->visible($this->canConfigure());
         }
 
-        return Button::defaultType()->link($this->getConfigUrl())->icon('fa-cog')->visible($this->canConfigure());
+        return Button::light()->link($this->getConfigUrl())->icon('fa-cog')->visible($this->canConfigure());
     }
 
     private function getConfigUrl()

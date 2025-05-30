@@ -4,8 +4,8 @@ namespace humhub\modules\calendar\interfaces\recurrence\widgets;
 
 use humhub\modules\calendar\assets\RecurrenceFormAssets;
 use humhub\modules\calendar\helpers\Url;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\JsWidget;
-use yii\widgets\ActiveForm;
 
 class RecurrenceFormWidget extends JsWidget
 {

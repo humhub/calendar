@@ -652,11 +652,15 @@ tbody,
 }
 
 /* OPTIONS */
-.calendar-options .calendar-selectors,
-.calendar-options .calendar-filters,
-.calendar-options .calendar-types {
-    float: left;
-    margin-right: 10px;
+.calendar-options > div {
+    padding: 0 10px;
+    border-right: 2px solid var(--default);
+}
+.calendar-options > div:first-child {
+    padding-left: 0;
+}
+.calendar-options > div:last-child {
+    border: none;
 }
 
 .timeField .form-group {
@@ -695,44 +699,23 @@ tbody,
 .calendar-entry-participants .pagination {
     margin: 10px 0 0;
 }
-.calendar-entry-participants .media-list {
-    margin: 0 11px;
-}
-.calendar-entry-participants .media-body {
-    width: 1%;
-    word-break: initial;
-}
-.calendar-entry-participants .media-body:first-child {
-    width: auto;
-}
-.calendar-entry-participants .media-body:first-child .media-object {
-    float: left;
-    margin-right: 5px;
-}
-.calendar-entry-participants .media-body:not(:first-child) {
-    padding-left: 5px;
-}
 .calendar-entry-participants select.form-control {
     width: auto;
     height: 40px;
     padding-right: 24px;
 }
-.calendar-entry-new-participants-form button.btn, .calendar-entry-participants .media-list button.btn {
-    height: 32px;
-    margin-top: 3px;
+.calendar-entry-new-participants-form .form-check [type=checkbox] {
+    margin-top: 7px;
 }
-.calendar-entry-participants-count {
-    padding: 18px 18px 36px;
-    margin: 0;
+.calendar-entry-new-participants-form .form-check .field-calendarentryparticipationform-newforcestatus {
+    vertical-align: middle;
+    margin: 0 !important;
+}
+.calendar-entry-new-participants-form button.btn, .calendar-entry-participants .hh-list button.btn {
+    height: 34px;
 }
 #calendar-entry-participants-list {
     position: relative;
-}
-.calendar-entry-participants-export-button {
-    margin: 18px 18px 0;
-}
-.calendar-entry-new-participants-form {
-    padding: 18px 18px 4px;
 }
 .calendar-entry-new-participants-form .form-group.field-calendarentryparticipationform-newparticipantstatus {
     padding: 0;
@@ -741,11 +724,8 @@ tbody,
 .calendar-entry-new-participants-form .form-group .checkbox label {
     padding-left: 0;
 }
-.calendar-entry-new-participants-form .form-group.field-calendarentryparticipationform-newforcestatus {
+.calendar-entry-new-participants-form .field-calendarentryparticipationform-newforcestatus {
     display: inline-block;
-}
-.calendar-entry-participants-filters {
-    padding: 10px 18px 0;
 }
 .calendar-entry-participants-filter-title {
     font-size: 80%;
@@ -776,10 +756,6 @@ tbody,
 }
 .calendar-entry-participants .pagination > .active > a {
     color: #fff;
-}
-
-.calendar-option-buttons {
-    float: right;
 }
 
 #calendar-overview-loader {
@@ -824,11 +800,10 @@ tbody,
 }
 
 @media (max-width: 767px) {
-    .calendar-option-buttons {
-        float: none;
-        text-align: right;
+    .calendar-options > div {
+        border: none;
+        padding: 0;
     }
-
     #calendar-overview-loader {
         position: inherit;
         float: left;
