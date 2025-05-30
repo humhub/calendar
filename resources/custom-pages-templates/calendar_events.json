@@ -1,4 +1,5 @@
 {
+  "version": "1.0",
   "name": "calendar_events",
   "engine": "twig",
   "description": "Default template for calendar events.",
