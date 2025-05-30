@@ -37,10 +37,10 @@ class ExportController extends Controller
         ];
     }
 
-    public function actionModal($guid)
+    public function actionModal($guid, $global)
     {
         return $this->renderAjax('modal', [
-            'token' => IcalTokenService::instance()->encrypt(Yii::$app->user->id, $guid)
+            'token' => IcalTokenService::instance()->encrypt(Yii::$app->user->id, $guid, $global)
         ]);
     }
 

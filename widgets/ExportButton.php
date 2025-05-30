@@ -23,6 +23,8 @@ class ExportButton extends Widget
      */
     public $container;
 
+    public $global = false;
+
     public function init()
     {
         $this->container = ContentContainerHelper::getCurrent();
@@ -42,7 +44,11 @@ class ExportButton extends Widget
 
         return ModalButton::defaultType()
             ->icon('download')
-            ->load(Url::to(['/calendar/export/modal', 'guid' => $this->container->contentContainerRecord->guid]))
+            ->load(Url::to([
+                '/calendar/export/modal',
+                'guid' => $this->container->contentContainerRecord->guid,
+                'global' => $this->global
+            ]))
             ->tooltip(Yii::t('CalendarModule.views', 'Export'));
     }
 }

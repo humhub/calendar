@@ -22,7 +22,7 @@ class IcalTokenService extends BaseObject implements StaticInstanceInterface
 {
     use StaticInstanceTrait;
 
-    public function encrypt(int $uid, string $guid): string
+    public function encrypt(int $uid, string $guid, bool $global): string
     {
         $issuedAt = time();
         $data = [
@@ -31,6 +31,7 @@ class IcalTokenService extends BaseObject implements StaticInstanceInterface
             'nbf' => $issuedAt,
             'uid' => $uid,
             'guid' => $guid,
+            'global' => $global,
         ];
 
         $config = ExportSettings::instance();
@@ -46,11 +47,11 @@ class IcalTokenService extends BaseObject implements StaticInstanceInterface
         try {
             $config = ExportSettings::instance();
             $validData = JWT::decode($token, new Key($config->jwtKey, 'HS256'));
-            if (empty($validData->uid) || empty($validData->guid)) {
+            if (empty($validData->uid) || empty($validData->guid) || !isset($validData->global)) {
                 throw new \RuntimeException();
             }
 
-            return [$validData->uid, $validData->guid];
+            return [$validData->uid, $validData->guid, $validData->global];
         } catch (Exception $e) {
             return null;
         }
