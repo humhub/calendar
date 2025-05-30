@@ -10,6 +10,7 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\Module;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
@@ -239,10 +240,10 @@ class VCalendar extends Model
             }
         }
 
-        $topics = Topic::findByContent($item->content)->all();
+        $eventType = $item->getEventType();
 
-        foreach ($topics as $topic) {
-            $evt->add('CATEGORIES', $topic->name);
+        if ($eventType instanceof CalendarEntryType && !empty($category = $eventType->name)) {
+            $evt->add('CATEGORIES', $category);
         }
 
         return $this;

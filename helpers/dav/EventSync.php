@@ -102,30 +102,9 @@ class EventSync extends BaseObject
         $this->event->save();
     }
 
-    private function categories()
-    {
-        $categories = $this->eventProperties->get(EventProperty::CATEGORIES, null, 0);
-
-        $existingTopics = Topic::findByContainer($this->event->content->container, true)
-            ->andWhere(['content_tag.name' => $categories])
-            ->indexBy('content_tag.name')
-            ->column();
-
-        $categories = ArrayHelper::getColumn($categories, function($category) use ($existingTopics) {
-            if ($existingTopic = ArrayHelper::getValue($existingTopics, $category)) {
-                return $existingTopic;
-            }
-
-            return "_add:$category";
-        });
-
-        Topic::attach($this->event->content, $categories);
-    }
-
     public function sync()
     {
         $this->participants();
         $this->recurrence();
-        $this->categories();
     }
 }
