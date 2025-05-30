@@ -10,10 +10,16 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\Module;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
+use humhub\modules\content\models\Content;
 use yii\base\Model;
 use Sabre\VObject;
+use yii\helpers\ArrayHelper;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+
 
 /**
  * Class VCalendar serves as wrapper around sabledavs vobject api.
@@ -154,7 +160,15 @@ class VCalendar extends Model
         }
 
         if (!empty($item->getDescription())) {
-            $result['DESCRIPTION'] = $item->getDescription();
+            $result['DESCRIPTION'] = RichTextToPlainTextConverter::process($item->getDescription());
+        }
+
+        if (isset($item->content->visibility)) {
+            $result['CLASS'] = ArrayHelper::getValue([
+                Content::VISIBILITY_PRIVATE => 'PRIVATE',
+                Content::VISIBILITY_PUBLIC => 'PUBLIC',
+                Content::VISIBILITY_OWNER => 'CONFIDENTIAL',
+            ], $item->content->visibility);
         }
 
         if ($item instanceof RecurrentEventIF && RecurrenceHelper::isRecurrent($item)) {
@@ -214,29 +228,22 @@ class VCalendar extends Model
             }
         }
 
-        $module = Module::instance();
-
-        if ($item instanceof CalendarEventParticipationIF) {
-            if ($module->icsOrganizer) {
-                $organizer = $item->getOrganizer();
-                if ($organizer instanceof User) {
-                    $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
-                }
+        if ($item instanceof CalendarEventParticipationIF && Module::instance()->settings->get('includeUserInfo', false)) {
+            $organizer = $item->getOrganizer();
+            if ($organizer instanceof User) {
+                $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
             }
 
-
-            /** This should be configurable because its may not be desired.
-            foreach ($item->findParticipants([CalendarEventParticipationIF::PARTICIPATION_STATUS_ACCEPTED])->limit(20)->all() as $user) {
-                /* @var $user User
-                $evt->add('ATTENDEE', $this->getCN($user));
+            foreach ($item->findParticipants()->limit(20)->all() as $user) {
+                /* @var $user User */
+                $evt->add('ATTENDEE', ['CN' => $this->getCN($user)]);
             }
+        }
 
-            if(!empty($item->getExternalParticipants())) {
-                foreach ($item->getExternalParticipants() as $email) {
-                    $evt->add('ATTENDEE', 'MAILTO:'.$email);
-                }
-            }
-            **/
+        $eventType = $item->getEventType();
+
+        if ($eventType instanceof CalendarEntryType && !empty($category = $eventType->name)) {
+            $evt->add('CATEGORIES', $category);
         }
 
         return $this;

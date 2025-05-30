@@ -5,6 +5,7 @@ use humhub\modules\calendar\widgets\CalendarControls;
 use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\CalendarTypeLegend;
 use humhub\modules\calendar\widgets\ConfigureButton;
+use humhub\modules\calendar\widgets\ExportButton;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\widgets\FooterMenu;
@@ -27,6 +28,7 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
             <div class="calendar-option-buttons pull-right">
                 <?= CalendarControls::widget([
                     'widgets' => [
+                        [ExportButton::class, ['global' => true], ['sortOrder' => 10]],
                         [ConfigureButton::class, [], ['sortOrder' => 100]],
                     ],
                 ]) ?>
