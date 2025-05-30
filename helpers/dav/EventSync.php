@@ -52,10 +52,9 @@ class EventSync extends BaseObject
     private function participants(): void
     {
         $attendeesRaw = $this->eventProperties->get(EventProperty::ATTENDEES, null, true);
+        $attendees = [];
 
         if (!empty($attendeesRaw) && is_iterable($attendeesRaw)) {
-            $attendees = [];
-
             foreach ($attendeesRaw as $attendee) {
                 $partStat = ArrayHelper::getValue($attendee, 'PARTSTAT')?->getValue() ?: null;
                 $email = $attendee->getValue();
@@ -83,17 +82,17 @@ class EventSync extends BaseObject
                     $participant->save();
                 }
                 $attendees[] = $participant->id;
-
-                $cleanUpCondition = [
-                    'AND',
-                    ['=', 'calendar_entry_id', $this->event->id],
-                ];
-                if (!empty($attendees)) {
-                    $cleanUpCondition[] = ['NOT IN', 'id', $attendees];
-                }
-                CalendarEntryParticipant::deleteAll($cleanUpCondition);
             }
         }
+
+        $cleanUpCondition = [
+            'AND',
+            ['=', 'calendar_entry_id', $this->event->id],
+        ];
+        if (!empty($attendees)) {
+            $cleanUpCondition[] = ['NOT IN', 'id', $attendees];
+        }
+        CalendarEntryParticipant::deleteAll($cleanUpCondition);
     }
 
     private function recurrence(): void
