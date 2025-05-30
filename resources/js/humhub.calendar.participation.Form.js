@@ -28,8 +28,8 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
             $('#calendar-entry-participation-tabs li a').click(function () {
                 if ($('#calendar-entry-participation-tabs li:visible').length > 1) {
                     var isTabSettingsActive = $(this).closest('li').index() === 0;
-                    that.saveButton.toggleClass('d-none', isTabSettingsActive);
-                    that.nextButton.toggleClass('d-none', !isTabSettingsActive);
+                    that.saveButton.toggle(!isTabSettingsActive);
+                    that.nextButton.toggle(isTabSettingsActive);
                 }
             });
         }
@@ -163,10 +163,10 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
         } else {
             this.$.find('.participationOnly').fadeIn('fast');
         }
-        this.tabParticipants.toggleClass('d-none', noParticipants);
+        this.tabParticipants.toggle(!noParticipants);
         if (this.isNewRecord) {
-            this.saveButton.toggleClass('d-none', !noParticipants);
-            this.nextButton.toggleClass('d-none', noParticipants);
+            this.saveButton.toggle(noParticipants);
+            this.nextButton.toggle(!noParticipants);
         }
     };
 
@@ -177,16 +177,16 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
 
     Form.prototype.next = function (evt) {
         this.tabParticipants.find('a').tab('show');
-        this.nextButton.addClass('d-none');
-        this.saveButton.removeClass('d-none');
+        this.nextButton.hide();
+        this.saveButton.show();
         evt.finish();
     }
 
     Form.prototype.back = function (evt) {
         if (this.tabParticipants.find('a').hasClass('active')) {
             this.tabSettings.find('a').tab('show');
-            this.saveButton.addClass('d-none');
-            this.nextButton.removeClass('d-none');
+            this.saveButton.hide();
+            this.nextButton.show();
         } else {
             loader.set(evt.$trigger, {size: '10px', css: {padding: '0px'}});
             calendar.editModal(evt);

@@ -74,11 +74,11 @@ humhub.module('calendar.recurrence.Form', function (module, require, $) {
         var value = parseInt(this.$.find(INTERVAL_TYPE_SELECT).val(), 10);
 
         if(value === -1) {
-            this.$.find('.hideIfNoRecurrence').addClass('d-none');
+            this.$.find('.hideIfNoRecurrence').hide();
         } else {
-            this.$.find('.hideIfNoRecurrence').removeClass('d-none');
-            this.$.find('[data-recurrence-type]').addClass('d-none');
-            this.$.find('[data-recurrence-type="'+value+'"]').removeClass('d-none');
+            this.$.find('.hideIfNoRecurrence').show();
+            this.$.find('[data-recurrence-type]').hide();
+            this.$.find('[data-recurrence-type="'+value+'"]').show();
         }
     };
 
@@ -90,12 +90,12 @@ humhub.module('calendar.recurrence.Form', function (module, require, $) {
                 $('.recurrence-end-date, .recurrence-end-occurrences').hide();
                 return;
             case 1:
-                $('.recurrence-end-date').removeClass('d-none');
-                $('.recurrence-end-occurrences').addClass('d-none');
+                $('.recurrence-end-date').show();
+                $('.recurrence-end-occurrences').hide();
                 return;
             case 2:
-                $('.recurrence-end-date').addClass('d-none');
-                $('.recurrence-end-occurrences').removeClass('d-none');
+                $('.recurrence-end-date').hide();
+                $('.recurrence-end-occurrences').show();
                 return;
         }
     };
