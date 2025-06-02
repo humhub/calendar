@@ -78,9 +78,9 @@ class ExportController extends Controller
             throw new NotFoundHttpException();
         }
 
-        [$userId, $guid] = $data;
+        [$userId, $guid, $global] = $data;
 
-        $user = User::find()->active()->andWhere(['guid' => $guid])->one();
+        $user = User::find()->active()->andWhere(['id' => $userId])->one();
 
         if (!$user) {
             throw new NotFoundHttpException();
@@ -92,7 +92,13 @@ class ExportController extends Controller
         Yii::$app->user->enableSession = false;
         Yii::$app->user->login($user);
 
-        $events = $this->calendarService->getCalendarItems(null, null, [], $contentContainer->polymorphicRelation);
+        $events = $this->calendarService->getCalendarItems(
+            null,
+            null,
+            [],
+            $global ? null : $contentContainer->polymorphicRelation
+        );
+
         $ics = CalendarUtils::generateIcal($events);
 
         return Yii::$app->response->sendContentAsFile(
