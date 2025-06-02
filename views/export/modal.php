@@ -11,6 +11,15 @@ use humhub\widgets\Tabs;
  * @var $token string
  */
 
+
+
+$items = [
+    ['label' => Yii::t('CalendarModule.base', 'iCal'), 'view' => 'ical'],
+];
+if (Yii::$app->urlManager->enablePrettyUrl) {
+    $items[] = ['label' => Yii::t('CalendarModule.base', 'CalDAV'), 'view' => 'caldav'];
+}
+
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('CalendarModule.export', '<strong>Calendar</strong> export')]) ?>
@@ -18,10 +27,7 @@ use humhub\widgets\Tabs;
 <?= Tabs::widget([
     'viewPath' => '@calendar/views/export/modal',
     'params' => ['token' => $token],
-    'items' => [
-        ['label' => Yii::t('CalendarModule.base', 'iCal'), 'view' => 'ical'],
-        ['label' => Yii::t('CalendarModule.base', 'CalDAV'), 'view' => 'caldav']
-    ],
+    'items' => $items,
 ]); ?>
 
 <div class="modal-footer">
