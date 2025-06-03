@@ -32,6 +32,8 @@ class VCalendar extends Model
     public const PARTICIPATION_STATUS_DECLINED = 'DECLINED';
     public const PARTICIPATION_STATUS_TENTATIVE = 'TENTATIVE';
 
+    public const MAX_PARTICIPANTS_COUNT = 200;
+
     /**
      * @var
      */
@@ -234,7 +236,7 @@ class VCalendar extends Model
                 $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
             }
 
-            foreach ($item->findParticipants()->limit(20)->all() as $user) {
+            foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $user) {
                 /* @var $user User */
                 $evt->add('ATTENDEE', ['CN' => $this->getCN($user)]);
             }
