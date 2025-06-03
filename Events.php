@@ -447,11 +447,4 @@ class Events
             }
         }
     }
-
-    public static function onModuleEnabled(ModuleEvent $event)
-    {
-        if ($event->moduleId === 'calendar') {
-            ExportSettings::instance()->save();
-        }
-    }
 }
