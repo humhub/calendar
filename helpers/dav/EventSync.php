@@ -11,6 +11,7 @@ namespace humhub\modules\calendar\helpers\dav;
 use humhub\modules\calendar\helpers\dav\enum\EventProperty;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\modules\calendar\Module;
 use humhub\modules\topic\models\Topic;
 use yii\base\BaseObject;
 use yii\db\ActiveRecord;
@@ -66,7 +67,7 @@ class EventSync extends BaseObject
                     continue;
                 }
 
-                $user = User::findOne(['email' => $email]);
+                $user = User::find()->active()->andWhere(['email' => $email])->one();
                 if (!$user) {
                     continue;
                 }
@@ -103,7 +104,10 @@ class EventSync extends BaseObject
 
     public function sync()
     {
-        $this->participants();
+        if (Module::instance()->settings->get('includeUserInfo', false)) {
+            $this->participants();
+        }
+
         $this->recurrence();
     }
 }

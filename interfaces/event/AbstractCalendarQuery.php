@@ -747,20 +747,6 @@ abstract class AbstractCalendarQuery extends Component
         }
     }
 
-    public function one()
-    {
-        try {
-            if (!$this->_built) {
-                $this->setupQuery();
-            }
-
-            return $this->preFilter($this->_query->one());
-        } catch (FilterNotSupportedException $e) {
-            throw $e;
-            return [];
-        }
-    }
-
     /**
      * Sets up the actual filter query.
      */

@@ -473,7 +473,7 @@ class CalendarUtils
         return VCalendar::withEvents($events, CalendarUtils::getSystemTimeZone(true))->serialize();
     }
 
-    public static function geterateIcs($event)
+    public static function generateIcs($event)
     {
         if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
             /* @var $event RecurrentEventIF */

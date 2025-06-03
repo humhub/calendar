@@ -57,7 +57,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
     {
         $userId = basename($principalUri);
 
-        $user = User::findOne(['username' => $userId]);
+        $user = User::find()->active()->andWhere(['username' => $userId])->one();
 
         $contentContainers = [];
         if ($user->moduleManager->isEnabled('calendar') || $user->moduleManager->canEnable('calendar')) {
@@ -328,7 +328,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
     protected function getContentContainerForCalendar(string $calendarId) : ?ContentContainerActiveRecord
     {
         if (StringHelper::startsWith($calendarId, 'profile')) {
-            $contentContainer = User::findOne(['guid' => substr($calendarId, 8)]);
+            $contentContainer = User::find()->active()->andWhere(['guid' => substr($calendarId, 8)])->one();
         } elseif (StringHelper::startsWith($calendarId, 'space')) {
             $contentContainer = Space::findOne(['guid' => substr($calendarId, 6)]);
         } else {

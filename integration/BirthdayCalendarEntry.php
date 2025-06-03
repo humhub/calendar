@@ -329,6 +329,6 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF, Calend
             return null;
         }
 
-        return CalendarUtils::geterateIcs($event);
+        return CalendarUtils::generateIcs($event);
     }
 }

@@ -19,7 +19,7 @@ class PrincipalBackend extends AbstractBackend
 {
     public function getPrincipalsByPrefix($prefix)
     {
-        return ArrayHelper::getColumn(User::find()->all(), function(User $user) {
+        return ArrayHelper::getColumn(User::find()->active()->all(), function(User $user) {
             return $this->userToPrincipal($user);
         });
     }
@@ -27,7 +27,7 @@ class PrincipalBackend extends AbstractBackend
     public function getPrincipalByPath($path)
     {
         $username = basename($path);
-        $user = User::findOne(['username' => $username]);
+        $user = User::find()->active()->andWhere(['username' => $username])->one();
 
         if (!$user) {
             return null;
@@ -60,7 +60,7 @@ class PrincipalBackend extends AbstractBackend
     {
         $principals = [];
 
-        $query = User::find();
+        $query = User::find()->active();
         if (isset($searchProperties['{DAV:}displayname'])) {
             $query->andWhere(['like', 'username', $searchProperties['{DAV:}displayname']]);
         }

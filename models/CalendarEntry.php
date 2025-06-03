@@ -635,7 +635,7 @@ class CalendarEntry extends ContentActiveRecord implements
             return null;
         }
 
-        return CalendarUtils::geterateIcs($event);
+        return CalendarUtils::generateIcs($event);
     }
 
     public function afterMove(ContentContainerActiveRecord $container = null)
