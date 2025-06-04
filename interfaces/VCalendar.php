@@ -46,6 +46,8 @@ class VCalendar extends Model
      */
     private $vcalendar;
 
+    private bool $includeUserInfo;
+
 
     /**
      * @param CalendarEventIF|CalendarEventIF[] $items
@@ -83,6 +85,7 @@ class VCalendar extends Model
     {
         parent::init();
         $this->initVObject();
+        $this->includeUserInfo = Module::instance()->settings->get('includeUserInfo', false);
     }
 
 
@@ -230,7 +233,7 @@ class VCalendar extends Model
             }
         }
 
-        if ($item instanceof CalendarEventParticipationIF && Module::instance()->settings->get('includeUserInfo', false)) {
+        if ($item instanceof CalendarEventParticipationIF) {
             $organizer = $item->getOrganizer();
             if ($organizer instanceof User) {
                 $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
@@ -274,7 +277,7 @@ class VCalendar extends Model
     {
         $result = $user->getDisplayName();
 
-        if ($user->email) {
+        if (!$this->includeUserInfo && $user->email) {
             $result .= ':MAILTO:' . $user->email;
         }
 

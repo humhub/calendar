@@ -41,6 +41,7 @@ class CalDavController extends Controller
 {
     /**
      * @todo Temporary workaround – should be removed after the core release.
+     * @site https://github.com/humhub/humhub-internal/issues/670
      *
      * The issue is that the current ErrorController redirects to the login page
      * instead of returning a proper 401 error when the request is sent as an API call

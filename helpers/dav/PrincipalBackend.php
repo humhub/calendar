@@ -19,6 +19,10 @@ class PrincipalBackend extends AbstractBackend
 {
     public function getPrincipalsByPrefix($prefix)
     {
+        if (!YII_DEBUG) {
+            return [];
+        }
+
         return ArrayHelper::getColumn(User::find()->active()->all(), function(User $user) {
             return $this->userToPrincipal($user);
         });

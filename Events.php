@@ -50,7 +50,7 @@ class Events
     public static function onBeforeRequest()
     {
         /**
-         * @todo Temporary workaround – should be removed after the core release.x
+         * @todo Temporary workaround – should be removed after the core release 1.18
          * @see \humhub\modules\calendar\controllers\CalDavController::actionError
          */
         if (Yii::$app instanceof Application) {
