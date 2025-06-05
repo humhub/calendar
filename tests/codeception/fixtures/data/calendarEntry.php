@@ -45,7 +45,7 @@ return [
     // Recurring event (weekly)
     [
         'id' => 2,
-        'title' => 'Team Meeting',
+        'title' => 'Recurring Team Meeting',
         'description' => 'Weekly team sync-up',
         'start_datetime' => '2025-06-08 10:00:00',
         'end_datetime' => '2025-06-08 11:00:00',
@@ -60,7 +60,7 @@ return [
         'max_participants' => null,
         'uid' => 'event-001-20250601',
         'rrule' => 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SU',
-        'parent_event_id' => 1,
+        'parent_event_id' => null,
         'recurrence_id' => '20250608T100000',
         'exdate' => null,
         'sequence' => 0,

@@ -11,6 +11,8 @@ modules:
       - Filesystem
       - Yii2
       - Asserts
+      - REST:
+          depends: Yii2
       - tests\codeception\_support\TestHelper
       - tests\codeception\_support\DynamicFixtureHelper
       - tests\codeception\_support\HumHubHelper
