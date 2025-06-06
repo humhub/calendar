@@ -87,7 +87,7 @@ class CreateSpaceEntryCest
         $I->waitForElementVisible('[for="calendarentryparticipationform-forcejoin"]', null, '#globalModal');
         $I->click('[for="calendarentryparticipationform-forcejoin"]');
         $I->click('Save', '#globalModal');
-        //$I->seeSuccess();
+        $I->seeSuccess();
 
         $I->expect('All space members to be attending');
         $I->click('New Test Event');
