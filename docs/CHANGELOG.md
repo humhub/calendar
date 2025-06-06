@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.0 (unreleased)
+-------------------------
+- Enh #549: Migration to Bootstrap 5 for HumHub 1.18
+
 1.7.4 (May 12, 2025)
 --------------------
 - Enh #542: Add filters for template element of the custom pages module

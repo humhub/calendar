@@ -7,7 +7,7 @@ use humhub\modules\calendar\widgets\EntryParticipants;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
 use yii\web\View;
 
 /* @var $calendarEntry CalendarEntry */
@@ -18,9 +18,9 @@ use yii\web\View;
 $color = 'var(--text-color-secondary)';
 ?>
 
-<div class="media event calendar-wall-entry" style="margin-top:20px;" data-action-component="calendar.CalendarEntry"
+<div class="event calendar-wall-entry mt-3" data-action-component="calendar.CalendarEntry"
      data-calendar-entry="<?= $calendarEntry->id ?>">
-    <div class="event-info-section clearfix" style="margin-bottom:10px">
+    <div class="event-info-section clearfix mb-2">
         <?= Icon::get('file-text')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
 
         <div class="event-info-section-content">
@@ -35,7 +35,7 @@ $color = 'var(--text-color-secondary)';
                     <small>(<?= Yii::t('CalendarModule.base', 'Recurring') ?>)</small>
                 <?php endif; ?>
                 <?php if ($calendarEntry->closed) : ?>
-                    &nbsp;<?= Label::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
+                    &nbsp;<?= Badge::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
                 <?php endif; ?>
             </h1>
         </div>

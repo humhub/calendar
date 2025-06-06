@@ -5,16 +5,16 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\widgets\ParticipantList;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $form ActiveForm */
 /* @var $calendarEntryParticipationForm CalendarEntryParticipationForm */
 /* @var $renderWrapper bool */
 ?>
-<?= $renderWrapper ? Html::beginTag('div', ['class' => 'modal-body calendar-entry-participants']) : '' ?>
+<?= $renderWrapper ? Html::beginTag('div', ['class' => 'calendar-entry-participants']) : '' ?>
     <?= ParticipantList::widget([
         'form' => $form,
         'model' => $calendarEntryParticipationForm,

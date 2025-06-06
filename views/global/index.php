@@ -1,15 +1,14 @@
 <?php
 
+use humhub\helpers\ThemeHelper;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\widgets\CalendarControls;
 use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\CalendarTypeLegend;
 use humhub\modules\calendar\widgets\ConfigureButton;
 use humhub\modules\calendar\widgets\FullCalendar;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\widgets\FooterMenu;
 
-/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $selectors array */
 /* @var $filters array */
 /* @var $editUrl string */
@@ -24,7 +23,7 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
         <div class="panel-heading">
             <strong><?= Yii::t('CalendarModule.base', 'Calendar') ?></strong>
 
-            <div class="calendar-option-buttons pull-right">
+            <div class="float-end">
                 <?= CalendarControls::widget([
                     'widgets' => [
                         [ConfigureButton::class, [], ['sortOrder' => 100]],

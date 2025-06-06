@@ -1,0 +1,29 @@
+@use 'fc';
+@use 'options';
+@use 'form';
+@use 'participants';
+@use 'wall_entry';
+@use 'legend';
+
+.timeField {
+  .form-group {
+    margin-bottom: 0;
+  }
+
+  .help-block {
+    margin: 0;
+  }
+}
+
+#calendar-overview-loader {
+  position: absolute;
+  right: 10px;
+  top: 60px;
+}
+
+@media (max-width: 767px) {
+  #calendar-overview-loader {
+    position: inherit;
+    float: left;
+  }
+}
