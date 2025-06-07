@@ -20,7 +20,7 @@
 return [
     // Regular event with participants
     [
-        'id' => 1,
+        'id' => 100,
         'title' => 'Team Meeting',
         'description' => 'Weekly team sync-up',
         'start_datetime' => '2025-06-01 10:00:00',
@@ -44,7 +44,7 @@ return [
     ],
     // Recurring event (weekly)
     [
-        'id' => 2,
+        'id' => 101,
         'title' => 'Recurring Team Meeting',
         'description' => 'Weekly team sync-up',
         'start_datetime' => '2025-06-08 10:00:00',
@@ -68,7 +68,7 @@ return [
     ],
     // Event with special characters
     [
-        'id' => 3,
+        'id' => 102,
         'title' => 'Event with Comma, & Semicolon;',
         'description' => 'Test special chars: \n new line',
         'start_datetime' => '2025-06-02 14:00:00',
@@ -92,7 +92,7 @@ return [
     ],
     // All-day event
     [
-        'id' => 4,
+        'id' => 103,
         'title' => 'Company Holiday',
         'description' => 'Annual company-wide holiday',
         'start_datetime' => '2025-06-03 00:00:00',
