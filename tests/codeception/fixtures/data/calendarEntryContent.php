@@ -20,7 +20,7 @@ return [
     [
         'guid' => '00abe243-9b50-4a31-81f3-2798cfc0dc38',
         'object_model' => 'humhub\modules\calendar\models\CalendarEntry',
-        'object_id' => 100,
+        'object_id' => 1,
         'contentcontainer_id' => 1,
         'stream_channel' => 'default',
         'stream_sort_date' => '2025-06-01 10:00:00.000',
@@ -40,7 +40,7 @@ return [
     [
         'guid' => '1b2c34d5-6e78-4a92-9c1a-3d4e5f6a7b89',
         'object_model' => 'humhub\modules\calendar\models\CalendarEntry',
-        'object_id' => 101,
+        'object_id' => 2,
         'contentcontainer_id' => 1,
         'stream_channel' => 'default',
         'stream_sort_date' => '2025-06-08 10:00:00.000',
@@ -60,7 +60,7 @@ return [
     [
         'guid' => '2c3d45e6-7f89-4ba3-8d2b-4e5f6a7b8c90',
         'object_model' => 'humhub\modules\calendar\models\CalendarEntry',
-        'object_id' => 102,
+        'object_id' => 3,
         'contentcontainer_id' => 1,
         'stream_channel' => 'default',
         'stream_sort_date' => '2025-06-02 14:00:00.000',
@@ -80,7 +80,7 @@ return [
     [
         'guid' => '3d4e56f7-8g90-4cb4-9e3c-5f6a7b8c9d01',
         'object_model' => 'humhub\modules\calendar\models\CalendarEntry',
-        'object_id' => 103,
+        'object_id' => 4,
         'contentcontainer_id' => 1,
         'stream_channel' => 'default',
         'stream_sort_date' => '2025-06-03 00:00:00.000',
