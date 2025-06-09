@@ -35,7 +35,7 @@ class EventCest extends HumHubApiTestCest
         $I->amAdmin();
         $I->createSampleCalendarEntry();
         $I->sendGet('calendar/entry/5');
-        $I->seeCalendarEntryDefinitionById(1);
+        $I->seeCalendarEntryDefinitionById(5);
     }
 
     public function testUpdateEventById(ApiTester $I)
@@ -65,7 +65,7 @@ class EventCest extends HumHubApiTestCest
                 'recurring' => 1,
             ],
         ]);
-        $I->seeCalendarEntryDefinitionById(1);
+        $I->seeCalendarEntryDefinitionById(5);
     }
 
     public function testDeleteEventById(ApiTester $I)
