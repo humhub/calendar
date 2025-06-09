@@ -95,7 +95,7 @@ class IcalExportCest
         $I->assertStringContainsString('ATTENDEE:Sara Tester:MAILTO:user2@example.com', $icsContent, 'Sara is Attendee');
         $I->assertStringContainsString('ATTENDEE:Andreas Tester:MAILTO:user3@example.com', $icsContent, 'Andreas is Attendee');
 
-        $entry->delete();
+        $entry->hardDelete();
     }
 
     public function testGlobalIcalExportSpecialCharsForUser1(FunctionalTester $I)
@@ -163,6 +163,6 @@ class IcalExportCest
         $I->assertStringContainsString('ATTENDEE:Sara Tester:MAILTO:user2@example.com', $icsContent, 'Sara is Attendee');
         $I->assertStringContainsString('ATTENDEE:Andreas Tester:MAILTO:user3@example.com', $icsContent, 'Andreas is Attendee');
 
-        $entry->delete();
+        $entry->hardDelete();
     }
 }
