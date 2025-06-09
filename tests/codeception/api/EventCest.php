@@ -34,8 +34,8 @@ class EventCest extends HumHubApiTestCest
         $I->wantTo('see calendar event by id');
         $I->amAdmin();
         $I->createSampleCalendarEntry();
-        $I->sendGet('calendar/entry/5');
-        $I->seeCalendarEntryDefinitionById(5);
+        $I->sendGet('calendar/entry/1');
+        $I->seeCalendarEntryDefinitionById(1);
     }
 
     public function testUpdateEventById(ApiTester $I)
@@ -47,11 +47,11 @@ class EventCest extends HumHubApiTestCest
         $I->wantTo('update calendar event by id');
         $I->amAdmin();
 
-        $I->sendPut('calendar/entry/5');
+        $I->sendPut('calendar/entry/1');
         $I->seeNotFoundMessage('Calendar entry not found!');
 
         $I->createSampleCalendarEntry();
-        $I->sendPut('calendar/entry/5', [
+        $I->sendPut('calendar/entry/1', [
             'CalendarEntry' => [
                 'title' => 'Updated event title',
                 'description' => 'Updated event description',
@@ -65,7 +65,7 @@ class EventCest extends HumHubApiTestCest
                 'recurring' => 1,
             ],
         ]);
-        $I->seeCalendarEntryDefinitionById(5);
+        $I->seeCalendarEntryDefinitionById(1);
     }
 
     public function testDeleteEventById(ApiTester $I)
@@ -77,11 +77,11 @@ class EventCest extends HumHubApiTestCest
         $I->wantTo('delete calendar event by id');
         $I->amAdmin();
 
-        $I->sendDelete('calendar/entry/5');
+        $I->sendDelete('calendar/entry/1');
         $I->seeNotFoundMessage('Content record not found!');
 
         $I->createSampleCalendarEntry();
-        $I->sendDelete('calendar/entry/5');
+        $I->sendDelete('calendar/entry/1');
         $I->seeSuccessMessage('Successfully deleted!');
     }
 
@@ -95,7 +95,7 @@ class EventCest extends HumHubApiTestCest
         $I->amAdmin();
 
         $I->createSampleCalendarEntry();
-        $I->sendPost('calendar/entry/5/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE]);
+        $I->sendPost('calendar/entry/1/respond', ['type' => CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE]);
         $I->seeSuccessMessage('Participation successfully changed.');
     }
 
@@ -109,11 +109,11 @@ class EventCest extends HumHubApiTestCest
         $I->amAdmin();
 
         $I->createSampleCalendarEntry();
-        $I->sendPost('calendar/entry/5/upload-files');
+        $I->sendPost('calendar/entry/1/upload-files');
         $I->seeBadMessage('No files to upload.');
         UploadedFile::reset();
 
-        $I->sendPost('calendar/entry/5/upload-files', [], [
+        $I->sendPost('calendar/entry/1/upload-files', [], [
             'files' => [
                 codecept_data_dir('test1.txt'),
                 codecept_data_dir('test2.txt'),
@@ -122,10 +122,10 @@ class EventCest extends HumHubApiTestCest
         $I->seeSuccessMessage('Files successfully uploaded.');
 
         $I->amGoingTo('remove a file from the event');
-        $I->sendDelete('calendar/entry/5/remove-file/2');
+        $I->sendDelete('calendar/entry/1/remove-file/2');
         $I->seeSuccessMessage('File successfully removed.');
 
-        $I->sendDelete('calendar/entry/5/remove-file/2');
+        $I->sendDelete('calendar/entry/1/remove-file/2');
         $I->seeNotFoundMessage('Could not find requested content record or file!');
     }
 

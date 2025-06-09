@@ -31,7 +31,7 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         // Starts in 4 days (not included)
         $entry4 = $this->createEntry((new DateTime())->add(new DateInterval('P4D')), 6, 'Future Entry', $s1);
 
-        $entries = CalendarEntryQuery::find()->container($s1)->days(3)->all();
+        $entries = CalendarEntryQuery::find()->days(3)->all();
 
         $this->assertEquals(2, count($entries));
         $this->assertEquals($entry2->title, $entries[0]->title);
@@ -56,12 +56,12 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         $entry3 = $this->createEntry((new DateTime())->add(new DateInterval('P1D')), 1, 'Tomorrow', $s1);
 
         // Get all entries from today by open range query
-        $entries = CalendarEntryQuery::find()->container($s1)->days(0)->all();
+        $entries = CalendarEntryQuery::find()->days(0)->all();
 
         $this->assertEquals(1, count($entries));
         $this->assertEquals($entry2->title, $entries[0]->title);
 
-        $entries = CalendarEntryQuery::find()->container($s1)->days(1)->all();
+        $entries = CalendarEntryQuery::find()->days(1)->all();
         $this->assertEquals(2, count($entries));
         $this->assertEquals($entry2->title, $entries[0]->title);
         $this->assertEquals($entry3->title, $entries[1]->title);

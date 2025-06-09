@@ -19,6 +19,5 @@ class CalendarEntryFixture extends ActiveFixture
     public $depends = [
         CalendarEntryParticipantFixture::class,
         CalendarReminderFixture::class,
-        CalendarEntryContentFixture::class,
     ];
 }
