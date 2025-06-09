@@ -30,7 +30,7 @@ class IcalExportCest
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
 
-        $I->createCalendarEntry(
+        $entry = $I->createCalendarEntry(
             $user,
             [
                 'title' => 'Team Meeting',
@@ -95,6 +95,7 @@ class IcalExportCest
         $I->assertStringContainsString('ATTENDEE:Sara Tester:MAILTO:user2@example.com', $icsContent, 'Sara is Attendee');
         $I->assertStringContainsString('ATTENDEE:Andreas Tester:MAILTO:user3@example.com', $icsContent, 'Andreas is Attendee');
 
+        $entry->delete();
     }
 
     public function testGlobalIcalExportSpecialCharsForUser1(FunctionalTester $I)
@@ -106,7 +107,7 @@ class IcalExportCest
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
 
-        $I->createCalendarEntry(
+        $entry = $I->createCalendarEntry(
             $user,
             [
                 'title' => 'Event with Comma, & Semicolon;',
@@ -162,5 +163,6 @@ class IcalExportCest
         $I->assertStringContainsString('ATTENDEE:Sara Tester:MAILTO:user2@example.com', $icsContent, 'Sara is Attendee');
         $I->assertStringContainsString('ATTENDEE:Andreas Tester:MAILTO:user3@example.com', $icsContent, 'Andreas is Attendee');
 
+        $entry->delete();
     }
 }
