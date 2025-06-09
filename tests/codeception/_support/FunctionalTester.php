@@ -41,5 +41,7 @@ class FunctionalTester extends \FunctionalTester
             $participant->user_id = $attendeeId;
             $participant->save();
         }
+
+        return $entry;
     }
 }
