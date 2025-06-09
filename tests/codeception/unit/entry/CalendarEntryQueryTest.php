@@ -94,6 +94,15 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         // Entry way in the future (not included)
         $this->createEntry((new DateTime())->add(new DateInterval('P20D')), 6, 'Future Entry', $s2);
 
+        // Find all within -5 till 13 day range
+        $entries = CalendarEntryQuery::find()->from(-5)->to(13)->all();
+
+        $this->assertEquals(4, count($entries));
+        $this->assertEquals($entry1->title, $entries[0]->title);
+        $this->assertEquals($entry2->title, $entries[1]->title);
+        $this->assertEquals($entry3->title, $entries[2]->title);
+        $this->assertEquals($entry4->title, $entries[3]->title);
+
         // Find all s1 entries within -5 till 13 day range
         $entries = CalendarEntryQuery::find()->container($s1)->from(-5)->to(13)->all();
 
