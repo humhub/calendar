@@ -2,6 +2,8 @@
 
 namespace calendar;
 
+use calendar\_support\trait\CalendarEntryHelper;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -20,6 +22,7 @@ namespace calendar;
 class FunctionalTester extends \FunctionalTester
 {
     use _generated\FunctionalTesterActions;
+    use CalendarEntryHelper;
 
     /**
      * Define custom actions here

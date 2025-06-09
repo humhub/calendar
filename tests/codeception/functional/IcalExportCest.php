@@ -28,6 +28,16 @@ class IcalExportCest
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
 
+        $I->createCalendarEntry(
+            'Team Meeting event exists',
+            'Weekly team sync-up',
+            [
+                'start_datetime' => '2025-06-01 10:00:00',
+                'end_datetime' => '2025-06-01 11:00:00',
+                'location' => 'Conference Room A',
+            ]
+        );
+
         $jwtKey = IcalTokenService::instance()->encrypt($user->id, $user->guid, false);
 
         $I->amOnRoute('/calendar/export/calendar', ['token' => $jwtKey]);
