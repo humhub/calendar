@@ -2,7 +2,7 @@
 
 /**
  * HumHub
- * Copyright © 2025 The HumHub Project
+ * Copyright © 2014 The HumHub Project
  *
  * The texts of the GNU Affero General Public License with an additional
  * permission and of our proprietary license can be found at and
