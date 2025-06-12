@@ -64,7 +64,11 @@ class CalDavController extends Controller
         }
 
         // Take control of error action only when called from Calendar Clients
-        if (!empty(array_intersect($accept, ['*/*', 'text/xml', 'application/xml'. 'text/calendar', 'application/ics', 'text/plain']))) {
+        if (
+            !empty($accept) &&
+            $accept[0] !== 'text/html' &&
+            !empty(array_intersect($accept, ['*/*', 'text/xml', 'application/xml'. 'text/calendar', 'application/ics', 'text/plain']))
+        ) {
             if ($exception instanceof ForbiddenHttpException || $exception instanceof UnauthorizedHttpException) {
                 $this->response->statusCode = 401;
                 $this->response->content = Response::$httpStatuses[401];
