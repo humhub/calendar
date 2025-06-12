@@ -15,6 +15,7 @@ use humhub\modules\calendar\Events;
 use humhub\modules\content\widgets\WallEntryLinks;
 use humhub\commands\IntegrityController;
 use humhub\commands\CronController;
+use humhub\components\ModuleManager;
 
 return [
     'id' => 'calendar',
@@ -44,5 +45,8 @@ return [
     ],
     'urlManagerRules' => [
         'calendar' => 'calendar/global',
+        '/.well-known/caldav' => 'calendar/cal-dav/well-known',
+        ['pattern' => 'remote/caldav/<path:.*>', 'route' => 'calendar/cal-dav/index', 'defaults' => ['path' => '']],
+        ['pattern' => 'remote/ical/<token:[a-zA-Z0-9\-_\.%]+>', 'route' => 'calendar/export/calendar'],
     ],
 ];

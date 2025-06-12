@@ -2,6 +2,9 @@
 
 namespace calendar;
 
+use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -24,4 +27,21 @@ class FunctionalTester extends \FunctionalTester
     /**
      * Define custom actions here
      */
+
+    public function createCalendarEntry($container, $data, $attendees = [])
+    {
+        $entry = new CalendarEntry($container);
+        $entry->setAttributes($data);
+        $entry->save();
+
+        foreach ($attendees as $attendeeId) {
+            $participant = new CalendarEntryParticipant();
+            $participant->calendar_entry_id = $entry->id;
+            $participant->participation_state = 3;
+            $participant->user_id = $attendeeId;
+            $participant->save();
+        }
+
+        return $entry;
+    }
 }
