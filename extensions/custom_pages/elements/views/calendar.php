@@ -12,6 +12,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var CalendarEntryElement $model */
 /* @var ActiveForm $form */
 ?>
-<?= $form->field($model, 'id')->widget(CalendarEntryPicker::class, [
+<?= $form->field($model, 'contentRecordId')->widget(CalendarEntryPicker::class, [
     'maxSelection' => 1,
 ]) ?>

@@ -36,22 +36,13 @@ class CalendarEntryElement extends BaseContentRecordElement
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('CalendarModule.base', 'Select calendar event'),
+            'contentRecordId' => Yii::t('CalendarModule.base', 'Select calendar event'),
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function render($options = [])
+    public function __toString()
     {
-        $result = Html::encode($this->record->title);
-
-        if ($this->isEditMode($options)) {
-            return $this->wrap('span', $result, $options);
-        }
-
-        return $result;
+        return Html::encode($this->record->title);
     }
 
     /**

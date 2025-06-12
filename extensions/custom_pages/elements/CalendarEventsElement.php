@@ -14,6 +14,8 @@ use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordsElement;
+use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordsElementVariable;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -116,5 +118,13 @@ class CalendarEventsElement extends BaseContentRecordsElement
         }
 
         return $query;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return new BaseContentRecordsElementVariable($this);
     }
 }
