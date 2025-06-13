@@ -11,6 +11,7 @@ namespace humhub\modules\calendar\extensions\custom_pages\elements;
 use humhub\libs\Html;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordElement;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use Yii;
 
 /**
@@ -51,5 +52,14 @@ class CalendarEntryElement extends BaseContentRecordElement
     public function getFormView(): string
     {
         return '@calendar/extensions/custom_pages/elements/views/calendar';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return CalendarEntryElementVariable::instance($this)
+            ->setRecord($this->getRecord());
     }
 }
