@@ -8,7 +8,7 @@
 
 use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEventsElement;
 use humhub\modules\calendar\widgets\CalendarEntryPicker;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var CalendarEventsElement $model */
 /* @var ActiveForm $form */

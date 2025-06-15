@@ -9,7 +9,7 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use Yii;

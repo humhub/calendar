@@ -10,7 +10,6 @@ use humhub\modules\calendar\interfaces\recurrence\RecurrenceQueryIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\widgets\Label;
 use yii\base\Model;
 
 /**
@@ -218,9 +217,7 @@ class CalendarEntryDummy extends Model implements CalendarEventIF, RecurrentEven
     }
 
     /**
-     * (optional) A badge/label used in snippets
-     *
-     * @return Label|string|null
+     * @inheritdoc
      */
     public function getBadge()
     {
