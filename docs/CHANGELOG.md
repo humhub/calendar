@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.5 (Unreleased)
+--------------------
+- Enh #550: Update custom pages extension for new template variables
+
 1.7.4 (May 12, 2025)
 --------------------
 - Enh #542: Add filters for template element of the custom pages module
