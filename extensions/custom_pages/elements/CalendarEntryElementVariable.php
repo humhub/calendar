@@ -9,10 +9,11 @@
 namespace humhub\modules\calendar\extensions\custom_pages\elements;
 
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordElementVariable;
 use humhub\modules\custom_pages\modules\template\elements\BaseRecordElementVariable;
 use yii\db\ActiveRecord;
 
-class CalendarEntryElementVariable extends BaseRecordElementVariable
+class CalendarEntryElementVariable extends BaseContentRecordElementVariable
 {
     public string $title;
     public string $description;
