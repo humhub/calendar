@@ -69,7 +69,7 @@ class EventProperties extends BaseObject
             }
 
             if ($propertyKey == EventProperty::CATEGORIES) {
-                return ArrayHelper::getColumn(iterator_to_array($property), function(Property $property) {
+                return ArrayHelper::getColumn(iterator_to_array($property), function (Property $property) {
                     return $property->getValue();
                 });
             }

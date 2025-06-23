@@ -38,7 +38,7 @@ class ExportButton extends Widget
 
     public function run()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return;
         }
 
@@ -47,7 +47,7 @@ class ExportButton extends Widget
             ->load(Url::to([
                 '/calendar/export/modal',
                 'guid' => $this->container->contentContainerRecord->guid,
-                'global' => $this->global
+                'global' => $this->global,
             ]))
             ->tooltip(Yii::t('CalendarModule.views', 'Export'));
     }

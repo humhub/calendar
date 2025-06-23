@@ -20,7 +20,6 @@ use Sabre\VObject;
 use yii\helpers\ArrayHelper;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 
-
 /**
  * Class VCalendar serves as wrapper around sabledavs vobject api.
  *

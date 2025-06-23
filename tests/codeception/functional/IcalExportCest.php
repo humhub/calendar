@@ -129,7 +129,7 @@ class IcalExportCest
                 'sequence' => 0,
                 'location' => 'Room B, Building 1',
             ],
-            [2, 3, 4]
+            [2, 3, 4],
         );
 
         $jwtKey = IcalTokenService::instance()->encrypt($user->id, $user->guid, true);
