@@ -150,5 +150,14 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
     public function filterMine()
     {
         $this->_query->andWhere(['profile.user_id' => Yii::$app->user->id]);
+
+        return $this;
+    }
+
+    public function filterByGuid(string $guid): static
+    {
+        $this->_query->andWhere(['user.guid' => $guid]);
+
+        return $this;
     }
 }
