@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.5 (Jnune 23, 2025)
+-----------------------
+- Enh #541: Added native export features via ICal and CalDav
+
 1.7.4 (May 12, 2025)
 --------------------
 - Enh #542: Add filters for template element of the custom pages module
