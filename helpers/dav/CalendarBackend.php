@@ -89,7 +89,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             }
         }
 
-        return ArrayHelper::getColumn($contentContainers, function(array $contentContainer) use ($principalUri, $user) {
+        return ArrayHelper::getColumn($contentContainers, function (array $contentContainer) use ($principalUri, $user) {
             $guid = ArrayHelper::getValue($contentContainer, 'guid');
 
             return [
@@ -118,9 +118,9 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
         return ArrayHelper::getColumn(
             $calendarService->getCalendarItems(null, null, [], $contentContainer),
-            function(CalendarEventIF $event) use ($calendarId) {
+            function (CalendarEventIF $event) use ($calendarId) {
                 return $this->prepareEvent($event, $calendarId);
-            }
+            },
         );
     }
 
@@ -195,7 +195,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             Yii::error($e);
             $transaction->rollBack();
 
-            throw new ServiceUnavailable;
+            throw new ServiceUnavailable();
         }
 
         $etag = md5($event->getLastModified()->getTimestamp());
@@ -237,7 +237,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             Yii::error($e);
             $transaction->rollBack();
 
-            throw new ServiceUnavailable;
+            throw new ServiceUnavailable();
         }
 
     }
@@ -256,7 +256,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         ];
 
 
-        $propPatch->handle($supportedProperties, function($mutations) use ($supportedProperties) {
+        $propPatch->handle($supportedProperties, function ($mutations) use ($supportedProperties) {
             foreach ($mutations as $propertyName => $propertyValue) {
                 if (in_array($propertyName, $supportedProperties)) {
                     // Ignore calendar-order and calendar-color for apple calendar
@@ -278,7 +278,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         throw new NotImplemented();
     }
 
-    protected function prepareEvent(CalendarEventIF|CalendarEntry|BirthdayCalendarEntry $event, string $calendarId) : array
+    protected function prepareEvent(CalendarEventIF|CalendarEntry|BirthdayCalendarEntry $event, string $calendarId): array
     {
         if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
             /* @var $event RecurrentEventIF */
@@ -325,7 +325,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         }
     }
 
-    protected function getContentContainerForCalendar(string $calendarId) : ?ContentContainerActiveRecord
+    protected function getContentContainerForCalendar(string $calendarId): ?ContentContainerActiveRecord
     {
         if (StringHelper::startsWith($calendarId, 'profile')) {
             $contentContainer = User::find()->active()->andWhere(['guid' => substr($calendarId, 8)])->one();

@@ -23,7 +23,7 @@ class PrincipalBackend extends AbstractBackend
             return [];
         }
 
-        return ArrayHelper::getColumn(User::find()->active()->all(), function(User $user) {
+        return ArrayHelper::getColumn(User::find()->active()->all(), function (User $user) {
             return $this->userToPrincipal($user);
         });
     }
@@ -85,7 +85,7 @@ class PrincipalBackend extends AbstractBackend
                 'principal' => 'principals/' . $path,
                 'privilege' => '{DAV:}read',
                 'grant' => true,
-            ]
+            ],
         ];
     }
 
@@ -101,10 +101,10 @@ class PrincipalBackend extends AbstractBackend
             '{DAV:}displayname' => $user->displayName,
             '{http://sabredav.org/ns}email-address' => $user->email,
             '{urn:ietf:params:xml:ns:caldav}calendar-home-set' => [
-                'href' => '/calendars/' . $user->username . '/'
+                'href' => '/calendars/' . $user->username . '/',
             ],
             '{urn:ietf:params:xml:ns:caldav}calendar-resource-uri' => [
-                ['href' => '/calendars/' . $user->username . '/']
+                ['href' => '/calendars/' . $user->username . '/'],
             ],
         ];
     }

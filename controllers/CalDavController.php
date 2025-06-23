@@ -58,7 +58,7 @@ class CalDavController extends Controller
 
         if (is_string($accept)) {
             $accept = array_map('trim', explode(',', $accept));
-            $accept = array_map(function($type) {
+            $accept = array_map(function ($type) {
                 return strtok($type, ';');
             }, $accept);
         }
@@ -67,7 +67,7 @@ class CalDavController extends Controller
         if (
             !empty($accept) &&
             $accept[0] !== 'text/html' &&
-            !empty(array_intersect($accept, ['*/*', 'text/xml', 'application/xml'. 'text/calendar', 'application/ics', 'text/plain']))
+            !empty(array_intersect($accept, ['*/*', 'text/xml', 'application/xml' . 'text/calendar', 'application/ics', 'text/plain']))
         ) {
             if ($exception instanceof ForbiddenHttpException || $exception instanceof UnauthorizedHttpException) {
                 $this->response->statusCode = 401;
@@ -106,7 +106,7 @@ class CalDavController extends Controller
             [
                 'class' => HttpBasicAuth::class,
                 'only' => ['index'],
-                'auth' => function($username, $password) {
+                'auth' => function ($username, $password) {
                     $login = new Login();
                     $login->username = $username;
                     $login->password = $password;
@@ -122,8 +122,8 @@ class CalDavController extends Controller
                     }
 
                     return null;
-                }
-            ]
+                },
+            ],
         ];
     }
 
@@ -141,7 +141,7 @@ class CalDavController extends Controller
             $server = new Server($tree);
             $server->setBaseUri(Url::to(['/calendar/cal-dav/index']));
             $server->addPlugin(new AuthPlugin(new UserPassAuthBackend()));
-            $server->addPlugin(new DAVPlugin);
+            $server->addPlugin(new DAVPlugin());
             $server->addPlugin(new SharingPlugin());
             $server->addPlugin(new CalDAVPlugin());
             $server->addPlugin(new SchedulePlugin());

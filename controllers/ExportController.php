@@ -40,7 +40,7 @@ class ExportController extends Controller
     public function actionModal($guid, $global)
     {
         return $this->renderAjax('modal', [
-            'token' => IcalTokenService::instance()->encrypt(Yii::$app->user->id, $guid, $global)
+            'token' => IcalTokenService::instance()->encrypt(Yii::$app->user->id, $guid, $global),
         ]);
     }
 
@@ -66,7 +66,7 @@ class ExportController extends Controller
         return Yii::$app->response->sendContentAsFile(
             $ics,
             $uid . '.ics',
-            ['mimeType' => static::EXPORT_MIME]
+            ['mimeType' => static::EXPORT_MIME],
         );
     }
 
@@ -96,7 +96,7 @@ class ExportController extends Controller
             null,
             null,
             [],
-            $global ? null : $contentContainer->polymorphicRelation
+            $global ? null : $contentContainer->polymorphicRelation,
         );
 
         $ics = CalendarUtils::generateIcal($events);
@@ -104,7 +104,7 @@ class ExportController extends Controller
         return Yii::$app->response->sendContentAsFile(
             $ics,
             Inflector::slug($contentContainer->polymorphicRelation->displayName, '_') . '.ics',
-            ['mimeType' => static::EXPORT_MIME]
+            ['mimeType' => static::EXPORT_MIME],
         );
     }
 }
