@@ -1,6 +1,7 @@
 <?php
 
 return [
+    ' Used for secure iCal feed URL generation. Changing the key revokes all existing iCal URLs. If empty, a random key is generated automatically.' => '',
     '<strong>Add</strong> profile calendar' => '',
     '<strong>Choose</strong> target calendar' => '',
     '<strong>Reminder</strong> settings' => '',
@@ -19,6 +20,7 @@ return [
     'Attending' => '',
     'Before a target calendar can be selected, the module must be activated in at least one Space.' => '',
     'Birthday' => '',
+    'CalDAV' => '',
     'Calendar' => '',
     'Calendar event' => '',
     'Calendar events' => '',
@@ -67,6 +69,7 @@ return [
     'I\'m attending' => '',
     'ID' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',
+    'Include Organizer and Participant Info in Exports' => '',
     'Interested' => '',
     'Invalid date or time format!' => '',
     'Invalid day of month given' => '',
@@ -76,6 +79,8 @@ return [
     'Invalid week day selection' => '',
     'Invite' => '',
     'Invited: {users}' => '',
+    'JWT Key' => '',
+    'JWT Token Expiration' => '',
     'Leave empty to list all events. Enter 0 to display only today\'s events.' => '',
     'List' => '',
     'Location' => '',
@@ -133,6 +138,7 @@ return [
     'Wednesday' => '',
     'Week' => '',
     'Weeks' => '',
+    'When enabled, calendar exports (ics, iCal, CalDAV) will include the organizer\'s and participant\'s names and email addresses. Disable to exclude this information for increased privacy.' => '',
     'Year' => '',
     'Years' => '',
     'You cannot invite participants!' => '',
@@ -148,6 +154,8 @@ return [
     'first' => '',
     'forth' => '',
     'global' => '',
+    'iCal' => '',
+    'in seconds. 0 for no JWT token expiration.' => '',
     'last' => '',
     'on weekdays' => '',
     'second' => '',
@@ -157,4 +165,5 @@ return [
     '{displayName} added you to the event "{contentTitle}".' => '',
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '',
     '{displayName} invited you to the event "{contentTitle}".' => '',
+    '{name} Calendar' => '',
 ];

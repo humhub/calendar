@@ -38,6 +38,7 @@ return [
     'Defaults' => '',
     'Event Types' => '',
     'Everybody can participate' => '',
+    'Export' => '',
     'Filter events' => '',
     'Followed spaces' => '',
     'Followed users' => '',

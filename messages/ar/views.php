@@ -56,4 +56,5 @@ return [
     'Undecided' => 'غير مقرر',
     'You are invited, please select your role:' => 'أنت مدعو، من فضلك اختر دوراً:',
     '{count} Participants' => '{count} مشاركين',
+    'Export' => '',
 ];

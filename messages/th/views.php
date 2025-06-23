@@ -49,6 +49,7 @@ return [
     '<strong>Edit</strong> Event' => '',
     'Are you sure want to remove the participant from the event?' => '',
     'Declined' => '',
+    'Export' => '',
     'Filter events' => '',
     'Invited' => '',
     'Only by Invite' => '',

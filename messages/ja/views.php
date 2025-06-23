@@ -56,4 +56,5 @@ return [
     'Undecided' => '未決定',
     'You are invited, please select your role:' => '招待されました。役割を選択してください：',
     '{count} Participants' => '{count}人の参加者',
+    'Export' => '',
 ];
