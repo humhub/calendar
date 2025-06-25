@@ -8,6 +8,8 @@ use DateTimeZone;
 use humhub\libs\DateHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\calendar\interfaces\VCalendar;
 use humhub\modules\calendar\Module;
 use humhub\modules\content\models\Content;
 use Sabre\VObject\UUIDUtil;
@@ -448,5 +450,36 @@ class CalendarUtils
             $sequence = $entry->getSequence();
             $entry->setSequence(($sequence === null) ? 0 : ++$sequence);
         }
+    }
+
+    public static function generateIcal($entries)
+    {
+        $events = [];
+        foreach ($entries as $entry) {
+            $event = CalendarUtils::getCalendarEvent($entry);
+
+            if (!$event) {
+                continue;
+            }
+
+            if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
+                /* @var $event RecurrentEventIF */
+                $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
+            }
+
+            $events[] = $event;
+        }
+
+        return VCalendar::withEvents($events, CalendarUtils::getSystemTimeZone(true))->serialize();
+    }
+
+    public static function generateIcs($event)
+    {
+        if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
+            /* @var $event RecurrentEventIF */
+            $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
+        }
+
+        return VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone(true))->serialize();
     }
 }

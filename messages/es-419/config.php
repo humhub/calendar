@@ -14,6 +14,7 @@ return [
     'Delete' => '',
     'Do you really want to delte this event type?' => '',
     'Event Type Configuration' => '',
+    'Export settings' => '',
     'Full calendar' => '',
     'Half a year' => '',
     'Here you can configure default settings for new calendar events.' => '',

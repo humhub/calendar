@@ -43,6 +43,7 @@ return [
     'Declined' => '',
     'Defaults' => '',
     'Event Types' => '',
+    'Export' => '',
     'Filter events' => '',
     'General' => '',
     'Invited' => '',

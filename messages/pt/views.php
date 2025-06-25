@@ -54,6 +54,7 @@ return [
     'Undecided' => 'Indecisos',
     'You are invited, please select your role:' => 'Estás convidado, por favor seleciona o papel:',
     '{count} Participants' => '{count} Participantes',
+    'Export' => '',
     'Filter events' => '',
     'Select calendars' => '',
 ];

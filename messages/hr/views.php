@@ -56,4 +56,5 @@ return [
     '<strong>Create</strong> Event' => '',
     '<strong>Edit</strong> Event' => '',
     'Are you sure want to remove the participant from the event?' => '',
+    'Export' => '',
 ];

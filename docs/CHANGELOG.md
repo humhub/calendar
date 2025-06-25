@@ -1,9 +1,17 @@
 Changelog
 =========
 
-1.7.5 (Unreleased)
+1.7.7 (Unreleased)
 --------------------
 - Enh #550: Update custom pages extension for new template variables
+
+1.7.6 (June 25, 2025)
+---------------------
+- Fix #555: Fixed JWT version conflict with core version
+
+1.7.5 (June 23, 2025)
+-----------------------
+- Enh #541: Added native export features via ICal and CalDav
 
 1.7.4 (May 12, 2025)
 --------------------
