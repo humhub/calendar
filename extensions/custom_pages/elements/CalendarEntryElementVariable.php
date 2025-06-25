@@ -19,8 +19,8 @@ class CalendarEntryElementVariable extends BaseContentRecordElementVariable
     public string $description;
     public string $url;
     public string $color;
-    public string $start_datetime;
-    public string $end_datetime;
+    public string $startDateTime;
+    public string $endDateTime;
     public string $location;
 
     public function setRecord(?ActiveRecord $record): BaseRecordElementVariable
@@ -30,8 +30,8 @@ class CalendarEntryElementVariable extends BaseContentRecordElementVariable
             $this->description = $record->description;
             $this->url = $record->getUrl();
             $this->color = $record->color;
-            $this->start_datetime = $record->start_datetime;
-            $this->end_datetime = $record->end_datetime;
+            $this->startDateTime = $record->start_datetime;
+            $this->endDateTime = $record->end_datetime;
             $this->location = $record->location;
         }
 
