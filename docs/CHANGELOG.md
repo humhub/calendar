@@ -1,7 +1,11 @@
 Changelog
 =========
 
-1.7.5 (Jnune 23, 2025)
+1.7.6 (Unreleased)
+-----------------------
+- Fix #555: Fixed JWT version conflict with core version
+
+1.7.5 (June 23, 2025)
 -----------------------
 - Enh #541: Added native export features via ICal and CalDav
 
