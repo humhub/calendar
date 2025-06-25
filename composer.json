@@ -7,8 +7,7 @@
     "simshaun/recurr": "^4",
     "sabre/xml": "^2",
     "sabre/uri": "^2",
-    "sabre/dav": "~4.6.0",
-    "firebase/php-jwt": "^6.11"
+    "sabre/dav": "~4.6.0"
   },
   "config": {
     "process-timeout": 1800
