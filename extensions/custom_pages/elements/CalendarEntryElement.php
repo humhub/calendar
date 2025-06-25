@@ -10,8 +10,10 @@ namespace humhub\modules\calendar\extensions\custom_pages\elements;
 
 use humhub\libs\Html;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\widgets\CalendarEntryPicker;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
@@ -49,17 +51,18 @@ class CalendarEntryElement extends BaseContentRecordElement
     /**
      * @inheritdoc
      */
-    public function getFormView(): string
+    public function getTemplateVariable(): BaseElementVariable
     {
-        return '@calendar/extensions/custom_pages/elements/views/calendar';
+        return CalendarEntryElementVariable::instance($this)
+            ->setRecord($this->getRecord());
     }
 
     /**
      * @inheritdoc
      */
-    public function getTemplateVariable(): BaseElementVariable
+    public function renderEditForm(ActiveForm $form): string
     {
-        return CalendarEntryElementVariable::instance($this)
-            ->setRecord($this->getRecord());
+        return $form->field($this, 'contentRecordId')
+            ->widget(CalendarEntryPicker::class, ['maxSelection' => 1]);
     }
 }
