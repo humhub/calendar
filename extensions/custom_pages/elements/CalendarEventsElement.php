@@ -86,10 +86,11 @@ class CalendarEventsElement extends BaseContentRecordsElement
 
     /**
      * @inheritdoc
+     * @return ActiveQueryContent
      */
-    protected function filterOptions(ActiveQueryContent $query): ActiveQuery
+    protected function getQuery(): ActiveQuery
     {
-        $query = parent::filterOptions($query);
+        $query = parent::getQuery();
 
         if (!Yii::$app->user->isGuest && $this->hasFilter(self::FILTER_PARTICIPANT)) {
             $query->leftJoin('calendar_entry_participant', 'calendar_entry.id = calendar_entry_participant.calendar_entry_id AND calendar_entry_participant.user_id = :userId', [':userId' => Yii::$app->user->id])
