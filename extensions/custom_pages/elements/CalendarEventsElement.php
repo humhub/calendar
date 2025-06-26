@@ -12,7 +12,6 @@ use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\calendar\widgets\CalendarEntryPicker;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordsElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
@@ -59,7 +58,6 @@ class CalendarEventsElement extends BaseContentRecordsElement
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'static' => Yii::t('CalendarModule.base', 'Select calendars'),
             'sortOrder' => Yii::t('CalendarModule.base', 'Sorting'),
             'nextDays' => Yii::t('CalendarModule.base', 'Display events within the next X days'),
         ]);
@@ -134,13 +132,10 @@ class CalendarEventsElement extends BaseContentRecordsElement
     public function renderEditForm(ActiveForm $form): string
     {
         return parent::renderEditForm($form) .
-            $this->renderEditRecordsTypeFields([
-                'static' => $form->field($this, 'static')->widget(CalendarEntryPicker::class),
-                'options' => $form->field($this, 'nextDays') .
-                    $form->field($this, 'sortOrder')->radioList([
-                        $this::SORT_DATE_OLD => Yii::t('CalendarModule.base', 'From Oldest to Newest'),
-                        $this::SORT_DATE_NEW => Yii::t('CalendarModule.base', 'From Newest to Oldest'),
-                    ]),
+            $form->field($this, 'nextDays') .
+            $form->field($this, 'sortOrder')->radioList([
+                $this::SORT_DATE_OLD => Yii::t('CalendarModule.base', 'From Oldest to Newest'),
+                $this::SORT_DATE_NEW => Yii::t('CalendarModule.base', 'From Newest to Oldest'),
             ]);
     }
 }
