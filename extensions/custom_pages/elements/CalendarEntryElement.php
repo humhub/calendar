@@ -10,10 +10,8 @@ namespace humhub\modules\calendar\extensions\custom_pages\elements;
 
 use humhub\libs\Html;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\widgets\CalendarEntryPicker;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
@@ -39,7 +37,7 @@ class CalendarEntryElement extends BaseContentRecordElement
     public function attributeLabels()
     {
         return [
-            'contentRecordId' => Yii::t('CalendarModule.base', 'Select calendar event'),
+            'contentRecordId' => Yii::t('CalendarModule.base', 'Calendar event ID'),
         ];
     }
 
@@ -55,14 +53,5 @@ class CalendarEntryElement extends BaseContentRecordElement
     {
         return CalendarEntryElementVariable::instance($this)
             ->setRecord($this->getRecord());
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEditForm(ActiveForm $form): string
-    {
-        return $form->field($this, 'contentRecordId')
-            ->widget(CalendarEntryPicker::class, ['maxSelection' => 1]);
     }
 }
