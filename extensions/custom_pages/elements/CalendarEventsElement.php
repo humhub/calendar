@@ -14,6 +14,8 @@ use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordsElement;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -30,7 +32,6 @@ class CalendarEventsElement extends BaseContentRecordsElement
     public const SORT_DATE_OLD = 'date_old';
     public const SORT_DATE_NEW = 'date_new';
     public const RECORD_CLASS = CalendarEntry::class;
-    public string $contentFormView = '@calendar/extensions/custom_pages/elements/views/calendars';
 
     /**
      * @inheritdoc
@@ -57,7 +58,6 @@ class CalendarEventsElement extends BaseContentRecordsElement
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'static' => Yii::t('CalendarModule.base', 'Select calendars'),
             'sortOrder' => Yii::t('CalendarModule.base', 'Sorting'),
             'nextDays' => Yii::t('CalendarModule.base', 'Display events within the next X days'),
         ]);
@@ -86,10 +86,11 @@ class CalendarEventsElement extends BaseContentRecordsElement
 
     /**
      * @inheritdoc
+     * @return ActiveQueryContent
      */
-    protected function filterOptions(ActiveQueryContent $query): ActiveQuery
+    protected function getQuery(): ActiveQuery
     {
-        $query = parent::filterOptions($query);
+        $query = parent::getQuery();
 
         if (!Yii::$app->user->isGuest && $this->hasFilter(self::FILTER_PARTICIPANT)) {
             $query->leftJoin('calendar_entry_participant', 'calendar_entry.id = calendar_entry_participant.calendar_entry_id AND calendar_entry_participant.user_id = :userId', [':userId' => Yii::$app->user->id])
@@ -116,5 +117,26 @@ class CalendarEventsElement extends BaseContentRecordsElement
         }
 
         return $query;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return new CalendarEventsElementVariable($this);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return parent::renderEditForm($form) .
+            $form->field($this, 'nextDays') .
+            $form->field($this, 'sortOrder')->radioList([
+                $this::SORT_DATE_OLD => Yii::t('CalendarModule.base', 'From Oldest to Newest'),
+                $this::SORT_DATE_NEW => Yii::t('CalendarModule.base', 'From Newest to Oldest'),
+            ]);
     }
 }
