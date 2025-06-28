@@ -56,4 +56,5 @@ return [
     'Undecided' => 'Még nincs eldöntve',
     'You are invited, please select your role:' => 'Önt meghívták, kérjük, válassza ki a szerepét:',
     '{count} Participants' => '{count} résztvevő',
+    'Export' => '',
 ];

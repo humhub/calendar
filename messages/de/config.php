@@ -13,6 +13,7 @@ return [
   'Delete' => 'Löschen',
   'Do you really want to delte this event type?' => 'Möchtest du diese Kategorie wirklich löschen?',
   'Event Type Configuration' => 'Event Kategorien',
+  'Export settings' => 'Exporteinstellungen',
   'Full calendar' => 'Kalenderansicht',
   'Half a year' => 'Ein halbes Jahr',
   'Here you can configure default settings for new calendar events.' => 'Hier kannst du die Standard-Einstellungen für neue Termine bearbeiten.',

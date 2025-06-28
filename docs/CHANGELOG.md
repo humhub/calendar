@@ -5,6 +5,14 @@ Changelog
 -------------------------
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 
+1.7.6 (June 25, 2025)
+---------------------
+- Fix #555: Fixed JWT version conflict with core version
+
+1.7.5 (June 23, 2025)
+-----------------------
+- Enh #541: Added native export features via ICal and CalDav
+
 1.7.4 (May 12, 2025)
 --------------------
 - Enh #542: Add filters for template element of the custom pages module

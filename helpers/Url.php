@@ -87,6 +87,11 @@ class Url extends BaseUrl
         return static::toRoute(['/calendar/config/menu']);
     }
 
+    public static function toExportMenu()
+    {
+        return static::toRoute(['/calendar/config/export']);
+    }
+
     public static function toCalendar(ContentContainerActiveRecord $container = null)
     {
         if ($container) {
@@ -225,7 +230,7 @@ class Url extends BaseUrl
             $container = $entry->content->container;
         }
 
-        return $container->createUrl('/calendar/ical/export', ['id' => $entry->content->id]);
+        return $container->createUrl('/calendar/export/event', ['id' => $entry->content->id]);
     }
 
     public static function toUserLevelReminderConfig(CalendarEventReminderIF $entry, ContentContainerActiveRecord $container = null)

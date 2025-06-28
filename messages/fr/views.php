@@ -56,4 +56,5 @@ return [
     'Undecided' => 'Ne sais pas encore',
     'You are invited, please select your role:' => 'Vous êtes invité·e, veuillez sélectionner votre rôle :',
     '{count} Participants' => '{count} participant·es',
+    'Export' => '',
 ];

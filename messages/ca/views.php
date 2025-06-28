@@ -44,6 +44,7 @@ return [
     'Declined' => '',
     'Defaults' => '',
     'Event Types' => '',
+    'Export' => '',
     'Filter events' => '',
     'Invited' => '',
     'Only by Invite' => '',

@@ -55,5 +55,6 @@ return [
     ':count Invited' => '',
     ':count Undecided' => '',
     'Declined' => '',
+    'Export' => '',
     'Undecided' => '',
 ];

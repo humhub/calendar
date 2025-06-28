@@ -46,6 +46,7 @@ return [
     'Are you sure want to remove the participant from the event?' => '',
     'Calendars' => '',
     'Declined' => '',
+    'Export' => '',
     'Filter events' => '',
     'Invited' => '',
     'Only by Invite' => '',
