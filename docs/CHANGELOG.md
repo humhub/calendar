@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.0 (unreleased)
+-------------------------
+- Enh #549: Migration to Bootstrap 5 for HumHub 1.18
+
 1.7.6 (June 25, 2025)
 ---------------------
 - Fix #555: Fixed JWT version conflict with core version
