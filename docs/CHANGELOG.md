@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.7 (Unreleased)
+--------------------
+- Enh #550: Update custom pages extension for new template variables
+
 1.7.6 (June 25, 2025)
 ---------------------
 - Fix #555: Fixed JWT version conflict with core version
