@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.7.7 (Unreleased)
---------------------
+1.7.7 (June 30, 2025)
+---------------------
 - Enh #550: Update custom pages extension for new template variables
 
 1.7.6 (June 25, 2025)
