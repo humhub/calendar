@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.8 (Unreleased)
+---------------------
+- Enh #557: Use content ID in the "Custom Pages" extension
+
 1.7.7 (June 30, 2025)
 ---------------------
 - Enh #550: Update custom pages extension for new template variables
