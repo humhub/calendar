@@ -314,6 +314,22 @@ class VCalendar extends Model
         $vcalendar = new VObject\Component\VCalendar();
         $vt = $vcalendar->createComponent('VTIMEZONE');
         $vt->TZID = $tz->getName();
+
+        $offset = $transitions[0]['offset'] ?? 0;
+        $tzname = $transitions[0]['abbr'] ?? $tzid;
+
+        $hours = intdiv($offset, 3600);
+        $minutes = abs(($offset % 3600) / 60);
+        $sign = $offset >= 0 ? '+' : '-';
+        $offsetStr = sprintf('%s%02d%02d', $sign, abs($hours), $minutes);
+
+        $standard = $vcalendar->createComponent('STANDARD');
+        $standard->add('DTSTART', '19700101T000000');
+        $standard->add('TZOFFSETFROM', $offsetStr);
+        $standard->add('TZOFFSETTO', $offsetStr);
+        $standard->add('TZNAME', $tzname);
+        $vt->add($standard);
+
         $std = null;
         $dst = null;
         foreach ($transitions as $i => $trans) {
