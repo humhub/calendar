@@ -34,7 +34,7 @@ class ReopenedEvent extends EventNotification
     {
         $params = [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => Html::encode($this->getContentInfo($this->source, false)),
         ];
 
         if ($this->source->content->container instanceof Space) {
@@ -52,7 +52,7 @@ class ReopenedEvent extends EventNotification
     public function getMailSubject()
     {
         return Yii::t('CalendarModule.notification', '{displayName} reopened the event "{contentTitle}".', [
-            'displayName' => Html::encode($this->originator->displayName),
+            'displayName' => $this->originator->displayName,
             'contentTitle' => $this->getContentInfo($this->source, false),
         ]);
     }

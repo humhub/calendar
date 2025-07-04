@@ -28,7 +28,7 @@ class MarkAttend extends EventNotification
     public function html()
     {
         $params = [
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => Html::encode($this->getContentInfo($this->source, false)),
             'time' => $this->source->getFormattedTime(),
         ];
 

@@ -4,6 +4,7 @@ Changelog
 1.7.8 (Unreleased)
 ---------------------
 - Enh #557: Use content ID in the "Custom Pages" extension
+- Fix #559: Email Notification subjects HTML encoded
 
 1.7.7 (June 30, 2025)
 ---------------------
