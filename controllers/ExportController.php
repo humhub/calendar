@@ -99,7 +99,7 @@ class ExportController extends Controller
             $global ? null : $contentContainer->polymorphicRelation,
         );
 
-        $ics = CalendarUtils::generateIcal($events);
+        $ics = CalendarUtils::generateIcal($events, $contentContainer->polymorphicRelation->displayName);
 
         return Yii::$app->response->sendContentAsFile(
             $ics,

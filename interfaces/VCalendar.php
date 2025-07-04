@@ -15,6 +15,7 @@ use humhub\modules\calendar\Module;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
 use humhub\modules\content\models\Content;
+use Yii;
 use yii\base\Model;
 use Sabre\VObject;
 use yii\helpers\ArrayHelper;
@@ -52,9 +53,9 @@ class VCalendar extends Model
      * @param CalendarEventIF|CalendarEventIF[] $items
      * @return VCalendar
      */
-    public static function withEvents($items, $tz = null)
+    public static function withEvents($items, $tz = null, $name = null)
     {
-        $instance = (new static());
+        $instance = (new static(['name' => $name]));
         $instance->addTimeZone($tz);
 
         if (!is_array($items)) {
@@ -102,6 +103,7 @@ class VCalendar extends Model
         $this->vcalendar = new VObject\Component\VCalendar([
             'PRODID' => static::PRODID,
             'METHOD' => $this->method,
+            'X-WR-CALNAME' => trim(Yii::$app->name . ' - ' . $this->name, " \n\r\t\v\0-"),
         ]);
     }
 

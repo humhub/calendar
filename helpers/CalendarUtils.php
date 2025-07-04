@@ -452,7 +452,7 @@ class CalendarUtils
         }
     }
 
-    public static function generateIcal($entries)
+    public static function generateIcal($entries, $name)
     {
         $events = [];
         foreach ($entries as $entry) {
@@ -470,7 +470,11 @@ class CalendarUtils
             $events[] = $event;
         }
 
-        return VCalendar::withEvents($events, CalendarUtils::getSystemTimeZone(true))->serialize();
+        return VCalendar::withEvents(
+            $events,
+            CalendarUtils::getSystemTimeZone(true),
+            $name
+        )->serialize();
     }
 
     public static function generateIcs($event)
