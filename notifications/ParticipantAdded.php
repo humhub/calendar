@@ -24,7 +24,7 @@ class ParticipantAdded extends EventNotification
     {
         $params = [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => Html::encode($this->getContentInfo($this->source, false)),
             'spaceName' =>  Html::encode($this->source->content->container->displayName),
             'time' => $this->source->getFormattedTime(),
         ];
@@ -40,7 +40,7 @@ class ParticipantAdded extends EventNotification
     public function getMailSubject()
     {
         $params = [
-            'displayName' =>  Html::encode($this->originator->displayName),
+            'displayName' =>  $this->originator->displayName,
             'contentTitle' => $this->getContentInfo($this->source, false),
         ];
 

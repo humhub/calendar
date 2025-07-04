@@ -11,6 +11,6 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $source]);
 
 echo Yii::t('CalendarModule.views', '%displayName% cannot attend %contentTitle%.', [
     '%displayName%' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
-    '%contentTitle%' => $this->context->getContentInfo($source).' on '.$formatter->getFormattedTime()
+    '%contentTitle%' => Html::encode($this->context->getContentInfo($source)).' on '.$formatter->getFormattedTime()
 ]);
 ?>
