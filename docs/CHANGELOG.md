@@ -4,6 +4,7 @@ Changelog
 1.7.8 (Unreleased)
 ---------------------
 - Enh #557: Use content ID in the "Custom Pages" extension
+- Enh #562: Add JWT token for caldav password
 
 1.7.7 (June 30, 2025)
 ---------------------
