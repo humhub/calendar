@@ -1,8 +1,11 @@
 <?php
 
+use humhub\modules\calendar\helpers\AuthTokenService;
 use yii\helpers\Html;
 use humhub\widgets\Link;
 use yii\helpers\Url;
+
+$passwordToken = AuthTokenService::instance()->calDavEncrypt(Yii::$app->user->identity);
 
 ?>
 
@@ -35,7 +38,12 @@ use yii\helpers\Url;
         </div>
     </div>
     <div class="form-group">
-        <?= Html::label(Yii::t('CalendarModule.export', 'Password')); ?>
-        <?= Html::textInput(null, Yii::t('CalendarModule.export', 'Your HumHub password'), ['disabled' => true, 'class' => 'form-control']) ?>
+        <?= Html::label(Yii::t('CalendarModule.export', 'Password'));?>
+        <?= Html::textInput(null, $passwordToken, ['disabled' => true, 'class' => 'form-control']) ?>
+        <div class="text-right help-block">
+            <div id="url_5" class="hidden"><?= $passwordToken ?></div>
+            <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_5')->icon('fa-clipboard')->style('color:#777') ?>
+        </div>
+        <div class="help-block"><?= Yii::t('CalendarModule.export', 'Or Your HumHub password') ?></div>
     </div>
 </div>

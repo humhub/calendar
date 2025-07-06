@@ -9,7 +9,7 @@
 namespace calendar\functional;
 
 use calendar\FunctionalTester;
-use humhub\modules\calendar\helpers\ical\IcalTokenService;
+use humhub\modules\calendar\helpers\AuthTokenService;
 use humhub\modules\space\behaviors\SpaceModelModules;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -55,7 +55,7 @@ class IcalExportCest
             [1, 2, 3, 4],
         );
 
-        $jwtKey = IcalTokenService::instance()->encrypt($user->id, $user->guid, false);
+        $jwtKey = AuthTokenService::instance()->iCalEncrypt($user->id, $user->guid, false);
 
         $I->amOnRoute('/calendar/export/calendar', ['token' => $jwtKey]);
 
@@ -132,7 +132,7 @@ class IcalExportCest
             [2, 3, 4],
         );
 
-        $jwtKey = IcalTokenService::instance()->encrypt($user->id, $user->guid, true);
+        $jwtKey = AuthTokenService::instance()->iCalEncrypt($user->id, $user->guid, true);
 
         $I->amOnRoute('/calendar/export/calendar', ['token' => $jwtKey]);
 

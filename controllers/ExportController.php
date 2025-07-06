@@ -5,7 +5,7 @@ namespace humhub\modules\calendar\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\helpers\ical\IcalTokenService;
+use humhub\modules\calendar\helpers\AuthTokenService;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\content\models\Content;
@@ -40,7 +40,7 @@ class ExportController extends Controller
     public function actionModal($guid, $global)
     {
         return $this->renderAjax('modal', [
-            'token' => IcalTokenService::instance()->encrypt(Yii::$app->user->id, $guid, $global),
+            'token' => AuthTokenService::instance()->iCalEncrypt(Yii::$app->user->id, $guid, $global),
         ]);
     }
 
@@ -72,7 +72,7 @@ class ExportController extends Controller
 
     public function actionCalendar($token)
     {
-        $data = IcalTokenService::instance()->decrypt($token);
+        $data = AuthTokenService::instance()->iCalDecrypt($token);
 
         if (!$data) {
             throw new NotFoundHttpException();
