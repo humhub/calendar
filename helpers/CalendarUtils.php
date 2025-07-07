@@ -473,7 +473,7 @@ class CalendarUtils
         return VCalendar::withEvents(
             $events,
             CalendarUtils::getSystemTimeZone(true),
-            $name
+            $name,
         )->serialize();
     }
 
