@@ -3,6 +3,8 @@ Changelog
 
 1.7.8 (Unreleased)
 ---------------------
+- Enh #557: Use content ID in the "Custom Pages" extension
+- Enh #562: Add JWT token for caldav password
 - Enh #557: Use content ID in the `Custom Pages` extension
 - Enh #561: Add calendar name for `ical`
 
