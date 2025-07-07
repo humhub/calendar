@@ -44,6 +44,6 @@ $passwordToken = AuthTokenService::instance()->calDavEncrypt(Yii::$app->user->id
             <div id="url_5" class="hidden"><?= $passwordToken ?></div>
             <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_5')->icon('fa-clipboard')->style('color:#777') ?>
         </div>
-        <div class="help-block"><?= Yii::t('CalendarModule.export', 'Or Your HumHub password') ?></div>
+        <div class="help-block"><?= Yii::t('CalendarModule.export', 'Alternatively, you can also use your password.') ?></div>
     </div>
 </div>
