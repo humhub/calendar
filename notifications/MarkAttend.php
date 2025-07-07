@@ -28,7 +28,7 @@ class MarkAttend extends EventNotification
     public function html()
     {
         $params = [
-            'contentTitle' => Html::encode($this->getContentInfo($this->source, false)),
+            'contentTitle' => $this->getContentInfo($this->source, false),
             'time' => $this->source->getFormattedTime(),
         ];
 
@@ -47,7 +47,7 @@ class MarkAttend extends EventNotification
     public function getMailSubject()
     {
         return Yii::t('CalendarModule.base', 'You have been registered for the event "{contentTitle}".', [
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
         ]);
     }
 }

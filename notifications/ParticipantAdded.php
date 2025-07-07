@@ -24,7 +24,7 @@ class ParticipantAdded extends EventNotification
     {
         $params = [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'contentTitle' => Html::encode($this->getContentInfo($this->source, false)),
+            'contentTitle' => $this->getContentInfo($this->source, false),
             'spaceName' =>  Html::encode($this->source->content->container->displayName),
             'time' => $this->source->getFormattedTime(),
         ];
@@ -41,7 +41,7 @@ class ParticipantAdded extends EventNotification
     {
         $params = [
             'displayName' =>  $this->originator->displayName,
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
         ];
 
         return $this->isInvited()

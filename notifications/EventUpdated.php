@@ -29,7 +29,7 @@ class EventUpdated extends EventNotification
     {
         $params = [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'contentTitle' => Html::encode($this->getContentInfo($this->source, false)),
+            'contentTitle' => $this->getContentInfo($this->source, false),
         ];
 
         if ($this->source->content->container instanceof Space) {
@@ -48,7 +48,7 @@ class EventUpdated extends EventNotification
     {
         return Yii::t('CalendarModule.notification', '{displayName} updated the event "{contentTitle}".', [
             'displayName' => $this->originator->displayName,
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
         ]);
     }
 }

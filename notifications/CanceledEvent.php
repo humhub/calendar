@@ -48,15 +48,15 @@ class CanceledEvent extends BaseNotification
         if ($this->source->content->container instanceof Space) {
             return Yii::t('CalendarModule.notification', '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => Html::encode($this->getContentInfo($this->source, false)),
+                'contentTitle' => $this->getContentInfo($this->source, false),
                 'spaceName' =>  Html::encode($this->source->content->container->displayName),
             ]);
-        } else {
-            return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} canceled the event "{contentTitle}".', [
-                'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => Html::encode($this->getContentInfo($this->source, false)),
-            ]);
         }
+
+        return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} canceled the event "{contentTitle}".', [
+            'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            'contentTitle' => $this->getContentInfo($this->source, false),
+        ]);
     }
 
     /**
@@ -66,7 +66,7 @@ class CanceledEvent extends BaseNotification
     {
         return Yii::t('CalendarModule.notification', '{displayName} canceled the event "{contentTitle}".', [
             'displayName' => $this->originator->displayName,
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
         ]);
     }
 }
