@@ -7,6 +7,7 @@ Changelog
 - Enh #562: Add JWT token for caldav password
 - Enh #557: Use content ID in the `Custom Pages` extension
 - Enh #561: Add calendar name for `ical`
+- Fix #559: Email Notification subjects HTML encoded
 
 1.7.7 (June 30, 2025)
 ---------------------
