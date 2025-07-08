@@ -11,6 +11,7 @@ namespace humhub\modules\calendar\extensions\custom_pages\elements;
 use humhub\helpers\Html;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordElement;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use Yii;
 
 /**
@@ -36,29 +37,21 @@ class CalendarEntryElement extends BaseContentRecordElement
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('CalendarModule.base', 'Select calendar event'),
+            'contentId' => Yii::t('CalendarModule.base', 'Calendar event content ID'),
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function render($options = [])
+    public function __toString()
     {
-        $result = Html::encode($this->record->title);
-
-        if ($this->isEditMode($options)) {
-            return $this->wrap('span', $result, $options);
-        }
-
-        return $result;
+        return Html::encode($this->record?->title);
     }
 
     /**
      * @inheritdoc
      */
-    public function getFormView(): string
+    public function getTemplateVariable(): BaseElementVariable
     {
-        return '@calendar/extensions/custom_pages/elements/views/calendar';
+        return CalendarEntryElementVariable::instance($this)
+            ->setRecord($this->getRecord());
     }
 }

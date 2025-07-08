@@ -5,6 +5,18 @@ Changelog
 -------------------------
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 
+1.7.8 (Unreleased)
+---------------------
+- Enh #557: Use content ID in the "Custom Pages" extension
+- Enh #562: Add JWT token for caldav password
+- Enh #557: Use content ID in the `Custom Pages` extension
+- Enh #561: Add calendar name for `ical`
+- Fix #559: Email Notification subjects HTML encoded
+
+1.7.7 (June 30, 2025)
+---------------------
+- Enh #550: Update custom pages extension for new template variables
+
 1.7.6 (June 25, 2025)
 ---------------------
 - Fix #555: Fixed JWT version conflict with core version

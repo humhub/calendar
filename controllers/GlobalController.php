@@ -290,22 +290,4 @@ class GlobalController extends Controller
     {
         return $this->asJson(FilterType::search($keyword, null, true));
     }
-
-    public function actionPickerSearch(string $keyword)
-    {
-        $calendarEntries = CalendarEntry::find()
-            ->readable()
-            ->andWhere(['like', 'calendar_entry.title', $keyword]);
-
-        $output = [];
-        foreach ($calendarEntries->each() as $calendarEntry) {
-            /* @var CalendarEntry $calendarEntry */
-            $output[] = [
-                'id' => $calendarEntry->id,
-                'text' => $calendarEntry->title,
-            ];
-        }
-
-        return $this->asJson($output);
-    }
 }

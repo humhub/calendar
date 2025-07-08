@@ -40,8 +40,8 @@ class ParticipantAdded extends EventNotification
     public function getMailSubject()
     {
         $params = [
-            'displayName' =>  Html::encode($this->originator->displayName),
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'displayName' =>  $this->originator->displayName,
+            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
         ];
 
         return $this->isInvited()

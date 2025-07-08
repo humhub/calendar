@@ -47,8 +47,8 @@ class EventUpdated extends EventNotification
     public function getMailSubject()
     {
         return Yii::t('CalendarModule.notification', '{displayName} updated the event "{contentTitle}".', [
-            'displayName' => Html::encode($this->originator->displayName),
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'displayName' => $this->originator->displayName,
+            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
         ]);
     }
 }

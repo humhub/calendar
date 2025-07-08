@@ -58,7 +58,7 @@ class ExportSettings extends Model
     public function attributeHints()
     {
         return [
-            'jwtKey' => Yii::t('CalendarModule.base', ' Used for secure iCal feed URL generation. Changing the key revokes all existing iCal URLs. If empty, a random key is generated automatically.'),
+            'jwtKey' => Yii::t('CalendarModule.base', 'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.'),
             'jwtExpire' => Yii::t('CalendarModule.base', 'in seconds. 0 for no JWT token expiration.'),
             'includeUserInfo' => Yii::t('CalendarModule.base', 'When enabled, calendar exports (ics, iCal, CalDAV) will include the organizer\'s and participant\'s names and email addresses. Disable to exclude this information for increased privacy.'),
         ];
