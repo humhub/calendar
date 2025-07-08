@@ -237,12 +237,18 @@ class VCalendar extends Model
         if ($item instanceof CalendarEventParticipationIF) {
             $organizer = $item->getOrganizer();
             if ($organizer instanceof User) {
-                $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
+                $evt->add(
+                    'ORGANIZER;CN=' . $this->getCN($organizer),
+                    'mailto:' . $this->getMailto($organizer),
+                );
             }
 
-            foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $user) {
+            foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $participant) {
                 /* @var $user User */
-                $evt->add('ATTENDEE', ['CN' => $this->getCN($user)]);
+                $evt->add(
+                    'ATTENDEE;CN=' . $this->getCN($participant),
+                    'mailto:' . $this->getMailto($participant),
+                );
             }
         }
 
@@ -276,13 +282,16 @@ class VCalendar extends Model
 
     private function getCN(User $user)
     {
-        $result = $user->getDisplayName();
+        return addslashes($user->getDisplayName());
+    }
 
+    private function getMailto(User $user)
+    {
         if (!$this->includeUserInfo && $user->email) {
-            $result .= ':MAILTO:' . $user->email;
+            return $user->email;
         }
 
-        return $result;
+        return '-';
     }
 
     /**
