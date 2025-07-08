@@ -8,17 +8,15 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\modules\calendar\helpers\dav\CalDavAuth;
 use humhub\modules\calendar\helpers\dav\UserPassAuthBackend;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserFilter;
-use humhub\modules\user\services\AuthClientService;
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\DAVACL\PrincipalCollection;
 use Yii;
 use yii\base\Event;
-use yii\filters\auth\HttpBasicAuth;
 use yii\helpers\Url;
 use Sabre\DAV\Server;
 use Sabre\DAV\Sharing\Plugin as DAVPlugin;
@@ -104,25 +102,8 @@ class CalDavController extends Controller
     {
         return [
             [
-                'class' => HttpBasicAuth::class,
+                'class' => CalDavAuth::class,
                 'only' => ['index'],
-                'auth' => function ($username, $password) {
-                    $login = new Login();
-                    $login->username = $username;
-                    $login->password = $password;
-
-                    if ($login->validate()) {
-                        $authClientService = new AuthClientService($login->authClient);
-                        $authClientService->autoMapToExistingUser();
-                        $user = $authClientService->getUser();
-
-                        if ($user->isActive()) {
-                            return $user;
-                        }
-                    }
-
-                    return null;
-                },
             ],
         ];
     }

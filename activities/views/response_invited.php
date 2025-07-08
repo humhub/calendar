@@ -8,8 +8,9 @@ use yii\helpers\Html;
 /* @var $originator \humhub\modules\user\models\User */
 
 $formatter = new CalendarDateFormatter(['calendarItem' => $source]);
+?>
 
-echo Yii::t('CalendarModule.views', '%displayName% is invited to %contentTitle%.', [
+<?= Yii::t('CalendarModule.views', '%displayName% is invited to %contentTitle%.', [
     '%displayName%' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
-    '%contentTitle%' => $this->context->getContentInfo($source).' on '.$formatter->getFormattedTime()
-]);
+    '%contentTitle%' => $this->context->getContentInfo($source) . ' on ' . $formatter->getFormattedTime(),
+]) ?>
