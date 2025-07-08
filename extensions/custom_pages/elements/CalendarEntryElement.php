@@ -8,7 +8,7 @@
 
 namespace humhub\modules\calendar\extensions\custom_pages\elements;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;

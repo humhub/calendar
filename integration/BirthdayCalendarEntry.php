@@ -3,16 +3,17 @@
 namespace humhub\modules\calendar\integration;
 
 use DateTime;
-use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\event\CalendarIcsGeneratableEventIF;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
+use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
-use humhub\widgets\Label;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\widgets\bootstrap\Badge;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
 
-class BirthdayCalendarEntry extends Model implements FullCalendarEventIF, CalendarIcsGeneratableEventIF
+class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
 {
     /**
      * @var BirthdayUserModel
@@ -152,7 +153,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF, Calend
      */
     public function getColor()
     {
-        return null;
+        return $this->getTypeSetting()?->getColor();
     }
 
     /**
@@ -180,15 +181,12 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF, Calend
     }
 
     /**
-     * (optional) A badge/label used in snippets
-     *
-     * @return Label|string|null
-     * @throws \Exception
+     * @inheritdoc
      */
     public function getBadge()
     {
         $type = $this->getEventType();
-        return Label::asColor($this->getColor(), $type->getTitle())->icon($type->getIcon())->right();
+        return Badge::instance($type->getTitle())->cssBgColor($this->getColor())->icon($type->getIcon())->right();
     }
 
     /**
@@ -321,14 +319,16 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF, Calend
         return [];
     }
 
-    public function generateIcs(): ?string
+    public function getTypeSetting(): ?CalendarTypeSetting
     {
-        $event = CalendarUtils::getCalendarEvent($this);
+        /* @var CalendarService $calendarService */
+        $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
 
-        if (!$event) {
-            return null;
-        }
+        // Get current space container or current user container for global calendar
+        $container = Yii::$app->controller instanceof ContentContainerController
+            ? Yii::$app->controller->contentContainer
+            : (Yii::$app->user->isGuest ? null : Yii::$app->user->getIdentity());
 
-        return CalendarUtils::generateIcs($event);
+        return $calendarService->getItemType($this->getEventType()->getKey(), $container);
     }
 }

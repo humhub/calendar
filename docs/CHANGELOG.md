@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.0 (unreleased)
+-------------------------
+- Enh #549: Migration to Bootstrap 5 for HumHub 1.18
+
 1.7.8 (Unreleased)
 ---------------------
 - Enh #557: Use content ID in the "Custom Pages" extension
