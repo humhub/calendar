@@ -17,7 +17,7 @@ $passwordToken = AuthTokenService::instance()->calDavEncrypt(Yii::$app->user->id
         <?= Html::label(Yii::t('CalendarModule.export', 'CalDAV URL')); ?>
         <?= Html::textInput(null, Url::to(['/calendar/cal-dav/index'], true), ['disabled' => true, 'class' => 'form-control']) ?>
         <div class="text-right help-block">
-            <div id="url_2" class="hidden"><?= Url::to(['/calendar/remote/cal-dav'], true) ?></div>
+            <div id="url_2" class="hidden"><?= Url::to(['/calendar/cal-dav/index'], true) ?></div>
             <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_2')->icon('fa-clipboard')->style('color:#777') ?>
         </div>
     </div>
