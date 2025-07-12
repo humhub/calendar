@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.9 (Unreleased)
+---------------------
+- fix #566: Fix caldav birthday event sync
+
 1.7.8 (July 11, 2025)
 ---------------------
 - Security: Versions between 1.7.7 - 1.7.5 displayed participants' email addresses in ICS files without the enabled “Expose User Data” option.
