@@ -1,8 +1,9 @@
 Changelog
 =========
 
-1.7.9 (Unreleased)
+1.7.9 (July 12, 2025)
 ---------------------
+- fix #566: Fix caldav birthday event sync
 - Fix #565: Fix caldav `Copy to clipboard`
 
 1.7.8 (July 11, 2025)
