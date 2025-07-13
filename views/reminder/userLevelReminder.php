@@ -14,7 +14,7 @@ use humhub\widgets\modal\ModalButton;
 ?>
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('CalendarModule.base', '<strong>Reminder</strong> settings'),
-    'footer' => ModalButton::cancel() . ModalButton::save(),
+    'footer' => ModalButton::cancel() . ModalButton::save()->submit(),
 ]) ?>
     <div class="form-text">
         <?= Yii::t('CalendarModule.base', 'Your reminder settings for event: <strong>\'{title}\'</strong>', [

@@ -29,7 +29,7 @@ if ($model instanceof CalendarTypeSetting) {
 
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('CalendarModule.views', $title),
-    'footer' => ModalButton::cancel() . ModalButton::save(),
+    'footer' => ModalButton::cancel() . ModalButton::save()->submit(),
 ]) ?>
     <div id="event-type-color-field" class="input-group input-color-group">
         <?= $form->field($model, 'color')->colorInput() ?>

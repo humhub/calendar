@@ -39,7 +39,7 @@ $formButtons = $isNewRecord
     : ModalButton::cancel(Yii::t('CalendarModule.views', 'Close'))
         ->id('calendar-entry-participation-button-close');
 if ($calendarEntryParticipationForm->entry->content->canEdit()) {
-    $formButtons .= ModalButton::save(null, $saveUrl)
+    $formButtons .= ModalButton::save()->submit($saveUrl)
         ->id('calendar-entry-participation-button-save')
         ->cssClass(!$isNewRecord || !$isParticipationEnabled ? '' : 'd-none');
 }

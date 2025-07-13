@@ -1,7 +1,8 @@
 <?php
+
 use humhub\modules\calendar\assets\CalendarBaseAssets;
-use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\widgets\bootstrap\Tabs;
 use humhub\widgets\modal\Modal;
@@ -35,7 +36,7 @@ $calendarEntryForm->entry->color = empty($calendarEntryForm->entry->color) ? $th
     'title' => $header,
     'size' => Modal::SIZE_LARGE,
     'closable' => false,
-    'footer' => ModalButton::cancel() . ModalButton::save($saveButtonText, $editUrl),
+    'footer' => ModalButton::cancel() . ModalButton::save($saveButtonText)->submit($editUrl),
     'form' => ['enableClientValidation' => false],
 ]) ?>
 <div id="calendar-entry-form" data-ui-widget="calendar.Form" data-ui-init data-is-recurrent="<?= RecurrenceHelper::isRecurrent($calendarEntryForm->entry)?>">
