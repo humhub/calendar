@@ -55,7 +55,7 @@ class FullCalendarSettings extends Model
 
         // if default viewMode is "list" (or old entry like "listMonth"), take the configured list view type
         if (substr($this->viewMode, 0, 4) == 'list') {
-            $this->viewMode === $this->listViewType;
+            $this->viewMode = $this->listViewType;
         }
     }
 
