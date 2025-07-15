@@ -8,6 +8,7 @@
 
 namespace humhub\modules\calendar\assets;
 
+use humhub\modules\calendar\models\participation\FullCalendarSettings;
 use humhub\modules\ui\view\components\View;
 use Yii;
 use yii\web\AssetBundle;
@@ -45,6 +46,7 @@ class CalendarAsset extends AssetBundle
                 'button.day' => Yii::t('CalendarModule.base', 'Day'),
                 'button.list' => Yii::t('CalendarModule.base', 'List'),
             ],
+            'listViewType' => (new FullCalendarSettings())->listViewType,
         ]);
         return parent::register($view);
     }
