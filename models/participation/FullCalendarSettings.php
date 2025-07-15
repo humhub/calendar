@@ -141,6 +141,6 @@ class FullCalendarSettings extends Model
             self::LIST_VIEW_WEEK => Yii::t('CalendarModule.base', 'Week'),
             self::LIST_VIEW_MONTH => Yii::t('CalendarModule.base', 'Month'),
             self::LIST_VIEW_YEAR => Yii::t('CalendarModule.base', 'Year'),
-        ]
+        ];
     }
 }
