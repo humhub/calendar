@@ -1,6 +1,10 @@
 Changelog
 =========
 
+TBA
+---------------------
+- Enh #569: Make list view type configurable
+
 1.7.9 (July 12, 2025)
 ---------------------
 - fix #566: Fix caldav birthday event sync
