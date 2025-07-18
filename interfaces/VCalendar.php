@@ -278,7 +278,7 @@ class VCalendar extends Model
     {
         $result = $user->getDisplayName();
 
-        if (!$this->includeUserInfo && $user->email) {
+        if ($this->includeUserInfo && $user->email) {
             $result .= ':MAILTO:' . $user->email;
         }
 

@@ -5,13 +5,20 @@ Changelog
 -------------------------
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 
-1.7.8 (Unreleased)
+1.7.9 (July 12, 2025)
 ---------------------
+- fix #566: Fix caldav birthday event sync
+- Fix #565: Fix caldav `Copy to clipboard`
+
+1.7.8 (July 11, 2025)
+---------------------
+- Security: Versions between 1.7.7 - 1.7.5 displayed participants' email addresses in ICS files without the enabled “Expose User Data” option.
 - Enh #557: Use content ID in the "Custom Pages" extension
 - Enh #562: Add JWT token for caldav password
 - Enh #557: Use content ID in the `Custom Pages` extension
 - Enh #561: Add calendar name for `ical`
 - Fix #559: Email Notification subjects HTML encoded
+- Enh #564: Fix "Expose User Data" option
 
 1.7.7 (June 30, 2025)
 ---------------------

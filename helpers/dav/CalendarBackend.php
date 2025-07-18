@@ -130,7 +130,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
         if (StringHelper::startsWith($eventId, 'birthday')) {
             $userGuid = substr($eventId, 8);
-            $birthdayUser = BirthdayCalendarQuery::find()->filterByGuid($userGuid)->one();
+            $birthdayUser = BirthdayCalendarQuery::find()->filterByGuid($userGuid)->query()->one();
 
             if ($birthdayUser) {
                 $event = new BirthdayCalendarEntry(['model' => $birthdayUser]);
