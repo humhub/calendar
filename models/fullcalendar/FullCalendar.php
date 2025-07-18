@@ -8,20 +8,17 @@
 
 namespace humhub\modules\calendar\models\fullcalendar;
 
-use humhub\components\ActiveRecord;
+use DateTime;
+use Exception;
+use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
-use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\components\ContentActiveRecord;
-use Yii;
-use DateTime;
-use Exception;
 use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
-use humhub\libs\Html;
 use yii\base\InvalidConfigException;
 
 class FullCalendar
