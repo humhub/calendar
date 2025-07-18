@@ -15,7 +15,7 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\custom_pages\modules\template\elements\BaseContentRecordsElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
 
