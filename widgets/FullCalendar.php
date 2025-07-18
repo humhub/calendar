@@ -40,7 +40,7 @@ class FullCalendar extends JsWidget
 
     public function init()
     {
-        CalendarAsset::register($this->getView());
+        CalendarAsset::registerForContainer($this->getView(), $this->contentContainer);
 
         if (Yii::$app->user->isGuest) {
             $this->canWrite = false;
