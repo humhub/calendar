@@ -1,7 +1,7 @@
 Changelog
 =========
 
-TBA
+1.7.10 (July 21, 2025)
 ---------------------
 - Enh #569: Make list view type configurable
 
