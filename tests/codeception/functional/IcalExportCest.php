@@ -82,8 +82,8 @@ class IcalExportCest
 
         $I->assertNotFalse($teamMeeting, 'Team Meeting event exists');
         $I->assertEquals('Team Meeting', (string)$teamMeeting->SUMMARY);
-        $I->assertEquals('20250601T100000', (string)$teamMeeting->DTSTART);
-        $I->assertEquals('20250601T110000', (string)$teamMeeting->DTEND);
+        $I->assertEquals('20250601T100000Z', (string)$teamMeeting->DTSTART);
+        $I->assertEquals('20250601T110000Z', (string)$teamMeeting->DTEND);
         $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
         $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
         $I->assertEquals(4, count($teamMeeting->ATTENDEE), 'Team Meeting has 4 attendees');
@@ -152,8 +152,8 @@ class IcalExportCest
         $specialEvent = reset($specialEvent);
         $I->assertNotFalse($specialEvent, 'Special characters event exists');
         $I->assertEquals('Event with Comma, & Semicolon;', (string)$specialEvent->SUMMARY);
-        $I->assertEquals('20250602T140000', (string)$specialEvent->DTSTART);
-        $I->assertEquals('20250602T150000', (string)$specialEvent->DTEND);
+        $I->assertEquals('20250602T140000Z', (string)$specialEvent->DTSTART);
+        $I->assertEquals('20250602T150000Z', (string)$specialEvent->DTEND);
         $I->assertEquals('Room B, Building 1', (string)$specialEvent->LOCATION);
         $I->assertEquals('Test special chars: \n new line', (string)$specialEvent->DESCRIPTION);
         $I->assertEquals(3, count($specialEvent->ATTENDEE), 'Special characters event has 3 attendees');
