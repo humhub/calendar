@@ -5,6 +5,10 @@ Changelog
 -------------------------
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 
+1.7.10 (July 21, 2025)
+---------------------
+- Enh #569: Make list view type configurable
+
 1.7.9 (July 12, 2025)
 ---------------------
 - fix #566: Fix caldav birthday event sync

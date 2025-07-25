@@ -24,4 +24,6 @@ ParticipationFormAssets::register($this);
     </div>
 
     <?= $form->field($fullCalendarSettings, 'viewMode')->dropDownList($fullCalendarSettings->getViewModeItems()) ?>
+
+    <?= $form->field($fullCalendarSettings, 'listViewType')->dropDownList($fullCalendarSettings->getListViewTypes()) ?>
 </div>

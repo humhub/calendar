@@ -8,6 +8,7 @@
 
 namespace humhub\modules\calendar\assets;
 
+use humhub\modules\calendar\models\participation\FullCalendarSettings;
 use Yii;
 use yii\web\AssetBundle;
 
@@ -33,7 +34,7 @@ class CalendarAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public static function register($view)
+    public static function registerForContainer($view, $contentContainer = null)
     {
         $view->registerJsConfig('calendar.Calendar', [
             'text' => [
@@ -43,8 +44,8 @@ class CalendarAsset extends AssetBundle
                 'button.day' => Yii::t('CalendarModule.base', 'Day'),
                 'button.list' => Yii::t('CalendarModule.base', 'List'),
             ],
+            'listViewType' => (new FullCalendarSettings(['contentContainer' => $contentContainer]))->listViewType,
         ]);
         return parent::register($view);
     }
-
 }
