@@ -164,7 +164,7 @@ Here is a short description of the interfac functions:
  - `getColor()`: (optional) A color used within the calendar view and sidebar snippet, if null is returned the default color will be used
  - `getSequence()`: (optional) The event [revision sequence](https://www.kanzaki.com/docs/ical/sequence.html) 
  - `getLocation()`: (optional) an event location string
- - `getBadge()`: (optional) a `humhub\widgets\Label` or string used in the sidebar snippet
+ - `getBadge()`: (optional) a `humhub\widgets\bootstrap\Badge` or string used in the sidebar snippet
  - `getCalendarOptions()`: (optional) additional event configuration
 
 > **Optional** functions can return null if not supported.
