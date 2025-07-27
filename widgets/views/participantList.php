@@ -47,14 +47,12 @@ use yii\helpers\Html;
         <?php endforeach; ?>
     <?= Html::endTag('div') ?>
 
-    <?php if ($pagination->getPageCount() > 1): ?>
-    <div class="pagination-container mt-4">
+    <div class="pagination-container">
         <?= AjaxLinkPager::widget([
             'pagination' => $pagination,
             'linkOptions' => ['data' => ['action-click' => 'changeParticipantsListPage']],
         ]) ?>
         <?= Html::hiddenInput('calendar-entry-participants-count', $pagination->totalCount) ?>
     </div>
-    <?php endif; ?>
 
 <?= Html::endTag('div') ?>
