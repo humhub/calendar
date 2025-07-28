@@ -143,11 +143,7 @@ humhub.module('calendar', function (module, require, $) {
         Form.prototype.setEditMode = function (evt) {
             var mode = evt.$trigger.data('editMode');
 
-            if (mode == Form.RECUR_EDIT_MODE_THIS) {
-                $('.field-calendarentryform-is_public').hide();
-            } else {
-                $('.field-calendarentryform-is_public').show();
-            }
+            $('.field-calendarentryform-is_public').toggle(mode != Form.RECUR_EDIT_MODE_THIS);
 
             this.$.find('.calendar-edit-mode-back').show();
             this.$.find('.recurrence-edit-type').hide();
@@ -155,7 +151,7 @@ humhub.module('calendar', function (module, require, $) {
             this.$.find('#recurrenceEditMode').val(mode);
         };
 
-        Form.prototype.showEditModes = function (evt) {
+        Form.prototype.showEditModes = function () {
             this.$.find('.calendar-edit-mode-back').hide();
             this.$.find('.recurrence-edit-type').show();
             this.$.find('.calendar-entry-form-tabs').hide();
@@ -206,7 +202,6 @@ humhub.module('calendar', function (module, require, $) {
                 });
                 $timeFields.css('opacity', '0.2');
                 $timeZoneInput.hide();
-
             } else {
                 $timeInputs.each(function () {
                     var $this = $(this);
@@ -233,20 +228,18 @@ humhub.module('calendar', function (module, require, $) {
         Form.prototype.changeEventType = function (evt) {
             var $selected = evt.$trigger.find(':selected');
             if ($selected.data('color')) {
-                $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('color'));
-                $('.colorpicker-element').data('colorpicker').update();
+                this.$.find('#calendarentry-color').val($selected.data('color'));
             } else if (module.config['defaultEventColor']) {
-                $('.colorpicker-element').data('colorpicker').color.setColor(module.config['defaultEventColor']);
-                $('.colorpicker-element').data('colorpicker').update();
+                this.$.find('#calendarentry-color').val(module.config['defaultEventColor']);
             }
         };
 
         Form.prototype.toggleRecurring = function (evt) {
-            $('.calendar-entry-form-tabs .tab-recurrence').parent().toggle(evt.$trigger.is(':checked'));
+            $('.calendar-entry-form-tabs .tab-recurrence').toggle(evt.$trigger.is(':checked'));
         };
 
         Form.prototype.toggleReminder = function (evt) {
-            $('.calendar-entry-form-tabs .tab-reminder').parent().toggle(evt.$trigger.is(':checked'));
+            $('.calendar-entry-form-tabs .tab-reminder').toggle(evt.$trigger.is(':checked'));
         };
 
         var CalendarEntry = Content.extend();

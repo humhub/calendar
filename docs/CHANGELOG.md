@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.0 (unreleased)
+-------------------------
+- Enh #549: Migration to Bootstrap 5 for HumHub 1.18
+
 1.7.10 (July 21, 2025)
 ---------------------
 - Enh #569: Make list view type configurable
