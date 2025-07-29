@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.11 (Unreleased)
+---------------------
+- Fix #570: Fix extension for module "Custom Pages"
+
 1.7.10 (July 21, 2025)
 ---------------------
 - Enh #569: Make list view type configurable
