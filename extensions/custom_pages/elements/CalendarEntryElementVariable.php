@@ -26,13 +26,13 @@ class CalendarEntryElementVariable extends BaseContentRecordElementVariable
     public function setRecord(?ActiveRecord $record): BaseRecordElementVariable
     {
         if ($record instanceof CalendarEntry) {
-            $this->title = $record->title;
-            $this->description = $record->description;
+            $this->title = $record->title ?? '';
+            $this->description = $record->description ?? '';
             $this->url = $record->getUrl();
-            $this->color = $record->color;
-            $this->startDateTime = $record->start_datetime;
-            $this->endDateTime = $record->end_datetime;
-            $this->location = $record->location;
+            $this->color = $record->color ?? '';
+            $this->startDateTime = $record->start_datetime ?? '';
+            $this->endDateTime = $record->end_datetime ?? '';
+            $this->location = $record->location ?? '';
         }
 
         return parent::setRecord($record);
