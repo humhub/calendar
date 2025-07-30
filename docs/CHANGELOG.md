@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.7.11 (Unreleased)
----------------------
+1.7.11 (July 30, 2025)
+----------------------
 - Fix #570: Fix extension for module "Custom Pages"
 
 1.7.10 (July 21, 2025)
