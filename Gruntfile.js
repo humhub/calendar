@@ -16,6 +16,7 @@ module.exports = function (grunt) {
         cssmin: {
             target: {
                 files: {
+                    'resources/css/feathericons.min.css': ['resources/css/feathericons.css'],
                     'resources/css/calendar.min.css': ['resources/css/calendar.css']
                 }
             }
@@ -39,6 +40,7 @@ module.exports = function (grunt) {
             },
             fullcalendarCss: {
                 src:[
+                    'resources/css/feathericons.min.css',
                     'node_modules/@fullcalendar/core/main.min.css',
                     'node_modules/@fullcalendar/daygrid/main.min.css',
                     'node_modules/@fullcalendar/timegrid/main.min.css',
