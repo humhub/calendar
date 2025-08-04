@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\interfaces;
 
 use DateTime;
+use DateTimeZone;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
@@ -207,7 +208,7 @@ class VCalendar extends Model
 
         $lastModified = $item->getLastModified();
         if ($lastModified) {
-            $result['LAST-MODIFIED'] = $lastModified;
+            $result['LAST-MODIFIED'] = $lastModified->setTimezone(new DateTimeZone('UTC'))->format('Ymd\THis\Z');
         }
 
         $evt = $this->vcalendar->add('VEVENT', $result);
