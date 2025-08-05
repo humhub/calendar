@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.12 (Unreleased)
+----------------------
+- Enh #558: ICS Import on Android
+
 1.7.11 (July 30, 2025)
 ----------------------
 - Fix #570: Fix extension for module "Custom Pages"
