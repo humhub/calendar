@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.7.12 (Unreleased)
-----------------------
+1.7.12 (August 5, 2025)
+-----------------------
 - Enh #558: ICS Import on Android
 
 1.7.11 (July 30, 2025)
