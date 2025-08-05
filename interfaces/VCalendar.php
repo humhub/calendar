@@ -288,7 +288,7 @@ class VCalendar extends Model
 
     private function getMailto(User $user)
     {
-        if (!$this->includeUserInfo && $user->email) {
+        if ($this->includeUserInfo && $user->email) {
             return $user->email;
         }
 

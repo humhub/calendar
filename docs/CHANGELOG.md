@@ -1,13 +1,28 @@
 Changelog
 =========
 
-1.7.8 (Unreleased)
+1.7.11 (July 30, 2025)
+----------------------
+- Fix #570: Fix extension for module "Custom Pages"
+
+1.7.10 (July 21, 2025)
 ---------------------
+- Enh #569: Make list view type configurable
+
+1.7.9 (July 12, 2025)
+---------------------
+- fix #566: Fix caldav birthday event sync
+- Fix #565: Fix caldav `Copy to clipboard`
+
+1.7.8 (July 11, 2025)
+---------------------
+- Security: Versions between 1.7.7 - 1.7.5 displayed participants' email addresses in ICS files without the enabled “Expose User Data” option.
 - Enh #557: Use content ID in the "Custom Pages" extension
 - Enh #562: Add JWT token for caldav password
 - Enh #557: Use content ID in the `Custom Pages` extension
 - Enh #561: Add calendar name for `ical`
 - Fix #559: Email Notification subjects HTML encoded
+- Enh #564: Fix "Expose User Data" option
 
 1.7.7 (June 30, 2025)
 ---------------------
