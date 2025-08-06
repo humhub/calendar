@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\interfaces;
 
 use DateTime;
+use DateTimeZone;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
@@ -207,7 +208,7 @@ class VCalendar extends Model
 
         $lastModified = $item->getLastModified();
         if ($lastModified) {
-            $result['LAST-MODIFIED'] = $lastModified;
+            $result['LAST-MODIFIED'] = $lastModified->setTimezone(new DateTimeZone('UTC'))->format('Ymd\THis\Z');
         }
 
         $evt = $this->vcalendar->add('VEVENT', $result);
@@ -237,12 +238,18 @@ class VCalendar extends Model
         if ($item instanceof CalendarEventParticipationIF) {
             $organizer = $item->getOrganizer();
             if ($organizer instanceof User) {
-                $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
+                $evt->add(
+                    'ORGANIZER;CN=' . $this->getCN($organizer),
+                    'mailto:' . $this->getMailto($organizer),
+                );
             }
 
-            foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $user) {
+            foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $participant) {
                 /* @var $user User */
-                $evt->add('ATTENDEE', ['CN' => $this->getCN($user)]);
+                $evt->add(
+                    'ATTENDEE;CN=' . $this->getCN($participant),
+                    'mailto:' . $this->getMailto($participant),
+                );
             }
         }
 
@@ -276,13 +283,16 @@ class VCalendar extends Model
 
     private function getCN(User $user)
     {
-        $result = $user->getDisplayName();
+        return addslashes($user->getDisplayName());
+    }
 
+    private function getMailto(User $user)
+    {
         if ($this->includeUserInfo && $user->email) {
-            $result .= ':MAILTO:' . $user->email;
+            return $user->email;
         }
 
-        return $result;
+        return '-';
     }
 
     /**
@@ -316,6 +326,22 @@ class VCalendar extends Model
         $vcalendar = new VObject\Component\VCalendar();
         $vt = $vcalendar->createComponent('VTIMEZONE');
         $vt->TZID = $tz->getName();
+
+        $offset = $transitions[0]['offset'] ?? 0;
+        $tzname = $transitions[0]['abbr'] ?? $tzid;
+
+        $hours = intdiv($offset, 3600);
+        $minutes = abs(($offset % 3600) / 60);
+        $sign = $offset >= 0 ? '+' : '-';
+        $offsetStr = sprintf('%s%02d%02d', $sign, abs($hours), $minutes);
+
+        $standard = $vcalendar->createComponent('STANDARD');
+        $standard->add('DTSTART', '19700101T000000');
+        $standard->add('TZOFFSETFROM', $offsetStr);
+        $standard->add('TZOFFSETTO', $offsetStr);
+        $standard->add('TZNAME', $tzname);
+        $vt->add($standard);
+
         $std = null;
         $dst = null;
         foreach ($transitions as $i => $trans) {

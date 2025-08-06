@@ -5,6 +5,18 @@ Changelog
 -------------------------
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 
+1.7.13 (August 6, 2025)
+-----------------------
+- Fix #572: Fix CSP Violation in `fullcalendar.bundle.min.css`
+
+1.7.12 (August 5, 2025)
+-----------------------
+- Enh #558: ICS Import on Android
+
+1.7.11 (July 30, 2025)
+----------------------
+- Fix #570: Fix extension for module "Custom Pages"
+
 1.7.10 (July 21, 2025)
 ---------------------
 - Enh #569: Make list view type configurable
