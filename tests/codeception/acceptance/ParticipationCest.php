@@ -45,13 +45,13 @@ class ParticipationCest
         $I->wait(1);
 
         $I->click('Participant Event');
-        $I->waitForText('Participant Description', null, '#globalModal');
+        $I->waitForText('Participant Description', 10, '#globalModal');
         $I->dontSee('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
         $I->dontSee('Decline', '#globalModal button');
 
         $I->click('Invite', '#globalModal');
-        $I->waitForText('Participants', null, '#globalModal');
+        $I->waitForText('Participants', 10, '#globalModal');
 
         $I->selectOption('#calendarentry-participation_mode', 2);
 
@@ -61,13 +61,13 @@ class ParticipationCest
         $I->click('Save', '#globalModal');
         $I->seeSuccess();
         $I->click('Participant Event');
-        $I->waitForText('Participant Description', null, '#globalModal');
+        $I->waitForText('Participant Description', 10, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->see('Maybe', '#globalModal button');
         $I->see('Decline', '#globalModal button');
 
         $I->click('Invite', '#globalModal');
-        $I->waitForText('Participants', null, '#globalModal-title');
+        $I->waitForText('Participants', 10, '#globalModal-title');
         $I->click('.tab-participation');
         $I->click('[for="calendarentry-allow_decline"]', '#globalModal');
         $I->click('[for="calendarentry-allow_maybe"]', '#globalModal');
@@ -75,15 +75,15 @@ class ParticipationCest
         $I->wait(1);
 
         $I->click('Participant Event');
-        $I->waitForText('Participant Description', null, '#globalModal');
+        $I->waitForText('Participant Description', 10, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
         $I->dontSee('Decline', '#globalModal button');
 
         $I->click('Attend', '#globalModal');
-        $I->waitForText('1 Attending', null, '#globalModal');
+        $I->waitForText('1 Attending', 10, '#globalModal');
         $I->click('1 Attending', '#globalModal');
-        $I->waitForText('Participants', null, '#globalModal');
+        $I->waitForText('Participants', 10, '#globalModal');
         $I->see('Admin Tester', '#globalModal');
     }
 }

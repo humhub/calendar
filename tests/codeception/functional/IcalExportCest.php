@@ -10,7 +10,6 @@ namespace calendar\functional;
 
 use calendar\FunctionalTester;
 use humhub\modules\calendar\helpers\AuthTokenService;
-use humhub\modules\space\behaviors\SpaceModelModules;
 use humhub\modules\user\models\User;
 use Sabre\VObject\Reader;
 use Yii;

@@ -40,7 +40,7 @@ class SettingsCest
         $I->createEventToday('Setting Event', 'Setting Description', null, null, false);
         $I->click('Next', '#globalModal');
 
-        $I->waitForText('Participants', null, '#globalModal');
+        $I->waitForText('Participants', 10, '#globalModal');
         $I->seeInField('#calendarentry-participation_mode', '0');
         $I->dontSeeElement('.participationOnly');
 
@@ -61,7 +61,7 @@ class SettingsCest
         $I->amOnSpace1('/calendar/view');
         $I->createEventToday('Setting Event', 'Setting Description', null, null, false);
         $I->click('Next', '#globalModal');
-        $I->waitForText('Participants', null, '#globalModal-title');
+        $I->waitForText('Participants', 10, '#globalModal-title');
         $I->seeInField('#calendarentry-participation_mode', '2');
         $I->seeElement('.participationOnly');
         $I->dontSeeCheckboxIsChecked('#calendarentry-allow_decline');
