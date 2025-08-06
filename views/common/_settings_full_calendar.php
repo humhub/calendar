@@ -19,7 +19,7 @@ ParticipationFormAssets::register($this);
         <?= Yii::t('CalendarModule.config', 'Calendar default view mode settings'); ?>
     </h4>
 
-    <div class="help-block">
+    <div class="form-text">
         <?= $helpBlock ?>
     </div>
 

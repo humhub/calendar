@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.0 (unreleased)
+-------------------------
+- Enh #549: Migration to Bootstrap 5 for HumHub 1.18
+
 1.7.13 (August 6, 2025)
 -----------------------
 - Fix #572: Fix CSP Violation in `fullcalendar.bundle.min.css`

@@ -9,11 +9,10 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\calendar\helpers\ICalHelper;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 use Yii;
 
 class ExportButton extends Widget
@@ -42,7 +41,7 @@ class ExportButton extends Widget
             return;
         }
 
-        return ModalButton::defaultType()
+        return ModalButton::light()
             ->icon('download')
             ->load(Url::to([
                 '/calendar/export/modal',

@@ -1,17 +1,16 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\external_calendar\assets\Assets;
-use humhub\widgets\ModalDialog;
 use humhub\modules\external_calendar\models\CalendarExport;
-use humhub\widgets\ModalButton;
-use humhub\widgets\Tabs;
+use humhub\widgets\bootstrap\Tabs;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /**
- * @var $this \humhub\modules\ui\view\components\View
+ * @var $this View
  * @var $token string
  */
-
-
 
 $items = [
     ['label' => Yii::t('CalendarModule.base', 'iCal'), 'view' => 'ical'],
@@ -19,18 +18,17 @@ $items = [
 if (Yii::$app->urlManager->enablePrettyUrl) {
     $items[] = ['label' => Yii::t('CalendarModule.base', 'CalDAV'), 'view' => 'caldav'];
 }
-
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('CalendarModule.export', '<strong>Calendar</strong> export')]) ?>
+<?php Modal::beginDialog([
+    'title' => Yii::t('CalendarModule.export', '<strong>Calendar</strong> export'),
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+]) ?>
 
 <?= Tabs::widget([
     'viewPath' => '@calendar/views/export/modal',
     'params' => ['token' => $token],
     'items' => $items,
-]); ?>
+]) ?>
 
-<div class="modal-footer">
-    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
-</div>
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

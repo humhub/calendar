@@ -9,7 +9,6 @@
 namespace humhub\modules\calendar\assets;
 
 use humhub\modules\calendar\models\participation\FullCalendarSettings;
-use humhub\modules\ui\view\components\View;
 use Yii;
 use yii\web\AssetBundle;
 
@@ -33,8 +32,7 @@ class CalendarAsset extends AssetBundle
     ];
 
     /**
-     * @param View $view
-     * @return AssetBundle
+     * @inheritdoc
      */
     public static function registerForContainer($view, $contentContainer = null)
     {

@@ -35,7 +35,7 @@ class GlobalCalendarCest
         $I->amOnRoute(['/calendar/global/index']);
         $I->expectTo('see my space calendar entry');
         $I->see('Select calendars');
-        $I->waitForText('Space Event', null, '#calendar');
+        $I->waitForText('Space Event', 10, '#calendar');
 
         $I->amGoingTo('activate the profile calendar module by creating a new event');
         $I->click('.fc-today');
@@ -46,34 +46,34 @@ class GlobalCalendarCest
         $I->click('Next', '#globalModal');
 
 
-        $I->waitForText('Add profile calendar', null, '#globalModal');
+        $I->waitForText('Add profile calendar', 10, '#globalModal');
         $I->click('Enable', '#globalModal');
-        $I->waitForText('Next', null, '#globalModal');
+        $I->waitForText('Next', 10, '#globalModal');
         $I->click('Next', '#globalModal');
 
-        $I->waitForText('Create Event', null, '#globalModal');
+        $I->waitForText('Create Event', 10, '#globalModal');
         $I->fillField('CalendarEntry[title]', 'My Test Profile Entry');
         $I->fillField('#calendarentry-description .humhub-ui-richtext', 'My Test Profile Entry Description');
         $I->click('Next', '#globalModal');
 
-        //$I->waitForText('Close', null, '#globalModal');
+        //$I->waitForText('Close', 10, '#globalModal');
         //$I->click('Close', '#globalModal');
 
         //$I->wait(1);
-        $I->waitForText('My Test Profile Entry', null, '.fc-event-container');
+        $I->waitForText('My Test Profile Entry', 10, '.fc-event-container');
         $I->see('My Test Profile Entry', '.fc-title');
 
         // Active space filter
         $I->amGoingTo('Select the space calendar filter');
         $I->click('.calendar_my_spaces');
         $I->wait(2);
-        $I->waitForText('Space Event', null, '#calendar');
+        $I->waitForText('Space Event', 10, '#calendar');
 
         $I->wantToTest('the global calendar filters');
         $I->amGoingTo('deselect the space calendar filter');
         $I->click('.calendar_my_spaces');
         $I->wait(2);
-        $I->waitForText('Space Event', null, '#calendar');
+        $I->waitForText('Space Event', 10, '#calendar');
     }
 
     /**

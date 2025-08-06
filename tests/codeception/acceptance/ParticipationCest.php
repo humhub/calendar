@@ -41,49 +41,49 @@ class ParticipationCest
         $I->cantSee('Maximum number of participants', '#globalModal');
         $I->cantSee('Allow option', '#globalModal');
 
-        $I->click('[type="submit"]');
+        $I->click('Save', '#globalModal');
         $I->wait(1);
 
         $I->click('Participant Event');
-        $I->waitForText('Participant Description', null, '#globalModal');
+        $I->waitForText('Participant Description', 10, '#globalModal');
         $I->dontSee('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
         $I->dontSee('Decline', '#globalModal button');
 
         $I->click('Invite', '#globalModal');
-        $I->waitForText('Participants', null, '#globalModal');
+        $I->waitForText('Participants', 10, '#globalModal');
 
         $I->selectOption('#calendarentry-participation_mode', 2);
 
         $I->fillField('#calendarentry-max_participants', 1);
         $I->fillField('#calendarentry-participant_info .humhub-ui-richtext', 'My Test Event');
 
-        $I->click('[type="submit"]');
+        $I->click('Save', '#globalModal');
         $I->seeSuccess();
         $I->click('Participant Event');
-        $I->waitForText('Participant Description', null, '#globalModal');
+        $I->waitForText('Participant Description', 10, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->see('Maybe', '#globalModal button');
         $I->see('Decline', '#globalModal button');
 
         $I->click('Invite', '#globalModal');
-        $I->waitForText('Participants', null, '#globalModal h4');
+        $I->waitForText('Participants', 10, '#globalModal-title');
         $I->click('.tab-participation');
         $I->click('[for="calendarentry-allow_decline"]', '#globalModal');
         $I->click('[for="calendarentry-allow_maybe"]', '#globalModal');
-        $I->click('[type="submit"]');
+        $I->click('Save', '#globalModal');
         $I->wait(1);
 
         $I->click('Participant Event');
-        $I->waitForText('Participant Description', null, '#globalModal');
+        $I->waitForText('Participant Description', 10, '#globalModal');
         $I->see('Attend', '#globalModal button');
         $I->dontSee('Maybe', '#globalModal button');
         $I->dontSee('Decline', '#globalModal button');
 
         $I->click('Attend', '#globalModal');
-        $I->waitForText('1 Attending', null, '#globalModal');
+        $I->waitForText('1 Attending', 10, '#globalModal');
         $I->click('1 Attending', '#globalModal');
-        $I->waitForText('Participants', null, '#globalModal');
+        $I->waitForText('Participants', 10, '#globalModal');
         $I->see('Admin Tester', '#globalModal');
     }
 }

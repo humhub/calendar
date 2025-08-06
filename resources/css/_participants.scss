@@ -1,0 +1,103 @@
+.calendar-entry-participants {
+  &.modal-body {
+    padding: 0 0 20px 0;
+  }
+
+  button.btn-participants-action {
+    margin: 10px 0 0 12px;
+  }
+
+  .pagination {
+    margin: 10px 0 0;
+  }
+
+  select.form-control {
+    width: auto;
+    height: 40px;
+    padding-right: 24px;
+  }
+}
+
+.calendar-entry-new-participants-form {
+  .form-check {
+    [type=checkbox] {
+      margin-top: 7px;
+    }
+
+    .field-calendarentryparticipationform-newforcestatus {
+      vertical-align: middle;
+      margin: 0 !important;
+    }
+  }
+
+  button.btn {
+    height: 34px;
+  }
+}
+
+.calendar-entry-participants .hh-list button.btn {
+  height: 34px;
+}
+
+#calendar-entry-participants-list {
+  position: relative;
+}
+
+.calendar-entry-new-participants-form {
+  .form-group {
+    &.field-calendarentryparticipationform-newparticipantstatus {
+      padding: 0;
+      margin: 0;
+    }
+
+    .checkbox label {
+      padding-left: 0;
+    }
+  }
+
+  .field-calendarentryparticipationform-newforcestatus {
+    display: inline-block;
+  }
+}
+
+.calendar-entry-participants-filter-title {
+  font-size: 80%;
+}
+
+.calendar-entry-participants-filters .btn.btn-info {
+  margin: 10px 8px 0 0;
+  padding: 3px 14px;
+
+  &.active {
+    background: #0397A8 !important;
+    color: #FFF !important;
+  }
+
+  &:not(.active) {
+    border: 1px solid #435F6F;
+    color: #435F6F !important;
+    background: #FFF;
+
+    &:hover {
+      background: #0397A8 !important;
+      border: 1px solid #0397A8;
+      color: #FFF !important;
+    }
+  }
+}
+
+.calendar-entry-participants {
+  .pagination-container {
+    margin-top: 25px;
+  }
+
+  .pagination > {
+    li > a {
+      color: #000;
+    }
+
+    .active > a {
+      color: #fff;
+    }
+  }
+}
