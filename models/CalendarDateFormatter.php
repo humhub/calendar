@@ -48,6 +48,10 @@ class CalendarDateFormatter extends Component
 
     public function getFormattedStartTime($format = 'short', $timeZone = null)
     {
+        if ($timeZone === null) {
+            $timeZone = CalendarUtils::getSystemTimeZone(true);
+        }
+
         if ($timeZone) {
             Yii::$app->formatter->timeZone = $timeZone;
         }
@@ -94,6 +98,10 @@ class CalendarDateFormatter extends Component
 
     public function getFormattedEndTime($format = 'short', $timeZone = null)
     {
+        if ($timeZone === null) {
+            $timeZone = CalendarUtils::getSystemTimeZone(true);
+        }
+
         if ($timeZone) {
             Yii::$app->formatter->timeZone = $timeZone;
         }

@@ -3,7 +3,6 @@
 namespace humhub\modules\calendar\models;
 
 use DateTime;
-use DateTimeZone;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\helpers\Url;
@@ -15,7 +14,6 @@ use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationI
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
-use humhub\modules\calendar\interfaces\VCalendar;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
@@ -1069,7 +1067,7 @@ class CalendarEntry extends ContentActiveRecord implements
 
     public function isPast(): bool
     {
-        $currentTimeZone = new DateTimeZone(Yii::$app->timeZone);
+        $currentTimeZone = CalendarUtils::getSystemTimeZone();
 
         $now = (new DateTime('now'))
             ->setTimezone($currentTimeZone);
