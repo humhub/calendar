@@ -281,12 +281,12 @@ class CalendarUtils
     public static function getUserTimeZone($asString = false)
     {
         if (!static::$userTimezone) {
-            $tz =  Yii::$app->user->isGuest
-                ? Yii::$app->timeZone
+            $tz = Yii::$app->user->isGuest
+                ? static::getSystemTimeZone(true)
                 : Yii::$app->user->getTimeZone();
 
             if (!$tz) {
-                $tz = Yii::$app->timeZone;
+                $tz = static::getSystemTimeZone(true);
             }
 
             if ($tz) {
@@ -300,7 +300,8 @@ class CalendarUtils
 
     public static function getSystemTimeZone($asString = false)
     {
-        return $asString ? Yii::$app->timeZone : new DateTimeZone(Yii::$app->timeZone);
+        $tz = Yii::$app->settings->get('defaultTimeZone', Yii::$app->timeZone);
+        return $asString ? $tz : new DateTimeZone($tz);
     }
 
     public static function toDBDateFormat($date, $fixedTZ = true)
@@ -308,7 +309,7 @@ class CalendarUtils
         $date = static::getDateTime($date);
 
         if (!$fixedTZ) {
-            $date->setTimezone(new DateTimeZone(Yii::$app->timeZone));
+            $date->setTimezone(static::getSystemTimeZone());
         }
 
         return $date->format(static::DB_DATE_FORMAT);

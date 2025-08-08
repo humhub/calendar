@@ -10,11 +10,8 @@ namespace calendar\functional;
 
 use calendar\FunctionalTester;
 use humhub\modules\calendar\helpers\AuthTokenService;
-use humhub\modules\space\behaviors\SpaceModelModules;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Sabre\VObject\Reader;
-use tests\codeception\_pages\DashboardPage;
 use Yii;
 
 class IcalExportCest
@@ -27,6 +24,7 @@ class IcalExportCest
         $user->moduleManager->enable('calendar');
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
+        Yii::$app->getModule('calendar')->settings->set('includeUserInfo', true);
 
         $entry = $I->createCalendarEntry(
             $user,
@@ -88,10 +86,10 @@ class IcalExportCest
         $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
         $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
         $I->assertEquals(4, count($teamMeeting->ATTENDEE), 'Team Meeting has 4 attendees');
-        $I->assertStringContainsString('ATTENDEE:Admin Tester:MAILTO:admin@example.com', $icsContent, 'Admin is Attendee');
-        $I->assertStringContainsString('ATTENDEE:Peter Tester:MAILTO:user1@example.com', $icsContent, 'Peter is Attendee');
-        $I->assertStringContainsString('ATTENDEE:Sara Tester:MAILTO:user2@example.com', $icsContent, 'Sara is Attendee');
-        $I->assertStringContainsString('ATTENDEE:Andreas Tester:MAILTO:user3@example.com', $icsContent, 'Andreas is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ADMIN TESTER:mailto:admin@example.com', $icsContent, 'Admin is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
 
         $entry->hardDelete();
     }
@@ -104,6 +102,7 @@ class IcalExportCest
         $user->moduleManager->enable('calendar');
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
+        Yii::$app->getModule('calendar')->settings->set('includeUserInfo', true);
 
         $entry = $I->createCalendarEntry(
             $user,
@@ -157,9 +156,9 @@ class IcalExportCest
         $I->assertEquals('Room B, Building 1', (string)$specialEvent->LOCATION);
         $I->assertEquals('Test special chars: \n new line', (string)$specialEvent->DESCRIPTION);
         $I->assertEquals(3, count($specialEvent->ATTENDEE), 'Special characters event has 3 attendees');
-        $I->assertStringContainsString('ATTENDEE:Peter Tester:MAILTO:user1@example.com', $icsContent, 'Peter is Attendee');
-        $I->assertStringContainsString('ATTENDEE:Sara Tester:MAILTO:user2@example.com', $icsContent, 'Sara is Attendee');
-        $I->assertStringContainsString('ATTENDEE:Andreas Tester:MAILTO:user3@example.com', $icsContent, 'Andreas is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
 
         $entry->hardDelete();
     }
