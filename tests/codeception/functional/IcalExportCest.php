@@ -10,11 +10,8 @@ namespace calendar\functional;
 
 use calendar\FunctionalTester;
 use humhub\modules\calendar\helpers\AuthTokenService;
-use humhub\modules\space\behaviors\SpaceModelModules;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Sabre\VObject\Reader;
-use tests\codeception\_pages\DashboardPage;
 use Yii;
 
 class IcalExportCest
@@ -27,6 +24,7 @@ class IcalExportCest
         $user->moduleManager->enable('calendar');
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
+        Yii::$app->getModule('calendar')->settings->set('includeUserInfo', true);
 
         $entry = $I->createCalendarEntry(
             $user,
@@ -104,6 +102,7 @@ class IcalExportCest
         $user->moduleManager->enable('calendar');
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
+        Yii::$app->getModule('calendar')->settings->set('includeUserInfo', true);
 
         $entry = $I->createCalendarEntry(
             $user,

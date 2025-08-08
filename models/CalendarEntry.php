@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\models;
 
 use DateTime;
+use DateTimeZone;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\helpers\Url;
@@ -546,7 +547,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function getTimezone()
     {
-        return ($this->isAllDay()) ? 'UTC' : $this->time_zone;
+        return $this->isAllDay() ? CalendarUtils::getSystemTimeZone(true) : $this->time_zone;
     }
 
     /**
@@ -555,7 +556,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function getStartDateTime()
     {
-        return new DateTime($this->start_datetime ?? 'now', CalendarUtils::getSystemTimeZone());
+        return new DateTime($this->start_datetime ?? 'now', new DateTimeZone($this->getTimezone()));
     }
 
     /**
@@ -564,7 +565,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function getEndDateTime()
     {
-        return new DateTime($this->end_datetime ?? 'now', CalendarUtils::getSystemTimeZone());
+        return new DateTime($this->end_datetime ?? 'now', new DateTimeZone($this->getTimezone()));
     }
 
     /**
