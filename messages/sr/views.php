@@ -1,9 +1,9 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% ne može prisustvovati %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% prisustvuje %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% možda će prisustvovati %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} ne može prisustvovati {contentTitle} na {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} prisustvuje {contentTitle} na {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} možda će prisustvovati {contentTitle} na {dateTime}.',
     '<strong>Create</strong> new event type' => '<strong>Kreiraj</strong> novi tip događaja',
     '<strong>Edit</strong> calendar' => '<strong>Uredi</strong> kalendar',
     '<strong>Edit</strong> event type' => '<strong>Uredi</strong> tip događaja',
@@ -40,7 +40,7 @@ return [
     'Settings' => 'Postavke',
     'Snippet' => 'Isečak',
     'Title' => 'Funkcija',
-    '%displayName% is invited to %contentTitle%.' => '',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '',
     ':count Attending' => '',
     ':count Declined' => '',
     ':count Invited' => '',

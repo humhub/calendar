@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% se nemůže účastnit %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% se účastní %contentTitle%.',
-    '%displayName% is invited to %contentTitle%.' => '%displayName% je pozván do %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% se může účastnit %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} se nemůže účastnit {contentTitle} v {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} se účastní {contentTitle} v {dateTime}.',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '{displayName} je pozván do {contentTitle} v {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} se může účastnit {contentTitle} v {dateTime}.',
     ':count Attending' => ':count Účastní se',
     ':count Declined' => ':count Zamítnuto',
     ':count Invited' => ':count Pozváno',

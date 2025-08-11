@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% は %contentTitle% に参加できません。',
-    '%displayName% is attending %contentTitle%.' => '%displayName% は %contentTitle% に参加しています。',
-    '%displayName% is invited to %contentTitle%.' => '%displayName% は %contentTitle% に招待されています。',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% は %contentTitle% に参加している可能性があります。',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} は {contentTitle} {dateTime} に参加できません。',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} は {contentTitle} {dateTime} に参加しています。',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '{displayName} は {contentTitle} {dateTime} に招待されています。',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} は {contentTitle} {dateTime} に参加している可能性があります。',
     ':count Attending' => ':count 参加者',
     ':count Declined' => ':count 辞退者',
     ':count Invited' => ':count 招待者',

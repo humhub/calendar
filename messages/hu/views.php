@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% nem vehet részt ebben: %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% részt vehet itt: %contentTitle%.',
-    '%displayName% is invited to %contentTitle%.' => '%displayName% meghívást kapott ide: %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% esetleg részt vehet itt: %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} nem vehet részt ebben: {contentTitle} {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} részt vehet itt: {contentTitle} {dateTime}.',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '{displayName} meghívást kapott ide: {contentTitle} {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} esetleg részt vehet itt: {contentTitle} {dateTime}.',
     ':count Attending' => ':count Részt vesz',
     ':count Declined' => ':count Elutasítva',
     ':count Invited' => ':count Meghívva',

@@ -1,9 +1,9 @@
 <?php
 return [
-  '%displayName% attends to %contentTitle%.' => '',
-  '%displayName% created a new %contentTitle%.' => '',
-  '%displayName% maybe attends to %contentTitle%.' => '',
-  '%displayName% not attends to %contentTitle%.' => '',
+  '{displayName} attends to {contentTitle}.' => '',
+  '{displayName} created a new {contentTitle}.' => '',
+  '{displayName} maybe attends to {contentTitle}.' => '',
+  '{displayName} not attends to {contentTitle}.' => '',
   ':count attending' => '',
   ':count declined' => '',
   ':count maybe' => '',

@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% kan inte delta i %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% deltar i %contentTitle%.',
-    '%displayName% is invited to %contentTitle%.' => '%displayName% är inbjuden till %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% kommer kanske att delta i %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} kan inte delta i {contentTitle} den {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} deltar i {contentTitle} den {dateTime}.',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '{displayName} är inbjuden till {contentTitle} den {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} kommer kanske att delta i {contentTitle} den {dateTime}.',
     ':count Attending' => ':count Närvarar',
     ':count Declined' => ':count har avböjt',
     ':count Invited' => ':count Inbjudna',

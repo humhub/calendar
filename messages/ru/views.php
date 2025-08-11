@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% не может посещать %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% посещает %contentTitle%.',
-    '%displayName% is invited to %contentTitle%.' => '%displayName% приглашен в %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% может присутствовать на %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} не может посещать {contentTitle} {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} посещает {contentTitle} {dateTime}.',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '{displayName} приглашен в {contentTitle} {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} может присутствовать на {contentTitle} {dateTime}.',
     '<strong>Create</strong> Event' => '<strong>Создать</strong> событие',
     '<strong>Create</strong> new event type' => '<strong>Создать</strong> новый тип события.',
     '<strong>Edit</strong> Event' => '<strong>Изменить</strong> событие',

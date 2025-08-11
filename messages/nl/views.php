@@ -1,9 +1,9 @@
 <?php
 return [
-  '%displayName% cannot attend %contentTitle%.' => '%displayName% kan %contentTitle% niet bijwonen.',
-  '%displayName% is attending %contentTitle%.' => '%displayName% gaat naar %contentTitle%.',
-  '%displayName% is invited to %contentTitle%.' => '%displayName% is uitgenodigd voor %contentTitle%.',
-  '%displayName% might be attending %contentTitle%.' => '%displayName% is mogelijk aanwezig op %contentTitle%.',
+  '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} kan {contentTitle} niet bijwonen op {dateTime}.',
+  '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} gaat naar {contentTitle} op {dateTime}.',
+  '{displayName} is invited to {contentTitle} on {dateTime}.' => '{displayName} is uitgenodigd voor {contentTitle} op {dateTime}.',
+  '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} is mogelijk aanwezig op {contentTitle} op {dateTime}.',
   ':count Attending' => ':count aanwezig',
   ':count Declined' => ':count afgewezen',
   ':count Invited' => ':count uitgenodigd',

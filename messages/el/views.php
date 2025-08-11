@@ -1,9 +1,9 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% δεν μπορεί να παρευρεθεί %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% παρακολουθεί %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% μπορεί να παρευρεθεί %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} δεν μπορεί να παρευρεθεί {contentTitle} στις {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} παρακολουθεί {contentTitle} στις {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} μπορεί να παρευρεθεί {contentTitle} στις {dateTime}.',
     '<strong>Create</strong> new event type' => '<strong>Δημιουργία</strong> νέου τύπου εκδήλωσης',
     '<strong>Edit</strong> calendar' => '<strong>Επεξεργασία</strong> ημερολογίου',
     '<strong>Edit</strong> event type' => '<strong>Επεξεργασία</strong> τύπου εκδήλωσης',
@@ -40,7 +40,7 @@ return [
     'Settings' => 'Ρυθμίσεις',
     'Snippet' => 'Απόσπασμα',
     'Title' => 'Τίτλος',
-    '%displayName% is invited to %contentTitle%.' => '',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '',
     ':count Attending' => '',
     ':count Declined' => '',
     ':count Invited' => '',

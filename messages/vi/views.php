@@ -1,9 +1,9 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% không thể tham dự %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% sẽ tham dự %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% có thể tham dự %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} không thể tham dự {contentTitle} vào {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} sẽ tham dự {contentTitle} vào {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} có thể tham dự {contentTitle} vào {dateTime}.',
     '<strong>Create</strong> new event type' => '<strong>Tạo</strong> loại sự kiện mới',
     '<strong>Edit</strong> calendar' => '<strong>Sửa</strong> lịch',
     '<strong>Edit</strong> event type' => '<strong>Sửa</strong> loại sự kiện',
@@ -40,7 +40,7 @@ return [
     'Settings' => 'Cấu hình',
     'Snippet' => 'Khối thông tin',
     'Title' => 'Tiêu đề',
-    '%displayName% is invited to %contentTitle%.' => '',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '',
     ':count Attending' => '',
     ':count Declined' => '',
     ':count Invited' => '',

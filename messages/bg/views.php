@@ -1,9 +1,9 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% не може да присъства на %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% присъства на %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% може да присъства на %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} не може да присъства на {contentTitle} на {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} присъства на {contentTitle} на {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} може да присъства на {contentTitle} на {dateTime}.',
     '<strong>Create</strong> new event type' => '<strong>Създайте</strong> нов тип събитие',
     '<strong>Edit</strong> calendar' => '<strong>Редактиране</strong> на календар',
     '<strong>Edit</strong> event type' => '<strong>Редактиране</strong> на тип събитие',
@@ -40,7 +40,7 @@ return [
     'Settings' => 'Настройки',
     'Snippet' => 'Фрагмент',
     'Title' => 'Заглавие',
-    '%displayName% is invited to %contentTitle%.' => '',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '',
     ':count Attending' => '',
     ':count Declined' => '',
     ':count Invited' => '',
