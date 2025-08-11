@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% kan ikke deltage i %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% deltager i %contentTitle%.',
-    '%displayName% is invited to %contentTitle%.' => '%displayName% er inviteret til %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% deltager måske i %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} kan ikke deltage i {contentTitle} den {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} deltager i {contentTitle} den {dateTime}.',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '{displayName} er inviteret til {contentTitle} den {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} deltager måske i {contentTitle} den {dateTime}.',
     ':count Attending' => ':count Deltager',
     ':count Declined' => ':count Afviste',
     ':count Invited' => ':count Inviteret',

@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => 'لا يمكن لـ %displayName% حضور %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% يحضر %contentTitle%',
-    '%displayName% is invited to %contentTitle%.' => 'تمت دعوة %displayName% إلى %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% قد يحضر %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => 'لا يمكن لـ {displayName} حضور {contentTitle} في {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} يحضر {dateTime} في {contentTitle}',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => 'تمت دعوة {displayName} إلى {contentTitle} في {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} قد يحضر {dateTime} في {contentTitle}.',
     ':count Attending' => ':عدد الحضور',
     ':count Declined' => ':عدد الرافضين',
     ':count Invited' => ':عدد المدعوين',

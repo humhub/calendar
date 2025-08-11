@@ -1,9 +1,9 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% ไม่สามารถเข้าร่วม %contentTitle%',
-    '%displayName% is attending %contentTitle%.' => '%displayName% กำลังเข้าร่วม %contentTitle%',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% อาจเข้าร่วม %contentTitle%',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} ไม่สามารถเข้าร่วม {contentTitle} ใน {dateTime}',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} กำลังเข้าร่วม {contentTitle} ใน {dateTime}',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} อาจเข้าร่วม {contentTitle} ใน {dateTime}',
     '<strong>Create</strong> new event type' => '<strong>สร้าง</strong> ประเภทกิจกรรมใหม่',
     '<strong>Edit</strong> calendar' => '<strong>แก้ไข</strong> ปฏิทิน',
     '<strong>Edit</strong> event type' => '<strong>แก้ไข</strong> ประเภทเหตุการณ์',
@@ -40,7 +40,7 @@ return [
     'Settings' => 'การตั้งค่า',
     'Snippet' => 'Snippet',
     'Title' => 'หัวข้อ',
-    '%displayName% is invited to %contentTitle%.' => '',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '',
     ':count Attending' => '',
     ':count Declined' => '',
     ':count Invited' => '',

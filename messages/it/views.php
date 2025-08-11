@@ -1,10 +1,10 @@
 <?php
 
 return [
-    '%displayName% cannot attend %contentTitle%.' => '%displayName% non può partecipare a %contentTitle%.',
-    '%displayName% is attending %contentTitle%.' => '%displayName% sta partecipando a %contentTitle%.',
-    '%displayName% is invited to %contentTitle%.' => '%displayName% è invitato a %contentTitle%.',
-    '%displayName% might be attending %contentTitle%.' => '%displayName% potrebbe partecipare a %contentTitle%.',
+    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '{displayName} non può partecipare a {contentTitle} il {dateTime}.',
+    '{displayName} is attending {contentTitle} on {dateTime}.' => '{displayName} sta partecipando a {contentTitle} il {dateTime}.',
+    '{displayName} is invited to {contentTitle} on {dateTime}.' => '{displayName} è invitato a {contentTitle} il {dateTime}.',
+    '{displayName} might be attending {contentTitle} on {dateTime}.' => '{displayName} potrebbe partecipare a {contentTitle} il {dateTime}.',
     ':count Attending' => ':count Partecipanti',
     ':count Declined' => ':count Rifiutati',
     ':count Invited' => ':count Invitati',
