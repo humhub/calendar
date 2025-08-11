@@ -547,7 +547,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function getTimezone()
     {
-        return $this->isAllDay() ? CalendarUtils::getSystemTimeZone(true) : $this->time_zone;
+        return $this->isAllDay() ? 'UTC' : $this->time_zone;
     }
 
     /**
