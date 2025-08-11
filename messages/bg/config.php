@@ -38,6 +38,7 @@ return [
     'Full calendar' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
+    'List view type' => '',
     'Menu settings' => '',
     'View mode' => '',
 ];

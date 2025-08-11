@@ -36,6 +36,7 @@ return [
     'Half a year' => '',
     'Include birthdays to dashboard snippet' => '',
     'Interval of upcoming events' => '',
+    'List view type' => '',
     'Participation' => '',
     'There are currently no event types available.' => '',
     'Upcoming events snippet' => '',

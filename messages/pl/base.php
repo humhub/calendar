@@ -159,9 +159,9 @@ return [
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} zaprosił cię do wzięcia udziału w "{contentTitle}" w strefie {spaceName}, rusza o {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} zaprosił cię na wydarzenie "{contentTitle}".',
     '{name} Calendar' => '{name} kalendarza',
-    ' Used for secure iCal feed URL generation. Changing the key revokes all existing iCal URLs. If empty, a random key is generated automatically.' => '',
     'Calendar event content ID' => '',
     'Leave empty to list all events. Enter 0 to display only today\'s events.' => '',
+    'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',
     'When enabled, calendar exports (ics, iCal, CalDAV) will include the organizer\'s and participant\'s names and email addresses. Disable to exclude this information for increased privacy.' => '',
     'in seconds. 0 for no JWT token expiration.' => '',
 ];

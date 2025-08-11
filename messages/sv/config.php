@@ -40,4 +40,5 @@ return [
     'Upcoming events snippet' => 'Kommande Snippet händelser',
     'View mode' => 'Visningsläge',
     'Export settings' => '',
+    'List view type' => '',
 ];

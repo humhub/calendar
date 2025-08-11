@@ -1,7 +1,6 @@
 <?php
 
 return [
-    ' Used for secure iCal feed URL generation. Changing the key revokes all existing iCal URLs. If empty, a random key is generated automatically.' => '',
     '<strong>Add</strong> profile calendar' => '',
     '<strong>Choose</strong> target calendar' => '',
     '<strong>Reminder</strong> settings' => '',
@@ -132,6 +131,7 @@ return [
     'Upcoming {type}' => '',
     'Upcoming {type}: {title}' => '',
     'Use default reminder' => '',
+    'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',
     'User birthdays' => '',
     'Wednesday' => '',
     'Week' => '',

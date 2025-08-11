@@ -40,4 +40,5 @@ return [
     'Upcoming events snippet' => 'Widget z nadchodzącymi wydarzeniami',
     'View mode' => 'Tryb widoku',
     'Export settings' => '',
+    'List view type' => '',
 ];
