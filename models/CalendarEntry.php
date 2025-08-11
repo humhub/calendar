@@ -556,7 +556,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function getStartDateTime()
     {
-        return new DateTime($this->start_datetime ?? 'now', new DateTimeZone($this->getTimezone()));
+        return new DateTime($this->start_datetime ?? 'now', CalendarUtils::getSystemTimeZone());
     }
 
     /**
@@ -565,7 +565,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function getEndDateTime()
     {
-        return new DateTime($this->end_datetime ?? 'now', new DateTimeZone($this->getTimezone()));
+        return new DateTime($this->end_datetime ?? 'now', CalendarUtils::getSystemTimeZone());
     }
 
     /**
