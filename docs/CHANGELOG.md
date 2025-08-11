@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.14 (Unreleased)
+----------------------
+- Fix #573: Fix time zone for anonymous users
+
 1.7.13 (August 6, 2025)
 -----------------------
 - Fix #572: Fix CSP Violation in `fullcalendar.bundle.min.css`
