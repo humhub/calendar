@@ -4,6 +4,7 @@ Changelog
 1.7.14 (Unreleased)
 ----------------------
 - Fix #573: Fix time zone for anonymous users
+- Fix #576: Show private events as public on iCal import
 
 1.7.13 (August 6, 2025)
 -----------------------
