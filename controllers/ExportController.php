@@ -6,6 +6,7 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\AuthTokenService;
+use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\content\models\Content;
@@ -92,12 +93,26 @@ class ExportController extends Controller
         Yii::$app->user->enableSession = false;
         Yii::$app->user->login($user);
 
+        /** @var CalendarEntry[] $events */
         $events = $this->calendarService->getCalendarItems(
             null,
             null,
             [],
             $global ? null : $contentContainer->polymorphicRelation,
         );
+
+        /**
+         * Google Calendar strips details of private/confidential events,
+         * To make events visible in Google Calendar, force visibility to PUBLIC
+         * when the request comes from the Google Calendar.
+         */
+        if (Yii::$app->request->userAgent == 'Google-Calendar-Importer') {
+            foreach ($events as $event) {
+                if (!empty($event->content)) {
+                    $event->content->visibility = Content::VISIBILITY_PUBLIC;
+                }
+            }
+        }
 
         $ics = CalendarUtils::generateIcal($events, $contentContainer->polymorphicRelation->displayName);
 
