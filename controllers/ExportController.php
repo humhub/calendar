@@ -101,9 +101,16 @@ class ExportController extends Controller
             $global ? null : $contentContainer->polymorphicRelation,
         );
 
-        foreach ($events as $event) {
-            if (!empty($event->content)) {
-                $event->content->visibility = Content::VISIBILITY_PUBLIC;
+        /**
+         * Google Calendar strips details of private/confidential events,
+         * To make events visible in Google Calendar, force visibility to PUBLIC
+         * when the request comes from the Google Calendar.
+         */
+        if (Yii::$app->request->userAgent == 'Google-Calendar-Importer') {
+            foreach ($events as $event) {
+                if (!empty($event->content)) {
+                    $event->content->visibility = Content::VISIBILITY_PUBLIC;
+                }
             }
         }
 
