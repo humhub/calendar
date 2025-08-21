@@ -34,8 +34,8 @@ class EventSync extends BaseObject
         self::PARTICIPATION_STATE_INVITED => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED,
     ];
 
-    private null|EventProperties $eventProperties;
-    private null|CalendarEntry|ActiveRecord $event;
+    private ?EventProperties $eventProperties;
+    private CalendarEntry|ActiveRecord|null $event;
 
     public function from(EventProperties $eventProperties): self
     {
