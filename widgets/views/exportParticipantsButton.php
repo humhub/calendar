@@ -11,10 +11,10 @@ use humhub\widgets\bootstrap\Button;
 /* @var array $options */
 ?>
 <div class="btn-group dropdown calendar-entry-participants-export-button float-end">
-    <?= Button::info()->icon('download')->sm()
+    <?= Button::accent(()->icon('download')->sm()
         ->link($buttons[0]->getHref())
         ->pjax(false)->loader(false) ?>
-    <?= Button::info('')->sm()
+    <?= Button::accent(('')->sm()
         ->cssClass('dropdown-toggle')
         ->options(['data-bs-toggle' => 'dropdown'])
         ->loader(false) ?>

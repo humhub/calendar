@@ -19,7 +19,7 @@ use yii\web\View;
     'size' => Modal::SIZE_LARGE,
     'footer' => ($editUrl ? Button::primary(Yii::t('CalendarModule.base', 'Edit'))
             ->action('calendar.editModal', $editUrl, "[data-content-key=".$entry->content->id ."]" ) : '') .
-        ($inviteUrl ? Button::info(Yii::t('CalendarModule.base', 'Invite'))
+        ($inviteUrl ? Button::accent((Yii::t('CalendarModule.base', 'Invite'))
             ->action('ui.modal.load', $inviteUrl, "[data-content-key=".$entry->content->id ."]" ) : ''),
 ]) ?>
     <?= $this->renderAjax('view', ['entry' => $entry, 'stream' => false]) ?>

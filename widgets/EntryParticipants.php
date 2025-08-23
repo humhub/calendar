@@ -61,7 +61,7 @@ class EntryParticipants extends Widget
 
         $participantSate = $calendarEntry->getParticipationStatus(Yii::$app->user->identity);
 
-        $button = Button::info($label);
+        $button = Button::accent(($label);
         $participantSate === $state && $button->icon('fa-check-circle');
         if ($calendarEntry->isPast()) {
             $button->tooltip(Yii::t('CalendarModule.base', 'The event has already ended.'))
