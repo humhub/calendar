@@ -44,9 +44,9 @@ class CalendarController extends BaseContentController
     {
         $data = Yii::$app->request->bodyParams;
 
-        return $calendarEntryForm->load($data) &&
-            $calendarEntryForm->save() &&
-            (!method_exists($this, 'updateContent') || $this->updateContent($calendarEntryForm->entry, $data));
+        return $calendarEntryForm->load($data)
+            && $calendarEntryForm->save()
+            && (!method_exists($this, 'updateContent') || $this->updateContent($calendarEntryForm->entry, $data));
     }
 
     public function actionCreate($containerId)

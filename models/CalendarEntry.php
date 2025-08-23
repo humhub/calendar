@@ -368,8 +368,8 @@ class CalendarEntry extends ContentActiveRecord implements
             $this->participation->setDefautls();
         }
 
-        if (RecurrenceHelper::isRecurrentRoot($this) ||
-            (RecurrenceHelper::isRecurrentInstance($this) && $this->content->hidden)) {
+        if (RecurrenceHelper::isRecurrentRoot($this)
+            || (RecurrenceHelper::isRecurrentInstance($this) && $this->content->hidden)) {
             $this->streamChannel = null;
         }
 
