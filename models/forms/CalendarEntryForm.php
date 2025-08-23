@@ -515,22 +515,22 @@ class CalendarEntryForm extends Model
             return;
         }
 
-        if ($this->original->getTitle() !== $this->entry->getTitle() ||
-            $this->original->getDescription() !== $this->entry->getDescription() ||
-            $this->original->getStartDateTime() != $this->entry->getStartDateTime() ||
-            $this->original->getEndDateTime() != $this->entry->getEndDateTime() ||
-            $this->original->isAllDay() !== $this->entry->isAllDay() ||
-            $this->original->participation_mode !== $this->entry->participation_mode ||
-            $this->original->getColor() !== $this->entry->getColor() ||
-            $this->original->allow_decline !== $this->entry->allow_decline ||
-            $this->original->allow_maybe !== $this->entry->allow_maybe ||
-            $this->original->getTimezone() !== $this->entry->getTimezone() ||
-            $this->original->participant_info !== $this->entry->participant_info ||
-            $this->original->getEventStatus() !== $this->entry->getEventStatus() ||
-            $this->original->max_participants !== $this->entry->max_participants ||
-            $this->original->getRrule() !== $this->entry->getRrule() ||
-            $this->original->getExdate() !== $this->entry->getExdate() ||
-            $this->original->getLocation() !== $this->entry->getLocation()
+        if ($this->original->getTitle() !== $this->entry->getTitle()
+            || $this->original->getDescription() !== $this->entry->getDescription()
+            || $this->original->getStartDateTime() != $this->entry->getStartDateTime()
+            || $this->original->getEndDateTime() != $this->entry->getEndDateTime()
+            || $this->original->isAllDay() !== $this->entry->isAllDay()
+            || $this->original->participation_mode !== $this->entry->participation_mode
+            || $this->original->getColor() !== $this->entry->getColor()
+            || $this->original->allow_decline !== $this->entry->allow_decline
+            || $this->original->allow_maybe !== $this->entry->allow_maybe
+            || $this->original->getTimezone() !== $this->entry->getTimezone()
+            || $this->original->participant_info !== $this->entry->participant_info
+            || $this->original->getEventStatus() !== $this->entry->getEventStatus()
+            || $this->original->max_participants !== $this->entry->max_participants
+            || $this->original->getRrule() !== $this->entry->getRrule()
+            || $this->original->getExdate() !== $this->entry->getExdate()
+            || $this->original->getLocation() !== $this->entry->getLocation()
         ) {
             CalendarUtils::incrementSequence($this->entry);
             $this->entry->saveEvent();

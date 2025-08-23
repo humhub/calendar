@@ -306,8 +306,8 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $properties = $this->properties()->from($data);
 
         if (
-            $event->isNewRecord ||
-            RichTextToPlainTextConverter::process($event->description) != $properties->get(EventProperty::DESCRIPTION)
+            $event->isNewRecord
+            || RichTextToPlainTextConverter::process($event->description) != $properties->get(EventProperty::DESCRIPTION)
         ) {
             $event->description = $properties->get(EventVirtualProperty::DESCRIPTION_NORMALIZED);
         }

@@ -132,9 +132,9 @@ class CalendarEventsElement extends BaseContentRecordsElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return parent::renderEditForm($form) .
-            $form->field($this, 'nextDays') .
-            $form->field($this, 'sortOrder')->radioList([
+        return parent::renderEditForm($form)
+            . $form->field($this, 'nextDays')
+            . $form->field($this, 'sortOrder')->radioList([
                 $this::SORT_DATE_OLD => Yii::t('CalendarModule.base', 'From Oldest to Newest'),
                 $this::SORT_DATE_NEW => Yii::t('CalendarModule.base', 'From Newest to Oldest'),
             ]);

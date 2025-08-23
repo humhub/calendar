@@ -43,8 +43,8 @@ class EventProperties extends BaseObject
             $endDateTime = ArrayHelper::getValue($this->properties, EventProperty::END_DATE->value);
 
             return +(
-                !empty($startDateTime['VALUE']) && $startDateTime['VALUE']->getValue() === 'DATE' &&
-                !empty($endDateTime['VALUE']) && $endDateTime['VALUE']->getValue() === 'DATE'
+                !empty($startDateTime['VALUE']) && $startDateTime['VALUE']->getValue() === 'DATE'
+                && !empty($endDateTime['VALUE']) && $endDateTime['VALUE']->getValue() === 'DATE'
             );
         }
 
