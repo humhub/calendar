@@ -10,15 +10,17 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
+use humhub\modules\calendar\notifications\MarkAttend;
 use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -39,7 +41,6 @@ use yii\web\Response;
  */
 class EntryController extends ContentContainerController
 {
-
     /**
      * @inheritdoc
      */
@@ -57,8 +58,8 @@ class EntryController extends ContentContainerController
     {
         $entry = $this->getCalendarEntry($id);
 
-        if (!$entry) {
-            throw new HttpException('404');
+        if (!$entry->content->canView()) {
+            throw new ForbiddenHttpException('You have no permission to view the event!');
         }
 
         $this->view->meta->setDescription(RichTextToPlainTextConverter::process($entry->getTitle() . ' - ' . $entry->getDescription()));
@@ -149,7 +150,7 @@ class EntryController extends ContentContainerController
                     'update-url' => $this->contentContainer->createUrl('/calendar/entry/update-participant-status'),
                     'remove-url' => $this->contentContainer->createUrl('/calendar/entry/remove-participant'),
                     'filter-url' => $this->contentContainer->createUrl('/calendar/entry/participants-list'),
-                ]
+                ],
             ],
         ]);
     }
@@ -166,21 +167,25 @@ class EntryController extends ContentContainerController
     {
         $calendarEntry = $this->getCalendarEntry($id);
 
-        if (!$calendarEntry) {
-            throw new HttpException('404');
-        }
-
         if (!$calendarEntry->canRespond(Yii::$app->user->identity)) {
-            throw new HttpException(403);
+            throw new ForbiddenHttpException('You cannot be a participant of the event!');
         }
 
         if ($calendarEntry->isPast()) {
-            throw new HttpException(403, 'Event is over!');
+            throw new ForbiddenHttpException('Event is over!');
         }
 
-        return $this->asJson([
-            'success' => $calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int)$type)
-        ]);
+        if (!$calendarEntry->setParticipationStatus(Yii::$app->user->identity, (int)$type)) {
+            throw new ForbiddenHttpException('You cannot be a participant of the event!');
+        }
+
+        if ($type == CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED) {
+            MarkAttend::instance()->from(Yii::$app->user->identity)
+                ->about($calendarEntry)
+                ->sendBulk([Yii::$app->user->identity]);
+        }
+
+        return $this->asJson(['success' => true]);
     }
 
     /**
@@ -257,7 +262,7 @@ class EntryController extends ContentContainerController
         return $this->renderAjax('edit', [
             'calendarEntryForm' => $calendarEntryForm,
             'contentContainer' => $this->contentContainer,
-            'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer, $calendarEntryForm->wall)
+            'editUrl' => Url::toEditEntry($calendarEntryForm->entry, $cal, $this->contentContainer, $calendarEntryForm->wall),
         ]);
     }
 
@@ -282,7 +287,7 @@ class EntryController extends ContentContainerController
     /**
      * Action to render modal window with participation settings and active tab "Participants of the event"
      *
-     * @param integer|null $id
+     * @param int|null $id
      * @return string
      */
     public function actionModalParticipants($id = null)
@@ -294,7 +299,7 @@ class EntryController extends ContentContainerController
      * Action to render only participants list
      * Used for filtering and pagination
      *
-     * @param integer|null $id
+     * @param int|null $id
      * @return string
      */
     public function actionParticipantsList($id = null)
@@ -530,7 +535,8 @@ class EntryController extends ContentContainerController
     {
         $this->forcePostRequest();
 
-        $calendarEntry = $this->getCalendarEntry($id);
+        // Allow to delete the entry even if it was already soft deleted before by unknown issue
+        $calendarEntry = $this->getCalendarEntry($id, Content::STATE_DELETED);
 
         if (!$calendarEntry) {
             throw new HttpException('404', Yii::t('CalendarModule.base', "Event not found!"));
@@ -540,10 +546,20 @@ class EntryController extends ContentContainerController
             throw new HttpException('403', Yii::t('CalendarModule.base', "You don't have permission to delete this event!"));
         }
 
-        $calendarEntry->delete();
+        if (!$calendarEntry->delete()) {
+            return Yii::$app->request->isAjax
+                ? $this->asJson([
+                    'success' => false,
+                    'message' => Yii::t('CalendarModule.base', 'Event could not be deleted!'),
+                ])
+                : $this->redirect(Url::toEntry($calendarEntry));
+        }
 
         return Yii::$app->request->isAjax
-            ? $this->asJson(['success' => true])
+            ? $this->asJson([
+                'success' => true,
+                'message' => Yii::t('CalendarModule.base', 'Event has been be deleted!'),
+            ])
             : $this->redirect(Url::toCalendar($this->contentContainer));
     }
 
@@ -551,21 +567,27 @@ class EntryController extends ContentContainerController
      * Returns a readable calendar entry by given id
      *
      * @param int $id
+     * @param array|string|null $allowedStateFilters
      * @return CalendarEntry
      * @throws Throwable
      * @throws Exception
      */
-    protected function getCalendarEntry($id): CalendarEntry
+    protected function getCalendarEntry($id, $allowedStateFilters = null): CalendarEntry
     {
         if (!$id) {
             throw new HttpException(404);
         }
 
+        $query = CalendarEntry::find()->contentContainer($this->contentContainer);
+        if ($allowedStateFilters) {
+            $query->stateFilterCondition[] = ['content.state' => $allowedStateFilters];
+        }
+
         /* @var CalendarEntry $entry */
-        $entry = CalendarEntry::find()->contentContainer($this->contentContainer)->readable()->where(['calendar_entry.id' => $id])->one();
+        $entry = $query->readable()->where(['calendar_entry.id' => $id])->one();
 
         if (!$entry) {
-            throw new HttpException(404);
+            throw new NotFoundHttpException();
         }
 
         return $entry;

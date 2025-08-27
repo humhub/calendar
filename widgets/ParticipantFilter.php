@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2022 HumHub GmbH & Co. KG
@@ -45,7 +46,7 @@ class ParticipantFilter extends Widget
 
     public static function getStatuses(): array
     {
-        return ['' => Yii::t('CalendarModule.views_entry_view', 'All')]
+        return ['' => Yii::t('CalendarModule.views', 'All')]
             + ParticipantItem::getStatuses();
     }
 }

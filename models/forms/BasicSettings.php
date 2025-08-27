@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -17,7 +18,7 @@ use yii\base\Model;
 
 class BasicSettings extends Model
 {
-    const SETTING_CONTENT_HIDDEN = 'defaults.contentHidden';
+    public const SETTING_CONTENT_HIDDEN = 'defaults.contentHidden';
 
     /**
      * @var ContentContainerActiveRecord

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\participation;
-
 
 use humhub\components\SettingsManager;
 use humhub\modules\calendar\Module;
@@ -12,12 +10,15 @@ use yii\base\Model;
 
 class FullCalendarSettings extends Model
 {
-    const SETTING_LIST_WEEK = 'listWeek';
-    const SETTING_GRID_DAY = 'timeGridDay';
-    const SETTING_GRID_WEEK = 'timeGridWeek';
-    const SETTING_GRID_MONTH = 'dayGridMonth';
-    const SETTING_LIST_YEAR = 'listYear';
-    const SETTING_VIEW_MODE_KEY = 'defaults.fullCalendarViewMode';
+    public const SETTING_GRID_DAY = 'timeGridDay';
+    public const SETTING_GRID_WEEK = 'timeGridWeek';
+    public const SETTING_GRID_MONTH = 'dayGridMonth';
+    public const SETTING_LIST = 'list';
+    public const SETTING_VIEW_MODE_KEY = 'defaults.fullCalendarViewMode';
+    public const SETTING_LIST_VIEW_TYPE_KEY = 'listViewType';
+    public const LIST_VIEW_WEEK = 'listWeek';
+    public const LIST_VIEW_MONTH = 'listMonth';
+    public const LIST_VIEW_YEAR = 'listYear';
 
     /**
      * @var ContentContainerActiveRecord
@@ -28,6 +29,11 @@ class FullCalendarSettings extends Model
      * @var string
      */
     public $viewMode;
+
+    /**
+     * @var string
+     */
+    public $listViewType;
 
     /**
      * @var SettingsManager
@@ -44,6 +50,13 @@ class FullCalendarSettings extends Model
     private function initSettings()
     {
         $this->viewMode = $this->getSetting(self::SETTING_VIEW_MODE_KEY, static::SETTING_GRID_MONTH);
+
+        $this->listViewType = $this->getSetting(self::SETTING_LIST_VIEW_TYPE_KEY, static::LIST_VIEW_WEEK);
+
+        // if default viewMode is "list" (or old entry like "listMonth"), take the configured list view type
+        if (substr($this->viewMode, 0, 4) == 'list') {
+            $this->viewMode = $this->listViewType;
+        }
     }
 
     /**
@@ -72,7 +85,7 @@ class FullCalendarSettings extends Model
     public function rules()
     {
         return [
-            [['viewMode'], 'string'],
+            [['viewMode', 'listViewType'], 'string'],
         ];
     }
 
@@ -83,6 +96,7 @@ class FullCalendarSettings extends Model
     {
         return [
             'viewMode' => Yii::t('CalendarModule.config', 'View mode'),
+            'listViewType' => Yii::t('CalendarModule.config', 'List view type'),
         ];
     }
 
@@ -94,6 +108,7 @@ class FullCalendarSettings extends Model
 
         $settings = $this->getSettings();
         $settings->set(self::SETTING_VIEW_MODE_KEY, $this->viewMode);
+        $settings->set(self::SETTING_LIST_VIEW_TYPE_KEY, $this->listViewType);
         return true;
     }
 
@@ -101,6 +116,7 @@ class FullCalendarSettings extends Model
     {
         $settings = $this->getSettings();
         $settings->set(self::SETTING_VIEW_MODE_KEY, null);
+        $settings->set(self::SETTING_LIST_VIEW_TYPE_KEY, null);
         $this->initSettings();
     }
 
@@ -112,11 +128,19 @@ class FullCalendarSettings extends Model
     public function getViewModeItems()
     {
         return [
-            self::SETTING_LIST_YEAR => Yii::t('CalendarModule.calendar', 'Year'),
-            self::SETTING_GRID_MONTH => Yii::t('CalendarModule.calendar', 'Month'),
-            self::SETTING_GRID_WEEK => Yii::t('CalendarModule.calendar', 'Week'),
-            self::SETTING_GRID_DAY => Yii::t('CalendarModule.calendar', 'Day'),
-            self::SETTING_LIST_WEEK => Yii::t('CalendarModule.calendar', 'List'),
+            self::SETTING_GRID_MONTH => Yii::t('CalendarModule.base', 'Month'),
+            self::SETTING_GRID_WEEK => Yii::t('CalendarModule.base', 'Week'),
+            self::SETTING_GRID_DAY => Yii::t('CalendarModule.base', 'Day'),
+            self::SETTING_LIST => Yii::t('CalendarModule.base', 'List'),
+        ];
+    }
+
+    public function getListViewTypes()
+    {
+        return [
+            self::LIST_VIEW_WEEK => Yii::t('CalendarModule.base', 'Week'),
+            self::LIST_VIEW_MONTH => Yii::t('CalendarModule.base', 'Month'),
+            self::LIST_VIEW_YEAR => Yii::t('CalendarModule.base', 'Year'),
         ];
     }
 }

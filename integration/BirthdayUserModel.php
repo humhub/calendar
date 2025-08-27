@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -6,8 +7,8 @@
  */
 
 namespace humhub\modules\calendar\integration;
-use humhub\modules\user\models\User;
 
+use humhub\modules\user\models\User;
 
 /**
  * Class BirthdayProfileModel

@@ -1,13 +1,13 @@
 <?php
 
 use humhub\components\View;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\widgets\form\ActiveForm;
 use Recurr\Frequency;
-use yii\widgets\ActiveForm;
 
 /* @var $this View */
 /* @var $form ActiveForm */
@@ -20,16 +20,16 @@ use yii\widgets\ActiveForm;
 
     <label class="control-label"><?= $model->getAttributeLabel('frequency') ?></label>
     <div class="row">
-        <div class="col-md-2 hideIfNoRecurrence" style="padding-right:0">
+        <div class="col-lg-2 hideIfNoRecurrence pe-0">
             <?= $form->field($model, 'interval')->input('number', ['min' => 1, 'data-action-change' => 'updatedValue'])->label(false) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <?= $form->field($model, 'frequency')->dropDownList($model->getIntervalTypesSelection(), [
                 'options' => $model->getIntervalTypesSelectionData(),
-                'data-action-change' => 'updatedType'
+                'data-action-change' => 'updatedType',
             ])->label(false) ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
         </div>
     </div>
 

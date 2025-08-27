@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2022 HumHub GmbH & Co. KG
@@ -47,11 +48,13 @@ class m220217_141238_move_files extends Migration
         }
 
         // Update all attached files to content mode
-        $this->execute('UPDATE file
+        $this->execute(
+            'UPDATE file
               SET show_in_stream = 0
             WHERE object_model = :CalendarEntryClass
               AND show_in_stream = 1',
-            ['CalendarEntryClass' => CalendarEntry::class]);
+            ['CalendarEntryClass' => CalendarEntry::class],
+        );
     }
 
     /**

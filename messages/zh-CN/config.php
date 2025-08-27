@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Basic' => '基础',
     'Delete' => '删除',
     'Name' => '名字',
     '<strong>Calendar</strong> module configuration' => '',
@@ -14,6 +15,8 @@ return [
     'Default participation settings' => '',
     'Do you really want to delte this event type?' => '',
     'Event Type Configuration' => '',
+    'Export settings' => '',
+    'Full calendar' => '',
     'Half a year' => '',
     'Here you can configure default settings for new calendar events.' => '',
     'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => '',
@@ -24,12 +27,15 @@ return [
     'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => '',
     'Include birthdays to dashboard snippet' => '',
     'Interval of upcoming events' => '',
+    'List view type' => '',
     'Max event items' => '',
     'Menu settings' => '',
     'One month' => '',
     'One week' => '',
     'One year' => '',
     'Only show top menu item and snippet if the module is installed in the users profile' => '',
+    'Participation' => '',
+    'Reminder' => '',
     'Reset' => '',
     'Show snippet' => '',
     'There are currently no event types available.' => '',

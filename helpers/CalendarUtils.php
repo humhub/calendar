@@ -8,6 +8,8 @@ use DateTimeZone;
 use humhub\libs\DateHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
+use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\calendar\interfaces\VCalendar;
 use humhub\modules\calendar\Module;
 use humhub\modules\content\models\Content;
 use Sabre\VObject\UUIDUtil;
@@ -20,35 +22,34 @@ use Yii;
  */
 class CalendarUtils
 {
-
     /**
      * Database Field - Validators
      */
-    const REGEX_DBFORMAT_DATE = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
-    const REGEX_DBFORMAT_DATETIME = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';
+    public const REGEX_DBFORMAT_DATE = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
+    public const REGEX_DBFORMAT_DATETIME = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';
 
     private static $userTimezone;
     private static $userTimezoneString;
 
-    const DATE_FORMAT_ATOM = 'Y-m-d\TH:i:sP';
-    const DB_DATE_FORMAT = 'Y-m-d H:i:s';
-    const DATE_FORMAT_SHORT = 'Y-m-d';
-    const DATE_FORMAT_SHORT_NO_TIME = '!Y-m-d';
+    public const DATE_FORMAT_ATOM = 'Y-m-d\TH:i:sP';
+    public const DB_DATE_FORMAT = 'Y-m-d H:i:s';
+    public const DATE_FORMAT_SHORT = 'Y-m-d';
+    public const DATE_FORMAT_SHORT_NO_TIME = '!Y-m-d';
 
-    const TIME_FORMAT_SHORT_PHP = 'H:i';
-    const TIME_FORMAT_SHORT = 'php:'.self::TIME_FORMAT_SHORT_PHP;
-    const TIME_FORMAT_SHORT_MERIDIEM_PHP = 'h:i A';
-    const TIME_FORMAT_SHORT_MERIDIEM = 'php:'.self::TIME_FORMAT_SHORT_MERIDIEM_PHP;
+    public const TIME_FORMAT_SHORT_PHP = 'H:i';
+    public const TIME_FORMAT_SHORT = 'php:' . self::TIME_FORMAT_SHORT_PHP;
+    public const TIME_FORMAT_SHORT_MERIDIEM_PHP = 'h:i A';
+    public const TIME_FORMAT_SHORT_MERIDIEM = 'php:' . self::TIME_FORMAT_SHORT_MERIDIEM_PHP;
 
-    const ICAL_TIME_FORMAT        = 'Ymd\THis';
+    public const ICAL_TIME_FORMAT        = 'Ymd\THis';
 
-    const DOW_SUNDAY = 1;
-    const DOW_MONDAY = 2;
-    const DOW_TUESDAY = 3;
-    const DOW_WEDNESDAY = 4;
-    const DOW_THURSDAY = 5;
-    const DOW_FRIDAY = 6;
-    const DOW_SATURDAY = 7;
+    public const DOW_SUNDAY = 1;
+    public const DOW_MONDAY = 2;
+    public const DOW_TUESDAY = 3;
+    public const DOW_WEDNESDAY = 4;
+    public const DOW_THURSDAY = 5;
+    public const DOW_FRIDAY = 6;
+    public const DOW_SATURDAY = 7;
 
     /**
      * @param $value
@@ -60,18 +61,18 @@ class CalendarUtils
      */
     public static function parseDateTimeString($value, $timeValue = null, $timeFormat = null, $timeZone = 'UTC')
     {
-        if(static::isInDbFormat($value)) {
+        if (static::isInDbFormat($value)) {
             $date = DateTime::createFromFormat(static::DATE_FORMAT_SHORT_NO_TIME, $value, static::getDateTimeZone('UTC'));
             $ts = $date->getTimestamp();
         } else {
             $ts = DateHelper::parseDateTimeToTimestamp($value);
         }
 
-        if(!$ts) {
+        if (!$ts) {
             return false;
         }
 
-        if($timeValue) {
+        if ($timeValue) {
             $ts += static::parseTime($timeValue, $timeFormat);
         }
 
@@ -84,7 +85,7 @@ class CalendarUtils
          * We check for year 1980 regarding a Bug in HumHub 1.3 which returned unix epoch date for invalid date formats with time
          * This was fixed in HumHub 1.4
          */
-        if($result < new \DateTime('1980-01-01')) {
+        if ($result < new \DateTime('1980-01-01')) {
             $result = false;
         }
 
@@ -102,7 +103,7 @@ class CalendarUtils
      * Checks whether the given value is a db date format or not.
      *
      * @param string $value the date value
-     * @return boolean
+     * @return bool
      */
     protected static function isInDbFormat($value)
     {
@@ -118,10 +119,10 @@ class CalendarUtils
     {
         $result = false;
 
-        if($format) {
+        if ($format) {
             try {
                 $dt = DateTime::createFromFormat(static::parseFormat($format), $value ?? '');
-                if($dt === false) {
+                if ($dt === false) {
                     return false;
                 }
                 // Use 1st January for time seconds extracting because today date has an issue
@@ -133,11 +134,11 @@ class CalendarUtils
             }
         }
 
-        if(!$format && !$result) {
+        if (!$format && !$result) {
             $result = static::parseTime($value, static::TIME_FORMAT_SHORT);
         }
 
-        if(!$format && !$result) {
+        if (!$format && !$result) {
             $result = static::parseTime($value, static::TIME_FORMAT_SHORT_MERIDIEM);
         }
 
@@ -162,23 +163,23 @@ class CalendarUtils
         $start = static::getDateTime($start);
         $end = static::getDateTime($end);
 
-        if($start >= $end) {
+        if ($start >= $end) {
             return false;
         }
 
         $startCondition = static::getTimeString($start) === '00:00';
 
-        if(!$startCondition) {
+        if (!$startCondition) {
             return false;
         }
 
         $endTime = static::getTimeString($end);
 
-        if($endDateMomentAfter === null) {
+        if ($endDateMomentAfter === null) {
             return $endTime === '00:00' || $endTime === '23:59';
         }
 
-        if($endDateMomentAfter) {
+        if ($endDateMomentAfter) {
             return $endTime === '00:00';
         }
 
@@ -187,12 +188,12 @@ class CalendarUtils
 
     public static function ensureAllDay(DateTime $startDt, DateTime $endDt)
     {
-        if($startDt->format('Y-m-d') === $endDt->format('Y-m-d')) {
+        if ($startDt->format('Y-m-d') === $endDt->format('Y-m-d')) {
             $endDt->modify('+1 day');
         }
 
-        $startDt->setTime(0,0,0);
-        $endDt->setTime(0,0,0);
+        $startDt->setTime(0, 0, 0);
+        $endDt->setTime(0, 0, 0);
     }
 
     /**
@@ -218,10 +219,10 @@ class CalendarUtils
      */
     public static function getDateTime($date)
     {
-        if($date instanceof \DateTimeImmutable) {
+        if ($date instanceof \DateTimeImmutable) {
             return DateTime::createFromFormat(
                 static::DATE_FORMAT_ATOM,
-                $date->format(static::DATE_FORMAT_ATOM)
+                $date->format(static::DATE_FORMAT_ATOM),
             );
         }
 
@@ -234,7 +235,7 @@ class CalendarUtils
      */
     public static function getDateTimeZone($tz = null)
     {
-        if(!$tz) {
+        if (!$tz) {
             return null;
         }
 
@@ -250,7 +251,7 @@ class CalendarUtils
     {
         $result = $event->getEndTimezone();
 
-        if(!$result) {
+        if (!$result) {
             $result = $event->getTimezone();
         }
 
@@ -261,7 +262,7 @@ class CalendarUtils
     {
         $date = ($recurrentId instanceof \DateTimeInterface) ? $recurrentId : new DateTime($recurrentId, new DateTimeZone('UTC'));
 
-        if($targetTZ) {
+        if ($targetTZ) {
             $date->setTimezone(new DateTimeZone($targetTZ));
         }
 
@@ -279,16 +280,16 @@ class CalendarUtils
      */
     public static function getUserTimeZone($asString = false)
     {
-        if(!static::$userTimezone) {
-            $tz =  Yii::$app->user->isGuest
-                ? Yii::$app->timeZone
+        if (!static::$userTimezone) {
+            $tz = Yii::$app->user->isGuest
+                ? static::getSystemTimeZone(true)
                 : Yii::$app->user->getTimeZone();
 
-            if(!$tz) {
-                $tz = Yii::$app->timeZone;
+            if (!$tz) {
+                $tz = static::getSystemTimeZone(true);
             }
 
-            if($tz) {
+            if ($tz) {
                 static::$userTimezoneString = $tz;
                 static::$userTimezone = new DateTimeZone($tz);
             }
@@ -299,15 +300,16 @@ class CalendarUtils
 
     public static function getSystemTimeZone($asString = false)
     {
-        return $asString ? Yii::$app->timeZone : new DateTimeZone(Yii::$app->timeZone);
+        $tz = Yii::$app->settings->get('defaultTimeZone', Yii::$app->timeZone);
+        return $asString ? $tz : new DateTimeZone($tz);
     }
 
     public static function toDBDateFormat($date, $fixedTZ = true)
     {
         $date = static::getDateTime($date);
 
-        if(!$fixedTZ) {
-            $date->setTimezone(new DateTimeZone(Yii::$app->timeZone));
+        if (!$fixedTZ) {
+            $date->setTimezone(static::getSystemTimeZone());
         }
 
         return $date->format(static::DB_DATE_FORMAT);
@@ -341,14 +343,14 @@ class CalendarUtils
     public static function getDayOfWeek($dow)
     {
         $dows = static::getDaysOfWeek();
-        if(isset($dow, $dows)) {
+        if (isset($dow, $dows)) {
             return $dows[$dow];
         }
     }
 
     public static function translateToUserTimezone($date, $fromTZ = null, $format = self::DB_DATE_FORMAT)
     {
-        if(!$fromTZ) {
+        if (!$fromTZ) {
             $fromTZ = static::getSystemTimeZone();
         }
         return static::translateTimezone($date, $fromTZ, static::getUserTimeZone(), $format);
@@ -356,7 +358,7 @@ class CalendarUtils
 
     public static function translateToSystemTimezone($date, $fromTZ = null, $format = self::DB_DATE_FORMAT)
     {
-        if(!$fromTZ) {
+        if (!$fromTZ) {
             $fromTZ = static::getUserTimeZone();
         }
 
@@ -387,7 +389,7 @@ class CalendarUtils
 
     private static function clearTimezone($date, $newTZ = null)
     {
-        if($newTZ) {
+        if ($newTZ) {
             $newTZ = static::getDateTimeZone($newTZ);
         }
 
@@ -408,13 +410,15 @@ class CalendarUtils
         return $format;
     }
 
-    public static function generateEventUid(CalendarEventIF $event, $type = 'event') {
+    public static function generateEventUid(CalendarEventIF $event, $type = 'event')
+    {
         return static::generateUUid($event->getEventType()->getKey());
     }
 
-    public static function generateUUid($type = 'event') {
+    public static function generateUUid($type = 'event')
+    {
         Module::registerAutoloader();
-        return 'humhub-'.$type.'-' . UUIDUtil::getUUID();
+        return 'humhub-' . $type . '-' . UUIDUtil::getUUID();
     }
 
     /**
@@ -423,17 +427,17 @@ class CalendarUtils
      */
     public static function getCalendarEvent($model)
     {
-        if($model instanceof Content) {
+        if ($model instanceof Content) {
             $model = $model->getModel();
         }
 
-        if($model instanceof CalendarEventIF) {
+        if ($model instanceof CalendarEventIF) {
             return $model;
         }
 
-        if(method_exists($model, 'getCalendarEvent')) {
+        if (method_exists($model, 'getCalendarEvent')) {
             $event = $model->getCalendarEvent();
-            if($event instanceof CalendarEventIF) {
+            if ($event instanceof CalendarEventIF) {
                 return $event;
             }
         }
@@ -443,9 +447,44 @@ class CalendarUtils
 
     public static function incrementSequence(CalendarEventIF $entry)
     {
-        if($entry instanceof EditableEventIF) {
+        if ($entry instanceof EditableEventIF) {
             $sequence = $entry->getSequence();
-            $entry->setSequence( ($sequence === null) ? 0 : ++$sequence);
+            $entry->setSequence(($sequence === null) ? 0 : ++$sequence);
         }
+    }
+
+    public static function generateIcal($entries, $name)
+    {
+        $events = [];
+        foreach ($entries as $entry) {
+            $event = CalendarUtils::getCalendarEvent($entry);
+
+            if (!$event) {
+                continue;
+            }
+
+            if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
+                /* @var $event RecurrentEventIF */
+                $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
+            }
+
+            $events[] = $event;
+        }
+
+        return VCalendar::withEvents(
+            $events,
+            CalendarUtils::getSystemTimeZone(true),
+            $name,
+        )->serialize();
+    }
+
+    public static function generateIcs($event)
+    {
+        if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
+            /* @var $event RecurrentEventIF */
+            $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
+        }
+
+        return VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone(true))->serialize();
     }
 }

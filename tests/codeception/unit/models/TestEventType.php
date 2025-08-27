@@ -1,14 +1,12 @@
 <?php
 
-
 namespace humhub\modules\calendar\tests\codeception\unit\models;
-
 
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 
 class TestEventType implements CalendarTypeIF
 {
-    const ITEM_TYPE = 'testType';
+    public const ITEM_TYPE = 'testType';
 
     public function getKey()
     {

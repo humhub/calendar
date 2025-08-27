@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -14,7 +15,6 @@
  */
 
 namespace humhub\modules\calendar\interfaces\event;
-
 
 use DateTime;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -43,12 +43,12 @@ class CalendarItemsEvent extends Event
     public $end;
 
     /**
-     * @var integer result limit
+     * @var int result limit
      */
     public $limit;
 
     /**
-     * @var boolean whether or not to expand recurring events
+     * @var bool whether or not to expand recurring events
      */
     public $expand;
 
@@ -63,7 +63,7 @@ class CalendarItemsEvent extends Event
     public function addItems($itemType, $items)
     {
         $items = is_array($items) ? $items : [$items];
-        if(!isset($this->items[$itemType])) {
+        if (!isset($this->items[$itemType])) {
             $this->items[$itemType] = $items;
         } else {
             $this->items[$itemType] = array_merge($this->items[$itemType], $items);

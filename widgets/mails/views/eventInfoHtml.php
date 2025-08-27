@@ -5,14 +5,17 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
+use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
+use yii\web\View;
 
+/* @var $this View */
 /* @var $event CalendarEventIF */
 /* @var $url string */
 /* @var $extraInfo string */
@@ -28,37 +31,35 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
     <table width="100%" style="table-layout:fixed;" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td colspan="2"
-                style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left;">
+                style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left;">
 
                 <?php if (!empty($event->getTitle())): ?>
                     <h1><?= Html::encode($event->getTitle()) ?></h1>
                 <?php endif; ?>
 
                 <?php if (!empty($event->getStartDateTime())): ?>
-                    <?= Yii::t('CalendarModule.mail', '<strong>Starting</strong> {date}', [
-                        'date' => $formatter->getFormattedTime()
-                    ]) ?>
-                    <br>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Starting') ?>:</strong>
+                    <?= $formatter->getFormattedTime() ?><br><br>
                 <?php endif; ?>
 
-                <?php if ($event instanceof CalendarEventParticipationIF): ?>
-                    <?php if ($event->getOrganizer()) : ?>
-                        <b><?= Yii::t('CalendarModule.mail', 'Organized by {userName}', ['userName' => Html::encode($event->getOrganizer()->displayName)]) ?></b>
-                    <?php endif; ?>
+                <?php if ($event instanceof CalendarEventParticipationIF && $event->getOrganizer()): ?>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Organizer') ?>:</strong>
+                    <?= Html::encode($event->getOrganizer()->displayName) ?><br><br>
                 <?php endif; ?>
 
                 <?php if (!empty($event->getLocation())): ?>
-                    <b><?= Yii::t('CalendarModule.mail', 'Location:') ?> <?= Html::encode($event->getLocation()) ?></b>
-                    <br>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Location') ?>:</strong>
+                    <?= Html::encode($event->getLocation()) ?><br><br>
                 <?php endif; ?>
 
                 <?php if (!empty($event->getDescription())): ?>
-                    <p><?= RichTextToEmailHtmlConverter::process($event->getDescription()) ?></p>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Description') ?>:</strong><br>
+                    <?= RichTextToEmailHtmlConverter::process($event->getDescription()) ?><br>
                 <?php endif; ?>
 
                 <?php if (isset($extraInfo) && !empty($extraInfo)): ?>
-                    <h2><?= Yii::t('CalendarModule.mail', 'Additional information:'); ?></h2>
-                    <p><?= RichTextToEmailHtmlConverter::process($extraInfo) ?></p>
+                    <strong><?= Yii::t('CalendarModule.notification', 'Participants info') ?>:</strong><br>
+                    <?= RichTextToEmailHtmlConverter::process($extraInfo) ?><br>
                 <?php endif; ?>
             </td>
         </tr>

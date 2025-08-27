@@ -7,9 +7,9 @@
 
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\widgets\Button;
-use yii\widgets\ActiveForm;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\SortOrderField;
 
 /* @var $model MenuSettings */
 ?>

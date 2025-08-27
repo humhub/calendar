@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -19,7 +20,7 @@ class m171027_185420_reminder extends Migration
             'content_id' => $this->integer()->null(),
             'active' => $this->tinyInteger(4)->defaultValue(1),
             'disabled' => $this->tinyInteger(4)->defaultValue(0),
-            'contentcontainer_id' => $this->integer()->null()
+            'contentcontainer_id' => $this->integer()->null(),
         ]);
 
         $this->createTable('calendar_reminder_sent', [

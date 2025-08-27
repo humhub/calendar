@@ -1,4 +1,5 @@
 <?php
+
 namespace calendar;
 
 use humhub\modules\calendar\helpers\RestDefinitions;

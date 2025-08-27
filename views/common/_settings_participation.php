@@ -3,10 +3,12 @@
 use humhub\modules\calendar\assets\ParticipationFormAssets;
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\web\View;
 
 /* @var $this View */
+/* @var $form ActiveForm */
 /* @var $participationSettings ParticipationSettings */
 
 $helpBlock = $participationSettings->isGlobal()
@@ -20,17 +22,17 @@ ParticipationFormAssets::register($this);
     <h4>
         <?= Yii::t('CalendarModule.config', 'Default participation settings'); ?>
         <?php if ($participationSettings->showResetButton()) : ?>
-            <?= Button::defaultType(Yii::t('CalendarModule.config', 'Reset'))
+            <?= Button::light(Yii::t('CalendarModule.config', 'Reset'))
                 ->action('client.pjax.post', $participationSettings->getResetButtonUrl())->link()->right()->sm()?>
         <?php endif; ?>
     </h4>
 
-    <div class="help-block">
+    <div class="form-text">
         <?= $helpBlock ?>
     </div>
 
     <?= $form->field($participationSettings, 'participation_mode')->dropDownList(CalendarEntryParticipationForm::getModeItems(), ['data-action-change' => 'changeParticipationMode']) ?>
-    <div class="participationOnly" style="<?= $participationSettings->isParticipationAllowed() ? '' : 'display:none' ?>">
+    <div class="participationOnly<?= $participationSettings->isParticipationAllowed() ? '' : ' d-none' ?>">
         <?= $form->field($participationSettings, 'allow_decline')->checkbox() ?>
         <?= $form->field($participationSettings, 'allow_maybe')->checkbox() ?>
     </div>

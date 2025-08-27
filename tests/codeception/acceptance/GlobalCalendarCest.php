@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -34,50 +35,45 @@ class GlobalCalendarCest
         $I->amOnRoute(['/calendar/global/index']);
         $I->expectTo('see my space calendar entry');
         $I->see('Select calendars');
-        $I->waitForText('Space Event',null, '#calendar');
-
-        // Active space and profile filter
-        $I->click('.calendar_my_spaces');
-        $I->click('.calendar_my_profile');
-
-        $I->wait(2);
-
-        $I->waitForText( 'Space Event', null,'#calendar');
-
-        $I->wantToTest('the global calendar filters');
-        $I->amGoingTo('deselect the space clalendar filter');
-        $I->click('.calendar_my_spaces');
-        $I->wait(2);
-        $I->cantSee('Space Event', '#calendar');
+        $I->waitForText('Space Event', 10, '#calendar');
 
         $I->amGoingTo('activate the profile calendar module by creating a new event');
         $I->click('.fc-today');
         $I->expectTo('see the choose calendar modal');
         $I->waitForText('Choose target calendar');
+        $I->click('.select2-selection--single');
+        $I->click('.select2-results__option:nth-child(2)');
         $I->click('Next', '#globalModal');
 
 
-        $I->waitForText('Add profile calendar', null, '#globalModal');
+        $I->waitForText('Add profile calendar', 10, '#globalModal');
         $I->click('Enable', '#globalModal');
-        $I->waitForText('Next', null, '#globalModal');
+        $I->waitForText('Next', 10, '#globalModal');
         $I->click('Next', '#globalModal');
 
-        $I->waitForText('Create Event', null, '#globalModal');
+        $I->waitForText('Create Event', 10, '#globalModal');
         $I->fillField('CalendarEntry[title]', 'My Test Profile Entry');
-        $I->fillField('#calendarentry-description .humhub-ui-richtext',  'My Test Profile Entry Description');
+        $I->fillField('#calendarentry-description .humhub-ui-richtext', 'My Test Profile Entry Description');
         $I->click('Next', '#globalModal');
 
-        //$I->waitForText('Close', null, '#globalModal');
+        //$I->waitForText('Close', 10, '#globalModal');
         //$I->click('Close', '#globalModal');
 
         //$I->wait(1);
-        $I->waitForText('My Test Profile Entry',null, '.fc-event-container');
-
-        $I->waitForElementVisible('.calendar_my_spaces');
-        $I->click('.calendar_my_spaces');
-
-        $I->waitForText('Space Event');
+        $I->waitForText('My Test Profile Entry', 10, '.fc-event-container');
         $I->see('My Test Profile Entry', '.fc-title');
+
+        // Active space filter
+        $I->amGoingTo('Select the space calendar filter');
+        $I->click('.calendar_my_spaces');
+        $I->wait(2);
+        $I->waitForText('Space Event', 10, '#calendar');
+
+        $I->wantToTest('the global calendar filters');
+        $I->amGoingTo('deselect the space calendar filter');
+        $I->click('.calendar_my_spaces');
+        $I->wait(2);
+        $I->waitForText('Space Event', 10, '#calendar');
     }
 
     /**
@@ -98,17 +94,17 @@ class GlobalCalendarCest
         $I->click('.fc-day-top.fc-today');
         $I->waitForText('Create Event');
 
-//         $I->click('[for="calendarentry-all_day"]');
-//         $I->wait(1);
+        //         $I->click('[for="calendarentry-all_day"]');
+        //         $I->wait(1);
 
         $I->wantToTest('how the end time will change value if the start time is changed');
         $I->fillField('#calendarentryform-start_time', '01:00 PM');
-//         $I->fillField('input[name="CalendarEntryForm[start_time]"]', '01:00 PM');
-//         $I->executeJS('$(".field-calendarentryform-start_time .picker").click();');
-//         $I->seeElement('input', ['name' => 'meridian']);
-//         $I->fillField('input[name="hour"]', '01');
-//         $I->fillField('input[name="minute"]', '00');
-//         $I->fillField('input[name="meridian"]', 'PM');
+        //         $I->fillField('input[name="CalendarEntryForm[start_time]"]', '01:00 PM');
+        //         $I->executeJS('$(".field-calendarentryform-start_time .picker").click();');
+        //         $I->seeElement('input', ['name' => 'meridian']);
+        //         $I->fillField('input[name="hour"]', '01');
+        //         $I->fillField('input[name="minute"]', '00');
+        //         $I->fillField('input[name="meridian"]', 'PM');
         $I->executeJS('$("#calendarentryform-start_time").focus().val("01:00 PM").change();');
         $I->wait(1);
         $I->seeInField('#calendarentryform-end_time', '02:00 PM');

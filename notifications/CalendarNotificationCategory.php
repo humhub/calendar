@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -29,7 +30,7 @@ class CalendarNotificationCategory extends NotificationCategory
      */
     public function getTitle()
     {
-        return Yii::t('CalendarModule.notifications_CalendarNotificationCategory', 'Calendar');
+        return Yii::t('CalendarModule.notification', 'Calendar');
     }
 
     /**
@@ -37,6 +38,6 @@ class CalendarNotificationCategory extends NotificationCategory
      */
     public function getDescription()
     {
-        return Yii::t('CalendarModule.notifications_CalendarNotificationCategory', 'Receive Calendar related Notifications.');
+        return Yii::t('CalendarModule.notification', 'Receive Calendar related Notifications.');
     }
 }

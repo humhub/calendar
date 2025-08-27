@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -33,8 +34,8 @@ class EditLink extends WallEntryControlLink
         $this->icon = 'fa-pencil';
         $this->options = [
             'data-action-click' => 'calendar.editModal',
-            'data-action-target' =>"[data-content-key='".$this->entry->content->id."']",
-            'data-action-url' => Url::toEditEntry($this->entry, 1)
+            'data-action-target' => "[data-content-key='" . $this->entry->content->id . "']",
+            'data-action-url' => Url::toEditEntry($this->entry, 1),
         ];
 
         parent::init();

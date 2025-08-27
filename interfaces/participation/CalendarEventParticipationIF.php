@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -7,17 +8,16 @@
 
 namespace humhub\modules\calendar\interfaces\participation;
 
-
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 
 interface CalendarEventParticipationIF
 {
-    const PARTICIPATION_STATUS_NONE = 0;
-    const PARTICIPATION_STATUS_DECLINED = 1;
-    const PARTICIPATION_STATUS_MAYBE = 2;
-    const PARTICIPATION_STATUS_ACCEPTED = 3;
-    const PARTICIPATION_STATUS_INVITED = 4;
+    public const PARTICIPATION_STATUS_NONE = 0;
+    public const PARTICIPATION_STATUS_DECLINED = 1;
+    public const PARTICIPATION_STATUS_MAYBE = 2;
+    public const PARTICIPATION_STATUS_ACCEPTED = 3;
+    public const PARTICIPATION_STATUS_INVITED = 4;
 
     /**
      * Returns the participation state for a given user or guests if $user is null.

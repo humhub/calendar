@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -6,10 +7,9 @@
  *
  */
 
-namespace  humhub\modules\calendar\notifications;
+namespace humhub\modules\calendar\notifications;
 
-use humhub\libs\Html;
-use humhub\modules\content\notifications\ContentCreatedNotificationCategory;
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -45,18 +45,18 @@ class CanceledEvent extends BaseNotification
      */
     public function html()
     {
-        if($this->source->content->container instanceof Space) {
-            return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} canceled event "{contentTitle}" in space {spaceName}.', [
+        if ($this->source->content->container instanceof Space) {
+            return Yii::t('CalendarModule.notification', '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                 'contentTitle' => $this->getContentInfo($this->source, false),
-                'spaceName' =>  Html::encode($this->source->content->container->displayName)
-            ]);
-        } else {
-            return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} canceled event "{contentTitle}".', [
-                'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => $this->getContentInfo($this->source, false)
+                'spaceName' =>  Html::encode($this->source->content->container->displayName),
             ]);
         }
+
+        return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} canceled the event "{contentTitle}".', [
+            'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            'contentTitle' => $this->getContentInfo($this->source, false),
+        ]);
     }
 
     /**
@@ -64,9 +64,9 @@ class CanceledEvent extends BaseNotification
      */
     public function getMailSubject()
     {
-        return Yii::t('CalendarModule.notifications_views_CanceledEvent', '{displayName} canceled event "{contentTitle}".', [
-            'displayName' => Html::encode($this->originator->displayName),
-            'contentTitle' => $this->getContentInfo($this->source, false)
+        return Yii::t('CalendarModule.notification', '{displayName} canceled the event "{contentTitle}".', [
+            'displayName' => $this->originator->displayName,
+            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
         ]);
     }
 }

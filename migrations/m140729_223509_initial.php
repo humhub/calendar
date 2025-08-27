@@ -4,7 +4,6 @@ use humhub\components\Migration;
 
 class m140729_223509_initial extends Migration
 {
-
     public function up()
     {
         $this->createTable('calendar_entry', [

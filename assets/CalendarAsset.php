@@ -8,7 +8,7 @@
 
 namespace humhub\modules\calendar\assets;
 
-use humhub\modules\ui\view\components\View;
+use humhub\modules\calendar\models\participation\FullCalendarSettings;
 use Yii;
 use yii\web\AssetBundle;
 
@@ -17,36 +17,35 @@ class CalendarAsset extends AssetBundle
     public $defer = true;
 
     public $publishOptions = [
-        'forceCopy' => false
+        'forceCopy' => false,
     ];
-    
+
     public $sourcePath = '@calendar/resources/js';
 
     public $js = [
-        'humhub.calendar.Calendar.min.js'
+        'humhub.calendar.Calendar.min.js',
     ];
 
     public $depends = [
         FullCalendarAssets::class,
-        CalendarBaseAssets::class
+        CalendarBaseAssets::class,
     ];
 
     /**
-     * @param View $view
-     * @return AssetBundle
+     * @inheritdoc
      */
-    public static function register($view)
+    public static function registerForContainer($view, $contentContainer = null)
     {
         $view->registerJsConfig('calendar.Calendar', [
             'text' => [
-                'button.today' => Yii::t('CalendarModule.calendar', 'Today'),
-                'button.month' => Yii::t('CalendarModule.calendar', 'Month'),
-                'button.week' => Yii::t('CalendarModule.calendar', 'Week'),
-                'button.day' => Yii::t('CalendarModule.calendar', 'Day'),
-                'button.list' => Yii::t('CalendarModule.calendar', 'List'),
-            ]
+                'button.today' => Yii::t('CalendarModule.base', 'Today'),
+                'button.month' => Yii::t('CalendarModule.base', 'Month'),
+                'button.week' => Yii::t('CalendarModule.base', 'Week'),
+                'button.day' => Yii::t('CalendarModule.base', 'Day'),
+                'button.list' => Yii::t('CalendarModule.base', 'List'),
+            ],
+            'listViewType' => (new FullCalendarSettings(['contentContainer' => $contentContainer]))->listViewType,
         ]);
         return parent::register($view);
     }
-
 }

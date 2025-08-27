@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -43,9 +44,9 @@ class CalendarController extends BaseContentController
     {
         $data = Yii::$app->request->bodyParams;
 
-        return $calendarEntryForm->load($data) &&
-            $calendarEntryForm->save() &&
-            (!method_exists($this, 'updateContent') || $this->updateContent($calendarEntryForm->entry, $data));
+        return $calendarEntryForm->load($data)
+            && $calendarEntryForm->save()
+            && (!method_exists($this, 'updateContent') || $this->updateContent($calendarEntryForm->entry, $data));
     }
 
     public function actionCreate($containerId)
@@ -86,7 +87,7 @@ class CalendarController extends BaseContentController
         }
 
         $calendarEntryForm = new CalendarEntryForm(['entry' => $calendarEntry]);
-        if(! $calendarEntryForm->entry->content->canEdit()) {
+        if (! $calendarEntryForm->entry->content->canEdit()) {
             return $this->returnError(403, 'You are not allowed to update this calendar entry!');
         }
 
@@ -122,11 +123,11 @@ class CalendarController extends BaseContentController
         }
 
         if (! in_array((int)$respondType, [
-                CalendarEntryParticipant::PARTICIPATION_STATE_NONE,
-                CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED,
-                CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
-                CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
-            ], true)) {
+            CalendarEntryParticipant::PARTICIPATION_STATE_NONE,
+            CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED,
+            CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
+            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
+        ], true)) {
             return $this->returnError(400, 'Invalid respond type');
         }
 

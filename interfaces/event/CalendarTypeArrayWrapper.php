@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces\event;
-
 
 use humhub\components\SettingsManager;
 use Yii;
@@ -17,27 +15,27 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
     /**
      * @var string Color option key
      */
-    const OPTION_DEFAULT_COLOR = 'color';
+    public const OPTION_DEFAULT_COLOR = 'color';
 
     /**
      * @var string Icon option key
      */
-    const OPTION_ICON = 'icon';
+    public const OPTION_ICON = 'icon';
 
     /**
      * @var string description
      */
-    const OPTION_DESCRIPTION = 'description';
+    public const OPTION_DESCRIPTION = 'description';
 
     /**
      * @var string Icon type key
      */
-    const OPTION_KEY = 'key';
+    public const OPTION_KEY = 'key';
 
     /**
      * @var string Title option key
      */
-    const OPTION_TITLE = 'title';
+    public const OPTION_TITLE = 'title';
 
     public $options = [];
 
@@ -48,7 +46,7 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
      */
     public function getDefaultColor()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_DEFAULT_COLOR])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_DEFAULT_COLOR])) {
             return $this->options[static::OPTION_DEFAULT_COLOR];
         }
 
@@ -60,7 +58,7 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
      */
     public function getTitle()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_TITLE])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_TITLE])) {
             return $this->options[static::OPTION_TITLE];
         }
 
@@ -69,7 +67,7 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
 
     public function getIcon()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_ICON])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_ICON])) {
             return $this->options[static::OPTION_ICON];
         }
 
@@ -78,7 +76,7 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
 
     public function getDescription()
     {
-        if(!empty($this->options) && isset($this->options[static::OPTION_DESCRIPTION])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_DESCRIPTION])) {
             return $this->options[static::OPTION_DESCRIPTION];
         }
 
@@ -87,11 +85,11 @@ class CalendarTypeArrayWrapper extends Model implements CalendarTypeIF
 
     public function getKey()
     {
-        if($this->key) {
+        if ($this->key) {
             return $this->key;
         }
 
-        if(!empty($this->options) && isset($this->options[static::OPTION_KEY])) {
+        if (!empty($this->options) && isset($this->options[static::OPTION_KEY])) {
             return $this->options[static::OPTION_KEY];
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -13,7 +14,7 @@ class m170721_203204_close_event extends Migration
 {
     public function safeUp()
     {
-        $this->addColumn('calendar_entry', 'closed', Schema::TYPE_BOOLEAN. ' DEFAULT 0');
+        $this->addColumn('calendar_entry', 'closed', Schema::TYPE_BOOLEAN . ' DEFAULT 0');
     }
 
     public function safeDown()

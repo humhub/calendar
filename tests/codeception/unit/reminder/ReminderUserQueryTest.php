@@ -9,9 +9,8 @@ use calendar\CalendarUnitTest;
 use DateInterval;
 use DateTime;
 
-class ReminderUserQueryTest  extends CalendarUnitTest
+class ReminderUserQueryTest extends CalendarUnitTest
 {
-
     /**
      * SPACE
      */
@@ -22,7 +21,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_NONE;
         $result = $entry->getReminderUserQuery()->all();
         static::assertCount(3, $result);
@@ -37,7 +36,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $result = $entry->getReminderUserQuery()->all();
         static::assertCount(0, $result);
@@ -49,7 +48,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->participation->setParticipationStatus(User::findOne(['id' => 2]), CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED);
         $result = $entry->getReminderUserQuery()->all();
@@ -63,7 +62,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->participation->setParticipationStatus(User::findOne(['id' => 2]), CalendarEntryParticipation::PARTICIPATION_STATUS_MAYBE);
         $result = $entry->getReminderUserQuery()->all();
@@ -77,7 +76,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->participation->setParticipationStatus(User::findOne(['id' => 2]), CalendarEntryParticipation::PARTICIPATION_STATUS_DECLINED);
         $result = $entry->getReminderUserQuery()->all();
@@ -94,7 +93,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $user);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $user);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_NONE;
         $result = $entry->getReminderUserQuery()->all();
         static::assertCount(1, $result);
@@ -108,7 +107,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $user);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $user);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $result = $entry->getReminderUserQuery()->all();
         static::assertCount(1, $result);
@@ -122,7 +121,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $user);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $user);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->setParticipationStatus($participant, CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED);
         $result = $entry->getReminderUserQuery()->all();
@@ -138,7 +137,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $user);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $user);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->setParticipationStatus($participant, CalendarEntryParticipation::PARTICIPATION_STATUS_MAYBE);
         $result = $entry->getReminderUserQuery()->all();
@@ -154,7 +153,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $user);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $user);
         $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->setParticipationStatus($participant, CalendarEntryParticipation::PARTICIPATION_STATUS_DECLINED);
         $result = $entry->getReminderUserQuery()->all();
@@ -170,7 +169,7 @@ class ReminderUserQueryTest  extends CalendarUnitTest
     {
         $found = false;
         foreach ($participants as $participant) {
-            if($user->is($participant)) {
+            if ($user->is($participant)) {
                 $found = true;
                 break;
             }

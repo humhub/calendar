@@ -1,46 +1,21 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace  humhub\modules\calendar\notifications;
+namespace humhub\modules\calendar\notifications;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
-use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\calendar\notifications\base\EventNotification;
 use Yii;
-use yii\mail\MessageInterface;
 
-class ParticipantAdded extends BaseNotification
+class ParticipantAdded extends EventNotification
 {
-
-    /**
-     * @var CalendarEntry
-     */
-    public $source;
-
-    /**
-     * @inheritdoc
-     */
-    public $moduleId = 'calendar';
-
-    /**
-     * @inheritdoc
-     */
-    public $viewName = 'participationInfoNotification';
-
     public ?int $participationStatus = null;
-
-    /**
-     * @inheritdoc
-     */
-    public function category()
-    {
-        return new CalendarNotificationCategory();
-    }
 
     /**
      * @inheritdoc
@@ -51,12 +26,12 @@ class ParticipantAdded extends BaseNotification
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
             'contentTitle' => $this->getContentInfo($this->source, false),
             'spaceName' =>  Html::encode($this->source->content->container->displayName),
-            'time' => $this->source->getFormattedTime()
+            'time' => $this->source->getFormattedTime(),
         ];
 
         return $this->isInvited()
-            ? Yii::t('CalendarModule.base', '{displayName} just invited you to event "{contentTitle}" in space {spaceName} starting at {time}.', $params)
-            : Yii::t('CalendarModule.base', '{displayName} just added you to event "{contentTitle}" in space {spaceName} starting at {time}.', $params);
+            ? Yii::t('CalendarModule.base', '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.', $params)
+            : Yii::t('CalendarModule.base', '{displayName} added you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.', $params);
     }
 
     /**
@@ -65,30 +40,13 @@ class ParticipantAdded extends BaseNotification
     public function getMailSubject()
     {
         $params = [
-            'displayName' =>  Html::encode($this->originator->displayName),
-            'contentTitle' => $this->getContentInfo($this->source, false)
+            'displayName' =>  $this->originator->displayName,
+            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
         ];
 
         return $this->isInvited()
-            ? Yii::t('CalendarModule.base', '{displayName} just invited you to event "{contentTitle}".', $params)
-            : Yii::t('CalendarModule.base', '{displayName} just added you to event "{contentTitle}".', $params);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeMailSend(MessageInterface $message)
-    {
-        $ics = $this->source->generateIcs();
-
-        if (!empty($ics)) {
-            $message->attachContent($ics, [
-                'fileName' => $this->source->getUid() . '.ics',
-                'contentType' => 'text/calendar'
-            ]);
-        }
-
-        return true;
+            ? Yii::t('CalendarModule.base', '{displayName} invited you to the event "{contentTitle}".', $params)
+            : Yii::t('CalendarModule.base', '{displayName} added you to the event "{contentTitle}".', $params);
     }
 
     private function isInvited(): bool

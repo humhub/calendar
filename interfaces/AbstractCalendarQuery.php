@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -24,5 +25,4 @@ use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery as BaseCalend
  */
 abstract class AbstractCalendarQuery extends BaseCalendarQuery
 {
-
 }

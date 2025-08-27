@@ -1,15 +1,123 @@
 Changelog
 =========
 
-1.6.0  (Unreleased)
-------------------------
-- Fix #481: Update module resources path
-
-1.5.11 (Unreleased)
+1.8.0 (August 27, 2025)
 -----------------------
+- Fix #481: Update module resources path
+- Enh #549: Migration to Bootstrap 5 for HumHub 1.18
+
+1.7.14 (August 21, 2025)
+------------------------
+- Fix #573: Fix time zone for anonymous users
+- Fix #576: Fix Google Calendar hiding private events during iCal import
+
+1.7.13 (August 6, 2025)
+-----------------------
+- Fix #572: Fix CSP Violation in `fullcalendar.bundle.min.css`
+
+1.7.12 (August 5, 2025)
+-----------------------
+- Enh #558: ICS Import on Android
+
+1.7.11 (July 30, 2025)
+----------------------
+- Fix #570: Fix extension for module "Custom Pages"
+
+1.7.10 (July 21, 2025)
+---------------------
+- Enh #569: Make list view type configurable
+
+1.7.9 (July 12, 2025)
+---------------------
+- fix #566: Fix caldav birthday event sync
+- Fix #565: Fix caldav `Copy to clipboard`
+
+1.7.8 (July 11, 2025)
+---------------------
+- Security: Versions between 1.7.7 - 1.7.5 displayed participants' email addresses in ICS files without the enabled “Expose User Data” option.
+- Enh #557: Use content ID in the "Custom Pages" extension
+- Enh #562: Add JWT token for caldav password
+- Enh #557: Use content ID in the `Custom Pages` extension
+- Enh #561: Add calendar name for `ical`
+- Fix #559: Email Notification subjects HTML encoded
+- Enh #564: Fix "Expose User Data" option
+
+1.7.7 (June 30, 2025)
+---------------------
+- Enh #550: Update custom pages extension for new template variables
+
+1.7.6 (June 25, 2025)
+---------------------
+- Fix #555: Fixed JWT version conflict with core version
+
+1.7.5 (June 23, 2025)
+-----------------------
+- Enh #541: Added native export features via ICal and CalDav
+
+1.7.4 (May 12, 2025)
+--------------------
+- Enh #542: Add filters for template element of the custom pages module
+
+1.7.3 (February 25, 2025)
+-------------------------
+- Enh #537: Implement template element for custom pages
+- Enh #538: Fix deletion of recurrent calendar entry from wall stream
+
+1.7.2 (January 28, 2025)
+------------------------
+- Fix #525: Fix Space calendar header
+- Enh #526: New event from the global calendar: display "Select space..." or "Select calendar..." prompt instead of first Space
+- Enh #528: Show the "Filter by types" filter only if a list a type is available
+- Fix #523: Global calendar: display the "My profile" filter only when the module is enabled in for the User account
+- Enh #514: Replace the view modes listWeek and listYear with listMonth
+- Enh #532: Update event color when category is unselected
+
+1.7.1 (January 17, 2025)
+------------------------
+- Fix #521: Fix global calendar url
+
+1.7.0 (January 14, 2025)
+------------------------
+- Fix #509: Fix event type visibility
+- Enh #512: Surround the widget wall entry links with a dedicated HTML class
+- Enh #516: Improved calendar page URLs
+- Fix #519: Fix issue where `IntlDateFormatter::parse()` failed to parse Bulgarian dates.
+- Fix #520: Fix global calendar url when prettyUrl is disabled 
+- Enh #502: Replace theme variables with CSS variables
+- Enh #504: Update Active Form for Bootstrap 5
+- Enh #508: Reduce translation message categories
+
+1.6.3 (August 23, 2024)
+-----------------------
+- Fix #477: Hide the settings button when module is not available for a container
+- Enh #466: Fix period selector on default reminder settings
+- Fix: Add autofocus on event edit and event type edit (for HumHub 1.17 - see https://github.com/humhub/humhub/issues/7136)
+- Fix #500: Fix notification message about updated event
+
+1.6.2 (July 16, 2024)
+---------------------
+- Enh #495: Fix column `exdate` to delete more than 16 recurrence event entries
+
+1.6.1 (July 3, 2024)
+--------------------
+- Enh: Updated translations
+
+1.6.0 (July 1, 2024)
+--------------------
+- Enh #489: Use PHP CS Fixer
+- Enh #492: Add colors for event types in pickers
+
+1.5.12 (June 25, 2024)
+----------------------
+- Fix #487: Base event notification broken
+
+1.5.11 (June 24, 2024)
+----------------------
 - Enh #473: Add footer to global calendar
 - Fix #474: Fix checking for past event when it is created from different time zone
 - Fix #478: Revert missed controls on space calendar
+- Enh #484: New notification when user marks "Attend" and attach ICS files
+- Enh #486: Clearer and consistent wording
 
 1.5.10 (March 19, 2024)
 -----------------------

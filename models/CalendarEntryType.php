@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -15,7 +16,6 @@
 
 namespace humhub\modules\calendar\models;
 
-
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\content\models\ContentTag;
 use Yii;
@@ -24,9 +24,9 @@ class CalendarEntryType extends ContentTag implements CalendarTypeIF
 {
     public $moduleId = 'calendar';
 
-    const DEFAULT_COLOR = '#59D6E4';
-    const KEY = 'calendar_event';
-    const ICON = 'fa-calendar';
+    public const DEFAULT_COLOR = '#59D6E4';
+    public const KEY = 'calendar_event';
+    public const ICON = 'fa-calendar';
 
     public function init()
     {

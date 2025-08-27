@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -37,9 +38,9 @@ class ForceParticipation extends ActiveJob
         $originator = User::findOne(['id' => $this->originator_id]);
         $status = isset($this->status) ? $this->status : CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED;
 
-        if(!$entry || !$originator || !($entry->content->container instanceof Space) ||
-            !CalendarEntryParticipation::isAllowedStatus($status)) {
-            throw new InvalidConfigException('Could not force calendar event participation due to invalid config ('.$this->entry_id.', '.$this->originator_id.', '.$status.')');
+        if (!$entry || !$originator || !($entry->content->container instanceof Space)
+            || !CalendarEntryParticipation::isAllowedStatus($status)) {
+            throw new InvalidConfigException('Could not force calendar event participation due to invalid config (' . $this->entry_id . ', ' . $this->originator_id . ', ' . $status . ')');
         }
 
         $subQuery = CalendarEntryParticipant::find()

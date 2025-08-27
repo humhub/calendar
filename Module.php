@@ -15,6 +15,11 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 class Module extends ContentContainerModule
 {
     /**
+     * @var string the default route of this module.
+     */
+    public $defaultRoute = 'view';
+
+    /**
      * @var bool feature switch for recurrence events
      */
     public $recurrenceActive = true;
@@ -37,6 +42,8 @@ class Module extends ContentContainerModule
 
     /**
      * @var bool whether or not to include the ORGANIZER in ICS export
+     * @deprecated since 1.7.4
+     * @see `Include Organizer and Participant Info in Exports` option in Calendar Module Admin UI
      */
     public $icsOrganizer = false;
 

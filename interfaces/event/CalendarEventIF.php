@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -15,11 +16,8 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-
 use DateTime;
-use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\widgets\Label;
-use DateTimeInterface;
+use humhub\widgets\bootstrap\Badge;
 
 /**
  * This interface serves as the base interface for all types of calendar events.
@@ -91,7 +89,7 @@ interface CalendarEventIF
      * Defines whether or not this event is an spans over an whole day.
      * Note all_day events should omit any timezone translations.
      *
-     * @return boolean
+     * @return bool
      */
     public function isAllDay();
 
@@ -190,7 +188,7 @@ interface CalendarEventIF
     /**
      * (optional) A badge/label used in snippets
      *
-     * @return Label|string|null
+     * @return Badge|string|null
      */
     public function getBadge();
 

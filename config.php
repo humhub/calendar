@@ -2,6 +2,7 @@
 
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\components\Application;
+use humhub\modules\content\models\Content;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\ProfileMenu;
@@ -14,6 +15,7 @@ use humhub\modules\calendar\Events;
 use humhub\modules\content\widgets\WallEntryLinks;
 use humhub\commands\IntegrityController;
 use humhub\commands\CronController;
+use humhub\components\ModuleManager;
 
 return [
     'id' => 'calendar',
@@ -26,7 +28,7 @@ return [
         ['class' => ProfileMenu::class, 'event' => ProfileMenu::EVENT_INIT, 'callback' => [Events::class, 'onProfileMenuInit']],
         ['class' => SpaceSidebar::class, 'event' => SpaceSidebar::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSidebarInit']],
         ['class' => ProfileSidebar::class, 'event' => ProfileSidebar::EVENT_INIT, 'callback' => [Events::class, 'onProfileSidebarInit']],
-        ['class' => DashboardSidebar::class, 'event' =>DashboardSidebar::EVENT_INIT, 'callback' => [Events::class, 'onDashboardSidebarInit']],
+        ['class' => DashboardSidebar::class, 'event' => DashboardSidebar::EVENT_INIT, 'callback' => [Events::class, 'onDashboardSidebarInit']],
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Events::class, 'onTopMenuInit']],
         ['class' => 'humhub\modules\calendar\interfaces\CalendarService', 'event' => 'getItemTypes', 'callback' => [Events::class, 'onGetCalendarItemTypes']],
         ['class' => 'humhub\modules\calendar\interfaces\CalendarService', 'event' => 'findItems', 'callback' => [Events::class, 'onFindCalendarItems']],
@@ -38,5 +40,13 @@ return [
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronRun']],
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
+        ['class' => 'humhub\modules\custom_pages\modules\template\services\ElementTypeService', 'event' => 'init', 'callback' => [Events::class, 'onCustomPagesTemplateElementTypeServiceInit']],
+        ['class' => Content::class, 'event' => Content::EVENT_AFTER_SOFT_DELETE, 'callback' => [Events::class, 'onContentAfterSoftDelete']],
+    ],
+    'urlManagerRules' => [
+        'calendar' => 'calendar/global',
+        '/.well-known/caldav' => 'calendar/cal-dav/well-known',
+        ['pattern' => 'remote/caldav/<path:.*>', 'route' => 'calendar/cal-dav/index', 'defaults' => ['path' => '']],
+        ['pattern' => 'remote/ical/<token:[a-zA-Z0-9\-_\.%]+>', 'route' => 'calendar/export/calendar'],
     ],
 ];

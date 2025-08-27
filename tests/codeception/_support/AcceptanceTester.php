@@ -1,4 +1,5 @@
 <?php
+
 namespace calendar;
 
 /**
@@ -30,7 +31,7 @@ class AcceptanceTester extends \AcceptanceTester
         $this->waitForText('Create Event');
 
         $this->fillField('CalendarEntry[title]', $title);
-        $this->fillField('#calendarentry-description .humhub-ui-richtext'  , $description);
+        $this->fillField('#calendarentry-description .humhub-ui-richtext', $description);
 
         if ($startTime) {
             $this->click('[for="calendarentry-all_day"]');

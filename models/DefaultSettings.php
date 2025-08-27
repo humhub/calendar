@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -68,18 +69,18 @@ class DefaultSettings extends Model
 
     public function load($data, $formName = null)
     {
-        return $this->basicSettings->load($data) |
-            $this->participationSettings->load($data) |
-            $this->reminderSettings->load($data) |
-            $this->fullCalendarSettings->load($data);
+        return $this->basicSettings->load($data)
+            | $this->participationSettings->load($data)
+            | $this->reminderSettings->load($data)
+            | $this->fullCalendarSettings->load($data);
     }
 
     public function save(): bool
     {
-        return $this->basicSettings->save() &&
-            $this->participationSettings->save() &&
-            $this->reminderSettings->save() &&
-            $this->fullCalendarSettings->save();
+        return $this->basicSettings->save()
+            && $this->participationSettings->save()
+            && $this->reminderSettings->save()
+            && $this->fullCalendarSettings->save();
     }
 
     public function isGlobal()

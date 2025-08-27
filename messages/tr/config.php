@@ -2,6 +2,7 @@
 
 return [
     '<strong>Calendar</strong> module configuration' => '<strong>Takvim</strong> modülü ayarları',
+    'Basic' => 'Temel',
     'Calendar Configuration' => 'Takvim ayarları',
     'Create new type' => 'Yeni tür oluştur',
     'Delete' => 'Sil',
@@ -10,6 +11,8 @@ return [
     'One month' => 'Bir ay',
     'One week' => 'Bir hafta',
     'One year' => 'Bir yıl',
+    'Participation' => 'Katılım',
+    'Reminder' => 'Hatırlatıcı',
     'Reset' => 'Sıfırla',
     'There are currently no event types available.' => 'Şu anda mevcut etkinlik türü yok.',
     '<strong>Confirm</strong> Deletion' => '',
@@ -20,6 +23,8 @@ return [
     'Default participation settings' => '',
     'Do you really want to delte this event type?' => '',
     'Event Type Configuration' => '',
+    'Export settings' => '',
+    'Full calendar' => '',
     'Half a year' => '',
     'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => '',
     'Here you can configure default settings for the full calendar.' => '',
@@ -29,6 +34,7 @@ return [
     'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => '',
     'Include birthdays to dashboard snippet' => '',
     'Interval of upcoming events' => '',
+    'List view type' => '',
     'Max event items' => '',
     'Menu settings' => '',
     'Only show top menu item and snippet if the module is installed in the users profile' => '',

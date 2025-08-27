@@ -19,7 +19,6 @@ use Yii;
  */
 class ResponseInvited extends BaseActivity implements ConfigurableActivityInterface
 {
-
     public $viewName = 'response_invited';
     public $moduleId = 'calendar';
 
@@ -28,7 +27,7 @@ class ResponseInvited extends BaseActivity implements ConfigurableActivityInterf
      */
     public function getTitle()
     {
-        return Yii::t('CalendarModule.activities', 'Calendar: Invite');
+        return Yii::t('CalendarModule.notification', 'Calendar: Invite');
     }
 
     /**
@@ -36,6 +35,6 @@ class ResponseInvited extends BaseActivity implements ConfigurableActivityInterf
      */
     public function getDescription()
     {
-        return Yii::t('CalendarModule.activities', 'Whenever someone invites to participate in an event.');
+        return Yii::t('CalendarModule.notification', 'Whenever someone invites to participate in an event.');
     }
 }

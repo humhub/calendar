@@ -16,7 +16,8 @@ module.exports = function (grunt) {
         cssmin: {
             target: {
                 files: {
-                    'resources/css/calendar.min.css': ['resources/css/calendar.css']
+                    'resources/css/humhub.calendar.min.css': ['resources/css/humhub.calendar.css'],
+                    'resources/css/feathericons.min.css': ['resources/css/feathericons.css'],
                 }
             }
         },
@@ -39,6 +40,7 @@ module.exports = function (grunt) {
             },
             fullcalendarCss: {
                 src:[
+                    'resources/css/feathericons.min.css',
                     'node_modules/@fullcalendar/core/main.min.css',
                     'node_modules/@fullcalendar/daygrid/main.min.css',
                     'node_modules/@fullcalendar/timegrid/main.min.css',
@@ -48,9 +50,19 @@ module.exports = function (grunt) {
                 dest: 'resources/css/fullcalendar.bundle.min.css'
             }
         },
+        sass: {
+            options: {
+                implementation: require('sass')
+            },
+            dev: {
+                files: {
+                    'resources/css/humhub.calendar.css': 'resources/css/humhub.calendar.scss'
+                }
+            }
+        },
         watch: {
             scripts: {
-                files: ['resources/js/*.js', 'resources/css/*.css'],
+                files: ['resources/js/*.js', 'resources/css/*.scss'],
                 tasks: ['build'],
                 options: {
                     spawn: false,
@@ -59,11 +71,11 @@ module.exports = function (grunt) {
         }
     });
 
-    //grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('build', ['concat', 'uglify', 'cssmin']);
+    grunt.registerTask('build', ['concat', 'uglify', 'sass', 'cssmin']);
 };

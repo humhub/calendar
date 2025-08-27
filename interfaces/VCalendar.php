@@ -1,10 +1,9 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces;
 
-
 use DateTime;
+use DateTimeZone;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
@@ -12,10 +11,16 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\Module;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
+use humhub\modules\content\models\Content;
+use Yii;
 use yii\base\Model;
 use Sabre\VObject;
+use yii\helpers\ArrayHelper;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 
 /**
  * Class VCalendar serves as wrapper around sabledavs vobject api.
@@ -23,10 +28,12 @@ use Sabre\VObject;
  */
 class VCalendar extends Model
 {
-    const PRODID = '-//HumHub Org//HumHub Calendar 0.7//EN';
-    const PARTICIPATION_STATUS_ACCEPTED = 'ACCEPTED';
-    const PARTICIPATION_STATUS_DECLINED = 'DECLINED';
-    const PARTICIPATION_STATUS_TENTATIVE = 'TENTATIVE';
+    public const PRODID = '-//HumHub Org//HumHub Calendar 0.7//EN';
+    public const PARTICIPATION_STATUS_ACCEPTED = 'ACCEPTED';
+    public const PARTICIPATION_STATUS_DECLINED = 'DECLINED';
+    public const PARTICIPATION_STATUS_TENTATIVE = 'TENTATIVE';
+
+    public const MAX_PARTICIPANTS_COUNT = 200;
 
     /**
      * @var
@@ -40,23 +47,24 @@ class VCalendar extends Model
      */
     private $vcalendar;
 
+    private bool $includeUserInfo;
+
 
     /**
      * @param CalendarEventIF|CalendarEventIF[] $items
      * @return VCalendar
      */
-    public static function withEvents($items, $tz = null)
+    public static function withEvents($items, $tz = null, $name = null)
     {
-        $instance = (new static());
+        $instance = (new static(['name' => $name]));
         $instance->addTimeZone($tz);
 
-        if(!is_array($items)) {
+        if (!is_array($items)) {
             $items = [$items];
         }
 
-        foreach ($items as $item)
-        {
-            if(is_array($item)) {
+        foreach ($items as $item) {
+            if (is_array($item)) {
                 $item = new CalendarEventIFWrapper(['options' => $item]);
             }
             $instance->addVEvent($item);
@@ -68,7 +76,7 @@ class VCalendar extends Model
 
     public function addTimeZone($tz)
     {
-        if($tz && is_string($tz)) {
+        if ($tz && is_string($tz)) {
             $this->vcalendar->add($this->generate_vtimezone($tz));
         }
         return $this;
@@ -78,6 +86,7 @@ class VCalendar extends Model
     {
         parent::init();
         $this->initVObject();
+        $this->includeUserInfo = Module::instance()->settings->get('includeUserInfo', false);
     }
 
 
@@ -95,6 +104,7 @@ class VCalendar extends Model
         $this->vcalendar = new VObject\Component\VCalendar([
             'PRODID' => static::PRODID,
             'METHOD' => $this->method,
+            'X-WR-CALNAME' => trim(Yii::$app->name . ' - ' . $this->name, " \n\r\t\v\0-"),
         ]);
     }
 
@@ -130,7 +140,7 @@ class VCalendar extends Model
 
         if ($item->isAllDay() && $dtend->format('H:i') === '23:59') {
             // Translate for legacy events
-            $dtend->modify('+1 hour')->setTime(0,0,0);
+            $dtend->modify('+1 hour')->setTime(0, 0, 0);
         }
 
         $dtStart = clone $item->getStartDateTime();
@@ -147,7 +157,7 @@ class VCalendar extends Model
             'DTEND' => $dtEnd,
             'SUMMARY' => $item->getTitle(),
         ];
-        
+
         if (isset($item->closed) && $item->closed) {
             $result['STATUS'] = 'CANCELLED';
         }
@@ -157,7 +167,15 @@ class VCalendar extends Model
         }
 
         if (!empty($item->getDescription())) {
-            $result['DESCRIPTION'] = $item->getDescription();
+            $result['DESCRIPTION'] = RichTextToPlainTextConverter::process($item->getDescription());
+        }
+
+        if (isset($item->content->visibility)) {
+            $result['CLASS'] = ArrayHelper::getValue([
+                Content::VISIBILITY_PRIVATE => 'PRIVATE',
+                Content::VISIBILITY_PUBLIC => 'PUBLIC',
+                Content::VISIBILITY_OWNER => 'CONFIDENTIAL',
+            ], $item->content->visibility);
         }
 
         if ($item instanceof RecurrentEventIF && RecurrenceHelper::isRecurrent($item)) {
@@ -175,7 +193,7 @@ class VCalendar extends Model
                 if ($initRecurrenceChildren) {
                     $recurrenceItems = $item->getRecurrenceInstances()->all();
                 }
-            } else if (RecurrenceHelper::isRecurrentInstance($item)) {
+            } elseif (RecurrenceHelper::isRecurrentInstance($item)) {
                 $recurrenceId = new DateTime($item->getRecurrenceId());
                 $recurrenceId->setTimezone(CalendarUtils::getStartTimeZone($item));
                 $result['RECURRENCE-ID'] = $recurrenceId;
@@ -189,8 +207,8 @@ class VCalendar extends Model
         }
 
         $lastModified = $item->getLastModified();
-        if($lastModified) {
-            $result['LAST-MODIFIED'] = $lastModified;
+        if ($lastModified) {
+            $result['LAST-MODIFIED'] = $lastModified->setTimezone(new DateTimeZone('UTC'))->format('Ymd\THis\Z');
         }
 
         $evt = $this->vcalendar->add('VEVENT', $result);
@@ -217,29 +235,28 @@ class VCalendar extends Model
             }
         }
 
-        $module = Module::instance();
-
-        if($item instanceof CalendarEventParticipationIF) {
-            if($module->icsOrganizer) {
-                $organizer = $item->getOrganizer();
-                if($organizer instanceof User) {
-                    $evt->add('ORGANIZER', ['CN' => $this->getCN($organizer)]);
-                }
+        if ($item instanceof CalendarEventParticipationIF) {
+            $organizer = $item->getOrganizer();
+            if ($organizer instanceof User) {
+                $evt->add(
+                    'ORGANIZER;CN=' . $this->getCN($organizer),
+                    'mailto:' . $this->getMailto($organizer),
+                );
             }
 
-
-            /** This should be configurable because its may not be desired.
-            foreach ($item->findParticipants([CalendarEventParticipationIF::PARTICIPATION_STATUS_ACCEPTED])->limit(20)->all() as $user) {
-                /* @var $user User
-                $evt->add('ATTENDEE', $this->getCN($user));
+            foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $participant) {
+                /* @var $user User */
+                $evt->add(
+                    'ATTENDEE;CN=' . $this->getCN($participant),
+                    'mailto:' . $this->getMailto($participant),
+                );
             }
+        }
 
-            if(!empty($item->getExternalParticipants())) {
-                foreach ($item->getExternalParticipants() as $email) {
-                    $evt->add('ATTENDEE', 'MAILTO:'.$email);
-                }
-            }
-            **/
+        $eventType = $item->getEventType();
+
+        if ($eventType instanceof CalendarEntryType && !empty($category = $eventType->name)) {
+            $evt->add('CATEGORIES', $category);
         }
 
         return $this;
@@ -247,7 +264,7 @@ class VCalendar extends Model
 
     private function setLegacyRecurrentData($item, &$result)
     {
-        if(!$item instanceof CalendarEventIFWrapper) {
+        if (!$item instanceof CalendarEventIFWrapper) {
             return;
         }
 
@@ -266,13 +283,16 @@ class VCalendar extends Model
 
     private function getCN(User $user)
     {
-        $result = $user->getDisplayName();
+        return addslashes($user->getDisplayName());
+    }
 
-        if($user->email) {
-            $result .= ':MAILTO:'.$user->email;
+    private function getMailto(User $user)
+    {
+        if ($this->includeUserInfo && $user->email) {
+            return $user->email;
         }
 
-        return $result;
+        return '-';
     }
 
     /**
@@ -280,17 +300,21 @@ class VCalendar extends Model
      * with daylight transitions covering the given date range.
      *
      * @param string Timezone ID as used in PHP's Date functions
-     * @param integer Unix timestamp with first date/time in this timezone
-     * @param integer Unix timestap with last date/time in this timezone
+     * @param int Unix timestamp with first date/time in this timezone
+     * @param int Unix timestap with last date/time in this timezone
      *
      * @return mixed A Sabre\VObject\Component object representing a VTIMEZONE definition
      *               or false if no timezone information is available
      * @throws Exception
      */
-    function generate_vtimezone($tzid, $from = 0, $to = 0)
+    public function generate_vtimezone($tzid, $from = 0, $to = 0)
     {
-        if (!$from) $from = time();
-        if (!$to) $to = $from;
+        if (!$from) {
+            $from = time();
+        }
+        if (!$to) {
+            $to = $from;
+        }
         try {
             $tz = new \DateTimeZone($tzid);
         } catch (Exception $e) {
@@ -302,6 +326,22 @@ class VCalendar extends Model
         $vcalendar = new VObject\Component\VCalendar();
         $vt = $vcalendar->createComponent('VTIMEZONE');
         $vt->TZID = $tz->getName();
+
+        $offset = $transitions[0]['offset'] ?? 0;
+        $tzname = $transitions[0]['abbr'] ?? $tzid;
+
+        $hours = intdiv($offset, 3600);
+        $minutes = abs(($offset % 3600) / 60);
+        $sign = $offset >= 0 ? '+' : '-';
+        $offsetStr = sprintf('%s%02d%02d', $sign, abs($hours), $minutes);
+
+        $standard = $vcalendar->createComponent('STANDARD');
+        $standard->add('DTSTART', '19700101T000000');
+        $standard->add('TZOFFSETFROM', $offsetStr);
+        $standard->add('TZOFFSETTO', $offsetStr);
+        $standard->add('TZNAME', $tzname);
+        $vt->add($standard);
+
         $std = null;
         $dst = null;
         foreach ($transitions as $i => $trans) {

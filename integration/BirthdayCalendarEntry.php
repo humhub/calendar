@@ -1,20 +1,20 @@
 <?php
 
-
 namespace humhub\modules\calendar\integration;
 
-
 use DateTime;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
+use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
-use humhub\widgets\Label;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\widgets\bootstrap\Badge;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
 
 class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
 {
-
     /**
      * @var BirthdayUserModel
      */
@@ -31,7 +31,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
      */
     public function getUid()
     {
-        return 'birthday'.$this->model->guid;
+        return 'birthday' . $this->model->guid;
     }
 
     /**
@@ -47,7 +47,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
      * Defines whether or not this event is an spans over an whole day.
      * Note all_day events should omit any timezone translations.
      *
-     * @return boolean
+     * @return bool
      */
     public function isAllDay()
     {
@@ -153,7 +153,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
      */
     public function getColor()
     {
-        return null;
+        return $this->getTypeSetting()?->getColor();
     }
 
     /**
@@ -181,15 +181,12 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
     }
 
     /**
-     * (optional) A badge/label used in snippets
-     *
-     * @return Label|string|null
-     * @throws \Exception
+     * @inheritdoc
      */
     public function getBadge()
     {
         $type = $this->getEventType();
-        return Label::asColor($this->getColor(), $type->getTitle())->icon($type->getIcon())->right();
+        return Badge::instance($type->getTitle())->cssBgColor($this->getColor())->icon($type->getIcon())->right();
     }
 
     /**
@@ -268,7 +265,7 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
      *
      * @param DateTime $start
      * @param DateTime $end
-     * @return boolean|string
+     * @return bool|string
      */
     public function updateTime(DateTime $start, DateTime $end)
     {
@@ -320,5 +317,18 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
     public function getFullCalendarOptions()
     {
         return [];
+    }
+
+    public function getTypeSetting(): ?CalendarTypeSetting
+    {
+        /* @var CalendarService $calendarService */
+        $calendarService = Yii::$app->getModule('calendar')->get(CalendarService::class);
+
+        // Get current space container or current user container for global calendar
+        $container = Yii::$app->controller instanceof ContentContainerController
+            ? Yii::$app->controller->contentContainer
+            : (Yii::$app->user->isGuest ? null : Yii::$app->user->getIdentity());
+
+        return $calendarService->getItemType($this->getEventType()->getKey(), $container);
     }
 }

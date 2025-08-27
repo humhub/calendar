@@ -1,9 +1,13 @@
 <?php
 
 return [
+    'Basic' => 'Základní',
     'Create new type' => 'Vytvořit nový typ ',
     'Delete' => 'Smazat',
+    'Full calendar' => 'Úplný kalendář',
     'Name' => 'Jméno skupiny',
+    'Participation' => 'Účast',
+    'Reminder' => 'Připomínka',
     '<strong>Calendar</strong> module configuration' => '',
     '<strong>Confirm</strong> Deletion' => '',
     'Add \'Calendar\' to the main menu' => '',
@@ -14,6 +18,7 @@ return [
     'Default participation settings' => '',
     'Do you really want to delte this event type?' => '',
     'Event Type Configuration' => '',
+    'Export settings' => '',
     'Half a year' => '',
     'Here you can configure default settings for new calendar events.' => '',
     'Here you can configure default settings for new calendar events. These settings can be overwritten on space/profile level.' => '',
@@ -24,6 +29,7 @@ return [
     'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => '',
     'Include birthdays to dashboard snippet' => '',
     'Interval of upcoming events' => '',
+    'List view type' => '',
     'Max event items' => '',
     'Menu settings' => '',
     'One month' => '',

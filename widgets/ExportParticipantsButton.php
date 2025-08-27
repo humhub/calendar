@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -10,7 +11,7 @@ namespace humhub\modules\calendar\widgets;
 use humhub\components\Widget;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**
@@ -48,7 +49,7 @@ class ExportParticipantsButton extends Widget
     public function run()
     {
         echo $this->render('exportParticipantsButton', [
-            'buttons' => $this->getButtons()
+            'buttons' => $this->getButtons(),
         ]);
     }
 
@@ -63,7 +64,7 @@ class ExportParticipantsButton extends Widget
                 ->icon('file-code-o'),
             Button::none(Yii::t('CalendarModule.base', 'Export as {type}', ['type' => 'xlsx']))
                 ->link(Url::toExportParticipations('xlsx', $this->entry, $this->state))
-                ->icon('file-excel-o')
+                ->icon('file-excel-o'),
         ];
     }
 }

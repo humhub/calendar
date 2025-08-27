@@ -1,0 +1,19 @@
+.calendar-options > div {
+  padding: 0 10px;
+  border-right: 2px solid var(--default);
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:last-child {
+    border: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .calendar-options > div {
+    border: none;
+    padding: 0;
+  }
+}
