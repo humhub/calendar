@@ -20,7 +20,7 @@ use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Throwable;
 use Yii;
 use yii\base\Exception;

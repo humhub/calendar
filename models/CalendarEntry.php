@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\calendar\models;
 
 use DateTime;
@@ -32,8 +38,8 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
-use humhub\widgets\Button;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\Html;
 
@@ -215,12 +221,12 @@ class CalendarEntry extends ContentActiveRecord implements
         $labels = [];
 
         if ($this->closed) {
-            $labels[] = Label::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
+            $labels[] = Badge::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
         }
 
         $type = $this->getEventType();
         if ($type) {
-            $labels[] = Label::asColor($type->color, $type->name)->sortOrder(310);
+            $labels[] = Badge::asColor($type->color, $type->name)->sortOrder(310);
         }
 
         return parent::getLabels($labels);
@@ -600,25 +606,22 @@ class CalendarEntry extends ContentActiveRecord implements
     }
 
     /**
-     * Returns a badge for the snippet
-     *
-     * @return string the timezone this item was originally saved, note this is
-     * @throws \Throwable
+     * @inheritdoc
      */
     public function getBadge()
     {
         if ($this->closed) {
-            return Label::danger(Yii::t('CalendarModule.base', 'canceled'))->right();
+            return Badge::danger(Yii::t('CalendarModule.base', 'canceled'))->right();
         }
 
         if ($this->participation->isEnabled()) {
             $status = $this->getParticipationStatus(Yii::$app->user->identity);
             switch ($status) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
-                    return Label::success(Yii::t('CalendarModule.base', 'Attending'))->right();
+                    return Badge::success(Yii::t('CalendarModule.base', 'Attending'))->right();
                 case CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE:
                     if ($this->allow_maybe) {
-                        return Label::success(Yii::t('CalendarModule.base', 'Interested'))->right();
+                        return Badge::success(Yii::t('CalendarModule.base', 'Interested'))->right();
                     }
             }
         }

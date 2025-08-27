@@ -2,12 +2,12 @@
 
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\modules\calendar\helpers\Url;
+use humhub\widgets\modal\ModalButton;
+use yii\web\View;
 
 /* @var $this View */
 /* @var $model RecurrenceFormModel */
@@ -20,13 +20,13 @@ $root = $entry->getRecurrenceQuery()->getRecurrenceRoot();
 
 ?>
 
-<?php if(RecurrenceHelper::isRecurrentInstance($entry)) : ?>
+<?php if (RecurrenceHelper::isRecurrentInstance($entry)) : ?>
 
     <?= $form->field($model, 'recurrenceEditMode')->hiddenInput(['id' => 'recurrenceEditMode'])->label(false) ?>
 
-    <div class="modal-body recurrence-edit-type">
+    <div class="recurrence-edit-type">
 
-        <?= Button::info(Yii::t('CalendarModule.base', 'Edit this event'))
+        <?= Button::accent((Yii::t('CalendarModule.base', 'Edit this event'))
             ->options(['data-edit-mode' => RecurrenceFormModel::EDIT_MODE_THIS ])
             ->action('setEditMode')
             ->style('width:100%')->lg()->loader(false)?>
@@ -36,7 +36,7 @@ $root = $entry->getRecurrenceQuery()->getRecurrenceRoot();
 
         <?php if(true) : ?>
 
-            <?= Button::info(Yii::t('CalendarModule.base', 'Edit this and following events'))
+            <?= Button::accent((Yii::t('CalendarModule.base', 'Edit this and following events'))
                 ->options(['data-edit-mode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING ])
                 ->action('setEditMode')
                 ->style('width:100%')->lg()->loader(false)?>
@@ -45,7 +45,7 @@ $root = $entry->getRecurrenceQuery()->getRecurrenceRoot();
             <br>
         <?php endif; ?>
 
-        <?= ModalButton::info(Yii::t('CalendarModule.base', 'Edit all events'))
+        <?= ModalButton::accent((Yii::t('CalendarModule.base', 'Edit all events'))
             ->load(Url::toEditEntry($root))
             ->style('width:100%')->lg()->loader() ?>
 

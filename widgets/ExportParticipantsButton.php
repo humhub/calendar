@@ -11,7 +11,7 @@ namespace humhub\modules\calendar\widgets;
 use humhub\components\Widget;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**

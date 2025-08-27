@@ -8,7 +8,7 @@
 
 namespace humhub\modules\calendar\notifications;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\notifications\base\EventNotification;
 use Yii;
