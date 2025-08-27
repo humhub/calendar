@@ -40,4 +40,5 @@ return [
     'Upcoming events snippet' => '今後のイベント スニペット',
     'View mode' => 'ビューモード',
     'Export settings' => '',
+    'List view type' => '',
 ];

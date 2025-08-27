@@ -21,7 +21,6 @@ use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationI
 use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
-use humhub\modules\calendar\interfaces\VCalendar;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
@@ -368,8 +367,8 @@ class CalendarEntry extends ContentActiveRecord implements
             $this->participation->setDefautls();
         }
 
-        if (RecurrenceHelper::isRecurrentRoot($this) ||
-            (RecurrenceHelper::isRecurrentInstance($this) && $this->content->hidden)) {
+        if (RecurrenceHelper::isRecurrentRoot($this)
+            || (RecurrenceHelper::isRecurrentInstance($this) && $this->content->hidden)) {
             $this->streamChannel = null;
         }
 
@@ -554,7 +553,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function getTimezone()
     {
-        return ($this->isAllDay()) ? 'UTC' : $this->time_zone;
+        return $this->isAllDay() ? 'UTC' : $this->time_zone;
     }
 
     /**
@@ -1072,7 +1071,7 @@ class CalendarEntry extends ContentActiveRecord implements
 
     public function isPast(): bool
     {
-        $currentTimeZone = new DateTimeZone(Yii::$app->timeZone);
+        $currentTimeZone = CalendarUtils::getSystemTimeZone();
 
         $now = (new DateTime('now'))
             ->setTimezone($currentTimeZone);

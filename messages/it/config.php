@@ -40,4 +40,5 @@ return [
     'Upcoming events snippet' => 'snippet Eventi Imminenti',
     'View mode' => 'Modalità di visualizzazione',
     'Export settings' => '',
+    'List view type' => '',
 ];

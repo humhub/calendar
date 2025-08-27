@@ -103,8 +103,8 @@ class Events
     public static function onTopMenuInit($event)
     {
         try {
-            if (SnippetModuleSettings::instance()->showGlobalCalendarItems() &&
-                MenuSettings::instance()->show) {
+            if (SnippetModuleSettings::instance()->showGlobalCalendarItems()
+                && MenuSettings::instance()->show) {
                 $event->sender->addItem([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
                     'url' => Url::toGlobalCalendar(),
@@ -439,9 +439,9 @@ class Events
         if ($event->content->object_model === CalendarEntry::class) {
             /* @var CalendarEntry $calendarEntry */
             $calendarEntry = $event->content->getModel();
-            if ($calendarEntry &&
-                RecurrenceHelper::isRecurrentInstance($calendarEntry) &&
-                $calendarEntry->getRecurrenceRoot()?->content?->state === Content::STATE_PUBLISHED) {
+            if ($calendarEntry
+                && RecurrenceHelper::isRecurrentInstance($calendarEntry)
+                && $calendarEntry->getRecurrenceRoot()?->content?->state === Content::STATE_PUBLISHED) {
                 // Child recurrent entry must be deleted hardly if the parent entry is not soft deleted
                 $calendarEntry->hardDelete();
             }

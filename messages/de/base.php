@@ -1,7 +1,6 @@
 <?php
 
 return [
-    ' Used for secure iCal feed URL generation. Changing the key revokes all existing iCal URLs. If empty, a random key is generated automatically.' => 'Wird zur sicheren Generierung von iCal-Feed-URLs verwendet. Eine Änderung des Schlüssels widerruft alle bestehenden iCal-URLs. Wenn das Feld leer ist, wird automatisch ein zufälliger Schlüssel generiert.',
     '<strong>Add</strong> profile calendar' => 'Profilkalender <strong>erstellen</strong>',
     '<strong>Choose</strong> target calendar' => 'Zielkalender <strong>wählen</strong>',
     '<strong>Reminder</strong> settings' => '<strong>Erinnerungs</strong>einstellungen',
@@ -164,4 +163,5 @@ return [
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} hat dich zum Event "{contentTitle}" eingeladen.',
     '{name} Calendar' => '{name} Kalender',
     'Calendar event content ID' => '',
+    'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',
 ];

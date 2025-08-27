@@ -40,4 +40,5 @@ return [
     'Upcoming events snippet' => 'Uddrag af kommende begivenheder',
     'View mode' => 'Visningstilstand',
     'Export settings' => '',
+    'List view type' => '',
 ];

@@ -16,12 +16,14 @@
 
 namespace humhub\modules\calendar\interfaces\event\legacy;
 
+use DateTime;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
-use DateTime;
+use humhub\widgets\Label;
 use yii\base\Model;
 
 /**
@@ -88,7 +90,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
      */
     public function getTimezone()
     {
-        return $this->getOption(static::OPTION_TIMEZONE, Yii::$app->timeZone);
+        return $this->getOption(static::OPTION_TIMEZONE, CalendarUtils::getSystemTimeZone());
     }
 
     public function getTitle()

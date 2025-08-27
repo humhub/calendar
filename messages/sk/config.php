@@ -40,4 +40,5 @@ return [
     'Upcoming events snippet' => 'Útržok nadchádzajúcej udalosti',
     'View mode' => 'Režim zobrazenia',
     'Export settings' => '',
+    'List view type' => '',
 ];

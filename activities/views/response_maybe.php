@@ -10,7 +10,8 @@ use yii\helpers\Html;
 $formatter = new CalendarDateFormatter(['calendarItem' => $source]);
 ?>
 
-<?= Yii::t('CalendarModule.views', '%displayName% might be attending %contentTitle%.', [
-    '%displayName%' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
-    '%contentTitle%' => $this->context->getContentInfo($source) . ' on ' . $formatter->getFormattedTime(),
+<?= Yii::t('CalendarModule.views', '{displayName} might be attending {contentTitle} on {dateTime}.', [
+    'displayName' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
+    'contentTitle' => $this->context->getContentInfo($source),
+    'dateTime' => $formatter->getFormattedTime(),
 ]) ?>

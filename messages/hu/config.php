@@ -40,4 +40,5 @@ return [
     'Upcoming events snippet' => 'Közelgő események kódrészlet (snippet)',
     'View mode' => 'Nézet mód',
     'Export settings' => '',
+    'List view type' => '',
 ];

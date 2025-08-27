@@ -28,6 +28,7 @@ return [
     'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => '',
     'Include birthdays to dashboard snippet' => '',
     'Interval of upcoming events' => '',
+    'List view type' => '',
     'Max event items' => '',
     'Menu settings' => '',
     'One month' => '',

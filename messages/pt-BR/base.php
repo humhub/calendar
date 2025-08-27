@@ -1,7 +1,6 @@
 <?php
 
 return [
-    ' Used for secure iCal feed URL generation. Changing the key revokes all existing iCal URLs. If empty, a random key is generated automatically.' => 'Usado para geração segura de URLs de feed do iCal. Alterar a chave revoga todas as URLs existentes do iCal. Se estiver vazia, uma chave aleatória é gerada automaticamente.',
     '<strong>Add</strong> profile calendar' => '<strong>Adicionar</strong> calendário de perfil',
     '<strong>Choose</strong> target calendar' => '<strong>Escolha</strong> o calendário de destino',
     '<strong>Reminder</strong> settings' => 'Configurações de <strong>Lembrete</strong>',
@@ -23,6 +22,7 @@ return [
     'CalDAV' => 'CalDAV',
     'Calendar' => 'Calendário',
     'Calendar event' => 'Evento do calendário',
+    'Calendar event content ID' => 'ID do conteúdo do evento do calendário',
     'Calendar events' => 'Eventos do calendário',
     'Cancel Event' => 'Cancelar evento',
     'Cannot remove the participant!' => 'Não é possível remover o participante!',
@@ -163,5 +163,5 @@ return [
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} acabou de convidar você para o evento "{contentTitle}" no Espaço {spaceName} a partir de {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} acaba de convidar você para o evento "{contentTitle}".',
     '{name} Calendar' => 'Calendário {name}',
-    'Calendar event content ID' => '',
+    'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',
 ];

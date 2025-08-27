@@ -14,6 +14,7 @@ return [
     'Delete' => 'Supprimer',
     'Do you really want to delte this event type?' => 'Voulez-vous vraiment supprimer ce type d\'événement ?',
     'Event Type Configuration' => 'Configuration des types d\'événements',
+    'Export settings' => 'Exporter les réglages',
     'Full calendar' => 'Calendrier entier',
     'Half a year' => '6 mois',
     'Here you can configure default settings for new calendar events.' => 'Ici, vous pouvez configurer des paramètres par défaut pour les nouveaux événements de calendrier.',
@@ -39,5 +40,5 @@ return [
     'There are currently no event types available.' => 'Il n\'y a aucun type d\'événement disponible pour le moment.',
     'Upcoming events snippet' => 'Extrait des prochains événements',
     'View mode' => 'Mode d’affichage',
-    'Export settings' => '',
+    'List view type' => '',
 ];

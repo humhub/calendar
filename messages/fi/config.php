@@ -38,6 +38,7 @@ return [
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Here you can manage and disable different calendars.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'List view type' => '',
     'Menu settings' => '',
     'View mode' => '',
 ];
