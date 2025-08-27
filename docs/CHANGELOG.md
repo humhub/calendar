@@ -5,6 +5,7 @@ Changelog
 -----------------------
 - Fix #481: Update module resources path
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
+- Enh #378: Use new content state service
 
 1.7.14 (August 21, 2025)
 ------------------------

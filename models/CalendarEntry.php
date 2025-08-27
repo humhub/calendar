@@ -404,9 +404,8 @@ class CalendarEntry extends ContentActiveRecord implements
             $entries = $root->getRecurrenceInstances()->all();
             $entries[] = $root;
             foreach ($entries as $entry) {
-                if ($entry->content->state != $newState) {
-                    $entry->content->setState($newState);
-                    $entry->content->save();
+                if (!$entry->content->getStateService()->is($newState)) {
+                    $entry->content->getStateService()->update($newState);
                 }
             }
         }
