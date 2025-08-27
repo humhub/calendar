@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2022 HumHub GmbH & Co. KG
@@ -42,5 +43,14 @@ class FilterType extends ContentTagPicker
         $this->url = Url::toFindFilterTypes($this->contentContainer);
 
         parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     * @param CalendarEntryType $item
+     */
+    protected function getItemImage($item)
+    {
+        return $item->color;
     }
 }

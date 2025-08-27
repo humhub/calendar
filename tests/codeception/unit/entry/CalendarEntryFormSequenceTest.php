@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\tests\codeception\unit\entry;
-
 
 use calendar\CalendarUnitTest;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
@@ -40,7 +38,7 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
                 'end_time' => '01:00 PM',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($this->form->save());
@@ -52,14 +50,14 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
         $calendarForm = new CalendarEntryForm(['entry' => $this->form->entry]);
         $calendarForm->load([
             'CalendarEntry' => [
-                'all_day' => '1'
+                'all_day' => '1',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '7/16/17',
                 'end_date' => '8/16/17',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]);
 
         $this->assertTrue($calendarForm->save());
@@ -72,13 +70,13 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
         $calendarForm = new CalendarEntryForm(['entry' => $this->form->entry]);
         $calendarForm->load([
             'CalendarEntry' => [
-                'all_day' => '1'
+                'all_day' => '1',
             ],
             'CalendarEntryForm' => [
                 'end_date' => '8/16/17',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]);
 
         $this->assertTrue($calendarForm->save());
@@ -97,8 +95,8 @@ class CalendarEntryFormSequenceTest extends CalendarUnitTest
             ],
             'RecurrenceFormModel' => [
                 'frequency' => Frequency::DAILY,
-                'interval' => 1
-            ]
+                'interval' => 1,
+            ],
         ]);
 
         $this->assertTrue($calendarForm->save());

@@ -563,6 +563,9 @@ definitions:
       max_participants:
         type: string
         example: null
+      location:
+        type: string
+        example: null
       content:
         $ref: "https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/content.yaml#/definitions/Content"
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2022 HumHub GmbH & Co. KG
@@ -8,7 +9,8 @@
 namespace humhub\modules\calendar\models\forms;
 
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\calendar\notifications\Invited;
+use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
+use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -28,7 +30,7 @@ class CalendarEntryParticipationForm extends Model
     public $sendUpdateNotification = 0;
 
     /**
-     * @var integer if set to true all space participants will be added to the event
+     * @var int if set to true all space participants will be added to the event
      */
     public $forceJoin = 0;
 
@@ -48,12 +50,12 @@ class CalendarEntryParticipationForm extends Model
     public $newParticipants;
 
     /**
-     * @var integer
+     * @var int
      */
     public $newParticipantStatus;
 
     /**
-     * @var integer
+     * @var int
      */
     public $newForceStatus;
 
@@ -142,9 +144,9 @@ class CalendarEntryParticipationForm extends Model
     public static function getModeItems(): array
     {
         return [
-            CalendarEntry::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views_entry_edit', 'No participants'),
-            CalendarEntry::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.views_entry_edit', 'Only by Invite'),
-            CalendarEntry::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views_entry_edit', 'Everybody can participate')
+            CalendarEntryParticipation::PARTICIPATION_MODE_NONE => Yii::t('CalendarModule.views', 'No participants'),
+            CalendarEntryParticipation::PARTICIPATION_MODE_INVITE => Yii::t('CalendarModule.views', 'Only by Invite'),
+            CalendarEntryParticipation::PARTICIPATION_MODE_ALL => Yii::t('CalendarModule.views', 'Everybody can participate'),
         ];
     }
 
@@ -164,12 +166,14 @@ class CalendarEntryParticipationForm extends Model
             return;
         }
 
-        foreach ($users as $user) {
-            $this->entry->participation->setParticipationStatus($user, $this->newParticipantStatus);
+        foreach ($users as $u => $user) {
+            if (!$this->entry->participation->setParticipationStatus($user, $this->newParticipantStatus)) {
+                unset($users[$u]);
+            }
         }
 
-        if ($this->newParticipantStatus == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED) {
-            Invited::instance()->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($users);
+        if ($this->newParticipantStatus == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED && count($users)) {
+            ParticipantAdded::instance()->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($users);
         }
     }
 }

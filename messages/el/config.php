@@ -1,11 +1,10 @@
 <?php
 
 return [
-    '(disabled)' => '(Απενεργοποιημένο)',
-    '(global)' => '(παγκόσμια)',
     '<strong>Calendar</strong> module configuration' => '<strong>Ημερολόγιο</strong> διαμόρφωσης μονάδας',
     '<strong>Confirm</strong> Deletion' => '<strong>Επιβεβαίωση</strong> Διαγραφής',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Προσθέτει ένα απόσπασμα με τις επερχόμενες εκδηλώσεις στον πίνακα ελέγχου των χρηστών σας.',
+    'Basic' => 'Βασικό',
     'Calendar Configuration' => 'Διαμόρφωση ημερολογίου',
     'Create new type' => 'Δημιουργία νέου τύπου',
     'Default participation settings' => 'Προεπιλεγμένες ρυθμίσεις συμμετοχής',
@@ -26,14 +25,20 @@ return [
     'One week' => 'Μία εβδομάδα',
     'One year' => 'Ένας χρόνος',
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Εμφανίζεται μόνο το στοιχείο του επάνω μενού και το απόσπασμα εάν η ενότητα είναι εγκατεστημένη στο προφίλ των χρηστών',
+    'Participation' => 'Συμμετοχή',
+    'Reminder' => 'Υπενθύμιση',
     'Reset' => 'Επαναφορά',
     'Show snippet' => 'Εμφάνιση αποσπάσματος',
     'There are currently no event types available.' => 'Προς το παρόν δεν υπάρχουν διαθέσιμοι τύποι εκδηλώσεων.',
     'Upcoming events snippet' => 'Απόσπασμα προσεχών εκδηλώσεων',
     'Add \'Calendar\' to the main menu' => '',
     'Calendar default view mode settings' => '',
+    'Default basic settings' => '',
+    'Export settings' => '',
+    'Full calendar' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
+    'List view type' => '',
     'Menu settings' => '',
     'View mode' => '',
 ];

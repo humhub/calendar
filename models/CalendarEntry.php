@@ -1,56 +1,66 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\calendar\models;
 
+use DateTime;
+use DateTimeZone;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
+use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\event\CalendarEntryTypeSetting;
+use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
+use humhub\modules\calendar\interfaces\event\CalendarIcsGeneratableEventIF;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
+use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
-use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\models\recurrence\CalendarEntryRecurrenceQuery;
 use humhub\modules\calendar\models\reminder\CalendarReminder;
-use humhub\modules\calendar\permissions\CreateEntry;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\user\components\ActiveQueryUser;
-use Yii;
-use DateTime;
-use humhub\modules\calendar\helpers\Url;
-use humhub\modules\calendar\helpers\CalendarUtils;
-use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
 use humhub\modules\calendar\notifications\CanceledEvent;
 use humhub\modules\calendar\notifications\ReopenedEvent;
+use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\calendar\widgets\WallEntry;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\widgets\Label;
-use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Button;
+use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "calendar_entry".
  *
  * The followings are the available columns in table 'calendar_entry':
- * @property integer $id
+ * @property int $id
  * @property string $title
  * @property string $description
  * @property string $start_datetime
  * @property string $end_datetime
- * @property integer $all_day
- * @property integer $participation_mode
+ * @property int $all_day
+ * @property int $participation_mode
  * @property string $color
  * @property string $uid
- * @property integer $allow_decline
- * @property integer $allow_maybe
+ * @property int $allow_decline
+ * @property int $allow_maybe
  * @property string $participant_info
- * @property integer $closed
- * @property integer $max_participants
+ * @property int $closed
+ * @property int $max_participants
  * @property string $rrule
  * @property string $recurrence_id
  * @property int $parent_event_id
@@ -63,8 +73,14 @@ use humhub\modules\user\models\User;
  * @property-read bool $reminder
  * @property-read CalendarEntry|null $recurrenceRoot
  */
-class CalendarEntry extends ContentActiveRecord implements Searchable, RecurrentEventIF, FullCalendarEventIF,
-    CalendarEventStatusIF, CalendarEventReminderIF, CalendarEventParticipationIF
+class CalendarEntry extends ContentActiveRecord implements
+    Searchable,
+    RecurrentEventIF,
+    FullCalendarEventIF,
+    CalendarEventStatusIF,
+    CalendarEventReminderIF,
+    CalendarEventParticipationIF,
+    CalendarIcsGeneratableEventIF
 {
     /**
      * @inheritdoc
@@ -112,28 +128,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     public $moduleId = 'calendar';
 
     /**
-     * Participation Modes
-     */
-    const PARTICIPATION_MODE_NONE = 0;
-    const PARTICIPATION_MODE_INVITE = 1;
-    const PARTICIPATION_MODE_ALL = 2;
-
-    /**
-     * @var array all given participation modes as array
-     */
-    public static $participationModes = [
-        self::PARTICIPATION_MODE_NONE,
-        self::PARTICIPATION_MODE_INVITE,
-        self::PARTICIPATION_MODE_ALL
-    ];
-
-    /**
      * Filters
      */
-    const FILTER_PARTICIPATE = 1;
-    const FILTER_NOT_RESPONDED = 3;
-    const FILTER_RESPONDED = 4;
-    const FILTER_MINE = 5;
+    public const FILTER_PARTICIPATE = 1;
+    public const FILTER_NOT_RESPONDED = 3;
+    public const FILTER_RESPONDED = 4;
+    public const FILTER_MINE = 5;
 
     /**
      * @var CalendarEntryParticipation
@@ -175,7 +175,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         // Note we can't call this in `init()` because of https://github.com/humhub/humhub/issues/3734
         $this->participation->setDefautls();
 
-        if(!$this->color && $this->content->container) {
+        if (!$this->color && $this->content->container) {
             $typeSetting = new CalendarEntryTypeSetting(['type' => $this->getEventType(), 'contentContainer' => $this->content->container]);
             $this->color = $typeSetting->getColor();
         }
@@ -221,12 +221,12 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         $labels = [];
 
         if ($this->closed) {
-            $labels[] = Label::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
+            $labels[] = Badge::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
         }
 
         $type = $this->getEventType();
         if ($type) {
-            $labels[] = Label::asColor($type->color, $type->name)->sortOrder(310);
+            $labels[] = Badge::asColor($type->color, $type->name)->sortOrder(310);
         }
 
         return parent::getLabels($labels);
@@ -247,7 +247,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             [['end_datetime'], 'date', 'format' => $dateFormat],
             [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
             [['title'], 'string', 'max' => 200],
-            [['participation_mode'], 'in', 'range' => self::$participationModes],
+            [['participation_mode'], 'in', 'range' => CalendarEntryParticipation::$participationModes],
             [['end_datetime'], 'validateEndTime'],
             [['recurrence_id'], 'validateRecurrenceId'],
             [['description', 'participant_info'], 'safe'],
@@ -260,8 +260,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function validateRecurrenceId()
     {
-        if($this->isNewRecord && RecurrenceHelper::isRecurrentInstance($this)) {
-            if(static::findOne(['recurrence_id' => $this->recurrence_id, 'parent_event_id' => $this->parent_event_id])) {
+        if ($this->isNewRecord && RecurrenceHelper::isRecurrentInstance($this)) {
+            if (static::findOne(['recurrence_id' => $this->recurrence_id, 'parent_event_id' => $this->parent_event_id])) {
                 $this->addError('recurrence_id', 'Recurrence instance with the same recurrence_id already persisted');
             }
         }
@@ -289,16 +289,16 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             $endDT->modify('+1 day')->setTime(0, 0, 0);
             $this->updateAttributes([
                 'start_datetime' => CalendarUtils::toDBDateFormat($startDT),
-                'end_datetime' => CalendarUtils::toDBDateFormat($endDT)
+                'end_datetime' => CalendarUtils::toDBDateFormat($endDT),
             ]);
-        } else if (!CalendarUtils::isAllDay($this->start_datetime, $this->end_datetime, true)) {
+        } elseif (!CalendarUtils::isAllDay($this->start_datetime, $this->end_datetime, true)) {
             // Translate from 23:59 end dates to 00:00 end dates
             $start = $this->getStartDateTime();
             $end = $this->getEndDateTime()->modify('+1 hour');
             CalendarUtils::ensureAllDay($start, $end);
             $this->updateAttributes([
                 'start_datetime' => CalendarUtils::toDBDateFormat($start),
-                'end_datetime' => CalendarUtils::toDBDateFormat($end)
+                'end_datetime' => CalendarUtils::toDBDateFormat($end),
             ]);
         }
 
@@ -367,7 +367,8 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             $this->participation->setDefautls();
         }
 
-        if(RecurrenceHelper::isRecurrentRoot($this)) {
+        if (RecurrenceHelper::isRecurrentRoot($this)
+            || (RecurrenceHelper::isRecurrentInstance($this) && $this->content->hidden)) {
             $this->streamChannel = null;
         }
 
@@ -479,7 +480,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function setType($type)
     {
-        if(empty($type)) {
+        if (empty($type)) {
             $this->removeType();
             return;
         }
@@ -507,24 +508,24 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         if ($this->content->container instanceof Space) {
             switch ($this->participation_mode) {
-                case static::PARTICIPATION_MODE_NONE:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_NONE:
                     return Membership::getSpaceMembersQuery($this->content->container);
-                case static::PARTICIPATION_MODE_ALL:
-                case static::PARTICIPATION_MODE_INVITE:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_ALL:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_INVITE:
                     return $this->participation->findParticipants([
                         CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
                         CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE]);
             }
         } elseif ($this->content->container instanceof User) {
             switch ($this->participation_mode) {
-                case static::PARTICIPATION_MODE_NONE:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_NONE:
                     return User::find()->where(['id' => $this->content->container->id]);
-                case static::PARTICIPATION_MODE_INVITE:
-                case static::PARTICIPATION_MODE_ALL:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_INVITE:
+                case CalendarEntryParticipation::PARTICIPATION_MODE_ALL:
                     return $this->participation->findParticipants([
                         CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
                         CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE])
-                        ->union(User::find()->where(['id' =>  $this->content->container->id]));
+                        ->union(User::find()->where(['id' => $this->content->container->id]));
 
             }
         }
@@ -551,7 +552,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function getTimezone()
     {
-        return ($this->isAllDay()) ? 'UTC' : $this->time_zone;
+        return $this->isAllDay() ? 'UTC' : $this->time_zone;
     }
 
     /**
@@ -582,7 +583,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     }
 
     /**
-     * @return boolean weather or not this item spans exactly over a whole day
+     * @return bool weather or not this item spans exactly over a whole day
      */
     public function isAllDay()
     {
@@ -590,7 +591,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
             $this->all_day = 1;
         }
 
-        return (boolean)$this->all_day;
+        return (bool)$this->all_day;
     }
 
     /**
@@ -604,25 +605,22 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     }
 
     /**
-     * Returns a badge for the snippet
-     *
-     * @return string the timezone this item was originally saved, note this is
-     * @throws \Throwable
+     * @inheritdoc
      */
     public function getBadge()
     {
-        if($this->closed) {
-            return Label::danger(Yii::t('CalendarModule.base', 'canceled'))->right();
+        if ($this->closed) {
+            return Badge::danger(Yii::t('CalendarModule.base', 'canceled'))->right();
         }
 
         if ($this->participation->isEnabled()) {
             $status = $this->getParticipationStatus(Yii::$app->user->identity);
             switch ($status) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
-                    return Label::success(Yii::t('CalendarModule.base', 'Attending'))->right();
+                    return Badge::success(Yii::t('CalendarModule.base', 'Attending'))->right();
                 case CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE:
                     if ($this->allow_maybe) {
-                        return Label::success(Yii::t('CalendarModule.base', 'Interested'))->right();
+                        return Badge::success(Yii::t('CalendarModule.base', 'Interested'))->right();
                     }
             }
         }
@@ -630,11 +628,15 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
         return null;
     }
 
-    public function generateIcs()
+    public function generateIcs(): ?string
     {
-        $timezone = Yii::$app->settings->get('defaultTimeZone');
-        $ics = new ICS($this->title, $this->description, $this->start_datetime, $this->end_datetime, null, null, $timezone, $this->all_day);
-        return $ics;
+        $event = CalendarUtils::getCalendarEvent($this);
+
+        if (!$event) {
+            return null;
+        }
+
+        return CalendarUtils::generateIcs($event);
     }
 
     public function afterMove(ContentContainerActiveRecord $container = null)
@@ -670,9 +672,18 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      *
      * @return string
      */
-    public function getLocation()
+    public function getLocation(bool $asHtml = false)
     {
-        return $this->location;
+        if (!$asHtml) {
+            return $this->location;
+        }
+        if (
+            filter_var($this->location, FILTER_VALIDATE_URL) !== false
+            && strpos($this->location, 'https://') === 0 // restrict to secure URLs (and not HTTP, SSF, FTP, etc.)
+        ) {
+            return Button::asLink($this->location)->link($this->location)->options(['target' => '_blank']);
+        }
+        return Html::encode($this->location);
     }
 
     public function getDescription()
@@ -742,7 +753,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function getCalendarViewMode()
     {
-        if(empty($this->getCalendarViewUrl())) {
+        if (empty($this->getCalendarViewUrl())) {
             return static::VIEW_MODE_REDIRECT;
         }
 
@@ -764,9 +775,9 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      * @inheritDoc
      * @throws \Throwable
      */
-    public function setParticipationStatus(User $user, $status = self::PARTICIPATION_STATUS_ACCEPTED)
+    public function setParticipationStatus(User $user, $status = self::PARTICIPATION_STATUS_ACCEPTED): bool
     {
-        $this->participation->setParticipationStatus($user, $status);
+        return $this->participation->setParticipationStatus($user, $status);
     }
 
     /**
@@ -921,6 +932,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
     {
         $this->content->created_by = $root->content->created_by;
         $this->content->visibility = $root->content->visibility;
+        $this->content->hidden = $root->content->hidden ?? 0;
 
         if (!$original || empty($this->description) || $original->description === $this->description) {
             $this->description = $root->description;
@@ -1035,7 +1047,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function saveEvent()
     {
-       return $this->save();
+        return $this->save();
     }
 
     /**
@@ -1044,7 +1056,7 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
      */
     public function canMove(ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             return true;
         }
 
@@ -1053,12 +1065,19 @@ class CalendarEntry extends ContentActiveRecord implements Searchable, Recurrent
 
     public function canInvite(?User $user = null): bool
     {
-        return $this->isOwner($user);
+        return $this->content->canEdit($user);
     }
 
     public function isPast(): bool
     {
-        $timeZone = CalendarUtils::getEndTimeZone($this);
-        return new DateTime('now', $timeZone) > new DateTime($this->end_datetime ?? 'now', $timeZone);
+        $currentTimeZone = CalendarUtils::getSystemTimeZone();
+
+        $now = (new DateTime('now'))
+            ->setTimezone($currentTimeZone);
+        $end = (new DateTime($this->end_datetime ?? 'now'))
+            ->setTimezone(CalendarUtils::getEndTimeZone($this))
+            ->setTimezone($currentTimeZone);
+
+        return $now > $end;
     }
 }

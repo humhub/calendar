@@ -2,10 +2,14 @@
 
 namespace humhub\modules\calendar\tests\codeception\unit\reminder;
 
+use calendar\CalendarUnitTest;
+use DateInterval;
+use DateTime;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
+use humhub\modules\calendar\models\reminder\CalendarReminder;
+use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 use humhub\modules\calendar\models\reminder\ReminderService;
-use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\models\Content;
@@ -13,14 +17,8 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
-use calendar\CalendarUnitTest;
-use DateInterval;
-use DateTime;
-use humhub\modules\calendar\Events;
-use humhub\modules\calendar\models\reminder\CalendarReminder;
-use humhub\modules\calendar\models\reminder\CalendarReminderSent;
 
-class ReminderProcessTest  extends CalendarUnitTest
+class ReminderProcessTest extends CalendarUnitTest
 {
     protected function setUp(): void
     {
@@ -37,7 +35,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $user = User::findOne(['id' => 1]);
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
 
         // Set a global reminder
         $globalReminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 1);
@@ -63,7 +61,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $user = User::findOne(['id' => 1]);
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
 
         // Set a global reminder
         $globalReminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_HOUR, 1);
@@ -93,7 +91,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $user = User::findOne(['id' => 1]);
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
         $entry->updateAttributes(['participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE]);
 
         // Set a global reminder
@@ -144,7 +142,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $user = User::findOne(['id' => 1]);
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
 
         $reminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 1, $entry, $user);
         $this->assertTrue($reminder->save());
@@ -179,7 +177,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
 
         $reminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 1, $entry);
         $this->assertTrue($reminder->save());
@@ -222,7 +220,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertTrue($reminder2->save());
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
 
 
         (new ReminderService())->sendAllReminder();
@@ -259,19 +257,19 @@ class ReminderProcessTest  extends CalendarUnitTest
         $space = Space::findOne(['id' => 3]);
 
         $this->becomeUser('admin');
-        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
+        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
 
-        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR,1, $space);
+        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 1, $space);
         $this->assertTrue($spaceReminder->save());
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
 
         // Entry2 begins exactly in one hour
-        $entry2 = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test2',  $space);
+        $entry2 = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test2', $space);
 
-        $entryLevelContainerWideReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR,1, $entry2);
+        $entryLevelContainerWideReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 1, $entry2);
         $this->assertTrue($entryLevelContainerWideReminder->save());
 
         (new ReminderService())->sendAllReminder();
@@ -312,22 +310,22 @@ class ReminderProcessTest  extends CalendarUnitTest
     {
         $space = Space::findOne(['id' => 3]);
         $this->becomeUser('admin');
-        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
+        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
 
-        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR,1, $space);
+        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 1, $space);
         $this->assertTrue($spaceReminder->save());
 
         // Entry begins exactly in one hour
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
 
         // Entry2 begins exactly in one hour
-        $entry2 = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test2',  $space);
+        $entry2 = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test2', $space);
 
-        $entryLevelContainerWideReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR,1, $entry2);
+        $entryLevelContainerWideReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 1, $entry2);
         $this->assertTrue($entryLevelContainerWideReminder->save());
 
-        $userEntryLevelContainerWideReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR,1, $entry2, User::findOne(['id' => 1]));
+        $userEntryLevelContainerWideReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 1, $entry2, User::findOne(['id' => 1]));
         $this->assertTrue($userEntryLevelContainerWideReminder->save());
 
         (new ReminderService())->sendAllReminder();
@@ -379,18 +377,18 @@ class ReminderProcessTest  extends CalendarUnitTest
     {
         $space = Space::findOne(['id' => 3]);
         $this->becomeUser('admin');
-        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
+        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
 
-        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR,1, $space);
+        $spaceReminder = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_HOUR, 1, $space);
         $this->assertTrue($spaceReminder->save());
 
 
         // Entry begins exactly in one day
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('P1D')), null, 'Test',  $space);
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('P1D')), null, 'Test', $space);
 
         // Entry2 begins exactly in one hour
-        $entry2 = $this->createEntry((new DateTime)->add(new DateInterval('PT1H')), null, 'Test2',  $space);
+        $entry2 = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test2', $space);
 
         (new ReminderService())->sendAllReminder();
 
@@ -425,24 +423,24 @@ class ReminderProcessTest  extends CalendarUnitTest
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
 
-        $entry = $this->createEntry((new DateTime)->add(new DateInterval('P2D')), null, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime())->add(new DateInterval('P2D')), null, 'Test', Space::findOne(['id' => 3]));
 
         // Check Only sent to not declined user
         (new ReminderService())->sendAllReminder();
 
         $this->assertFalse(CalendarReminderSent::check($reminder, $entry));
 
-        $this->assertSentEmail( 0);
+        $this->assertSentEmail(0);
     }
 
     public function testSentReminderToNonSpaceMemberParticipant()
     {
         $this->becomeUser('admin');
 
-        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
+        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
-        $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
-        $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
+        $entry = $this->createEntry((new DateTime())->modify('+23 hours'), null, 'Test', Space::findOne(['id' => 3]));
+        $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
         $entry->setParticipationStatus(User::findOne(['id' => 1]));
@@ -464,7 +462,7 @@ class ReminderProcessTest  extends CalendarUnitTest
 
     private function assertCheck($reminder, $entry)
     {
-        if(!CalendarReminderSent::check($reminder, $entry)) {
+        if (!CalendarReminderSent::check($reminder, $entry)) {
             $test = 'asdf';
         }
         $this->assertTrue(CalendarReminderSent::check($reminder, $entry));
@@ -490,8 +488,8 @@ class ReminderProcessTest  extends CalendarUnitTest
         $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
 
-        $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
-        $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
+        $entry = $this->createEntry((new DateTime())->modify('+23 hours'), null, 'Test', Space::findOne(['id' => 3]));
+        $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
         $entry->setParticipationStatus(User::findOne(['id' => 1]));
@@ -527,10 +525,10 @@ class ReminderProcessTest  extends CalendarUnitTest
     {
         $this->becomeUser('admin');
 
-        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
+        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
-        $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
-        $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_ALL;
+        $entry = $this->createEntry((new DateTime())->modify('+23 hours'), null, 'Test', Space::findOne(['id' => 3]));
+        $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
         $entry->saveEvent();
 
         $entry->setParticipationStatus(User::findOne(['id' => 1]));
@@ -564,10 +562,10 @@ class ReminderProcessTest  extends CalendarUnitTest
     public function testSingleGlobalReminderOnSpaceParticipationNone()
     {
         $this->becomeUser('admin');
-        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1 );
+        $reminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 1);
         $this->assertTrue($reminder->save());
-        $entry = $this->createEntry((new DateTime)->modify('+23 hours'), null, 'Test',  Space::findOne(['id' => 3]));
-        $entry->participation_mode = CalendarEntry::PARTICIPATION_MODE_NONE;
+        $entry = $this->createEntry((new DateTime())->modify('+23 hours'), null, 'Test', Space::findOne(['id' => 3]));
+        $entry->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_NONE;
         $entry->saveEvent();
 
         (new ReminderService())->sendAllReminder();
@@ -590,7 +588,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->assertTrue($reminder->save());
 
         // create recurrent event today tomorrow recurring every day
-        $entry = $this->createEntry(new DateTime(), 1, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry(new DateTime(), 1, 'Test', Space::findOne(['id' => 3]));
         $entry->rrule = 'FREQ=DAILY;INTERVAL=1';
         $entry->saveEvent();
 
@@ -626,7 +624,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->becomeUser('Admin');
         $globalReminder = CalendarReminder::initGlobalDefault(CalendarReminder::UNIT_DAY, 2);
         $this->assertTrue($globalReminder->save());
-        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test', Space::findOne(['id' => 3]));
         (new ReminderService())->sendAllReminder();
         $this->assertTrue(CalendarReminderSent::check($globalReminder, $entry));
     }
@@ -636,7 +634,7 @@ class ReminderProcessTest  extends CalendarUnitTest
         $this->becomeUser('Admin');
         $default = CalendarReminder::initContainerDefault(CalendarReminder::UNIT_DAY, 2, Space::findOne(['id' => 3]));
         $this->assertTrue($default->save());
-        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test', Space::findOne(['id' => 3]));
         (new ReminderService())->sendAllReminder();
         $this->assertTrue(CalendarReminderSent::check($default, $entry));
     }
@@ -644,7 +642,7 @@ class ReminderProcessTest  extends CalendarUnitTest
     public function testSimpleEntryLevelContainerReminder()
     {
         $this->becomeUser('Admin');
-        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test', Space::findOne(['id' => 3]));
         $reminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 2, $entry);
         $this->assertTrue($reminder->save());
         (new ReminderService())->sendAllReminder();
@@ -654,7 +652,7 @@ class ReminderProcessTest  extends CalendarUnitTest
     public function testSimpleEntryLevelUserReminder()
     {
         $this->becomeUser('Admin');
-        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test',  Space::findOne(['id' => 3]));
+        $entry = $this->createEntry((new DateTime())->modify('+1 day'), 1, 'Test', Space::findOne(['id' => 3]));
         $reminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_DAY, 2, $entry, Yii::$app->user->identity);
         $this->assertTrue($reminder->save());
         (new ReminderService())->sendAllReminder();

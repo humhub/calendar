@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -17,7 +18,7 @@ class m171027_185418_user_id_index extends Migration
         try {
             // Seems to throw 'Foreign key constraint is incorrectly' formed error in some installations
             $this->addForeignKey('fk-calendar-participant-user-id', 'calendar_entry_participant', 'user_id', 'user', 'id', 'CASCADE');
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
         }
     }

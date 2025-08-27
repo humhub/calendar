@@ -9,30 +9,30 @@
 namespace humhub\modules\calendar\models;
 
 use Yii;
-use \yii\base\Model;
+use yii\base\Model;
 
 class SnippetModuleSettings extends Model
 {
     /**
      * Duration settings in days
      */
-    const DURATION_WEEK = 7;
-    const DURATION_MONTH = 31;
-    const DURATION_HALF_YEAR = 182;
-    const DURATION_YEAR = 365;
+    public const DURATION_WEEK = 7;
+    public const DURATION_MONTH = 31;
+    public const DURATION_HALF_YEAR = 182;
+    public const DURATION_YEAR = 365;
 
     /**
-     * @var boolean determines if the dashboard widget should be shown or not (default true)
+     * @var bool determines if the dashboard widget should be shown or not (default true)
      */
     public $upcomingEventsSnippetShow = true;
 
     /**
-     * @var boolean whether or not to include birthdays in the dashboard snippet
+     * @var bool whether or not to include birthdays in the dashboard snippet
      */
     public $upcomingEventsSnippetIncludeBirthday = false;
 
     /**
-     * @var boolean duration of upcoming events for the dashboard widget (default 31 days)
+     * @var bool duration of upcoming events for the dashboard widget (default 31 days)
      */
     public $upcomingEventsSnippetDuration = self::DURATION_MONTH;
 
@@ -47,7 +47,7 @@ class SnippetModuleSettings extends Model
     public $upcomingEventsSnippetSortOrder = 300;
 
     /**
-     * @var boolean determines if the calendar top menu item adn dashboard widget should only be shown if the user installed the calendar module in his profile
+     * @var bool determines if the calendar top menu item adn dashboard widget should only be shown if the user installed the calendar module in his profile
      */
     public $showIfInstalled = false;
 
@@ -83,7 +83,7 @@ class SnippetModuleSettings extends Model
      */
     public static function instantiate()
     {
-        return new self;
+        return new self();
     }
 
     /**
@@ -95,7 +95,7 @@ class SnippetModuleSettings extends Model
             [['upcomingEventsSnippetShow', 'showIfInstalled', 'upcomingEventsSnippetIncludeBirthday'], 'boolean'],
             ['upcomingEventsSnippetDuration', 'number', 'min' => self::DURATION_WEEK, 'max' => self::DURATION_YEAR],
             ['upcomingEventsSnippetSortOrder', 'number', 'min' => 0],
-            ['upcomingEventsSnippetMaxItems', 'number', 'min' => 1, 'max' => 30]
+            ['upcomingEventsSnippetMaxItems', 'number', 'min' => 1, 'max' => 30],
         ];
     }
 

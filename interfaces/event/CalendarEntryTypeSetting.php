@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -14,7 +15,6 @@
  */
 
 namespace humhub\modules\calendar\interfaces\event;
-
 
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\space\models\Space;
@@ -69,7 +69,7 @@ class CalendarEntryTypeSetting extends CalendarTypeSetting
      */
     public function getDefaultColor()
     {
-        if($this->contentContainer instanceof  Space) {
+        if ($this->contentContainer instanceof  Space) {
             return $this->contentContainer->color;
         }
 

@@ -30,7 +30,7 @@ class ManageEntry extends \humhub\libs\BasePermission
         Space::USERGROUP_OWNER,
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
-        User::USERGROUP_SELF
+        User::USERGROUP_SELF,
     ];
 
     /**
@@ -49,12 +49,12 @@ class ManageEntry extends \humhub\libs\BasePermission
 
     public function getTitle()
     {
-        return Yii::t('CalendarModule.permissions', 'Manage entries');
+        return Yii::t('CalendarModule.base', 'Manage entries');
     }
 
     public function getDescription()
     {
-        return Yii::t('CalendarModule.permissions', 'Allows the user to edit/delete existing calendar entries');
+        return Yii::t('CalendarModule.base', 'Allows the user to edit/delete existing calendar entries');
     }
 
 

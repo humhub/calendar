@@ -1,11 +1,10 @@
 <?php
 
 return [
-    '(disabled)' => '(деактивиран)',
-    '(global)' => '(глобален)',
     '<strong>Calendar</strong> module configuration' => 'Конфигурация на модул <strong>Календар</strong>',
     '<strong>Confirm</strong> Deletion' => '<strong>Потвърждаване</strong> на изтриване',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Добавя фрагмент с предстоящи събития към таблото за управление на вашите потребители.',
+    'Basic' => 'Основни',
     'Calendar Configuration' => 'Конфигурация на календара',
     'Create new type' => 'Създайте нов тип',
     'Default participation settings' => 'Настройки по подразбиране за участие',
@@ -26,14 +25,20 @@ return [
     'One week' => 'Една седмица',
     'One year' => 'Една година',
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Показване на горния елемент от менюто и фрагмента само ако модулът е инсталиран в потребителския профил',
+    'Participation' => 'Участие',
+    'Reminder' => 'Напомняне',
     'Reset' => 'Нулиране',
     'Show snippet' => 'Показване на фрагмент',
     'There are currently no event types available.' => 'Понастоящем няма налични типове събития.',
     'Upcoming events snippet' => 'Фрагмент за предстоящи събития',
     'Add \'Calendar\' to the main menu' => '',
     'Calendar default view mode settings' => '',
+    'Default basic settings' => '',
+    'Export settings' => '',
+    'Full calendar' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
+    'List view type' => '',
     'Menu settings' => '',
     'View mode' => '',
 ];

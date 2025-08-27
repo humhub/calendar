@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -7,6 +8,7 @@
 
 namespace humhub\modules\calendar\controllers;
 
+use humhub\widgets\modal\ModalClose;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\access\ControllerAccess;
@@ -15,7 +17,6 @@ use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\models\reminder\forms\ReminderSettings;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\Content;
-use humhub\widgets\ModalClose;
 
 class ReminderController extends ContentContainerController
 {
@@ -25,7 +26,7 @@ class ReminderController extends ContentContainerController
     public function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
         ];
     }
 
@@ -40,23 +41,23 @@ class ReminderController extends ContentContainerController
     {
         $content = Content::findOne(['id' => $id]);
 
-        if(!$content) {
+        if (!$content) {
             throw new HttpException(404);
         }
 
-        if(!$content->canView()) {
+        if (!$content->canView()) {
             throw new HttpException(403);
         }
 
         $model = CalendarUtils::getCalendarEvent($content);
 
-        if(!$model || !($model instanceof CalendarEventReminderIF)) {
+        if (!$model || !($model instanceof CalendarEventReminderIF)) {
             throw new HttpException(400);
         }
 
-        $reminderSettings = new ReminderSettings(['entry' =>$model, 'user' => Yii::$app->user->getIdentity()]);
+        $reminderSettings = new ReminderSettings(['entry' => $model, 'user' => Yii::$app->user->getIdentity()]);
 
-        if($reminderSettings->load(Yii::$app->request->post()) && $reminderSettings->save()) {
+        if ($reminderSettings->load(Yii::$app->request->post()) && $reminderSettings->save()) {
             return ModalClose::widget(['saved' => true]);
         }
 

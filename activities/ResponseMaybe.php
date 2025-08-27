@@ -27,7 +27,7 @@ class ResponseMaybe extends BaseActivity implements ConfigurableActivityInterfac
      */
     public function getTitle()
     {
-        return Yii::t('CalendarModule.activities', 'Calendar: maybe');
+        return Yii::t('CalendarModule.notification', 'Calendar: maybe');
     }
 
     /**
@@ -35,6 +35,6 @@ class ResponseMaybe extends BaseActivity implements ConfigurableActivityInterfac
      */
     public function getDescription()
     {
-        return Yii::t('CalendarModule.activities', 'Whenever someone may be participating in an event.');
+        return Yii::t('CalendarModule.notification', 'Whenever someone may be participating in an event.');
     }
 }

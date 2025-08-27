@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -9,11 +10,8 @@ namespace calendar\functional;
 
 use calendar\FunctionalTester;
 use DateTime;
-use humhub\modules\space\behaviors\SpaceModelModules;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use tests\codeception\_pages\DashboardPage;
-use Yii;
 
 class CalendarWidgetCest
 {

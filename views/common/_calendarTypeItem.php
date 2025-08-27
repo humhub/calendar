@@ -6,8 +6,10 @@
  *
  */
 
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Html;
-use humhub\widgets\ModalButton;
 
 /* @var $editUrl string */
 /* @var $deleteUrl string */
@@ -15,28 +17,30 @@ use humhub\widgets\ModalButton;
 /* @var $isSpaceGlobal */
 /* @var $color */
 /* @var $disabled */
-
 ?>
-<div class="media" style="margin-top:5px;">
-    <div class="media-body">
-        <div class="input-group">
-            <span class="input-group-addon">
-                <i style="display:inline-block;width:16px;height:16px;background-color: <?= Html::encode($color)?>"></i>
-            </span>
-            <input class="form-control" value="<?= Html::encode($title) ?><?= ($disabled ? ' - '.Yii::t('CalendarModule.config', '(disabled)') : '') ?>" title="<?= Yii::t('CalendarModule.base', 'Event type color');?>" type="text" readonly>
-            <span class="input-group-addon">
-                <?php if($isSpaceGlobal) : ?>
-                    <small><?=  Yii::t('CalendarModule.config', '(global)') ?></small>
-                <?php else: ?>
-                    <?= ModalButton::primary()->load($editUrl)->icon('fa-pencil')->xs() ?>
-                    <?php if(!empty($deleteUrl)) : ?>
-                        <?= ModalButton::danger()->post($deleteUrl)->confirm(
-                            Yii::t('CalendarModule.config', '<strong>Confirm</strong> Deletion'),
-                            Yii::t('CalendarModule.config', 'Do you really want to delte this event type?'),
-                            Yii::t('CalendarModule.config', 'Delete'))->icon('fa-times')->xs() ?>
-                    <?php endif ?>
-                <?php endif; ?>
-            </span>
-        </div>
-    </div>
+<div class="input-group mt-2">
+    <span class="input-group-text">
+        <i style="display:inline-block;width:16px;height:16px;background-color: <?= Html::encode($color)?>"></i>
+    </span>
+    <span class="input-group-text flex-fill">
+        <?= Html::encode($title) ?>
+        <?php if ($disabled) : ?>
+            <?= Badge::warning(Yii::t('CalendarModule.base', 'disabled')) ?>
+        <?php endif; ?>
+        <?php if ($isSpaceGlobal) : ?>
+            <?= Badge::info(Yii::t('CalendarModule.base', 'global')) ?>
+        <?php endif; ?>
+    </span>
+    <?php if (!$isSpaceGlobal || Yii::$app->user->can([ManageModules::class])) : ?>
+    <span class="input-group-text">
+        <?= ModalButton::primary()->load($editUrl)->icon('fa-pencil')->sm() ?>
+        <?php if (!empty($deleteUrl)) : ?>
+            <?= ModalButton::danger()->post($deleteUrl)->confirm(
+                Yii::t('CalendarModule.config', '<strong>Confirm</strong> Deletion'),
+                Yii::t('CalendarModule.config', 'Do you really want to delte this event type?'),
+                Yii::t('CalendarModule.config', 'Delete'),
+            )->icon('fa-times')->sm()->cssClass('ms-2') ?>
+        <?php endif ?>
+    </span>
+    <?php endif; ?>
 </div>

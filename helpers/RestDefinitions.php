@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -6,6 +7,7 @@
  */
 
 namespace humhub\modules\calendar\helpers;
+
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\rest\definitions\ContentDefinitions;
@@ -35,8 +37,9 @@ class RestDefinitions
             'participant_info' => $entry->participant_info,
             'closed' => (int)$entry->closed,
             'max_participants' => (int)$entry->max_participants,
+            'location' => $entry->location,
             'content' => ContentDefinitions::getContent($entry->content),
-            'participants' => static::getParticipantUsers($entry->getParticipantEntries()->with('user')->all())
+            'participants' => static::getParticipantUsers($entry->getParticipantEntries()->with('user')->all()),
         ];
     }
 
@@ -45,15 +48,15 @@ class RestDefinitions
         $result = [
             'attending' => [],
             'maybe' => [],
-            'declined' => []
+            'declined' => [],
         ];
 
         foreach ($participants as $participant) {
             if ($participant->participation_state === CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED) {
                 $result['attending'][] = UserDefinitions::getUserShort($participant->user);
-            } elseif ($participant->participation_state === CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE){
+            } elseif ($participant->participation_state === CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE) {
                 $result['maybe'][] = UserDefinitions::getUserShort($participant->user);
-            } elseif ($participant->participation_state === CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED){
+            } elseif ($participant->participation_state === CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED) {
                 $result['declined'][] = UserDefinitions::getUserShort($participant->user);
             }
         }

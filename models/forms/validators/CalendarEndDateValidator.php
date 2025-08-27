@@ -15,7 +15,7 @@ use humhub\modules\calendar\models\forms\CalendarEntryForm;
 
 /**
  * Validates the end date which should be bigger thant start date
- * 
+ *
  * @package humhub\modules\calendar\models\forms\validators
  */
 class CalendarEndDateValidator extends Validator

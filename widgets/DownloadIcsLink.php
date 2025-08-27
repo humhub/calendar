@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -8,12 +9,10 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
-use humhub\modules\calendar\models\CalendarEntry;
 use Yii;
-
 
 /**
  * Class DownloadIcsLink
@@ -21,7 +20,6 @@ use Yii;
  */
 class DownloadIcsLink extends Widget
 {
-
     /**
      * @var CalendarEventIF
      */
@@ -30,9 +28,17 @@ class DownloadIcsLink extends Widget
     public function run()
     {
         if ($this->calendarEntry === null) {
-            return;
+            return '';
         }
 
-        return Html::a(Yii::t('CalendarModule.base', 'Download ICS'), Url::toEntryDownloadICS($this->calendarEntry), ['target' => '_blank']);
+        return Html::tag(
+            'span',
+            Html::a(
+                Yii::t('CalendarModule.base', 'Download ICS'),
+                Url::toEntryDownloadICS($this->calendarEntry),
+                ['target' => '_blank'],
+            ),
+            ['class' => 'calendar-entry-ics-download'],
+        );
     }
 }

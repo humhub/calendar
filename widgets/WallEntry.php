@@ -16,7 +16,7 @@ class WallEntry extends WallStreamModuleEntryWidget
      */
     public $createRoute = '/calendar/entry/add-from-wall';
 
-    const VIEW_CONTEXT_FULLCALENDAR = 'fullCalendar';
+    public const VIEW_CONTEXT_FULLCALENDAR = 'fullCalendar';
 
     /**
      * @var CalendarEntry
@@ -32,7 +32,7 @@ class WallEntry extends WallStreamModuleEntryWidget
      * @inheritdoc
      */
     public $editRoute = "/calendar/entry/edit";
-    
+
     /**
      * @inheritdoc
      */
@@ -68,7 +68,7 @@ class WallEntry extends WallStreamModuleEntryWidget
             $result[] = [CloseLink::class, ['entry' => $this->model], ['sortOrder' => 210]];
 
             // We need special edit/delete behavior in full calendar view
-            if($this->renderOptions->isViewContext(static::VIEW_CONTEXT_FULLCALENDAR)) {
+            if ($this->renderOptions->isViewContext(static::VIEW_CONTEXT_FULLCALENDAR)) {
                 $this->renderOptions->disableControlsEntryEdit()->disableControlsEntryDelete();
                 $result[] = [EditLink::class, ['entry' => $this->model], ['sortOrder' => 100]];
                 $result[] = [DeleteLink::class, ['entry' => $this->model], ['sortOrder' => 200]];
@@ -83,7 +83,7 @@ class WallEntry extends WallStreamModuleEntryWidget
     public function getWallEntryViewParams()
     {
         $params = parent::getWallEntryViewParams();
-        if($this->isInModal()) {
+        if ($this->isInModal()) {
             $params['showContentContainer'] = true;
         }
         return $params;
@@ -107,7 +107,7 @@ class WallEntry extends WallStreamModuleEntryWidget
             'calendarEntry' => $entry,
             'collapse' => $this->collapse,
             'participantSate' => $entry->getParticipationStatus(Yii::$app->user->identity),
-            'contentContainer' => $entry->content->container
+            'contentContainer' => $entry->content->container,
         ]);
     }
 
@@ -119,5 +119,3 @@ class WallEntry extends WallStreamModuleEntryWidget
         return $this->model->title;
     }
 }
-
-?>

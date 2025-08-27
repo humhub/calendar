@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -7,12 +8,11 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-
 interface CalendarEventStatusIF
 {
-    const STATUS_TENTATIVE = 'TENTATIVE';
-    const STATUS_CONFIRMED = 'CONFIRMED';
-    const STATUS_CANCELLED = 'CANCELLED';
+    public const STATUS_TENTATIVE = 'TENTATIVE';
+    public const STATUS_CONFIRMED = 'CONFIRMED';
+    public const STATUS_CANCELLED = 'CANCELLED';
 
     /**
      * @return mixed

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -11,9 +12,8 @@ namespace humhub\modules\calendar\integration;
 use Yii;
 use yii\base\Component;
 use yii\helpers\Html;
-use  humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
+use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\user\models\User;
-
 
 /**
  * Created by PhpStorm.
@@ -29,9 +29,9 @@ class BirthdayCalendar extends Component
     /**
      * Default color of meeting type calendar items.
      */
-    const DEFAULT_COLOR = '#59D6E4';
+    public const DEFAULT_COLOR = '#59D6E4';
 
-    const ITEM_TYPE_KEY = 'birthday';
+    public const ITEM_TYPE_KEY = 'birthday';
 
     /**
      * @param $event CalendarItemTypesEvent

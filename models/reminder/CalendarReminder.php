@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\reminder;
-
 
 use DateTime;
 use humhub\components\ActiveRecord;
@@ -87,23 +85,23 @@ use yii\db\Expression;
  *
  * @package humhub\modules\calendar\models
  *
- * @property integer $id
- * @property integer $value
- * @property integer $unit
+ * @property int $id
+ * @property int $value
+ * @property int $unit
  * @property string $content_id
- * @property integer $contentcontainer_id
- * @property integer $active
- * @property integer $disabled
+ * @property int $contentcontainer_id
+ * @property int $active
+ * @property int $disabled
  * @property-read Content $entryContent
  */
 class CalendarReminder extends ActiveRecord
 {
-    const UNIT_HOUR = 1;
-    const UNIT_DAY = 2;
-    const UNIT_WEEK = 3;
-    const UNIT_MINUTE = 4;
+    public const UNIT_HOUR = 1;
+    public const UNIT_DAY = 2;
+    public const UNIT_WEEK = 3;
+    public const UNIT_MINUTE = 4;
 
-    const MAX_VALUES = [
+    public const MAX_VALUES = [
         self::UNIT_MINUTE => 60,
         self::UNIT_HOUR => 24,
         self::UNIT_DAY => 31,
@@ -139,7 +137,7 @@ class CalendarReminder extends ActiveRecord
             $this->active = 1;
         }
 
-        if($this->disabled === null) {
+        if ($this->disabled === null) {
             $this->disabled = 0;
         }
     }
@@ -149,7 +147,7 @@ class CalendarReminder extends ActiveRecord
         $rules = [
             [['unit'], 'in', 'range' => [static::UNIT_MINUTE, static::UNIT_HOUR, static::UNIT_DAY, static::UNIT_WEEK]],
             [['value'], 'number', 'min' => 1],
-            [['value'], 'validateValue']
+            [['value'], 'validateValue'],
         ];
 
         if ($this->active && !$this->disabled) {
@@ -161,19 +159,19 @@ class CalendarReminder extends ActiveRecord
 
     public function validateValue($attribute, $params)
     {
-        if(!$this->unit) {
+        if (!$this->unit) {
             return;
         }
 
         $max = static::MAX_VALUES[$this->unit];
-        if(!$this->validateMaxRange()) {
-            $this->addError('value',"Only values from 1 to $max are allowed");
+        if (!$this->validateMaxRange()) {
+            $this->addError('value', "Only values from 1 to $max are allowed");
         }
     }
 
     private function validateMaxRange()
     {
-        if(!$this->unit) {
+        if (!$this->unit) {
             return true;
         }
 
@@ -182,10 +180,10 @@ class CalendarReminder extends ActiveRecord
 
     public function ensureValidValue()
     {
-        if($this->validateMaxRange()) {
+        if ($this->validateMaxRange()) {
             return;
         }
-        
+
         switch ($this->unit) {
             case static::UNIT_MINUTE:
                 $this->unit = static::UNIT_HOUR;
@@ -232,7 +230,7 @@ class CalendarReminder extends ActiveRecord
             'value' => $value,
             'contentcontainer_id' => $container->contentcontainer_id,
             'active' => 1,
-            'disabled' => 0
+            'disabled' => 0,
         ]);
     }
 
@@ -285,7 +283,7 @@ class CalendarReminder extends ActiveRecord
     {
         $instance = new static(['unit' => $unit, 'value' => $value, 'active' => 1, 'content_id' => $model->getContentRecord()->id,  'disabled' => 0]);
 
-        if($user) {
+        if ($user) {
             $instance->contentcontainer_id = $user->contentcontainer_id;
         }
 
@@ -349,7 +347,7 @@ class CalendarReminder extends ActiveRecord
     public function getEntry()
     {
         $content = $this->entryContent;
-        if($content) {
+        if ($content) {
             return CalendarUtils::getCalendarEvent($content);
         }
 
@@ -400,7 +398,7 @@ class CalendarReminder extends ActiveRecord
     {
         $result = static::getDefaultFromCache($container, $globalFallback);
 
-        if($result !== null) {
+        if ($result !== null) {
             return $result;
         }
 
@@ -428,7 +426,7 @@ class CalendarReminder extends ActiveRecord
 
     private static function setDefaultResult(ContentContainerActiveRecord $container = null, $result = null)
     {
-        if($container) {
+        if ($container) {
             static::$containerDefaults[$container->contentcontainer_id] = $result;
         } else {
             static::$globalDefaults = $result;
@@ -443,18 +441,18 @@ class CalendarReminder extends ActiveRecord
 
     private static function getDefaultFromCache(ContentContainerActiveRecord $container = null, $globalFallback = false)
     {
-        if($container && !isset(static::$containerDefaults[$container->contentcontainer_id])) {
+        if ($container && !isset(static::$containerDefaults[$container->contentcontainer_id])) {
             return null; // No cached results
         }
 
-        if($container) {
+        if ($container) {
             $result = static::$containerDefaults[$container->contentcontainer_id];
-            if(!empty($result) || !$globalFallback) {
+            if (!empty($result) || !$globalFallback) {
                 return $result;
             }
         }
 
-        if(static::$globalDefaults !== null) {
+        if (static::$globalDefaults !== null) {
             return static::$globalDefaults;
         }
 
@@ -469,7 +467,7 @@ class CalendarReminder extends ActiveRecord
     {
         $query = static::find()->where(['IS NOT', 'content_id', new Expression('NULL')]);
 
-        if($active) {
+        if ($active) {
             $query->andWhere(['active' => 1]);
         }
 
@@ -491,7 +489,7 @@ class CalendarReminder extends ActiveRecord
      */
     public static function getEntryLevelReminder(CalendarEventReminderIF $model, $user = true, $defaultFallback = false)
     {
-        if($model->getContentRecord()->isNewRecord) {
+        if ($model->getContentRecord()->isNewRecord) {
             return $defaultFallback ? static::getEntryLevelDefaults($model, $user) : [];
         }
 
@@ -500,9 +498,9 @@ class CalendarReminder extends ActiveRecord
             // We want user entry level first with given contentcontainer_id, then sort by interval
             ->orderBy('calendar_reminder.contentcontainer_id DESC, disabled DESC, unit ASC, value ASC');
 
-        if($user === false) {
+        if ($user === false) {
             $query->andWhere(['IS' ,'contentcontainer_id', new Expression('NULL')]);
-        } else if($user instanceof User) {
+        } elseif ($user instanceof User) {
             $query->andWhere(['contentcontainer_id' => $user->contentcontainer_id]);
         } else {
             //$query->andWhere(['contentcontainer_id' => $model->getContentRecord()->contentcontainer_id]);
@@ -517,11 +515,11 @@ class CalendarReminder extends ActiveRecord
     {
         $result = [];
 
-        if($user instanceof User) {
+        if ($user instanceof User) {
             $result = static::getEntryLevelReminder($model, false, true);
         }
 
-        if(empty($result)) {
+        if (empty($result)) {
             $result = static::getDefaults($model->getContentRecord()->container, true);
         }
 
@@ -539,7 +537,7 @@ class CalendarReminder extends ActiveRecord
             return false;
         }
 
-        if($this->isDefaultReminder() && CalendarReminderSent::check($this, $entry)) {
+        if ($this->isDefaultReminder() && CalendarReminderSent::check($this, $entry)) {
             return false;
         }
 
@@ -554,7 +552,7 @@ class CalendarReminder extends ActiveRecord
      */
     public function checkMaturity(CalendarEventReminderIF $model)
     {
-        if(!$this->active || $this->isDisabled()) {
+        if (!$this->active || $this->isDisabled()) {
             return false;
         }
 
@@ -569,7 +567,7 @@ class CalendarReminder extends ActiveRecord
 
     private function getModify()
     {
-        if(!$this->unit || ! $this->value) {
+        if (!$this->unit || ! $this->value) {
             return '-0 hours';
         }
 
@@ -591,7 +589,7 @@ class CalendarReminder extends ActiveRecord
         }
 
         // add tolerance for cron delay....
-        return '-'.$this->value.' '.$modifyUnit;
+        return '-' . $this->value . ' ' . $modifyUnit;
     }
 
     /**
@@ -599,7 +597,7 @@ class CalendarReminder extends ActiveRecord
      */
     public function acknowledge(CalendarEventReminderIF $entry)
     {
-        if($this->isEntryLevelReminder()) {
+        if ($this->isEntryLevelReminder()) {
             $this->updateAttributes(['active' => 0]);
         }
 

@@ -1,11 +1,10 @@
 <?php
 
 return [
-    '(disabled)' => '(ei käytössä)',
-    '(global)' => '(Maailmanlaajuinen)',
     '<strong>Calendar</strong> module configuration' => '<strong>Kalenteri</strong> asetukset',
     '<strong>Confirm</strong> Deletion' => '<strong>Vahvista</strong> poisto',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Lisää widget käyttäjien etusivulle tulevista tapahtumista.',
+    'Basic' => 'Tiedot',
     'Create new type' => 'Luo uusi tyyppi',
     'Delete' => 'Poista',
     'Do you really want to delte this event type?' => 'Haluatko todella poistaa tämän tapahtumatyypin?',
@@ -22,6 +21,8 @@ return [
     'One week' => 'Viikko',
     'One year' => 'Vuosi',
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Näytä vain ylävalikkokohta ja katkelmat, jos laajennus on asennettu käyttäjän profiiliin',
+    'Participation' => 'osallistujat',
+    'Reminder' => 'Muistutus',
     'Reset' => 'Tyhjennä',
     'Show snippet' => 'Näytä widget',
     'There are currently no event types available.' => 'Tapahtumien tyypit eivät ole tällä hetkellä käytettävissä.',
@@ -29,11 +30,15 @@ return [
     'Add \'Calendar\' to the main menu' => '',
     'Calendar Configuration' => '',
     'Calendar default view mode settings' => '',
+    'Default basic settings' => '',
     'Default participation settings' => '',
+    'Export settings' => '',
+    'Full calendar' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Here you can manage and disable different calendars.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'List view type' => '',
     'Menu settings' => '',
     'View mode' => '',
 ];

@@ -109,7 +109,7 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'title' => 'Overwritten title',
                 'all_day' => '0',
                 'description' => 'Overwritten description',
-                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
@@ -121,8 +121,8 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
-                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_THIS
-            ]
+                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_THIS,
+            ],
         ]));
 
         $this->assertTrue($form->save());
@@ -167,7 +167,7 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'title' => 'Overwritten title',
                 'all_day' => '0',
                 'description' => 'Overwritten description',
-                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
@@ -179,8 +179,8 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
-                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_THIS
-            ]
+                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_THIS,
+            ],
         ]));
 
         $this->assertTrue($form->save());
@@ -224,8 +224,8 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
-                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING
-            ]
+                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING,
+            ],
         ]));
 
         $this->assertTrue($form->save());
@@ -258,8 +258,8 @@ class RecurrenceEditTest extends RecurrenceUnitTest
                 'recurring' => 1,
             ],
             'RecurrenceFormModel' => [
-                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING
-            ]
+                'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING,
+            ],
         ]));
 
         $this->assertTrue($form->save());
@@ -284,7 +284,7 @@ class RecurrenceEditTest extends RecurrenceUnitTest
             'CalendarEntry' => [
                 'title' => 'Overwritten title',
                 'description' => 'Overwritten description',
-                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_NONE,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '0',
@@ -297,8 +297,8 @@ class RecurrenceEditTest extends RecurrenceUnitTest
             'RecurrenceFormModel' => [
                 'recurrenceEditMode' => RecurrenceFormModel::EDIT_MODE_ALL,
                 'frequency' => Frequency::DAILY,
-                'interval' => 2
-            ]
+                'interval' => 2,
+            ],
         ]));
 
         $this->assertTrue($form->save());

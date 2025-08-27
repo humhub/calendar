@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -6,9 +7,9 @@
  *
  */
 
-namespace  humhub\modules\calendar\notifications;
+namespace humhub\modules\calendar\notifications;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\notification\components\BaseNotification;
@@ -51,21 +52,21 @@ class Remind extends BaseNotification
     public function html()
     {
         /* @var $record CalendarEventReminderIF */
-        if($this->source instanceof CalendarEventReminderIF) {
-            return Yii::t('CalendarModule.reminder', 'You have an <strong>{type}</strong> coming up: {title}', [
+        if ($this->source instanceof CalendarEventReminderIF) {
+            return Yii::t('CalendarModule.base', 'You have an <strong>{type}</strong> coming up: {title}', [
                 'type' => Html::encode($this->getEventType()),
-                'title' => RichText::preview($this->source->getTitle(), 25)
+                'title' => RichText::preview($this->source->getTitle(), 25),
             ]);
         }
 
-        return Yii::t('CalendarModule.reminder', 'You have an <strong>{type}</strong> coming up', ['type' => $this->getEventType()]);
+        return Yii::t('CalendarModule.base', 'You have an <strong>{type}</strong> coming up', ['type' => $this->getEventType()]);
     }
 
     public function getEventType()
     {
-        if($this->source instanceof CalendarEventReminderIF) {
+        if ($this->source instanceof CalendarEventReminderIF) {
             $type = $this->source->getEventType();
-            if($type) {
+            if ($type) {
                 return $type->getTitle();
             }
         }
@@ -78,13 +79,13 @@ class Remind extends BaseNotification
      */
     public function getMailSubject()
     {
-        if($this->source instanceof CalendarEventReminderIF) {
-            return Yii::t('CalendarModule.reminder', 'Upcoming {type}: {title}', [
+        if ($this->source instanceof CalendarEventReminderIF) {
+            return Yii::t('CalendarModule.base', 'Upcoming {type}: {title}', [
                 'type' => $this->getEventType(),
-                'title' => $this->source->getTitle()
+                'title' => $this->source->getTitle(),
             ]);
         }
 
-        return Yii::t('CalendarModule.reminder', 'Upcoming {type}', ['type' => $this->getEventType()]);
+        return Yii::t('CalendarModule.base', 'Upcoming {type}', ['type' => $this->getEventType()]);
     }
 }

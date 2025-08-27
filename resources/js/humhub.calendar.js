@@ -7,17 +7,14 @@
 humhub.module('calendar', function (module, require, $) {
         var Widget = require('ui.widget').Widget;
         var client = require('client');
-        var util = require('util');
-        var object = util.object;
         var modal = require('ui.modal');
         var action = require('action');
         var Content = require('content').Content;
         var event = require('event');
         var StreamEntry = require('stream').StreamEntry;
+        var status = require('ui.status');
 
         var Calendar = Widget.extend();
-
-
         var Form = Widget.extend();
 
         Form.RECUR_EDIT_MODE_CREATE = 0;
@@ -34,36 +31,119 @@ humhub.module('calendar', function (module, require, $) {
                 $('#calendarentry-participation_mode').focus();
             });
 
-            this.$.find('#calendarentryform-start_date').on('change', function() {
-                var startTime =  $('#calendarentryform-start_date').datepicker('getDate').getTime();
-                var endTime = $('#calendarentryform-end_date').datepicker('getDate').getTime();
-
-                if(endTime < startTime) {
-                    $('#calendarentryform-end_date').val($('#calendarentryform-start_date').val())
-                }
-            });
-
-            this.$.find('#calendarentryform-end_date').on('change', function() {
-                var startTime =  $('#calendarentryform-start_date').datepicker('getDate').getTime();
-                var endTime = $('#calendarentryform-end_date').datepicker('getDate').getTime();
-
-                if(endTime < startTime) {
-                    $('#calendarentryform-start_date').val($('#calendarentryform-end_date').val())
-                }
-            });
-
+            this.initDateTimeCorrector();
             this.initTimeInput();
             this.initSubmitAction();
+        };
+
+        Form.prototype.initDateTimeCorrector = function () {
+            var startPrefix = '#calendarentryform-start_';
+            var endPrefix = '#calendarentryform-end_';
+
+            var convertTimeToMinutes = function(time) {
+                time = time.split(':');
+                var hours = parseInt(time[0]);
+                if (hours === 12 && time[1].includes('AM')) {
+                    hours = 0;
+                } else {
+                    hours += time[1].includes('PM') && hours < 12 ? 12 : 0;
+                }
+                return hours * 60 + parseInt(time[1]);
+            }
+
+            var convertMinutesToTime = function(time, mode) {
+                var minutes = time % 60;
+                var hours = (time - minutes) / 60;
+                var modeSuffix = '';
+                if (mode === '12h') {
+                    modeSuffix = hours < 12 ? ' AM' : ' PM';
+                    if (hours === 0) {
+                        hours = 12;
+                    } else if (hours > 12) {
+                        hours -= 12;
+                    }
+                }
+                if (hours < 10) {
+                    hours = '0' + hours;
+                }
+                if (minutes < 10) {
+                    minutes = '0' + minutes;
+                }
+                return hours + ':' + minutes + modeSuffix;
+            }
+
+            var getDateData = function() {
+                return {
+                    start: $(startPrefix + 'date').datepicker('getDate').getTime(),
+                    end: $(endPrefix + 'date').datepicker('getDate').getTime(),
+                }
+            }
+
+            var getTimeData = function() {
+                return {
+                    start: convertTimeToMinutes($(startPrefix + 'time').val()),
+                    end: convertTimeToMinutes($(endPrefix + 'time').val()),
+                    mode: $(startPrefix + 'time').val().includes('M') ? '12h' : '24h',
+                }
+            }
+
+            var fixDateTime = function(prefix, time, mode) {
+                var dayMinutes = 24 * 60;
+                if (time < 0 || time >= dayMinutes) {
+                    // Shift date to +1/-1 day if time is out of day
+                    var date = new Date($(prefix + 'date').datepicker('getDate'));
+                    date.setDate(date.getDate() + (time < 0 ? -1 : 1));
+                    $(prefix + 'date').datepicker('setDate', date);
+                    time = time + (time < 0 ? dayMinutes : -dayMinutes);
+                }
+                $(prefix + 'time').val(convertMinutesToTime(time, mode));
+            }
+
+            var validateTime = function () {
+                var date = getDateData();
+                if (date.start !== date.end) {
+                    return true;
+                }
+                var time = getTimeData();
+                return time.start >= time.end ? time : true;
+            }
+
+            this.$.find(startPrefix + 'time').on('change', function () {
+                var time = validateTime();
+                if (time !== true) {
+                    fixDateTime(endPrefix, time.start + 60, time.mode);
+                }
+            });
+
+            this.$.find(endPrefix + 'time').on('change', function () {
+                var time = validateTime();
+                if (time !== true) {
+                    fixDateTime(startPrefix, time.end - 60, time.mode);
+                }
+            });
+
+            var validateDate = function () {
+                var date = getDateData();
+                return date.start <= date.end;
+            }
+
+            this.$.find(startPrefix + 'date').on('change', function () {
+                if (!validateDate()) {
+                    $(endPrefix + 'date').val($(startPrefix + 'date').val());
+                }
+            });
+
+            this.$.find(endPrefix + 'date').on('change', function () {
+                if (!validateDate()) {
+                    $(startPrefix + 'date').val($(endPrefix + 'date').val())
+                }
+            });
         };
 
         Form.prototype.setEditMode = function (evt) {
             var mode = evt.$trigger.data('editMode');
 
-            if (mode == Form.RECUR_EDIT_MODE_THIS) {
-                $('.field-calendarentryform-is_public').hide();
-            } else {
-                $('.field-calendarentryform-is_public').show();
-            }
+            $('.field-calendarentryform-is_public').toggle(mode != Form.RECUR_EDIT_MODE_THIS);
 
             this.$.find('.calendar-edit-mode-back').show();
             this.$.find('.recurrence-edit-type').hide();
@@ -71,13 +151,13 @@ humhub.module('calendar', function (module, require, $) {
             this.$.find('#recurrenceEditMode').val(mode);
         };
 
-        Form.prototype.showEditModes = function (evt) {
+        Form.prototype.showEditModes = function () {
             this.$.find('.calendar-edit-mode-back').hide();
             this.$.find('.recurrence-edit-type').show();
             this.$.find('.calendar-entry-form-tabs').hide();
         };
 
-        Form.prototype.initTimeInput = function (evt) {
+        Form.prototype.initTimeInput = function () {
             var $timeFields = modal.global.$.find('.timeField');
             var $timeInputs = $timeFields.find('.form-control');
             $timeInputs.each(function () {
@@ -122,7 +202,6 @@ humhub.module('calendar', function (module, require, $) {
                 });
                 $timeFields.css('opacity', '0.2');
                 $timeZoneInput.hide();
-
             } else {
                 $timeInputs.each(function () {
                     var $this = $(this);
@@ -148,18 +227,19 @@ humhub.module('calendar', function (module, require, $) {
 
         Form.prototype.changeEventType = function (evt) {
             var $selected = evt.$trigger.find(':selected');
-            if ($selected.data('type-color')) {
-                $('.colorpicker-element').data('colorpicker').color.setColor($selected.data('type-color'));
-                $('.colorpicker-element').data('colorpicker').update();
+            if ($selected.data('color')) {
+                this.$.find('#calendarentry-color').val($selected.data('color'));
+            } else if (module.config['defaultEventColor']) {
+                this.$.find('#calendarentry-color').val(module.config['defaultEventColor']);
             }
         };
 
         Form.prototype.toggleRecurring = function (evt) {
-            $('.calendar-entry-form-tabs .tab-recurrence').parent().toggle(evt.$trigger.is(':checked'));
+            $('.calendar-entry-form-tabs .tab-recurrence').toggle(evt.$trigger.is(':checked'));
         };
 
         Form.prototype.toggleReminder = function (evt) {
-            $('.calendar-entry-form-tabs .tab-reminder').parent().toggle(evt.$trigger.is(':checked'));
+            $('.calendar-entry-form-tabs .tab-reminder').toggle(evt.$trigger.is(':checked'));
         };
 
         var CalendarEntry = Content.extend();
@@ -221,15 +301,12 @@ humhub.module('calendar', function (module, require, $) {
         };
 
         var editModal = function (evt) {
-            var streamEntry = Widget.closest(evt.$trigger);
-            streamEntry.loader();
             modal.load(evt).then(function (response) {
                 modal.global.$.one('submitted', function () {
                     var calendar = getCalendar();
-                    if(calendar) {
+                    if (calendar) {
                         calendar.fetch();
                     }
-
                 });
             }).catch(function (e) {
                 module.log.error(e, true);
@@ -245,10 +322,18 @@ humhub.module('calendar', function (module, require, $) {
             streamEntry.loader();
             modal.confirm().then(function (confirm) {
                 if (confirm) {
-                    client.post(evt).then(function () {
-                        modal.global.close();
+                    client.post(evt).then(function (response) {
+                        if (response.success) {
+                            status.success(response.message);
+                            modal.global.close();
+                        } else if (response.message) {
+                            status.error(response.message);
+                        }
                     }).catch(function (e) {
                         module.log.error(e, true);
+                        if (e.message) {
+                            status.error(e.message);
+                        }
                     });
                 } else {
                     var streamEntry = Widget.closest(evt.$trigger);

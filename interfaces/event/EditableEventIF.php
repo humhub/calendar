@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\interfaces\event;
-
 
 /**
  * In order to use some calendar interfaces events need to be updated or even deleted. Event types facilitating

@@ -37,7 +37,7 @@ use humhub\modules\calendar\models\CalendarEntry;
 class CalendarEntryForm extends Model
 {
     /**
-     * @var integer Content visibility
+     * @var int Content visibility
      */
     public $is_public;
 
@@ -112,7 +112,7 @@ class CalendarEntryForm extends Model
     public $recurrenceForm;
 
     /**
-     * @var boolean defines if the Task is created from wall stream
+     * @var bool defines if the Task is created from wall stream
      */
     public $wall;
 
@@ -153,7 +153,7 @@ class CalendarEntryForm extends Model
         $this->timeZone = $this->entry->time_zone;
         $this->is_public = $this->entry->content->visibility;
 
-        if(!$this->entry->isNewRecord) {
+        if (!$this->entry->isNewRecord) {
             $type = $this->entry->getEventType();
             if ($type) {
                 $this->type_id = $type->id;
@@ -211,7 +211,7 @@ class CalendarEntryForm extends Model
 
         if ($this->isAllDay()) {
             $this->translateFromMomentAfterToFormEndDate($endDT);
-        } else if (!empty($timeZone)) {
+        } elseif (!empty($timeZone)) {
             $startDT = CalendarUtils::translateTimezone($startDT, $timeZone, $this->timeZone);
             $endDT = CalendarUtils::translateTimezone($endDT, $timeZone, $this->timeZone);
         }
@@ -227,23 +227,23 @@ class CalendarEntryForm extends Model
 
     private function translateFromMomentAfterToFormEndDate(DateTime $dt)
     {
-        if(!$this->isAllDay()) {
+        if (!$this->isAllDay()) {
             return $dt;
         }
-        return $dt->modify('-1 day')->setTime(0,0,0);
+        return $dt->modify('-1 day')->setTime(0, 0, 0);
     }
 
     private function translateFromFormToMomentAfterEndDate(DateTime $dt)
     {
-        if(!$this->isAllDay()) {
+        if (!$this->isAllDay()) {
             return $dt;
         }
-        return $dt->modify('+1 day')->setTime(0,0,0);
+        return $dt->modify('+1 day')->setTime(0, 0, 0);
     }
 
     public function setDefaultTime()
     {
-        if($this->isAllDay()) {
+        if ($this->isAllDay()) {
             $withMeridiam = Yii::$app->formatter->isShowMeridiem();
             $this->start_time = $withMeridiam ? '10:00 AM' : '10:00';
             $this->end_time =  $withMeridiam ? '12:00 PM' : '12:00';
@@ -310,7 +310,7 @@ class CalendarEntryForm extends Model
         $startDt = CalendarUtils::getDateTime($start);
         $endDt = CalendarUtils::getDateTime($end);
 
-        if($translateTimeZone) {
+        if ($translateTimeZone) {
             $startDt = CalendarUtils::translateTimezone($startDt, CalendarUtils::getSystemTimeZone(), $this->timeZone);
             $endDt = CalendarUtils::translateTimezone($endDt, CalendarUtils::getSystemTimeZone(), $this->timeZone);
         }
@@ -328,7 +328,7 @@ class CalendarEntryForm extends Model
         $startDt = $this->getStartDateTime();
         $endDt =  $this->getEndDateTime();
 
-        if($this->entry->isAllDay()) {
+        if ($this->entry->isAllDay()) {
             $this->entry->start_datetime = CalendarUtils::toDBDateFormat($startDt);
             $this->entry->end_datetime = CalendarUtils::toDBDateFormat($this->translateFromFormToMomentAfterEndDate($endDt));
         } else {
@@ -351,7 +351,7 @@ class CalendarEntryForm extends Model
      */
     public function load($data, $formName = null)
     {
-        if(empty($data)) {
+        if (empty($data)) {
             return false;
         }
 
@@ -360,7 +360,7 @@ class CalendarEntryForm extends Model
         }
 
         $container = $this->entry->content->container;
-        if(!$this->canCreatePublicEntry()) {
+        if (!$this->canCreatePublicEntry()) {
             $this->entry->content->visibility = Content::VISIBILITY_PRIVATE;
         } else {
             $this->entry->content->visibility = $this->is_public;
@@ -374,10 +374,13 @@ class CalendarEntryForm extends Model
             $this->type_id = null;
         }
 
-        if($this->isAllDay()) {
+        if ($this->isAllDay()) {
             $this->start_time = null;
             $this->end_time = null;
         }
+
+        $this->start_date = $this->normalizeFormattedDate($this->start_date);
+        $this->end_date = $this->normalizeFormattedDate($this->end_date);
 
         $startDT = $this->getStartDateTime();
         $endDt = $this->getEndDateTime();
@@ -397,17 +400,17 @@ class CalendarEntryForm extends Model
         $isStartDateError = !empty($this->getErrors('start_date'));
         $isEndDateError = !empty($this->getErrors('end_date'));
 
-        if(!$isStartDateError && !$isEndDateError) {
+        if (!$isStartDateError && !$isEndDateError) {
             return;
         }
 
         $startDate = $this->getStartDateTime();
         $endDate = $this->getEndDateTime();
 
-        if(!$startDate) {
-            if($this->original) {
+        if (!$startDate) {
+            if ($this->original) {
                 $startDate = $this->original->getStartDateTime();
-            } else if($endDate instanceof DateTime) {
+            } elseif ($endDate instanceof DateTime) {
                 $startDate = clone $endDate;
             } else {
                 $startDate = new DateTime();
@@ -415,16 +418,16 @@ class CalendarEntryForm extends Model
         }
 
         $endDate = $this->getEndDateTime();
-        if(!$endDate) {
-            if($this->original) {
+        if (!$endDate) {
+            if ($this->original) {
                 $endDate = $this->translateFromMomentAfterToFormEndDate($this->original->getEndDateTime());
-            }else if($startDate instanceof DateTime) {
+            } elseif ($startDate instanceof DateTime) {
                 $endDate = clone $startDate;
             } else {
                 $endDate = new DateTime();
             }
 
-            if($endDate < $startDate) {
+            if ($endDate < $startDate) {
                 $endDate = $startDate;
             }
         }
@@ -508,17 +511,27 @@ class CalendarEntryForm extends Model
 
     public function sequenceCheck()
     {
-        if(!$this->original) {
+        if (!$this->original) {
             return;
         }
 
-        $incrementSequence = $this->original->getStartDateTime() != $this->entry->getStartDateTime();
-        $incrementSequence = $incrementSequence || $this->original->getEndDateTime() != $this->entry->getEndDateTime();
-        $incrementSequence = $incrementSequence || $this->original->getRrule() !== $this->entry->getRrule();
-        $incrementSequence = $incrementSequence || $this->original->getExdate() !== $this->entry->getExdate();
-        $incrementSequence = $incrementSequence || $this->original->getEventStatus() !== $this->entry->getEventStatus();
-
-        if($incrementSequence) {
+        if ($this->original->getTitle() !== $this->entry->getTitle()
+            || $this->original->getDescription() !== $this->entry->getDescription()
+            || $this->original->getStartDateTime() != $this->entry->getStartDateTime()
+            || $this->original->getEndDateTime() != $this->entry->getEndDateTime()
+            || $this->original->isAllDay() !== $this->entry->isAllDay()
+            || $this->original->participation_mode !== $this->entry->participation_mode
+            || $this->original->getColor() !== $this->entry->getColor()
+            || $this->original->allow_decline !== $this->entry->allow_decline
+            || $this->original->allow_maybe !== $this->entry->allow_maybe
+            || $this->original->getTimezone() !== $this->entry->getTimezone()
+            || $this->original->participant_info !== $this->entry->participant_info
+            || $this->original->getEventStatus() !== $this->entry->getEventStatus()
+            || $this->original->max_participants !== $this->entry->max_participants
+            || $this->original->getRrule() !== $this->entry->getRrule()
+            || $this->original->getExdate() !== $this->entry->getExdate()
+            || $this->original->getLocation() !== $this->entry->getLocation()
+        ) {
             CalendarUtils::incrementSequence($this->entry);
             $this->entry->saveEvent();
         }
@@ -531,7 +544,7 @@ class CalendarEntryForm extends Model
 
     public function isAllDay()
     {
-        return (boolean) $this->entry->all_day;
+        return (bool) $this->entry->all_day;
     }
 
     public function getStartDateTime()
@@ -539,8 +552,8 @@ class CalendarEntryForm extends Model
         $timeZone = $this->isAllDay() ? 'UTC' : $this->timeZone;
         $startDT = CalendarUtils::parseDateTimeString($this->start_date, $this->start_time, null, $timeZone);
 
-        if($startDT && $this->isAllDay()) {
-            $startDT->setTime(0,0,0);
+        if ($startDT && $this->isAllDay()) {
+            $startDT->setTime(0, 0, 0);
         }
         return $startDT;
     }
@@ -549,9 +562,24 @@ class CalendarEntryForm extends Model
     {
         $timeZone = $this->isAllDay() ? 'UTC' : $this->timeZone;
         $endDT = CalendarUtils::parseDateTimeString($this->end_date, $this->end_time, null, $timeZone);
-        if($endDT && $this->isAllDay()) {
-            $endDT->setTime(0,0,0);
+        if ($endDT && $this->isAllDay()) {
+            $endDT->setTime(0, 0, 0);
         }
         return $endDT;
+    }
+
+    private function normalizeFormattedDate($formattedDate)
+    {
+        /**
+         * If the locale is 'bg' (Bulgarian), remove the 'г.' suffix from the date string.
+         * This suffix is automatically added by IntlDateFormatter::format() to indicate "year" in Bulgarian,
+         * but IntlDateFormatter::parse() fails to handle it properly, causing a parsing error.
+         * To ensure successful parsing, we normalize the date string by removing 'г.'.
+         */
+        if (Yii::$app->formatter->locale == 'bg') {
+            return str_replace(' г.', '', $formattedDate);
+        }
+
+        return $formattedDate;
     }
 }

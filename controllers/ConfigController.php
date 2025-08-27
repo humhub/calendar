@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -8,6 +9,7 @@
 namespace humhub\modules\calendar\controllers;
 
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\calendar\models\ExportSettings;
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use Yii;
@@ -40,7 +42,7 @@ class ConfigController extends AbstractConfigController
         }
 
         return $this->render('snippet', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
@@ -53,8 +55,20 @@ class ConfigController extends AbstractConfigController
         }
 
         return $this->render('menu', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
+    public function actionExport()
+    {
+        $model = new ExportSettings();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('export', [
+            'model' => $model,
+        ]);
+    }
 }

@@ -1,18 +1,14 @@
 <?php
 
 use humhub\modules\calendar\interfaces\recurrence\widgets\RecurrenceFormWidget;
+use humhub\modules\calendar\models\forms\CalendarEntryForm;
+use humhub\widgets\form\ActiveForm;
 
-/* @var $form \humhub\widgets\ActiveForm */
-/* @var $calendarEntryForm \humhub\modules\calendar\models\forms\CalendarEntryForm */
-/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $form ActiveForm */
+/* @var $calendarEntryForm CalendarEntryForm */
 ?>
-
-<div class="modal-body">
-
-    <?= RecurrenceFormWidget::widget([
-            'form' => $form,
-            'model' => $calendarEntryForm->recurrenceForm,
-            'picker' => '#calendarentryform-start_date'
-    ])?>
-
-</div>
+<?= RecurrenceFormWidget::widget([
+    'form' => $form,
+    'model' => $calendarEntryForm->recurrenceForm,
+    'picker' => '#calendarentryform-start_date'
+]) ?>

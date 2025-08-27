@@ -1,11 +1,10 @@
 <?php
 
 return [
-    '(disabled)' => '(ikke i bruk)',
-    '(global)' => '(global)',
     '<strong>Calendar</strong> module configuration' => 'Konfigurasjon <strong>Kalender</strong>modul',
     '<strong>Confirm</strong> Deletion' => '<strong>Bekreft</strong> sletting',
     'Adds an snippet with upcoming events to your users dashboard.' => 'Legger til en snippet med nærstående aktivitet til Oversikt',
+    'Basic' => 'Grunnleggende',
     'Create new type' => 'Opprett ny',
     'Delete' => 'Slett',
     'Do you really want to delte this event type?' => 'Bekreft sletting av aktivitetstype.',
@@ -22,6 +21,7 @@ return [
     'One week' => 'En uke',
     'One year' => 'Ett år',
     'Only show top menu item and snippet if the module is installed in the users profile' => 'Vis kun øverste menypunkt og snippet hvis modulen er installert på brukerens profil',
+    'Participation' => 'Påmelding',
     'Reset' => 'Tilbakestill',
     'Show snippet' => 'Vis snippet',
     'There are currently no event types available.' => 'Det er ingen aktivitetstyper tilgjengelig',
@@ -29,11 +29,16 @@ return [
     'Add \'Calendar\' to the main menu' => '',
     'Calendar Configuration' => '',
     'Calendar default view mode settings' => '',
+    'Default basic settings' => '',
     'Default participation settings' => '',
+    'Export settings' => '',
+    'Full calendar' => '',
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'Here you can manage and disable different calendars.' => '',
     'Include birthdays to dashboard snippet' => '',
+    'List view type' => '',
     'Menu settings' => '',
+    'Reminder' => '',
     'View mode' => '',
 ];

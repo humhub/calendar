@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -29,7 +30,7 @@ class CloseLink extends WallEntryControlLink
 
     public function init()
     {
-        if($this->entry->closed) {
+        if ($this->entry->closed) {
             $this->label = Yii::t('CalendarModule.base', 'Reopen Event');
             $this->icon = 'fa-check';
         } else {
@@ -39,8 +40,8 @@ class CloseLink extends WallEntryControlLink
 
         $this->options = [
             'data-action-click' => 'toggleClose',
-            'data-action-target' =>"[data-calendar-entry='".$this->entry->id."']",
-            'data-action-url' => Url::toEntryToggleClose($this->entry)
+            'data-action-target' => "[data-calendar-entry='" . $this->entry->id . "']",
+            'data-action-url' => Url::toEntryToggleClose($this->entry),
         ];
 
         parent::init();

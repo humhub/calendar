@@ -7,12 +7,13 @@
 humhub.module('calendar.reminder.Form', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var client = require('client');
+    var additions = require('ui.additions');
 
     var SELECTOR_ITEMS = '.calendar-reminder-items';
+    var SELECTOR_ITEM = '[data-reminder-index]';
     var SELECTOR_DEFAULT_ITEMS = '.calendar-reminder-item-defaults';
-    var SELECTOR_USE_DEFAULT_CHECKBOX = '#remindersettings-usedefaults';
     var SELECTOR_REMINDER_TYPE_DROPDOWN = '#remindersettings-remindertype';
-    var SELECTOR_ADD_BUTTON = '.btn-primary[data-action-click="add"]';
+    var SELECTOR_BUTTON = '[data-action-click]';
 
     var REMINDER_TYPE_NONE = 0;
     var REMINDER_TYPE_DEFAULTS = 1;
@@ -20,17 +21,24 @@ humhub.module('calendar.reminder.Form', function (module, require, $) {
 
     var Form = Widget.extend();
 
-    Form.prototype.init = function(evt) {
+    Form.prototype.init = function() {
         this.checkMaxReminder();
         this.checkRemidnerType();
     };
 
     Form.prototype.checkMaxReminder = function() {
-        var count = this.$.find(SELECTOR_ITEMS).find('[data-reminder-index]').length;
-        if(count >= this.options.maxReminder) {
-            this.$.find(SELECTOR_ADD_BUTTON).hide();
-        } else {
-            this.$.find(SELECTOR_ADD_BUTTON).show();
+        var rows = this.$.find(SELECTOR_ITEM);
+
+        this.$.find(SELECTOR_BUTTON).data('action-click', 'delete')
+            .removeClass('btn-primary').addClass('btn-danger')
+            .find('i')
+            .removeClass('fa-plus').addClass('fa-times');
+
+        if (rows.length < this.options.maxReminder) {
+            rows.last().find(SELECTOR_BUTTON).data('action-click', 'add')
+                .removeClass('btn-danger').addClass('btn-primary')
+                .find('i')
+                .removeClass('fa-times').addClass('fa-plus');
         }
     };
 
@@ -64,18 +72,15 @@ humhub.module('calendar.reminder.Form', function (module, require, $) {
         var $newRow = $triggerRow.clone().attr('data-reminder-index', ++$lastIndex);
 
         $newRow.find('[name]').each(function() {
-            var name = $(this).attr('name').replace(/CalendarReminder\[[0-9]]/, 'CalendarReminder['+$lastIndex+']');
-            $(this).attr('name', name);
+            $(this).attr('name', $(this).attr('name').replace(/^CalendarReminder\[\d]/, 'CalendarReminder[' + $lastIndex + ']'));
         });
+        $newRow.find('[id]').each(function() {
+            $(this).attr('id', $(this).attr('id').replace(/^calendarreminder-\d/, 'calendarreminder-' + $lastIndex));
+        });
+        $newRow.find('.select2-container').remove();
+        additions.applyTo($newRow);
 
         $newRow.insertAfter($triggerRow);
-
-        evt.$trigger.data('action-click', 'delete')
-            .removeClass('btn-primary')
-            .addClass('btn-danger')
-            .find('i')
-            .removeClass('fa-plus')
-            .addClass('fa-times');
 
         this.checkMaxReminder();
     };

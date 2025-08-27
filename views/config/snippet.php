@@ -5,13 +5,16 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-/* @var $this yii\web\View */
-/* @var $model \humhub\modules\calendar\models\SnippetModuleSettings */
 
+use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\widgets\Button;
-use yii\widgets\ActiveForm;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\SortOrderField;
+use yii\web\View;
+
+/* @var $this View */
+/* @var $model SnippetModuleSettings */
 ?>
 
 <div class="panel panel-default">
@@ -27,7 +30,7 @@ use yii\widgets\ActiveForm;
             <?= Yii::t('CalendarModule.config', 'Upcoming events snippet') ?>
         </h4>
         
-        <div class="help-block">
+        <div class="form-text">
             <?= Yii::t('CalendarModule.config', 'Adds an snippet with upcoming events to your users dashboard.') ?>
         </div>
         
@@ -41,9 +44,10 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'showIfInstalled')
             ->checkbox()
-            ->hint(Yii::t('CalendarModule.config',
-                'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.'));
-        ?>
+            ->hint(Yii::t(
+                'CalendarModule.config',
+                'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.',
+            )) ?>
 
         <?= Button::save()->submit() ?>
         <?php ActiveForm::end(); ?>

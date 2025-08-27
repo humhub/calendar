@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\models\participation;
-
 
 use humhub\components\SettingsManager;
 use humhub\modules\calendar\helpers\Url;
@@ -14,9 +12,9 @@ use yii\base\Model;
 
 class ParticipationSettings extends Model
 {
-    const SETTING_PARTICIPATION_MODE = 'defaults.participationMode';
-    const SETTING_ALLOW_MAYBE = 'defaults.allowMaybe';
-    const SETTING_ALLOW_DECLINE = 'defaults.allowDecline';
+    public const SETTING_PARTICIPATION_MODE = 'defaults.participationMode';
+    public const SETTING_ALLOW_MAYBE = 'defaults.allowMaybe';
+    public const SETTING_ALLOW_DECLINE = 'defaults.allowDecline';
 
     /**
      * @var ContentContainerActiveRecord
@@ -24,12 +22,12 @@ class ParticipationSettings extends Model
     public $contentContainer;
 
     /**
-     * @var integer
+     * @var int
      */
     public $participation_mode;
 
     /**
-     * @var integer
+     * @var int
      */
     public $allow_decline;
 
@@ -39,7 +37,7 @@ class ParticipationSettings extends Model
     private $settings;
 
     /**
-     * @var integer
+     * @var int
      */
     public $allow_maybe;
 
@@ -52,7 +50,7 @@ class ParticipationSettings extends Model
 
     private function initSettings()
     {
-        $this->participation_mode = (int) $this->getSetting(self::SETTING_PARTICIPATION_MODE, CalendarEntry::PARTICIPATION_MODE_ALL);
+        $this->participation_mode = (int) $this->getSetting(self::SETTING_PARTICIPATION_MODE, CalendarEntryParticipation::PARTICIPATION_MODE_ALL);
         $this->allow_decline = (int) $this->getSetting(self::SETTING_ALLOW_DECLINE, 1);
         $this->allow_maybe = (int) $this->getSetting(self::SETTING_ALLOW_MAYBE, 1);
     }
@@ -68,7 +66,7 @@ class ParticipationSettings extends Model
 
     private function getSettings()
     {
-        if(!$this->settings) {
+        if (!$this->settings) {
             /* @var $module Module */
             $module = Yii::$app->getModule('calendar');
             $this->settings = $this->contentContainer ? $module->settings->contentContainer($this->contentContainer) : $module->settings;
@@ -84,7 +82,7 @@ class ParticipationSettings extends Model
     {
         return [
             [['allow_decline', 'allow_maybe'], 'integer'],
-            [['participation_mode'], 'in', 'range' => CalendarEntry::$participationModes],
+            [['participation_mode'], 'in', 'range' => CalendarEntryParticipation::$participationModes],
         ];
     }
 
@@ -102,7 +100,7 @@ class ParticipationSettings extends Model
      */
     public function isParticipationAllowed()
     {
-        return $this->participation_mode != CalendarEntry::PARTICIPATION_MODE_NONE;
+        return $this->participation_mode != CalendarEntryParticipation::PARTICIPATION_MODE_NONE;
     }
 
     public function save()

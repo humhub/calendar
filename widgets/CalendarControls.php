@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -6,7 +7,6 @@
  */
 
 namespace humhub\modules\calendar\widgets;
-
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;

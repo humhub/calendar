@@ -14,7 +14,9 @@ use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\models\DefaultSettings;
 use humhub\modules\calendar\models\forms\BasicSettings;
 use humhub\modules\calendar\models\participation\ParticipationSettings;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\models\ContentContainer;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\HttpException;
@@ -24,10 +26,10 @@ use yii\web\HttpException;
  */
 abstract class AbstractConfigController extends ContentContainerController
 {
-    const VIEW_CONFIG_DEFAULT = '@calendar/views/common/defaultConfig';
-    const VIEW_CONFIG_TYPE = '@calendar/views/common/typesConfig';
-    const VIEW_CONFIG_EDIT_TYPE_MODAL = '@calendar/views/common/editTypeModal';
-    const VIEW_CONFIG_CALENDARS = '@calendar/views/common/calendarsConfig';
+    public const VIEW_CONFIG_DEFAULT = '@calendar/views/common/defaultConfig';
+    public const VIEW_CONFIG_TYPE = '@calendar/views/common/typesConfig';
+    public const VIEW_CONFIG_EDIT_TYPE_MODAL = '@calendar/views/common/editTypeModal';
+    public const VIEW_CONFIG_CALENDARS = '@calendar/views/common/calendarsConfig';
 
     /**
      * @var CalendarService
@@ -55,7 +57,7 @@ abstract class AbstractConfigController extends ContentContainerController
         }
 
         return $this->render(static::VIEW_CONFIG_DEFAULT, [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
@@ -66,13 +68,13 @@ abstract class AbstractConfigController extends ContentContainerController
             : CalendarEntryType::findGlobal();
 
         $typeDataProvider = new ActiveDataProvider([
-            'query' => $query
+            'query' => $query,
         ]);
 
         return $this->render(static::VIEW_CONFIG_TYPE, [
             'typeDataProvider' => $typeDataProvider,
             'createUrl' => URL::toCreateType($this->contentContainer),
-            'contentContainer' => $this->contentContainer
+            'contentContainer' => $this->contentContainer,
         ]);
     }
 
@@ -84,23 +86,25 @@ abstract class AbstractConfigController extends ContentContainerController
 
         $this->validateEntry($model);
 
-        $model->delete();
+        if ($model->delete()) {
+            $this->view->success(Yii::t('CalendarModule.base', 'Deleted'));
+        }
 
-        return $this->htmlRedirect(Url::toConfigTypes($this->contentContainer));
+        return $this->htmlRedirect(Url::toConfigTypes($this->contentContainer ?? $this->getContainerFromRequest()));
     }
 
     public function actionEditType($id = null)
     {
-        if($id) {
+        if ($id) {
             $model = CalendarEntryType::find()->where(['id' => $id])->one();
             $this->validateEntry($model);
         } else {
             $model = new CalendarEntryType($this->contentContainer);
         }
 
-        if($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
-            return $this->htmlRedirect(URL::toConfigTypes($this->contentContainer));
+            return $this->htmlRedirect(URL::toConfigTypes($this->contentContainer ?? $this->getContainerFromRequest()));
         }
 
         return $this->renderAjax(static::VIEW_CONFIG_EDIT_TYPE_MODAL, ['model' => $model]);
@@ -111,7 +115,7 @@ abstract class AbstractConfigController extends ContentContainerController
         $types = $this->calendarService->getCalendarItemTypes($this->contentContainer);
         return $this->render(static::VIEW_CONFIG_CALENDARS, [
             'contentContainer' => $this->contentContainer,
-            'calendars' => $types
+            'calendars' => $types,
         ]);
     }
 
@@ -119,11 +123,11 @@ abstract class AbstractConfigController extends ContentContainerController
     {
         $item = $this->calendarService->getItemType($key, $this->contentContainer);
 
-        if(!$item) {
+        if (!$item) {
             throw new HttpException(404);
         }
 
-        if($item->load(Yii::$app->request->post()) && $item->save()) {
+        if ($item->load(Yii::$app->request->post()) && $item->save()) {
             $this->view->saved();
             return $this->htmlRedirect(URL::toConfigCalendars($this->contentContainer));
         }
@@ -151,11 +155,11 @@ abstract class AbstractConfigController extends ContentContainerController
 
     protected function validateEntry(CalendarEntryType $type = null)
     {
-        if(!$type) {
+        if (!$type) {
             throw new HttpException(404);
         }
 
-        if($type->contentcontainer_id !== $this->getContentContainerId()) {
+        if ($type->contentcontainer_id !== $this->getContentContainerId()) {
             throw new HttpException(400);
         }
     }
@@ -163,5 +167,11 @@ abstract class AbstractConfigController extends ContentContainerController
     protected function getContentContainerId()
     {
         return $this->contentContainer ? $this->contentContainer->contentcontainer_id : null;
+    }
+
+    protected function getContainerFromRequest(): ?ContentContainerActiveRecord
+    {
+        $guid = Yii::$app->request->get('guid', Yii::$app->request->post('guid'));
+        return $guid ? ContentContainer::findRecord($guid) : null;
     }
 }

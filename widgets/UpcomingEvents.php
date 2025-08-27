@@ -18,7 +18,6 @@ use humhub\modules\calendar\helpers\Url;
  */
 class UpcomingEvents extends Widget
 {
-
     /**
      * ContentContainer to limit events to. (Optional)
      *
@@ -41,7 +40,7 @@ class UpcomingEvents extends Widget
 
         $filters = [];
 
-        if(!$this->contentContainer) {
+        if (!$this->contentContainer) {
             $filters[] = CalendarEntryQuery::FILTER_DASHBOARD;
         }
 

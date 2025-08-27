@@ -6,7 +6,6 @@ use Recurr\Rule;
 
 class RRuleHelper
 {
-
     /**
      * @param $rrule
      * @param $until
@@ -20,14 +19,14 @@ class RRuleHelper
 
     public static function compare($oldRrule, $newRrule, $ignoreUntil = false)
     {
-        if($oldRrule === $newRrule) {
+        if ($oldRrule === $newRrule) {
             return true;
         }
 
         $oldRruleArr = static::toArray($oldRrule);
         $newRruleArr = static::toArray($newRrule);
 
-        if($ignoreUntil) {
+        if ($ignoreUntil) {
             $oldRruleArr['UNTIL'] = null;
             $newRruleArr['UNTIL'] = null;
         }

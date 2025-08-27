@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -11,7 +12,7 @@ namespace humhub\modules\calendar\jobs;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
-use humhub\modules\calendar\notifications\ForceAdd;
+use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -37,9 +38,9 @@ class ForceParticipation extends ActiveJob
         $originator = User::findOne(['id' => $this->originator_id]);
         $status = isset($this->status) ? $this->status : CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED;
 
-        if(!$entry || !$originator || !($entry->content->container instanceof Space) ||
-            !CalendarEntryParticipation::isAllowedStatus($status)) {
-            throw new InvalidConfigException('Could not force calendar event participation due to invalid config ('.$this->entry_id.', '.$this->originator_id.', '.$status.')');
+        if (!$entry || !$originator || !($entry->content->container instanceof Space)
+            || !CalendarEntryParticipation::isAllowedStatus($status)) {
+            throw new InvalidConfigException('Could not force calendar event participation due to invalid config (' . $this->entry_id . ', ' . $this->originator_id . ', ' . $status . ')');
         }
 
         $subQuery = CalendarEntryParticipant::find()
@@ -56,10 +57,13 @@ class ForceParticipation extends ActiveJob
 
         $users = [];
         foreach ($remainingMemberships as $membership) {
-            $entry->participation->setParticipationStatus($membership->user, $status);
-            $users[] = $membership->user;
+            if ($entry->participation->setParticipationStatus($membership->user, $status)) {
+                $users[] = $membership->user;
+            }
         }
 
-        ForceAdd::instance()->from($originator)->about($entry)->sendBulk($users);
+        if (count($users)) {
+            ParticipantAdded::instance()->from($originator)->about($entry)->sendBulk($users);
+        }
     }
 }

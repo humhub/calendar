@@ -129,11 +129,49 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             buttonText.list = module.text('button.list');
         }
 
+        var that = this;
+        
         var options = {
+			customButtons: {
+                create: {
+                    click: function() {
+                        // Start: next full hour
+                        var start = new Date();
+                        start.setHours(start.getHours() + 1);
+                        start.setMinutes(0, 0, 0);
+                        
+                        // End: next full hour +1
+                        var end = new Date();
+                        end.setHours(end.getHours() + 2);
+                        end.setMinutes(0, 0, 0);
+                        
+                        var options = {
+                            data: {
+                                start: that.toJsonDateFormat(start, false),
+                                end: that.toJsonDateFormat(end, false),
+                                cal: 1
+                            }
+                        }
+                        var createUrl = that.options.global ? that.options.globalCreateUrl : that.options.editUrl;
+                        
+                        modal.global.load(createUrl, options).then(function () {
+                            modal.global.$.one('hidden.bs.modal submitted', function () {
+                                that.fetch();
+                            });
+                        }).catch(function (e) {
+                            modal.global.close();
+                            module.log.error(e, true);
+                        });
+
+                        that.fullCalendar.unselect();
+                    },
+                    bootstrapFontAwesome: 'fa-plus',
+                }
+            },
             header: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                right: 'create dayGridMonth,timeGridWeek,timeGridDay,' + module.config['listViewType']
             },
             buttonText: buttonText,
             plugins: ['dayGrid', 'timeGrid', 'list', 'interaction', 'bootstrap', 'moment', 'momentTimezone'],
@@ -159,7 +197,8 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 right: 'today'
             };
             options.footer = {
-                center: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                center: 'dayGridMonth,timeGridWeek,timeGridDay,' + module.config['listViewType'],
+                right: 'create'
             };
         }
 

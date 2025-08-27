@@ -4,9 +4,9 @@ namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\calendar\helpers\Url;
-use humhub\widgets\Button;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**
@@ -16,7 +16,6 @@ use Yii;
  */
 class EntryParticipants extends Widget
 {
-
     /**
      * @var CalendarEntry
      */
@@ -44,8 +43,8 @@ class EntryParticipants extends Widget
 
     private function getParticipantStateCount($state, $condition)
     {
-        if(!$condition) {
-            return null;
+        if (!$condition) {
+            return 0;
         }
 
         return  $this->calendarEntry->getParticipantCount($state);
@@ -53,17 +52,17 @@ class EntryParticipants extends Widget
 
     public static function participateButton(CalendarEntry $calendarEntry, $state, $label)
     {
-        if($state == CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE && !$calendarEntry->allow_maybe) {
+        if ($state == CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE && !$calendarEntry->allow_maybe) {
             return null;
         }
-        if($state == CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED && !$calendarEntry->allow_decline) {
+        if ($state == CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED && !$calendarEntry->allow_decline) {
             return null;
         }
 
         $participantSate = $calendarEntry->getParticipationStatus(Yii::$app->user->identity);
 
-        $button = Button::info($label)
-            ->icon($participantSate === $state ? 'fa-check-circle' : null);
+        $button = Button::accent(($label);
+        $participantSate === $state && $button->icon('fa-check-circle');
         if ($calendarEntry->isPast()) {
             $button->tooltip(Yii::t('CalendarModule.base', 'The event has already ended.'))
                 ->cssClass('active fc-disabled-cursor')
@@ -74,5 +73,5 @@ class EntryParticipants extends Widget
         }
 
         return $button;
-   }
+    }
 }

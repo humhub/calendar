@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -15,7 +16,6 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-
 use yii\base\Exception;
 
 class FilterNotSupportedException extends Exception
@@ -23,7 +23,8 @@ class FilterNotSupportedException extends Exception
     /**
      * @inheritdoc
      */
-    public function getName() {
+    public function getName()
+    {
         return 'Filter not suppored';
     }
 

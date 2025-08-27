@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -34,7 +35,7 @@ class ContainerConfigMenu extends SettingsTabs
     public function getFirstVisibleItem()
     {
         foreach ($this->items as $item) {
-            if(!isset($item['visible']) || $item['visible'] === true) {
+            if (!isset($item['visible']) || $item['visible'] === true) {
                 return $item;
             }
         }
@@ -49,11 +50,11 @@ class ContainerConfigMenu extends SettingsTabs
     {
         $this->contentContainer = ContentContainerHelper::getCurrent();
 
-        if(!$this->contentContainer && !Yii::$app->user->isGuest) {
+        if (!$this->contentContainer && !Yii::$app->user->isGuest) {
             $this->contentContainer = Yii::$app->user->identity;
         }
 
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             $this->initItems();
         }
 
@@ -68,25 +69,25 @@ class ContainerConfigMenu extends SettingsTabs
 
         $this->items = [
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Defaults'),
+                'label' => Yii::t('CalendarModule.views', 'Defaults'),
                 'url' => Url::toConfig($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'index'),
-                'visible' => $canConfigure
+                'visible' => $canConfigure,
             ],
             [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Event Types'),
+                'label' => Yii::t('CalendarModule.views', 'Event Types'),
                 'url' => Url::toConfigTypes($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'types'),
-                'visible' => $canConfigure
+                'visible' => $canConfigure,
             ],
         ];
 
-        if(!empty($calendarService->getCalendarItemTypes($this->contentContainer))) {
+        if (!empty($calendarService->getCalendarItemTypes($this->contentContainer))) {
             $this->items[] = [
-                'label' => Yii::t('CalendarModule.widgets_GlobalConfigMenu', 'Calendars'),
+                'label' => Yii::t('CalendarModule.views', 'Calendars'),
                 'url' => Url::toConfigCalendars($this->contentContainer),
                 'active' => $this->isCurrentRoute('calendar', 'container-config', 'calendars'),
-                'visible' => $canConfigure
+                'visible' => $canConfigure,
             ];
         }
     }

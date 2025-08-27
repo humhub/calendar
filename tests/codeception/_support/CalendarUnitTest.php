@@ -1,8 +1,6 @@
 <?php
 
-
 namespace calendar;
-
 
 use humhub\modules\calendar\Events;
 use humhub\modules\calendar\helpers\CalendarUtils;
@@ -35,20 +33,20 @@ class CalendarUnitTest extends HumHubDbTestCase
         }
 
         $fullDay = false;
-        if(is_string($days)) {
+        if (is_string($days)) {
             $to = clone $from;
             $to->add(new DateInterval($days));
             $fullDay = CalendarUtils::isAllDay($from, $to);
-        }else if (is_int($days)) {
+        } elseif (is_int($days)) {
             $fullDay = true;
             $to = clone $from;
-            $to->setTime(0,0,0)->add(new DateInterval("P" . $days . "D"));
-        } else if($days instanceof DateTime) {
+            $to->setTime(0, 0, 0)->add(new DateInterval("P" . $days . "D"));
+        } elseif ($days instanceof DateTime) {
             $to = clone $days;
-        } else if($days instanceof DateInterval) {
+        } elseif ($days instanceof DateInterval) {
             $to = clone $from;
             $to->add($days);
-        } else if(!$days) {
+        } elseif (!$days) {
             $to = clone $from;
             $to->add(new DateInterval('PT1H'));
         }
@@ -56,10 +54,10 @@ class CalendarUnitTest extends HumHubDbTestCase
         $entry = new CalendarEntry();
         $entry->title = $title;
 
-        if($fullDay) {
+        if ($fullDay) {
             $entry->all_day = 1;
-            $from->setTime(0,0,0);
-            $to->modify('+1 hour')->setTime(0,0,0);
+            $from->setTime(0, 0, 0);
+            $to->modify('+1 hour')->setTime(0, 0, 0);
         } else {
             $entry->all_day = 0;
         }

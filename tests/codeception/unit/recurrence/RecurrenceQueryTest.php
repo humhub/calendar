@@ -13,7 +13,7 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         $this->becomeUser('Admin');
         $this->space = Space::findOne(['id' => 1]);
 
-        $from = $this->getEntryDate()->setTime(0,0,0);
+        $from = $this->getEntryDate()->setTime(0, 0, 0);
 
         $this->rootEvent = $this->createEntry($from, 2, 'Two Day Event', $this->space);
         $this->setDefaults($this->rootEvent, 'FREQ=DAILY;INTERVAL=2');
@@ -36,7 +36,7 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         $instances = $this->rootEvent->getRecurrenceQuery()->expandUpcoming(2, true);
         $this->assertCount(2, $instances);
 
-        $today = (new DateTime())->setTime(0,0,0);
+        $today = (new DateTime())->setTime(0, 0, 0);
         $this->assertEquals($today, $instances[0]->getStartDateTime());
 
         $next = $today->modify('+2 day');
@@ -48,7 +48,7 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         // Create a recurrent event starting today repeating every two days, but don't expand yet
         $this->initRecurrentEvents('FREQ=DAILY;INTERVAL=2', new DateTime(), false);
 
-        $today = (new DateTime())->setTime(0,0,0);
+        $today = (new DateTime())->setTime(0, 0, 0);
 
         $expandEnd = clone $today;
         $expandEnd->modify('+3 day');
@@ -72,7 +72,7 @@ class RecurrenceQueryTest extends RecurrenceUnitTest
         // Create a recurrent event starting today repeating every two days, but don't expand yet
         $this->initRecurrentEvents('FREQ=DAILY;INTERVAL=2', new DateTime(), false);
 
-        $first = (new DateTime())->setTime(0,0,0);
+        $first = (new DateTime())->setTime(0, 0, 0);
         $second = clone $first;
         $second->modify('+2 day');
         $third = clone $first;

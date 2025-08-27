@@ -18,7 +18,6 @@ use humhub\modules\content\components\ActiveQueryContent;
 
 class CalendarEntryFormTest extends CalendarUnitTest
 {
-
     public function testDefaultData()
     {
         $this->becomeUser('Admin');
@@ -30,7 +29,7 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'all_day' => '0',
                 'title' => 'Test title',
                 'description' => 'TestDescription',
-                'participation_mode' => 2
+                'participation_mode' => 2,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
@@ -40,7 +39,7 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'end_time' => '01:00 PM',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($calendarForm->save());
@@ -132,14 +131,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '1'
+                'all_day' => '1',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/1/20',
                 'start_time' => '10:00 AM', // will be ignored
                 'end_date' => '2/1/20',
-                'end_time' => '10:30 AM' // will be ignored
-            ]
+                'end_time' => '10:30 AM', // will be ignored
+            ],
         ]));
 
         $this->assertTrue($form->isAllDay());
@@ -160,14 +159,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '1'
+                'all_day' => '1',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/1/20',
                 'start_time' => '10:00 AM', // will be ignored
                 'end_date' => '2/2/20',
-                'end_time' => '10:30 AM' // will be ignored
-            ]
+                'end_time' => '10:30 AM', // will be ignored
+            ],
         ]));
 
         $this->assertTrue($form->isAllDay());
@@ -188,14 +187,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/1/20',
                 'start_time' => '10:00 AM',
                 'end_date' => '2/1/20',
-                'end_time' => '10:30 AM'
-            ]
+                'end_time' => '10:30 AM',
+            ],
         ]));
 
         $this->assertFalse($form->isAllDay());
@@ -216,14 +215,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/1/20',
                 'start_time' => '10:00 AM',
                 'end_date' => '2/2/20',
-                'end_time' => '10:30 AM'
-            ]
+                'end_time' => '10:30 AM',
+            ],
         ]));
 
         $this->assertFalse($form->isAllDay());
@@ -290,7 +289,7 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '1'
+                'all_day' => '1',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/2/20',
@@ -299,7 +298,7 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'end_time' => '10:30 AM', // will be ignored
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($form->save());
@@ -324,14 +323,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '03.01.20',
                 'start_time' => '10:00 AM',
                 'end_date' => '2/3/20',
-                'end_time' => '10:30 AM'
-            ]
+                'end_time' => '10:30 AM',
+            ],
         ]));
 
         $this->assertFalse($form->save());
@@ -356,14 +355,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/3/20',
                 'start_time' => '10:00 AM',
                 'end_date' => '03.01.20',
-                'end_time' => '10:30 AM'
-            ]
+                'end_time' => '10:30 AM',
+            ],
         ]));
 
         $this->assertFalse($form->save());
@@ -388,14 +387,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '03.01.20',
                 'start_time' => '10:00 AM',
                 'end_date' => '03.01.20',
-                'end_time' => '10:30 AM'
-            ]
+                'end_time' => '10:30 AM',
+            ],
         ]));
 
         $this->assertFalse($form->save());
@@ -420,14 +419,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => null,
-                'all_day' => '1'
+                'all_day' => '1',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/2/20',
                 'start_time' => '10:00 AM', // will be ignored
                 'end_date' => '2/3/20',
-                'end_time' => '10:30 AM' // will be ignored
-            ]
+                'end_time' => '10:30 AM', // will be ignored
+            ],
         ]));
 
         $this->assertFalse($form->save());
@@ -452,7 +451,7 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/2/20',
@@ -461,7 +460,7 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'end_time' => '10:30 AM',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($form->save());
@@ -488,14 +487,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => null,
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/2/20',
                 'start_time' => '10:00 AM',
                 'end_date' => '2/3/20',
-                'end_time' => '10:30 AM'
-            ]
+                'end_time' => '10:30 AM',
+            ],
         ]));
 
         $this->assertFalse($form->save());
@@ -523,7 +522,7 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/2/20',
@@ -532,7 +531,7 @@ class CalendarEntryFormTest extends CalendarUnitTest
                 'end_time' => '10:30 AM',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($form->save());
@@ -561,14 +560,14 @@ class CalendarEntryFormTest extends CalendarUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => 'Test',
-                'all_day' => '1'
+                'all_day' => '1',
             ],
             'CalendarEntryForm' => [
                 'start_date' => '2/2/20',
                 'end_date' => '2/3/20',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($form->save());

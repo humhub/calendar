@@ -1,8 +1,6 @@
 <?php
 
-
 namespace calendar;
-
 
 use DateTime;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -27,7 +25,7 @@ class RecurrenceUnitTest extends CalendarUnitTest
      */
     protected $recurrences;
 
-    const DEFAULT_RRULE = 'FREQ=DAILY;INTERVAL=1';
+    public const DEFAULT_RRULE = 'FREQ=DAILY;INTERVAL=1';
 
     protected function initRecurrentEvents($rrule = self::DEFAULT_RRULE, $startDate = null, $expand = true)
     {
@@ -39,7 +37,7 @@ class RecurrenceUnitTest extends CalendarUnitTest
         $this->setDefaults($this->rootEvent, $rrule);
         $this->assertTrue($this->rootEvent->save());
 
-        if($expand) {
+        if ($expand) {
             $this->recurrences = $this->expand(true);
         }
     }
@@ -62,11 +60,11 @@ class RecurrenceUnitTest extends CalendarUnitTest
      */
     protected function expand($save = false, $entry = null, $fromDay = 1, $toDay = 7)
     {
-        if(!$entry) {
+        if (!$entry) {
             $entry = $this->rootEvent;
         }
-        $expandStart = (new DateTime)->setDate(2019, 12, $fromDay)->setTime(0,0,0);
-        $expandEnd = (new DateTime)->setDate(2019, 12,  $toDay)->setTime(23,59,59);
+        $expandStart = (new DateTime())->setDate(2019, 12, $fromDay)->setTime(0, 0, 0);
+        $expandEnd = (new DateTime())->setDate(2019, 12, $toDay)->setTime(23, 59, 59);
         $result = [];
         return CalendarRecurrenceExpand::expand($entry, $expandStart, $expandEnd, $result, $save);
     }

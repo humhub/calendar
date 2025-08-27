@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\calendar\tests\codeception\unit\entry;
-
 
 use calendar\CalendarUnitTest;
 use humhub\modules\calendar\helpers\CalendarUtils;
@@ -51,14 +49,14 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
         // Set User TZ to = Europe/London -> UTC + 1
         Yii::$app->user->getIdentity()->time_zone = 'Europe/London';
 
-        $calendarForm = CalendarEntryForm::createEntry( Space::findOne(['id' => 1]));
+        $calendarForm = CalendarEntryForm::createEntry(Space::findOne(['id' => 1]));
 
         $this->assertTrue($calendarForm->load([
             'CalendarEntry' => [
                 'all_day' => '0',
                 'title' => 'Test title',
                 'description' => 'TestDescription',
-                'participation_mode' => 2
+                'participation_mode' => 2,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
@@ -68,7 +66,7 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'end_time' => '01:00 PM',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($calendarForm->save());
@@ -91,7 +89,7 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
         // Change timezone of event to Europe/Sofia -> UTC +3
         $this->assertTrue($calendarForm->load([
             'CalendarEntry' => [
-                'all_day' => '0'
+                'all_day' => '0',
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
@@ -102,7 +100,7 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'end_time' => '01:00 PM',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($calendarForm->save());
@@ -141,7 +139,7 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'all_day' => '1',
                 'title' => 'Test title',
                 'description' => 'TestDescription',
-                'participation_mode' => 2
+                'participation_mode' => 2,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
@@ -149,7 +147,7 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'end_date' => '6/27/17',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($calendarForm->save());
@@ -185,7 +183,7 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'all_day' => '1',
                 'title' => 'Test title',
                 'description' => 'TestDescription',
-                'participation_mode' => 2
+                'participation_mode' => 2,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
@@ -193,7 +191,7 @@ class CalendarFormTimezoneTest extends CalendarUnitTest
                 'end_date' => '8/16/17',
                 'reminder' => 1,
                 'recurring' => 1,
-            ]
+            ],
         ]));
 
         $this->assertTrue($calendarForm->save());

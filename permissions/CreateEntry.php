@@ -30,7 +30,7 @@ class CreateEntry extends \humhub\libs\BasePermission
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
         Space::USERGROUP_MEMBER,
-        User::USERGROUP_SELF
+        User::USERGROUP_SELF,
     ];
 
     /**
@@ -47,12 +47,12 @@ class CreateEntry extends \humhub\libs\BasePermission
 
     public function getTitle()
     {
-        return Yii::t('CalendarModule.permissions', 'Create entry');
+        return Yii::t('CalendarModule.base', 'Create entry');
     }
 
     public function getDescription()
     {
-        return Yii::t('CalendarModule.permissions', 'Allows the user to create new calendar entries');
+        return Yii::t('CalendarModule.base', 'Allows the user to create new calendar entries');
     }
 
 }

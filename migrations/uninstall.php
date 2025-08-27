@@ -5,7 +5,6 @@ use humhub\components\Migration;
 
 class uninstall extends Migration
 {
-
     public function up()
     {
         $this->dropTable('calendar_entry');
