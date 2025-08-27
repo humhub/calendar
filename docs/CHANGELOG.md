@@ -3,6 +3,7 @@ Changelog
 
 1.8.0 (August 27, 2025)
 -----------------------
+- Fix #481: Update module resources path
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 
 1.7.14 (August 21, 2025)
