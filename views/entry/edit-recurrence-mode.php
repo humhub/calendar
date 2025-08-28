@@ -26,17 +26,17 @@ $root = $entry->getRecurrenceQuery()->getRecurrenceRoot();
 
     <div class="recurrence-edit-type">
 
-        <?= Button::accent((Yii::t('CalendarModule.base', 'Edit this event'))
+        <?= Button::accent(Yii::t('CalendarModule.base', 'Edit this event'))
             ->options(['data-edit-mode' => RecurrenceFormModel::EDIT_MODE_THIS ])
             ->action('setEditMode')
-            ->style('width:100%')->lg()->loader(false)?>
+            ->style('width:100%')->lg()->loader(false) ?>
 
         <br>
         <br>
 
         <?php if(true) : ?>
 
-            <?= Button::accent((Yii::t('CalendarModule.base', 'Edit this and following events'))
+            <?= Button::accent(Yii::t('CalendarModule.base', 'Edit this and following events'))
                 ->options(['data-edit-mode' => RecurrenceFormModel::EDIT_MODE_FOLLOWING ])
                 ->action('setEditMode')
                 ->style('width:100%')->lg()->loader(false)?>
@@ -45,7 +45,7 @@ $root = $entry->getRecurrenceQuery()->getRecurrenceRoot();
             <br>
         <?php endif; ?>
 
-        <?= ModalButton::accent((Yii::t('CalendarModule.base', 'Edit all events'))
+        <?= ModalButton::accent(Yii::t('CalendarModule.base', 'Edit all events'))
             ->load(Url::toEditEntry($root))
             ->style('width:100%')->lg()->loader() ?>
 
