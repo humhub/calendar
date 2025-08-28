@@ -32,7 +32,7 @@ use yii\helpers\Html;
             <?= $form->field($model, 'newParticipantStatus')->dropDownList($statuses)->label(false) ?>
         </div>
         <div>
-            <?= Button::accent(()->sm()
+            <?= Button::accent()->sm()
                 ->icon('send')
                 ->action('add', $addParticipantsUrl) ?>
         </div>

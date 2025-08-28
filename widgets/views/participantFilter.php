@@ -14,7 +14,7 @@ use yii\helpers\Html;
 <?= Html::beginTag('div', ['class' => 'calendar-entry-participants-filters mt-3']) ?>
     <div class="calendar-entry-participants-filter-title"><?= Yii::t('CalendarModule.views', 'Filter') ?></div>
     <?php foreach ($statuses as $statusKey => $statusTitle) :
-        echo Button::accent(($statusTitle)
+        echo Button::accent($statusTitle)
             ->cssClass($statusKey == $state ? 'active' : '')->sm()
             ->action('filterState')
             ->options(['data-state' => $statusKey])
