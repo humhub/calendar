@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.15 (unreleased)
+-----------------------
+- ENH #585: Add profile title field to participants export (CSV/XLSX) 
+
 1.7.14 (August 21, 2025)
 ------------------------
 - Fix #573: Fix time zone for anonymous users
