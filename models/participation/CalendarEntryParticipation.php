@@ -363,7 +363,12 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             'username',
             'profile.firstname',
             'profile.lastname',
-            'profile.title',
+            [
+                'label' => 'Title',
+                'value' => function (User $user) {
+                    return $user->getDisplayNameSub();
+                },
+            ],
             [
                 'label' => Yii::t('CalendarModule.base', 'Participation Status'),
                 'value' => function (User $user) use ($statuses) {
