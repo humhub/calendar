@@ -1,10 +1,6 @@
 Changelog
 =========
 
-1.8.1 (unreleased)
------------------------
-- ENH #584: Add profile title field to participants export (CSV/XLSX)
-
 1.8.0 (August 27, 2025)
 -----------------------
 - Fix #481: Update module resources path
