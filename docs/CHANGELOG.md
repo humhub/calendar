@@ -7,6 +7,10 @@ Changelog
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 - Enh #378: Use new content state service
 
+1.7.15 (September 1, 2025)
+--------------------------
+- ENH #585: Add profile title field to participants export (CSV/XLSX) 
+
 1.7.14 (August 21, 2025)
 ------------------------
 - Fix #573: Fix time zone for anonymous users
