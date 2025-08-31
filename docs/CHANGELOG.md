@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.7.15 (unreleased)
------------------------
+1.7.15 (September 1, 2025)
+--------------------------
 - ENH #585: Add profile title field to participants export (CSV/XLSX) 
 
 1.7.14 (August 21, 2025)
