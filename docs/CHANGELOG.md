@@ -1,10 +1,18 @@
 Changelog
 =========
 
-1.7.14 (Unreleased)
-----------------------
-- Fix #573: Fix time zone for anonymous users
+1.7.16 (September 4, 2025)
+--------------------------
 - Enh #587: Log model validation errors in caldav backend
+
+1.7.15 (September 1, 2025)
+--------------------------
+- ENH #585: Add profile title field to participants export (CSV/XLSX) 
+
+1.7.14 (August 21, 2025)
+------------------------
+- Fix #573: Fix time zone for anonymous users
+- Fix #576: Fix Google Calendar hiding private events during iCal import
 
 1.7.13 (August 6, 2025)
 -----------------------
