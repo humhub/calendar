@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.16 (September 4, 2025)
+--------------------------
+- Enh #587: Log model validation errors in caldav backend
+
 1.7.15 (September 1, 2025)
 --------------------------
 - ENH #585: Add profile title field to participants export (CSV/XLSX) 

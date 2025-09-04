@@ -182,7 +182,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         try {
             $event->save();
             if ($event->hasErrors()) {
-                throw new \RuntimeException();
+                throw new \RuntimeException('Failed to save an event: ' . http_build_query($event->firstErrors));
             }
             $this->sync()->from($this->properties()->from($calendarData))->to($event);
 
@@ -224,7 +224,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         try {
             $event->save();
             if ($event->hasErrors()) {
-                throw new \RuntimeException();
+                throw new \RuntimeException('Failed to save an event: ' . http_build_query($event->firstErrors));
             }
             $this->sync()->from($this->properties()->from($calendarData))->to($event);
 
