@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.2 (Unreleased)
+--------------------------
+- Enh #590: Do not specify calendar name on single event export ics
+
 1.8.1 (September 10, 2025)
 --------------------------
 - Fix #589: Fixed syntax error in view
