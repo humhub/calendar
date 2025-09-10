@@ -50,8 +50,6 @@ return [
     'Friday' => 'Sexta-feira',
     'Here you can configure default settings for all calendar events.' => 'Aqui podes configurar as definições padrão para todos os eventos no calendário.',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => 'Aqui podes configurar avisos globais. Estas configurações podem ser sobrescritas ao nível do espaço/perfil.',
-    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => 'Aqui podes configurar as definições padrão para o lembrete deste evento. As pessoas podem sobrescrever estas definições por via do link <strong>Avisar</strong>.',
     'Hour' => 'Hora',
     'I\'m attending' => 'Vou',
     'ID' => 'ID',
@@ -143,6 +141,8 @@ return [
     'Filter by types' => '',
     'From Newest to Oldest' => '',
     'From Oldest to Newest' => '',
+    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
+    <strong>Set reminder</strong> link.' => '',
     'Include Organizer and Participant Info in Exports' => '',
     'JWT Key' => '',
     'JWT Token Expiration' => '',

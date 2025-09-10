@@ -62,8 +62,6 @@ return [
     'From Oldest to Newest' => 'Vom Ältesten zum Neuesten',
     'Here you can configure default settings for all calendar events.' => 'Hier können Sie Voreinstellungen für alle Kalendereinträge definieren.',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => 'Hier können Sie globale Voreinstellungen für die Erinnerungsfunktion definieren. Diese Einstellungen können von individuellen Einstellungen innerhalb der Spaces oder Profile überschrieben werden.',
-    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => 'Hier können Sie Voreinstellungen für einzelne Termine definieren. Benutzer können diese für sich persönlich und individuell anpassen.',
     'Hour' => 'Stunde',
     'I\'m attending' => 'Ich nehme teil',
     'ID' => 'ID',
@@ -163,5 +161,7 @@ return [
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} hat dich zum Event "{contentTitle}" eingeladen.',
     '{name} Calendar' => '{name} Kalender',
     'Calendar event content ID' => '',
+    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
+    <strong>Set reminder</strong> link.' => '',
     'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',
 ];

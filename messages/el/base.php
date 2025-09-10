@@ -39,8 +39,6 @@ return [
     'Friday' => 'Παρασκευή',
     'Here you can configure default settings for all calendar events.' => 'Εδώ μπορείτε να ρυθμίσετε τις προεπιλεγμένες ρυθμίσεις για όλα τα συμβάντα ημερολογίου.',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => 'Εδώ μπορείτε να ρυθμίσετε τις προεπιλεγμένες υπενθυμίσεις για προεπιλογή. Αυτές οι ρυθμίσεις μπορούν να αντικατασταθούν στο επίπεδο χώρου / προφίλ.',
-    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => 'Εδώ μπορείτε να ρυθμίσετε τις προεπιλεγμένες ρυθμίσεις υπενθύμισης για αυτό το συμβάν. Οι χρήστες μπορούν να αντικαταστήσουν αυτές τις ρυθμίσεις με τη σύνδεση <strong> Ορισμός υπενθύμισης </strong>.',
     'Hour' => 'Ωρα',
     'I\'m attending' => 'Παρακολουθώ',
     'ID' => 'Ταυτότητα',
@@ -130,6 +128,8 @@ return [
     'Filter by types' => '',
     'From Newest to Oldest' => '',
     'From Oldest to Newest' => '',
+    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
+    <strong>Set reminder</strong> link.' => '',
     'Include Organizer and Participant Info in Exports' => '',
     'Invited: {users}' => '',
     'JWT Key' => '',

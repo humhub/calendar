@@ -56,8 +56,6 @@ return [
     'Friday' => 'Piatok',
     'Here you can configure default settings for all calendar events.' => 'Tu môžete nakonfigurovať predvolené nastavenie pre všetky udalosti kalendára.',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => 'Tu môžete nakonfigurovať globálne predvolené pripomienky. Tieto nastavenia je možné prepísať na úrovni priestoru/profilu.',
-    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => 'Tu môžete nakonfigurovať predvolené nastavenie pripomienky pre túto udalosť. Používatelia môžu tieto nastavenia prepísať pomocou odkazu <strong>Nastaviť pripomienku</strong>.',
     'Hour' => 'Hodina',
     'I\'m attending' => 'Som účatníkom',
     'ID' => 'ID',
@@ -152,6 +150,8 @@ return [
     'Display events within the next X days' => '',
     'From Newest to Oldest' => '',
     'From Oldest to Newest' => '',
+    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
+    <strong>Set reminder</strong> link.' => '',
     'Include Organizer and Participant Info in Exports' => '',
     'JWT Key' => '',
     'JWT Token Expiration' => '',
