@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.7.17 (September 11, 2025)
+--------------------------
+- Fix #591: Fix RuntimeException in caldav sync
+- Enh #590: Do not specify calendar name on single event export ics
+
 1.7.16 (September 4, 2025)
 --------------------------
 - Enh #587: Log model validation errors in caldav backend
