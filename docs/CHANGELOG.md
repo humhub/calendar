@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.2 (Unreleased)
+--------------------------
+- Fix #591: Fix RuntimeException in caldav sync
+
 1.8.1 (September 10, 2025)
 --------------------------
 - Fix #589: Fixed syntax error in view
