@@ -235,6 +235,7 @@ class CalendarEntry extends ContentActiveRecord implements
 
         return [
             [['files'], 'safe'],
+            [['title', 'location', 'description'], 'trim'],
             [['title', 'start_datetime', 'end_datetime'], 'required'],
             [['color'], 'string', 'max' => 7],
             [['start_datetime'], 'date', 'format' => $dateFormat],
