@@ -453,7 +453,7 @@ class CalendarUtils
         }
     }
 
-    public static function generateIcal($entries, $name)
+    public static function generateIcal($entries, $calendarName)
     {
         $events = [];
         foreach ($entries as $entry) {
@@ -474,7 +474,7 @@ class CalendarUtils
         return VCalendar::withEvents(
             $events,
             CalendarUtils::getSystemTimeZone(true),
-            $name,
+            $calendarName,
         )->serialize();
     }
 
@@ -485,6 +485,10 @@ class CalendarUtils
             $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
         }
 
-        return VCalendar::withEvents($event, CalendarUtils::getSystemTimeZone(true))->serialize();
+        return VCalendar::withEvents(
+            $event,
+            CalendarUtils::getSystemTimeZone(true),
+            false
+        )->serialize();
     }
 }

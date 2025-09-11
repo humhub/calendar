@@ -1,9 +1,10 @@
 Changelog
 =========
 
-1.8.2 (Unreleased)
+1.8.2 (September 11, 2025)
 --------------------------
 - Fix #591: Fix RuntimeException in caldav sync
+- Enh #590: Do not specify calendar name on single event export ics
 
 1.8.1 (September 10, 2025)
 --------------------------

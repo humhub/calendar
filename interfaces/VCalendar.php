@@ -54,9 +54,9 @@ class VCalendar extends Model
      * @param CalendarEventIF|CalendarEventIF[] $items
      * @return VCalendar
      */
-    public static function withEvents($items, $tz = null, $name = null)
+    public static function withEvents($items, $tz = null, $calendarName = null)
     {
-        $instance = (new static(['name' => $name]));
+        $instance = (new static(['name' => $calendarName]));
         $instance->addTimeZone($tz);
 
         if (!is_array($items)) {
@@ -101,11 +101,18 @@ class VCalendar extends Model
          * X-WR-TIMEZONE
          * X-PUBLISHED-TTL
          */
-        $this->vcalendar = new VObject\Component\VCalendar([
+
+
+        $params = [
             'PRODID' => static::PRODID,
             'METHOD' => $this->method,
-            'X-WR-CALNAME' => trim(Yii::$app->name . ' - ' . $this->name, " \n\r\t\v\0-"),
-        ]);
+        ];
+
+        if ($this->name !== false) {
+            $params['X-WR-CALNAME'] = trim(Yii::$app->name . ' - ' . $this->name, " \n\r\t\v\0-");
+        }
+
+        $this->vcalendar = new VObject\Component\VCalendar($params);
     }
 
     public function getInstance()
