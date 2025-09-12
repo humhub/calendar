@@ -146,8 +146,8 @@ humhub.module('calendar.participation.Form', function (module, require, $) {
             modal.find('#calendar-entry-participants-list').after(response.html).remove();
             updateParticipantsCount(modal.find('[name=calendar-entry-participants-count]').val(), false);
             loader.reset(filters);
-            filters.find('.btn.active').removeClass('active');
-            filters.find('[data-active]').addClass('active').removeAttr('data-active');
+            filters.find('.btn.active').removeClass('active btn-accent').addClass('btn-outline-accent');
+            filters.find('[data-active]').removeClass('btn-outline-accent').addClass('active btn-accent').removeAttr('data-active');
         }).catch(function(e) {
             module.log.error(e, true);
         }).finally(function () {
