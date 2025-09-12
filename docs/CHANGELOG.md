@@ -3,7 +3,7 @@ Changelog
 
 1.8.3 (Unreleased)
 --------------------------
-- Fix: Participants Filter styling
+- Fix #595: Participants Filter styling
 
 1.8.2 (September 11, 2025)
 --------------------------
