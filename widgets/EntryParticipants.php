@@ -62,14 +62,19 @@ class EntryParticipants extends Widget
         $participantSate = $calendarEntry->getParticipationStatus(Yii::$app->user->identity);
 
         $button = Button::accent($label);
-        $participantSate === $state && $button->icon('fa-check-circle');
+        $isActive = $participantSate === $state;
+        if ($isActive) {
+            $button->icon('check-circle');
+        } else {
+            $button->outline();
+        }
         if ($calendarEntry->isPast()) {
             $button->tooltip(Yii::t('CalendarModule.base', 'The event has already ended.'))
                 ->cssClass('active fc-disabled-cursor')
                 ->loader(false);
         } else {
             $button->action('calendar.respond', Url::toEntryRespond($calendarEntry, $state))
-                ->cssClass($participantSate === $state ? '' : 'active');
+                ->cssClass($isActive ? 'active' : '');
         }
 
         return $button;
