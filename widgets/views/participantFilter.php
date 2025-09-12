@@ -11,13 +11,22 @@ use yii\helpers\Html;
 /* @var string $state */
 /* @var array $statuses */
 ?>
+
 <?= Html::beginTag('div', ['class' => 'calendar-entry-participants-filters mt-3']) ?>
-    <div class="calendar-entry-participants-filter-title"><?= Yii::t('CalendarModule.views', 'Filter') ?></div>
-    <?php foreach ($statuses as $statusKey => $statusTitle) :
-        echo Button::accent($statusTitle)
-            ->cssClass($statusKey == $state ? 'active' : '')->sm()
+    <div class="calendar-entry-participants-filter-title mb-2"><?= Yii::t('CalendarModule.views', 'Filter') ?></div>
+    <?php foreach ($statuses as $statusKey => $statusTitle) : ?>
+        <?php
+        $button = Button::accent($statusTitle)
+            ->sm()
             ->action('filterState')
             ->options(['data-state' => $statusKey])
             ->loader(false);
-    endforeach; ?>
+        if ($statusKey === $state) {
+            $button->cssClass('active');
+        } else {
+            $button->outline();
+        }
+        ?>
+        <?= $button ?>
+    <?php endforeach; ?>
 <?= Html::endTag('div') ?>

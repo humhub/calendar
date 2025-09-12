@@ -587,25 +587,6 @@ th, td, thead, tbody, .fc-divider, .fc-row, .fc-content, .fc-popover, .fc-list-v
   font-size: 80%;
 }
 
-.calendar-entry-participants-filters .btn.btn-accent {
-  margin: 10px 8px 0 0;
-  padding: 3px 14px;
-}
-.calendar-entry-participants-filters .btn.btn-accent.active {
-  background: #0397A8 !important;
-  color: #FFF !important;
-}
-.calendar-entry-participants-filters .btn.btn-accent:not(.active) {
-  border: 1px solid #435F6F;
-  color: #435F6F !important;
-  background: #FFF;
-}
-.calendar-entry-participants-filters .btn.btn-accent:not(.active):hover {
-  background: #0397A8 !important;
-  border: 1px solid #0397A8;
-  color: #FFF !important;
-}
-
 .calendar-entry-participants .pagination-container {
   margin-top: 25px;
 }
