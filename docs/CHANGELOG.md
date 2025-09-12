@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.3 (Unreleased)
+--------------------------
+- Fix #594: Wall Entry Buttons Active #594
+
 1.8.2 (September 11, 2025)
 --------------------------
 - Fix #591: Fix RuntimeException in caldav sync
