@@ -609,12 +609,6 @@ th, td, thead, tbody, .fc-divider, .fc-row, .fc-content, .fc-popover, .fc-list-v
 .calendar-wall-entry .event-participation-buttons button {
   margin-right: 8px;
 }
-.calendar-wall-entry .event-participation-buttons button .fa {
-  font-size: 130%;
-  position: relative;
-  top: 1px;
-  margin-right: 3px;
-}
 .calendar-wall-entry [data-action-click] {
   cursor: pointer;
 }
