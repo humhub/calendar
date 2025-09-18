@@ -174,7 +174,7 @@ class IcalExportCest
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
         Yii::$app->getModule('calendar')->settings->set('includeParticipantInfo', false);
-//        Yii::$app->getModule('calendar')->settings->set('includeParticipantEmail', true);
+        Yii::$app->getModule('calendar')->settings->set('includeParticipantEmail', false);
 
         $entry = $I->createCalendarEntry(
             $user,
@@ -235,7 +235,7 @@ class IcalExportCest
         $I->assertEquals('20250601T110000Z', (string)$teamMeeting->DTEND);
         $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
         $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
-        $I->assertEquals(4, count($teamMeeting->ATTENDEE), 'Team Meeting has 4 attendees');
+        $I->assertNull($teamMeeting->ATTENDEE, 'Team Meeting has not any attendees');
         $I->assertStringNotContainsString('ATTENDEE;CN=ADMIN TESTER:mailto:admin@example.com', $icsContent, 'Admin is Attendee');
         $I->assertStringNotContainsString('ATTENDEE;CN=PETER TESTER:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
         $I->assertStringNotContainsString('ATTENDEE;CN=SARA TESTER:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
@@ -315,10 +315,10 @@ class IcalExportCest
         $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
         $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
         $I->assertEquals(4, count($teamMeeting->ATTENDEE), 'Team Meeting has 4 attendees');
-        $I->assertStringContainsString('ATTENDEE;CN=ADMIN TESTER:-', $icsContent, 'Admin is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:-', $icsContent, 'Peter is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:-', $icsContent, 'Sara is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:-', $icsContent, 'Andreas is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ADMIN TESTER:mailto:-', $icsContent, 'Admin is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:mailto:-', $icsContent, 'Peter is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:mailto:-', $icsContent, 'Sara is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:-', $icsContent, 'Andreas is Attendee');
 
         $entry->hardDelete();
     }
