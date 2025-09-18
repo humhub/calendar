@@ -245,15 +245,15 @@ class VCalendar extends Model
             }
         }
 
-        if ($this->includeParticipantInfo && $item instanceof CalendarEventParticipationIF) {
-            $organizer = $item->getOrganizer();
-            if ($organizer instanceof User) {
-                $evt->add(
-                    'ORGANIZER;CN=' . $this->getCN($organizer),
-                    'mailto:' . $this->getMailto($organizer),
-                );
-            }
+        $organizer = $item->getOrganizer();
+        if ($organizer instanceof User) {
+            $evt->add(
+                'ORGANIZER;CN=' . $this->getCN($organizer),
+                'mailto:' . $this->getMailto($organizer),
+            );
+        }
 
+        if ($this->includeParticipantInfo && $item instanceof CalendarEventParticipationIF) {
             foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $participant) {
                 /* @var $user User */
                 $evt->add(
