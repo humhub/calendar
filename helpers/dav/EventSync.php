@@ -104,7 +104,7 @@ class EventSync extends BaseObject
 
     public function sync()
     {
-        if (Module::instance()->settings->get('includeUserInfo', false)) {
+        if (Module::instance()->settings->get('includeParticipantInfo', false)) {
             $this->participants();
         }
 

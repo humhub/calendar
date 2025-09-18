@@ -24,7 +24,8 @@ class IcalExportCest
         $user->moduleManager->enable('calendar');
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
-        Yii::$app->getModule('calendar')->settings->set('includeUserInfo', true);
+        Yii::$app->getModule('calendar')->settings->set('includeParticipantInfo', true);
+        Yii::$app->getModule('calendar')->settings->set('includeParticipantEmail', true);
 
         $entry = $I->createCalendarEntry(
             $user,
@@ -70,7 +71,7 @@ class IcalExportCest
         $vcalendar = Reader::read($icsContent);
 
 
-        $I->assertNotNull($vcalendar, 'iCal content is valid');
+        $I->assertNotNull($vcalendar, 'ics content is valid');
         $I->assertStringContainsString('BEGIN:VCALENDAR', $icsContent);
         $I->assertStringContainsString('VERSION:2.0', $icsContent);
 
@@ -102,7 +103,8 @@ class IcalExportCest
         $user->moduleManager->enable('calendar');
         $user->moduleManager->flushCache();
         Yii::$app->moduleManager->flushCache();
-        Yii::$app->getModule('calendar')->settings->set('includeUserInfo', true);
+        Yii::$app->getModule('calendar')->settings->set('includeParticipantInfo', true);
+        Yii::$app->getModule('calendar')->settings->set('includeParticipantEmail', true);
 
         $entry = $I->createCalendarEntry(
             $user,
@@ -141,7 +143,7 @@ class IcalExportCest
         $icsContent = $I->grabResponse();
         $vcalendar = Reader::read($icsContent);
 
-        $I->assertNotNull($vcalendar, 'iCal content is valid');
+        $I->assertNotNull($vcalendar, 'ics content is valid');
         $I->assertStringContainsString('BEGIN:VCALENDAR', $icsContent);
         $I->assertStringContainsString('VERSION:2.0', $icsContent);
 
@@ -159,6 +161,164 @@ class IcalExportCest
         $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
         $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
         $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
+
+        $entry->hardDelete();
+    }
+
+    public function testIcsWithDisabledIncludeParticipantInfo(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $user = User::findOne(['id' => 1]);
+
+        $user->moduleManager->enable('calendar');
+        $user->moduleManager->flushCache();
+        Yii::$app->moduleManager->flushCache();
+        Yii::$app->getModule('calendar')->settings->set('includeParticipantInfo', false);
+//        Yii::$app->getModule('calendar')->settings->set('includeParticipantEmail', true);
+
+        $entry = $I->createCalendarEntry(
+            $user,
+            [
+                'title' => 'Team Meeting',
+                'description' => 'Weekly team sync-up',
+                'start_datetime' => '2025-06-01 10:00:00',
+                'end_datetime' => '2025-06-01 11:00:00',
+                'all_day' => 0,
+                'participation_mode' => 2, // Allow participation
+                'color' => '#007bff',
+                'allow_decline' => 1,
+                'allow_maybe' => 1,
+                'time_zone' => 'Asia/Yerevan',
+                'participant_info' => '',
+                'closed' => 0,
+                'max_participants' => null,
+                'uid' => 'event-001-20250601',
+                'rrule' => null,
+                'parent_event_id' => null,
+                'recurrence_id' => null,
+                'exdate' => null,
+                'sequence' => 0,
+                'location' => 'Conference Room A',
+            ],
+            [1, 2, 3, 4],
+        );
+
+        $jwtKey = AuthTokenService::instance()->iCalEncrypt($user->id, $user->guid, false);
+
+        $I->amOnRoute('/calendar/export/calendar', ['token' => $jwtKey]);
+
+        $I->seeResponseCodeIs(200);
+
+        $headers = \Yii::$app->response->headers->toArray();
+
+        $I->assertArrayHasKey('content-type', $headers, 'Content-Type header is present');
+        $I->assertContains('text/calendar', $headers['content-type'], 'Content-Type is text/calendar');
+        $I->assertArrayHasKey('content-disposition', $headers, 'Content-Disposition header is present');
+        $I->assertStringContainsString('attachment; filename="admin_tester.ics"', $headers['content-disposition'][0], 'Content-Disposition includes filename');
+
+        $icsContent = $I->grabResponse();
+        $vcalendar = Reader::read($icsContent);
+
+
+        $I->assertNotNull($vcalendar, 'ics content is valid');
+        $I->assertStringContainsString('BEGIN:VCALENDAR', $icsContent);
+        $I->assertStringContainsString('VERSION:2.0', $icsContent);
+
+        $events = iterator_to_array($vcalendar->VEVENT);
+
+        $teamMeeting = array_filter($events, fn($event) => (string)$event->SUMMARY === 'Team Meeting');
+        $teamMeeting = reset($teamMeeting);
+
+        $I->assertNotFalse($teamMeeting, 'Team Meeting event exists');
+        $I->assertEquals('Team Meeting', (string)$teamMeeting->SUMMARY);
+        $I->assertEquals('20250601T100000Z', (string)$teamMeeting->DTSTART);
+        $I->assertEquals('20250601T110000Z', (string)$teamMeeting->DTEND);
+        $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
+        $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
+        $I->assertEquals(4, count($teamMeeting->ATTENDEE), 'Team Meeting has 4 attendees');
+        $I->assertStringNotContainsString('ATTENDEE;CN=ADMIN TESTER:mailto:admin@example.com', $icsContent, 'Admin is Attendee');
+        $I->assertStringNotContainsString('ATTENDEE;CN=PETER TESTER:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
+        $I->assertStringNotContainsString('ATTENDEE;CN=SARA TESTER:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
+        $I->assertStringNotContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
+
+        $entry->hardDelete();
+    }
+
+    public function testIcsWithDisabledIncludeParticipantEmail(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $user = User::findOne(['id' => 1]);
+
+        $user->moduleManager->enable('calendar');
+        $user->moduleManager->flushCache();
+        Yii::$app->moduleManager->flushCache();
+        Yii::$app->getModule('calendar')->settings->set('includeParticipantInfo', true);
+        Yii::$app->getModule('calendar')->settings->set('includeParticipantEmail', false);
+
+        $entry = $I->createCalendarEntry(
+            $user,
+            [
+                'title' => 'Team Meeting',
+                'description' => 'Weekly team sync-up',
+                'start_datetime' => '2025-06-01 10:00:00',
+                'end_datetime' => '2025-06-01 11:00:00',
+                'all_day' => 0,
+                'participation_mode' => 2, // Allow participation
+                'color' => '#007bff',
+                'allow_decline' => 1,
+                'allow_maybe' => 1,
+                'time_zone' => 'Asia/Yerevan',
+                'participant_info' => '',
+                'closed' => 0,
+                'max_participants' => null,
+                'uid' => 'event-001-20250601',
+                'rrule' => null,
+                'parent_event_id' => null,
+                'recurrence_id' => null,
+                'exdate' => null,
+                'sequence' => 0,
+                'location' => 'Conference Room A',
+            ],
+            [1, 2, 3, 4],
+        );
+
+        $jwtKey = AuthTokenService::instance()->iCalEncrypt($user->id, $user->guid, false);
+
+        $I->amOnRoute('/calendar/export/calendar', ['token' => $jwtKey]);
+
+        $I->seeResponseCodeIs(200);
+
+        $headers = \Yii::$app->response->headers->toArray();
+
+        $I->assertArrayHasKey('content-type', $headers, 'Content-Type header is present');
+        $I->assertContains('text/calendar', $headers['content-type'], 'Content-Type is text/calendar');
+        $I->assertArrayHasKey('content-disposition', $headers, 'Content-Disposition header is present');
+        $I->assertStringContainsString('attachment; filename="admin_tester.ics"', $headers['content-disposition'][0], 'Content-Disposition includes filename');
+
+        $icsContent = $I->grabResponse();
+        $vcalendar = Reader::read($icsContent);
+
+
+        $I->assertNotNull($vcalendar, 'ics content is valid');
+        $I->assertStringContainsString('BEGIN:VCALENDAR', $icsContent);
+        $I->assertStringContainsString('VERSION:2.0', $icsContent);
+
+        $events = iterator_to_array($vcalendar->VEVENT);
+
+        $teamMeeting = array_filter($events, fn($event) => (string)$event->SUMMARY === 'Team Meeting');
+        $teamMeeting = reset($teamMeeting);
+
+        $I->assertNotFalse($teamMeeting, 'Team Meeting event exists');
+        $I->assertEquals('Team Meeting', (string)$teamMeeting->SUMMARY);
+        $I->assertEquals('20250601T100000Z', (string)$teamMeeting->DTSTART);
+        $I->assertEquals('20250601T110000Z', (string)$teamMeeting->DTEND);
+        $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
+        $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
+        $I->assertEquals(4, count($teamMeeting->ATTENDEE), 'Team Meeting has 4 attendees');
+        $I->assertStringContainsString('ATTENDEE;CN=ADMIN TESTER:-', $icsContent, 'Admin is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:-', $icsContent, 'Peter is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:-', $icsContent, 'Sara is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:-', $icsContent, 'Andreas is Attendee');
 
         $entry->hardDelete();
     }
