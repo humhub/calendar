@@ -5,6 +5,7 @@ Changelog
 --------------------------
 - Fix #591: Fix RuntimeException in caldav sync
 - Enh #590: Do not specify calendar name on single event export ics
+- Enh #597: Split participant export privacy option checkbox into two checkboxes
 
 1.7.16 (September 4, 2025)
 --------------------------
