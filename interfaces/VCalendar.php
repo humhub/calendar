@@ -47,7 +47,9 @@ class VCalendar extends Model
      */
     private $vcalendar;
 
-    private bool $includeUserInfo;
+    private bool $includeParticipantInfo;
+
+    private bool $includeParticipantEmail;
 
 
     /**
@@ -86,7 +88,8 @@ class VCalendar extends Model
     {
         parent::init();
         $this->initVObject();
-        $this->includeUserInfo = Module::instance()->settings->get('includeUserInfo', false);
+        $this->includeParticipantInfo = Module::instance()->settings->get('includeParticipantInfo', false);
+        $this->includeParticipantEmail = Module::instance()->settings->get('includeParticipantEmail', false);
     }
 
 
@@ -242,15 +245,15 @@ class VCalendar extends Model
             }
         }
 
-        if ($item instanceof CalendarEventParticipationIF) {
-            $organizer = $item->getOrganizer();
-            if ($organizer instanceof User) {
-                $evt->add(
-                    'ORGANIZER;CN=' . $this->getCN($organizer),
-                    'mailto:' . $this->getMailto($organizer),
-                );
-            }
+        $organizer = $item->getOrganizer();
+        if ($organizer instanceof User) {
+            $evt->add(
+                'ORGANIZER;CN=' . $this->getCN($organizer),
+                'mailto:' . $this->getMailto($organizer),
+            );
+        }
 
+        if ($this->includeParticipantInfo && $item instanceof CalendarEventParticipationIF) {
             foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $participant) {
                 /* @var $user User */
                 $evt->add(
@@ -295,7 +298,7 @@ class VCalendar extends Model
 
     private function getMailto(User $user)
     {
-        if ($this->includeUserInfo && $user->email) {
+        if ($this->includeParticipantEmail && $user->email) {
             return $user->email;
         }
 

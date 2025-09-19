@@ -16,7 +16,8 @@ class ExportSettings extends Model
 {
     public $jwtKey;
     public $jwtExpire = 0;
-    public $includeUserInfo;
+    public $includeParticipantInfo;
+    public $includeParticipantEmail;
 
     /**
      * @var Module
@@ -29,7 +30,8 @@ class ExportSettings extends Model
 
         $this->jwtKey = $this->module->settings->get('jwtKey', $this->jwtKey);
         $this->jwtExpire = $this->module->settings->get('jwtExpiration', $this->jwtExpire);
-        $this->includeUserInfo = $this->module->settings->get('includeUserInfo', $this->module->icsOrganizer);
+        $this->includeParticipantInfo = $this->module->settings->get('includeParticipantInfo', $this->module->icsOrganizer);
+        $this->includeParticipantEmail = $this->module->settings->get('includeParticipantEmail', false);
 
         if (YII_ENV_TEST) {
             $this->jwtKey = 'test-key';
@@ -41,8 +43,8 @@ class ExportSettings extends Model
         return [
             [['jwtKey'], 'string', 'min' => 32, 'max' => 32],
             [['jwtExpire'], 'integer'],
-            [['includeUserInfo'], 'boolean'],
-            [['jwtExpire', 'includeUserInfo'], 'default', 'value' => 0],
+            [['includeParticipantInfo', 'includeParticipantEmail'], 'boolean'],
+            [['jwtExpire', 'includeParticipantInfo', 'includeParticipantEmail'], 'default', 'value' => 0],
         ];
     }
 
@@ -51,7 +53,8 @@ class ExportSettings extends Model
         return [
             'jwtKey' => Yii::t('CalendarModule.base', 'JWT Key'),
             'jwtExpire' => Yii::t('CalendarModule.base', 'JWT Token Expiration'),
-            'includeUserInfo' => Yii::t('CalendarModule.base', 'Include Organizer and Participant Info in Exports'),
+            'includeParticipantInfo' => Yii::t('CalendarModule.base', 'Include participant information in exports'),
+            'includeParticipantEmail' => Yii::t('CalendarModule.base', 'Also include participant email addresses'),
         ];
     }
 
@@ -60,7 +63,8 @@ class ExportSettings extends Model
         return [
             'jwtKey' => Yii::t('CalendarModule.base', 'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.'),
             'jwtExpire' => Yii::t('CalendarModule.base', 'in seconds. 0 for no JWT token expiration.'),
-            'includeUserInfo' => Yii::t('CalendarModule.base', 'When enabled, calendar exports (ics, iCal, CalDAV) will include the organizer\'s and participant\'s names and email addresses. Disable to exclude this information for increased privacy.'),
+            'includeParticipantInfo' => Yii::t('CalendarModule.base', 'When enabled, attendee names are included in ICS and CalDAV exports. The organizer is always included.'),
+            'includeParticipantEmail' => Yii::t('CalendarModule.base', 'In addition to names, attendees’ email addresses will be included in ICS and CalDAV exports. Enable only if allowed by your privacy policy or data protection rules.'),
         ];
     }
 
@@ -77,9 +81,14 @@ class ExportSettings extends Model
             $this->jwtKey = Yii::$app->security->generateRandomString();
         }
 
+        if (!$this->includeParticipantInfo) {
+            $this->includeParticipantEmail = false;
+        }
+
         $this->module->settings->set('jwtKey', $this->jwtKey);
         $this->module->settings->set('jwtExpire', (int) $this->jwtExpire);
-        $this->module->settings->set('includeUserInfo', $this->includeUserInfo);
+        $this->module->settings->set('includeParticipantInfo', $this->includeParticipantInfo);
+        $this->module->settings->set('includeParticipantEmail', $this->includeParticipantEmail);
 
         return true;
     }
