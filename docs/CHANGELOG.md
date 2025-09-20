@@ -5,6 +5,7 @@ Changelog
 --------------------------
 - Fix #594: Wall Entry Buttons Active #594
 - Fix #595: Participants Filter styling
+- Fix: Misaligned calendar filter "Select calendars" on mobile view  
 
 1.8.2 (September 11, 2025)
 --------------------------
