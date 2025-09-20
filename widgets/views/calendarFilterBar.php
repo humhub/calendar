@@ -36,7 +36,7 @@ use humhub\widgets\FadeIn;
             <div class="form-text">
                 <?= Yii::t('CalendarModule.views', 'Select calendars') ?>
             </div>
-            <div class="d-inline-block float-start me-2">
+            <div class="d-inline-block">
                 <?php if (Yii::$app->user->identity->moduleManager->isEnabled('calendar')): ?>
                     <div class="checkbox">
                         <label class="calendar_my_profile">
