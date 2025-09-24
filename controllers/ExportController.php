@@ -57,7 +57,7 @@ class ExportController extends Controller
             throw new ForbiddenHttpException(403);
         }
 
-        $ics = $content->model->generateIcs();
+        $ics = $content->model->generateIcs(true);
         $uid = $content->model->getUid() ?: $this->uniqueId;
 
         if (empty($ics)) {

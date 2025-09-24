@@ -478,9 +478,9 @@ class CalendarUtils
         )->serialize();
     }
 
-    public static function generateIcs($event)
+    public static function generateIcs($event, $singleEvent = false)
     {
-        if (RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
+        if (!$singleEvent && RecurrenceHelper::isRecurrent($event) && !RecurrenceHelper::isRecurrentRoot($event)) {
             /* @var $event RecurrentEventIF */
             $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
         }
