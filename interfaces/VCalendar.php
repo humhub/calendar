@@ -334,83 +334,61 @@ class VCalendar extends Model
         $vt = $vcalendar->createComponent('VTIMEZONE');
         $vt->TZID = $tz->getName();
 
-        if (empty($transitions)) {
-            $offset = $tz->getOffset(new DateTime('now', $tz)) / 3600;
-            $hours = intdiv((int)$offset, 1);
-            $minutes = abs(($offset - $hours) * 60);
-            $sign = $offset >= 0 ? '+' : '-';
-            $offsetStr = sprintf('%s%02d%02d', $sign, abs($hours), $minutes);
-
-            $standard = $vcalendar->createComponent('STANDARD');
-            $standard->add('DTSTART', '19700101T000000');
-            $standard->add('TZOFFSETFROM', $offsetStr);
-            $standard->add('TZOFFSETTO', $offsetStr);
-            $standard->add('TZNAME', $tz->getName());
-            $vt->add($standard);
-            return $vt;
-        }
-
         $offset = $transitions[0]['offset'] ?? 0;
         $tzname = $transitions[0]['abbr'] ?? $tzid;
-        $isDst = $transitions[0]['isdst'] ?? false;
 
         $hours = intdiv($offset, 3600);
         $minutes = abs(($offset % 3600) / 60);
         $sign = $offset >= 0 ? '+' : '-';
         $offsetStr = sprintf('%s%02d%02d', $sign, abs($hours), $minutes);
 
-        $initialType = $isDst ? 'DAYLIGHT' : 'STANDARD';
-        $initial = $vcalendar->createComponent($initialType);
-        $initial->add('DTSTART', '19700101T000000');
-        $initial->add('TZOFFSETFROM', $offsetStr);
-        $initial->add('TZOFFSETTO', $offsetStr);
-        $initial->add('TZNAME', $tzname);
-        $vt->add($initial);
+        $standard = $vcalendar->createComponent('STANDARD');
+        $standard->add('DTSTART', '19700101T000000');
+        $standard->add('TZOFFSETFROM', $offsetStr);
+        $standard->add('TZOFFSETTO', $offsetStr);
+        $standard->add('TZNAME', $tzname);
+        $vt->add($standard);
 
         $std = null;
         $dst = null;
-        $tzfrom = $offset / 3600;
         foreach ($transitions as $i => $trans) {
+            $cmp = null;
+            // skip the first entry...
             if ($i == 0) {
+                // ... but remember the offset for the next TZOFFSETFROM value
+                $tzfrom = $trans['offset'] / 3600;
                 continue;
             }
-            $cmp = null;
+            // daylight saving time definition
             if ($trans['isdst']) {
                 $t_dst = $trans['ts'];
                 $dst = $vcalendar->createComponent('DAYLIGHT');
                 $cmp = $dst;
-            } else {
+            } // standard time definition
+            else {
                 $t_std = $trans['ts'];
                 $std = $vcalendar->createComponent('STANDARD');
                 $cmp = $std;
             }
             if ($cmp) {
-                $dt = new DateTime($trans['time'], new DateTimeZone('UTC'));
-                $dt->modify("+$tzfrom hours");
+                $dt = new DateTime($trans['time']);
                 $offset = $trans['offset'] / 3600;
-                $hours = intdiv((int)$offset, 1);
-                $minutes = abs(($offset - $hours) * 60);
-                $sign = $offset >= 0 ? '+' : '-';
-                $offsetTo = sprintf('%s%02d%02d', $sign, abs($hours), $minutes);
-                $prevHours = intdiv((int)$tzfrom, 1);
-                $prevMinutes = abs(($tzfrom - $prevHours) * 60);
-                $prevSign = $tzfrom >= 0 ? '+' : '-';
-                $offsetFrom = sprintf('%s%02d%02d', $prevSign, abs($prevHours), $prevMinutes);
-
-                $cmp->add('DTSTART', $dt->format('Ymd\THis'));
-                $cmp->add('TZOFFSETFROM', $offsetFrom);
-                $cmp->add('TZOFFSETTO', $offsetTo);
+                $cmp->DTSTART = $dt->format('Ymd\THis');
+                $cmp->TZOFFSETFROM = sprintf('%s%02d%02d', $tzfrom >= 0 ? '+' : '', floor($tzfrom), ($tzfrom - floor($tzfrom)) * 60);
+                $cmp->TZOFFSETTO = sprintf('%s%02d%02d', $offset >= 0 ? '+' : '', floor($offset), ($offset - floor($offset)) * 60);
+                // add abbreviated timezone name if available
                 if (!empty($trans['abbr'])) {
-                    $cmp->add('TZNAME', $trans['abbr']);
+                    $cmp->TZNAME = $trans['abbr'];
                 }
                 $tzfrom = $offset;
                 $vt->add($cmp);
             }
+            // we covered the entire date range
             if ($std && $dst && min($t_std, $t_dst) < $from && max($t_std, $t_dst) > $to) {
                 break;
             }
         }
-
+        // add X-MICROSOFT-CDO-TZID if available
         $microsoftExchangeMap = array_flip(VObject\TimeZoneUtil::$microsoftExchangeMap);
         if (array_key_exists($tz->getName(), $microsoftExchangeMap)) {
             $vt->add('X-MICROSOFT-CDO-TZID', $microsoftExchangeMap[$tz->getName()]);
