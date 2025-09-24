@@ -6,6 +6,7 @@ Changelog
 - Fix #594: Wall Entry Buttons Active #594
 - Fix #595: Participants Filter styling
 - Fix #598: Misaligned calendar filter "Select calendars" on mobile view  
+- Fix #599: Fixed ics export for recurring events
 
 1.8.2 (September 11, 2025)
 --------------------------
