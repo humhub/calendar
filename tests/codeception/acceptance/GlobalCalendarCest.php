@@ -34,6 +34,8 @@ class GlobalCalendarCest
         $I->wantToTest('the if the space event is visible in my global calendar');
         $I->amOnRoute(['/calendar/global/index']);
         $I->expectTo('see my space calendar entry');
+        $I->click('a[href="#calendar-filters-container"]');
+        $I->wait(1); // For the filters container to collapse
         $I->see('Select calendars');
         $I->waitForText('Space Event', 10, '#calendar');
 
