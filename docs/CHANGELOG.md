@@ -7,6 +7,7 @@ Changelog
 - Fix #595: Participants Filter styling
 - Fix #598: Misaligned calendar filter "Select calendars" on mobile view  
 - Fix #599: Fixed ics export for recurring events
+- Enh #602: Add Filter toggle button
 
 1.8.2 (September 11, 2025)
 --------------------------
