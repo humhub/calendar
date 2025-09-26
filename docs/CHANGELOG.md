@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.19 (Unreleased)
+--------------------------
+- Enh #602: Fixed ics export for recurring events
+
 1.7.18 (September 19, 2025)
 --------------------------
 - Enh #597: Split participant export privacy option checkbox into two checkboxes
