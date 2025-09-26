@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.7.19 (Unreleased)
---------------------------
+1.7.19 (September 26, 2025)
+---------------------------
 - Enh #603: Fixed ics export for recurring events
 
 1.7.18 (September 19, 2025)
