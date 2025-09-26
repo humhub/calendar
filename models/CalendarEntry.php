@@ -627,7 +627,7 @@ class CalendarEntry extends ContentActiveRecord implements
         return null;
     }
 
-    public function generateIcs(): ?string
+    public function generateIcs($singleEvent = false): ?string
     {
         $event = CalendarUtils::getCalendarEvent($this);
 
@@ -635,7 +635,7 @@ class CalendarEntry extends ContentActiveRecord implements
             return null;
         }
 
-        return CalendarUtils::generateIcs($event);
+        return CalendarUtils::generateIcs($event, $singleEvent);
     }
 
     public function afterMove(ContentContainerActiveRecord $container = null)
