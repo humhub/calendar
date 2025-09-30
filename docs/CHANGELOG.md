@@ -8,6 +8,7 @@ Changelog
 - Fix #598: Misaligned calendar filter "Select calendars" on mobile view  
 - Fix #599: Fixed ics export for recurring events
 - Enh #602: Add Filter toggle button
+- Enh #604: Improved Module Test GitHub Actions
 
 1.8.2 (September 11, 2025)
 --------------------------
