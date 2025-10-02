@@ -150,6 +150,7 @@ return [
     'Calendar event content ID' => '',
     'Calendar events' => '',
     'Display events within the next X days' => '',
+    'Filter' => '',
     'From Newest to Oldest' => '',
     'From Oldest to Newest' => '',
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the

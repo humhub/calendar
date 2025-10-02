@@ -111,6 +111,7 @@ return [
     'Event could not be deleted!' => '',
     'Event has been be deleted!' => '',
     'Export as {type}' => '',
+    'Filter' => '',
     'From Newest to Oldest' => '',
     'From Oldest to Newest' => '',
     'Here you can configure default settings for all calendar events.' => '',

@@ -147,6 +147,7 @@ return [
     'Display events within the next X days' => '',
     'Event could not be deleted!' => '',
     'Event has been be deleted!' => '',
+    'Filter' => '',
     'From Newest to Oldest' => '',
     'From Oldest to Newest' => '',
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the

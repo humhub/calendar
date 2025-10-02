@@ -128,6 +128,7 @@ return [
     'Display events within the next X days' => '',
     'Event could not be deleted!' => '',
     'Event has been be deleted!' => '',
+    'Filter' => '',
     'From Newest to Oldest' => '',
     'From Oldest to Newest' => '',
     'Here you can configure default settings for all calendar events.' => '',

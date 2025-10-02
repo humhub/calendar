@@ -158,6 +158,7 @@ return [
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} zaprosił cię na wydarzenie "{contentTitle}".',
     '{name} Calendar' => '{name} kalendarza',
     'Calendar event content ID' => '',
+    'Filter' => '',
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
     <strong>Set reminder</strong> link.' => '',
     'Leave empty to list all events. Enter 0 to display only today\'s events.' => '',

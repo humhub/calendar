@@ -161,6 +161,7 @@ return [
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} hat dich zum Event "{contentTitle}" eingeladen.',
     '{name} Calendar' => '{name} Kalender',
     'Calendar event content ID' => '',
+    'Filter' => '',
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
     <strong>Set reminder</strong> link.' => '',
     'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',

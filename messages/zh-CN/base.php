@@ -69,6 +69,7 @@ return [
     'Event could not be deleted!' => '',
     'Event has been be deleted!' => '',
     'Export as {type}' => '',
+    'Filter' => '',
     'Filter by types' => '',
     'Friday' => '',
     'From Newest to Oldest' => '',

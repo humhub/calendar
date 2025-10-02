@@ -162,6 +162,7 @@ return [
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} vient de vous inviter à l’événement « {contentTitle} » dans l’espace {spaceName} ; l’événement commence à {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} vient de vous inviter à l’événement « {contentTitle} ».',
     '{name} Calendar' => 'Calendrier {name}',
+    'Filter' => '',
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
     <strong>Set reminder</strong> link.' => '',
 ];

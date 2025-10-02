@@ -63,6 +63,7 @@ return [
     'Event not found!' => '',
     'Export as {type}' => '',
     'Files' => '',
+    'Filter' => '',
     'Filter by types' => '',
     'Friday' => '',
     'From Newest to Oldest' => '',
