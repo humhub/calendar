@@ -1,4 +1,4 @@
-name: PHP Codeception Tests - develop
+name: PHP Codeception Tests - master
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    uses: humhub/actions/.github/workflows/module-tests-develop.yml@main
+    uses: humhub/actions/.github/workflows/module-tests-master.yml@main
     with:
       module-id: calendar
       use-rest-module: true
