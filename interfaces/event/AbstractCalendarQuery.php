@@ -46,6 +46,7 @@ abstract class AbstractCalendarQuery extends Component
      */
     public const FILTER_RESPONDED = 4;
     public const FILTER_MINE = 5;
+    public const FILTER_DASHBOARD = 6;
     public const FILTER_USERRELATED = 'userRelated';
 
     /**
@@ -955,6 +956,10 @@ abstract class AbstractCalendarQuery extends Component
                 $this->filterUserRelated();
             }
 
+            if ($this->hasFilter(self::FILTER_DASHBOARD)) {
+                $this->filterDashboard();
+            }
+
             if (empty($this->_filters)) {
                 return;
             }
@@ -1067,6 +1072,23 @@ abstract class AbstractCalendarQuery extends Component
             $this->_query->userRelated($this->_userScopes);
         } else {
             throw new FilterNotSupportedException('User related filter not supported for this query');
+        }
+    }
+
+    protected function filterDashboard()
+    {
+        if (Yii::$app->user->isGuest) {
+            throw new FilterNotSupportedException('User related filter not supported for this query');
+        }
+
+        if (empty($this->_userScopes)) {
+            $this->_userScopes = [
+                ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
+                ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE,
+                ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES,
+                ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS,
+            ];
+            $this->filterUserRelated();
         }
     }
 

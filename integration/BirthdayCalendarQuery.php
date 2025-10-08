@@ -76,6 +76,23 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     }
 
+    protected function filterDashboard()
+    {
+        if (SnippetModuleSettings::instance()->includeBirthdayToDashboard()) {
+            return;
+        }
+
+        if (!Yii::$app->user->isGuest && Yii::$app->getModule('friendship')->settings->get('enable')) {
+            $this->_query->innerJoin(
+                'user_friendship',
+                'user.id=user_friendship.friend_user_id AND user_friendship.user_id=:userId',
+                [':userId' => Yii::$app->user->id],
+            );
+        } else {
+            throw new FilterNotSupportedException('Global filter not supported for this query');
+        }
+    }
+
     protected function filterUserRelated()
     {
         if (!empty($this->_userScopes) && !(in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS, $this->_userScopes) || in_array(ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, $this->_userScopes))) {
