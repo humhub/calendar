@@ -22,15 +22,12 @@ use yii\db\ActiveQuery;
 /**
  * Class to manage content records of the elements with Calendar events list
  *
- * @property string $sortOrder
  * @property int $nextDays
  */
 class CalendarEventsElement extends BaseContentRecordsElement
 {
     public const FILTER_PARTICIPANT = 'participant';
     public const FILTER_PAST = 'past_events';
-    public const SORT_DATE_OLD = 'date_old';
-    public const SORT_DATE_NEW = 'date_new';
     public const RECORD_CLASS = CalendarEntry::class;
 
     /**
@@ -40,7 +37,6 @@ class CalendarEventsElement extends BaseContentRecordsElement
     {
         return array_merge(parent::getDynamicAttributes(), [
             'nextDays' => null,
-            'sortOrder' => self::SORT_DATE_OLD,
         ]);
     }
 
@@ -58,7 +54,6 @@ class CalendarEventsElement extends BaseContentRecordsElement
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'sortOrder' => Yii::t('CalendarModule.base', 'Sorting'),
             'nextDays' => Yii::t('CalendarModule.base', 'Display events within the next X days'),
         ]);
     }
@@ -133,10 +128,6 @@ class CalendarEventsElement extends BaseContentRecordsElement
     public function renderEditForm(ActiveForm $form): string
     {
         return parent::renderEditForm($form)
-            . $form->field($this, 'nextDays')
-            . $form->field($this, 'sortOrder')->radioList([
-                $this::SORT_DATE_OLD => Yii::t('CalendarModule.base', 'From Oldest to Newest'),
-                $this::SORT_DATE_NEW => Yii::t('CalendarModule.base', 'From Newest to Oldest'),
-            ]);
+            . $form->field($this, 'nextDays');
     }
 }
