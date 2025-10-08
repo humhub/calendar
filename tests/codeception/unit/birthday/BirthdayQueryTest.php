@@ -59,16 +59,16 @@ class BirthdayQueryTest extends HumHubDbTestCase
         $this->becomeFriendWith('User2');
         $this->enableFriendships(false);
 
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')));
         $this->assertEquals(0, count($result));
 
         $this->enableFriendships();
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')));
         $this->assertEquals(1, count($result));
 
         $this->becomeUser('User2');
         $this->becomeFriendWith('User1');
-        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_DASHBOARD]);
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')));
         $this->assertEquals(2, count($result));
     }
 

@@ -40,10 +40,6 @@ class UpcomingEvents extends Widget
 
         $filters = [];
 
-        if (!$this->contentContainer) {
-            $filters[] = CalendarEntryQuery::FILTER_DASHBOARD;
-        }
-
         $calendarEntries = $calendarService->getUpcomingEntries($this->contentContainer, $settings->upcomingEventsSnippetDuration, $settings->upcomingEventsSnippetMaxItems, $filters);
 
         if (empty($calendarEntries)) {
