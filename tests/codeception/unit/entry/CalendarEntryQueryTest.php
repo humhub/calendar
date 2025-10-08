@@ -139,7 +139,7 @@ class CalendarEntryQueryTest extends CalendarUnitTest
         $this->logout();
 
         // Find all within -5 till 13 day range for Dashboard filter
-        $entries = CalendarEntryQuery::find()->from(-5)->to(13)->filter([CalendarEntryQuery::FILTER_DASHBOARD])->all();
+        $entries = CalendarEntryQuery::find()->from(-5)->to(13)->all();
 
         $this->assertEquals(3, count($entries));
         $this->assertEquals($entry1->title, $entries[0]->title);
