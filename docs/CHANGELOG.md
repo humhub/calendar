@@ -9,6 +9,7 @@ Changelog
 - Fix #599: Fixed ics export for recurring events
 - Enh #602: Add Filter toggle button
 - Enh #604: Improved Module Test GitHub Actions
+- Enh #607: Improves `Upcoming events` widget to include events from followed spaces and profiles
 
 1.8.2 (September 11, 2025)
 --------------------------
