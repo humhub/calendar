@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.3 (Unreleased)
---------------------------
+1.8.3 (October 9, 2025)
+-----------------------
 - Fix #594: Wall Entry Buttons Active #594
 - Fix #595: Participants Filter styling
 - Fix #598: Misaligned calendar filter "Select calendars" on mobile view  
