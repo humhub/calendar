@@ -9,6 +9,7 @@
 namespace humhub\modules\calendar\extensions\custom_pages\elements;
 
 use DateTime;
+use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
@@ -29,6 +30,7 @@ class CalendarEventsElement extends BaseContentRecordsElement
     public const FILTER_PARTICIPANT = 'participant';
     public const FILTER_PAST = 'past_events';
     public const RECORD_CLASS = CalendarEntry::class;
+    public const SORT_UPCOMING = 'upcoming';
 
     /**
      * @inheritdoc
@@ -92,9 +94,11 @@ class CalendarEventsElement extends BaseContentRecordsElement
                 ->andWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
         }
 
-        if (!$this->hasFilter(self::FILTER_PAST)) {
+        $isUpcomingSorting = in_array($this->sortOrder, [self::SORT_UPCOMING, 'date_new'/* support deprecated */]);
+
+        if (!$this->hasFilter(self::FILTER_PAST) || $isUpcomingSorting) {
             $now = new DateTime('now', CalendarUtils::getUserTimeZone());
-            $query->andWhere(['>', 'calendar_entry.start_datetime', $now->format('Y-m-d H:i:s')]);
+            $query->andWhere(['>', 'calendar_entry.end_datetime', $now->format('Y-m-d H:i:s')]);
         }
 
         if ($this->nextDays !== null && $this->nextDays !== '') {
@@ -102,13 +106,8 @@ class CalendarEventsElement extends BaseContentRecordsElement
             $query->andWhere(['<', 'calendar_entry.start_datetime', $maxDate->format('Y-m-d')]);
         }
 
-        switch ($this->sortOrder) {
-            case self::SORT_DATE_OLD:
-                $query->orderBy(['calendar_entry.start_datetime' => SORT_ASC]);
-                break;
-            case self::SORT_DATE_NEW:
-                $query->orderBy(['calendar_entry.start_datetime' => SORT_DESC]);
-                break;
+        if ($isUpcomingSorting) {
+            $query->orderBy(['calendar_entry.start_datetime' => SORT_ASC]);
         }
 
         return $query;
@@ -127,7 +126,38 @@ class CalendarEventsElement extends BaseContentRecordsElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
+        $sortUpcoming = self::SORT_UPCOMING;
+        $filterPast = self::FILTER_PAST;
+
         return parent::renderEditForm($form)
-            . $form->field($this, 'nextDays');
+            . $form->field($this, 'nextDays')
+            // Disable filter "Show past events" on sorting "By upcoming events first":
+            . Html::script(<<<JS
+var calendarsSortOrderSelector = 'input[name="CalendarEventsElement[sortOrder]"]';
+if (typeof changeCalendarsElementFilter === 'undefined') {
+    function changeCalendarsElementFilter() {
+        const sortOrder = document.querySelector(calendarsSortOrderSelector + ':checked');
+        const pastEvents = document.querySelector('input[name="CalendarEventsElement[filter][]"][value="{$filterPast}"]');
+        if (sortOrder && pastEvents) {
+            pastEvents.disabled = sortOrder.value === '{$sortUpcoming}';
+        }
+    }
+}
+
+changeCalendarsElementFilter();
+document.querySelectorAll(calendarsSortOrderSelector).forEach(el => {
+    el.addEventListener('change', changeCalendarsElementFilter);
+});
+JS);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getSortOptions(): array
+    {
+        return array_merge(parent::getSortOptions(), [
+            self::SORT_UPCOMING => Yii::t('CalendarModule.base', 'By upcoming events first'),
+        ]);
     }
 }
