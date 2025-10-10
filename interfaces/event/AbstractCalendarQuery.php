@@ -1082,7 +1082,12 @@ abstract class AbstractCalendarQuery extends Component
         }
 
         if (empty($this->_userScopes)) {
-            $this->_userScopes = [ActiveQueryContent::USER_RELATED_SCOPE_SPACES, ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE];
+            $this->_userScopes = [
+                ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
+                ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE,
+                ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES,
+                ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS,
+            ];
             $this->filterUserRelated();
         }
     }
