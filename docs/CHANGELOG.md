@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.20 (Unreleased)
+---------------------------
+- Enh #608: Improved `Upcoming events` widget to include events from followed spaces and profiles
+
 1.7.19 (September 26, 2025)
 ---------------------------
 - Enh #603: Fixed ics export for recurring events
