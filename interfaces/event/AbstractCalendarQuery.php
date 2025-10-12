@@ -1090,6 +1090,7 @@ abstract class AbstractCalendarQuery extends Component
             ];
             $this->filterUserRelated();
         }
+        $this->filterIsParticipant();
     }
 
     /**
