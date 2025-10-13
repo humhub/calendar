@@ -14,6 +14,7 @@ use DateTime;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ActiveQueryContent;
@@ -1090,7 +1091,9 @@ abstract class AbstractCalendarQuery extends Component
             ];
             $this->filterUserRelated();
         }
-        $this->filterIsParticipant();
+
+        $this->participantJoin();
+        $this->_query->orWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
     }
 
     /**
