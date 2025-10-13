@@ -1092,8 +1092,7 @@ abstract class AbstractCalendarQuery extends Component
             $this->filterUserRelated();
         }
 
-        $this->participantJoin();
-        $this->_query->orWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
+        $this->filterOrIsParticipant();
     }
 
     /**
