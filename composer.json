@@ -7,9 +7,16 @@
     "simshaun/recurr": "^4",
     "sabre/xml": "^2",
     "sabre/uri": "^2",
-    "sabre/dav": "~4.6.0"
+    "sabre/dav": "~4.6.0",
+    "humhub/module-coding-standards": "dev-main"
   },
   "config": {
     "process-timeout": 1800
+  },
+  "repositories": {
+    "humhub-module-coding-standards": {
+      "type": "vcs",
+      "url": "https://github.com/humhub/module-coding-standards.git"
+    }
   }
 }

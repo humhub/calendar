@@ -1,0 +1,12 @@
+name: Weekly Rector
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+jobs:
+  rector:
+    uses: humhub/module-coding-standards/workflows/base/rector-auto-pr.yml@main
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
