@@ -8,5 +8,3 @@ on:
 jobs:
   rector:
     uses: humhub/module-coding-standards/.github/workflows/rector-auto-pr.yaml@main
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
