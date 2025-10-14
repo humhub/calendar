@@ -20,7 +20,7 @@ use yii\web\NotFoundHttpException;
 class ExportController extends Controller
 {
     private const EXPORT_MIME = 'text/calendar';
-    private ?CalendarService $calendarService;
+    private ?CalendarService $calendarService = null;
 
     public function init()
     {

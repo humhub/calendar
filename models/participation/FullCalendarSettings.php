@@ -54,7 +54,7 @@ class FullCalendarSettings extends Model
         $this->listViewType = $this->getSetting(self::SETTING_LIST_VIEW_TYPE_KEY, static::LIST_VIEW_WEEK);
 
         // if default viewMode is "list" (or old entry like "listMonth"), take the configured list view type
-        if (substr($this->viewMode, 0, 4) == 'list') {
+        if (str_starts_with((string) $this->viewMode, 'list')) {
             $this->viewMode = $this->listViewType;
         }
     }

@@ -15,7 +15,7 @@ use Yii;
  * @package humhub\modules\calendar\models
  * @deprecated since 0.7 use humhub\modules\calendar\interfaces\VCalendar instead
  */
-class ICS
+class ICS implements \Stringable
 {
     public const DT_FORMAT_TIME = 'php:His';
     public const DT_FORMAT_DAY = 'php:Ymd';
@@ -26,7 +26,6 @@ class ICS
     protected $dtend;
     protected $location;
     protected $url;
-    protected $timezone;
 
     /**
      * ICS constructor.
@@ -40,7 +39,7 @@ class ICS
      * @param bool $allDay
      * @throws \Exception
      */
-    public function __construct($summary, $description, $dtstart, $dtend, $location, $url, $timezone, $allDay = false)
+    public function __construct($summary, $description, $dtstart, $dtend, $location, $url, protected $timezone, $allDay = false)
     {
         if ($allDay) {
             $dtend = (new DateTime($dtend))->add(new DateInterval('P1D'));
@@ -52,10 +51,9 @@ class ICS
         $this->dtend = $this->formatTimestamp($dtend, $allDay);
         $this->location = $this->escapeString($location);
         $this->url = $this->escapeString($url);
-        $this->timezone = $timezone;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $rows = $this->buildProps();
         $string =  implode("\r\n", $rows);
@@ -98,6 +96,6 @@ class ICS
 
     private function escapeString($str)
     {
-        return preg_replace('/([\,;])/', '\\\$1', $str);
+        return preg_replace('/([\,;])/', '\\\$1', (string) $str);
     }
 }

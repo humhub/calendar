@@ -105,7 +105,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
     public function getCalendarObjects($calendarId)
     {
-        $calendarId = trim($calendarId, '/');
+        $calendarId = trim((string) $calendarId, '/');
 
         $contentContainer = $this->getContentContainerForCalendar($calendarId);
 
@@ -118,9 +118,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
 
         return ArrayHelper::getColumn(
             $calendarService->getCalendarItems(null, null, [], $contentContainer),
-            function (CalendarEventIF $event) use ($calendarId) {
-                return $this->prepareEvent($event, $calendarId);
-            },
+            fn(CalendarEventIF $event) => $this->prepareEvent($event, $calendarId),
         );
     }
 
@@ -293,8 +291,8 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             'calendarid'    => $calendarId,
             'calendardata'  => $ics,
             'lastmodified'  => $event->getLastModified() ? $event->getLastModified()->getTimestamp() : null,
-            'etag'          => $event->getLastModified() ? md5($event->getLastModified()->getTimestamp()) : null,
-            'size'          => strlen($ics),
+            'etag'          => $event->getLastModified() ? md5((string) $event->getLastModified()->getTimestamp()) : null,
+            'size'          => strlen((string) $ics),
             'componenttype' => 'VEVENT',
             'firstoccurence' => $event->getStartDateTime()->getTimestamp(),
             'lastoccurence'  => $event->getEndDateTime()->getTimestamp(),
@@ -319,7 +317,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
         $event->location = $properties->get(EventProperty::LOCATION);
         $event->uid = $properties->get(EventProperty::UID, $event->getUid());
 
-        if (empty(trim($event->title))) {
+        if (empty(trim((string) $event->title))) {
             $event->title = '-';
         }
 

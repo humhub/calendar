@@ -472,7 +472,7 @@ class CalendarEntry extends ContentActiveRecord implements
     {
         $type = CalendarEntryType::findByContent($this->content)->one();
 
-        return $type ? $type : new CalendarEntryType();
+        return $type ?: new CalendarEntryType();
     }
 
     /**
@@ -680,7 +680,7 @@ class CalendarEntry extends ContentActiveRecord implements
         }
         if (
             filter_var($this->location, FILTER_VALIDATE_URL) !== false
-            && strpos($this->location, 'https://') === 0 // restrict to secure URLs (and not HTTP, SSF, FTP, etc.)
+            && str_starts_with($this->location, 'https://') // restrict to secure URLs (and not HTTP, SSF, FTP, etc.)
         ) {
             return Button::asLink($this->location)->link($this->location)->options(['target' => '_blank']);
         }

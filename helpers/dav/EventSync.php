@@ -34,8 +34,8 @@ class EventSync extends BaseObject
         self::PARTICIPATION_STATE_INVITED => CalendarEntryParticipant::PARTICIPATION_STATE_INVITED,
     ];
 
-    private ?EventProperties $eventProperties;
-    private CalendarEntry|ActiveRecord|null $event;
+    private ?EventProperties $eventProperties = null;
+    private CalendarEntry|ActiveRecord|null $event = null;
 
     public function from(EventProperties $eventProperties): self
     {
@@ -60,8 +60,8 @@ class EventSync extends BaseObject
                 $partStat = ArrayHelper::getValue($attendee, 'PARTSTAT')?->getValue() ?: null;
                 $email = $attendee->getValue();
 
-                if (strpos($email, 'mailto:') === 0) {
-                    $email = substr($email, 7);
+                if (str_starts_with((string) $email, 'mailto:')) {
+                    $email = substr((string) $email, 7);
                 }
                 if ($email == $this->event->getOrganizer()->email) {
                     continue;

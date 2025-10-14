@@ -36,7 +36,7 @@ class ForceParticipation extends ActiveJob
         /* @var $entry CalendarEntry */
         $entry = CalendarEntry::findOne(['id' => $this->entry_id]);
         $originator = User::findOne(['id' => $this->originator_id]);
-        $status = isset($this->status) ? $this->status : CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED;
+        $status = $this->status ?? CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED;
 
         if (!$entry || !$originator || !($entry->content->container instanceof Space)
             || !CalendarEntryParticipation::isAllowedStatus($status)) {
