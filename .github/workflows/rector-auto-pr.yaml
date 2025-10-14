@@ -7,6 +7,6 @@ on:
 
 jobs:
   rector:
-    uses: humhub/module-coding-standards/workflows/base/rector-auto-pr.yml@main
+    uses: humhub/module-coding-standards/.github/workflows/rector-auto-pr.yml@main
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
