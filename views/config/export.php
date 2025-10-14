@@ -11,6 +11,7 @@ use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $model ExportSettings */
+/* @var $this \yii\web\View */
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration') ?></div>
@@ -27,9 +28,28 @@ use humhub\widgets\form\ActiveForm;
         <?= $form->field($model, 'jwtExpire')->textInput(); ?>
 
         <hr>
-        <?= $form->field($model, 'includeUserInfo')->checkbox(); ?>
+        <?= $form->field($model, 'includeParticipantInfo')->checkbox(); ?>
+        <?= $form->field($model, 'includeParticipantEmail', ['options' => ['class' => ['mb-3', $model->includeParticipantInfo ? '' : 'd-none']]])->checkbox(); ?>
 
         <?= Button::save()->submit() ?>
         <?php ActiveForm::end(); ?>
     </div>
 </div>
+
+<?php
+
+$js = <<<JS
+    $('#exportsettings-includeparticipantinfo').change(function() {
+        const emailCheckbox = $('#exportsettings-includeparticipantemail');
+        const emailCheckboxField = $('.field-exportsettings-includeparticipantemail');
+        
+        if ($(this).prop('checked')) {
+            emailCheckboxField.show();
+        } else {
+            emailCheckbox.prop('checked', false);
+            emailCheckboxField.hide();
+        }
+    }).trigger('change');
+JS;
+
+$this->registerJs($js);

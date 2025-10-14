@@ -29,6 +29,27 @@ Changelog
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 - Enh #378: Use new content state service
 
+1.7.20 (Unreleased)
+---------------------------
+- Enh #608: Improved `Upcoming events` widget to include events from followed spaces and profiles
+
+1.7.19 (September 26, 2025)
+---------------------------
+- Enh #603: Fixed ics export for recurring events
+
+1.7.18 (September 19, 2025)
+--------------------------
+- Enh #597: Split participant export privacy option checkbox into two checkboxes
+
+1.7.17 (September 11, 2025)
+--------------------------
+- Fix #591: Fix RuntimeException in caldav sync
+- Enh #590: Do not specify calendar name on single event export ics
+
+1.7.16 (September 4, 2025)
+--------------------------
+- Enh #587: Log model validation errors in caldav backend
+
 1.7.15 (September 1, 2025)
 --------------------------
 - ENH #585: Add profile title field to participants export (CSV/XLSX) 

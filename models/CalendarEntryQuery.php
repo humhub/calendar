@@ -92,6 +92,15 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
         $this->_query->andWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
     }
 
+    public function filterOrIsParticipant()
+    {
+        $this->participantJoin();
+        $this->_query->orWhere(['calendar_entry_participant.participation_state' => [
+            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
+            CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
+        ]]);
+    }
+
     private function participantJoin()
     {
         if (!$this->praticipantJoined) {
