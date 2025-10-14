@@ -14,6 +14,7 @@ use DateTime;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntry;
+use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ActiveQueryContent;
@@ -1082,9 +1083,16 @@ abstract class AbstractCalendarQuery extends Component
         }
 
         if (empty($this->_userScopes)) {
-            $this->_userScopes = [ActiveQueryContent::USER_RELATED_SCOPE_SPACES, ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE];
+            $this->_userScopes = [
+                ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
+                ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE,
+                ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES,
+                ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS,
+            ];
             $this->filterUserRelated();
         }
+
+        $this->filterOrIsParticipant();
     }
 
     /**
