@@ -80,7 +80,7 @@ class CalendarService extends Component
      * @param null ContentContainerActiveRecord $contentContainer
      * @return array|null
      */
-    public function getCalendarItemTypes(ContentContainerActiveRecord $contentContainer = null)
+    public function getCalendarItemTypes(?ContentContainerActiveRecord $contentContainer = null)
     {
         $containerKey = ($contentContainer) ? $contentContainer->contentcontainer_id : 'global';
 
@@ -121,7 +121,7 @@ class CalendarService extends Component
      * @return CalendarEventIF[]
      * @throws \Throwable
      */
-    public function getCalendarItems(DateTime $start = null, DateTime $end = null, $filters = [], ContentContainerActiveRecord $contentContainer = null, $limit = null, $expand = true, $types = [])
+    public function getCalendarItems(?DateTime $start = null, ?DateTime $end = null, $filters = [], ?ContentContainerActiveRecord $contentContainer = null, $limit = null, $expand = true, $types = [])
     {
         $result = [];
 
@@ -200,7 +200,7 @@ class CalendarService extends Component
      * @return CalendarEventIF[]
      * @throws \Throwable
      */
-    public function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5, $filters = [], $expand = true)
+    public function getUpcomingEntries(?ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5, $filters = [], $expand = true)
     {
         $start = new DateTime('now', CalendarUtils::getUserTimeZone());
         $end = ($daysInFuture > 0) ? (new DateTime('now', CalendarUtils::getUserTimeZone()))
@@ -214,7 +214,7 @@ class CalendarService extends Component
      * @param ContentContainerActiveRecord|null $contentContainer
      * @return CalendarTypeSetting|null
      */
-    public function getItemType($key, ContentContainerActiveRecord $contentContainer = null)
+    public function getItemType($key, ?ContentContainerActiveRecord $contentContainer = null)
     {
         $itemTypes = $this->getCalendarItemTypes($contentContainer);
         foreach ($itemTypes as $itemType) {

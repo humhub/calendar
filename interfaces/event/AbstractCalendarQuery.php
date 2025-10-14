@@ -222,7 +222,7 @@ abstract class AbstractCalendarQuery extends Component
      * @return array|ActiveRecord[]
      * @throws \Throwable
      */
-    public static function findForFilter(DateTime $start = null, DateTime $end = null, ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true, $types = [])
+    public static function findForFilter(?DateTime $start = null, ?DateTime $end = null, ?ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true, $types = [])
     {
         $query = static::find(null, $expand)
             ->container($container)
@@ -308,7 +308,7 @@ abstract class AbstractCalendarQuery extends Component
      * @return \self
      * @throws \Throwable
      */
-    public static function find(User $user = null, bool $expand = true)
+    public static function find(?User $user = null, bool $expand = true)
     {
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
@@ -445,7 +445,7 @@ abstract class AbstractCalendarQuery extends Component
      * @param ContentContainerActiveRecord $container
      * @return $this
      */
-    public function container(ContentContainerActiveRecord $container = null)
+    public function container(?ContentContainerActiveRecord $container = null)
     {
         $this->_container = $container;
         return $this;
@@ -986,7 +986,7 @@ abstract class AbstractCalendarQuery extends Component
      * @param ContentContainerActiveRecord|null $container
      * @throws FilterNotSupportedException
      */
-    protected function filterGuests(ContentContainerActiveRecord $container = null)
+    protected function filterGuests(?ContentContainerActiveRecord $container = null)
     {
         if (!$this->_query instanceof ActiveQueryContent) {
             throw new FilterNotSupportedException('Guest filter not supported for this query');

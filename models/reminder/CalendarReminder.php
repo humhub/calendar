@@ -394,7 +394,7 @@ class CalendarReminder extends ActiveRecord
      * @param ContentContainerActiveRecord|null $container
      * @return static[]
      */
-    public static function getDefaults(ContentContainerActiveRecord $container = null, $globalFallback = false)
+    public static function getDefaults(?ContentContainerActiveRecord $container = null, $globalFallback = false)
     {
         $result = static::getDefaultFromCache($container, $globalFallback);
 
@@ -424,7 +424,7 @@ class CalendarReminder extends ActiveRecord
         return $result;
     }
 
-    private static function setDefaultResult(ContentContainerActiveRecord $container = null, $result = null)
+    private static function setDefaultResult(?ContentContainerActiveRecord $container = null, $result = null)
     {
         if ($container) {
             static::$containerDefaults[$container->contentcontainer_id] = $result;
@@ -439,7 +439,7 @@ class CalendarReminder extends ActiveRecord
         static::$globalDefaults  = null;
     }
 
-    private static function getDefaultFromCache(ContentContainerActiveRecord $container = null, $globalFallback = false)
+    private static function getDefaultFromCache(?ContentContainerActiveRecord $container = null, $globalFallback = false)
     {
         if ($container && !isset(static::$containerDefaults[$container->contentcontainer_id])) {
             return null; // No cached results

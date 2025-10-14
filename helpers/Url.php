@@ -15,7 +15,7 @@ use yii\helpers\Url as BaseUrl;
 
 class Url extends BaseUrl
 {
-    public static function toConfig(ContentContainerActiveRecord $container = null)
+    public static function toConfig(?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar/container-config');
@@ -24,7 +24,7 @@ class Url extends BaseUrl
         return  BaseUrl::to(['/calendar/config']);
     }
 
-    public static function toConfigTypes(ContentContainerActiveRecord $container = null)
+    public static function toConfigTypes(?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar/container-config/types');
@@ -33,7 +33,7 @@ class Url extends BaseUrl
         return static::to(['/calendar/config/types']);
     }
 
-    public static function toEditType(CalendarEntryType $model, ContentContainerActiveRecord $container = null)
+    public static function toEditType(CalendarEntryType $model, ?ContentContainerActiveRecord $container = null)
     {
         if ($model->container instanceof ContentContainerActiveRecord) {
             return $model->container->createUrl('/calendar/container-config/edit-type', ['id' => $model->id]);
@@ -46,7 +46,7 @@ class Url extends BaseUrl
         return static::to($params);
     }
 
-    public static function toCreateType(ContentContainerActiveRecord $container = null)
+    public static function toCreateType(?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar/container-config/edit-type');
@@ -55,7 +55,7 @@ class Url extends BaseUrl
         return static::to(['/calendar/config/edit-type']) ;
     }
 
-    public static function toDeleteType(CalendarEntryType $model, ContentContainerActiveRecord $container = null)
+    public static function toDeleteType(CalendarEntryType $model, ?ContentContainerActiveRecord $container = null)
     {
         if ($model->container instanceof ContentContainerActiveRecord) {
             return $model->container->createUrl('/calendar/container-config/delete-type', ['id' => $model->id]);
@@ -68,7 +68,7 @@ class Url extends BaseUrl
         return static::to($params);
     }
 
-    public static function toConfigCalendars(ContentContainerActiveRecord $container = null)
+    public static function toConfigCalendars(?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar/container-config/calendars');
@@ -92,7 +92,7 @@ class Url extends BaseUrl
         return static::toRoute(['/calendar/config/export']);
     }
 
-    public static function toCalendar(ContentContainerActiveRecord $container = null)
+    public static function toCalendar(?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar');
@@ -106,7 +106,7 @@ class Url extends BaseUrl
         return static::to(['/calendar/global']);
     }
 
-    public static function toEditItemType(CalendarTypeIF $type, ContentContainerActiveRecord $container = null)
+    public static function toEditItemType(CalendarTypeIF $type, ?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar/container-config/edit-calendars', ['key' => $type->getKey()]);
@@ -115,7 +115,7 @@ class Url extends BaseUrl
         return static::to(['/calendar/config/edit-calendars', 'key' => $type->getKey()]);
     }
 
-    public static function toBasicSettingsReset(ContentContainerActiveRecord $container = null)
+    public static function toBasicSettingsReset(?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar/container-config/reset-basic-config');
@@ -124,7 +124,7 @@ class Url extends BaseUrl
         return static::to(['/calendar/config/reset-basic-config']);
     }
 
-    public static function toParticipationSettingsReset(ContentContainerActiveRecord $container = null)
+    public static function toParticipationSettingsReset(?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar/container-config/reset-participation-config');
@@ -133,7 +133,7 @@ class Url extends BaseUrl
         return static::to(['/calendar/config/reset-participation-config']);
     }
 
-    public static function toAjaxLoad(ContentContainerActiveRecord $container = null)
+    public static function toAjaxLoad(?ContentContainerActiveRecord $container = null)
     {
         if ($container) {
             return $container->createUrl('/calendar/view/load-ajax');
@@ -147,7 +147,7 @@ class Url extends BaseUrl
         return static::to(['/calendar/global/select']);
     }
 
-    public static function toEditEntry(CalendarEntry $entry, $cal = null, ContentContainerActiveRecord $container = null, $wall = null)
+    public static function toEditEntry(CalendarEntry $entry, $cal = null, ?ContentContainerActiveRecord $container = null, $wall = null)
     {
         if (!$container) {
             $container = $entry->content->container;
@@ -156,7 +156,7 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/edit', ['id' => $entry->id, 'cal' => $cal, 'wall' => $wall]);
     }
 
-    public static function toEditEntryParticipation(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
+    public static function toEditEntryParticipation(CalendarEntry $entry, ?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $entry->content->container;
@@ -180,7 +180,7 @@ class Url extends BaseUrl
         return $user->createUrl('/user/account/enable-module', ['moduleId' => 'calendar']);
     }
 
-    public static function toEntry(CalendarEntry $entry, $cal = 0, ContentContainerActiveRecord $container = null)
+    public static function toEntry(CalendarEntry $entry, $cal = 0, ?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $entry->content->container;
@@ -201,7 +201,7 @@ class Url extends BaseUrl
         return $container ? $container->createUrl('/calendar/entry/view', $params) : '';
     }
 
-    public static function toEntryDelete(CalendarEntry $entry, $cal = 0, ContentContainerActiveRecord $container = null)
+    public static function toEntryDelete(CalendarEntry $entry, $cal = 0, ?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $entry->content->container;
@@ -215,7 +215,7 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/delete', $params);
     }
 
-    public static function toEntryToggleClose(CalendarEntry $entry, ContentContainerActiveRecord $container = null)
+    public static function toEntryToggleClose(CalendarEntry $entry, ?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $entry->content->container;
@@ -224,7 +224,7 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/toggle-close', ['id' => $entry->id]);
     }
 
-    public static function toEntryDownloadICS(ContentActiveRecord $entry, ContentContainerActiveRecord $container = null)
+    public static function toEntryDownloadICS(ContentActiveRecord $entry, ?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $entry->content->container;
@@ -233,7 +233,7 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/export/event', ['id' => $entry->content->id]);
     }
 
-    public static function toUserLevelReminderConfig(CalendarEventReminderIF $entry, ContentContainerActiveRecord $container = null)
+    public static function toUserLevelReminderConfig(CalendarEventReminderIF $entry, ?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $entry->getContentRecord()->container;
@@ -242,7 +242,7 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/reminder/set', ['id' => $entry->getContentRecord()->id]);
     }
 
-    public static function toEntryRespond(CalendarEntry $entry, $state, ContentContainerActiveRecord $container = null)
+    public static function toEntryRespond(CalendarEntry $entry, $state, ?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $entry->content->container;
@@ -255,7 +255,7 @@ class Url extends BaseUrl
             'id' => $entry->id]);
     }
 
-    public static function toParticipationUserList(CalendarEntry $entry, $state = null, ContentContainerActiveRecord $container = null)
+    public static function toParticipationUserList(CalendarEntry $entry, $state = null, ?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $entry->content->container;
@@ -292,7 +292,7 @@ class Url extends BaseUrl
         return static::to(['/calendar/global/update-monthly-recurrence-selection']);
     }
 
-    public static function toFindFilterTypes(ContentContainerActiveRecord $container = null)
+    public static function toFindFilterTypes(?ContentContainerActiveRecord $container = null)
     {
         return $container
             ? $container->createUrl('/calendar/view/find-filter-types')
