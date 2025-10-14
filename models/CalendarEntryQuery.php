@@ -95,7 +95,7 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
     public function filterOrIsParticipant()
     {
         $this->participantJoin();
-        $this->_query->andWhere(['calendar_entry_participant.participation_state' => [
+        $this->_query->orWhere(['calendar_entry_participant.participation_state' => [
             CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
             CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
         ]]);
