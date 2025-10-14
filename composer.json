@@ -18,5 +18,8 @@
       "type": "vcs",
       "url": "https://github.com/humhub/module-coding-standards.git"
     }
-  }
+  },
+  "scripts": {
+    "rector": "vendor/bin/rector process --config=vendor/humhub/module-coding-standards/rector.php"
+  }  
 }
