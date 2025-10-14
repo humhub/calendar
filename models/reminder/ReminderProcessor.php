@@ -72,7 +72,7 @@ class ReminderProcessor extends Model
      * @throws InvalidConfigException
      * @throws \Throwable
      */
-    private function runByUpcomingEvents(ContentContainerActiveRecord $container = null)
+    private function runByUpcomingEvents(?ContentContainerActiveRecord $container = null)
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('calendar');
@@ -194,7 +194,7 @@ class ReminderProcessor extends Model
      * @throws InvalidConfigException
      * @throws IntegrityException
      */
-    public function sendEntryLevelReminder(CalendarReminder $reminder, CalendarEventReminderIF $entry = null, $skipUsers = [])
+    public function sendEntryLevelReminder(CalendarReminder $reminder, ?CalendarEventReminderIF $entry = null, $skipUsers = [])
     {
         if (!$entry) {
             $entry = $reminder->getEntry();

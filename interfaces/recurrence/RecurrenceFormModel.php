@@ -253,7 +253,7 @@ class RecurrenceFormModel extends Model
      * @throws InvalidRRule
      * @throws \Throwable
      */
-    public function save(RecurrentEventIF $original = null)
+    public function save(?RecurrentEventIF $original = null)
     {
         if (!$this->validate()) {
             return false;

@@ -57,7 +57,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
     /**
      * @return ActiveQuery
      */
-    protected function findRecurrenceInstances(DateTime $start = null, DateTime $end = null)
+    protected function findRecurrenceInstances(?DateTime $start = null, ?DateTime $end = null)
     {
         $query = static::createQuery()->andWhere([$this->parentEventIdField => $this->event->getId()]);
         if ($start && $end) {
@@ -110,7 +110,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
      * @param DateTime|null $end
      * @return array|CalendarReminder[]|CalendarReminderSent[]|ActiveRecord[]
      */
-    public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null)
+    public function getRecurrenceExceptions(?DateTime $start = null, ?DateTime $end = null)
     {
         if ($this->event instanceof EditableEventIF) {
             return $this->findRecurrenceInstances($start, $end)->andWhere(['>', $this->sequenceField, 0])->all();

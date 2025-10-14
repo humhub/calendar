@@ -640,7 +640,7 @@ class CalendarEntry extends ContentActiveRecord implements
         return CalendarUtils::generateIcs($event, $singleEvent);
     }
 
-    public function afterMove(ContentContainerActiveRecord $container = null)
+    public function afterMove(?ContentContainerActiveRecord $container = null)
     {
         $this->participation->afterMove($container);
     }
@@ -767,7 +767,7 @@ class CalendarEntry extends ContentActiveRecord implements
      * @param User $user
      * @return int
      */
-    public function getParticipationStatus(User $user = null)
+    public function getParticipationStatus(?User $user = null)
     {
         return $this->participation->getParticipationStatus($user);
     }
@@ -820,7 +820,7 @@ class CalendarEntry extends ContentActiveRecord implements
      * @return mixed
      * @throws \Throwable
      */
-    public function canRespond(User $user = null)
+    public function canRespond(?User $user = null)
     {
         return $this->participation->canRespond($user);
     }
@@ -1055,7 +1055,7 @@ class CalendarEntry extends ContentActiveRecord implements
      * @inheritDoc
      *
      */
-    public function canMove(ContentContainerActiveRecord $container = null)
+    public function canMove(?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             return true;

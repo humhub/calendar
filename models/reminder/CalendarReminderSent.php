@@ -29,7 +29,7 @@ class CalendarReminderSent extends ActiveRecord
         return $instance;
     }
 
-    public static function check(CalendarReminder $reminder, CalendarEventReminderIF $entry = null)
+    public static function check(CalendarReminder $reminder, ?CalendarEventReminderIF $entry = null)
     {
         return !empty(static::findByReminder($reminder, $entry)->all());
     }
@@ -39,7 +39,7 @@ class CalendarReminderSent extends ActiveRecord
      * @param CalendarEventReminderIF $entry
      * @return \yii\db\ActiveQuery
      */
-    public static function findByReminder(CalendarReminder $reminder, CalendarEventReminderIF $entry = null)
+    public static function findByReminder(CalendarReminder $reminder, ?CalendarEventReminderIF $entry = null)
     {
         $condition = ['reminder_id' => $reminder->id];
         if ($entry) {

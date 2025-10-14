@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.4 (Unreleased)
+-----------------------
+- Fix #609: Fix for PHP 8.4
+
 1.8.3 (October 9, 2025)
 -----------------------
 - Fix #594: Wall Entry Buttons Active #594

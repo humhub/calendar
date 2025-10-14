@@ -27,7 +27,7 @@ interface RecurrenceQueryIF
 
     public function expandSingle($recurrence_id, $save = true);
 
-    public function getRecurrenceExceptions(DateTime $start = null, DateTime $end = null);
+    public function getRecurrenceExceptions(?DateTime $start = null, ?DateTime $end = null);
 
     public function expandEvent($from = null, $to = null, $save = false, &$expandResult = []);
 

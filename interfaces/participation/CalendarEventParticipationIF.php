@@ -25,13 +25,13 @@ interface CalendarEventParticipationIF
      * @param User $user
      * @return int
      */
-    public function getParticipationStatus(User $user = null);
+    public function getParticipationStatus(?User $user = null);
 
     /**
      * @param User|null $user
      * @return mixed
      */
-    public function canRespond(User $user = null);
+    public function canRespond(?User $user = null);
 
     /**
      * @param User $user
