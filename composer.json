@@ -1,13 +1,14 @@
 {
   "name": "humhub/humhub-calendar",
-  "description": "HumHub calendar module",
-  "type": "library",
+  "type": "humhub-module",
   "require": {
     "sabre/vobject": "^4",
     "simshaun/recurr": "^4",
     "sabre/xml": "^2",
     "sabre/uri": "^2",
-    "sabre/dav": "~4.6.0",
+    "sabre/dav": "~4.6.0"
+  },
+  "require-dev": {
     "humhub/module-coding-standards": "dev-main"
   },
   "config": {
