@@ -53,7 +53,7 @@ class AuthTokenService extends BaseObject implements StaticInstanceInterface
             }
 
             return [$validData->uid, $validData->guid, $validData->global];
-        } catch (Exception $e) {
+        } catch (Exception) {
             return null;
         }
     }
@@ -87,7 +87,7 @@ class AuthTokenService extends BaseObject implements StaticInstanceInterface
             }
 
             return [$validData->uid, $validData->username];
-        } catch (Exception $e) {
+        } catch (Exception) {
             return null;
         }
     }

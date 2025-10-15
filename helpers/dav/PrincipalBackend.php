@@ -23,9 +23,7 @@ class PrincipalBackend extends AbstractBackend
             return [];
         }
 
-        return ArrayHelper::getColumn(User::find()->active()->all(), function (User $user) {
-            return $this->userToPrincipal($user);
-        });
+        return ArrayHelper::getColumn(User::find()->active()->all(), fn(User $user) => $this->userToPrincipal($user));
     }
 
     public function getPrincipalByPath($path)

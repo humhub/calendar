@@ -32,7 +32,7 @@ class RecurrenceHelper
 
         $recurrence_id = $vEvent->{'RECURRENCE-ID'}->getValue();
         // We only need to translate from UTC to event timezone for non all day events
-        $tz = (strrpos($recurrence_id, 'T') === false) ? null : $eventTZ;
+        $tz = (strrpos((string) $recurrence_id, 'T') === false) ? null : $eventTZ;
         return  static::getRecurrentId($vEvent->{'RECURRENCE-ID'}->getValue(), $tz);
     }
 

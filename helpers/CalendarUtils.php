@@ -129,7 +129,7 @@ class CalendarUtils
                 // with dates like 27th March when hour is shifted to summer/winter time
                 $dt->setDate($dt->format('Y'), 1, 1);
                 $result = $dt->getTimestamp() - strtotime($dt->format('Y') . '-01-01');
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 return false;
             }
         }
@@ -403,8 +403,8 @@ class CalendarUtils
             return null;
         }
 
-        if (strncmp($format, 'php:', 4) === 0) {
-            return substr($format, 4);
+        if (str_starts_with((string) $format, 'php:')) {
+            return substr((string) $format, 4);
         }
 
         return $format;

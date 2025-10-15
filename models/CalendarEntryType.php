@@ -43,7 +43,7 @@ class CalendarEntryType extends ContentTag implements CalendarTypeIF
     public function getTitle()
     {
 
-        return $this->name ? $this->name : Yii::t('CalendarModule.base', 'Event');
+        return $this->name ?: Yii::t('CalendarModule.base', 'Event');
     }
 
     public function getDescription()

@@ -23,7 +23,7 @@ class EventProperties extends BaseObject
     /**
      * @var Property[]|null
      */
-    private ?array $properties;
+    private ?array $properties = null;
 
     public function from(string $calendar): self
     {
@@ -50,7 +50,7 @@ class EventProperties extends BaseObject
 
         if ($propertyKey == EventVirtualProperty::DESCRIPTION_NORMALIZED) {
             $description = $this->get(EventProperty::DESCRIPTION);
-            $description = preg_replace('/\n{2,}/', '<MULTI_N>', $description);
+            $description = preg_replace('/\n{2,}/', '<MULTI_N>', (string) $description);
             $description = str_replace("\n", '', $description);
             $description = str_replace('<MULTI_N>', "\n", $description);
             return trim($description);
@@ -69,9 +69,7 @@ class EventProperties extends BaseObject
             }
 
             if ($propertyKey == EventProperty::CATEGORIES) {
-                return ArrayHelper::getColumn(iterator_to_array($property), function (Property $property) {
-                    return $property->getValue();
-                });
+                return ArrayHelper::getColumn(iterator_to_array($property), fn(Property $property) => $property->getValue());
             }
         }
 

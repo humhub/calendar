@@ -56,9 +56,7 @@ class CalDavController extends Controller
 
         if (is_string($accept)) {
             $accept = array_map('trim', explode(',', $accept));
-            $accept = array_map(function ($type) {
-                return strtok($type, ';');
-            }, $accept);
+            $accept = array_map(fn($type) => strtok($type, ';'), $accept);
         }
 
         // Take control of error action only when called from Calendar Clients
@@ -91,7 +89,7 @@ class CalDavController extends Controller
             return true;
         }
 
-        Yii::$app->on('twofa.beforeCheck', function (Event $event) use ($action) {
+        Yii::$app->on('twofa.beforeCheck', function (Event $event) use ($action): void {
             $event->handled = true;
         });
 

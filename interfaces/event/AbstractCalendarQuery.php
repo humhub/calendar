@@ -244,7 +244,7 @@ abstract class AbstractCalendarQuery extends Component
 
         $expandResult = [];
 
-        foreach ($result as $index => $entry) {
+        foreach ($result as $entry) {
             static::autoAssignUid($entry, $query);
 
             if ($expand) {
@@ -743,7 +743,7 @@ abstract class AbstractCalendarQuery extends Component
             }
 
             return $this->preFilter($this->_query->all());
-        } catch (FilterNotSupportedException $e) {
+        } catch (FilterNotSupportedException) {
             return [];
         }
     }
@@ -918,14 +918,10 @@ abstract class AbstractCalendarQuery extends Component
             return $this->dateFormat;
         }
 
-        switch ($this->dateQueryType) {
-            case static::DATE_QUERY_TYPE_DATE:
-                return $this->dateFormat = CalendarUtils::DATE_FORMAT_SHORT;
-            case static::DATE_QUERY_TYPE_TIME:
-            case static::DATE_QUERY_TYPE_MIXED:
-            default:
-                return $this->dateFormat = CalendarUtils::DB_DATE_FORMAT;
-        }
+        $this->dateFormat = match ($this->dateQueryType) {
+            static::DATE_QUERY_TYPE_DATE => CalendarUtils::DATE_FORMAT_SHORT,
+            default => CalendarUtils::DB_DATE_FORMAT,
+        };
     }
 
     /**

@@ -136,7 +136,7 @@ class CalendarEventIFWrapper extends Model implements CalendarEventIF, FullCalen
     protected function getOption($key, $default, $options = null)
     {
         $options = empty($options) ? $this->options : $options;
-        return isset($options[$key]) ? $options[$key] : $default;
+        return $options[$key] ?? $default;
     }
 
     /**

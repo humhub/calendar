@@ -34,7 +34,7 @@ class m220217_141238_move_files extends Migration
             foreach ($entry->fileManager->findStreamFiles() as $file) {
                 /* @var File $file */
                 $attachedFilesContent .= "\r\n";
-                if (strpos($file->mime_type, 'image/') === 0) {
+                if (str_starts_with((string) $file->mime_type, 'image/')) {
                     // Image
                     $attachedFilesContent .= '![](file-guid:' . $file->guid . ' "' . $file->file_name . '")';
                 } else {

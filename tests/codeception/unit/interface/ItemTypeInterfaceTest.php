@@ -16,7 +16,7 @@ class ItemTypeInterfaceTest extends CalendarUnitTest
     public function testExportCalendarItemType()
     {
         $service = new CalendarService();
-        $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event) {
+        $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event): void {
             $event->addType(TestEventType::ITEM_TYPE, new TestEventType());
         });
 
@@ -26,7 +26,7 @@ class ItemTypeInterfaceTest extends CalendarUnitTest
     public function testExportMultipleCalendarItemType()
     {
         $service = new CalendarService();
-        $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event) {
+        $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event): void {
             $event->addType(TestEventType::ITEM_TYPE, new TestEventType());
             $event->addType(OtherTestEventType::ITEM_TYPE, new OtherTestEventType());
         });
@@ -40,7 +40,7 @@ class ItemTypeInterfaceTest extends CalendarUnitTest
     public function testLegacyCalendarItemTypeInterface()
     {
         $service = new CalendarService();
-        $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event) {
+        $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event): void {
             $event->addType('arrayType', [
                 'title' => 'Array Test Type',
                 'description' => 'Array Test Type Description',
@@ -64,7 +64,7 @@ class ItemTypeInterfaceTest extends CalendarUnitTest
         $space2 = Space::findOne(['id' => 2]);
 
         $service = new CalendarService();
-        $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event) {
+        $service->on(CalendarService::EVENT_GET_ITEM_TYPES, function (CalendarItemTypesEvent $event): void {
             $container = $event->contentContainer;
 
             if (!$container || $container->id === 1) {

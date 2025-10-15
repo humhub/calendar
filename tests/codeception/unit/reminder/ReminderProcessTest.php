@@ -22,7 +22,6 @@ class ReminderProcessTest extends CalendarUnitTest
 {
     protected function setUp(): void
     {
-        parent::setUp();
         Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
         // Make sure we don't receive content created notifications
         Membership::updateAll(['send_notifications' => 0]);
