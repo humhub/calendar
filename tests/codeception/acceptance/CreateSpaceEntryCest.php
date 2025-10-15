@@ -148,6 +148,8 @@ class CreateSpaceEntryCest
         $I->wait(1);
 
         // Workaround regarding Webdriver click issues...
+        $I->click('.filter-toggle-link');
+        $I->waitForText('My events');
         $I->click('.calendar_filter_mine');
 
         $I->wait(5);

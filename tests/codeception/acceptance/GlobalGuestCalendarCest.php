@@ -38,6 +38,8 @@ class GlobalGuestCalendarCest
         $I->wait(1);
 
         // Workaround regarding Webdriver click issues...
+        $I->click('.filter-toggle-link');
+        $I->waitForText('I\'m attending');
         $I->click('.calendar_filter_participate');
 
         $I->wait(1);
@@ -81,6 +83,8 @@ class GlobalGuestCalendarCest
         $I->wait(1);
 
         // Workaround regarding Webdriver click issues...
+        $I->click('.filter-toggle-link');
+        $I->waitForText('I\'m attending');
         $I->click('.calendar_filter_participate');
 
         $I->wait(1);
