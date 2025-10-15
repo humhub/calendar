@@ -120,7 +120,7 @@ class ReminderProcessor extends Model
                 continue;
             }
 
-            $entryKey = get_class($entry) . ':' . $entry->id;
+            $entryKey = $entry::class . ':' . $entry->id;
             if (!isset($entryHandled[$entryKey])) {
                 $this->handleEntryLevelReminder($entry);
                 $entryHandled[$entryKey] = true;

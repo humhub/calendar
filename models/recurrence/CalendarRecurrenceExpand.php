@@ -149,7 +149,7 @@ class CalendarRecurrenceExpand extends Model
 
         try {
             $it = new EventIterator([$vCalendar->getInstance()->VEVENT], null, $eventTimeZone);
-        } catch (NoInstancesException $e) {
+        } catch (NoInstancesException) {
             return [];
         }
 

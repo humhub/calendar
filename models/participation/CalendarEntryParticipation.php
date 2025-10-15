@@ -142,7 +142,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             return $this->entry->hasMany(User::class, ['id' => 'user_id'])->via('participantEntries');
         }
 
-        return $this->entry->hasMany(User::class, ['id' => 'user_id'])->via('participantEntries', function ($query) use ($status) {
+        return $this->entry->hasMany(User::class, ['id' => 'user_id'])->via('participantEntries', function ($query) use ($status): void {
             /* @var $query ActiveQuery */
             $query->andWhere(['IN', 'calendar_entry_participant.participation_state', $status]);
         });
@@ -365,23 +365,17 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             'profile.lastname',
             [
                 'label' => 'Title',
-                'value' => function (User $user) {
-                    return $user->getDisplayNameSub();
-                },
+                'value' => fn(User $user) => $user->getDisplayNameSub(),
             ],
             [
                 'label' => Yii::t('CalendarModule.base', 'Participation Status'),
-                'value' => function (User $user) use ($statuses) {
-                    return $statuses[$this->getParticipationStatus($user)] ?? '';
-                },
+                'value' => fn(User $user) => $statuses[$this->getParticipationStatus($user)] ?? '',
             ],
         ];
         if (!Yii::$app->user->isGuest && Yii::$app->user->can(ManageUsers::class)) {
             $columns[] = [
                 'label' => Yii::t('CalendarModule.base', 'Email'),
-                'value' => function (User $user) {
-                    return $user->email;
-                },
+                'value' => fn(User $user) => $user->email,
             ];
             $columns[] = 'profile.gender';
             $columns[] = 'profile.city';

@@ -19,7 +19,7 @@ use Yii;
  *
  * @property-read CalendarEntry|null $record
  */
-class CalendarEntryElement extends BaseContentRecordElement
+class CalendarEntryElement extends BaseContentRecordElement implements \Stringable
 {
     protected const RECORD_CLASS = CalendarEntry::class;
 
@@ -41,9 +41,9 @@ class CalendarEntryElement extends BaseContentRecordElement
         ];
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return Html::encode($this->record?->title);
+        return (string) Html::encode($this->record?->title);
     }
 
     /**

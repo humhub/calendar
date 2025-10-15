@@ -571,22 +571,13 @@ class CalendarReminder extends ActiveRecord
             return '-0 hours';
         }
 
-        switch ($this->unit) {
-            case static::UNIT_MINUTE:
-                $modifyUnit = 'minutes';
-                break;
-            case static::UNIT_HOUR:
-                $modifyUnit = 'hours';
-                break;
-            case static::UNIT_DAY:
-                $modifyUnit = 'days';
-                break;
-            case static::UNIT_WEEK:
-                $modifyUnit = 'weeks';
-                break;
-            default:
-                $modifyUnit = 'hours';
-        }
+        $modifyUnit = match ($this->unit) {
+            static::UNIT_MINUTE => 'minutes',
+            static::UNIT_HOUR => 'hours',
+            static::UNIT_DAY => 'days',
+            static::UNIT_WEEK => 'weeks',
+            default => 'hours',
+        };
 
         // add tolerance for cron delay....
         return '-' . $this->value . ' ' . $modifyUnit;

@@ -182,8 +182,7 @@ class CalendarService extends Component
             if ($content->contentcontainer_id === null) {
                 $typeSettings = $this->getItemType($type->getKey());
             } else {
-                $container = isset(static::$containerCache[$content->contentcontainer_id])
-                    ? static::$containerCache[$content->contentcontainer_id] : $content->container;
+                $container = static::$containerCache[$content->contentcontainer_id] ?? $content->container;
                 $typeSettings = $this->getItemType($type->getKey(), $container);
             }
         }
