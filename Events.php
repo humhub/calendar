@@ -53,7 +53,7 @@ class Events
          * @todo Temporary workaround – should be removed after the core release 1.18
          * @see \humhub\modules\calendar\controllers\CalDavController::actionError
          */
-         if (Yii::$app instanceof Application) {
+        if (Yii::$app instanceof Application) {
             Yii::$app->errorHandler->errorAction = 'calendar/cal-dav/error';
         }
 
