@@ -21,6 +21,7 @@
     }
   },
   "scripts": {
-    "rector": "vendor/bin/rector process --config=vendor/humhub/module-coding-standards/rector.php"
-  }  
+    "rector": "vendor/bin/rector process --config=vendor/humhub/module-coding-standards/rector.php",
+    "fixer": "vendor/bin/php-cs-fixer fix --config=vendor/humhub/module-coding-standards/php-cs-fixer.php"
+  }
 }

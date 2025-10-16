@@ -1183,12 +1183,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/humhub/module-coding-standards.git",
-                "reference": "653b9f795149807e0c1725c7323ad119249fd95c"
+                "reference": "3a76069e1276c33056f1de0004233b76c3eafc08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/humhub/module-coding-standards/zipball/653b9f795149807e0c1725c7323ad119249fd95c",
-                "reference": "653b9f795149807e0c1725c7323ad119249fd95c",
+                "url": "https://api.github.com/repos/humhub/module-coding-standards/zipball/3a76069e1276c33056f1de0004233b76c3eafc08",
+                "reference": "3a76069e1276c33056f1de0004233b76c3eafc08",
                 "shasum": ""
             },
             "require": {
@@ -1211,8 +1211,8 @@
                 "phpstan": [
                     "vendor/bin/phpstan analyse --configuration=vendor/humhub/module-coding-standards/phpstan.neon"
                 ],
-                "fix": [
-                    "vendor/bin/php-cs-fixer fix --config=vendor/humhub/module-coding-standards/.php-cs-fixer.dist.php"
+                "fixer": [
+                    "vendor/bin/php-cs-fixer fix --config=vendor/humhub/module-coding-standards/php-cs-fixer.php"
                 ]
             },
             "license": [
@@ -1223,7 +1223,7 @@
                 "source": "https://github.com/humhub/module-coding-standards/tree/main",
                 "issues": "https://github.com/humhub/module-coding-standards/issues"
             },
-            "time": "2025-10-15T21:51:34+00:00"
+            "time": "2025-10-16T17:00:12+00:00"
         },
         {
             "name": "phpstan/phpstan",
