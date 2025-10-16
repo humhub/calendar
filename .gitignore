@@ -2,6 +2,7 @@
 nbproject
 .idea/*
 .gitmodules
+/composer.lock
 
 node_modules
 
