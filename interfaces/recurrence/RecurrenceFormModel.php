@@ -226,7 +226,7 @@ class RecurrenceFormModel extends Model
 
         try {
             $this->setRuleFrequency();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->addError('frequency', Yii::t('CalendarModule.base', 'Invalid frequency given'));
         }
 
