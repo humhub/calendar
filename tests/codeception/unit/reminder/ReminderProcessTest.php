@@ -22,6 +22,9 @@ class ReminderProcessTest extends CalendarUnitTest
 {
     protected function setUp(): void
     {
+        parent::setUp();
+        Yii::$app->installationState->setInstalled();
+
         Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
         // Make sure we don't receive content created notifications
         Membership::updateAll(['send_notifications' => 0]);
@@ -86,8 +89,7 @@ class ReminderProcessTest extends CalendarUnitTest
     public function testDisableUserEntryLevelReminderLevel()
     {
         $space = Space::findOne(['id' => 3]);
-        $this->becomeUser('admin');
-        $user = User::findOne(['id' => 1]);
+        $user = $this->becomeUser('admin');
 
         // Entry begins exactly in one hour
         $entry = $this->createEntry((new DateTime())->add(new DateInterval('PT1H')), null, 'Test', $space);
@@ -105,7 +107,7 @@ class ReminderProcessTest extends CalendarUnitTest
         $entryLevelReminder = CalendarReminder::initEntryLevel(CalendarReminder::UNIT_HOUR, 2, $entry);
         $this->assertTrue($entryLevelReminder->save());
 
-        $userEntrylevelReminder = CalendarReminder::initDisableEntryLevelDefaults($entry, User::findOne(['id' => 1]));
+        $userEntrylevelReminder = CalendarReminder::initDisableEntryLevelDefaults($entry, $user);
         $this->assertTrue($userEntrylevelReminder->save());
 
         (new ReminderService())->sendAllReminder();
