@@ -245,28 +245,30 @@ class VCalendar extends Model
             }
         }
 
-        $organizer = $item->getOrganizer();
-        if ($organizer instanceof User) {
-            $evt->add(
-                'ORGANIZER;CN=' . $this->getCN($organizer),
-                'mailto:' . $this->getMailto($organizer),
-            );
-        }
-
-        if ($this->includeParticipantInfo && $item instanceof CalendarEventParticipationIF) {
-            foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $participant) {
-                /* @var $user User */
-                $evt->add(
-                    'ATTENDEE;CN=' . $this->getCN($participant),
-                    'mailto:' . $this->getMailto($participant),
-                );
-            }
-        }
-
         $eventType = $item->getEventType();
 
         if ($eventType instanceof CalendarEntryType && !empty($category = $eventType->name)) {
             $evt->add('CATEGORIES', $category);
+        }
+
+        if ($item instanceof CalendarEventParticipationIF) {
+            $organizer = $item->getOrganizer();
+            if ($organizer instanceof User) {
+                $evt->add(
+                    'ORGANIZER;CN=' . $this->getCN($organizer),
+                    'mailto:' . $this->getMailto($organizer),
+                );
+            }
+
+            if ($this->includeParticipantInfo) {
+                foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $participant) {
+                    /* @var $user User */
+                    $evt->add(
+                        'ATTENDEE;CN=' . $this->getCN($participant),
+                        'mailto:' . $this->getMailto($participant),
+                    );
+                }
+            }
         }
 
         return $this;
