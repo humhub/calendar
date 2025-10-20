@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.7.20 (Unreleased)
----------------------------
+1.7.20 (October 20, 2025)
+-------------------------
 - Enh #608: Improved `Upcoming events` widget to include events from followed spaces and profiles
 - Enh #618: Fixed a PHP error that occurred while fetching `organizer` of `Recurrence item`
 
