@@ -220,7 +220,7 @@ class RecurrenceFormModel extends Model
 
         try {
             $this->setRuleInterval();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->addError('interval', Yii::t('CalendarModule.base', 'Invalid interval given'));
         }
 
