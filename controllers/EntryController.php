@@ -20,7 +20,7 @@ use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -348,7 +348,7 @@ class EntryController extends ContentContainerController
         ];
 
         if (!$content->isPublic()) {
-            $filterParams['filter'] = function (array &$userData) use ($content) {
+            $filterParams['filter'] = function (array &$userData) use ($content): void {
                 if (!$userData['disabled'] && !$content->canView($userData['id'])) {
                     $userData['disabled'] = true;
                     $userData['disabledText'] = Yii::t('CalendarModule.base', 'Private events are only visible to you and, if the friendship system is activated, to your friends.');

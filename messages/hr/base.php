@@ -41,8 +41,6 @@ return [
     'Friday' => 'Petak',
     'Here you can configure default settings for all calendar events.' => 'Ovdje možete konfigurirati zadane postavke za sve kalendarske događaje.',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => 'Ovdje možete konfigurirati globalne zadane podsjetnike. Te se postavke mogu prebrisati na razini prostora / profila.',
-    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => 'Ovdje možete konfigurirati zadane postavke podsjetnika za ovaj događaj. Korisnici su u mogućnosti prebrisati ove postavke pomoću veze <strong>Postavi podsjetnik</strong>.',
     'Hour' => 'Sat',
     'I\'m attending' => 'Ja prisustvujem',
     'ID' => 'ID',
@@ -130,9 +128,12 @@ return [
     'Event could not be deleted!' => '',
     'Event has been be deleted!' => '',
     'Export as {type}' => '',
+    'Filter' => '',
     'Filter by types' => '',
     'From Newest to Oldest' => '',
     'From Oldest to Newest' => '',
+    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
+    <strong>Set reminder</strong> link.' => '',
     'Include Organizer and Participant Info in Exports' => '',
     'Invited: {users}' => '',
     'JWT Key' => '',

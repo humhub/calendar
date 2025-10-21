@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\calendar\models;
 
 use DateTime;
@@ -32,8 +38,8 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
-use humhub\widgets\Button;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\Html;
 
@@ -215,12 +221,12 @@ class CalendarEntry extends ContentActiveRecord implements
         $labels = [];
 
         if ($this->closed) {
-            $labels[] = Label::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
+            $labels[] = Badge::danger(Yii::t('CalendarModule.base', 'canceled'))->sortOrder(15);
         }
 
         $type = $this->getEventType();
         if ($type) {
-            $labels[] = Label::asColor($type->color, $type->name)->sortOrder(310);
+            $labels[] = Badge::asColor($type->color, $type->name)->sortOrder(310);
         }
 
         return parent::getLabels($labels);
@@ -399,9 +405,8 @@ class CalendarEntry extends ContentActiveRecord implements
             $entries = $root->getRecurrenceInstances()->all();
             $entries[] = $root;
             foreach ($entries as $entry) {
-                if ($entry->content->state != $newState) {
-                    $entry->content->setState($newState);
-                    $entry->content->save();
+                if (!$entry->content->getStateService()->is($newState)) {
+                    $entry->content->getStateService()->update($newState);
                 }
             }
         }
@@ -467,7 +472,7 @@ class CalendarEntry extends ContentActiveRecord implements
     {
         $type = CalendarEntryType::findByContent($this->content)->one();
 
-        return $type ? $type : new CalendarEntryType();
+        return $type ?: new CalendarEntryType();
     }
 
     /**
@@ -601,25 +606,22 @@ class CalendarEntry extends ContentActiveRecord implements
     }
 
     /**
-     * Returns a badge for the snippet
-     *
-     * @return string the timezone this item was originally saved, note this is
-     * @throws \Throwable
+     * @inheritdoc
      */
     public function getBadge()
     {
         if ($this->closed) {
-            return Label::danger(Yii::t('CalendarModule.base', 'canceled'))->right();
+            return Badge::danger(Yii::t('CalendarModule.base', 'canceled'))->right();
         }
 
         if ($this->participation->isEnabled()) {
             $status = $this->getParticipationStatus(Yii::$app->user->identity);
             switch ($status) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
-                    return Label::success(Yii::t('CalendarModule.base', 'Attending'))->right();
+                    return Badge::success(Yii::t('CalendarModule.base', 'Attending'))->right();
                 case CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE:
                     if ($this->allow_maybe) {
-                        return Label::success(Yii::t('CalendarModule.base', 'Interested'))->right();
+                        return Badge::success(Yii::t('CalendarModule.base', 'Interested'))->right();
                     }
             }
         }
@@ -638,7 +640,7 @@ class CalendarEntry extends ContentActiveRecord implements
         return CalendarUtils::generateIcs($event, $singleEvent);
     }
 
-    public function afterMove(ContentContainerActiveRecord $container = null)
+    public function afterMove(?ContentContainerActiveRecord $container = null)
     {
         $this->participation->afterMove($container);
     }
@@ -678,7 +680,7 @@ class CalendarEntry extends ContentActiveRecord implements
         }
         if (
             filter_var($this->location, FILTER_VALIDATE_URL) !== false
-            && strpos($this->location, 'https://') === 0 // restrict to secure URLs (and not HTTP, SSF, FTP, etc.)
+            && str_starts_with($this->location, 'https://') // restrict to secure URLs (and not HTTP, SSF, FTP, etc.)
         ) {
             return Button::asLink($this->location)->link($this->location)->options(['target' => '_blank']);
         }
@@ -765,7 +767,7 @@ class CalendarEntry extends ContentActiveRecord implements
      * @param User $user
      * @return int
      */
-    public function getParticipationStatus(User $user = null)
+    public function getParticipationStatus(?User $user = null)
     {
         return $this->participation->getParticipationStatus($user);
     }
@@ -818,7 +820,7 @@ class CalendarEntry extends ContentActiveRecord implements
      * @return mixed
      * @throws \Throwable
      */
-    public function canRespond(User $user = null)
+    public function canRespond(?User $user = null)
     {
         return $this->participation->canRespond($user);
     }
@@ -1053,7 +1055,7 @@ class CalendarEntry extends ContentActiveRecord implements
      * @inheritDoc
      *
      */
-    public function canMove(ContentContainerActiveRecord $container = null)
+    public function canMove(?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             return true;

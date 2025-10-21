@@ -1,9 +1,35 @@
 Changelog
 =========
 
-1.7.21 (Unreleased)
--------------------------
+1.8.4 (Unreleased)
+-----------------------
+- Fix #609: Fix for PHP 8.4
+- Fix #621: Implemented `module-coding-standards`
 - Fix #620: Fix CalendarQuery error
+
+1.8.3 (October 9, 2025)
+-----------------------
+- Fix #594: Wall Entry Buttons Active #594
+- Fix #595: Participants Filter styling
+- Fix #598: Misaligned calendar filter "Select calendars" on mobile view  
+- Fix #599: Fixed ics export for recurring events
+- Enh #602: Add Filter toggle button
+- Enh #604: Improved Module Test GitHub Actions
+
+1.8.2 (September 11, 2025)
+--------------------------
+- Fix #591: Fix RuntimeException in caldav sync
+- Enh #590: Do not specify calendar name on single event export ics
+
+1.8.1 (September 10, 2025)
+--------------------------
+- Fix #589: Fixed syntax error in view
+
+1.8.0 (August 27, 2025)
+-----------------------
+- Fix #481: Update module resources path
+- Enh #549: Migration to Bootstrap 5 for HumHub 1.18
+- Enh #378: Use new content state service
 
 1.7.20 (October 20, 2025)
 -------------------------

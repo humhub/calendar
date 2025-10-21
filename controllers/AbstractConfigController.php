@@ -153,7 +153,7 @@ abstract class AbstractConfigController extends ContentContainerController
         $this->redirect(Url::toConfig($this->contentContainer));
     }
 
-    protected function validateEntry(CalendarEntryType $type = null)
+    protected function validateEntry(?CalendarEntryType $type = null)
     {
         if (!$type) {
             throw new HttpException(404);

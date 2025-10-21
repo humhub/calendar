@@ -11,14 +11,9 @@
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $createUrl string */
 
-use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\widgets\ContainerConfigMenu;
 use humhub\modules\calendar\widgets\GlobalConfigMenu;
-use humhub\widgets\ActiveForm;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
-use humhub\widgets\Tabs;
-use \yii\helpers\Html;
+use humhub\widgets\modal\ModalButton;
 use yii\widgets\ListView;
 
 ?>
@@ -27,7 +22,7 @@ use yii\widgets\ListView;
 
     <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
 
-    <?php if($contentContainer === null) : ?>
+    <?php if ($contentContainer === null) : ?>
         <?= GlobalConfigMenu::widget() ?>
     <?php else: ?>
         <?= ContainerConfigMenu::widget()?>
@@ -40,7 +35,7 @@ use yii\widgets\ListView;
             <?= ModalButton::success(Yii::t('CalendarModule.config', 'Create new type'))->load($createUrl)->icon('fa-plus')->right(); ?>
             </h4>
 
-            <div class="help-block">
+            <div class="form-text">
                 <?= Yii::t('CalendarModule.config', 'Here you can manage your event types.') ?>
             </div>
 

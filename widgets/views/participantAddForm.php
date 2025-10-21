@@ -6,9 +6,9 @@
  */
 
 use humhub\modules\calendar\models\forms\CalendarEntryParticipationForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 
 /* @var ActiveForm $form */
@@ -17,9 +17,9 @@ use yii\helpers\Html;
 /* @var string $addParticipantsUrl */
 /* @var array $statuses */
 ?>
-<?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form']) ?>
-    <div class="media">
-        <div class="media-body">
+<?= Html::beginTag('div', ['class' => 'calendar-entry-new-participants-form pt-3']) ?>
+    <div class="d-flex flex-row">
+        <div class="flex-fill pe-1">
             <?= UserPickerField::widget([
                 'model' => $model,
                 'attribute' => 'newParticipants',
@@ -28,11 +28,11 @@ use yii\helpers\Html;
                 'url' => $searchUsersUrl,
             ]) ?>
         </div>
-        <div class="media-body">
+        <div class="pe-1">
             <?= $form->field($model, 'newParticipantStatus')->dropDownList($statuses)->label(false) ?>
         </div>
-        <div class="media-body">
-            <?= Button::info()->sm()
+        <div>
+            <?= Button::accent()->sm()
                 ->icon('send')
                 ->action('add', $addParticipantsUrl) ?>
         </div>
@@ -45,4 +45,4 @@ use yii\helpers\Html;
     <?php endif; ?>
 <?= Html::endTag('div') ?>
 
-<?= Html::tag('hr', '', ['style' => 'margin:10px 18px']) ?>
+<?= Html::tag('hr', '', ['class' => 'my-3']) ?>

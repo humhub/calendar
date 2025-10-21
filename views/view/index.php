@@ -1,11 +1,11 @@
 <?php
 
+use humhub\helpers\ThemeHelper;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\CalendarTypeLegend;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 
 /* @var $filters array */
 /* @var $canConfigure bool */

@@ -1,0 +1,19 @@
+#calendar-entry-form {
+  padding-top: 0;
+
+  .tab-menu {
+    margin-bottom: 0;
+  }
+
+  .bootstrap-timepicker-widget {
+    min-width: 140px;
+  }
+
+  .ProseMirror-menubar-wrapper {
+    z-index: 8;
+  }
+
+  .ProseMirror {
+    min-height: 150px !important;
+  }
+}

@@ -287,7 +287,7 @@ class VCalendar extends Model
         // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
         if (!empty($item->getExdate())) {
             $result['EXDATE'] = [];
-            foreach (explode(',', $item->getExdate()) as $exdate) {
+            foreach (explode(',', (string) $item->getExdate()) as $exdate) {
                 $result['EXDATE'][] = $exdate;
             }
         }
@@ -329,7 +329,7 @@ class VCalendar extends Model
         }
         try {
             $tz = new \DateTimeZone($tzid);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return false;
         }
         // get all transitions for one year back/ahead

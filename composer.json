@@ -1,7 +1,6 @@
 {
   "name": "humhub/humhub-calendar",
-  "description": "HumHub calendar module",
-  "type": "library",
+  "type": "humhub-module",
   "require": {
     "sabre/vobject": "^4",
     "simshaun/recurr": "^4",
@@ -9,7 +8,20 @@
     "sabre/uri": "^2",
     "sabre/dav": "~4.6.0"
   },
+  "require-dev": {
+    "humhub/module-coding-standards": "dev-main"
+  },
   "config": {
     "process-timeout": 1800
+  },
+  "repositories": {
+    "humhub-module-coding-standards": {
+      "type": "vcs",
+      "url": "https://github.com/humhub/module-coding-standards.git"
+    }
+  },
+  "scripts": {
+    "rector": "vendor/bin/rector process --config=vendor/humhub/module-coding-standards/rector.php",
+    "fixer": "vendor/bin/php-cs-fixer fix --config=vendor/humhub/module-coding-standards/php-cs-fixer.php"
   }
 }

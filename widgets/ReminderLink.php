@@ -9,11 +9,11 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 use Yii;
 
 /**
@@ -30,7 +30,7 @@ class ReminderLink extends Widget
     public function run()
     {
         if (!$this->entry instanceof ContentActiveRecord || !$this->entry instanceof CalendarEventIF) {
-            return;
+            return '';
         }
 
         return Html::tag(

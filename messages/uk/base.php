@@ -63,6 +63,7 @@ return [
     'Event not found!' => '',
     'Export as {type}' => '',
     'Files' => '',
+    'Filter' => '',
     'Filter by types' => '',
     'Friday' => '',
     'From Newest to Oldest' => '',
@@ -70,7 +71,7 @@ return [
     'Here you can configure default settings for all calendar events.' => '',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => '',
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => '',
+    <strong>Set reminder</strong> link.' => '',
     'Hour' => '',
     'I\'m attending' => '',
     'In order to add events to your profile, you have to enable the calendar module first.' => '',

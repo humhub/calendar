@@ -63,8 +63,6 @@ return [
     'From Oldest to Newest' => 'Du plus ancien au plus récent',
     'Here you can configure default settings for all calendar events.' => 'Ici vous pouvez configurer les rappels par défaut pour tous les évènements.',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => 'Ici vous pouvez configurer les rappels par défaut.  Ces paramètres peuvent-être outrepassés par les réglages des espaces ou des profils.',
-    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => 'Ici vous pouvez configurer les rappels par défaut pour cet évènement. Les utilisateurs peuvent outrepasser ces réglages avec le lien <strong>Régler les rappels</strong>.',
     'Hour' => 'Heure',
     'I\'m attending' => 'Je participe',
     'ID' => 'ID',
@@ -131,6 +129,7 @@ return [
     'Upcoming {type}' => 'À venir {type}',
     'Upcoming {type}: {title}' => 'À venir {type} : {title}',
     'Use default reminder' => 'Utiliser les rappels par défaut',
+    'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => 'Utilisé pour la génération sécurisée des URL de flux iCal et l\'authentification CalDAV. La modification de cette clé révoquera toutes les URL iCal et connexions CalDAV existantes. Si cette clé est vide, une clé aléatoire est générée automatiquement.',
     'User birthdays' => 'Anniversaires des utilisateurs et utilisatrices',
     'Wednesday' => 'Mercredi',
     'Week' => 'Semaine',
@@ -163,5 +162,7 @@ return [
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} vient de vous inviter à l’événement « {contentTitle} » dans l’espace {spaceName} ; l’événement commence à {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} vient de vous inviter à l’événement « {contentTitle} ».',
     '{name} Calendar' => 'Calendrier {name}',
-    'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',
+    'Filter' => '',
+    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
+    <strong>Set reminder</strong> link.' => '',
 ];

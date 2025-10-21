@@ -1,0 +1,10 @@
+name: Rector
+
+on:
+  schedule:
+    - cron: "0 5 * * 5"
+  workflow_dispatch:
+
+jobs:
+  rector:
+    uses: humhub/module-coding-standards/.github/workflows/rector-auto-pr.yaml@main

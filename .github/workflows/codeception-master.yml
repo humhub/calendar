@@ -1,0 +1,14 @@
+name: Codeception Tests - master
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * 1"
+
+jobs:
+  tests:
+    uses: humhub/module-coding-standards/.github/workflows/codeception-master.yml@main
+    with:
+      module-id: calendar
+      use-rest-module: true

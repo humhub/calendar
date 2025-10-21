@@ -69,7 +69,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         return $this->entry->participation_mode != self::PARTICIPATION_MODE_NONE;
     }
 
-    public function getParticipationStatus(User $user = null)
+    public function getParticipationStatus(?User $user = null)
     {
         if (!$user) {
             return static::PARTICIPATION_STATUS_NONE;
@@ -142,7 +142,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             return $this->entry->hasMany(User::class, ['id' => 'user_id'])->via('participantEntries');
         }
 
-        return $this->entry->hasMany(User::class, ['id' => 'user_id'])->via('participantEntries', function ($query) use ($status) {
+        return $this->entry->hasMany(User::class, ['id' => 'user_id'])->via('participantEntries', function ($query) use ($status): void {
             /* @var $query ActiveQuery */
             $query->andWhere(['IN', 'calendar_entry_participant.participation_state', $status]);
         });
@@ -171,7 +171,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         Yii::createObject(['class' => $notificationClass])->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($participants);
     }
 
-    public function afterMove(ContentContainerActiveRecord $container = null)
+    public function afterMove(?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             return;
@@ -237,7 +237,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      * @return CalendarEntryParticipant|null
      * @throws \Throwable
      */
-    public function findParticipant(User $user = null): ?CalendarEntryParticipant
+    public function findParticipant(?User $user = null): ?CalendarEntryParticipant
     {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
@@ -257,7 +257,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      * @return bool
      * @throws \Throwable
      */
-    public function canRespond(User $user = null)
+    public function canRespond(?User $user = null)
     {
         if ($this->entry->participation_mode == self::PARTICIPATION_MODE_NONE) {
             return false;
@@ -305,7 +305,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             || ($this->getParticipantCount(CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED) < $this->entry->max_participants);
     }
 
-    public function isParticipant(User $user = null, $includeMaybe = true)
+    public function isParticipant(?User $user = null, $includeMaybe = true)
     {
         $states = $includeMaybe
             ? [static::PARTICIPATION_STATUS_ACCEPTED, static::PARTICIPATION_STATUS_MAYBE]
@@ -325,7 +325,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         ]);
     }
 
-    public function isInvited(User $user = null)
+    public function isInvited(?User $user = null)
     {
         if ($user === null && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
@@ -334,7 +334,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         return $this->getParticipationStatus($user) === static::PARTICIPATION_STATUS_INVITED;
     }
 
-    public function isShowParticipationInfo(User $user = null)
+    public function isShowParticipationInfo(?User $user = null)
     {
         if (empty($this->entry->participant_info) || !$this->isEnabled()) {
             return false;
@@ -365,23 +365,17 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
             'profile.lastname',
             [
                 'label' => 'Title',
-                'value' => function (User $user) {
-                    return $user->getDisplayNameSub();
-                },
+                'value' => fn(User $user) => $user->getDisplayNameSub(),
             ],
             [
                 'label' => Yii::t('CalendarModule.base', 'Participation Status'),
-                'value' => function (User $user) use ($statuses) {
-                    return $statuses[$this->getParticipationStatus($user)] ?? '';
-                },
+                'value' => fn(User $user) => $statuses[$this->getParticipationStatus($user)] ?? '',
             ],
         ];
         if (!Yii::$app->user->isGuest && Yii::$app->user->can(ManageUsers::class)) {
             $columns[] = [
                 'label' => Yii::t('CalendarModule.base', 'Email'),
-                'value' => function (User $user) {
-                    return $user->email;
-                },
+                'value' => fn(User $user) => $user->email,
             ];
             $columns[] = 'profile.gender';
             $columns[] = 'profile.city';

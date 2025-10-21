@@ -220,13 +220,13 @@ class RecurrenceFormModel extends Model
 
         try {
             $this->setRuleInterval();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->addError('interval', Yii::t('CalendarModule.base', 'Invalid interval given'));
         }
 
         try {
             $this->setRuleFrequency();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->addError('frequency', Yii::t('CalendarModule.base', 'Invalid frequency given'));
         }
 
@@ -237,7 +237,7 @@ class RecurrenceFormModel extends Model
                 $this->weekDays = [$this->getStartDayOfWeek()];
             }
 
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             if ($this->interval == Frequency::MONTHLY) {
                 $this->addError('monthDaySelection', Yii::t('CalendarModule.base', 'Invalid day of month given'));
             } elseif ($this->interval == Frequency::WEEKLY) {
@@ -253,7 +253,7 @@ class RecurrenceFormModel extends Model
      * @throws InvalidRRule
      * @throws \Throwable
      */
-    public function save(RecurrentEventIF $original = null)
+    public function save(?RecurrentEventIF $original = null)
     {
         if (!$this->validate()) {
             return false;
@@ -398,7 +398,7 @@ class RecurrenceFormModel extends Model
 
     private function translateDayOfWeekToRrule($dow)
     {
-        return isset($this->dayOfWeekMap[$dow]) ? $this->dayOfWeekMap[$dow] : null;
+        return $this->dayOfWeekMap[$dow] ?? null;
     }
 
     public function getMonthDaySelection()
@@ -488,7 +488,7 @@ class RecurrenceFormModel extends Model
 
     private function getMonthlyPositionOfStart()
     {
-        $dayNum = strtolower($this->getStartDayOfMonth());
+        $dayNum = strtolower((string) $this->getStartDayOfMonth());
         return (int) floor(($dayNum - 1) / 7) + 1;
     }
 
@@ -497,18 +497,13 @@ class RecurrenceFormModel extends Model
      */
     private function getMonthlyPositionOfStartFormatted()
     {
-        switch ($this->getMonthlyPositionOfStart()) {
-            case 2:
-                return Yii::t('CalendarModule.base', 'second');
-            case 3:
-                return Yii::t('CalendarModule.base', 'third');
-            case 4:
-                return Yii::t('CalendarModule.base', 'forth');
-            case 5:
-                return Yii::t('CalendarModule.base', 'last');
-            default:
-                return Yii::t('CalendarModule.base', 'first');
-        }
+        return match ($this->getMonthlyPositionOfStart()) {
+            2 => Yii::t('CalendarModule.base', 'second'),
+            3 => Yii::t('CalendarModule.base', 'third'),
+            4 => Yii::t('CalendarModule.base', 'forth'),
+            5 => Yii::t('CalendarModule.base', 'last'),
+            default => Yii::t('CalendarModule.base', 'first'),
+        };
     }
 
     public function getEndTypeSelection()

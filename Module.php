@@ -50,11 +50,6 @@ class Module extends ContentContainerModule
     /**
      * @inheritdoc
      */
-    public $resourcesPath = 'resources';
-
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         parent::init();
@@ -88,7 +83,7 @@ class Module extends ContentContainerModule
      */
     public static function registerAutoloader()
     {
-        if (class_exists('\Sabre\VObject\Component\VCalendar')) {
+        if (class_exists(\Sabre\VObject\Component\VCalendar::class)) {
             return;
         }
 

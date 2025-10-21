@@ -36,7 +36,7 @@ class RRuleHelper
 
     public static function toArray($rrule)
     {
-        $rrule  = strtoupper($rrule);
+        $rrule  = strtoupper((string) $rrule);
         $rrule  = trim($rrule, ';');
         $rrule  = trim($rrule, "\n");
         $rows   = explode("\n", $rrule);

@@ -34,7 +34,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                 <?= Yii::t('CalendarModule.config', 'Calendar Configuration'); ?>
             </h4>
 
-            <div class="help-block">
+            <div class="form-text">
                 <?= Yii::t('CalendarModule.config', 'Here you can manage and disable different calendars.') ?>
             </div>
 

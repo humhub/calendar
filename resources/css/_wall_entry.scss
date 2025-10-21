@@ -1,0 +1,27 @@
+.calendar-wall-entry {
+  .calendar-wall-entry-section, .event-info-section {
+    margin-bottom: 10px;
+  }
+
+  .event-info-section-content {
+    padding-left: 25px;
+  }
+
+  .event-participation-buttons {
+    margin: 32px 0 15px;
+
+    button {
+      margin-right: 8px;
+    }
+  }
+
+  [data-action-click] {
+    cursor: pointer;
+  }
+
+  .event-info-section-content h1 {
+    margin: 0 0 5px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+}

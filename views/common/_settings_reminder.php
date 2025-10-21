@@ -18,7 +18,7 @@ $helpBlock = $reminderSettings->isGlobalSettings()
         <?= Yii::t('CalendarModule.base', 'Default reminder settings') ?>
     </h4>
 
-    <div class="help-block">
+    <div class="form-text">
         <?= $helpBlock ?>
     </div>
 

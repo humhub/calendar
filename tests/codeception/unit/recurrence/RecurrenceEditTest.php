@@ -82,9 +82,8 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         /* @var CalendarEntry[] $allEntries */
         $allEntries = $this->rootEvent->getRecurrenceInstances()->all();
         array_unshift($allEntries, $this->rootEvent);
-        $anyRecurrenceEntry = $allEntries[rand(1, count($allEntries) - 1)];
-        $anyRecurrenceEntry->content->setState(Content::STATE_PUBLISHED);
-        $anyRecurrenceEntry->content->save();
+        $anyRecurrenceEntry = $allEntries[random_int(1, count($allEntries) - 1)];
+        $anyRecurrenceEntry->content->getStateService()->publish();
 
         // Check root and all child events are restored automatically as well
         foreach ($allEntries as $entry) {

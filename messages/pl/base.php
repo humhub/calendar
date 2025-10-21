@@ -62,8 +62,6 @@ return [
     'From Oldest to Newest' => 'Od najstarszych do najnowszych',
     'Here you can configure default settings for all calendar events.' => 'Tutaj możesz dostosować domyślne ustawienia dla wszystkich wydarzeń.',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => 'Tutaj możesz ustawić globalne domyślne przypomnienia. Te ustawienia mogą zostać zastąpione na poziomie strefy/profilu.',
-    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
-        <strong>Set reminder</strong> link.' => 'Tutaj możesz ustawić domyślne ustawienia przypomnień dla tego wydarzenia. Użytkownicy mogą nadpisać te ustawienia przez odnośnik  <strong>Ustaw przypomnienie</strong>.',
     'Hour' => 'Godzina',
     'I\'m attending' => 'Biorę udział',
     'ID' => 'Identyfikator',
@@ -160,6 +158,9 @@ return [
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} zaprosił cię na wydarzenie "{contentTitle}".',
     '{name} Calendar' => '{name} kalendarza',
     'Calendar event content ID' => '',
+    'Filter' => '',
+    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the
+    <strong>Set reminder</strong> link.' => '',
     'Leave empty to list all events. Enter 0 to display only today\'s events.' => '',
     'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',
     'When enabled, calendar exports (ics, iCal, CalDAV) will include the organizer\'s and participant\'s names and email addresses. Disable to exclude this information for increased privacy.' => '',

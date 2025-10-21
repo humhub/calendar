@@ -186,7 +186,7 @@ class CalendarDateFormatter extends Component
     public static function getTimezoneLabel($timeZone)
     {
         $entries = static::getTimeZoneItems();
-        return isset($entries[$timeZone]) ? $entries[$timeZone] : $timeZone;
+        return $entries[$timeZone] ?? $timeZone;
     }
 
     public static function getTimeZoneItems()

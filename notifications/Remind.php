@@ -9,7 +9,7 @@
 
 namespace humhub\modules\calendar\notifications;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\notification\components\BaseNotification;
