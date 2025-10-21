@@ -13,4 +13,3 @@ jobs:
     with:
       module-id: calendar
       use-rest-module: true
-      install-composer: true
