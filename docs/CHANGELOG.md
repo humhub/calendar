@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.21 (Unreleased)
+-------------------------
+- Fix #620: Fix CalendarQuery error
+
 1.7.20 (October 20, 2025)
 -------------------------
 - Enh #608: Improved `Upcoming events` widget to include events from followed spaces and profiles
