@@ -1,14 +1,15 @@
-name: PHP Codeception Tests - next
+name: Codeception Tests - min version
 
 on:
   push:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 0"
+    - cron: "0 4 * * 1"
+
 
 jobs:
   tests:
-    uses: humhub/actions/.github/workflows/module-tests-next.yml@main
+    uses: humhub/module-coding-standards/.github/workflows/codeception-min-version.yml@main
     with:
       module-id: calendar
       use-rest-module: true

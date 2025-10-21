@@ -4,6 +4,7 @@ Changelog
 1.8.4 (Unreleased)
 -----------------------
 - Fix #609: Fix for PHP 8.4
+- Fix #621: Implemented `module-coding-standards`
 
 1.8.3 (October 9, 2025)
 -----------------------
