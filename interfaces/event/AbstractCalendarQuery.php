@@ -1128,8 +1128,6 @@ abstract class AbstractCalendarQuery extends Component
         throw new FilterNotSupportedException('Participant filter not supported for this query');
     }
 
-    public function filterOrIsParticipant() {}
-
     /**
      * Can be used to pre filter the result list
      * @param $result
