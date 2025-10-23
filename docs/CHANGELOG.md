@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.4 (Unreleased)
------------------------
+1.8.4 (October 23, 2025)
+------------------------
 - Fix #609: Fix for PHP 8.4
 - Fix #621: Implemented `module-coding-standards`
 - Fix #620: Fix CalendarQuery error
