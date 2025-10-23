@@ -5,6 +5,7 @@ Changelog
 -----------------------
 - Fix #609: Fix for PHP 8.4
 - Fix #621: Implemented `module-coding-standards`
+- Fix #620: Fix CalendarQuery error
 
 1.8.3 (October 9, 2025)
 -----------------------
@@ -30,9 +31,10 @@ Changelog
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 - Enh #378: Use new content state service
 
-1.7.20 (Unreleased)
----------------------------
+1.7.20 (October 20, 2025)
+-------------------------
 - Enh #608: Improved `Upcoming events` widget to include events from followed spaces and profiles
+- Enh #618: Fixed a PHP error that occurred while fetching `organizer` of `Recurrence item`
 
 1.7.19 (September 26, 2025)
 ---------------------------
