@@ -14,7 +14,6 @@ use DateTime;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ActiveQueryContent;
@@ -22,6 +21,7 @@ use Yii;
 use yii\base\Component;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 
 /**
  * Created by PhpStorm.
@@ -786,11 +786,7 @@ abstract class AbstractCalendarQuery extends Component
         }
     }
 
-    /**
-     * Sets up the date interval filter with respect to the openRange setting.
-     * This will also include all recurrent event roots if $expand is true and recurrence evets are supported
-     */
-    protected function setupDateCriteria()
+    protected function createDateCriteriaQuery(Query $query = null)
     {
         if ($this->_from) {
             $fromTime = clone $this->_from;
@@ -806,21 +802,21 @@ abstract class AbstractCalendarQuery extends Component
             //Search for all dates with start and/or end within the given range
 
             if ($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
-                $this->_query->andFilterWhere(['or',
+                $query->andFilterWhere(['or',
                     ['and', $this->getStartCriteria($this->_from, '<'), $this->getEndCriteria($this->_to, '>')],
                     ['and', $this->getStartCriteria($this->_from, '>='), $this->getStartCriteria($this->_to, '<')],
                     ['and', $this->getEndCriteria($this->_from, '>'), $this->getEndCriteria($this->_to, '<=')],
                     $this->isRecurrenceRootCondition(),
                 ]);
             } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
-                $this->_query->andFilterWhere(['or',
+                $query->andFilterWhere(['or',
                     ['and', $this->getStartCriteria($fromTime, '<'), $this->getEndCriteria($toTime, '>')],
                     ['and', $this->getStartCriteria($fromTime, '>='), $this->getStartCriteria($toTime, '<')],
                     ['and', $this->getEndCriteria($fromTime, '>'), $this->getEndCriteria($toTime, '<=')],
                     $this->isRecurrenceRootCondition(),
                 ]);
             } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
-                $this->_query->andFilterWhere(
+                $query->andFilterWhere(
                     ['or',
                         ['or',
                             ['and',
@@ -847,11 +843,11 @@ abstract class AbstractCalendarQuery extends Component
         } else {
             if ($this->_from) {
                 if ($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
-                    $this->_query->andWhere(['or', $this->getStartCriteria($this->_from, '>='), $this->isRecurrenceRootCondition()]);
+                    $query->andWhere(['or', $this->getStartCriteria($this->_from, '>='), $this->isRecurrenceRootCondition()]);
                 } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
-                    $this->_query->andWhere(['or', $this->getStartCriteria($fromTime, '>='), $this->isRecurrenceRootCondition()]);
+                    $query->andWhere(['or', $this->getStartCriteria($fromTime, '>='), $this->isRecurrenceRootCondition()]);
                 } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
-                    $this->_query->andWhere(
+                    $query->andWhere(
                         ['or',
                             ['and', [$this->allDayField => 0], $this->getStartCriteria($fromTime, '>=')],
                             ['and', [$this->allDayField => 1], $this->getStartCriteria($this->_from, '>=')],
@@ -863,11 +859,11 @@ abstract class AbstractCalendarQuery extends Component
 
             if ($this->_to) {
                 if ($this->dateQueryType === static::DATE_QUERY_TYPE_DATE) {
-                    $this->_query->andWhere(['or', $this->getEndCriteria($this->_to, '<='), $this->isRecurrenceRootCondition()]);
+                    $query->andWhere(['or', $this->getEndCriteria($this->_to, '<='), $this->isRecurrenceRootCondition()]);
                 } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_TIME) {
-                    $this->_query->andWhere(['or', $this->getEndCriteria($toTime, '<='), $this->isRecurrenceRootCondition()]);
+                    $query->andWhere(['or', $this->getEndCriteria($toTime, '<='), $this->isRecurrenceRootCondition()]);
                 } elseif ($this->dateQueryType === static::DATE_QUERY_TYPE_MIXED) {
-                    $this->_query->andWhere(
+                    $query->andWhere(
                         ['or',
                             ['and', [$this->allDayField => 0], $this->getEndCriteria($toTime, '<=')],
                             ['and', [$this->allDayField => 1], $this->getEndCriteria($this->_to, '<=')],
@@ -878,6 +874,15 @@ abstract class AbstractCalendarQuery extends Component
 
             }
         }
+    }
+
+    /**
+     * Sets up the date interval filter with respect to the openRange setting.
+     * This will also include all recurrent event roots if $expand is true and recurrence evets are supported
+     */
+    protected function setupDateCriteria()
+    {
+        $this->createDateCriteriaQuery($this->_query);
     }
 
     /**
@@ -1124,6 +1129,11 @@ abstract class AbstractCalendarQuery extends Component
     }
 
     public function filterIsParticipant()
+    {
+        throw new FilterNotSupportedException('Participant filter not supported for this query');
+    }
+
+    public function filterOrIsParticipant()
     {
         throw new FilterNotSupportedException('Participant filter not supported for this query');
     }
