@@ -1182,12 +1182,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/humhub/module-coding-standards.git",
-                "reference": "c569737c17577d7003d5afe39dd57d281df0b1f6"
+                "reference": "eacdf97a79cb9243adcce20332c80ef0de271c6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/humhub/module-coding-standards/zipball/c569737c17577d7003d5afe39dd57d281df0b1f6",
-                "reference": "c569737c17577d7003d5afe39dd57d281df0b1f6",
+                "url": "https://api.github.com/repos/humhub/module-coding-standards/zipball/eacdf97a79cb9243adcce20332c80ef0de271c6e",
+                "reference": "eacdf97a79cb9243adcce20332c80ef0de271c6e",
                 "shasum": ""
             },
             "require": {
@@ -1222,7 +1222,7 @@
                 "source": "https://github.com/humhub/module-coding-standards/tree/main",
                 "issues": "https://github.com/humhub/module-coding-standards/issues"
             },
-            "time": "2025-10-17T18:31:26+00:00"
+            "time": "2025-10-23T10:11:33+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -1908,16 +1908,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.2.3",
+            "version": "2.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "d27f976a332a87b5d03553c2e6f04adbe5da034f"
+                "reference": "fb9418af7777dfb1c87a536dc58398b5b07c74b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/d27f976a332a87b5d03553c2e6f04adbe5da034f",
-                "reference": "d27f976a332a87b5d03553c2e6f04adbe5da034f",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/fb9418af7777dfb1c87a536dc58398b5b07c74b9",
+                "reference": "fb9418af7777dfb1c87a536dc58398b5b07c74b9",
                 "shasum": ""
             },
             "require": {
@@ -1956,7 +1956,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.2.3"
+                "source": "https://github.com/rectorphp/rector/tree/2.2.5"
             },
             "funding": [
                 {
@@ -1964,7 +1964,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-11T21:50:23+00:00"
+            "time": "2025-10-23T11:22:37+00:00"
         },
         {
             "name": "sebastian/diff",

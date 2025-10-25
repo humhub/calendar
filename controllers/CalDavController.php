@@ -55,7 +55,7 @@ class CalDavController extends Controller
         $accept = Yii::$app->request->headers->get('Accept', []);
 
         if (is_string($accept)) {
-            $accept = array_map('trim', explode(',', $accept));
+            $accept = array_map(trim(...), explode(',', $accept));
             $accept = array_map(fn($type) => strtok($type, ';'), $accept);
         }
 
