@@ -2,9 +2,8 @@
 nbproject
 .idea/*
 .gitmodules
-
 node_modules
-
+composer.lock
 tests/codeception/_support/_generated/*
 tests/php_errors.log
 vendor/
