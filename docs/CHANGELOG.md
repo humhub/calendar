@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.5 (Unreleased)
+------------------------
+- Fix #630: Fix sidebar widget issue
+
 1.8.4 (October 23, 2025)
 ------------------------
 - Fix #609: Fix for PHP 8.4
