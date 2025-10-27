@@ -786,7 +786,7 @@ abstract class AbstractCalendarQuery extends Component
         }
     }
 
-    protected function createDateCriteriaQuery(Query $query = null)
+    protected function createDateCriteriaQuery(Query $query)
     {
         if ($this->_from) {
             $fromTime = clone $this->_from;
