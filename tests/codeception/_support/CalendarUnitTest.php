@@ -70,8 +70,14 @@ class CalendarUnitTest extends HumHubDbTestCase
         if ($container) {
             $entry->content->container = $container;
         }
+$a = $entry->save();
+        $this->assertTrue($a);
 
-        $this->assertTrue($entry->save());
+        if (!$a) {
+
+        var_dump($entry->getFirstErrors());die;
+        }
+
         return $entry;
     }
 }
