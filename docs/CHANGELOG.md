@@ -35,6 +35,10 @@ Changelog
 - Enh #549: Migration to Bootstrap 5 for HumHub 1.18
 - Enh #378: Use new content state service
 
+1.7.21 (October 28, 2025)
+-------------------------
+- Fix #629: Fix sidebar widget issue
+
 1.7.20 (October 20, 2025)
 -------------------------
 - Enh #608: Improved `Upcoming events` widget to include events from followed spaces and profiles
