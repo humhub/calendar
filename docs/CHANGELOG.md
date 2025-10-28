@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.8.5 (Unreleased)
+1.8.5 (October 28, 2025)
 ------------------------
 - Fix #630: Fix sidebar widget issue
 
