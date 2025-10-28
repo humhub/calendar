@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.7.21 (Unreleased)
+1.7.21 (October 28, 2025)
 -------------------------
 - Fix #629: Fix sidebar widget issue
 
