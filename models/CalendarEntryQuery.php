@@ -105,7 +105,7 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
                 CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
                 CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
             ]],
-            $onlyParticipatingQuery->where
+            $onlyParticipatingQuery->where,
         ]);
     }
 
