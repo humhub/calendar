@@ -159,7 +159,7 @@ return [
     'By upcoming events first' => '',
     'Calendar event content ID' => '',
     'Filter' => '',
-    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the<br/><strong>Set reminder</strong> link.' => 'vazgen',
+    'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the<br/><strong>Set reminder</strong> link.' => '',
     'In addition to names, attendees’ email addresses will be included in ICS and CalDAV exports. Enable only if allowed by your privacy policy or data protection rules.' => '',
     'Include participant information in exports' => '',
     'Used for secure iCal feed URL generation and CalDAV authentication. Changing this key will revoke all existing iCal URLs and CalDAV logins. If empty, a random key is generated automatically.' => '',
