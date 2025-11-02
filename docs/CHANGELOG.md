@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.6 (Unreleased)
+------------------------
+- Fix #635: Fixed duplicated export links 
+
 1.8.5 (October 28, 2025)
 ------------------------
 - Fix #630: Fix sidebar widget issue
