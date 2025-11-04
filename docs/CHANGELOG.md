@@ -4,6 +4,7 @@ Changelog
 1.8.6 (Unreleased)
 ------------------------
 - Fix #635: Fixed duplicated export links 
+- Enh: In the calendar, auto-contrast the text color from the event Type color
 
 1.8.5 (October 28, 2025)
 ------------------------

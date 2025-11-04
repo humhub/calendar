@@ -13,12 +13,12 @@ use Exception;
 use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\Url;
-use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\CalendarEventStatusIF;
+use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
+use humhub\modules\content\components\ContentActiveRecord;
 use yii\base\InvalidConfigException;
 
 class FullCalendar
@@ -36,6 +36,7 @@ class FullCalendar
             'title' => static::getTitle($entry),
             'editable' => false,
             'backgroundColor' => Html::encode($calendarService->getEventColor($entry)),
+            'textColor' => Html::encode($calendarService->getEventColorContrast($entry)),
             'allDay' => $entry->isAllDay(),
             'viewUrl' => $entry->getUrl(),
             'viewMode' => FullCalendarEventIF::VIEW_MODE_REDIRECT,
