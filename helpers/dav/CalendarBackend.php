@@ -196,7 +196,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             throw new ServiceUnavailable();
         }
 
-        $etag = md5($event->getLastModified()->getTimestamp());
+        $etag = md5((string) $event->getLastModified()->getTimestamp());
 
         return "\"$etag\"";
     }
