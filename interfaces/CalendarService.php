@@ -201,15 +201,15 @@ class CalendarService extends Component
             $minContrast = (float)Yii::$app->view->theme->variable('min-contrast-ratio', 3);
         }
 
-        $hex = ltrim($this->getEventColor($event), '#');
+        $hex = ltrim((string) $this->getEventColor($event), '#');
         $r = hexdec(substr($hex, 0, 2)) / 255;
         $g = hexdec(substr($hex, 2, 2)) / 255;
         $b = hexdec(substr($hex, 4, 2)) / 255;
 
         // Calculate relative luminance
-        $r = $r <= 0.03928 ? $r / 12.92 : pow(($r + 0.055) / 1.055, 2.4);
-        $g = $g <= 0.03928 ? $g / 12.92 : pow(($g + 0.055) / 1.055, 2.4);
-        $b = $b <= 0.03928 ? $b / 12.92 : pow(($b + 0.055) / 1.055, 2.4);
+        $r = $r <= 0.03928 ? $r / 12.92 : (($r + 0.055) / 1.055) ** 2.4;
+        $g = $g <= 0.03928 ? $g / 12.92 : (($g + 0.055) / 1.055) ** 2.4;
+        $b = $b <= 0.03928 ? $b / 12.92 : (($b + 0.055) / 1.055) ** 2.4;
         $lum = 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
 
         // Calculate contrast with white and black
