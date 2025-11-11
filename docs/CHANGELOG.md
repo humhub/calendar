@@ -5,6 +5,7 @@ Changelog
 ------------------------
 - Fix #635: Fixed duplicated export links 
 - Enh: In the calendar, auto-contrast the text color from the event Type color
+- Fix #639: Fix duplicated entries in `Upcoming Events` widget
 
 1.8.5 (October 28, 2025)
 ------------------------
