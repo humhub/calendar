@@ -26,7 +26,7 @@ class EventSync extends BaseObject
     private const PARTICIPATION_STATE_MAYBE = 'TENTATIVE';
     private const PARTICIPATION_STATE_INVITED = 'NEEDS-ACTION';
 
-    private const PARTICIPATION_STATE_MAP = [
+    public const PARTICIPATION_STATE_MAP = [
         self::PARTICIPATION_STATE_NONE => CalendarEntryParticipant::PARTICIPATION_STATE_NONE,
         self::PARTICIPATION_STATE_ACCEPTED => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED,
         self::PARTICIPATION_STATE_DECLINED => CalendarEntryParticipant::PARTICIPATION_STATE_DECLINED,

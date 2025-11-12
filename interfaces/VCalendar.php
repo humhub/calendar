@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeZone;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\dav\EventSync;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
@@ -29,9 +30,6 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConvert
 class VCalendar extends Model
 {
     public const PRODID = '-//HumHub Org//HumHub Calendar 0.7//EN';
-    public const PARTICIPATION_STATUS_ACCEPTED = 'ACCEPTED';
-    public const PARTICIPATION_STATUS_DECLINED = 'DECLINED';
-    public const PARTICIPATION_STATUS_TENTATIVE = 'TENTATIVE';
 
     public const MAX_PARTICIPANTS_COUNT = 200;
 
@@ -261,11 +259,13 @@ class VCalendar extends Model
             }
 
             if ($this->includeParticipantInfo) {
-                foreach ($item->findParticipants()->limit(self::MAX_PARTICIPANTS_COUNT)->all() as $participant) {
+                $participationStateMap = array_flip(EventSync::PARTICIPATION_STATE_MAP);
+
+                foreach ($item->getParticipantEntries()->with('user')->all() as $participant) {
                     /* @var $user User */
                     $evt->add(
-                        'ATTENDEE;CN=' . $this->getCN($participant),
-                        'mailto:' . $this->getMailto($participant),
+                        'ATTENDEE;CN=' . $this->getCN($participant->user) . ';PARTSTAT=' . ArrayHelper::getValue($participationStateMap, $participant->participation_state),
+                        'mailto:' . $this->getMailto($participant->user),
                     );
                 }
             }
