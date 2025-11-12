@@ -5,6 +5,7 @@ Changelog
 ------------------------
 - Fix #635: Fixed duplicated export links 
 - Enh: In the calendar, auto-contrast the text color from the event Type color
+- Fix #640: Fixed `PARTSTAT` for ics
 
 1.8.5 (October 28, 2025)
 ------------------------
