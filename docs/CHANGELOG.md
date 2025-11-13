@@ -1,11 +1,15 @@
 Changelog
 =========
 
-1.8.6 (Unreleased)
-------------------------
+1.8.7 (Unreleased)
+-------------------------
+- Fix #640: Fixed `PARTSTAT` for ics
+
+1.8.6 (November 12, 2025)
+-------------------------
 - Fix #635: Fixed duplicated export links 
 - Enh: In the calendar, auto-contrast the text color from the event Type color
-- Fix #640: Fixed `PARTSTAT` for ics
+- Fix #639: Fix duplicated entries in `Upcoming Events` widget
 
 1.8.5 (October 28, 2025)
 ------------------------

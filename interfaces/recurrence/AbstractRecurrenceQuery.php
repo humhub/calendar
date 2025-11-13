@@ -15,6 +15,7 @@ use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\helpers\RRuleHelper;
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
 use humhub\modules\calendar\models\recurrence\CalendarRecurrenceExpand;
+use yii\helpers\ArrayHelper;
 
 class AbstractRecurrenceQuery extends AbstractCalendarQuery implements RecurrenceQueryIF
 {
@@ -138,11 +139,9 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
         }
 
         /* @var $entry RecurrentEventIF */
-
-        // Make sure we only expand recurrence roots
-        if (RecurrenceHelper::isRecurrentRoot($entry)) {
+        if (RecurrenceHelper::isRecurrentRoot($entry)) { // Make sure we only expand recurrence roots
             $entry->getRecurrenceQuery()->expandEvent($this->_from, $this->_to, $this->autoSaveRecurrentInstances, $expandResult);
-        } else {
+        } elseif (!in_array($entry->id, ArrayHelper::getColumn($expandResult, 'id'))) { // Do not add duplicate entry if its already loaded
             $expandResult[] = $entry;
         }
     }
