@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.7 (Unreleased)
+-------------------------
+- Fix #640: Fixed `PARTSTAT` for ics
+
 1.8.6 (November 12, 2025)
 -------------------------
 - Fix #635: Fixed duplicated export links 

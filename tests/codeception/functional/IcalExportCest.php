@@ -87,10 +87,10 @@ class IcalExportCest
         $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
         $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
         $I->assertEquals(4, count($teamMeeting->ATTENDEE), 'Team Meeting has 4 attendees');
-        $I->assertStringContainsString('ATTENDEE;CN=ADMIN TESTER:mailto:admin@example.com', $icsContent, 'Admin is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ADMIN TESTER;PARTSTAT=ACCEPTED:mailto:admin@example.com', $icsContent, 'Admin is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER;PARTSTAT=ACCEPTED:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER;PARTSTAT=ACCEPTED:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER;PARTSTAT=ACCEPTED:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
 
         $entry->hardDelete();
     }
@@ -158,9 +158,9 @@ class IcalExportCest
         $I->assertEquals('Room B, Building 1', (string)$specialEvent->LOCATION);
         $I->assertEquals('Test special chars: \n new line', (string)$specialEvent->DESCRIPTION);
         $I->assertEquals(3, count($specialEvent->ATTENDEE), 'Special characters event has 3 attendees');
-        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER;PARTSTAT=ACCEPTED:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER;PARTSTAT=ACCEPTED:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER;PARTSTAT=ACCEPTED:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
 
         $entry->hardDelete();
     }
@@ -236,10 +236,10 @@ class IcalExportCest
         $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
         $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
         $I->assertNull($teamMeeting->ATTENDEE, 'Team Meeting has not any attendees');
-        $I->assertStringNotContainsString('ATTENDEE;CN=ADMIN TESTER:mailto:admin@example.com', $icsContent, 'Admin is Attendee');
-        $I->assertStringNotContainsString('ATTENDEE;CN=PETER TESTER:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
-        $I->assertStringNotContainsString('ATTENDEE;CN=SARA TESTER:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
-        $I->assertStringNotContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
+        $I->assertStringNotContainsString('ATTENDEE;CN=ADMIN TESTER;PARTSTAT=ACCEPTED:mailto:admin@example.com', $icsContent, 'Admin is Attendee');
+        $I->assertStringNotContainsString('ATTENDEE;CN=PETER TESTER;PARTSTAT=ACCEPTED:mailto:user1@example.com', $icsContent, 'Peter is Attendee');
+        $I->assertStringNotContainsString('ATTENDEE;CN=SARA TESTER;PARTSTAT=ACCEPTED:mailto:user2@example.com', $icsContent, 'Sara is Attendee');
+        $I->assertStringNotContainsString('ATTENDEE;CN=ANDREAS TESTER;PARTSTAT=ACCEPTED:mailto:user3@example.com', $icsContent, 'Andreas is Attendee');
 
         $entry->hardDelete();
     }
@@ -315,10 +315,10 @@ class IcalExportCest
         $I->assertEquals('Conference Room A', (string)$teamMeeting->LOCATION);
         $I->assertEquals('Weekly team sync-up', (string)$teamMeeting->DESCRIPTION);
         $I->assertEquals(4, count($teamMeeting->ATTENDEE), 'Team Meeting has 4 attendees');
-        $I->assertStringContainsString('ATTENDEE;CN=ADMIN TESTER:mailto:-', $icsContent, 'Admin is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER:mailto:-', $icsContent, 'Peter is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER:mailto:-', $icsContent, 'Sara is Attendee');
-        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER:mailto:-', $icsContent, 'Andreas is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ADMIN TESTER;PARTSTAT=ACCEPTED:mailto:-', $icsContent, 'Admin is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=PETER TESTER;PARTSTAT=ACCEPTED:mailto:-', $icsContent, 'Peter is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=SARA TESTER;PARTSTAT=ACCEPTED:mailto:-', $icsContent, 'Sara is Attendee');
+        $I->assertStringContainsString('ATTENDEE;CN=ANDREAS TESTER;PARTSTAT=ACCEPTED:mailto:-', $icsContent, 'Andreas is Attendee');
 
         $entry->hardDelete();
     }
