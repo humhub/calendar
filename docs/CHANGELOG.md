@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.8.7 (Unreleased)
+1.8.7 (November 18, 2025)
 -------------------------
 - Fix #640: Fixed `PARTSTAT` for ics
 
