@@ -4,6 +4,7 @@ Changelog
 1.8.8 (Unreleased)
 -------------------------
 - Enh #645: Convert swagger docs to OpenAPI 3.0
+- Fix #648: Fix event update on CalDAV sync
 
 1.8.7 (November 18, 2025)
 -------------------------
