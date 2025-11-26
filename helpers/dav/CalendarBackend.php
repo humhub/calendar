@@ -10,6 +10,7 @@ namespace humhub\modules\calendar\helpers\dav;
 
 use humhub\helpers\ArrayHelper;
 use humhub\libs\StringHelper;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\dav\enum\EventProperty;
 use humhub\modules\calendar\helpers\dav\enum\EventVirtualProperty;
 use humhub\modules\calendar\helpers\dav\enum\EventVisibilityValue;
@@ -18,6 +19,7 @@ use humhub\modules\calendar\integration\BirthdayCalendarEntry;
 use humhub\modules\calendar\integration\BirthdayCalendarQuery;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\calendar\interfaces\event\legacy\CalendarEventIFWrapper;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
@@ -113,11 +115,8 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             throw new NotFound();
         }
 
-        /** @var CalendarService $calendarService */
-        $calendarService = Yii::$app->moduleManager->getModule('calendar')->get(CalendarService::class);
-
         return ArrayHelper::getColumn(
-            $calendarService->getCalendarItems(null, null, [], $contentContainer),
+            SyncService::instance()->getCalendarObjects($contentContainer),
             fn(CalendarEventIF $event) => $this->prepareEvent($event, $calendarId),
         );
     }
@@ -136,7 +135,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
                 $event = null;
             }
         } else {
-            $event = CalendarEntry::findOne(['uid' => $eventId]);
+            $event = SyncService::instance()->getCalendarObject($eventId);
         }
 
         if (!$event) {
@@ -205,38 +204,13 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
     public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
         $eventId = basename($objectUri, '.ics');
-        /** @var ActiveRecord|CalendarEntry $event */
-        $event = CalendarEntry::findOne(['uid' => $eventId]);
+        $object = SyncService::instance()->getCalendarObject($eventId);
 
-        if (!$event) {
+        if (!$object) {
             throw new NotFound();
         }
 
-        $this->mapVeventToEvent($calendarData, $event);
-
-        if (!$event->content->canEdit()) {
-            throw new Forbidden();
-        }
-
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            $event->save();
-            if ($event->hasErrors()) {
-                throw new \RuntimeException('Failed to save an event: ' . http_build_query($event->firstErrors));
-            }
-            $this->sync()->from($this->properties()->from($calendarData))->to($event);
-
-            $transaction->commit();
-        } catch (\Throwable $e) {
-            if (YII_DEBUG) {
-                throw $e;
-            }
-
-            Yii::error($e);
-            $transaction->rollBack();
-
-            throw new ServiceUnavailable();
-        }
+        SyncService::instance()->updateCalendarObject($object, $calendarData);
 
     }
 
@@ -283,7 +257,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
         }
 
-        $ics = $event->generateIcs();
+        $ics = $event->hasMethod('generateIcs') ? $event->generateIcs() : CalendarUtils::generateIcs($event);
 
         return [
             'id'            => $event->uid,
