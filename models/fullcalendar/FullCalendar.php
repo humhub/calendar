@@ -11,6 +11,7 @@ namespace humhub\modules\calendar\models\fullcalendar;
 use DateTime;
 use Exception;
 use humhub\helpers\Html;
+use humhub\helpers\ScssHelper;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\CalendarService;
@@ -31,12 +32,13 @@ class FullCalendar
     public static function getFullCalendarArray(CalendarEventIF $entry)
     {
         $calendarService = new CalendarService();
+        $eventColor = $calendarService->getEventColor($entry);
 
         $result = [
             'title' => static::getTitle($entry),
             'editable' => false,
-            'backgroundColor' => Html::encode($calendarService->getEventColor($entry)),
-            'textColor' => Html::encode($calendarService->getEventColorContrast($entry)),
+            'backgroundColor' => Html::encode($eventColor),
+            'textColor' => Html::encode(ScssHelper::getColorContrast($eventColor)),
             'allDay' => $entry->isAllDay(),
             'viewUrl' => $entry->getUrl(),
             'viewMode' => FullCalendarEventIF::VIEW_MODE_REDIRECT,
