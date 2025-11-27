@@ -6,7 +6,7 @@ Changelog
 - Enh #645: Convert swagger docs to OpenAPI 3.0
 - Fix #647: Fix birthday date on CalDAV sync
 - Fix #648: Fix event update on CalDAV sync
-- Enh: Use core `ScssHelper::getColorContrast()`
+- Enh #651: Use core `ScssHelper::getColorContrast()`
 
 1.8.7 (November 18, 2025)
 -------------------------
