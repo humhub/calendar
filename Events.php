@@ -5,6 +5,7 @@ namespace humhub\modules\calendar;
 use DateTime;
 use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEntryElement;
 use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEventsElement;
+use humhub\modules\calendar\helpers\dav\SyncService;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
@@ -60,6 +61,7 @@ class Events
         try {
             static::registerAutoloader();
             Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
+            Yii::$app->getModule('calendar')->set(SyncService::class, ['class' => SyncService::class]);
         } catch (\Throwable $e) {
             Yii::error($e);
         }

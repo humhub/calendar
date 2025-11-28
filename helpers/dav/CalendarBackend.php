@@ -10,17 +10,14 @@ namespace humhub\modules\calendar\helpers\dav;
 
 use humhub\helpers\ArrayHelper;
 use humhub\libs\StringHelper;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\dav\enum\EventProperty;
-use humhub\modules\calendar\helpers\dav\enum\EventVirtualProperty;
-use humhub\modules\calendar\helpers\dav\enum\EventVisibilityValue;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\integration\BirthdayCalendarEntry;
 use humhub\modules\calendar\integration\BirthdayCalendarQuery;
-use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\CalendarEntry;
-use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\Content;
@@ -33,21 +30,14 @@ use Sabre\CalDAV\Backend\AbstractBackend;
 use Sabre\CalDAV\Backend\SchedulingSupport;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV\Exception\Conflict;
-use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\NotImplemented;
-use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\PropPatch;
 use Yii;
 use yii\db\ActiveRecord;
 
 class CalendarBackend extends AbstractBackend implements SchedulingSupport
 {
-    private function sync(): EventSync
-    {
-        return Yii::createObject(EventSync::class);
-    }
-
     private function properties(): EventProperties
     {
         return Yii::createObject(EventProperties::class);
@@ -113,11 +103,8 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             throw new NotFound();
         }
 
-        /** @var CalendarService $calendarService */
-        $calendarService = Yii::$app->moduleManager->getModule('calendar')->get(CalendarService::class);
-
         return ArrayHelper::getColumn(
-            $calendarService->getCalendarItems(null, null, [], $contentContainer),
+            SyncService::instance()->getCalendarObjects($contentContainer),
             fn(CalendarEventIF $event) => $this->prepareEvent($event, $calendarId),
         );
     }
@@ -136,7 +123,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
                 $event = null;
             }
         } else {
-            $event = CalendarEntry::findOne(['uid' => $eventId]);
+            $event = SyncService::instance()->getCalendarObject($eventId);
         }
 
         if (!$event) {
@@ -149,15 +136,13 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
     public function deleteCalendarObject($calendarId, $objectUri)
     {
         $eventId = basename($objectUri, '.ics');
-        $event = CalendarEntry::findOne(['uid' => $eventId]);
+        $object = SyncService::instance()->getCalendarObject($eventId);
 
-        if (!$event) {
+        if (!$object) {
             throw new NotFound();
         }
 
-        if ($event && $event->content->canEdit()) {
-            $event->delete();
-        }
+        SyncService::instance()->deleteCalendarObject($object);
     }
 
     public function createCalendarObject($calendarId, $objectUri, $calendarData)
@@ -168,35 +153,10 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             throw new Conflict();
         }
 
-        /** @var ActiveRecord|CalendarEntry $event */
-        $event = new CalendarEntry($this->getContentContainerForCalendar($calendarId));
-        $this->mapVeventToEvent($calendarData, $event);
-
-        if (!$event->content->canEdit()) {
-            throw new Forbidden();
-        }
-
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            $event->save();
-            if ($event->hasErrors()) {
-                throw new \RuntimeException('Failed to save an event: ' . http_build_query($event->firstErrors));
-            }
-            $this->sync()->from($this->properties()->from($calendarData))->to($event);
-
-            $transaction->commit();
-        } catch (\Throwable $e) {
-            if (YII_DEBUG) {
-                throw $e;
-            }
-
-            Yii::error($e);
-            $transaction->rollBack();
-
-            throw new ServiceUnavailable();
-        }
-
-        $etag = md5((string) $event->getLastModified()->getTimestamp());
+        /** @var ActiveRecord|CalendarEntry $object */
+        $object = new CalendarEntry($this->getContentContainerForCalendar($calendarId));
+        SyncService::instance()->createCalendarObject($object, $calendarData);
+        $etag = md5((string) $object->getLastModified()->getTimestamp());
 
         return "\"$etag\"";
     }
@@ -205,38 +165,13 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
     public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
         $eventId = basename($objectUri, '.ics');
-        /** @var ActiveRecord|CalendarEntry $event */
-        $event = CalendarEntry::findOne(['uid' => $eventId]);
+        $object = SyncService::instance()->getCalendarObject($eventId);
 
-        if (!$event) {
+        if (!$object) {
             throw new NotFound();
         }
 
-        $this->mapVeventToEvent($calendarData, $event);
-
-        if (!$event->content->canEdit()) {
-            throw new Forbidden();
-        }
-
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            $event->save();
-            if ($event->hasErrors()) {
-                throw new \RuntimeException('Failed to save an event: ' . http_build_query($event->firstErrors));
-            }
-            $this->sync()->from($this->properties()->from($calendarData))->to($event);
-
-            $transaction->commit();
-        } catch (\Throwable $e) {
-            if (YII_DEBUG) {
-                throw $e;
-            }
-
-            Yii::error($e);
-            $transaction->rollBack();
-
-            throw new ServiceUnavailable();
-        }
+        SyncService::instance()->updateCalendarObject($object, $calendarData);
 
     }
 
@@ -283,7 +218,7 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             $event = $event->getRecurrenceQuery()->getRecurrenceRoot();
         }
 
-        $ics = $event->generateIcs();
+        $ics = $event->hasMethod('generateIcs') ? $event->generateIcs() : CalendarUtils::generateIcs($event);
 
         return [
             'id'            => $event->uid,
@@ -297,34 +232,6 @@ class CalendarBackend extends AbstractBackend implements SchedulingSupport
             'firstoccurence' => $event->getStartDateTime()->getTimestamp(),
             'lastoccurence'  => $event->getEndDateTime()->getTimestamp(),
         ];
-    }
-
-    protected function mapVeventToEvent(string $data, CalendarEntry|ActiveRecord $event)
-    {
-        $properties = $this->properties()->from($data);
-
-        if (
-            $event->isNewRecord
-            || RichTextToPlainTextConverter::process($event->description) != $properties->get(EventProperty::DESCRIPTION)
-        ) {
-            $event->description = $properties->get(EventVirtualProperty::DESCRIPTION_NORMALIZED);
-        }
-        $event->title = $properties->get(EventProperty::TITLE);
-        $event->all_day = $properties->get(EventVirtualProperty::ALL_DAY);
-        $event->start_datetime = $properties->get(EventProperty::START_DATE)->format('Y-m-d H:i:s');
-        $event->end_datetime = $properties->get(EventProperty::END_DATE)->format('Y-m-d H:i:s');
-        $event->participation_mode = CalendarEntryParticipation::PARTICIPATION_MODE_ALL;
-        $event->location = $properties->get(EventProperty::LOCATION);
-        $event->uid = $properties->get(EventProperty::UID, $event->getUid());
-
-        if (empty(trim((string) $event->title))) {
-            $event->title = '-';
-        }
-
-        /** @var EventVisibilityValue $visibility */
-        if (($visibility = $properties->get(EventProperty::VISIBILITY))) {
-            $event->getContentRecord()->visibility = $visibility->contentType();
-        }
     }
 
     protected function getContentContainerForCalendar(string $calendarId): ?ContentContainerActiveRecord
