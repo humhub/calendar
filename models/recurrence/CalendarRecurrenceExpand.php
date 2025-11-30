@@ -235,7 +235,7 @@ class CalendarRecurrenceExpand extends Model
         // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
         // Note: VCalendar expand will translate all dates with time to UTC
         $vCalendar = (new VCalendar())->add($this->event, false);
-        $expandedVCalendar = $vCalendar->getInstance()->expand($start, $end, $this->event->isAllDay() ? null : $this->eventTimeZone);
+        $expandedVCalendar = $vCalendar->getInstance()->expand($start, $end, CalendarUtils::getUserTimeZone());
         return $expandedVCalendar->select('VEVENT');
     }
 
