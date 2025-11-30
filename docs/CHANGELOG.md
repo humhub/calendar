@@ -1,11 +1,12 @@
 Changelog
 =========
 
-1.8.8 (Unreleased)
--------------------------
+1.8.8 (1 December, 2025)
+------------------------
 - Enh #645: Convert swagger docs to OpenAPI 3.0
 - Fix #647: Fix birthday date on CalDAV sync
 - Fix #648: Fix event update on CalDAV sync
+- Enh #650: Added CalDAV sync events
 - Fix #654: Fix tests
 
 1.8.7 (November 18, 2025)
