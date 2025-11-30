@@ -23,9 +23,8 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConvert
 
 class SyncService extends Component implements StaticInstanceInterface
 {
-    private ?CalendarService $calendarService;
-
     use StaticInstanceTrait;
+    private ?CalendarService $calendarService;
 
     public function init()
     {
@@ -44,9 +43,9 @@ class SyncService extends Component implements StaticInstanceInterface
         return Yii::createObject(EventProperties::class);
     }
 
-    const EVENT_GET_OBJECT = 'event_get_object';
-    const EVENT_UPDATE_OBJECT = 'event_update_object';
-    const EVENT_DELETE_OBJECT = 'event_delete_object';
+    public const EVENT_GET_OBJECT = 'event_get_object';
+    public const EVENT_UPDATE_OBJECT = 'event_update_object';
+    public const EVENT_DELETE_OBJECT = 'event_delete_object';
 
     public function getCalendarObjects($contentContainer)
     {
