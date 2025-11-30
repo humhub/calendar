@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.9 (Unreleased)
+------------------
+- Fix #654: Fix tests
+
 1.8.8 (1 December, 2025)
 ------------------------
 - Enh #645: Convert swagger docs to OpenAPI 3.0
