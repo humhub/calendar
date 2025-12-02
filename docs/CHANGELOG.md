@@ -4,6 +4,7 @@ Changelog
 1.8.9 (Unreleased)
 ------------------
 - Fix #654: Fix tests
+- Fix #655: Fix `Attending` Filter for `Recurring` Events
 
 1.8.8 (1 December, 2025)
 ------------------------
