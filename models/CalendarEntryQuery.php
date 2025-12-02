@@ -6,6 +6,7 @@ use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use DateTime;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * CalendarEntryQuery class can be used for creating filter queries for [[CalendarEntry]] models.
@@ -91,6 +92,10 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
     {
         $this->participantJoin();
         $this->_query->andWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
+
+        if ($key = array_search($this->parentEventIdField . ' IS NULL', $this->_query->where)) {
+            ArrayHelper::remove($this->_query->where, $key);
+        }
     }
 
     public function filterOrIsParticipant()
