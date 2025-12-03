@@ -93,6 +93,11 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
         $this->participantJoin();
         $this->_query->andWhere(['calendar_entry_participant.participation_state' => CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED]);
 
+        /**
+         * The base query adds "parent_event_id IS NULL" to exclude recurring child events.
+         * For participant filtering, we must include those instances (since participation is stored per occurrence),
+         * so we detect and remove that condition from the query.
+         */
         if ($key = array_search($this->parentEventIdField . ' IS NULL', $this->_query->where)) {
             ArrayHelper::remove($this->_query->where, $key);
         }
