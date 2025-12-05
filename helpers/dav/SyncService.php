@@ -24,7 +24,7 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConvert
 class SyncService extends Component implements StaticInstanceInterface
 {
     use StaticInstanceTrait;
-    private ?CalendarService $calendarService;
+    private ?CalendarService $calendarService = null;
 
     public function init()
     {
