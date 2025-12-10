@@ -14,10 +14,10 @@ $link = Html::a(Icon::get('arrow-circle-right') . ' ' . Yii::t('CalendarModule.v
 $extraMenus = Html::tag('li', $link);
 ?>
 <div class="panel calendar-upcoming-snippet" id="calendar-upcoming-events-snippet">
+    <?= PanelMenu::widget(['id' => 'calendar-upcoming-events-snippet', 'extraMenus' => $extraMenus]) ?>
 
     <div class="panel-heading">
         <?= Icon::get('calendar') ?> <?= Yii::t('CalendarModule.views', '<strong>Upcoming</strong> events ') ?>
-        <?= PanelMenu::widget(['id' => 'calendar-upcoming-events-snippet', 'extraMenus' => $extraMenus]) ?>
     </div>
 
     <div class="panel-body p-0">
