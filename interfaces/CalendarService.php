@@ -195,7 +195,7 @@ class CalendarService extends Component
      * Returns black or white text color based on event color contrast.
      * Similar to Bootstrap's color-contrast() Sass function.
      */
-    public function getEventColorContrast(CalendarEventIF $event, float $minContrast = null): string
+    public function getEventColorContrast(CalendarEventIF $event, ?float $minContrast = null): string
     {
         if ($minContrast === null) {
             $minContrast = (float)Yii::$app->view->theme->variable('min-contrast-ratio', 3);

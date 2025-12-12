@@ -10,5 +10,5 @@ class DeleteObjectEvent extends Event
 {
     public $name = SyncService::EVENT_DELETE_OBJECT;
 
-    public ?CalendarEventIFWrapper $object;
+    public ?CalendarEventIFWrapper $object = null;
 }
