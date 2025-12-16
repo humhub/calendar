@@ -564,10 +564,6 @@ th, td, thead, tbody, .fc-divider, .fc-row, .fc-content, .fc-popover, .fc-list-v
   height: 34px;
 }
 
-.calendar-entry-participants .hh-list button.btn {
-  height: 34px;
-}
-
 #calendar-entry-participants-list {
   position: relative;
 }
