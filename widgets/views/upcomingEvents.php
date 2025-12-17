@@ -11,7 +11,9 @@ use yii\helpers\Html;
 /* @var $calendarEntries CalendarEventIF[] */
 /* @var $calendarUrl string */
 
-$link = Link::to(Yii::t('CalendarModule.views', 'Open Calendar'), $calendarUrl)->icon('arrow-circle-right');
+$link = Link::to(Yii::t('CalendarModule.views', 'Open Calendar'), $calendarUrl)
+    ->cssClass('dropdown-item')
+    ->icon('arrow-circle-right');
 $extraMenus = Html::tag('li', $link);
 ?>
 <div class="panel calendar-upcoming-snippet" id="calendar-upcoming-events-snippet">
