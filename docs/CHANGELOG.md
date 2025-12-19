@@ -7,6 +7,7 @@ Changelog
 - Fix #655: Fix `Attending` Filter for `Recurring` Events
 - Fix #656: Use `MailStyleHelper` for safe email inline styling
 - Fix #660: Missing "Collapse" item in the Dashboard widget sub-menu
+- Fix #663: Fixed locale issues in Mail Summary
 
 1.8.8 (1 December, 2025)
 ------------------------

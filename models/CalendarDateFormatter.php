@@ -55,13 +55,14 @@ class CalendarDateFormatter extends Component
         }
 
         if ($timeZone) {
+            $currentTimezone = Yii::$app->formatter->timeZone;
             Yii::$app->formatter->timeZone = $timeZone;
         }
 
         $result = Yii::$app->formatter->asTime($this->calendarItem->getStartDateTime(), $format);
 
         if ($timeZone) {
-            Yii::$app->i18n->autosetLocale();
+            Yii::$app->formatter->timeZone = $currentTimezone;
         }
 
         return $result;
@@ -86,13 +87,14 @@ class CalendarDateFormatter extends Component
     public static function formatDate(\DateTimeInterface $date, $format = 'long', $allDay = false)
     {
         if ($allDay) {
+            $currentTimezone = Yii::$app->formatter->timeZone;
             Yii::$app->formatter->timeZone = $date->getTimezone()->getName();
         }
 
         $result = Yii::$app->formatter->asDate($date, $format);
 
         if ($allDay) {
-            Yii::$app->i18n->autosetLocale();
+            Yii::$app->formatter->timeZone = $currentTimezone;
         }
 
         return $result;
@@ -107,13 +109,14 @@ class CalendarDateFormatter extends Component
         }
 
         if ($timeZone) {
+            $currentTimezone = Yii::$app->formatter->timeZone;
             Yii::$app->formatter->timeZone = $timeZone;
         }
 
         $result = Yii::$app->formatter->asTime($this->calendarItem->getEndDateTime(), $format);
 
         if ($timeZone) {
-            Yii::$app->i18n->autosetLocale();
+            Yii::$app->formatter->timeZone = $currentTimezone;
         }
 
         return $result;
