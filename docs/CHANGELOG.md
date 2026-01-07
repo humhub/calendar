@@ -8,7 +8,7 @@ Changelog
 - Fix #656: Use `MailStyleHelper` for safe email inline styling
 - Fix #660: Missing "Collapse" item in the Dashboard widget sub-menu
 - Fix #663: Fixed locale issues in Mail Summary
-- Fix: Compatibility with HumHub 1.18-beta.6
+- Fix #667: Compatibility with HumHub 1.18-beta.6
 
 1.8.8 (1 December, 2025)
 ------------------------
