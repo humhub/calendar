@@ -1,12 +1,15 @@
 Changelog
 =========
 
-1.8.9 (Unreleased)
-------------------
+1.8.9 (January 8, 2026)
+-----------------------
 - Fix #654: Fix tests
 - Fix #655: Fix `Attending` Filter for `Recurring` Events
 - Fix #656: Use `MailStyleHelper` for safe email inline styling
 - Fix #662: Participants pagination
+- Fix #660: Missing "Collapse" item in the Dashboard widget sub-menu
+- Fix #663: Fixed locale issues in Mail Summary
+- Fix #667: Compatibility with HumHub 1.18-beta.6
 
 1.8.8 (1 December, 2025)
 ------------------------

@@ -11,7 +11,7 @@ class UpdateObjectEvent extends Event
 {
     public $name = SyncService::EVENT_UPDATE_OBJECT;
 
-    public ?CalendarEventIFWrapper $object;
+    public ?CalendarEventIFWrapper $object = null;
 
-    public ?EventProperties $properties;
+    public ?EventProperties $properties = null;
 }
