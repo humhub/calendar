@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.9 (January 8, 2026)
------------------------
+1.8.10 (January 8, 2026)
+------------------------
 - Fix #654: Fix tests
 - Fix #655: Fix `Attending` Filter for `Recurring` Events
 - Fix #656: Use `MailStyleHelper` for safe email inline styling
