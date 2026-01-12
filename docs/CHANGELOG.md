@@ -10,6 +10,7 @@ Changelog
 - Fix #660: Missing "Collapse" item in the Dashboard widget sub-menu
 - Fix #663: Fixed locale issues in Mail Summary
 - Fix #667: Compatibility with HumHub 1.18-beta.6
+- Enh #651: Use core `ScssHelper::getColorContrast()`
 
 1.8.8 (1 December, 2025)
 ------------------------

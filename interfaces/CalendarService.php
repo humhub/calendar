@@ -31,7 +31,6 @@ use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
-use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
 
@@ -189,33 +188,6 @@ class CalendarService extends Component
         }
 
         return $typeSettings ? $typeSettings->getColor() : $type->getDefaultColor();
-    }
-
-    /**
-     * Returns black or white text color based on event color contrast.
-     * Similar to Bootstrap's color-contrast() Sass function.
-     */
-    public function getEventColorContrast(CalendarEventIF $event, ?float $minContrast = null): string
-    {
-        if ($minContrast === null) {
-            $minContrast = (float)Yii::$app->view->theme->variable('min-contrast-ratio', 3);
-        }
-
-        $hex = ltrim((string) $this->getEventColor($event), '#');
-        $r = hexdec(substr($hex, 0, 2)) / 255;
-        $g = hexdec(substr($hex, 2, 2)) / 255;
-        $b = hexdec(substr($hex, 4, 2)) / 255;
-
-        // Calculate relative luminance
-        $r = $r <= 0.03928 ? $r / 12.92 : (($r + 0.055) / 1.055) ** 2.4;
-        $g = $g <= 0.03928 ? $g / 12.92 : (($g + 0.055) / 1.055) ** 2.4;
-        $b = $b <= 0.03928 ? $b / 12.92 : (($b + 0.055) / 1.055) ** 2.4;
-        $lum = 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
-
-        // Calculate contrast with white and black
-        $contrastWhite = (max($lum, 1) + 0.05) / (min($lum, 1) + 0.05);
-
-        return $contrastWhite >= $minContrast ? '#FFFFFF' : '#000000';
     }
 
     /**
