@@ -17,13 +17,12 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\helpers\Url;
+use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
-use humhub\modules\user\models\User;
-use Yii;
-use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\widgets\SettingsTabs;
+use Yii;
 
 class ContainerConfigMenu extends SettingsTabs
 {
@@ -46,7 +45,7 @@ class ContainerConfigMenu extends SettingsTabs
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         $this->contentContainer = ContentContainerHelper::getCurrent();
 
@@ -91,5 +90,4 @@ class ContainerConfigMenu extends SettingsTabs
             ];
         }
     }
-
 }

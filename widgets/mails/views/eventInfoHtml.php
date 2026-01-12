@@ -6,11 +6,11 @@
  */
 
 use humhub\helpers\Html;
+use humhub\helpers\MailStyleHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
-use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
 use yii\web\View;
@@ -31,7 +31,7 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
     <table width="100%" style="table-layout:fixed;" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td colspan="2"
-                style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left;">
+                style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:left;">
 
                 <?php if (!empty($event->getTitle())): ?>
                     <h1><?= Html::encode($event->getTitle()) ?></h1>
@@ -67,6 +67,6 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
 </div>
 <?= MailButtonList::widget([
     'buttons' => [
-        MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')])
+        MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')]),
     ]
 ]) ?>

@@ -3,7 +3,9 @@
 namespace humhub\modules\calendar\integration;
 
 use DateTime;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\CalendarService;
+use humhub\modules\calendar\interfaces\event\CalendarIcsGeneratableEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeIF;
 use humhub\modules\calendar\interfaces\event\CalendarTypeSetting;
 use humhub\modules\calendar\interfaces\fullcalendar\FullCalendarEventIF;
@@ -13,7 +15,7 @@ use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
 
-class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
+class BirthdayCalendarEntry extends Model implements FullCalendarEventIF, CalendarIcsGeneratableEventIF
 {
     /**
      * @var BirthdayUserModel
@@ -330,5 +332,16 @@ class BirthdayCalendarEntry extends Model implements FullCalendarEventIF
             : (Yii::$app->user->isGuest ? null : Yii::$app->user->getIdentity());
 
         return $calendarService->getItemType($this->getEventType()->getKey(), $container);
+    }
+
+    public function generateIcs(): ?string
+    {
+        $event = CalendarUtils::getCalendarEvent($this);
+
+        if (!$event) {
+            return null;
+        }
+
+        return CalendarUtils::generateIcs($event);
     }
 }

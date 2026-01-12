@@ -59,7 +59,7 @@ class EventProperties extends BaseObject
         /** @var Property $property */
         $property = ArrayHelper::getValue($this->properties, $propertyKey->value, $default);
 
-        if ($property !== $default) {
+        if (!$raw && $property !== $default) {
             if (in_array($propertyKey, [EventProperty::START_DATE, EventProperty::END_DATE])) {
                 return (new DateTime($property->getValue()));
             }
@@ -68,11 +68,10 @@ class EventProperties extends BaseObject
                 return EventVisibilityValue::from($property->getValue());
             }
 
-            if ($propertyKey == EventProperty::CATEGORIES) {
+            if (in_array($propertyKey, [EventProperty::CATEGORIES, EventProperty::ATTENDEES])) {
                 return ArrayHelper::getColumn(iterator_to_array($property), fn(Property $property) => $property->getValue());
             }
         }
-
 
         if ($property == $default) {
             return $property;

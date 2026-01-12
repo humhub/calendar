@@ -277,6 +277,69 @@ public static function onFindCalendarItems(CalendarItemsEvent $event)
 }
 ```
 
+### CalDAV Object Events
+
+The Calendar module triggers three additional events to handle **single event operations** for CalDAV synchronization.  
+These events allow external modules to respond when a CalDAV client **requests, updates, or deletes** a single calendar object.
+
+Modules can listen to these events using `SyncService` in their module configuration.
+
+**config.php:**
+
+```php
+return [
+    'events' => [
+        ['class' => \humhub\modules\calendar\helpers\dav\SyncService::class, 'event' => 'event_get_object', 'callback' => [\humhub\modules\external_calendar\Events::class, 'onCaldavGetObject']],
+        ['class' => \humhub\modules\calendar\helpers\dav\SyncService::class, 'event' => 'event_update_object', 'callback' => [\humhub\modules\external_calendar\Events::class, 'onCaldavUpdateObject']],
+        ['class' => \humhub\modules\calendar\helpers\dav\SyncService::class, 'event' => 'event_delete_object', 'callback' => [\humhub\modules\external_calendar\Events::class, 'onCaldavDeleteObject']],
+    ],
+];
+```
+
+**Event.php:**
+
+- `event_get_object`
+
+Triggered when a CalDAV client requests a single calendar object (e.g., <uid>.ics).
+Used to retrieve the event by its UID for CalDAV synchronization.
+
+```php
+public static function onCaldavGetObject(GetObjectEvent $event)
+{
+    $event->object = CustomCalendarEvent::findOne(['uid' => $event->objectId]);
+}
+```
+
+- `event_update_object`
+
+Triggered when a CalDAV client updates a single event.
+Used to  modify an event based on the properties sent by the CalDAV client.
+
+```php
+public static function onCaldavUpdateObject(UpdateObjectEvent $event)
+{
+    if (!$event->object) {
+        $event->object = new CustomCalendarEvent();
+    }
+    $event->object->applyProperties($event->properties);
+    $event->object->save();
+}
+```
+
+- `event_delete_object`
+
+Triggered when a CalDAV client deletes a single event object.
+Used to remove an event from the system when requested by a CalDAV client.
+
+```php
+public static function onCaldavDeleteObject(DeleteObjectEvent $event)
+{
+    if ($event->object) {
+        $event->object->delete();
+    }
+}
+```
+
 ### Implementation of EditableEventIF
 
 The `humhub\modules\calendar\interfaces\event\EditableEventIF` extends the `CalendarEventIF` and can be implemented in order to support auto `uid` generation 

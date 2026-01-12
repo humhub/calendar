@@ -7,8 +7,5 @@ name: Upload to HumHub Marketplace
 
 jobs:
   build:
-    uses: humhub/actions/.github/workflows/module-marketplace-upload.yml@main
-    with:
-      install-composer: true
-      install-npm: true
+    uses: humhub/module-coding-standards/.github/workflows/marketplace-upload.yml@main
     secrets: inherit
