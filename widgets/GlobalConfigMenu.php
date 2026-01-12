@@ -17,16 +17,16 @@
 namespace humhub\modules\calendar\widgets;
 
 use humhub\modules\calendar\helpers\Url;
-use Yii;
 use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\widgets\SettingsTabs;
+use Yii;
 
 class GlobalConfigMenu extends SettingsTabs
 {
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         /* @var $calendarService CalendarService */
         $calendarService =  Yii::$app->getModule('calendar')->get(CalendarService::class);
