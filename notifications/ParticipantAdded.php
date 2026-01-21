@@ -41,7 +41,7 @@ class ParticipantAdded extends EventNotification
     {
         $params = [
             'displayName' =>  $this->originator->displayName,
-            'contentTitle' => $this->getContentPlainTextInfo($this->source, false),
+            'contentTitle' => $this->getContentInfo($this->source, false),
         ];
 
         return $this->isInvited()

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.11 (Unreleased)
+------------------------
+- Fix #669: Clean up markdown syntax from email notification subject
+
 1.8.10 (January 8, 2026)
 ------------------------
 - Fix #654: Fix tests
