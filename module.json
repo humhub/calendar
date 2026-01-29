@@ -5,7 +5,8 @@
     "keywords": ["calendar"],
     "version": "1.8.10",
     "humhub": {
-        "minVersion": "1.18.0-beta.6"
+        "minVersion": "1.18.0-beta.6",
+        "maxVersion": "1.18"
     },
     "homepage": "https://github.com/humhub/calendar",
     "authors": [
