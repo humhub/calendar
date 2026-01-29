@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.0 (TBD)
+------------------------
+- Fix: HumHub v.19 Activity Handling
+
 1.8.10 (January 8, 2026)
 ------------------------
 - Fix #654: Fix tests

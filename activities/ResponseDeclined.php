@@ -1,40 +1,35 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\calendar\activities;
 
-use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
+use humhub\modules\calendar\models\CalendarDateFormatter;
+use humhub\modules\calendar\models\CalendarEntry;
 use Yii;
 
 /**
- * ResponseDeclined Activity
- *
- * @author luke
+ * @extends BaseContentActivity<CalendarEntry>
  */
-class ResponseDeclined extends BaseActivity implements ConfigurableActivityInterface
+class ResponseDeclined extends BaseContentActivity implements ConfigurableActivityInterface
 {
-    public $viewName = 'response_declined';
-    public $moduleId = 'calendar';
+    protected string $contentActiveRecordClass = CalendarEntry::class;
 
-    /**
-     * @inheritdoc
-     */
-    public function getTitle()
+    public static function getTitle(): string
     {
         return Yii::t('CalendarModule.notification', 'Calendar: decline');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getDescription()
+    public static function getDescription(): string
     {
         return Yii::t('CalendarModule.notification', 'Whenever someone declines to participate in an event.');
+    }
+
+    protected function getMessage(array $params): string
+    {
+        $params['dateTime'] = (new CalendarDateFormatter(
+            ['calendarItem' => $this->contentActiveRecord],
+        ))->getFormattedTime();
+        return Yii::t('CalendarModule.views', '{displayName} is attending {contentTitle} on {dateTime}.', $params);
     }
 }
