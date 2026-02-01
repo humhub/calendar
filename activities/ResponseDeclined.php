@@ -29,7 +29,8 @@ class ResponseDeclined extends BaseContentActivity implements ConfigurableActivi
     {
         $params['dateTime'] = (new CalendarDateFormatter(
             ['calendarItem' => $this->contentActiveRecord],
-        ))->getFormattedTime();
-        return Yii::t('CalendarModule.views', '{displayName} is attending {contentTitle} on {dateTime}.', $params);
+        ))->getFormattedTime('short');
+
+        return Yii::t('CalendarModule.views', '{displayName} is attending Event "{contentTitle}" on {dateTime}.', $params);
     }
 }

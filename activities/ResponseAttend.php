@@ -29,8 +29,8 @@ class ResponseAttend extends BaseContentActivity implements ConfigurableActivity
     {
         $params['dateTime']
             = (new CalendarDateFormatter(['calendarItem' => $this->contentActiveRecord]))
-                ->getFormattedTime();
+                ->getFormattedTime('short');
 
-        return Yii::t('CalendarModule.views', '{displayName} is attending {contentTitle} on {dateTime}.', $params);
+        return Yii::t('CalendarModule.views', '{displayName} is attending Event "{contentTitle}" on {dateTime}.', $params);
     }
 }
