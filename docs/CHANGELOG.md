@@ -4,6 +4,7 @@ Changelog
 1.9.0 (TBD)
 ------------------------
 - Fix: HumHub v.19 Activity Handling
+- Enh #673: Remove deprecations
 
 1.8.10 (January 8, 2026)
 ------------------------

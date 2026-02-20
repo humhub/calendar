@@ -9,7 +9,6 @@
 namespace humhub\modules\calendar\models;
 
 use DateTime;
-use DateTimeZone;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\helpers\Url;
@@ -33,13 +32,12 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
-use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Badge;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\helpers\Html;
 
@@ -74,7 +72,6 @@ use yii\helpers\Html;
  * @property-read CalendarEntry|null $recurrenceRoot
  */
 class CalendarEntry extends ContentActiveRecord implements
-    Searchable,
     RecurrentEventIF,
     FullCalendarEventIF,
     CalendarEventStatusIF,
@@ -682,7 +679,7 @@ class CalendarEntry extends ContentActiveRecord implements
             filter_var($this->location, FILTER_VALIDATE_URL) !== false
             && str_starts_with($this->location, 'https://') // restrict to secure URLs (and not HTTP, SSF, FTP, etc.)
         ) {
-            return Button::asLink($this->location)->link($this->location)->options(['target' => '_blank']);
+            return Link::to($this->location, $this->location)->blank();
         }
         return Html::encode($this->location);
     }
