@@ -8,17 +8,13 @@
 
 namespace humhub\modules\calendar\assets;
 
+use humhub\components\assets\AssetBundle;
 use humhub\modules\calendar\models\participation\FullCalendarSettings;
 use Yii;
-use yii\web\AssetBundle;
 
 class CalendarAsset extends AssetBundle
 {
-    public $defer = true;
-
-    public $publishOptions = [
-        'forceCopy' => false,
-    ];
+    public $forceCopy = false;
 
     public $sourcePath = '@calendar/resources/js';
 
