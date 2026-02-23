@@ -8,18 +8,14 @@
 
 namespace humhub\modules\calendar\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 class ParticipationFormAssets extends AssetBundle
 {
-    public $defer = true;
-
     /**
      * @inheritdoc
      */
-    public $publishOptions = [
-        'forceCopy' => false,
-    ];
+    public $forceCopy = false;
 
     /**
      * @inheritdoc
