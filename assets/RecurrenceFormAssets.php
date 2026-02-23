@@ -8,7 +8,6 @@
 
 namespace humhub\modules\calendar\assets;
 
-
 use humhub\components\assets\AssetBundle;
 
 class RecurrenceFormAssets extends AssetBundle
