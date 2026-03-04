@@ -6,6 +6,7 @@
  */
 
 use humhub\modules\calendar\models\CalendarEntryType;
+use yii\helpers\Html;
 
 /* @var CalendarEntryType[] $calendarTypes */
 ?>
@@ -16,8 +17,8 @@ use humhub\modules\calendar\models\CalendarEntryType;
     <div class="panel-body">
         <?php foreach ($calendarTypes as $calendarType) : ?>
         <div class="calendar-type-item">
-            <span class="calendar-type-color" style="background:<?= $calendarType->color ?>"></span>
-            <?= $calendarType->name ?>
+            <span class="calendar-type-color" style="background:<?= Html::encode($calendarType->color) ?>"></span>
+            <?= Html::encode($calendarType->name) ?>
         </div>
         <?php endforeach; ?>
     </div>

@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.8.11 (March 2, 2026)
+----------------------
+
+> This release also fixes a [security](https://github.com/humhub/calendar/security/advisories/GHSA-gqj3-pmp2-mrx8) issue.
+
+- Fix #674: Fix asset bundle
+- Fix: HTML Encoding of Event Types
+
+
 1.8.10 (January 8, 2026)
 ------------------------
 - Fix #654: Fix tests

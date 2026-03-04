@@ -8,18 +8,14 @@
 
 namespace humhub\modules\calendar\assets;
 
+use humhub\components\assets\AssetBundle;
 use humhub\modules\calendar\interfaces\event\CalendarEntryTypeSetting;
 use humhub\modules\calendar\models\CalendarEntryType;
-use yii\web\AssetBundle;
 use Yii;
 
 class CalendarBaseAssets extends AssetBundle
 {
-    public $defer = true;
-
-    public $publishOptions = [
-        'forceCopy' => false,
-    ];
+    public $forceCopy = false;
 
     public $sourcePath = '@calendar/resources';
 
