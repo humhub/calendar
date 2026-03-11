@@ -16,7 +16,6 @@ use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
-use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
@@ -521,7 +520,7 @@ class EntryController extends ContentContainerController
 
         $entry->toggleClosed();
 
-        return $this->asJson(Stream::getContentResultEntry($entry->content));
+        return $this->asJson(StreamEntryResponse::getAsArray($entry->content));
     }
 
     /**

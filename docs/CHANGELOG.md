@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.12 (Unreleased)
+----------------------
+Enh #679: Remove deprecations
+
 1.8.11 (March 2, 2026)
 ----------------------
 
