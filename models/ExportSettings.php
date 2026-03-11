@@ -34,7 +34,7 @@ class ExportSettings extends Model
         $this->includeParticipantEmail = $this->module->settings->get('includeParticipantEmail', false);
 
         if (YII_ENV_TEST) {
-            $this->jwtKey = 'test-key';
+            $this->jwtKey = 'test-key-test-key-test-key-test-key';
         }
     }
 
