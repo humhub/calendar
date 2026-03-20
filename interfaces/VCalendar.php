@@ -157,6 +157,8 @@ class VCalendar extends Model
         if (!$item->isAllDay()) {
             $dtStart->setTimezone(CalendarUtils::getStartTimeZone($item));
             $dtEnd->setTimezone(CalendarUtils::getStartTimeZone($item));
+        } elseif ($dtEnd <= $dtStart) {
+            $dtEnd = (clone $dtStart)->modify('+1 day');
         }
 
         $result = [
@@ -199,7 +201,7 @@ class VCalendar extends Model
                 }
 
                 if ($initRecurrenceChildren) {
-                    $recurrenceItems = $item->getRecurrenceInstances()->all();
+                    $recurrenceItems = $item->getRecurrenceQuery()->getRecurrenceExceptions();
                 }
             } elseif (RecurrenceHelper::isRecurrentInstance($item)) {
                 $recurrenceId = new DateTime($item->getRecurrenceId());
