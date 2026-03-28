@@ -21,6 +21,7 @@ use Yii;
 use yii\base\Model;
 use Sabre\VObject;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url as YiiUrl;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 
 /**
@@ -178,6 +179,11 @@ class VCalendar extends Model
 
         if (!empty($item->getDescription())) {
             $result['DESCRIPTION'] = RichTextToPlainTextConverter::process($item->getDescription());
+        }
+
+        $eventUrl = $item->getUrl();
+        if (!empty($eventUrl)) {
+            $result['URL'] = YiiUrl::to($eventUrl, true);
         }
 
         if (isset($item->content->visibility)) {
