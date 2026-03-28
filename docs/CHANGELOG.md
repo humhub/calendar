@@ -3,7 +3,8 @@ Changelog
 
 1.8.12 (Unreleased)
 ----------------------
-Enh #679: Remove deprecations
+- Enh #679: Remove deprecations
+- Enh #683: Added single event link to ICS export
 
 1.8.11 (March 2, 2026)
 ----------------------
