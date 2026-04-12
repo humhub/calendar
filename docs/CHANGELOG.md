@@ -5,6 +5,7 @@ Changelog
 ------------------------
 - Fix: HumHub v.19 Activity Handling
 - Enh #673: Remove deprecations
+- Enh #684: Add JS i18n example for calendar button labels
 
 1.8.10 (January 8, 2026)
 ------------------------
