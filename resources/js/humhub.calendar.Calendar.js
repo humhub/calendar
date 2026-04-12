@@ -12,8 +12,11 @@ humhub.module('calendar.Calendar', function (module, require, $) {
     var loader = require('ui.loader');
     var view = require('ui.view');
     var modal = require('ui.modal');
+    var i18n = require('i18n');
 
     var Calendar = Widget.extend();
+
+    module.requiredI18nCategories = ['CalendarModule.base'];
 
     Calendar.prototype.init = function () {
         var that = this;
@@ -103,31 +106,13 @@ humhub.module('calendar.Calendar', function (module, require, $) {
     };
 
     Calendar.prototype.getDefaultOptions = function () {
-
-        /*
-         * We only want to overwrite the default button texts if already
-         * translated otherwise we use default fullcalendar translation.
-         */
-        var buttonText = {};
-        if (module.text('button.today') !== 'today') {
-            buttonText.today = module.text('button.today');
-        }
-
-        if (module.text('button.month') !== 'month') {
-            buttonText.month = module.text('button.month');
-        }
-
-        if (module.text('button.week') !== 'week') {
-            buttonText.week = module.text('button.week');
-        }
-
-        if (module.text('button.day') !== 'day') {
-            buttonText.day = module.text('button.day');
-        }
-
-        if (module.text('button.list') !== 'list') {
-            buttonText.list = module.text('button.list');
-        }
+        var buttonText = {
+            today: i18n.t('CalendarModule.base', 'Today'),
+            month: i18n.t('CalendarModule.base', 'Month'),
+            week: i18n.t('CalendarModule.base', 'Week'),
+            day: i18n.t('CalendarModule.base', 'Day'),
+            list: i18n.t('CalendarModule.base', 'List'),
+        };
 
         var that = this;
         
