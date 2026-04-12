@@ -37,13 +37,6 @@ class CalendarAsset extends AssetBundle
     public static function registerForContainer($view, $contentContainer = null)
     {
         $view->registerJsConfig('calendar.Calendar', [
-            'text' => [
-                'button.today' => Yii::t('CalendarModule.base', 'Today'),
-                'button.month' => Yii::t('CalendarModule.base', 'Month'),
-                'button.week' => Yii::t('CalendarModule.base', 'Week'),
-                'button.day' => Yii::t('CalendarModule.base', 'Day'),
-                'button.list' => Yii::t('CalendarModule.base', 'List'),
-            ],
             'listViewType' => (new FullCalendarSettings(['contentContainer' => $contentContainer]))->listViewType,
         ]);
         return parent::register($view);
