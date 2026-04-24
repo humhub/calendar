@@ -12,4 +12,5 @@ jobs:
     uses: humhub/module-coding-standards/.github/workflows/codeception-develop.yml@main
     with:
       module-id: calendar
+      humhub-branch: enh/js-translations
       use-rest-module: true
