@@ -5,6 +5,7 @@ Changelog
 ----------------------
 - Enh #679: Remove deprecations
 - Enh #683: Added single event link to ICS export
+- Fix #686: Submit calendar type filter changes
 
 1.8.11 (March 2, 2026)
 ----------------------
