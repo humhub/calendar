@@ -93,21 +93,34 @@ class CalendarRecurrenceExpand extends Model
         }
 
         $event = static::assureRootEvent($event);
+        $tz = new \DateTimeZone($event->getTimezone());
+        $recurrenceId = preg_replace('/[^0-9TZ]/', '', $recurrenceId);
+
+        if (!preg_match('/^\d{8}T\d{6}Z?$/', $recurrenceId)) {
+            return null;
+        }
+
+        try {
+            $recurrenceDate = new DateTime($recurrenceId, $tz);
+            $recurrenceId = CalendarUtils::cleanRecurrentId($recurrenceDate);
+        } catch (Exception) {
+            return null;
+        }
+
         $recurrence = $event->getRecurrenceQuery()->getRecurrenceInstance($recurrenceId);
 
         if ($recurrence) {
             return $recurrence;
         }
 
-        $tz = new \DateTimeZone($event->getTimezone());
-        $start = (new DateTime($recurrenceId, $tz))->modify("-1 minute");
-        $end = (new DateTime($recurrenceId, $tz))->modify("+1 minute");
+        $start = (clone $recurrenceDate)->modify("-1 minute");
+        $end = (clone $recurrenceDate)->modify("+1 minute");
 
         $instance = new static(['event' => $event, 'saveInstnace' => $save]);
         $result = $instance->expandEvent($start, $end);
 
         foreach ($result as $recurrence) {
-            if ($recurrence->getRecurrenceId() === CalendarUtils::cleanRecurrentId(new DateTime($recurrenceId, $tz))) {
+            if ($recurrence->getRecurrenceId() === $recurrenceId) {
                 return $recurrence;
             }
         }
