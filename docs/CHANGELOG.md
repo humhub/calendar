@@ -5,6 +5,7 @@ Changelog
 ----------------------
 - Enh #679: Remove deprecations
 - Enh #683: Added single event link to ICS export
+- Fix #685: Handle invalid recurrence ids
 
 1.8.11 (March 2, 2026)
 ----------------------
