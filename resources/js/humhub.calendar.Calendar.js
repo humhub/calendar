@@ -44,6 +44,13 @@ humhub.module('calendar.Calendar', function (module, require, $) {
 
     Calendar.prototype.initCalendarFilter = function () {
         var that = this;
+        var updateTypeFilterTimeout;
+        var updateTypeFilter = function () {
+            clearTimeout(updateTypeFilterTimeout);
+            updateTypeFilterTimeout = setTimeout(function () {
+                that.updateCalendarFilters(true);
+            }, 0);
+        };
 
         $('.selectorCheckbox').click(function () {
             that.updateCalendarFilters(true);
@@ -63,9 +70,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             that.updateCalendarFilters(true);
         });
 
-        $('select[name="filterType[]"]').on('change.select2', function () {
-            that.updateCalendarFilters(true);
-        });
+        $('select[name="filterType[]"]').on('change select2:select select2:unselect select2:clear', updateTypeFilter);
     };
 
     Calendar.prototype.updateCalendarFilters = function (reload) {
