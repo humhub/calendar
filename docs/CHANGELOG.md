@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.13 (Unreleased)
+-------------------
+- Enh #687: Hide other calendar items when filtering by type
+
 1.8.12 (May 3, 2026)
 --------------------
 - Enh #679: Remove deprecations
