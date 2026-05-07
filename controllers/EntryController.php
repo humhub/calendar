@@ -102,6 +102,10 @@ class EntryController extends ContentContainerController
             throw new NotFoundHttpException();
         }
 
+        if (!$recurrence->content->canView()) {
+            throw new ForbiddenHttpException('You have no permission to view the event!');
+        }
+
         return $this->renderEntry($recurrence, $cal);
     }
 
