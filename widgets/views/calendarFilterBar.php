@@ -56,6 +56,9 @@ use humhub\widgets\FadeIn;
                                     <?= Yii::t('CalendarModule.views', 'My profile'); ?>
                                 </label>
                             </div>
+                        <?php elseif (in_array(ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, $selectors)): ?>
+                            <input type="checkbox" name="selector" class="selectorCheckbox d-none"
+                                   value="<?= ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE; ?>" checked="checked">
                         <?php endif; ?>
                         <div class="checkbox">
                             <label class="calendar_my_spaces">
