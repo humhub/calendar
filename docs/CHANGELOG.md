@@ -4,6 +4,7 @@ Changelog
 1.8.13 (Unreleased)
 -------------------
 - Enh #688: Hide other calendar items when filtering by type
+- Fix #691: Yii2 2.0.55 compatibility
 
 1.8.12 (May 3, 2026)
 --------------------
