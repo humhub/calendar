@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.13 (Unreleased)
--------------------
+1.8.13 (May 15, 2026)
+---------------------
 - Enh #688: Hide other calendar items when filtering by type
 - Fix #691: Yii2 2.0.55 compatibility
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
