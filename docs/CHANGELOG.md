@@ -4,6 +4,7 @@ Changelog
 1.8.13 (Unreleased)
 -------------------
 - Enh #688: Hide other calendar items when filtering by type
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
 
 1.8.12 (May 3, 2026)
 --------------------
