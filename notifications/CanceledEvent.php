@@ -66,7 +66,7 @@ class CanceledEvent extends BaseNotification
     {
         return Yii::t('CalendarModule.notification', '{displayName} canceled the event "{contentTitle}".', [
             'displayName' => $this->originator->displayName,
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => Html::decode($this->getContentInfo($this->source, false)),
         ]);
     }
 }

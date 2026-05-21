@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.14 (Unreleased)
+---------------------
+- Enh #693: Fix html encoding in email subjects
+
 1.8.13 (May 15, 2026)
 ---------------------
 - Enh #688: Hide other calendar items when filtering by type

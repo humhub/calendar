@@ -48,7 +48,7 @@ class EventUpdated extends EventNotification
     {
         return Yii::t('CalendarModule.notification', '{displayName} updated the event "{contentTitle}".', [
             'displayName' => $this->originator->displayName,
-            'contentTitle' => $this->getContentInfo($this->source, false),
+            'contentTitle' => Html::decode($this->getContentInfo($this->source, false)),
         ]);
     }
 }
