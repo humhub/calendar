@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.8.14 (Unreleased)
+1.8.14 (May 21, 2026)
 ---------------------
 - Enh #694: Fix participant state editing
 
