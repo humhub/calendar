@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.14 (Unreleased)
+---------------------
+- Enh #694: Fix participant state editing
+
 1.8.13 (May 15, 2026)
 ---------------------
 - Enh #688: Hide other calendar items when filtering by type
