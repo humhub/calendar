@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.15 (Unreleased)
+-------------------
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
+
 1.8.14 (May 21, 2026)
 ---------------------
 - Enh #694: Fix participant state editing

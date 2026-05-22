@@ -99,7 +99,7 @@ class CalendarRecurrenceExpand extends Model
         // We need to normalize/validate it before DateTime parsing to avoid parse errors
         $recurrenceId = preg_replace('/[^0-9TZ]/', '', (string) $recurrenceId);
 
-        if (!preg_match('/^\d{8}T\d{6}Z?$/', $recurrenceId)) {
+        if (!preg_match('/^\d{8}T\d{6}Z?$/', (string) $recurrenceId)) {
             return null;
         }
 
