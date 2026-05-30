@@ -6,31 +6,19 @@
  *
  */
 
+use humhub\components\View;
 use humhub\modules\calendar\widgets\mails\CalendarEventMailInfo;
 use humhub\modules\calendar\models\CalendarEntry;
+use yii\db\ActiveRecord;
 
-/* @var $this yii\web\View */
-/* @var $viewable humhub\modules\content\notifications\ContentCreated */
+/* @var $this View */
 /* @var $url string */
-/* @var $date string */
-/* @var $isNew boolean */
-/* @var $isNew boolean */
-/* @var $originator \humhub\modules\user\models\User */
-/* @var $source yii\db\ActiveRecord */
-/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
-/* @var $space humhub\modules\space\models\Space */
-/* @var $record \humhub\modules\notification\models\Notification */
-/* @var $html string */
-/* @var $text string */
+/* @var $source ActiveRecord */
 
-$extraInfo = null;
-if($source instanceof CalendarEntry) {
-    $extraInfo = $source->participant_info;
-}
-
+$extraInfo = $source instanceof CalendarEntry ? $source->participant_info : null;
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
 
-    <?=  CalendarEventMailInfo::html($source, $url, $extraInfo) ?>
+    <?= CalendarEventMailInfo::html($source, $url, $extraInfo) ?>
 
 <?php $this->endContent();

@@ -125,28 +125,29 @@ class CalendarService extends Component
     {
         $result = [];
 
-        $event = new CalendarItemsEvent([
-            'contentContainer' => $contentContainer,
-            'start' => $start ? clone $start : null,
-            'end' => $end ? clone $end : null,
-            'filters' => $filters,
-            'limit' => $limit,
-            'expand' => $expand,
-        ]);
+        if (empty($types)) {
+            $event = new CalendarItemsEvent([
+                'contentContainer' => $contentContainer,
+                'start' => $start ? clone $start : null,
+                'end' => $end ? clone $end : null,
+                'filters' => $filters,
+                'limit' => $limit,
+                'expand' => $expand,
+            ]);
 
-        $this->trigger(static::EVENT_FIND_ITEMS, $event);
+            $this->trigger(static::EVENT_FIND_ITEMS, $event);
 
-        foreach ($event->getItems() as $itemTypeKey => $items) {
-            $itemType = $this->getItemType($itemTypeKey, $contentContainer);
+            foreach ($event->getItems() as $itemTypeKey => $items) {
+                $itemType = $this->getItemType($itemTypeKey, $contentContainer);
 
-            if ($itemType && $itemType->isEnabled()) {
-                foreach ($items as $item) {
-                    if (is_array($item)) {
-                        $result[] = new CalendarEventIFWrapper(['itemType' => $itemType, 'options' => $item]);
-                    } elseif ($item instanceof CalendarEventIF) {
-                        $result[] = $item;
+                if ($itemType && $itemType->isEnabled()) {
+                    foreach ($items as $item) {
+                        if (is_array($item)) {
+                            $result[] = new CalendarEventIFWrapper(['itemType' => $itemType, 'options' => $item]);
+                        } elseif ($item instanceof CalendarEventIF) {
+                            $result[] = $item;
+                        }
                     }
-
                 }
             }
         }

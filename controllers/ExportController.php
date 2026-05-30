@@ -99,6 +99,8 @@ class ExportController extends Controller
             null,
             [],
             $global ? null : $contentContainer->polymorphicRelation,
+            null,
+            false,
         );
 
         /**
