@@ -50,17 +50,10 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
         $to = $this->_to ?: (new \DateTime())->setTime(0, 0, 0)->modify('+2 year');
 
         $fromYear = (int)$from->format('Y');
-        $toYear = (int)$to->format('Y');
-
-        // Check if fromDate and toDate years differs
-        if ($toYear == $fromYear) {
-            $toOrFromBirthday = "DATE_ADD(profile.birthday, INTERVAL {$fromYear}-YEAR(profile.birthday) YEAR)";
-        } else {
-            $fromDate = $from->format('Y-m-d');
-            $fromDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$fromYear}-YEAR(profile.birthday) YEAR)";
-            $toDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$toYear}-YEAR(profile.birthday) YEAR)";
-            $toOrFromBirthday = "IF( $fromDateBirth >= DATE('{$fromDate}'), {$fromDateBirth}, {$toDateBirth})";
-        }
+        $fromDate = $from->format('Y-m-d');
+        $fromDateBirth = "DATE_ADD(profile.birthday, INTERVAL {$fromYear}-YEAR(profile.birthday) YEAR)";
+        $nextYearBirth = "DATE_ADD({$fromDateBirth}, INTERVAL 1 YEAR)";
+        $toOrFromBirthday = "IF({$fromDateBirth} >= DATE('{$fromDate}'), {$fromDateBirth}, {$nextYearBirth})";
 
         $this->_query->visible();
         $this->_query->joinWith('profile');

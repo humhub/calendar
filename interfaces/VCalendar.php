@@ -21,6 +21,7 @@ use Yii;
 use yii\base\Model;
 use Sabre\VObject;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url as YiiUrl;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 
 /**
@@ -157,6 +158,8 @@ class VCalendar extends Model
         if (!$item->isAllDay()) {
             $dtStart->setTimezone(CalendarUtils::getStartTimeZone($item));
             $dtEnd->setTimezone(CalendarUtils::getStartTimeZone($item));
+        } elseif ($dtEnd <= $dtStart) {
+            $dtEnd = (clone $dtStart)->modify('+1 day');
         }
 
         $result = [
@@ -176,6 +179,11 @@ class VCalendar extends Model
 
         if (!empty($item->getDescription())) {
             $result['DESCRIPTION'] = RichTextToPlainTextConverter::process($item->getDescription());
+        }
+
+        $eventUrl = $item->getUrl();
+        if (!empty($eventUrl)) {
+            $result['URL'] = YiiUrl::to($eventUrl, true);
         }
 
         if (isset($item->content->visibility)) {
@@ -199,11 +207,17 @@ class VCalendar extends Model
                 }
 
                 if ($initRecurrenceChildren) {
-                    $recurrenceItems = $item->getRecurrenceInstances()->all();
+                    $recurrenceItems = $item->getRecurrenceQuery()->getRecurrenceExceptions();
                 }
             } elseif (RecurrenceHelper::isRecurrentInstance($item)) {
-                $recurrenceId = new DateTime($item->getRecurrenceId());
-                $recurrenceId->setTimezone(CalendarUtils::getStartTimeZone($item));
+                $recurrenceId = $item->isAllDay()
+                    ? clone $dtStart
+                    : new DateTime($item->getRecurrenceId());
+
+                if (!$item->isAllDay()) {
+                    $recurrenceId->setTimezone(CalendarUtils::getStartTimeZone($item));
+                }
+
                 $result['RECURRENCE-ID'] = $recurrenceId;
             }
         } else {
@@ -221,6 +235,20 @@ class VCalendar extends Model
 
         $evt = $this->vcalendar->add('VEVENT', $result);
 
+        if ($item->isAllDay()) {
+            if (isset($evt->DTSTART)) {
+                $evt->DTSTART['VALUE'] = 'DATE';
+            }
+
+            if (isset($evt->DTEND)) {
+                $evt->DTEND['VALUE'] = 'DATE';
+            }
+
+            if (isset($evt->{'RECURRENCE-ID'})) {
+                $evt->{'RECURRENCE-ID'}['VALUE'] = 'DATE';
+            }
+        }
+
         if ($isRecurrenceChild) {
             return $this;
         }
@@ -230,16 +258,6 @@ class VCalendar extends Model
         if (!empty($recurrenceItems)) {
             foreach ($recurrenceItems as $recurrenceItem) {
                 $this->addVEvent($recurrenceItem, true);
-            }
-        }
-
-        if ($item->isAllDay()) {
-            if (isset($evt->DTSTART)) {
-                $evt->DTSTART['VALUE'] = 'DATE';
-            }
-
-            if (isset($evt->DTEND)) {
-                $evt->DTEND['VALUE'] = 'DATE';
             }
         }
 

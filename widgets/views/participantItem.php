@@ -30,7 +30,7 @@ use yii\helpers\Html;
         </div>
     </a>
     <div class="ms-1">
-        <?php if (!$entry->content->canEdit()) : ?>
+        <?php if ($entry->content->canEdit()) : ?>
             <?= Html::dropDownList('status', $entry->participation->getParticipationStatus($user), $statuses, [
                 'data-action-change' => 'update',
                 'class' => 'form-control',

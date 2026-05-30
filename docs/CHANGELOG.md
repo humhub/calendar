@@ -6,6 +6,36 @@ Changelog
 - Fix: HumHub v.19 Activity Handling
 - Enh #673: Remove deprecations
 
+1.8.15 (Unreleased)
+-------------------
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
+
+1.8.14 (May 21, 2026)
+---------------------
+- Enh #694: Fix participant state editing
+
+1.8.13 (May 15, 2026)
+---------------------
+- Enh #688: Hide other calendar items when filtering by type
+- Fix #691: Yii2 2.0.55 compatibility
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
+
+1.8.12 (May 3, 2026)
+--------------------
+- Enh #679: Remove deprecations
+- Enh #683: Added single event link to ICS export
+- Fix #686: Submit calendar type filter changes
+- Fix #685: Handle invalid recurrence ids
+
+1.8.11 (March 2, 2026)
+----------------------
+
+> This release also fixes a [security](https://github.com/humhub/calendar/security/advisories/GHSA-gqj3-pmp2-mrx8) issue.
+
+- Fix #674: Fix asset bundle
+- Fix: HTML Encoding of Event Types
+
+
 1.8.10 (January 8, 2026)
 ------------------------
 - Fix #654: Fix tests
