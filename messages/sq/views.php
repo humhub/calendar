@@ -4,10 +4,6 @@ return [
     'General' => 'Gjeneral',
     'Settings' => 'Cilësimet',
     'Title' => 'Titulli',
-    '{displayName} cannot attend {contentTitle} on {dateTime}.' => '',
-    '{displayName} is attending {contentTitle} on {dateTime}.' => '',
-    '{displayName} is invited to {contentTitle} on {dateTime}.' => '',
-    '{displayName} might be attending {contentTitle} on {dateTime}.' => '',
     ':count Attending' => '',
     ':count Declined' => '',
     ':count Invited' => '',
@@ -57,4 +53,5 @@ return [
     'Undecided' => '',
     'You are invited, please select your role:' => '',
     '{count} Participants' => '',
+    '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
 ];
