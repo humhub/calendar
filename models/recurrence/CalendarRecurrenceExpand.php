@@ -97,9 +97,9 @@ class CalendarRecurrenceExpand extends Model
 
         // The recurrence id may come from the EntryController::actionViewRecurrence(recurrence_id) or external clients may leave small garbage
         // We need to normalize/validate it before DateTime parsing to avoid parse errors
-        $recurrenceId = preg_replace('/[^0-9TZ]/', '', $recurrenceId);
+        $recurrenceId = preg_replace('/[^0-9TZ]/', '', (string) $recurrenceId);
 
-        if (!preg_match('/^\d{8}T\d{6}Z?$/', $recurrenceId)) {
+        if (!preg_match('/^\d{8}T\d{6}Z?$/', (string) $recurrenceId)) {
             return null;
         }
 

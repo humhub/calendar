@@ -1,10 +1,20 @@
 Changelog
 =========
 
-1.8.13 (Unreleased)
+1.8.15 (Unreleased)
 -------------------
-- Enh #688: Hide other calendar items when filtering by type
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
 - Fix #689: Fix calendar defaults and recurring visibility
+
+1.8.14 (May 21, 2026)
+---------------------
+- Enh #694: Fix participant state editing
+
+1.8.13 (May 15, 2026)
+---------------------
+- Enh #688: Hide other calendar items when filtering by type
+- Fix #691: Yii2 2.0.55 compatibility
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
 
 1.8.12 (May 3, 2026)
 --------------------
