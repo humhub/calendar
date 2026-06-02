@@ -88,6 +88,11 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     protected function filterUserRelated()
     {
+        if (empty($this->_userScopes)) {
+            $this->_query->andWhere('1=2');
+            return;
+        }
+
         if (!empty($this->_userScopes) && !(in_array(ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS, $this->_userScopes) || in_array(ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE, $this->_userScopes))) {
             throw new FilterNotSupportedException('Non supported user related filters');
         }

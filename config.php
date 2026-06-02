@@ -42,6 +42,7 @@ return [
         ['class' => 'humhub\modules\rest\Module', 'event' => 'restApiAddRules', 'callback' => [Events::class, 'onRestApiAddRules']],
         ['class' => 'humhub\modules\custom_pages\modules\template\services\ElementTypeService', 'event' => 'init', 'callback' => [Events::class, 'onCustomPagesTemplateElementTypeServiceInit']],
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_SOFT_DELETE, 'callback' => [Events::class, 'onContentAfterSoftDelete']],
+        ['class' => Content::class, 'event' => Content::EVENT_AFTER_UPDATE, 'callback' => [Events::class, 'onContentAfterUpdate']],
     ],
     'urlManagerRules' => [
         'calendar' => 'calendar/global',

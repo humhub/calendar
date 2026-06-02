@@ -472,37 +472,45 @@ class CalendarEntryForm extends Model
         //$this->translateDateTimes($this->entry->start_datetime, $this->entry->end_datetime, Yii::$app->timeZone, $this->timeZone);
 
         return CalendarEntry::getDb()->transaction(function ($db) {
+            $result = CalendarEntry::withoutRecurrenceContentVisibilitySync(function () {
 
-            if (!$this->entry->saveEvent()) {
-                return false;
-            }
+                if (!$this->entry->saveEvent()) {
+                    return false;
+                }
 
-            // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
-            if ($this->entry->description) {
-                RichText::postProcess($this->entry->description, $this->entry);
-            }
+                // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
+                if ($this->entry->description) {
+                    RichText::postProcess($this->entry->description, $this->entry);
+                }
 
-            $this->entry->setType($this->type_id);
+                $this->entry->setType($this->type_id);
 
-            Topic::attach($this->entry->content, $this->topics);
+                Topic::attach($this->entry->content, $this->topics);
 
-            if ($this->sendUpdateNotification && !$this->entry->isNewRecord && !$this->entry->closed) {
-                $this->entry->participation->sendUpdateNotification();
-            }
+                if ($this->sendUpdateNotification && !$this->entry->isNewRecord && !$this->entry->closed) {
+                    $this->entry->participation->sendUpdateNotification();
+                }
 
-            if (!$this->reminder) {
-                $this->reminderSettings->reminderType = ReminderSettings::REMINDER_TYPE_NONE;
-                $this->reminderSettings->reminders = [];
-            }
-            $result = $this->reminderSettings->save();
+                if (!$this->reminder) {
+                    $this->reminderSettings->reminderType = ReminderSettings::REMINDER_TYPE_NONE;
+                    $this->reminderSettings->reminders = [];
+                }
+                $result = $this->reminderSettings->save();
 
-            if (!$this->recurring) {
-                $this->recurrenceForm->frequency = RecurrenceFormModel::FREQUENCY_NEVER;
-            }
-            $result = $this->recurrenceForm->save($this->original) && $result;
+                if (!$this->recurring) {
+                    $this->recurrenceForm->frequency = RecurrenceFormModel::FREQUENCY_NEVER;
+                }
+                $result = $this->recurrenceForm->save($this->original) && $result;
+
+                if ($result) {
+                    $this->sequenceCheck();
+                }
+
+                return $result;
+            });
 
             if ($result) {
-                $this->sequenceCheck();
+                $this->entry->syncRecurrenceContentVisibility();
             }
 
             return $result;
