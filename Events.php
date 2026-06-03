@@ -466,4 +466,19 @@ class Events
             }
         }
     }
+
+    public static function onContentAfterUpdate($event): void
+    {
+        if (!CalendarEntry::isRecurrenceContentVisibilitySyncEnabled()
+            || !array_key_exists('visibility', $event->changedAttributes)
+            || $event->sender->object_model !== CalendarEntry::class) {
+            return;
+        }
+
+        /* @var CalendarEntry $calendarEntry */
+        $calendarEntry = $event->sender->getModel();
+        if ($calendarEntry) {
+            $calendarEntry->syncRecurrenceContentVisibility();
+        }
+    }
 }

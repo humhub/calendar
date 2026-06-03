@@ -142,6 +142,9 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     private $_recurrenceRoot = false;
 
+    private static bool $recurrenceContentVisibilitySyncEnabled = true;
+    private static bool $syncingRecurrenceContentVisibility = false;
+
     /**
      * @var bool Cached of reminder enabled
      */
@@ -841,6 +844,7 @@ class CalendarEntry extends ContentActiveRecord implements
     public function setRecurrenceRootId($rootId)
     {
         $this->parent_event_id = $rootId;
+        $this->_recurrenceRoot = false;
     }
 
     public function getRecurring(): bool
@@ -899,6 +903,52 @@ class CalendarEntry extends ContentActiveRecord implements
         }
 
         return $this->_recurrenceRoot;
+    }
+
+    public static function withoutRecurrenceContentVisibilitySync(callable $callback)
+    {
+        $enabled = static::$recurrenceContentVisibilitySyncEnabled;
+        static::$recurrenceContentVisibilitySyncEnabled = false;
+
+        try {
+            return $callback();
+        } finally {
+            static::$recurrenceContentVisibilitySyncEnabled = $enabled;
+        }
+    }
+
+    public static function isRecurrenceContentVisibilitySyncEnabled(): bool
+    {
+        return static::$recurrenceContentVisibilitySyncEnabled && !static::$syncingRecurrenceContentVisibility;
+    }
+
+    public function syncRecurrenceContentVisibility(): void
+    {
+        if (!RecurrenceHelper::isRecurrent($this) || static::$syncingRecurrenceContentVisibility || empty($this->id)) {
+            return;
+        }
+
+        $root = empty($this->parent_event_id) ? $this : self::findOne(['id' => $this->parent_event_id]);
+        if (!$root) {
+            return;
+        }
+
+        $entryIds = $root->getRecurrenceInstances()->select('calendar_entry.id')->column();
+        $entryIds[] = $root->id;
+
+        static::$syncingRecurrenceContentVisibility = true;
+        try {
+            foreach (Content::find()
+                ->where(['object_model' => static::getObjectModel(), 'object_id' => $entryIds])
+                ->andWhere(['<>', 'visibility', $this->content->visibility])
+                ->each() as $content) {
+                /* @var Content $content */
+                $content->visibility = $this->content->visibility;
+                $content->save();
+            }
+        } finally {
+            static::$syncingRecurrenceContentVisibility = false;
+        }
     }
 
     /**

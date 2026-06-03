@@ -252,7 +252,7 @@ abstract class AbstractCalendarQuery extends Component
             }
         }
 
-        return $expand ? $expandResult : $result;
+        return $expand ? $query->preFilter($expandResult) : $result;
     }
 
     /**
@@ -950,11 +950,12 @@ abstract class AbstractCalendarQuery extends Component
         if (Yii::$app->user->isGuest) {
             $this->filterGuests($this->_container);
         } else {
-            if ($this->hasFilter(self::FILTER_USERRELATED)) {
+            $hasUserRelatedFilter = $this->hasFilter(self::FILTER_USERRELATED);
+            if ($hasUserRelatedFilter) {
                 $this->_userScopes = $this->_filters[self::FILTER_USERRELATED];
             }
 
-            if (!empty($this->_userScopes)) {
+            if ($hasUserRelatedFilter || !empty($this->_userScopes)) {
                 $this->filterUserRelated();
             }
 

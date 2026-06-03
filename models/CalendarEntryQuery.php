@@ -7,6 +7,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use DateTime;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 /**
  * CalendarEntryQuery class can be used for creating filter queries for [[CalendarEntry]] models.
@@ -127,5 +128,15 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
         }
     }
 
+    protected function preFilter($result = [])
+    {
+        if (!method_exists(Yii::$app, 'getUser')) {
+            return parent::preFilter($result);
+        }
+
+        return array_values(array_filter(parent::preFilter($result), static function (CalendarEntry $entry) {
+            return $entry->content->isNewRecord || $entry->content->canView();
+        }));
+    }
 
 }
