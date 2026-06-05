@@ -134,9 +134,7 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
             return parent::preFilter($result);
         }
 
-        return array_values(array_filter(parent::preFilter($result), static function (CalendarEntry $entry) {
-            return $entry->content->isNewRecord || $entry->content->canView();
-        }));
+        return array_values(array_filter(parent::preFilter($result), static fn(CalendarEntry $entry) => $entry->content->isNewRecord || $entry->content->canView()));
     }
 
 }
