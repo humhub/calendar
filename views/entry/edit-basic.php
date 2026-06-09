@@ -48,28 +48,29 @@ use yii\jui\DatePicker;
 </div>
 
 <div class="row">
-    <div class="col-6">
-        <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
-        </div>
-        <?php if (Module::isRecurrenceActive()) : ?>
-            <div class="col-md-6">
-                <?= $form->field($calendarEntryForm, 'recurring')->checkbox(['data-action-change' => 'toggleRecurring']) ?>
-            </div>
-        <?php endif; ?>
-        </div>
-    </div>
-    <div class="col-6 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
+    <div class="col-6"></div>
+    <div class="col-6 mb-3 timeZoneField"<?= $calendarEntryForm->entry->all_day ? ' hidden' : '' ?>>
         <?= TimeZoneDropdownAddition::widget(['model' => $calendarEntryForm]) ?>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="d-flex flex-wrap gap-2 gap-sm-5">
+            <?= $form->field($calendarEntryForm->entry, 'all_day')->checkbox(['data-action-change' => 'toggleDateTime']) ?>
+            <?php if (Module::isRecurrenceActive()) : ?>
+                <?= $form->field($calendarEntryForm, 'recurring')->checkbox(['data-action-change' => 'toggleRecurring']) ?>
+            <?php endif; ?>
+            <?= $form->field($calendarEntryForm->entry, 'online')->checkbox(['data-action-change' => 'toggleOnline']) ?>
+        </div>
     </div>
 </div>
 
 <?php Yii::$app->i18n->autosetLocale(); ?>
 
 <div class="row">
-    <div class="col-md-6">
-        <?= $form->field($calendarEntryForm->entry, 'location')->textInput() ?>
+    <div class="col">
+        <?= $form->field($calendarEntryForm->entry, 'location')->textInput($calendarEntryForm->entry->online ? ['disabled' => true] : []) ?>
     </div>
 </div>
 

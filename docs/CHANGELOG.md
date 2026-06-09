@@ -5,6 +5,7 @@ Changelog
 -------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
 - Fix #689: Fix calendar defaults and recurring visibility
+- Enh #700: Participation link for online event
 
 1.8.14 (May 21, 2026)
 ---------------------

@@ -40,6 +40,7 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\helpers\Html;
 
@@ -54,6 +55,7 @@ use yii\helpers\Html;
  * @property string $end_datetime
  * @property int $all_day
  * @property int $participation_mode
+ * @property string $participation_url
  * @property string $color
  * @property string $uid
  * @property int $allow_decline
@@ -69,6 +71,7 @@ use yii\helpers\Html;
  * @property CalendarEntryParticipant[] $participantEntries
  * @property string $time_zone The timeZone this entry was saved, note the dates itself are always saved in app timeZone
  * @property string $location
+ * @property bool $online
  * @property-read bool $recurring
  * @property-read bool $reminder
  * @property-read CalendarEntry|null $recurrenceRoot
@@ -252,10 +255,13 @@ class CalendarEntry extends ContentActiveRecord implements
             [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => CalendarEntryParticipation::$participationModes],
+            [['participation_url'], 'string', 'max' => 255],
+            [['participation_url'], 'url', 'validSchemes' => ['https']],
             [['end_datetime'], 'validateEndTime'],
             [['recurrence_id'], 'validateRecurrenceId'],
             [['description', 'participant_info'], 'safe'],
-            ['location', 'string', 'max' => 128],
+            [['location'], 'string', 'max' => 128],
+            [['online'], 'boolean'],
         ];
     }
 
@@ -338,9 +344,12 @@ class CalendarEntry extends ContentActiveRecord implements
             'all_day' => Yii::t('CalendarModule.base', 'All Day'),
             'allow_decline' => Yii::t('CalendarModule.base', 'Allow option \'Decline\''),
             'allow_maybe' => Yii::t('CalendarModule.base', 'Allow option \'Undecided\''),
+            'participant_info' => Yii::t('CalendarModule.base', 'Participation information'),
             'participation_mode' => Yii::t('CalendarModule.base', 'Mode'),
+            'participation_url' => Yii::t('CalendarModule.base', 'Participation URL'),
             'max_participants' => Yii::t('CalendarModule.base', 'Maximum number of participants'),
             'location' => Yii::t('CalendarModule.base', 'Location'),
+            'online' => Yii::t('CalendarModule.base', 'Online event'),
         ];
     }
 
@@ -618,7 +627,7 @@ class CalendarEntry extends ContentActiveRecord implements
         }
 
         if ($this->participation->isEnabled()) {
-            $status = $this->getParticipationStatus(Yii::$app->user->identity);
+            $status = $this->getParticipationStatus();
             switch ($status) {
                 case CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED:
                     return Badge::success(Yii::t('CalendarModule.base', 'Attending'))->right();
@@ -664,11 +673,11 @@ class CalendarEntry extends ContentActiveRecord implements
     /**
      * Check if this calendar entry has a filled location attribute
      *
-     * @return bool true if location is filled, otherwise false
+     * @return bool true if it is not an online event and location is filled, otherwise false
      */
     public function hasLocation()
     {
-        return isset($this->location) && $this->location !== '';
+        return !$this->online && isset($this->location) && $this->location !== '';
     }
 
     /**
@@ -688,6 +697,21 @@ class CalendarEntry extends ContentActiveRecord implements
             return Button::asLink($this->location)->link($this->location)->options(['target' => '_blank']);
         }
         return Html::encode($this->location);
+    }
+
+    public function getParticipationUrl(): ?string
+    {
+        return $this->online ? $this->participation_url : null;
+    }
+
+    public function getParticipationLink(): ?string
+    {
+        $participation_url = $this->getParticipationUrl();
+        if (!$participation_url) {
+            return null;
+        }
+
+        return Link::to($participation_url, $participation_url)->blank();
     }
 
     public function getDescription()
@@ -1002,6 +1026,7 @@ class CalendarEntry extends ContentActiveRecord implements
         $this->allow_decline = $root->allow_decline;
         $this->allow_maybe = $root->allow_maybe;
         $this->location = $root->location;
+        $this->online = $root->online;
     }
 
     /**

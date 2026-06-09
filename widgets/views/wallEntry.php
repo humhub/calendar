@@ -59,7 +59,21 @@ $color = 'var(--text-color-secondary)';
         </div>
     <?php endif; ?>
 
-    <?php if ($calendarEntry->participation->isShowParticipationInfo(Yii::$app->user->identity)) : ?>
+    <?php if ($calendarEntry->participation->isShowParticipationLink()) : ?>
+        <div class="event-info-section clearfix">
+            <?= Icon::get('external-link')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+            <div class="event-info-section-content">
+                <h1>
+                    <?= Yii::t('CalendarModule.views', 'Participation link') ?>
+                </h1>
+                <div>
+                    <?= $calendarEntry->getParticipationLink() ?>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($calendarEntry->participation->isShowParticipationInfo()) : ?>
         <div class="event-info-section clearfix">
             <?= Icon::get('info-circle')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
             <div class="event-info-section-content">

@@ -100,14 +100,11 @@ class WallEntry extends WallStreamModuleEntryWidget
     protected function renderContent()
     {
         CalendarBaseAssets::register($this->getView());
-        /* @var $entry CalendarEntry */
-        $entry = $this->model;
 
         return $this->render('wallEntry', [
-            'calendarEntry' => $entry,
+            'calendarEntry' => $this->model,
             'collapse' => $this->collapse,
-            'participantSate' => $entry->getParticipationStatus(Yii::$app->user->identity),
-            'contentContainer' => $entry->content->container,
+            'contentContainer' => $this->model->content->container,
         ]);
     }
 

@@ -71,6 +71,10 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
 
     public function getParticipationStatus(?User $user = null)
     {
+        if (!$user && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->identity;
+        }
+
         if (!$user) {
             return static::PARTICIPATION_STATUS_NONE;
         }
@@ -334,13 +338,19 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
         return $this->getParticipationStatus($user) === static::PARTICIPATION_STATUS_INVITED;
     }
 
-    public function isShowParticipationInfo(?User $user = null)
+    public function isShowParticipationInfo(?User $user = null): bool
     {
-        if (empty($this->entry->participant_info) || !$this->isEnabled()) {
-            return false;
-        }
+        return $this->isEnabled()
+            && !empty($this->entry->participant_info)
+            && $this->isParticipant($user);
+    }
 
-        return $this->isParticipant($user);
+    public function isShowParticipationLink(?User $user = null): bool
+    {
+        return $this->isEnabled()
+            && $this->entry->online
+            && !empty($this->entry->participation_url)
+            && $this->isParticipant($user);
     }
 
     /**

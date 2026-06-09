@@ -242,6 +242,10 @@ humhub.module('calendar', function (module, require, $) {
             $('.calendar-entry-form-tabs .tab-reminder').toggle(evt.$trigger.is(':checked'));
         };
 
+        Form.prototype.toggleOnline = function (evt) {
+            this.$.find('[name="CalendarEntry[location]"]').prop('disabled', evt.$trigger.is(':checked'));
+        };
+
         var CalendarEntry = Content.extend();
 
         CalendarEntry.prototype.toggleClose = function (event) {
