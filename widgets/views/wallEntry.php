@@ -47,14 +47,16 @@ $color = 'var(--text-color-secondary)';
         <?php endif; ?>
     </div>
 
-    <?php if ($calendarEntry->hasLocation()) : ?>
+    <?php if ($calendarEntry->hasLocation() || $calendarEntry->online) : ?>
         <div class="event-info-section clearfix">
             <?= Icon::get('map-marker')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
             <div class="event-info-section-content">
                 <h1>
                     <?= Yii::t('CalendarModule.base', 'Location') ?>
                 </h1>
-                <?= $calendarEntry->getLocation(true) ?>
+                <?= $calendarEntry->online
+                    ? Yii::t('CalendarModule.base', 'Online')
+                    : $calendarEntry->getLocation(true) ?>
             </div>
         </div>
     <?php endif; ?>
