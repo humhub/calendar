@@ -243,7 +243,7 @@ humhub.module('calendar', function (module, require, $) {
         };
 
         Form.prototype.toggleOnline = function (evt) {
-            this.$.find('[name="CalendarEntry[location]"]').prop('disabled', evt.$trigger.is(':checked'));
+            this.$.find('#calendar-entry-form-location').toggle(!evt.$trigger.is(':checked'));
         };
 
         var CalendarEntry = Content.extend();

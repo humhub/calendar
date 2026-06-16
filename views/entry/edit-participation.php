@@ -24,7 +24,7 @@ $entry = $calendarEntryParticipationForm->entry;
     <?= $form->field($entry, 'allow_maybe')->checkbox() ?>
     <?= $form->field($entry, 'participant_info')->widget(RichTextField::class, ['placeholder' => Yii::t('CalendarModule.base', 'Additional Information for participants'), 'pluginOptions' => ['maxHeight' => '300px']]) ?>
     <?php if ($entry->online) : ?>
-        <?= $form->field($entry, 'participation_url') ?>
+        <?= $form->field($entry, 'location')->textInput(['maxlength' => 1000]) ?>
         <?= Alert::info(Yii::t('CalendarModule.base', 'Participantion information and participantion link are only visible to users marked as <strong>Attending</strong> or <strong>Maybe</strong>.'))->closeButton(false) ?>
     <?php endif ?>
 

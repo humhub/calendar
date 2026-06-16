@@ -10,7 +10,7 @@ class m260609_073826_online extends Migration
     public function safeUp()
     {
         $this->safeAddColumn('calendar_entry', 'online', $this->boolean()->defaultValue(false)->after('location'));
-        $this->safeAddColumn('calendar_entry', 'participation_url', $this->string()->after('participation_mode'));
+        $this->safeAlterColumn('calendar_entry', 'location', $this->string('1000'));
     }
 
     /**

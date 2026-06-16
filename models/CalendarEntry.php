@@ -43,6 +43,7 @@ use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\helpers\Html;
+use yii\validators\UrlValidator;
 
 /**
  * This is the model class for table "calendar_entry".
@@ -55,7 +56,6 @@ use yii\helpers\Html;
  * @property string $end_datetime
  * @property int $all_day
  * @property int $participation_mode
- * @property string $participation_url
  * @property string $color
  * @property string $uid
  * @property int $allow_decline
@@ -255,12 +255,10 @@ class CalendarEntry extends ContentActiveRecord implements
             [['all_day', 'allow_decline', 'allow_maybe', 'max_participants'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['participation_mode'], 'in', 'range' => CalendarEntryParticipation::$participationModes],
-            [['participation_url'], 'string', 'max' => 255],
-            [['participation_url'], 'url', 'validSchemes' => ['https']],
             [['end_datetime'], 'validateEndTime'],
             [['recurrence_id'], 'validateRecurrenceId'],
             [['description', 'participant_info'], 'safe'],
-            [['location'], 'string', 'max' => 128],
+            [['location'], 'string', 'max' => 1000],
             [['online'], 'boolean'],
         ];
     }
@@ -346,9 +344,10 @@ class CalendarEntry extends ContentActiveRecord implements
             'allow_maybe' => Yii::t('CalendarModule.base', 'Allow option \'Undecided\''),
             'participant_info' => Yii::t('CalendarModule.base', 'Participation information'),
             'participation_mode' => Yii::t('CalendarModule.base', 'Mode'),
-            'participation_url' => Yii::t('CalendarModule.base', 'Participation URL'),
             'max_participants' => Yii::t('CalendarModule.base', 'Maximum number of participants'),
-            'location' => Yii::t('CalendarModule.base', 'Location'),
+            'location' => $this->online
+                ? Yii::t('CalendarModule.base', 'Participation URL')
+                : Yii::t('CalendarModule.base', 'Location'),
             'online' => Yii::t('CalendarModule.base', 'Online event'),
         ];
     }
@@ -383,6 +382,11 @@ class CalendarEntry extends ContentActiveRecord implements
         if (RecurrenceHelper::isRecurrentRoot($this)
             || (RecurrenceHelper::isRecurrentInstance($this) && $this->content->hidden)) {
             $this->streamChannel = null;
+        }
+
+        if ($this->online && !$this->getParticipationUrl()) {
+            // Reset location(participation URL) after it was switched to online event from an address
+            $this->location = null;
         }
 
         return parent::beforeSave($insert);
@@ -701,17 +705,15 @@ class CalendarEntry extends ContentActiveRecord implements
 
     public function getParticipationUrl(): ?string
     {
-        return $this->online ? $this->participation_url : null;
+        return $this->online && (new UrlValidator(['validSchemes' => ['https']]))->validate($this->location)
+            ? $this->location
+            : null;
     }
 
     public function getParticipationLink(): ?string
     {
         $participation_url = $this->getParticipationUrl();
-        if (!$participation_url) {
-            return null;
-        }
-
-        return Link::to($participation_url, $participation_url)->blank();
+        return $participation_url ? Link::to($participation_url, $participation_url)->blank() : null;
     }
 
     public function getDescription()

@@ -68,9 +68,11 @@ use yii\jui\DatePicker;
 
 <?php Yii::$app->i18n->autosetLocale(); ?>
 
-<div class="row">
+<div class="row<?= $calendarEntryForm->entry->online ? ' d-none' : '' ?>" id="calendar-entry-form-location">
     <div class="col">
-        <?= $form->field($calendarEntryForm->entry, 'location')->textInput($calendarEntryForm->entry->online ? ['disabled' => true] : []) ?>
+        <?= $form->field($calendarEntryForm->entry, 'location')
+            ->label(Yii::t('CalendarModule.views', 'Location'))
+            ->textInput(['maxlength' => 1000]) ?>
     </div>
 </div>
 

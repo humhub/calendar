@@ -348,8 +348,7 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
     public function isShowParticipationLink(?User $user = null): bool
     {
         return $this->isEnabled()
-            && $this->entry->online
-            && !empty($this->entry->participation_url)
+            && $this->entry->getParticipationUrl()
             && $this->isParticipant($user);
     }
 
