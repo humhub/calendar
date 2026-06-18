@@ -59,10 +59,8 @@ class EntryParticipants extends Widget
             return null;
         }
 
-        $participantSate = $calendarEntry->getParticipationStatus(Yii::$app->user->identity);
-
         $button = Button::accent($label);
-        $isActive = $participantSate === $state;
+        $isActive = $calendarEntry->getParticipationStatus() === $state;
         if ($isActive) {
             $button->icon('check-circle');
         } else {
