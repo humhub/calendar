@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.15 (Unreleased)
--------------------
+1.8.15 (June 18, 2026)
+----------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
 - Fix #689: Fix calendar defaults and recurring visibility
 - Fix: Make m250603_194724_export_jwt_key migration resilient when module is not bootstrapped
