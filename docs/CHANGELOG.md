@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.1 (Unreleased)
+--------------------
+- Enh #702: Add aria-label attribute for icon-only buttons
+
 1.9.0 (June 5, 2026)
 --------------------
 - Fix: HumHub 1.19 Activity Handling
