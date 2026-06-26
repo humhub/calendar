@@ -52,6 +52,7 @@ return [
     'You are invited, please select your role:' => 'Estás convidado, por favor seleciona o papel:',
     '{count} Participants' => '{count} Participantes',
     'Filter events' => '',
+    'Select' => '',
     'Select calendars' => '',
     '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
 ];

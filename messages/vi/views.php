@@ -49,6 +49,7 @@ return [
     'Declined' => '',
     'Filter events' => '',
     'Only by Invite' => '',
+    'Select' => '',
     'Select calendars' => '',
     'Undecided' => '',
     'You are invited, please select your role:' => '',

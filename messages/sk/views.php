@@ -53,5 +53,6 @@ return [
     'Undecided' => 'Nerozhodnutý',
     'You are invited, please select your role:' => 'Ste pozvaný, vyberte si svoju rolu:',
     '{count} Participants' => '{count} Účastníkov',
+    'Select' => '',
     '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
 ];

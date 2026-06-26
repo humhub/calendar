@@ -47,6 +47,7 @@ return [
     'Open Calendar' => '',
     'Participants' => '',
     'Recurrence' => '',
+    'Select' => '',
     'Select calendars' => '',
     'Select event type...' => '',
     'Snippet' => '',

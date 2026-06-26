@@ -53,5 +53,6 @@ return [
     'Undecided' => 'Uafklaret',
     'You are invited, please select your role:' => 'Du er inviteret, vælg din rolle:',
     '{count} Participants' => '{count} Deltagere',
+    'Select' => '',
     '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
 ];

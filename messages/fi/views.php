@@ -49,6 +49,7 @@ return [
     'Invited' => '',
     'Only by Invite' => '',
     'Recurrence' => '',
+    'Select' => '',
     'Select calendars' => '',
     'Undecided' => '',
     'You are invited, please select your role:' => '',

@@ -52,6 +52,7 @@ return [
     ':count Invited' => '',
     ':count Undecided' => '',
     'Declined' => '',
+    'Select' => '',
     'Undecided' => '',
     '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
 ];

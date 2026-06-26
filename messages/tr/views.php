@@ -47,6 +47,7 @@ return [
     'Invited' => '',
     'Only by Invite' => '',
     'Recurrence' => '',
+    'Select' => '',
     'Select calendars' => '',
     'Select event type...' => '',
     'Snippet' => '',

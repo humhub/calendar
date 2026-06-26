@@ -53,5 +53,6 @@ return [
     'Undecided' => 'Niezdecydowani',
     'You are invited, please select your role:' => 'Jesteś zaproszony, proszę określ swoją rolę',
     '{count} Participants' => '{count} uczestników',
+    'Select' => '',
     '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
 ];

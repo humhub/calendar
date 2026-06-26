@@ -36,6 +36,7 @@ return [
     'Calendar events' => '',
     'Cancel Event' => '',
     'Cannot remove the participant!' => '',
+    'Configure' => '',
     'Create entry' => '',
     'Custom reminder' => '',
     'Day' => '',
