@@ -10,11 +10,12 @@ Changelog
 - Fix: HumHub 1.19 Activity Handling
 - Enh #673: Remove deprecations
 
-1.8.15 (Unreleased)
--------------------
+1.8.15 (June 18, 2026)
+----------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector
 - Fix #689: Fix calendar defaults and recurring visibility
 - Fix: Make m250603_194724_export_jwt_key migration resilient when module is not bootstrapped
+- Enh #700: Participation link for online event
 
 1.8.14 (May 21, 2026)
 ---------------------

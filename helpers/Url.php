@@ -248,10 +248,10 @@ class Url extends BaseUrl
             $container = $entry->content->container;
         }
 
-        $participantSate = $entry->participation->getParticipationStatus(Yii::$app->user->getidentity());
+        $participantState = $entry->participation->getParticipationStatus();
 
         return $container->createUrl('/calendar/entry/respond', [
-            'type' => $participantSate == $state ? CalendarEntryParticipant::PARTICIPATION_STATE_NONE : $state,
+            'type' => $participantState == $state ? CalendarEntryParticipant::PARTICIPATION_STATE_NONE : $state,
             'id' => $entry->id]);
     }
 
