@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.9.1 (Unreleased)
+1.9.1 (July 8, 2026)
 --------------------
 - Enh #702: Add aria-label attribute for icon-only buttons
 
