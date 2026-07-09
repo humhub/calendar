@@ -53,6 +53,8 @@ return [
     '<strong>Create</strong> Event' => '',
     '<strong>Edit</strong> Event' => '',
     'Are you sure want to remove the participant from the event?' => '',
+    'Location' => '',
+    'Participation link' => '',
     'Select' => '',
     '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
 ];

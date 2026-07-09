@@ -52,6 +52,8 @@ return [
     'You are invited, please select your role:' => 'Jste zváni, vyberte si svou roli:',
     '{count} Participants' => '{count} Účastníci',
     'Filter events' => '',
+    'Location' => '',
+    'Participation link' => '',
     'Select' => '',
     'Select calendars' => '',
     '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
