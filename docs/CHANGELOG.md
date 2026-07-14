@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.16 (Unreleased)
+--------------------
+- Fix #705: Restore calendar visibility to show all readable events by default
+
 1.8.15 (June 18, 2026)
 ----------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.6 using Rector

@@ -950,12 +950,11 @@ abstract class AbstractCalendarQuery extends Component
         if (Yii::$app->user->isGuest) {
             $this->filterGuests($this->_container);
         } else {
-            $hasUserRelatedFilter = $this->hasFilter(self::FILTER_USERRELATED);
-            if ($hasUserRelatedFilter) {
+            if ($this->hasFilter(self::FILTER_USERRELATED)) {
                 $this->_userScopes = $this->_filters[self::FILTER_USERRELATED];
             }
 
-            if ($hasUserRelatedFilter || !empty($this->_userScopes)) {
+            if (!empty($this->_userScopes)) {
                 $this->filterUserRelated();
             }
 

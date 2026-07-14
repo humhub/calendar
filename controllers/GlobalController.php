@@ -13,7 +13,6 @@ use humhub\modules\calendar\models\CalendarEntryDummy;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\calendar\widgets\FilterType;
-use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerModuleState;
@@ -99,22 +98,7 @@ class GlobalController extends Controller
             return [];
         }
 
-        return $this->getUserSettings()->getSerialized('lastSelectors') ?? $this->getDefaultSelectorSettings();
-    }
-
-    private function getDefaultSelectorSettings(): array
-    {
-        $selectors = [];
-
-        $selectors[] = ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE;
-        $selectors[] = ActiveQueryContent::USER_RELATED_SCOPE_SPACES;
-
-        if (!Yii::$app->getModule('user')->disableFollow) {
-            $selectors[] = ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES;
-            $selectors[] = ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS;
-        }
-
-        return $selectors;
+        return $this->getUserSettings()->getSerialized('lastSelectors', []);
     }
 
     /**
