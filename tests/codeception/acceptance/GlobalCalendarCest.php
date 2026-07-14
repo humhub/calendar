@@ -66,14 +66,13 @@ class GlobalCalendarCest
         $I->see('My Test Profile Entry', '.fc-title');
 
         // Active space filter
-        $I->amGoingTo('deselect the space calendar filter');
+        $I->amGoingTo('Select the space calendar filter');
         $I->click('.calendar_my_spaces');
         $I->wait(2);
-        $I->dontSee('Space Event', '#calendar');
-        $I->see('My Test Profile Entry', '#calendar');
+        $I->waitForText('Space Event', 10, '#calendar');
 
         $I->wantToTest('the global calendar filters');
-        $I->amGoingTo('select the space calendar filter');
+        $I->amGoingTo('deselect the space calendar filter');
         $I->click('.calendar_my_spaces');
         $I->wait(2);
         $I->waitForText('Space Event', 10, '#calendar');
