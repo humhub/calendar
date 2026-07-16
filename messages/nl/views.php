@@ -43,7 +43,7 @@ return [
   'Only by Invite' => 'Alleen op uitnodiging',
   'Open Calendar' => 'Open agenda',
   'Participants' => 'Deelnemers',
-  'Participation link' => '',
+  'Participation link' => 'Deelnamelink',
   'Recurrence' => 'Herhaling',
   'Reminder' => 'Herinnering',
   'Select' => 'Kies',
