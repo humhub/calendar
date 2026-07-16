@@ -41,8 +41,7 @@ class GlobalCalendarCest
         $I->click('.fc-today');
         $I->expectTo('see the choose calendar modal');
         $I->waitForText('Choose target calendar');
-        $I->click('.select2-selection--single');
-        $I->click('.select2-results__option:nth-child(2)');
+        $I->selectOption('select[name=contentContainerId]', 'Profile Calendar');
         $I->click('Next', '#globalModal');
 
 
@@ -60,6 +59,7 @@ class GlobalCalendarCest
         //$I->click('Close', '#globalModal');
 
         //$I->wait(1);
+        $I->amOnRoute(['/calendar/global/index']);
         $I->waitForText('My Test Profile Entry', 10, '.fc-event-container');
         $I->see('My Test Profile Entry', '.fc-title');
 
