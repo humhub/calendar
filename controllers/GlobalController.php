@@ -12,9 +12,10 @@ use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryDummy;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
 use humhub\modules\calendar\models\SnippetModuleSettings;
+use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\FilterType;
-use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerModuleManager;
+use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Membership;
@@ -74,74 +75,62 @@ class GlobalController extends Controller
 
     public function actionIndex()
     {
-        if (!Yii::$app->user->isGuest) {
-            $moduleEnabled = Yii::$app->user->getIdentity()->moduleManager->isEnabled('calendar');
-        } else {
-            $moduleEnabled = false;
-            $configureUrl = null;
-        }
-
         return $this->render('index', [
-            'selectors' => $this->getSelectorSettings(),
-            'filters' => $this->getFilterSettings(),
-            'canConfigure' => $moduleEnabled,
+            'view' => $this->getViewSetting(),
+            'calendars' => $this->getCalendarsSetting(),
+            'show' => $this->getShowSetting(),
+            'types' => $this->getTypesSetting(),
             'editUrl' => Url::to(['/calendar/entry/edit']),
         ]);
     }
 
     /**
-     * @return array|mixed calendar selector settings
-     * @throws \Throwable
+     * @return string current CalendarFilterBar::VIEW_* setting, defaults to VIEW_MY_CALENDARS.
+     *  Note: VIEW_NETWORK is only ever persisted/returned here after the user explicitly
+     *  picked it - it can never be reached implicitly.
      */
-    private function getSelectorSettings()
+    private function getViewSetting(): string
     {
-        if (Yii::$app->user->isGuest) {
-            return [];
-        }
-
-        return $this->getUserSettings()->getSerialized('lastSelectors') ?? $this->getDefaultSelectorSettings();
-    }
-
-    private function getDefaultSelectorSettings(): array
-    {
-        $selectors = [];
-
-        $selectors[] = ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE;
-        $selectors[] = ActiveQueryContent::USER_RELATED_SCOPE_SPACES;
-
-        if (!Yii::$app->getModule('user')->disableFollow) {
-            $selectors[] = ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES;
-            $selectors[] = ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS;
-        }
-
-        return $selectors;
+        return Yii::$app->user->isGuest
+            ? CalendarFilterBar::VIEW_MY_CALENDARS
+            : $this->getUserSettings()->get('lastView', CalendarFilterBar::VIEW_MY_CALENDARS);
     }
 
     /**
-     * @return \humhub\modules\content\components\ContentContainerSettingsManager
+     * @return string current CalendarFilterBar::CALENDARS_* setting, defaults to CALENDARS_ALL.
      */
-    public function getUserSettings()
+    private function getCalendarsSetting(): string
     {
-        if (Yii::$app->user->isGuest) {
-            return null;
-        }
-
-        /* @var $module \humhub\modules\calendar\Module */
-        $module = Yii::$app->getModule('calendar');
-        return $module->settings->user();
+        return Yii::$app->user->isGuest
+            ? CalendarFilterBar::CALENDARS_ALL
+            : $this->getUserSettings()->get('lastCalendars', CalendarFilterBar::CALENDARS_ALL);
     }
 
     /**
-     * @return array|mixed calendar filter settings
-     * @throws \Throwable
+     * @return string current CalendarFilterBar::SHOW_* setting, defaults to SHOW_ALL.
      */
-    private function getFilterSettings()
+    private function getShowSetting(): string
     {
-        if (Yii::$app->user->isGuest) {
-            return [];
-        }
+        return Yii::$app->user->isGuest
+            ? CalendarFilterBar::SHOW_ALL
+            : $this->getUserSettings()->get('lastShow', CalendarFilterBar::SHOW_ALL);
+    }
 
-        return $this->getUserSettings()->getSerialized('lastFilters', []);
+    /**
+     * @return int[] persisted "Event types" (CalendarEntryType ids) setting, defaults to [].
+     */
+    private function getTypesSetting(): array
+    {
+        return Yii::$app->user->isGuest
+            ? []
+            : (array) $this->getUserSettings()->getSerialized('lastTypes', []);
+    }
+
+    public function getUserSettings(): ?ContentContainerSettingsManager
+    {
+        return Yii::$app->user->isGuest
+            ? null
+            : Yii::$app->getModule('calendar')->settings->user();
     }
 
     public function actionSelect($start = null, $end = null)
@@ -236,14 +225,28 @@ class GlobalController extends Controller
         if (!Yii::$app->user->isGuest) {
             $settings = $this->getUserSettings();
 
-            $selectors = Yii::$app->request->get('selectors', []);
-            $filters = Yii::$app->request->get('filters', []);
+            $view = Yii::$app->request->get('view', CalendarFilterBar::VIEW_MY_CALENDARS);
+            $calendars = Yii::$app->request->get('calendars', CalendarFilterBar::CALENDARS_ALL);
+            $show = Yii::$app->request->get('show', CalendarFilterBar::SHOW_ALL);
             $types = Yii::$app->request->get('types', []);
 
-            $settings->setSerialized('lastSelectors', $selectors);
-            $settings->setSerialized('lastFilters', $filters);
+            if (!in_array($view, [CalendarFilterBar::VIEW_MY_CALENDARS, CalendarFilterBar::VIEW_NETWORK], true)) {
+                $view = CalendarFilterBar::VIEW_MY_CALENDARS;
+            }
 
-            $filters['userRelated'] = $selectors;
+            $settings->set('lastView', $view);
+            $settings->set('lastCalendars', $calendars);
+            $settings->set('lastShow', $show);
+            $settings->setSerialized('lastTypes', $types);
+
+            $filters = CalendarFilterBar::getFiltersForShow($show);
+
+            // "Entire network" is only ever applied if explicitly requested (view=network).
+            // Every other/default state always resolves to a non-empty scope, so switching
+            // to "all readable content" can never happen implicitly.
+            if ($view !== CalendarFilterBar::VIEW_NETWORK) {
+                $filters['userRelated'] = CalendarFilterBar::getSelectorsForCalendars($calendars);
+            }
 
             $entries = $this->calendarService->getCalendarItems(new DateTime($start), new DateTime($end), $filters, null, null, true, $types);
         } else {

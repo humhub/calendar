@@ -34,9 +34,7 @@ class GlobalCalendarCest
         $I->wantToTest('the if the space event is visible in my global calendar');
         $I->amOnRoute(['/calendar/global/index']);
         $I->expectTo('see my space calendar entry');
-        $I->click('a[href="#calendar-filters-container"]');
-        $I->wait(1); // For the filters container to collapse
-        $I->see('Select calendars');
+        $I->see('Calendars');
         $I->waitForText('Space Event', 10, '#calendar');
 
         $I->amGoingTo('activate the profile calendar module by creating a new event');
@@ -66,15 +64,15 @@ class GlobalCalendarCest
         $I->see('My Test Profile Entry', '.fc-title');
 
         // Active space filter
-        $I->amGoingTo('deselect the space calendar filter');
-        $I->click('.calendar_my_spaces');
+        $I->amGoingTo('narrow the calendars filter down to the profile calendar only');
+        $I->selectOption('select[name=calendars]', 'My profile');
         $I->wait(2);
         $I->dontSee('Space Event', '#calendar');
         $I->see('My Test Profile Entry', '#calendar');
 
         $I->wantToTest('the global calendar filters');
-        $I->amGoingTo('select the space calendar filter');
-        $I->click('.calendar_my_spaces');
+        $I->amGoingTo('switch the calendars filter back to all of my calendars');
+        $I->selectOption('select[name=calendars]', 'All');
         $I->wait(2);
         $I->waitForText('Space Event', 10, '#calendar');
     }

@@ -4,6 +4,7 @@ namespace humhub\modules\calendar\controllers;
 
 use DateTime;
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
+use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\FilterType;
 use humhub\modules\calendar\widgets\WallEntry;
 use humhub\modules\calendar\models\fullcalendar\FullCalendar;
@@ -51,7 +52,7 @@ class ViewController extends ContentContainerController
         return $this->render('index', [
             'contentContainer' => $this->contentContainer,
             'canAddEntries' => $this->contentContainer->permissionManager->can(new CreateEntry()),
-            'filters' => [],
+            'show' => CalendarFilterBar::SHOW_ALL,
         ]);
     }
 
@@ -68,8 +69,10 @@ class ViewController extends ContentContainerController
     {
         $result = [];
 
-        $filters = Yii::$app->request->get('filters', []);
+        $show = Yii::$app->request->get('show', CalendarFilterBar::SHOW_ALL);
         $types = Yii::$app->request->get('types', []);
+
+        $filters = CalendarFilterBar::getFiltersForShow($show);
 
         // Don't expand recurrence event on filter by "I'm attending" because this option is selected per each date separately
         $expand = !in_array(AbstractCalendarQuery::FILTER_PARTICIPATE, $filters);
