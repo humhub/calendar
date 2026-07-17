@@ -37,7 +37,7 @@ class GlobalGuestCalendarCest
 
         $I->wait(1);
 
-        $I->waitForText('I\'m attending');
+        $I->waitForText('I\'m Attending');
         $I->selectOption('select[name=show]', "I'm Attending");
 
         $I->wait(1);
@@ -80,7 +80,7 @@ class GlobalGuestCalendarCest
 
         $I->wait(1);
 
-        $I->waitForText('I\'m attending');
+        $I->waitForText('I\'m Attending');
         $I->selectOption('select[name=show]', "I'm Attending");
 
         $I->wait(1);
