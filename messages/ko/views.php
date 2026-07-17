@@ -36,7 +36,7 @@ return [
   'Menu' => '메뉴',
   'My events' => '',
   'My profile' => '내 프로필',
-  'My spaces' => '나의 방',
+  'My Spaces' => '나의 방',
   'Next' => '다음',
   'No participants' => '',
   'Only by Invite' => '',

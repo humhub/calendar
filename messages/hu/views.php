@@ -36,7 +36,7 @@ return [
   'Menu' => 'Menü',
   'My events' => 'Eseményeim',
   'My profile' => 'Profilom',
-  'My spaces' => 'Közösségeim',
+  'My Spaces' => 'Közösségeim',
   'Next' => 'Következő',
   'No participants' => 'Nincsenek résztvevők',
   'Only by Invite' => 'Csak meghívással',

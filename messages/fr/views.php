@@ -36,7 +36,7 @@ return [
   'Menu' => 'Menu',
   'My events' => 'Mes événements',
   'My profile' => 'Mon profil',
-  'My spaces' => 'Mes espaces',
+  'My Spaces' => 'Mes espaces',
   'Next' => 'Suivant',
   'No participants' => 'Pas de participants',
   'Only by Invite' => 'Uniquement sur invitation',

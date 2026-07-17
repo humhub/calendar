@@ -43,7 +43,7 @@ return [
     'Menu' => '',
     'My events' => '',
     'My profile' => '',
-    'My spaces' => '',
+    'My Spaces' => '',
     'Next' => '',
     'No participants' => '',
     'Only by Invite' => '',

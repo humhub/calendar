@@ -26,7 +26,7 @@ use Yii;
  * refreshing the calendar via AJAX without a page reload.
  *
  * The "Calendars" selector replaces the former multi-checkbox scope selection. Choosing
- * less can never implicitly widen the result set anymore - "Entire network" is only ever
+ * less can never implicitly widen the result set anymore - "Entire Network" is only ever
  * reached by explicitly picking it in the "View" dropdown.
  *
  * @package humhub\modules\calendar\widgets
@@ -120,7 +120,7 @@ class CalendarFilterBar extends Widget
     {
         return [
             self::VIEW_MY_CALENDARS => Yii::t('CalendarModule.views', 'My Calendars'),
-            self::VIEW_NETWORK => Yii::t('CalendarModule.views', 'Entire network'),
+            self::VIEW_NETWORK => Yii::t('CalendarModule.views', 'Entire Network'),
         ];
     }
 
@@ -160,7 +160,7 @@ class CalendarFilterBar extends Widget
     {
         return [
             self::SHOW_ALL => Yii::t('CalendarModule.views', 'Select...'),
-            self::SHOW_PARTICIPATE => Yii::t('CalendarModule.views', "I'm attending"),
+            self::SHOW_PARTICIPATE => Yii::t('CalendarModule.views', "I'm Attending"),
             self::SHOW_MINE => Yii::t('CalendarModule.views', 'My events'),
         ];
     }
@@ -202,9 +202,9 @@ class CalendarFilterBar extends Widget
     {
         $labels = [
             self::CALENDARS_PROFILE => Yii::t('CalendarModule.views', 'My profile'),
-            self::CALENDARS_SPACES => Yii::t('CalendarModule.views', 'My spaces'),
-            self::CALENDARS_FOLLOWED_SPACES => Yii::t('CalendarModule.views', 'Spaces I follow'),
-            self::CALENDARS_FOLLOWED_USERS => Yii::t('CalendarModule.views', 'People I follow'),
+            self::CALENDARS_SPACES => Yii::t('CalendarModule.views', 'My Spaces'),
+            self::CALENDARS_FOLLOWED_SPACES => Yii::t('CalendarModule.views', 'Followed Spaces'),
+            self::CALENDARS_FOLLOWED_USERS => Yii::t('CalendarModule.views', 'Followed People'),
         ];
 
         $options = [self::CALENDARS_ALL => Yii::t('CalendarModule.views', 'All')];

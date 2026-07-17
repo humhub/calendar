@@ -40,7 +40,7 @@ return [
   'Menu' => 'Menu',
   'My events' => 'Mijn gebeurtenissen',
   'My profile' => 'Mijn profiel',
-  'My spaces' => 'Mijn ruimtes',
+  'My Spaces' => 'Mijn ruimtes',
   'Next' => 'Volgende',
   'No participants' => 'Geen deelnemers',
   'Only by Invite' => 'Alleen op uitnodiging',

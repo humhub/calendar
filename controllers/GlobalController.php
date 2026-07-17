@@ -250,7 +250,7 @@ class GlobalController extends Controller
 
             $filters = CalendarFilterBar::getFiltersForShow($show);
 
-            // "Entire network" is only ever applied if explicitly requested (viewMode=network).
+            // "Entire Network" is only ever applied if explicitly requested (viewMode=network).
             // Every other/default state always resolves to a non-empty scope, so switching
             // to "all readable content" can never happen implicitly.
             if ($viewMode !== CalendarFilterBar::VIEW_NETWORK) {

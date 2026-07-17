@@ -36,7 +36,7 @@ return [
   'Menu' => 'Меню',
   'My events' => '',
   'My profile' => 'Мій профіль',
-  'My spaces' => 'Мої спільноти',
+  'My Spaces' => 'Мої спільноти',
   'Next' => 'Далі',
   'No participants' => '',
   'Only by Invite' => '',

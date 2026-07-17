@@ -36,7 +36,7 @@ return [
   'Menu' => 'Danh mục',
   'My events' => 'Sự kiện của tôi',
   'My profile' => 'Hồ sơ của tôi',
-  'My spaces' => 'Diễn đàn của tôi',
+  'My Spaces' => 'Diễn đàn của tôi',
   'Next' => 'Tiếp theo',
   'No participants' => 'Không có người tham gia',
   'Only by Invite' => '',

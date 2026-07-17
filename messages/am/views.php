@@ -36,7 +36,7 @@ return [
   'Menu' => 'ማውጫ',
   'My events' => '',
   'My profile' => 'የግል መረጃዬ',
-  'My spaces' => '',
+  'My Spaces' => '',
   'Next' => 'ቀጥሎ',
   'No participants' => '',
   'Only by Invite' => '',

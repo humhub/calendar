@@ -36,7 +36,7 @@ return [
   'Menu' => 'Meniu',
   'My events' => 'Evenimentele mele',
   'My profile' => 'Profilul meu',
-  'My spaces' => 'Spațiile mele',
+  'My Spaces' => 'Spațiile mele',
   'Next' => 'Inainte',
   'No participants' => 'Fără participanți',
   'Only by Invite' => '',

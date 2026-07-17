@@ -36,7 +36,7 @@ return [
   'Menu' => 'القائمة',
   'My events' => 'أحداثي',
   'My profile' => 'ملفي الشخصي',
-  'My spaces' => 'باحاتي',
+  'My Spaces' => 'باحاتي',
   'Next' => 'التالي',
   'No participants' => 'لا مشاركين',
   'Only by Invite' => 'فقط بواسطة دعوة',

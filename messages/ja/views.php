@@ -36,7 +36,7 @@ return [
   'Menu' => 'メニュー',
   'My events' => '自分のイベント',
   'My profile' => '私のプロフィール',
-  'My spaces' => 'マイスペース',
+  'My Spaces' => 'マイスペース',
   'Next' => '次へ',
   'No participants' => '参加者なし',
   'Only by Invite' => '招待された人のみ',
