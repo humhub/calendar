@@ -5,7 +5,7 @@ use humhub\modules\calendar\widgets\CalendarFilterBar;
 use humhub\modules\calendar\widgets\FilterType;
 use humhub\widgets\bootstrap\Button;
 
-/* @var $view string current CalendarFilterBar::VIEW_* value */
+/* @var $viewMode string current CalendarFilterBar::VIEW_* value */
 /* @var $calendars string current CalendarFilterBar::CALENDARS_* value */
 /* @var $show string current CalendarFilterBar::SHOW_* value */
 /* @var $viewOptions array */
@@ -22,13 +22,13 @@ use humhub\widgets\bootstrap\Button;
     <div class="form-search">
         <div class="d-flex flex-wrap gap-2">
             <?php if ($showSelectors) : ?>
-                <div class="flex-fill calendar-filter-view">
+                <div class="flex-fill calendar-filter-view-mode">
                     <div class="form-search-field-info"><?= Yii::t('CalendarModule.views', 'View') ?></div>
-                    <?= Html::dropDownList('view', $view, $viewOptions, [
-                        'class' => 'form-control calendar-select-view',
+                    <?= Html::dropDownList('viewMode', $viewMode, $viewOptions, [
+                        'class' => 'form-control calendar-select-view-mode',
                     ]) ?>
                 </div>
-                <div class="flex-fill calendar-filter-calendars<?= $view === CalendarFilterBar::VIEW_NETWORK ? ' d-none' : '' ?>">
+                <div class="flex-fill calendar-filter-calendars<?= $viewMode === CalendarFilterBar::VIEW_NETWORK ? ' d-none' : '' ?>">
                     <div class="form-search-field-info"><?= Yii::t('CalendarModule.views', 'Calendars') ?></div>
                     <?= Html::dropDownList('calendars', $calendars, $calendarsOptions, [
                         'class' => 'form-control calendar-select-calendars',

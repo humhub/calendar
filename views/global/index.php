@@ -10,7 +10,7 @@ use humhub\modules\calendar\widgets\ExportButton;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\widgets\FooterMenu;
 
-/* @var $view string */
+/* @var $viewMode string */
 /* @var $calendars string */
 /* @var $show string */
 /* @var $types array */
@@ -38,7 +38,7 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
         <?php if (!Yii::$app->user->isGuest) : ?>
         <div class="panel-body">
             <?= CalendarFilterBar::widget([
-                'view' => $view,
+                'viewMode' => $viewMode,
                 'calendars' => $calendars,
                 'show' => $show,
                 'types' => $types,
@@ -49,7 +49,7 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
             <?= FullCalendar::widget([
                 'canWrite' => !Yii::$app->user->isGuest,
                 'aspectRatio' => $aspectRatio,
-                'view' => $view,
+                'viewMode' => $viewMode,
                 'calendars' => $calendars,
                 'show' => $show,
                 'types' => $types,

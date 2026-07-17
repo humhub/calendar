@@ -50,8 +50,9 @@ class CalendarFilterBar extends Widget
 
     /**
      * @var string current view mode, one of self::VIEW_*
+     * Note: named $viewMode (not $view) since $view would shadow \yii\base\Widget::getView() magic property.
      */
-    public $view = self::VIEW_MY_CALENDARS;
+    public $viewMode = self::VIEW_MY_CALENDARS;
 
     /**
      * @var string current calendars scope, one of self::CALENDARS_*
@@ -98,7 +99,7 @@ class CalendarFilterBar extends Widget
         }
 
         return $this->render('calendarFilterBar', [
-            'view' => $this->view,
+            'viewMode' => $this->viewMode,
             'calendars' => $this->calendars,
             'show' => $this->show,
             'typeSelection' => $typeSelection,
@@ -121,6 +122,35 @@ class CalendarFilterBar extends Widget
             self::VIEW_MY_CALENDARS => Yii::t('CalendarModule.views', 'My Calendars'),
             self::VIEW_NETWORK => Yii::t('CalendarModule.views', 'Entire network'),
         ];
+    }
+
+    /**
+     * @param string $viewMode value to check
+     * @return bool whether $viewMode is one of self::VIEW_*
+     */
+    public static function isValidViewMode(string $viewMode): bool
+    {
+        return array_key_exists($viewMode, self::getViewOptions());
+    }
+
+    /**
+     * @param string $calendars value to check
+     * @return bool whether $calendars is one of the currently available self::CALENDARS_*
+     *  options (i.e. "all" or a scope actually offered to the current user, see
+     *  self::getCalendarsScopes())
+     */
+    public static function isValidCalendars(string $calendars): bool
+    {
+        return $calendars === self::CALENDARS_ALL || array_key_exists($calendars, self::getCalendarsScopes());
+    }
+
+    /**
+     * @param string $show value to check
+     * @return bool whether $show is one of self::SHOW_*
+     */
+    public static function isValidShow(string $show): bool
+    {
+        return array_key_exists($show, self::getShowOptions());
     }
 
     /**
@@ -226,7 +256,7 @@ class CalendarFilterBar extends Widget
      */
     public function isFiltered(): bool
     {
-        return $this->view !== self::VIEW_MY_CALENDARS
+        return $this->viewMode !== self::VIEW_MY_CALENDARS
             || $this->calendars !== self::CALENDARS_ALL
             || $this->show !== self::SHOW_ALL
             || !empty($this->types);

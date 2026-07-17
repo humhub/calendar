@@ -26,7 +26,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 data: {
                     start: moment(info.start.valueOf()).format('YYYY-MM-DD'),
                     end:  moment(info.end.valueOf()).format('YYYY-MM-DD'),
-                    view: that.options.view,
+                    viewMode: that.options.viewMode,
                     calendars: that.options.calendars,
                     show: that.options.show,
                     types: that.options.types
@@ -53,7 +53,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             }, 0);
         };
 
-        $('.calendar-select-view').on('change', function () {
+        $('.calendar-select-view-mode').on('change', function () {
             if (that._resetting) {
                 return;
             }
@@ -75,7 +75,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             that.updateCalendarFilters(true);
         });
 
-        $(document).on('click', '.calendar-filter-reset', function (evt) {
+        $('.calendar-filter-reset').on('click', function (evt) {
             evt.preventDefault();
             that.resetFilters();
         });
@@ -95,7 +95,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
      * "Entire network" always includes everything regardless of its value.
      */
     Calendar.prototype.toggleCalendarsSelector = function () {
-        var isNetwork = $('.calendar-select-view').val() === 'network';
+        var isNetwork = $('.calendar-select-view-mode').val() === 'network';
         $('.calendar-filter-calendars').toggleClass('d-none', isNetwork);
     };
 
@@ -112,7 +112,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
     Calendar.prototype.resetFilters = function () {
         this._resetting = true;
 
-        $('.calendar-select-view').val('mycalendars').trigger('change');
+        $('.calendar-select-view-mode').val('mycalendars').trigger('change');
         $('.calendar-select-calendars').val('all').trigger('change');
         $('.calendar-select-show').val('').trigger('change');
 
@@ -128,7 +128,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
     };
 
     Calendar.prototype.updateCalendarFilters = function (reload) {
-        this.options.view = $('.calendar-select-view').val() || 'mycalendars';
+        this.options.viewMode = $('.calendar-select-view-mode').val() || 'mycalendars';
         this.options.calendars = $('.calendar-select-calendars').val() || 'all';
         this.options.show = $('.calendar-select-show').val() || '';
         this.options.types = $('select[name="filterType[]"]').val() || [];
@@ -143,7 +143,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
      * defaults, mirroring the People/Space directory filter bars.
      */
     Calendar.prototype.updateResetButtonVisibility = function () {
-        var isFiltered = this.options.view !== 'mycalendars'
+        var isFiltered = this.options.viewMode !== 'mycalendars'
             || this.options.calendars !== 'all'
             || this.options.show !== ''
             || (this.options.types && this.options.types.length > 0);

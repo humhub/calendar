@@ -76,7 +76,7 @@ class GlobalController extends Controller
     public function actionIndex()
     {
         return $this->render('index', [
-            'view' => $this->getViewSetting(),
+            'viewMode' => $this->getViewModeSetting(),
             'calendars' => $this->getCalendarsSetting(),
             'show' => $this->getShowSetting(),
             'types' => $this->getTypesSetting(),
@@ -89,11 +89,11 @@ class GlobalController extends Controller
      *  Note: VIEW_NETWORK is only ever persisted/returned here after the user explicitly
      *  picked it - it can never be reached implicitly.
      */
-    private function getViewSetting(): string
+    private function getViewModeSetting(): string
     {
         return Yii::$app->user->isGuest
             ? CalendarFilterBar::VIEW_MY_CALENDARS
-            : $this->getUserSettings()->get('lastView', CalendarFilterBar::VIEW_MY_CALENDARS);
+            : $this->getUserSettings()->get('lastViewMode', CalendarFilterBar::VIEW_MY_CALENDARS);
     }
 
     /**
@@ -225,26 +225,35 @@ class GlobalController extends Controller
         if (!Yii::$app->user->isGuest) {
             $settings = $this->getUserSettings();
 
-            $view = Yii::$app->request->get('view', CalendarFilterBar::VIEW_MY_CALENDARS);
-            $calendars = Yii::$app->request->get('calendars', CalendarFilterBar::CALENDARS_ALL);
-            $show = Yii::$app->request->get('show', CalendarFilterBar::SHOW_ALL);
+            $viewMode = (string) Yii::$app->request->get('viewMode', CalendarFilterBar::VIEW_MY_CALENDARS);
+            $calendars = (string) Yii::$app->request->get('calendars', CalendarFilterBar::CALENDARS_ALL);
+            $show = (string) Yii::$app->request->get('show', CalendarFilterBar::SHOW_ALL);
             $types = Yii::$app->request->get('types', []);
 
-            if (!in_array($view, [CalendarFilterBar::VIEW_MY_CALENDARS, CalendarFilterBar::VIEW_NETWORK], true)) {
-                $view = CalendarFilterBar::VIEW_MY_CALENDARS;
+            // Only ever persist known/valid values - guards against arbitrary request values
+            // ending up permanently stored in the user settings.
+            if (!CalendarFilterBar::isValidViewMode($viewMode)) {
+                $viewMode = CalendarFilterBar::VIEW_MY_CALENDARS;
             }
+            if (!CalendarFilterBar::isValidCalendars($calendars)) {
+                $calendars = CalendarFilterBar::CALENDARS_ALL;
+            }
+            if (!CalendarFilterBar::isValidShow($show)) {
+                $show = CalendarFilterBar::SHOW_ALL;
+            }
+            $types = is_array($types) ? array_values(array_unique(array_filter(array_map('intval', $types)))) : [];
 
-            $settings->set('lastView', $view);
+            $settings->set('lastViewMode', $viewMode);
             $settings->set('lastCalendars', $calendars);
             $settings->set('lastShow', $show);
             $settings->setSerialized('lastTypes', $types);
 
             $filters = CalendarFilterBar::getFiltersForShow($show);
 
-            // "Entire network" is only ever applied if explicitly requested (view=network).
+            // "Entire network" is only ever applied if explicitly requested (viewMode=network).
             // Every other/default state always resolves to a non-empty scope, so switching
             // to "all readable content" can never happen implicitly.
-            if ($view !== CalendarFilterBar::VIEW_NETWORK) {
+            if ($viewMode !== CalendarFilterBar::VIEW_NETWORK) {
                 $filters['userRelated'] = CalendarFilterBar::getSelectorsForCalendars($calendars);
             }
 
