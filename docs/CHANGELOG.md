@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.16 (Unreleased)
---------------------
+1.8.16 (July 17, 2026)
+----------------------
 - Enh #708: Replace calendar filter checkboxes with dropdowns, Add new filter "Entire network"
 
 1.8.15 (June 18, 2026)
