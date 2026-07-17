@@ -27,8 +27,15 @@ class FullCalendar extends JsWidget
     public $loadUrl;
     public $dropUrl;
     public $editUrl;
-    public $selectors = [];
-    public $filters = [];
+    /**
+     * @var string current view mode, one of CalendarFilterBar::VIEW_*
+     *
+     * Note: named $viewMode (not $view) since $view would shadow Yii's
+     * \yii\base\Widget::getView() magic property.
+     */
+    public $viewMode = CalendarFilterBar::VIEW_MY_CALENDARS;
+    public $calendars = CalendarFilterBar::CALENDARS_ALL;
+    public $show = CalendarFilterBar::SHOW_ALL;
     public $types = [];
     /**
      * @var ContentContainerActiveRecord $contentContainer
@@ -84,8 +91,9 @@ class FullCalendar extends JsWidget
             'editable' => (int)$this->canWrite,
             'selectable' => (int)$this->canWrite,
             'select-helper' => (int)$this->canWrite,
-            'selectors' => $this->selectors,
-            'filters' => $this->filters,
+            'view-mode' => $this->viewMode,
+            'calendars' => $this->calendars,
+            'show' => $this->show,
             'types' => $this->types,
             'time-zone' => CalendarUtils::getUserTimeZone(true),
             'locale' => $this->translateLocale(Yii::$app->formatter->locale),

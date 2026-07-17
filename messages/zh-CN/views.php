@@ -18,7 +18,7 @@ return [
     'Menu' => '菜单',
     'My events' => '我的事件',
     'My profile' => '我的属性',
-    'My spaces' => '我的版块',
+    'My Spaces' => '我的版块',
     'Next' => '下一步',
     'No participants' => '没有参与者',
     'Settings' => '设置',

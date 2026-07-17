@@ -10,8 +10,10 @@ use humhub\modules\calendar\widgets\ExportButton;
 use humhub\modules\calendar\widgets\FullCalendar;
 use humhub\widgets\FooterMenu;
 
-/* @var $selectors array */
-/* @var $filters array */
+/* @var $viewMode string */
+/* @var $calendars string */
+/* @var $show string */
+/* @var $types array */
 /* @var $editUrl string */
 
 $isFluid = ThemeHelper::isFluid();
@@ -33,19 +35,24 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
                 ]) ?>
             </div>
         </div>
+        <?php if (!Yii::$app->user->isGuest) : ?>
         <div class="panel-body">
             <?= CalendarFilterBar::widget([
-                'selectors' => $selectors,
-                'filters' => $filters,
-                'showControls' => false,
+                'viewMode' => $viewMode,
+                'calendars' => $calendars,
+                'show' => $show,
+                'types' => $types,
             ]) ?>
         </div>
+        <?php endif ?>
         <div class="panel-body">
             <?= FullCalendar::widget([
                 'canWrite' => !Yii::$app->user->isGuest,
                 'aspectRatio' => $aspectRatio,
-                'selectors' => $selectors,
-                'filters' => $filters,
+                'viewMode' => $viewMode,
+                'calendars' => $calendars,
+                'show' => $show,
+                'types' => $types,
                 'loadUrl' => Url::toAjaxLoad(),
                 'editUrl' => $editUrl,
             ]) ?>

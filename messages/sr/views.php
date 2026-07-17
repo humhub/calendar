@@ -36,7 +36,7 @@ return [
   'Menu' => 'Meni',
   'My events' => 'Moji događaji',
   'My profile' => 'Moj profil',
-  'My spaces' => 'Moji prostori',
+  'My Spaces' => 'Moji prostori',
   'Next' => 'Dalje',
   'No participants' => 'Nema učesnika',
   'Only by Invite' => '',

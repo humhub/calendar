@@ -36,7 +36,7 @@ return [
   'Menu' => 'منو',
   'My events' => 'رویدادهای من',
   'My profile' => 'پروفایل من',
-  'My spaces' => 'انجمن‌های من',
+  'My Spaces' => 'انجمن‌های من',
   'Next' => 'بعدی',
   'No participants' => 'مشارکت‌کننده‌ای وجود ندارد',
   'Only by Invite' => '',

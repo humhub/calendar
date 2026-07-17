@@ -36,7 +36,7 @@ return [
   'Menu' => 'תפריט',
   'My events' => '',
   'My profile' => 'הפרופיל שלי',
-  'My spaces' => '',
+  'My Spaces' => '',
   'Next' => 'הבא',
   'No participants' => '',
   'Only by Invite' => '',
