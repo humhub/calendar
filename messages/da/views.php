@@ -37,7 +37,7 @@ return [
   'Menu' => 'Menu',
   'My events' => 'Mine events',
   'My profile' => 'Min profil',
-  'My spaces' => 'Mine Sider',
+  'My Spaces' => 'Mine Sider',
   'Next' => 'Næste',
   'No participants' => 'Ingen deltagere',
   'Only by Invite' => 'Kun med invitation',

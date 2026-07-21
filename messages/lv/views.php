@@ -15,7 +15,7 @@ return [
     'Menu' => 'Izvēlne',
     'My events' => 'Mani notikumi',
     'My profile' => 'Mans profils',
-    'My spaces' => 'Manas vietas',
+    'My Spaces' => 'Manas vietas',
     'Next' => 'Nākamais',
     'No participants' => 'Nav dalībnieku',
     'Participants' => 'Dalībnieki',

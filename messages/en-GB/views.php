@@ -28,7 +28,7 @@ return [
   'Maybe' => '',
   'My events' => '',
   'My profile' => '',
-  'My spaces' => '',
+  'My Spaces' => '',
   'No participants' => '',
   'Not responded yet' => '',
   'Participants' => '',

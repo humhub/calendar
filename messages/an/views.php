@@ -10,6 +10,7 @@ return [
     'Menu' => 'Menú',
     'My profile' => 'O mío perfil',
     'My spaces' => 'Espacios',
+    'My Spaces' => 'Espacios',
     'Next' => 'Siguient',
     'Settings' => 'Achustes',
     'Title' => 'Titulek',

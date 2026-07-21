@@ -37,7 +37,7 @@ return [
   'Menu' => '選單',
   'My events' => '',
   'My profile' => '我的個人資料',
-  'My spaces' => '我的Space',
+  'My Spaces' => '我的Space',
   'Next' => '下一個',
   'No participants' => '',
   'Only by Invite' => '',

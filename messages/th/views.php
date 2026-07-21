@@ -37,7 +37,7 @@ return [
   'Menu' => 'เมนู',
   'My events' => 'กิจกรรมของฉัน',
   'My profile' => 'ประวัติของฉัน',
-  'My spaces' => 'พื้นที่ของฉัน',
+  'My Spaces' => 'พื้นที่ของฉัน',
   'Next' => 'ถัดไป',
   'No participants' => 'ไม่มีผู้เข้าร่วม',
   'Only by Invite' => '',

@@ -37,7 +37,7 @@ return [
   'Menu' => 'Meny',
   'My events' => 'Mina aktiviteter',
   'My profile' => 'Min profil',
-  'My spaces' => 'Mina forum',
+  'My Spaces' => 'Mina forum',
   'Next' => 'Nästa',
   'No participants' => 'Inga deltagare',
   'Only by Invite' => 'Endast genom inbjudan',

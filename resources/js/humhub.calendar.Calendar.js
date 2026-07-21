@@ -26,8 +26,9 @@ humhub.module('calendar.Calendar', function (module, require, $) {
                 data: {
                     start: moment(info.start.valueOf()).format('YYYY-MM-DD'),
                     end:  moment(info.end.valueOf()).format('YYYY-MM-DD'),
-                    selectors: that.options.selectors,
-                    filters: that.options.filters,
+                    viewMode: that.options.viewMode,
+                    calendars: that.options.calendars,
+                    show: that.options.show,
                     types: that.options.types
                 },
                 success: function (response) {
@@ -52,48 +53,102 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             }, 0);
         };
 
-        $('.selectorCheckbox').click(function () {
+        $('.calendar-select-view-mode').on('change', function () {
+            if (that._resetting) {
+                return;
+            }
+            that.toggleCalendarsSelector();
             that.updateCalendarFilters(true);
         });
 
-        $('.filterCheckbox').click(function () {
-
-            // Make sure responded / not resondend  filters are not checked at the same time
-            if ($(this).val() == '3') {
-                $(":checkbox[value=4][name='filter']").attr("checked", false);
+        $('.calendar-select-calendars').on('change', function () {
+            if (that._resetting) {
+                return;
             }
-
-            if ($(this).val() == '4') {
-                $(":checkbox[value=3][name='filter']").attr("checked", false);
-            }
-
             that.updateCalendarFilters(true);
         });
 
-        $('select[name="filterType[]"]').on('change select2:select select2:unselect select2:clear', updateTypeFilter);
+        $('.calendar-select-show').on('change', function () {
+            if (that._resetting) {
+                return;
+            }
+            that.updateCalendarFilters(true);
+        });
+
+        $('.calendar-filter-reset').on('click', function (evt) {
+            evt.preventDefault();
+            that.resetFilters();
+        });
+
+        $('select[name="filterType[]"]').on('change select2:select select2:unselect select2:clear', function () {
+            if (that._resetting) {
+                return;
+            }
+            updateTypeFilter();
+        });
+
+        this.toggleCalendarsSelector();
+    };
+
+    /**
+     * The "Calendars" selector is only meaningful in "My Calendars" view mode, since
+     * "Entire network" always includes everything regardless of its value.
+     */
+    Calendar.prototype.toggleCalendarsSelector = function () {
+        var isNetwork = $('.calendar-select-view-mode').val() === 'network';
+        $('.calendar-filter-calendars').toggleClass('d-none', isNetwork);
+    };
+
+    /**
+     * Resets all filters back to their defaults (My Calendars / All / no "show only" / no types)
+     * and reloads the calendar, without navigating away from the current calendar view/date.
+     *
+     * Values are set via val().trigger('change') (not just val()) since these selects are
+     * enhanced with Select2 (see humhub\helpers\Html::dropDownList()), which only re-renders
+     * its visible display in reaction to a native "change" event on the underlying <select>.
+     * The individual change handlers are temporarily suppressed via the _resetting flag so the
+     * calendar is only reloaded once, at the end, instead of once per reset field.
+     */
+    Calendar.prototype.resetFilters = function () {
+        this._resetting = true;
+
+        $('.calendar-select-view-mode').val('mycalendars').trigger('change');
+        $('.calendar-select-calendars').val('all').trigger('change');
+        $('.calendar-select-show').val('').trigger('change');
+
+        var $types = $('select[name="filterType[]"]');
+        if ($types.length) {
+            $types.val(null).trigger('change');
+        }
+
+        this._resetting = false;
+
+        this.toggleCalendarsSelector();
+        this.updateCalendarFilters(true);
     };
 
     Calendar.prototype.updateCalendarFilters = function (reload) {
-        var that = this;
-        this.options.selectors = [];
-        this.options.filters = [];
-        this.options.types = [];
+        this.options.viewMode = $('.calendar-select-view-mode').val() || 'mycalendars';
+        this.options.calendars = $('.calendar-select-calendars').val() || 'all';
+        this.options.show = $('.calendar-select-show').val() || '';
+        this.options.types = $('select[name="filterType[]"]').val() || [];
 
-        $('.selectorCheckbox').each(function () {
-            if ($(this).prop('checked')) {
-                that.options.selectors.push($(this).val());
-            }
-        });
-
-        $('.filterCheckbox').each(function () {
-            if ($(this).prop('checked')) {
-                that.options.filters.push($(this).val());
-            }
-        });
-
-        that.options.types = $('select[name="filterType[]"]').val();
+        this.updateResetButtonVisibility();
 
         this.initFullCalendar(reload);
+    };
+
+    /**
+     * The reset ("x") action is only shown once the current selection deviates from the
+     * defaults, mirroring the People/Space directory filter bars.
+     */
+    Calendar.prototype.updateResetButtonVisibility = function () {
+        var isFiltered = this.options.viewMode !== 'mycalendars'
+            || this.options.calendars !== 'all'
+            || this.options.show !== ''
+            || (this.options.types && this.options.types.length > 0);
+
+        $('.form-search-action-reset').toggleClass('d-none', !isFiltered);
     };
 
     Calendar.prototype.initFullCalendar = function (reload) {
