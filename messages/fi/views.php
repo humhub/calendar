@@ -37,7 +37,7 @@ return [
   'Menu' => 'Valikko',
   'My events' => 'Minun tapahtumat',
   'My profile' => 'Minun tapahtumat',
-  'My spaces' => 'Minun sivut',
+  'My Spaces' => 'Minun sivut',
   'Next' => 'Seuraava',
   'No participants' => 'Ei osallistujia',
   'Only by Invite' => '',

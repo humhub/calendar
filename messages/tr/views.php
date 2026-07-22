@@ -37,7 +37,7 @@ return [
   'Menu' => 'Menü',
   'My events' => 'Etkinliklerim',
   'My profile' => 'Profilim',
-  'My spaces' => 'Mekanım',
+  'My Spaces' => 'Mekanım',
   'Next' => 'Devam',
   'No participants' => 'Katılımsız',
   'Only by Invite' => '',

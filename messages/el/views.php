@@ -37,7 +37,7 @@ return [
   'Menu' => 'Μενού',
   'My events' => 'Οι εκδηλώσεις μου',
   'My profile' => 'Το προφίλ μου',
-  'My spaces' => 'Οι χώροι μου',
+  'My Spaces' => 'Οι χώροι μου',
   'Next' => 'Επόμενο',
   'No participants' => 'Δεν υπάρχουν συμμετέχοντες',
   'Only by Invite' => '',

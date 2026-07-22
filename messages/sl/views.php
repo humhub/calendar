@@ -8,6 +8,7 @@ return [
     'General' => 'Splošno',
     'Menu' => 'Izbor',
     'My spaces' => 'Moji prostori',
+    'My Spaces' => 'Moji prostori',
     'Next' => 'Naslednji',
     'Settings' => 'Nastavitve',
     'Title' => 'Naslov',

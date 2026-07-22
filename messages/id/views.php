@@ -19,6 +19,7 @@ return [
     'My events' => 'Acara Saya',
     'My profile' => 'Profil saya',
     'My spaces' => 'Ruang Saya',
+    'My Spaces' => 'Ruang Saya',
     'Next' => 'Selanjutnya',
     'No participants' => 'Tidak berpartisipasi',
     'Participants' => 'Partisipasi',

@@ -41,7 +41,7 @@ return [
     'Location' => '',
     'Maybe' => '',
     'My events' => '',
-    'My spaces' => '',
+    'My Spaces' => '',
     'No participants' => '',
     'Only by Invite' => '',
     'Open Calendar' => '',

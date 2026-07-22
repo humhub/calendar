@@ -37,7 +37,7 @@ return [
   'Menu' => 'Meniu',
   'My events' => 'Mano įvykiai',
   'My profile' => 'Mano profilis',
-  'My spaces' => 'Mano erdvės',
+  'My Spaces' => 'Mano erdvės',
   'Next' => 'Kitas',
   'No participants' => 'Nėra dalyvių',
   'Only by Invite' => '',

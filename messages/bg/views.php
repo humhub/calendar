@@ -37,7 +37,7 @@ return [
   'Menu' => 'Меню',
   'My events' => 'Моите Събития',
   'My profile' => 'Моят Профил',
-  'My spaces' => 'Моите Раздели',
+  'My Spaces' => 'Моите Раздели',
   'Next' => 'Следващ',
   'No participants' => 'Няма участници',
   'Only by Invite' => '',

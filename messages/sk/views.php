@@ -37,7 +37,7 @@ return [
   'Menu' => 'Ponuka',
   'My events' => 'Moje udalosti',
   'My profile' => 'Môj profil',
-  'My spaces' => 'Moje priestory',
+  'My Spaces' => 'Moje priestory',
   'Next' => 'Ďalej',
   'No participants' => 'Žiadni účastníci',
   'Only by Invite' => 'Iba na pozvanie',
