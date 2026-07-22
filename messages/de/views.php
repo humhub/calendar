@@ -43,7 +43,7 @@ return [
   'Only by Invite' => 'Nur mit Einladung',
   'Open Calendar' => 'Kalender öffnen',
   'Participants' => 'Teilnehmer',
-  'Participation link' => '',
+  'Participation link' => 'Teilnahmelink',
   'Recurrence' => 'Wiederkehrende Termine',
   'Reminder' => 'Erinnerung',
   'Select' => 'Auswählen',
@@ -55,5 +55,5 @@ return [
   'Undecided' => 'Vielleicht',
   'You are invited, please select your role:' => 'Du bist eingeladen, bitte wähle deinen Teilnahmestatus:',
   '{count} Participants' => '{count} Teilnehmer',
-  '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
+  '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '{displayName} nimmt an der Veranstaltung "{contentTitle}" am {dateTime} teil.',
 ];
