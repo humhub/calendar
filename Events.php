@@ -3,17 +3,20 @@
 namespace humhub\modules\calendar;
 
 use DateTime;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEntryElement;
 use humhub\modules\calendar\extensions\custom_pages\elements\CalendarEventsElement;
 use humhub\modules\calendar\helpers\dav\SyncService;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\CalendarEntryParticipant;
-use humhub\modules\calendar\models\ExportSettings;
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\content\events\ContentEvent;
-use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
+use humhub\modules\content\widgets\WallEntryLinks;
+use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
+use humhub\modules\space\widgets\Menu;
+use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use humhub\modules\calendar\interfaces\event\CalendarItemTypesEvent;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -32,11 +35,13 @@ use humhub\modules\calendar\widgets\ReminderLink;
 use humhub\modules\calendar\widgets\UpcomingEvents;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar\helpers\Url;
+use humhub\modules\user\widgets\ProfileMenu;
+use humhub\modules\user\widgets\ProfileSidebar;
+use humhub\widgets\TopMenu;
 use Yii;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
 use yii\web\Application;
-use humhub\components\ModuleEvent;
 
 /**
  * Description of CalendarEvents
@@ -107,15 +112,15 @@ class Events
         try {
             if (SnippetModuleSettings::instance()->showGlobalCalendarItems()
                 && MenuSettings::instance()->show) {
-                $event->sender->addItem([
+                /* @var TopMenu $menu */
+                $menu = $event->sender;
+                $menu->addEntry(new MenuLink([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
                     'url' => Url::toGlobalCalendar(),
-                    'icon' => '<i class="fa fa-calendar"></i>',
-                    'isActive' => (Yii::$app->controller->module
-                        && Yii::$app->controller->module->id == 'calendar'
-                        && Yii::$app->controller->id == 'global'),
+                    'icon' => 'calendar',
+                    'isActive' => ControllerHelper::isActivePath('calendar', 'global'),
                     'sortOrder' => MenuSettings::instance()->sortOrder,
-                ]);
+                ]));
             }
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -125,17 +130,15 @@ class Events
     public static function onSpaceMenuInit($event)
     {
         try {
-            /* @var Space $space */
-            $space = $event->sender->space;
-            if ($space->moduleManager->isEnabled('calendar')) {
-                $event->sender->addItem([
+            /* @var Menu $menu */
+            $menu = $event->sender;
+            if ($menu->space->moduleManager->isEnabled('calendar')) {
+                $menu->addEntry(new MenuLink([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
-                    'group' => 'modules',
-                    'url' => Url::toCalendar($space),
-                    'icon' => '<i class="fa fa-calendar"></i>',
-                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
-
-                ]);
+                    'url' => Url::toCalendar($menu->space),
+                    'icon' => 'calendar',
+                    'isActive' => ControllerHelper::isActivePath('calendar'),
+                ]));
             }
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -145,15 +148,15 @@ class Events
     public static function onProfileMenuInit($event)
     {
         try {
-            /* @var User $user */
-            $user = $event->sender->user;
-            if ($user->moduleManager->isEnabled('calendar')) {
-                $event->sender->addItem([
+            /* @var ProfileMenu $menu */
+            $menu = $event->sender;
+            if ($menu->user->moduleManager->isEnabled('calendar')) {
+                $menu->addEntry(new MenuLink([
                     'label' => Yii::t('CalendarModule.base', 'Calendar'),
-                    'url' => Url::toCalendar($user),
-                    'icon' => '<i class="fa fa-calendar"></i>',
-                    'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar'),
-                ]);
+                    'url' => Url::toCalendar($menu->user),
+                    'icon' => 'calendar',
+                    'isActive' => ControllerHelper::isActivePath('calendar'),
+                ]));
             }
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -163,14 +166,17 @@ class Events
     public static function onSpaceSidebarInit($event)
     {
         try {
-            /* @var Space $space */
-            $space = $event->sender->space;
+            /* @var SpaceSidebar $sidebar */
+            $sidebar = $event->sender;
             $settings = SnippetModuleSettings::instantiate();
 
-            if ($space->moduleManager->isEnabled('calendar')) {
-                if ($settings->showUpcomingEventsSnippet()) {
-                    $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $space], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
-                }
+            if ($sidebar->space->moduleManager->isEnabled('calendar')
+                && $settings->showUpcomingEventsSnippet()) {
+                $sidebar->addWidget(
+                    UpcomingEvents::class,
+                    ['contentContainer' => $sidebar->space],
+                    ['sortOrder' => $settings->upcomingEventsSnippetSortOrder],
+                );
             }
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -180,10 +186,12 @@ class Events
     public static function onDashboardSidebarInit($event)
     {
         try {
+            /* @var DashboardSidebar $sidebar */
+            $sidebar = $event->sender;
             $settings = SnippetModuleSettings::instantiate();
 
             if ($settings->showUpcomingEventsSnippet()) {
-                $event->sender->addWidget(UpcomingEvents::class, [], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+                $sidebar->addWidget(UpcomingEvents::class, [], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
             }
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -197,12 +205,18 @@ class Events
                 return;
             }
 
-            $user = $event->sender->user;
-            if ($user != null) {
+            /* @var ProfileSidebar $sidebar */
+            $sidebar = $event->sender;
+
+            if ($sidebar->user != null) {
                 $settings = SnippetModuleSettings::instantiate();
 
                 if ($settings->showUpcomingEventsSnippet()) {
-                    $event->sender->addWidget(UpcomingEvents::class, ['contentContainer' => $user], ['sortOrder' => $settings->upcomingEventsSnippetSortOrder]);
+                    $sidebar->addWidget(
+                        UpcomingEvents::class,
+                        ['contentContainer' => $sidebar->user],
+                        ['sortOrder' => $settings->upcomingEventsSnippetSortOrder],
+                    );
                 }
             }
         } catch (\Throwable $e) {
@@ -213,14 +227,17 @@ class Events
     public static function onWallEntryLinks($event)
     {
         try {
-            $eventModel = static::getCalendarEvent($event->sender->object);
+            /* @var WallEntryLinks $links */
+            $links = $event->sender;
+
+            $eventModel = static::getCalendarEvent($links->object);
 
             if (!$eventModel) {
                 return;
             }
 
             if ($eventModel instanceof ContentActiveRecord && $eventModel instanceof CalendarEventIF) {
-                $event->sender->addWidget(DownloadIcsLink::class, ['calendarEntry' => $eventModel]);
+                $links->addWidget(DownloadIcsLink::class, ['calendarEntry' => $eventModel]);
             }
 
             /* @var $eventModel CalendarEventIF */
@@ -229,7 +246,7 @@ class Events
             }
 
             if ($eventModel instanceof CalendarEventReminderIF && !RecurrenceHelper::isRecurrentRoot($eventModel)) {
-                $event->sender->addWidget(ReminderLink::class, ['entry' => $eventModel]);
+                $links->addWidget(ReminderLink::class, ['entry' => $eventModel]);
             }
         } catch (\Throwable $e) {
             Yii::error($e);
