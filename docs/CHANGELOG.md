@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.3 (Unreleased)
+---------------------
+- Fix #710: Fix event type linking
+
 1.9.2 (July 16, 2026)
 ---------------------
 - Fix: CalDAV sync was intercepted by the core user gates (e.g. 2FA) for affected users after the twofa module moved to the gate system — the CalDAV controller now runs without a session, so the gates treat it as a stateless API request and leave the sync untouched (replaces the removed `twofa.beforeCheck` opt-out)

@@ -32,6 +32,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
+use humhub\modules\content\services\ContentTagService;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -501,7 +502,7 @@ class CalendarEntry extends ContentActiveRecord implements
         $type = ($type instanceof ContentTag) ? $type : ContentTag::findOne(['id' => $type]);
         if ($type->is(CalendarEntryType::class)) {
             $this->removeType();
-            $this->content->addTag($type);
+            (new ContentTagService($this->content))->addTag($type);
         }
     }
 
