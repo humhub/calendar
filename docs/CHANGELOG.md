@@ -3,7 +3,7 @@ Changelog
 
 1.9.3 (Unreleased)
 ---------------------
-- Fix #710: Fix event type linking
+- Fix: Fix event type linking
 
 1.9.2 (July 16, 2026)
 ---------------------
