@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.9.3 (Unreleased)
+1.9.3 (July 31, 2026)
 ---------------------
 - Fix: Fix event type linking
 
