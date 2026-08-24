@@ -18,6 +18,10 @@ Changelog
 - Fix: HumHub 1.19 Activity Handling
 - Enh #673: Remove deprecations
 
+1.8.17 (Unreleased)
+----------------------
+- Fix #710: Don't use a model saving in migration to avoid unknown column error
+
 1.8.16 (July 17, 2026)
 ----------------------
 - Enh #708: Replace calendar filter checkboxes with dropdowns, Add new filter "Entire network"
