@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Configure' => 'Konfiguro',
     'Edit' => 'Ndrysho',
     'Enable' => 'Aktivizoni',
     'Files' => 'Skedarët',
@@ -62,9 +63,8 @@ return [
     'Event could not be deleted!' => '',
     'Event has been be deleted!' => '',
     'Event not found!' => '',
+    'Event types' => '',
     'Export as {type}' => '',
-    'Filter' => '',
-    'Filter by types' => '',
     'Friday' => '',
     'Here you can configure default settings for all calendar events.' => '',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => '',
@@ -103,9 +103,14 @@ return [
     'No reminder' => '',
     'Notify participants about changes' => '',
     'On date' => '',
+    'Online' => '',
+    'Online event' => '',
     'Participant removed.' => '',
+    'Participantion information and participantion link are only visible to users marked as <strong>Attending</strong> or <strong>Maybe</strong>.' => '',
     'Participants' => '',
     'Participation Status' => '',
+    'Participation URL' => '',
+    'Participation information' => '',
     'Please select new participants.' => '',
     'Private events are only visible to you and, if the friendship system is activated, to your friends.' => '',
     'Profile Calendar' => '',

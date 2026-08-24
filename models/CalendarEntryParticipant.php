@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar\models;
 
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -77,22 +78,18 @@ class CalendarEntryParticipant extends ActiveRecord
     {
         $activity = null;
         if ($this->participation_state == self::PARTICIPATION_STATE_ACCEPTED) {
-            $activity = new \humhub\modules\calendar\activities\ResponseAttend();
+            $activityClass = \humhub\modules\calendar\activities\ResponseAttend::class;
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_MAYBE) {
-            $activity = new \humhub\modules\calendar\activities\ResponseMaybe();
+            $activityClass = \humhub\modules\calendar\activities\ResponseMaybe::class;
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_DECLINED) {
-            $activity = new \humhub\modules\calendar\activities\ResponseDeclined();
+            $activityClass = \humhub\modules\calendar\activities\ResponseDeclined::class;
         } elseif ($this->participation_state == self::PARTICIPATION_STATE_INVITED) {
-            $activity = new \humhub\modules\calendar\activities\ResponseInvited();
+            $activityClass = \humhub\modules\calendar\activities\ResponseInvited::class;
         } else {
             throw new \yii\base\Exception("Invalid participation state: " . $this->participation_state);
         }
 
-        if ($activity) {
-            $activity->source = $this->calendarEntry;
-            $activity->originator = $this->user;
-            $activity->create();
-        }
+        ActivityManager::dispatch($activityClass, $this->calendarEntry, $this->user);
 
         return parent::afterSave($insert, $changedAttributes);
     }

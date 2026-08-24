@@ -43,6 +43,7 @@ use yii\helpers\Html;
         <div class="ms-1">
             <?= Button::danger()->sm()
                 ->icon('remove')
+                ->options(['aria-label' => Yii::t('base', 'Delete')])
                 ->confirm(null, Yii::t('CalendarModule.views', 'Are you sure want to remove the participant from the event?'))
                 ->action('remove') ?>
         </div>

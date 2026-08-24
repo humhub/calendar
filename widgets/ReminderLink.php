@@ -13,7 +13,7 @@ use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\widgets\modal\ModalButton;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 
 /**
@@ -35,7 +35,7 @@ class ReminderLink extends Widget
 
         return Html::tag(
             'span',
-            ModalButton::asLink(Yii::t('CalendarModule.base', 'Set reminder'))
+            Link::modal(Yii::t('CalendarModule.base', 'Set reminder'))
                 ->load(Url::toUserLevelReminderConfig($this->entry))
                 ->loader(true),
             ['class' => 'calendar-entry-reminder'],
