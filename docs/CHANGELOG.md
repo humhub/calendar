@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.17 (Unreleased)
-----------------------
+1.8.17 (August 27, 2026)
+------------------------
 - Fix #710: Don't use a model saving in migration to avoid unknown column error
 - Fix: Add missing German translations for the calendar filter bar
 
