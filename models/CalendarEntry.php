@@ -166,9 +166,7 @@ class CalendarEntry extends ContentActiveRecord implements
             $this->time_zone = CalendarUtils::getUserTimeZone(true);
         }
 
-        if ($this->sequence === null) {
-            $this->sequence = 0;
-        }
+        $this->sequence ??= 0;
 
         $this->isAllDay(); // initialize all day
 
@@ -604,9 +602,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function isAllDay()
     {
-        if ($this->all_day === null) {
-            $this->all_day = 1;
-        }
+        $this->all_day ??= 1;
 
         return (bool)$this->all_day;
     }

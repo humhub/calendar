@@ -15,14 +15,7 @@ use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
 use yii\web\View;
 
-/* @var $this View */
-/* @var $event CalendarEventIF */
-/* @var $url string */
-/* @var $extraInfo string */
-
-if (!isset($url)) {
-    $url = $event->getUrl();
-}
+$url ??= $event->getUrl();
 
 $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
 ?>

@@ -28,9 +28,7 @@ class ParticipantFilter extends Widget
     {
         parent::init();
 
-        if ($this->state === null) {
-            $this->state = Yii::$app->request->get('state', Yii::$app->request->post('state', ''));
-        }
+        $this->state ??= Yii::$app->request->get('state', Yii::$app->request->post('state', ''));
     }
 
     /**
