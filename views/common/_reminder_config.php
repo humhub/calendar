@@ -12,6 +12,10 @@ use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use yii\web\View;
 
+/* @var $this View */
+/* @var $settings ReminderSettings */
+/* @var $form ActiveForm */
+
 $form ??= ActiveForm::begin();
 
 $options = [

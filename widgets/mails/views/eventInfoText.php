@@ -11,6 +11,10 @@ use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationI
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\content\widgets\richtext\RichText;
 
+/* @var $event CalendarEventIF */
+/* @var $url string */
+/* @var $extraInfo string */
+
 $url ??= $event->getUrl();
 
 $formatter = new CalendarDateFormatter(['calendarItem' => $event])
