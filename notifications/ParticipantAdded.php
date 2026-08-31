@@ -51,9 +51,7 @@ class ParticipantAdded extends EventNotification
 
     private function isInvited(): bool
     {
-        if ($this->participationStatus === null) {
-            $this->participationStatus = (int) $this->source->participation->getParticipationStatus($this->record->user);
-        }
+        $this->participationStatus ??= (int) $this->source->participation->getParticipationStatus($this->record->user);
 
         return $this->participationStatus === CalendarEventParticipationIF::PARTICIPATION_STATUS_INVITED;
     }

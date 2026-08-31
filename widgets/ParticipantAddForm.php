@@ -41,9 +41,7 @@ class ParticipantAddForm extends Widget
     {
         parent::init();
 
-        if ($this->state === null) {
-            $this->state = Yii::$app->request->get('state', Yii::$app->request->post('state', CalendarEntryParticipant::PARTICIPATION_STATE_INVITED));
-        }
+        $this->state ??= Yii::$app->request->get('state', Yii::$app->request->post('state', CalendarEntryParticipant::PARTICIPATION_STATE_INVITED));
         $this->model->newParticipantStatus = $this->state;
         $this->model->newForceStatus = CalendarEntryParticipant::PARTICIPATION_STATE_INVITED;
     }

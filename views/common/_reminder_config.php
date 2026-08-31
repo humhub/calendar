@@ -16,9 +16,7 @@ use yii\web\View;
 /* @var $settings ReminderSettings */
 /* @var $form ActiveForm */
 
-if (!isset($form)) {
-    $form = ActiveForm::begin();
-}
+$form ??= ActiveForm::begin();
 
 $options = [
     'class' => 'calendar-reminder-settings',

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.18 (Unreleased)
+-------------------
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
+
 1.8.17 (August 27, 2026)
 ------------------------
 - Fix #710: Don't use a model saving in migration to avoid unknown column error

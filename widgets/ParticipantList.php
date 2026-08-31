@@ -40,9 +40,7 @@ class ParticipantList extends Widget
      */
     public function init()
     {
-        if ($this->pageSize === null) {
-            $this->pageSize = Yii::$app->getModule('user')->userListPaginationSize;
-        }
+        $this->pageSize ??= Yii::$app->getModule('user')->userListPaginationSize;
 
         parent::init();
     }

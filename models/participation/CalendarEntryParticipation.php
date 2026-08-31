@@ -50,18 +50,11 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
     {
         $defaultSettings = new ParticipationSettings(['contentContainer' => $this->entry->content->container]);
 
-        // Default participiation Mode
-        if ($this->entry->participation_mode === null) {
-            $this->entry->participation_mode = $defaultSettings->participation_mode;
-        }
+        $this->entry->participation_mode ??= $defaultSettings->participation_mode;
 
-        if ($this->entry->allow_maybe === null) {
-            $this->entry->allow_maybe = $defaultSettings->allow_maybe;
-        }
+        $this->entry->allow_maybe ??= $defaultSettings->allow_maybe;
 
-        if ($this->entry->allow_decline === null) {
-            $this->entry->allow_decline = $defaultSettings->allow_decline;
-        }
+        $this->entry->allow_decline ??= $defaultSettings->allow_decline;
     }
 
     public function isEnabled()

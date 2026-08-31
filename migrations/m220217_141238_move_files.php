@@ -48,12 +48,10 @@ class m220217_141238_move_files extends Migration
         $entries = [];
         foreach ($query->each(100, $this->db) as $row) {
             $entryId = $row['entryId'];
-            if (!isset($entries[$entryId])) {
-                $entries[$entryId] = [
-                    'description' => $row['description'],
-                    'files' => [],
-                ];
-            }
+            $entries[$entryId] ??= [
+                'description' => $row['description'],
+                'files' => [],
+            ];
             $entries[$entryId]['files'][] = $row;
         }
 
