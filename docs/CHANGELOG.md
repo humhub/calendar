@@ -4,6 +4,7 @@ Changelog
 1.8.18 (Unreleased)
 -------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
+- Fix #712: Display missing recurring calendar events in the Custom Pages "Calendar events" template element
 
 1.8.17 (August 27, 2026)
 ------------------------
