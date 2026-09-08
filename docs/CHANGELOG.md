@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.4 (Unreleased)
+------------------
+- Fix: Deprecated null array offset in the reminder processor
+
 1.9.3 (July 31, 2026)
 ---------------------
 - Fix: Fix event type linking
