@@ -133,13 +133,9 @@ class CalendarReminder extends ActiveRecord
     {
         parent::init();
 
-        if ($this->active === null) {
-            $this->active = 1;
-        }
+        $this->active ??= 1;
 
-        if ($this->disabled === null) {
-            $this->disabled = 0;
-        }
+        $this->disabled ??= 0;
     }
 
     public function rules()

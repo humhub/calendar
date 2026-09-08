@@ -15,9 +15,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 /* @var $url string */
 /* @var $extraInfo string */
 
-if (!isset($url)) {
-    $url = $event->getUrl();
-}
+$url ??= $event->getUrl();
 
 $formatter = new CalendarDateFormatter(['calendarItem' => $event])
 ?>

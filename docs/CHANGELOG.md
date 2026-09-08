@@ -18,9 +18,15 @@ Changelog
 - Fix: HumHub 1.19 Activity Handling
 - Enh #673: Remove deprecations
 
-1.8.17 (Unreleased)
-----------------------
+1.8.18 (September 8, 2026)
+--------------------------
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
+- Fix #712: Display missing recurring calendar events in the Custom Pages "Calendar events" template element
+
+1.8.17 (August 27, 2026)
+------------------------
 - Fix #710: Don't use a model saving in migration to avoid unknown column error
+- Fix: Add missing German translations for the calendar filter bar
 
 1.8.16 (July 17, 2026)
 ----------------------
@@ -57,7 +63,6 @@ Changelog
 
 - Fix #674: Fix asset bundle
 - Fix: HTML Encoding of Event Types
-
 
 1.8.10 (January 8, 2026)
 ------------------------
