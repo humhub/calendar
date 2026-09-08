@@ -68,10 +68,18 @@ class ConfigureButton extends Widget
     public function run()
     {
         if ($this->container instanceof User && !Yii::$app->user->getIdentity()->moduleManager->isEnabled('calendar')) {
-            return ModalButton::light()->load(Url::toEnableModuleOnProfileConfig())->icon('fa-cog')->visible($this->canConfigure());
+            return ModalButton::light()
+                ->load(Url::toEnableModuleOnProfileConfig())
+                ->icon('cog')
+                ->options(['aria-label' => Yii::t('CalendarModule.base', 'Configure')])
+                ->visible($this->canConfigure());
         }
 
-        return Button::light()->link($this->getConfigUrl())->icon('fa-cog')->visible($this->canConfigure());
+        return Button::light()
+            ->link($this->getConfigUrl())
+            ->icon('cog')
+            ->options(['aria-label' => Yii::t('CalendarModule.base', 'Configure')])
+            ->visible($this->canConfigure());
     }
 
     private function getConfigUrl()
