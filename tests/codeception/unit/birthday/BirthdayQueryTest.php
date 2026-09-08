@@ -64,13 +64,16 @@ class BirthdayQueryTest extends HumHubDbTestCase
         $this->assertEquals(0, count($result));
 
         // Enable global "show all birthdays" setting -> filter is bypassed
-        Yii::$app->getModule('calendar')->settings->set(BasicSettings::SETTING_BIRTHDAY_SHOW_ALL, true);
+        $basicSettings = BasicSettings::instance();
+        $basicSettings->birthdayShowToEveryone = true;
+        $basicSettings->save();
 
         try {
             $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
             $this->assertEquals(2, count($result));
         } finally {
-            Yii::$app->getModule('calendar')->settings->set(BasicSettings::SETTING_BIRTHDAY_SHOW_ALL, false);
+            $basicSettings->birthdayShowToEveryone = false;
+            $basicSettings->save();
         }
     }
 
