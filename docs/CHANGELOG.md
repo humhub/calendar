@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.19 (Unreleased)
+--------------------------
+- Fix #715: Prevent silent demotion of a public profile calendar event to private when edited by a user without CreatePublicContent
+
 1.8.18 (September 8, 2026)
 --------------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
