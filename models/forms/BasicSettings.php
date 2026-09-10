@@ -19,6 +19,7 @@ use yii\base\Model;
 class BasicSettings extends Model
 {
     public const SETTING_CONTENT_HIDDEN = 'defaults.contentHidden';
+    public const SETTING_BIRTHDAY_SHOW_ALL = 'defaults.birthdayShowAll';
 
     /**
      * @var ContentContainerActiveRecord
@@ -36,6 +37,13 @@ class BasicSettings extends Model
     public $contentHiddenDefault;
 
     /**
+     * @var bool Global setting to show birthdays of all readable users in the calendar
+     * regardless of the currently selected "Calendars" filter (e.g. also for users
+     * that are not followed). Only configurable on global level.
+     */
+    public $birthdayShowToEveryone;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -47,6 +55,10 @@ class BasicSettings extends Model
     private function initSettings()
     {
         $this->contentHiddenDefault = (bool) $this->getSetting(self::SETTING_CONTENT_HIDDEN, false);
+
+        if ($this->isGlobal()) {
+            $this->birthdayShowToEveryone = (bool) $this->getSettings()->get(self::SETTING_BIRTHDAY_SHOW_ALL, false);
+        }
     }
 
     /**
@@ -84,6 +96,27 @@ class BasicSettings extends Model
     {
         return [
             [['contentHiddenDefault'], 'boolean'],
+            [['birthdayShowToEveryone'], 'boolean'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'birthdayShowToEveryone' => Yii::t('CalendarModule.config', 'Show birthdays regardless of the selected calendar filter'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'birthdayShowToEveryone' => Yii::t('CalendarModule.config', 'By default birthdays are only shown for your own profile and for followed users. If activated, birthdays of all otherwise visible users are shown in the calendar and dashboard snippet, no matter which "Calendars" filter is currently selected.'),
         ];
     }
 
@@ -93,16 +126,21 @@ class BasicSettings extends Model
             return false;
         }
 
-        $settings = $this->getSettings();
-        $settings->set(self::SETTING_CONTENT_HIDDEN, $this->contentHiddenDefault);
+        $this->getSettings()->set(self::SETTING_CONTENT_HIDDEN, $this->contentHiddenDefault);
+
+        if ($this->isGlobal()) {
+            $this->getSettings()->set(self::SETTING_BIRTHDAY_SHOW_ALL, $this->birthdayShowToEveryone);
+        }
 
         return true;
     }
 
     public function reset()
     {
-        $settings = $this->getSettings();
-        $settings->set(self::SETTING_CONTENT_HIDDEN, null);
+        $this->getSettings()->set(self::SETTING_CONTENT_HIDDEN, null);
+        if ($this->isGlobal()) {
+            $this->getSettings()->set(self::SETTING_BIRTHDAY_SHOW_ALL, null);
+        }
         $this->initSettings();
     }
 
@@ -113,7 +151,8 @@ class BasicSettings extends Model
 
     public function showResetButton(): bool
     {
-        return $this->getSettings()->get(self::SETTING_CONTENT_HIDDEN) !== null;
+        return $this->getSettings()->get(self::SETTING_CONTENT_HIDDEN) !== null
+            || ($this->isGlobal() && $this->getSettings()->get(self::SETTING_BIRTHDAY_SHOW_ALL) !== null);
     }
 
     public function getResetButtonUrl(): string

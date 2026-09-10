@@ -12,9 +12,11 @@ namespace humhub\modules\calendar\tests\codeception\unit\birthday;
 use DateInterval;
 use DateTime;
 use humhub\modules\calendar\integration\BirthdayCalendarQuery;
+use humhub\modules\calendar\models\forms\BasicSettings;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\space\models\Space;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 /**
  * Created by PhpStorm.
@@ -45,6 +47,34 @@ class BirthdayQueryTest extends HumHubDbTestCase
         $this->becomeFriendWith('User2');
         $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
         $this->assertEquals(2, count($result));
+    }
+
+    public function testShowAllBirthdaysSetting()
+    {
+        $this->enableFriendships();
+        $tomorrow = new DateTime('tomorrow');
+        $birthday = (new DateTime())->setDate(1987, (int)$tomorrow->format('m'), (int)$tomorrow->format('d'));
+        $this->setProfileField('birthday', $birthday->format('Y-m-d'), 'Admin');
+        $this->setProfileField('birthday', $birthday->format('Y-m-d'), 'User2');
+
+        $this->becomeUser('User1');
+
+        // Not following anyone -> no birthdays visible by default
+        $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
+        $this->assertEquals(0, count($result));
+
+        // Enable global "show all birthdays" setting -> filter is bypassed
+        $basicSettings = BasicSettings::instance();
+        $basicSettings->birthdayShowToEveryone = true;
+        $basicSettings->save();
+
+        try {
+            $result = BirthdayCalendarQuery::findForFilter(new DateTime(), (new DateTime())->add(new DateInterval('P10D')), null, [BirthdayCalendarQuery::FILTER_USERRELATED => [ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_USERS]]);
+            $this->assertEquals(2, count($result));
+        } finally {
+            $basicSettings->birthdayShowToEveryone = false;
+            $basicSettings->save();
+        }
     }
 
     public function testFriendQuery()

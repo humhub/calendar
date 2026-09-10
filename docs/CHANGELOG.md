@@ -9,6 +9,7 @@ Changelog
 --------------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
 - Fix #712: Display missing recurring calendar events in the Custom Pages "Calendar events" template element
+- Enh #714: Add option to show birthdays regardless of the selected calendar filter
 
 1.8.17 (August 27, 2026)
 ------------------------
