@@ -3,7 +3,7 @@ Changelog
 
 1.8.19 (Unreleased)
 --------------------------
-- Fix #715: Prevent silent demotion of a public profile calendar event to private when edited by a user without CreatePublicContent
+- Fix #715: Prevent public calendar events (profile edits and auto-materialized recurring instances) from being silently saved private for users without CreatePublicContent
 
 1.8.18 (September 8, 2026)
 --------------------------
