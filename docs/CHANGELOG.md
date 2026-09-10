@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.19 (Unreleased)
+--------------------------
+- Fix #715: Prevent public calendar events (profile edits and auto-materialized recurring instances) from being silently saved private for users without CreatePublicContent
+
 1.8.18 (September 8, 2026)
 --------------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector

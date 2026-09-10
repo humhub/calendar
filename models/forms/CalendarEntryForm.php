@@ -359,9 +359,17 @@ class CalendarEntryForm extends Model
             $this->entry->time_zone = $this->timeZone;
         }
 
-        $container = $this->entry->content->container;
         if (!$this->canCreatePublicEntry()) {
-            $this->entry->content->visibility = Content::VISIBILITY_PRIVATE;
+            // The "Public" field is hidden from editors without CreatePublicContent (e.g. a
+            // system admin editing another user's content for moderation purposes, or a space
+            // role that can manage entries but not create public content). A hidden field must
+            // not silently change on save: only default *new* records to private here - leave
+            // an *existing* record's visibility untouched, otherwise every edit by such an
+            // editor silently flips an already-public event to private for everyone else.
+            // See: HumHub Calendar - "event disappears after unrelated edit" investigation.
+            if ($this->entry->isNewRecord) {
+                $this->entry->content->visibility = Content::VISIBILITY_PRIVATE;
+            }
         } else {
             $this->entry->content->visibility = $this->is_public;
         }
