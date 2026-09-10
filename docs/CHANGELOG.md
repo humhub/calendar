@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.19 (Unreleased)
---------------------------
+1.8.19 (September 10, 2026)
+---------------------------
 - Fix #715: Prevent public calendar events (profile edits and auto-materialized recurring instances) from being silently saved private for users without CreatePublicContent
 
 1.8.18 (September 8, 2026)
