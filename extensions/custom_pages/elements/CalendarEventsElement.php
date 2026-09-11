@@ -169,9 +169,7 @@ class CalendarEventsElement extends BaseContentRecordsElement
      */
     public function getItems(): iterable
     {
-        if ($this->expandedRecords === null) {
-            $this->expandedRecords = $this->expandRecords($this->getQuery()->all());
-        }
+        $this->expandedRecords ??= $this->expandRecords($this->getQuery()->all());
 
         yield from $this->expandedRecords;
     }
