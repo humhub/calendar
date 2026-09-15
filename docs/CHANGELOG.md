@@ -4,7 +4,7 @@ Changelog
 1.8.20 (Unreleased)
 -------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
-- Fix #718: Correct invalid TZOFFSETFROM/TZOFFSETTO and missing per-event VTIMEZONE in .ics export that broke Google Calendar import
+- Fix #719: Correct invalid TZOFFSETFROM/TZOFFSETTO and missing per-event VTIMEZONE in .ics export that broke Google Calendar import
 
 1.8.19 (September 10, 2026)
 ---------------------------
