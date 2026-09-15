@@ -322,4 +322,195 @@ class IcalExportCest
 
         $entry->hardDelete();
     }
+
+    /**
+     * Regression test for https://github.com/humhub/humhub/issues/8478.
+     *
+     * Events created in a timezone different from each other (and from the site's
+     * default timezone) must each get their own VTIMEZONE component. Otherwise the
+     * DTSTART/DTEND TZID parameter references a timezone that is never declared
+     * anywhere in the file (RFC 5545 3.6.5), which strict iCalendar consumers -
+     * notably Google Calendar's importer - reject outright ("Imported 0 out of 0
+     * events") instead of just skipping the offending event.
+     */
+    public function testIcalExportDeclaresVtimezoneForEveryEventTimezone(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $user = User::findOne(['id' => 1]);
+
+        $user->moduleManager->enable('calendar');
+        $user->moduleManager->flushCache();
+        Yii::$app->moduleManager->flushCache();
+
+        $entryBerlin = $I->createCalendarEntry(
+            $user,
+            [
+                'title' => 'Berlin Event',
+                'description' => 'Regression test event',
+                'start_datetime' => '2026-09-17 10:00:00',
+                'end_datetime' => '2026-09-17 11:00:00',
+                'all_day' => 0,
+                'participation_mode' => 0,
+                'color' => '#007bff',
+                'allow_decline' => 0,
+                'allow_maybe' => 0,
+                'time_zone' => 'Europe/Berlin',
+                'participant_info' => '',
+                'closed' => 0,
+                'max_participants' => null,
+                'uid' => 'event-tz-berlin-20260917',
+                'rrule' => null,
+                'parent_event_id' => null,
+                'recurrence_id' => null,
+                'exdate' => null,
+                'sequence' => 0,
+                'location' => '',
+            ],
+            [],
+        );
+        // 'time_zone' is not in CalendarEntry::rules(), so setAttributes() (safe-only)
+        // silently drops it and init() defaults to the acting user's own timezone
+        // instead. Force it directly so the event actually uses a non-UTC timezone.
+        $entryBerlin->time_zone = 'Europe/Berlin';
+        $entryBerlin->save();
+
+        $entryManaus = $I->createCalendarEntry(
+            $user,
+            [
+                'title' => 'Manaus Event',
+                'description' => 'Regression test event',
+                'start_datetime' => '2026-09-18 08:00:00',
+                'end_datetime' => '2026-09-18 09:00:00',
+                'all_day' => 0,
+                'participation_mode' => 0,
+                'color' => '#28a745',
+                'allow_decline' => 0,
+                'allow_maybe' => 0,
+                'time_zone' => 'America/Manaus',
+                'participant_info' => '',
+                'closed' => 0,
+                'max_participants' => null,
+                'uid' => 'event-tz-manaus-20260918',
+                'rrule' => null,
+                'parent_event_id' => null,
+                'recurrence_id' => null,
+                'exdate' => null,
+                'sequence' => 0,
+                'location' => '',
+            ],
+            [],
+        );
+        $entryManaus->time_zone = 'America/Manaus';
+        $entryManaus->save();
+
+        $jwtKey = AuthTokenService::instance()->iCalEncrypt($user->id, $user->guid, false);
+
+        $I->amOnRoute('/calendar/export/calendar', ['token' => $jwtKey]);
+        $I->seeResponseCodeIs(200);
+
+        $icsContent = $I->grabResponse();
+        $vcalendar = Reader::read($icsContent);
+
+        $declaredTzids = [];
+        foreach ($vcalendar->select('VTIMEZONE') as $vtimezone) {
+            $declaredTzids[] = (string) $vtimezone->TZID;
+        }
+
+        $referencedTzids = [];
+        foreach ($vcalendar->VEVENT as $vevent) {
+            foreach (['DTSTART', 'DTEND'] as $propName) {
+                if (isset($vevent->{$propName}) && isset($vevent->{$propName}['TZID'])) {
+                    $referencedTzids[] = (string) $vevent->{$propName}['TZID'];
+                }
+            }
+        }
+        $referencedTzids = array_unique($referencedTzids);
+
+        $I->assertContains('Europe/Berlin', $referencedTzids, 'Sanity check: Berlin event uses its own timezone');
+        $I->assertContains('America/Manaus', $referencedTzids, 'Sanity check: Manaus event uses its own timezone');
+
+        foreach ($referencedTzids as $tzid) {
+            $I->assertContains(
+                $tzid,
+                $declaredTzids,
+                "TZID=$tzid is referenced by a DTSTART/DTEND but has no matching VTIMEZONE component (regression of humhub/humhub#8478)",
+            );
+        }
+
+        $entryBerlin->hardDelete();
+        $entryManaus->hardDelete();
+    }
+
+    /**
+     * Regression test for https://github.com/humhub/humhub/issues/8478.
+     *
+     * The actual root cause behind the reported "Imported 0 out of 0 events" failure
+     * (confirmed by the reporter against a real Google Calendar import): iCalendar
+     * UTC-OFFSET values must always be exactly 4 digits after the sign, e.g. "-0500"
+     * (RFC 5545 3.3.14 / 3.2.19). For DST-observing negative-offset zones such as
+     * America/Chicago, VTIMEZONE transition entries used to be formatted as "-500" /
+     * "-600" (missing leading zero) instead of "-0500" / "-0600" - Google Calendar's
+     * importer rejects the whole file on a malformed UTC-OFFSET like that instead of
+     * just skipping the offending value.
+     */
+    public function testIcalExportUtcOffsetsAreZeroPadded(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $user = User::findOne(['id' => 1]);
+
+        $user->moduleManager->enable('calendar');
+        $user->moduleManager->flushCache();
+        Yii::$app->moduleManager->flushCache();
+
+        $entry = $I->createCalendarEntry(
+            $user,
+            [
+                'title' => 'Chicago Event',
+                'description' => 'Regression test event',
+                'start_datetime' => '2026-09-17 10:00:00',
+                'end_datetime' => '2026-09-17 11:00:00',
+                'all_day' => 0,
+                'participation_mode' => 0,
+                'color' => '#6f42c1',
+                'allow_decline' => 0,
+                'allow_maybe' => 0,
+                'time_zone' => 'America/Chicago',
+                'participant_info' => '',
+                'closed' => 0,
+                'max_participants' => null,
+                'uid' => 'event-tz-chicago-20260917',
+                'rrule' => null,
+                'parent_event_id' => null,
+                'recurrence_id' => null,
+                'exdate' => null,
+                'sequence' => 0,
+                'location' => '',
+            ],
+            [],
+        );
+        $entry->time_zone = 'America/Chicago';
+        $entry->save();
+
+        $jwtKey = AuthTokenService::instance()->iCalEncrypt($user->id, $user->guid, false);
+
+        $I->amOnRoute('/calendar/export/calendar', ['token' => $jwtKey]);
+        $I->seeResponseCodeIs(200);
+
+        $icsContent = $I->grabResponse();
+
+        $I->assertStringContainsString('TZID:America/Chicago', $icsContent, 'America/Chicago VTIMEZONE block is present');
+
+        preg_match_all('/^TZOFFSET(?:FROM|TO):(.+)$/m', $icsContent, $matches);
+        $I->assertNotEmpty($matches[1], 'ics contains TZOFFSETFROM/TZOFFSETTO values to check');
+
+        foreach ($matches[1] as $offset) {
+            $offset = trim($offset);
+            $I->assertTrue(
+                (bool) preg_match('/^[+-]\d{4}$/', $offset),
+                "TZOFFSET value '$offset' must be exactly 4 digits after the sign (regression of humhub/humhub#8478)",
+            );
+        }
+
+        $entry->hardDelete();
+    }
 }
