@@ -368,6 +368,11 @@ class IcalExportCest
             ],
             [],
         );
+        // 'time_zone' is not in CalendarEntry::rules(), so setAttributes() (safe-only)
+        // silently drops it and init() defaults to the acting user's own timezone
+        // instead. Force it directly so the event actually uses a non-UTC timezone.
+        $entryBerlin->time_zone = 'Europe/Berlin';
+        $entryBerlin->save();
 
         $entryManaus = $I->createCalendarEntry(
             $user,
@@ -395,6 +400,8 @@ class IcalExportCest
             ],
             [],
         );
+        $entryManaus->time_zone = 'America/Manaus';
+        $entryManaus->save();
 
         $jwtKey = AuthTokenService::instance()->iCalEncrypt($user->id, $user->guid, false);
 
@@ -481,6 +488,8 @@ class IcalExportCest
             ],
             [],
         );
+        $entry->time_zone = 'America/Chicago';
+        $entry->save();
 
         $jwtKey = AuthTokenService::instance()->iCalEncrypt($user->id, $user->guid, false);
 
