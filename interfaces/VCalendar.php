@@ -50,6 +50,12 @@ class VCalendar extends Model
 
     private bool $includeParticipantEmail;
 
+    /**
+     * TZIDs for which a VTIMEZONE component has already been added to the calendar.
+     * @var string[]
+     */
+    private array $declaredTimezones = [];
+
 
     /**
      * @param CalendarEventIF|CalendarEventIF[] $items
@@ -77,10 +83,44 @@ class VCalendar extends Model
 
     public function addTimeZone($tz)
     {
-        if ($tz && is_string($tz)) {
-            $this->vcalendar->add($this->generate_vtimezone($tz));
-        }
+        $this->ensureTimeZone($tz);
         return $this;
+    }
+
+    /**
+     * Ensures a VTIMEZONE component for the given Olson timezone identifier is present in
+     * the calendar. Safe to call repeatedly (including with the same, or no, timezone):
+     * each TZID is only ever declared once, and UTC/GMT/floating times never need a
+     * VTIMEZONE component at all (RFC 5545 3.6.5).
+     *
+     * Every DTSTART/DTEND/RECURRENCE-ID we emit with a TZID parameter must have a matching
+     * VTIMEZONE somewhere in the file, or strict iCalendar consumers (notably Google
+     * Calendar's importer) reject the whole file instead of just skipping the bad event.
+     *
+     * @param string|DateTimeZone|null $tz
+     */
+    private function ensureTimeZone($tz): void
+    {
+        if (!$tz) {
+            return;
+        }
+
+        $tzid = $tz instanceof DateTimeZone ? $tz->getName() : (string) $tz;
+
+        if ($tzid === '' || in_array($tzid, ['UTC', 'GMT', 'Z', '+00:00'], true)) {
+            return;
+        }
+
+        if (in_array($tzid, $this->declaredTimezones, true)) {
+            return;
+        }
+
+        $this->declaredTimezones[] = $tzid;
+
+        $vt = $this->generate_vtimezone($tzid);
+        if ($vt) {
+            $this->vcalendar->add($vt);
+        }
     }
 
     public function init()
@@ -156,8 +196,10 @@ class VCalendar extends Model
         $dtEnd =  clone $item->getEndDateTime();
 
         if (!$item->isAllDay()) {
-            $dtStart->setTimezone(CalendarUtils::getStartTimeZone($item));
-            $dtEnd->setTimezone(CalendarUtils::getStartTimeZone($item));
+            $eventTimeZone = CalendarUtils::getStartTimeZone($item);
+            $dtStart->setTimezone($eventTimeZone);
+            $dtEnd->setTimezone($eventTimeZone);
+            $this->ensureTimeZone($eventTimeZone);
         } elseif ($dtEnd <= $dtStart) {
             $dtEnd = (clone $dtStart)->modify('+1 day');
         }
@@ -215,7 +257,9 @@ class VCalendar extends Model
                     : new DateTime($item->getRecurrenceId());
 
                 if (!$item->isAllDay()) {
-                    $recurrenceId->setTimezone(CalendarUtils::getStartTimeZone($item));
+                    $recurrenceTimeZone = CalendarUtils::getStartTimeZone($item);
+                    $recurrenceId->setTimezone($recurrenceTimeZone);
+                    $this->ensureTimeZone($recurrenceTimeZone);
                 }
 
                 $result['RECURRENCE-ID'] = $recurrenceId;
@@ -326,6 +370,20 @@ class VCalendar extends Model
     }
 
     /**
+     * Formats a UTC offset given in (possibly fractional, e.g. 5.5 for +05:30) hours as an
+     * iCalendar UTC-OFFSET value (e.g. "+0530", "-0400"), correctly zero-padded for
+     * negative and fractional offsets alike.
+     */
+    private static function formatTzOffset(float $hours): string
+    {
+        $sign = $hours >= 0 ? '+' : '-';
+        $absHours = abs($hours);
+        $h = (int) floor($absHours);
+        $m = (int) round(($absHours - $h) * 60);
+        return sprintf('%s%02d%02d', $sign, $h, $m);
+    }
+
+    /**
      * Returns a VTIMEZONE component for a Olson timezone identifier
      * with daylight transitions covering the given date range.
      *
@@ -360,10 +418,7 @@ class VCalendar extends Model
         $offset = $transitions[0]['offset'] ?? 0;
         $tzname = $transitions[0]['abbr'] ?? $tzid;
 
-        $hours = intdiv($offset, 3600);
-        $minutes = abs(($offset % 3600) / 60);
-        $sign = $offset >= 0 ? '+' : '-';
-        $offsetStr = sprintf('%s%02d%02d', $sign, abs($hours), $minutes);
+        $offsetStr = static::formatTzOffset($offset / 3600);
 
         $standard = $vcalendar->createComponent('STANDARD');
         $standard->add('DTSTART', '19700101T000000');
@@ -397,8 +452,8 @@ class VCalendar extends Model
                 $dt = new DateTime($trans['time']);
                 $offset = $trans['offset'] / 3600;
                 $cmp->DTSTART = $dt->format('Ymd\THis');
-                $cmp->TZOFFSETFROM = sprintf('%s%02d%02d', $tzfrom >= 0 ? '+' : '', floor($tzfrom), ($tzfrom - floor($tzfrom)) * 60);
-                $cmp->TZOFFSETTO = sprintf('%s%02d%02d', $offset >= 0 ? '+' : '', floor($offset), ($offset - floor($offset)) * 60);
+                $cmp->TZOFFSETFROM = static::formatTzOffset($tzfrom);
+                $cmp->TZOFFSETTO = static::formatTzOffset($offset);
                 // add abbreviated timezone name if available
                 if (!empty($trans['abbr'])) {
                     $cmp->TZNAME = $trans['abbr'];
