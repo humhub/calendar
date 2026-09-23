@@ -37,7 +37,7 @@ interface CalendarTypeIF
     public function getDefaultColor();
 
     /**
-     * @return string an optional icon string
+     * @return string|null an optional icon string
      */
     public function getIcon();
 }
