@@ -243,6 +243,7 @@ a.fc-event {
   overflow: hidden;
   padding: 2px;
   border: none;
+  box-sizing: border-box;
 }
 
 .fc-event-time, .fc-event-title {
@@ -654,4 +655,7 @@ th, td, thead, tbody, .fc-divider, .fc-row, .fc-content, .fc-popover, .fc-list-v
     position: inherit;
     float: left;
   }
+}
+.tooltip.calendar-event-tooltip .tooltip-inner {
+  max-width: 256px;
 }

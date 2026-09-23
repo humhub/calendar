@@ -53,7 +53,7 @@ class CalendarEntryType extends ContentTag implements CalendarTypeIF
 
     public function getIcon()
     {
-        return static::ICON;
+        return null;
     }
 
     public function getKey()
