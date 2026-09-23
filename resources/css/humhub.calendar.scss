@@ -27,3 +27,10 @@
     float: left;
   }
 }
+
+// Tooltip shown on hover for truncated calendar event titles in month/week view
+// (custom class set via data-bs-custom-class in humhub.calendar.Calendar.js#renderEvent).
+// Scoped to its own class so we don't change tooltip width site-wide.
+.tooltip.calendar-event-tooltip .tooltip-inner {
+  max-width: 256px;
+}

@@ -265,13 +265,32 @@ humhub.module('calendar.Calendar', function (module, require, $) {
         return options;
     };
 
-    Calendar.prototype.renderEvent = function (event, element) {
-        var $element = $(element);
-        $element.attr({title: $element.text()});
-        if (event.icon) {
-            if (string.startsWith(event.icon, 'fa-')) {
-                $element.find('.fc-content').prepend($('<i class="fa ' + event.icon + '"></i>'));
-            }
+    // NOTE: FullCalendar v4's eventRender hook is called with a SINGLE info object
+    // ({event, el, view, isMirror, isStart, isEnd}), not positional (event, element, view)
+    // arguments. The previous code used the old v3-style signature, so `element` was always
+    // undefined here and $element.attr(...)/find(...) below were silently no-ops - meaning
+    // neither the title attribute nor the icon prepend below it ever actually applied to
+    // anything. Fixed to read from `info`.
+    Calendar.prototype.renderEvent = function (info) {
+        var event = info.event;
+        var view = info.view;
+        var $element = $(info.el);
+        var attrs = {title: $element.text()};
+
+        // Use a styled Bootstrap tooltip (instead of just the native title attribute) so long
+        // event titles that get truncated in the grid are still fully readable on hover.
+        // Only in month/week view, where event boxes are small enough to truncate titles.
+        if (view && (view.type === 'dayGridMonth' || view.type === 'timeGridWeek')) {
+            attrs['data-bs-toggle'] = 'tooltip';
+            attrs['data-bs-placement'] = 'top';
+            attrs['data-bs-custom-class'] = 'calendar-event-tooltip';
+        }
+
+        $element.attr(attrs);
+
+        var icon = event.extendedProps && event.extendedProps.icon;
+        if (icon && string.startsWith(icon, 'fa-')) {
+            $element.find('.fc-content').prepend($('<i class="fa ' + icon + '"></i>'));
         }
     };
 
