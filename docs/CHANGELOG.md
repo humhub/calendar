@@ -6,6 +6,7 @@ Changelog
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
 - Fix #719: Correct invalid TZOFFSETFROM/TZOFFSETTO and missing per-event VTIMEZONE in .ics export that broke Google Calendar import
 - Enh #720: Add tooltip with full event title on hover in month/week view; fix event text and icon overflowing the tile
+- Enh #704: Make calendar events keyboard accessible (Tab focus, Enter/Space to open) in calendar and list views
 
 1.8.19 (September 10, 2026)
 ---------------------------

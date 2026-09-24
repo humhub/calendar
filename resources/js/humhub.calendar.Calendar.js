@@ -286,6 +286,25 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             attrs['data-bs-custom-class'] = 'calendar-event-tooltip';
         }
 
+        // Keyboard accessibility: make events focusable and activatable with Enter/Space
+        // (FullCalendar renders them as <a> without href, which are skipped by Tab).
+        if (event.extendedProps && event.extendedProps.viewUrl) {
+            var that = this;
+            attrs.tabindex = 0;
+            attrs.role = 'button';
+            attrs['aria-label'] = $.trim($element.text()).replace(/\s+/g, ' ');
+
+            $element.on('keydown', function (e) {
+                if (e.target !== this) {
+                    return;
+                }
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+                    e.preventDefault();
+                    that.clickEvent({event: event, el: this, jsEvent: e, view: view});
+                }
+            });
+        }
+
         $element.attr(attrs);
 
         var icon = event.extendedProps && event.extendedProps.icon;
