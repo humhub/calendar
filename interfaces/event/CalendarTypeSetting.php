@@ -16,8 +16,6 @@
 
 namespace humhub\modules\calendar\interfaces\event;
 
-use humhub\modules\calendar\models\CalendarEntryType;
-use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Model;
 use humhub\modules\calendar\helpers\Url;
@@ -75,6 +73,16 @@ class CalendarTypeSetting extends Model implements CalendarTypeIF
             ['color', 'required'],
             ['enabled', 'integer', 'min' => 0, 'max' => 1],
             ['color', 'match', 'pattern' => static::COLOR_VALIDATON_PATTERN],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'enabled' => Yii::t('CalendarModule.base', 'Enabled'),
         ];
     }
 
