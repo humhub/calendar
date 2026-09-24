@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.20 (Unreleased)
--------------------
+1.8.20 (September 24, 2026)
+---------------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
 - Fix #719: Correct invalid TZOFFSETFROM/TZOFFSETTO and missing per-event VTIMEZONE in .ics export that broke Google Calendar import
 - Enh #720: Add tooltip with full event title on hover in month/week view; fix event text and icon overflowing the tile
