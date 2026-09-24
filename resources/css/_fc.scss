@@ -276,6 +276,11 @@ a.fc-event {
   overflow: hidden;
   padding: 2px;
   border: none;
+  // @fullcalendar/core forces box-sizing: content-box on everything inside .fc-view-container
+  // (see node_modules/@fullcalendar/core/main.css). With content-box the 2px padding above is
+  // added on top of the 100% width/height, making this element 4px bigger than its parent event
+  // box in each dimension, which pushes long titles past the event's visible edge.
+  box-sizing: border-box;
 }
 
 .fc-event-time, .fc-event-title {

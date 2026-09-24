@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.5 (Unreleased)
+------------------
+- Enh: Merge of the changes of versions 1.8.19 and 1.8.20
+
 1.9.4 (September 8, 2026)
 -------------------------
 - Fix: Deprecated null array offset in the reminder processor
@@ -22,10 +26,21 @@ Changelog
 - Fix: HumHub 1.19 Activity Handling
 - Enh #673: Remove deprecations
 
+1.8.20 (September 24, 2026)
+---------------------------
+- Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
+- Fix #719: Correct invalid TZOFFSETFROM/TZOFFSETTO and missing per-event VTIMEZONE in .ics export that broke Google Calendar import
+- Enh #720: Add tooltip with full event title on hover in month/week view; fix event text and icon overflowing the tile
+
+1.8.19 (September 10, 2026)
+---------------------------
+- Fix #715: Prevent public calendar events (profile edits and auto-materialized recurring instances) from being silently saved private for users without CreatePublicContent
+
 1.8.18 (September 8, 2026)
 --------------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
 - Fix #712: Display missing recurring calendar events in the Custom Pages "Calendar events" template element
+- Enh #714: Add option to show birthdays regardless of the selected calendar filter
 
 1.8.17 (August 27, 2026)
 ------------------------

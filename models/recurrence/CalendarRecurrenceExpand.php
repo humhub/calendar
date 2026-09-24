@@ -328,6 +328,20 @@ class CalendarRecurrenceExpand extends Model
             if (!$model->saveEvent()) {
                 throw new Exception('Could not safe recurrent event');
             }
+
+            // This is an internal system flow: the instance is auto-materialized from its already
+            // public root event (visibility already copied 1:1 above via syncEventData()), in the
+            // context of whichever user happens to be viewing/expanding it - not necessarily the
+            // event's author and not necessarily someone with permission to create public content
+            // themselves. Content::beforeSave() may have silently demoted the freshly inserted
+            // instance back to private for such a viewer, even though the root event is public.
+            // Restore the inherited visibility directly via updateAttributes(), which - unlike
+            // save() - does not run validation or trigger beforeSave()/afterSave(), so this does
+            // not re-run (and get blocked by) the same permission check again.
+            // See: https://github.com/humhub/humhub/issues/8443
+            if ((int) $model->content->visibility !== (int) $root->content->visibility) {
+                $model->content->updateAttributes(['visibility' => $root->content->visibility]);
+            }
         }
 
         return $model;

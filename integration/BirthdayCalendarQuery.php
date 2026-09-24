@@ -18,6 +18,7 @@ namespace humhub\modules\calendar\integration;
 
 use humhub\modules\calendar\interfaces\event\AbstractCalendarQuery;
 use humhub\modules\calendar\interfaces\event\FilterNotSupportedException;
+use humhub\modules\calendar\models\forms\BasicSettings;
 use humhub\modules\calendar\models\SnippetModuleSettings;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\space\models\Membership;
@@ -88,6 +89,13 @@ class BirthdayCalendarQuery extends AbstractCalendarQuery
 
     protected function filterUserRelated()
     {
+        if (BasicSettings::instance()->birthdayShowToEveryone) {
+            // Admin opted in to show birthdays of all otherwise readable users,
+            // regardless of the selected "Calendars" filter (e.g. also for users
+            // that are not followed and are not members of a shared space).
+            return;
+        }
+
         if (empty($this->_userScopes)) {
             $this->_query->andWhere('1=2');
             return;
