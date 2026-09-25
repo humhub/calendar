@@ -13,3 +13,4 @@ jobs:
     with:
       module-id: calendar
       use-rest-module: true
+      rest-module-branch: develop

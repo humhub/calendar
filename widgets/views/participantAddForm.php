@@ -34,6 +34,7 @@ use yii\helpers\Html;
         <div>
             <?= Button::accent()->sm()
                 ->icon('send')
+                ->options(['aria-label' => Yii::t('CalendarModule.base', 'Add participants...')])
                 ->action('add', $addParticipantsUrl) ?>
         </div>
     </div>

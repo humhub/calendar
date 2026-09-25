@@ -27,6 +27,8 @@ return [
     'There are currently no event types available.' => 'Det er ingen aktivitetstyper tilgjengelig',
     'Upcoming events snippet' => 'Snippet for kommende aktiviteter',
     'Add \'Calendar\' to the main menu' => '',
+    'Birthdays' => '',
+    'By default birthdays are only shown for your own profile and for followed users. If activated, birthdays of all otherwise visible users are shown in the calendar and dashboard snippet, no matter which "Calendars" filter is currently selected.' => '',
     'Calendar Configuration' => '',
     'Calendar default view mode settings' => '',
     'Default basic settings' => '',
@@ -40,5 +42,6 @@ return [
     'List view type' => '',
     'Menu settings' => '',
     'Reminder' => '',
+    'Show birthdays regardless of the selected calendar filter' => '',
     'View mode' => '',
 ];

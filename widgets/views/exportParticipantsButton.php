@@ -12,9 +12,11 @@ use humhub\widgets\bootstrap\Button;
 ?>
 <div class="btn-group dropdown calendar-entry-participants-export-button float-end">
     <?= Button::accent()->icon('download')->sm()
+        ->options(['aria-label' => Yii::t('CalendarModule.views', 'Export')])
         ->link($buttons[0]->getHref())
         ->pjax(false)->loader(false) ?>
-    <?= Button::accent('')->sm()
+    <?= Button::accent()->sm()
+        ->options(['aria-label' => Yii::t('CalendarModule.views', 'Select')])
         ->cssClass('dropdown-toggle')
         ->options(['data-bs-toggle' => 'dropdown'])
         ->loader(false) ?>

@@ -1,6 +1,31 @@
 Changelog
 =========
 
+1.9.5 (Unreleased)
+------------------
+- Enh: Merge of the changes of versions 1.8.19 and 1.8.20
+
+1.9.4 (September 8, 2026)
+-------------------------
+- Fix: Deprecated null array offset in the reminder processor
+
+1.9.3 (July 31, 2026)
+---------------------
+- Fix: Fix event type linking
+
+1.9.2 (July 16, 2026)
+---------------------
+- Fix: CalDAV sync was intercepted by the core user gates (e.g. 2FA) for affected users after the twofa module moved to the gate system — the CalDAV controller now runs without a session, so the gates treat it as a stateless API request and leave the sync untouched (replaces the removed `twofa.beforeCheck` opt-out)
+
+1.9.1 (July 8, 2026)
+--------------------
+- Enh #702: Add aria-label attribute for icon-only buttons
+
+1.9.0 (June 5, 2026)
+--------------------
+- Fix: HumHub 1.19 Activity Handling
+- Enh #673: Remove deprecations
+
 1.8.20 (September 24, 2026)
 ---------------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector
@@ -58,7 +83,6 @@ Changelog
 
 - Fix #674: Fix asset bundle
 - Fix: HTML Encoding of Event Types
-
 
 1.8.10 (January 8, 2026)
 ------------------------

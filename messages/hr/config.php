@@ -32,6 +32,8 @@ return [
     'There are currently no event types available.' => 'Trenutačno nema dostupnih vrsta događaja.',
     'Upcoming events snippet' => 'Isječak nadolazećih događaja',
     'Add \'Calendar\' to the main menu' => '',
+    'Birthdays' => '',
+    'By default birthdays are only shown for your own profile and for followed users. If activated, birthdays of all otherwise visible users are shown in the calendar and dashboard snippet, no matter which "Calendars" filter is currently selected.' => '',
     'Calendar default view mode settings' => '',
     'Default basic settings' => '',
     'Export settings' => '',
@@ -40,5 +42,6 @@ return [
     'Include birthdays to dashboard snippet' => '',
     'List view type' => '',
     'Menu settings' => '',
+    'Show birthdays regardless of the selected calendar filter' => '',
     'View mode' => '',
 ];

@@ -39,6 +39,9 @@ return [
     'There are currently no event types available.' => 'Attualmente non sono disponibili tipi di eventi.',
     'Upcoming events snippet' => 'snippet Eventi Imminenti',
     'View mode' => 'Modalità di visualizzazione',
+    'Birthdays' => '',
+    'By default birthdays are only shown for your own profile and for followed users. If activated, birthdays of all otherwise visible users are shown in the calendar and dashboard snippet, no matter which "Calendars" filter is currently selected.' => '',
     'Export settings' => '',
     'List view type' => '',
+    'Show birthdays regardless of the selected calendar filter' => '',
 ];

@@ -16,7 +16,6 @@ use humhub\modules\user\models\UserFilter;
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\DAVACL\PrincipalCollection;
 use Yii;
-use yii\base\Event;
 use yii\helpers\Url;
 use Sabre\DAV\Server;
 use Sabre\DAV\Sharing\Plugin as DAVPlugin;
@@ -83,15 +82,17 @@ class CalDavController extends Controller
 
     public function beforeAction($action)
     {
+        // CalDAV authenticates statelessly per request (HTTP Basic / token). Disabling the
+        // session marks the request as an API request, so the core user gates (2FA, terms,
+        // ...) do not intercept the sync — they only apply to session-authenticated
+        // requests. Replaces the former `twofa.beforeCheck` opt-out, which was removed
+        // when the twofa module moved to the core user gate system.
+        Yii::$app->user->enableSession = false;
 
         if ($action->id == 'well-known') {
             // Allow `REPORT` and `PROPFIND` request for guests
             return true;
         }
-
-        Yii::$app->on('twofa.beforeCheck', function (Event $event) use ($action): void {
-            $event->handled = true;
-        });
 
         return parent::beforeAction($action);
     }

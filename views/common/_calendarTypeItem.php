@@ -33,13 +33,23 @@ use yii\helpers\Html;
     </span>
     <?php if (!$isSpaceGlobal || Yii::$app->user->can([ManageModules::class])) : ?>
     <span class="input-group-text">
-        <?= ModalButton::primary()->load($editUrl)->icon('fa-pencil')->sm() ?>
+        <?= ModalButton::primary()
+            ->load($editUrl)
+            ->icon('pencil')
+            ->options(['aria-label' => Yii::t('base', 'Edit')])
+            ->sm() ?>
         <?php if (!empty($deleteUrl)) : ?>
-            <?= ModalButton::danger()->post($deleteUrl)->confirm(
-                Yii::t('CalendarModule.config', '<strong>Confirm</strong> Deletion'),
-                Yii::t('CalendarModule.config', 'Do you really want to delte this event type?'),
-                Yii::t('CalendarModule.config', 'Delete'),
-            )->icon('fa-times')->sm()->cssClass('ms-2') ?>
+            <?= ModalButton::danger()
+                ->post($deleteUrl)
+                ->confirm(
+                    Yii::t('CalendarModule.config', '<strong>Confirm</strong> Deletion'),
+                    Yii::t('CalendarModule.config', 'Do you really want to delte this event type?'),
+                    Yii::t('CalendarModule.config', 'Delete'),
+                )
+                ->icon('times')
+                ->options(['aria-label' => Yii::t('CalendarModule.config', 'Delete')])
+                ->sm()
+                ->cssClass('ms-2') ?>
         <?php endif ?>
     </span>
     <?php endif; ?>
