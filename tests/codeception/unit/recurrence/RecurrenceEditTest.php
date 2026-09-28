@@ -8,7 +8,10 @@ use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\CalendarEntry;
 use humhub\modules\calendar\models\forms\CalendarEntryForm;
 use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
+use humhub\modules\like\models\Like;
+use humhub\modules\user\models\User;
 use Recurr\Frequency;
 
 class RecurrenceEditTest extends RecurrenceUnitTest
@@ -329,6 +332,54 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $this->assertEquals('2019-12-05 00:00:00', $newRecurrences[0]->end_datetime);
         $this->assertEquals('2019-12-06 00:00:00', $newRecurrences[1]->start_datetime);
         $this->assertEquals('2019-12-07 00:00:00', $newRecurrences[1]->end_datetime);
+    }
+
+    public function testMoveContentAddonsToFirstRecurrenceOnEnableRecurrence()
+    {
+        $this->initRecurrentEvents(null, null, false);
+        $entry = $this->rootEvent;
+        $this->assertFalse(RecurrenceHelper::isRecurrent($entry));
+
+        $this->assertTrue($entry->setParticipationStatus(User::findOne(['id' => 1])));
+        $comment = new Comment(['object_model' => CalendarEntry::class, 'object_id' => $entry->id, 'message' => 'Test comment']);
+        $this->assertTrue($comment->save());
+        $like = new Like(['object_model' => CalendarEntry::class, 'object_id' => $entry->id]);
+        $this->assertTrue($like->save());
+
+        $form = new CalendarEntryForm(['entry' => CalendarEntry::findOne(['id' => $entry->id])]);
+        $this->assertTrue($form->load([
+            'CalendarEntry' => [
+                'title' => $entry->title,
+                'all_day' => '1',
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_ALL,
+            ],
+            'CalendarEntryForm' => [
+                'is_public' => '1',
+                'start_date' => '12/1/19',
+                'end_date' => '12/1/19',
+                'recurring' => 1,
+            ],
+            'RecurrenceFormModel' => [
+                'frequency' => Frequency::DAILY,
+            ],
+        ]));
+        $this->assertTrue($form->save());
+
+        $root = CalendarEntry::findOne(['id' => $entry->id]);
+        $this->assertTrue(RecurrenceHelper::isRecurrentRoot($root));
+
+        $recurrences = $root->getRecurrenceInstances()->all();
+        $this->assertCount(1, $recurrences);
+        $firstRecurrence = $recurrences[0];
+        $this->assertEquals($root->start_datetime, $firstRecurrence->start_datetime);
+
+        $this->assertEquals(0, $root->getParticipantEntries()->count());
+        $this->assertEquals(1, $firstRecurrence->getParticipantEntries()->count());
+        $this->assertEquals(CalendarEntry::PARTICIPATION_STATUS_ACCEPTED, $firstRecurrence->getParticipationStatus(User::findOne(['id' => 1])));
+
+        $this->assertEquals(0, Comment::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $root->id])->count());
+        $this->assertEquals($firstRecurrence->id, Comment::findOne(['id' => $comment->id])->object_id);
+        $this->assertEquals($firstRecurrence->id, Like::findOne(['id' => $like->id])->object_id);
     }
 
     //TODO: test edit participation mode
