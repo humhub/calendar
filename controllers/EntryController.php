@@ -250,7 +250,16 @@ class EntryController extends ContentContainerController
             }
 
             if (empty($cal)) {
-                return ModalClose::widget(['saved' => true]);
+                $modalOptions = ['saved' => true];
+                if ($newFirstRecurrence = $calendarEntryForm->newFirstRecurrence) {
+                    // The event became recurring and its root is hidden from the stream,
+                    // so the stream entry should be reloaded with the first recurrence instead
+                    $modalOptions['script'] = '$(\'[data-content-key="' . $calendarEntryForm->entry->content->id . '"]\')'
+                        . '.attr("data-content-key", ' . $newFirstRecurrence->content->id . ')'
+                        . '.data("content-key", ' . $newFirstRecurrence->content->id . ');';
+                }
+
+                return ModalClose::widget($modalOptions);
             }
 
             return empty($id)

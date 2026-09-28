@@ -29,14 +29,17 @@ use humhub\modules\calendar\notifications\ReopenedEvent;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\calendar\widgets\WallEntry;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
+use humhub\modules\like\models\Like;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
@@ -994,6 +997,57 @@ class CalendarEntry extends ContentActiveRecord implements
         $instance->content->stream_channel = null;
 
         return $instance;
+    }
+
+    /**
+     * Moves participants, comments, likes and followers of this event to its first recurrence instance.
+     * Used when a non-recurring event becomes a recurring one, because the recurrence root is not
+     * visible in the stream and it is not possible to participate in it.
+     *
+     * @return static|null the first recurrence instance
+     * @throws \Throwable
+     */
+    public function moveContentAddonsToFirstRecurrence(): ?self
+    {
+        if (!RecurrenceHelper::isRecurrentRoot($this)) {
+            return null;
+        }
+
+        $firstRecurrences = $this->getRecurrenceQuery()->expandUpcoming(1, $this->getStartDateTime(), true);
+        $firstRecurrence = $firstRecurrences[0] ?? null;
+        if (!$firstRecurrence instanceof self || $firstRecurrence->isNewRecord) {
+            return null;
+        }
+
+        $rootCondition = ['object_model' => static::class, 'object_id' => $this->id];
+        $instanceCondition = ['object_model' => static::class, 'object_id' => $firstRecurrence->id];
+
+        CalendarEntryParticipant::updateAll(
+            ['calendar_entry_id' => $firstRecurrence->id],
+            ['AND',
+                ['calendar_entry_id' => $this->id],
+                ['NOT IN', 'user_id', CalendarEntryParticipant::find()
+                    ->select('user_id')
+                    ->where(['calendar_entry_id' => $firstRecurrence->id])
+                    ->column()],
+            ],
+        );
+        CalendarEntryParticipant::deleteAll(['calendar_entry_id' => $this->id]);
+
+        Comment::updateAll(['object_id' => $firstRecurrence->id], $rootCondition);
+        Like::updateAll(['object_id' => $firstRecurrence->id], $rootCondition);
+
+        Follow::updateAll(['object_id' => $firstRecurrence->id], ['AND',
+            $rootCondition,
+            ['NOT IN', 'user_id', Follow::find()->select('user_id')->where($instanceCondition)->column()],
+        ]);
+
+        Comment::flushCommentCache(static::class, $this->id);
+        Comment::flushCommentCache(static::class, $firstRecurrence->id);
+        Yii::$app->cache->delete('likes_' . static::class . '_' . $this->id);
+        Yii::$app->cache->delete('likes_' . static::class . '_' . $firstRecurrence->id);
+
+        return $firstRecurrence;
     }
 
     /**

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.21 (Unreleased)
+--------------------------
+- Fix #723: Move participants, comments and likes to the first recurrence when an event becomes recurring
+
 1.8.20 (September 24, 2026)
 ---------------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector

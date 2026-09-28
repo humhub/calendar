@@ -26,6 +26,7 @@ use humhub\modules\calendar\models\forms\validators\CalendarTypeValidator;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 
 /**
@@ -90,6 +91,11 @@ class CalendarEntryForm extends Model
      * @var CalendarEntry
      */
     public $original;
+
+    /**
+     * @var CalendarEntry|null the first recurrence instance created on save when the event became recurring
+     */
+    public ?CalendarEntry $newFirstRecurrence = null;
 
     /**
      * @var bool
@@ -509,6 +515,11 @@ class CalendarEntryForm extends Model
                     $this->recurrenceForm->frequency = RecurrenceFormModel::FREQUENCY_NEVER;
                 }
                 $result = $this->recurrenceForm->save($this->original) && $result;
+
+                if ($result && $this->original && !RecurrenceHelper::isRecurrent($this->original)) {
+                    // The event became recurring, keep its participants, comments and likes accessible
+                    $this->newFirstRecurrence = $this->entry->moveContentAddonsToFirstRecurrence();
+                }
 
                 if ($result) {
                     $this->sequenceCheck();
