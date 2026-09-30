@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.21 (Unreleased)
+-------------------
+- Fix #725: Deleted occurrences of recurring events reappear when the event time zone differs from the user's time zone
+
 1.8.20 (September 24, 2026)
 ---------------------------
 - Enh: Automated code refactoring for HumHub 1.18.0-beta.7 using Rector

@@ -14,7 +14,6 @@ use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationI
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\models\CalendarEntryType;
 use humhub\modules\calendar\Module;
-use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
 use humhub\modules\content\models\Content;
 use Yii;
@@ -243,8 +242,11 @@ class VCalendar extends Model
                 // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
                 if (!empty($item->getExdate())) {
                     $result['EXDATE'] = [];
+                    // Exdates are stored as local times of the event time zone (same as recurrence_id), so they must be
+                    // bound to that time zone, otherwise they are interpreted in the time zone of the current user
+                    $exdateTimeZone = $item->isAllDay() ? null : CalendarUtils::getStartTimeZone($item);
                     foreach (explode(',', $item->getExdate()) as $exdate) {
-                        $result['EXDATE'][] = $exdate;
+                        $result['EXDATE'][] = $exdateTimeZone ? new DateTime($exdate, $exdateTimeZone) : $exdate;
                     }
                 }
 
