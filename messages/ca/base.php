@@ -110,7 +110,7 @@ return [
     'End' => '',
     'Event Types' => '',
     'Event could not be deleted!' => '',
-    'Event has been be deleted!' => '',
+    'Event has been deleted!' => '',
     'Event types' => '',
     'Export as {type}' => '',
     'Here you can configure default settings for all calendar events.' => '',

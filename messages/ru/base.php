@@ -129,7 +129,7 @@ return [
     'Default reminder settings' => '',
     'Display events within the next X days' => '',
     'Event could not be deleted!' => '',
-    'Event has been be deleted!' => '',
+    'Event has been deleted!' => '',
     'Event types' => '',
     'Here you can configure default settings for all calendar events.' => '',
     'Here you can configure global default reminders. These settings can be overwritten on space/profile level.' => '',

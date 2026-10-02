@@ -55,7 +55,7 @@ return [
   'Event Type' => 'Gebeurtenistype',
   'Event Types' => 'Gebeurtenistypes',
   'Event could not be deleted!' => 'De gebeurtenis kon niet worden verwijderd!',
-  'Event has been be deleted!' => 'De gebeurtenis is verwijderd',
+  'Event has been deleted!' => 'De gebeurtenis is verwijderd',
   'Event not found!' => 'Gebeurtenis niet gevonden!',
   'Event types' => 'Gebeurtenistypen',
   'Export as {type}' => 'Exporteren als {type}',

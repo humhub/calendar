@@ -89,7 +89,7 @@ return [
     'Edit this and following events' => '',
     'Enable Reminder' => '',
     'Event could not be deleted!' => '',
-    'Event has been be deleted!' => '',
+    'Event has been deleted!' => '',
     'Event types' => '',
     'Export as {type}' => '',
     'Friday' => '',
