@@ -561,7 +561,7 @@ class EntryController extends ContentContainerController
         return Yii::$app->request->isAjax
             ? $this->asJson([
                 'success' => true,
-                'message' => Yii::t('CalendarModule.base', 'Event has been be deleted!'),
+                'message' => Yii::t('CalendarModule.base', 'Event has been deleted!'),
             ])
             : $this->redirect(Url::toCalendar($this->contentContainer));
     }

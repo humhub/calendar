@@ -56,7 +56,7 @@ return [
     'Event Type' => 'Tipo de Evento',
     'Event Types' => 'Tipos de Eventos',
     'Event could not be deleted!' => 'O evento não pôde ser excluído!',
-    'Event has been be deleted!' => 'O evento foi excluído!',
+    'Event has been deleted!' => 'O evento foi excluído!',
     'Event not found!' => 'Evento não encontrado!',
     'Export as {type}' => 'Exportar como {type}',
     'Files' => 'Arquivos',

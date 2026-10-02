@@ -49,7 +49,7 @@ return [
     'Event Type' => 'Aktivitetstyp',
     'Event Types' => 'Aktivitetstyper',
     'Event could not be deleted!' => 'Eventet kunde inte raderas!',
-    'Event has been be deleted!' => 'Eventet har tagits bort!',
+    'Event has been deleted!' => 'Eventet har tagits bort!',
     'Event not found!' => 'Hittar inte event',
     'Export as {type}' => 'Exportera som {type}',
     'Files' => 'Filer',

@@ -147,7 +147,7 @@ return [
     'Calendar events' => '',
     'Display events within the next X days' => '',
     'Event could not be deleted!' => '',
-    'Event has been be deleted!' => '',
+    'Event has been deleted!' => '',
     'Event types' => '',
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the<br/><strong>Set reminder</strong> link.' => '',
     'In addition to names, attendees’ email addresses will be included in ICS and CalDAV exports. Enable only if allowed by your privacy policy or data protection rules.' => '',

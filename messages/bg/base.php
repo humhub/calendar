@@ -128,7 +128,7 @@ return [
     'Edit Event' => '',
     'Enable Reminder' => '',
     'Event could not be deleted!' => '',
-    'Event has been be deleted!' => '',
+    'Event has been deleted!' => '',
     'Event types' => '',
     'Export as {type}' => '',
     'Here you can configure the default reminder settings for this event. Users are able to overwrite these settings by means of the<br/><strong>Set reminder</strong> link.' => '',

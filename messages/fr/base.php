@@ -55,7 +55,7 @@ return [
   'Event Type' => 'Type d\'événement',
   'Event Types' => 'Types d’événements',
   'Event could not be deleted!' => 'L’événement n’a pas pu être supprimé !',
-  'Event has been be deleted!' => 'L’événement a été supprimé !',
+  'Event has been deleted!' => 'L’événement a été supprimé !',
   'Event not found!' => 'Événement introuvable !',
   'Event types' => 'Types d\'événements',
   'Export as {type}' => 'Exporter comme {type}',

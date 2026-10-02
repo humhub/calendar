@@ -70,7 +70,7 @@ return [
     'Event Type' => '',
     'Event Types' => '',
     'Event could not be deleted!' => '',
-    'Event has been be deleted!' => '',
+    'Event has been deleted!' => '',
     'Event types' => '',
     'Export as {type}' => '',
     'Friday' => '',

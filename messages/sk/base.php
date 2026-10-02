@@ -49,7 +49,7 @@ return [
     'Event Type' => 'Typ Udalosti',
     'Event Types' => 'Typy udalostí',
     'Event could not be deleted!' => 'Udalosť sa nepodarilo odstrániť!',
-    'Event has been be deleted!' => 'Udalosť bola vymazaná!',
+    'Event has been deleted!' => 'Udalosť bola vymazaná!',
     'Event not found!' => 'Udalosť sa nenašla!',
     'Export as {type}' => 'Exportovať ako {type}',
     'Files' => 'Súbory',
