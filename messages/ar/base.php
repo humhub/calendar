@@ -49,7 +49,7 @@ return [
     'Event Type' => 'نوع الحدث',
     'Event Types' => 'أنواع الأحداث',
     'Event could not be deleted!' => 'الحدث لم يتم حذفه!',
-    'Event has been be deleted!' => 'الحدث قد تم حذفه',
+    'Event has been deleted!' => 'الحدث قد تم حذفه',
     'Event not found!' => 'لم يتم العثور على الحدث',
     'Export as {type}' => 'تصدير كـ {type}',
     'Files' => 'الملفات',

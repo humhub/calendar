@@ -53,7 +53,7 @@ return [
     'Event Type' => 'Typ wydarzenia',
     'Event Types' => 'Typy wydarzeń',
     'Event could not be deleted!' => 'Wydarzenie nie może zostać skasowane!',
-    'Event has been be deleted!' => 'Wydarzenie zostało skasowane!',
+    'Event has been deleted!' => 'Wydarzenie zostało skasowane!',
     'Event not found!' => 'Nie znaleziono wydarzenia!',
     'Export as {type}' => 'Eksportuj jako {type}',
     'Files' => 'Pliki',

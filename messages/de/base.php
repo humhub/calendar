@@ -55,7 +55,7 @@ return [
   'Event Type' => 'Event Kategorie',
   'Event Types' => 'Event Kategorien',
   'Event could not be deleted!' => 'Veranstaltung konnte nicht gelöscht werden!',
-  'Event has been be deleted!' => 'Veranstaltung wurde gelöscht!',
+  'Event has been deleted!' => 'Veranstaltung wurde gelöscht!',
   'Event not found!' => 'Termin nicht gefunden!',
   'Event types' => 'Veranstaltungsarten',
   'Export as {type}' => 'Exportiere als {type}',

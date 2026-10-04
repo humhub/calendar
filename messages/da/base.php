@@ -54,7 +54,7 @@ return [
     'Event Type' => 'Begivenhedstype',
     'Event Types' => 'Begivenhedstyper',
     'Event could not be deleted!' => 'Begivenheden kunne ikke slettes!',
-    'Event has been be deleted!' => 'Event has been be deleted!',
+    'Event has been deleted!' => 'Event has been deleted!',
     'Event not found!' => 'Begivenhed ikke fundet!',
     'Export as {type}' => 'Eksporter som {type}',
     'Files' => 'Filer',

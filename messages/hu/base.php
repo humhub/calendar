@@ -49,7 +49,7 @@ return [
     'Event Type' => 'Esemény típusa',
     'Event Types' => 'Eseménytípusok',
     'Event could not be deleted!' => 'Az eseményt nem sikerült törölni!',
-    'Event has been be deleted!' => 'Az esemény törölve lett!',
+    'Event has been deleted!' => 'Az esemény törölve lett!',
     'Event not found!' => 'Az esemény nem található!',
     'Export as {type}' => 'Exportálás mint {type}',
     'Files' => 'Fájlok',

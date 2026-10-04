@@ -52,7 +52,7 @@ return [
     'Event Type' => 'イベントタイプ',
     'Event Types' => 'イベントの種類',
     'Event could not be deleted!' => 'イベントを削除できませんでした。',
-    'Event has been be deleted!' => 'イベントは削除されました！',
+    'Event has been deleted!' => 'イベントは削除されました！',
     'Event not found!' => 'イベントが見つかりません！',
     'Export as {type}' => '{type} としてエクスポート',
     'Files' => 'ファイル',
