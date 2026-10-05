@@ -19,7 +19,7 @@
     "@fullcalendar/moment": "*",
     "@fullcalendar/moment-timezone": "*",
     "@fullcalendar/timegrid": "*",
-    "moment": "^2.29.4",
+    "moment": "^2.31.0",
     "moment-timezone": "^0.5.35"
   },
   "author": "Julian Harrer",
