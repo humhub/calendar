@@ -77,6 +77,24 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         }
     }
 
+    public function testExpandSingleAllDayRecurrenceWithUserTimeZoneBehindUtc()
+    {
+        parent::_before();
+        $this->becomeUser('Admin');
+        Yii::$app->user->getIdentity()->updateAttributes(['time_zone' => 'America/New_York']);
+        CalendarUtils::flush();
+
+        $this->space = Space::findOne(['id' => 1]);
+        $this->rootEvent = $this->createEntry(new DateTime('2019-12-01'), 1, 'All Day Entry', $this->space);
+        $this->setDefaults($this->rootEvent, 'FREQ=WEEKLY;INTERVAL=1');
+        $this->assertTrue($this->rootEvent->save());
+
+        $recurrence = $this->rootEvent->getRecurrenceQuery()->expandSingle('20191208T000000');
+        $this->assertNotNull($recurrence);
+        $this->assertEquals('20191208T000000', $recurrence->getRecurrenceId());
+        $this->assertEquals('2019-12-08 00:00:00', $recurrence->start_datetime);
+    }
+
     public function testDeleteRootEvent()
     {
         $this->initRecurrentEvents();

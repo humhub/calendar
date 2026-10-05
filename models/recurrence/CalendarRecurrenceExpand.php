@@ -93,7 +93,9 @@ class CalendarRecurrenceExpand extends Model
         }
 
         $event = static::assureRootEvent($event);
-        $tz = new \DateTimeZone($event->getTimezone());
+        // All day recurrences are expanded in the user time zone (see calculateRecurrenceInstances()),
+        // so the search window must be built in the same time zone, otherwise it misses the recurrence
+        $tz = $event->isAllDay() ? CalendarUtils::getUserTimeZone() : new DateTimeZone($event->getTimezone());
 
         // The recurrence id may come from the EntryController::actionViewRecurrence(recurrence_id) or external clients may leave small garbage
         // We need to normalize/validate it before DateTime parsing to avoid parse errors
