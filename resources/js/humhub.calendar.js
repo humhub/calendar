@@ -173,6 +173,13 @@ humhub.module('calendar', function (module, require, $) {
         }
 
         var onCalEntryFormSubmitted = function (evt, response) {
+            if (response.newFirstRecurrenceContentId) {
+                // The event became recurring, the modal is already closed by the success response
+                switchStreamEntry(response.contentId, response.newFirstRecurrenceContentId);
+                module.log.success('saved');
+                return;
+            }
+
             if (response.id) {
                 modal.global.$.one('hidden.bs.modal', function () {
                     var entry = StreamEntry.getNodeByKey(response.id);
@@ -315,6 +322,20 @@ humhub.module('calendar', function (module, require, $) {
             }).catch(function (e) {
                 module.log.error(e, true);
             });
+        };
+
+        /**
+         * Switches a stream entry to another content, so the next reload of the entry renders the new content,
+         * e.g. when an event became recurring and its root is replaced in the stream by the first recurrence
+         *
+         * @param {int} oldContentId
+         * @param {int} newContentId
+         */
+        var switchStreamEntry = function (oldContentId, newContentId) {
+            // Update the cached jQuery data as well, because Content.getKey() reads it by .data()
+            StreamEntry.getNodeByKey(oldContentId)
+                .attr('data-content-key', newContentId)
+                .data('content-key', newContentId);
         };
 
         var getCalendar = function () {

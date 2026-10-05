@@ -34,6 +34,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
+use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\like\models\Like;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Membership;
@@ -1013,8 +1014,11 @@ class CalendarEntry extends ContentActiveRecord implements
             return null;
         }
 
-        $firstRecurrences = $this->getRecurrenceQuery()->expandUpcoming(1, $this->getStartDateTime(), true);
-        $firstRecurrence = $firstRecurrences[0] ?? null;
+        // The first recurrence is always on the original date (DTSTART) and it is materialized by its recurrence id
+        // in the same way as when it is viewed from the calendar, so nothing is moved to a later date
+        $firstRecurrence = $this->getRecurrenceQuery()->expandSingle(
+            RecurrenceHelper::getRecurrentId($this, $this->isAllDay() ? null : $this->getTimezone()),
+        );
         if (!$firstRecurrence instanceof self || $firstRecurrence->isNewRecord) {
             return null;
         }
@@ -1041,11 +1045,16 @@ class CalendarEntry extends ContentActiveRecord implements
             $rootCondition,
             ['NOT IN', 'user_id', Follow::find()->select('user_id')->where($instanceCondition)->column()],
         ]);
+        Follow::deleteAll($rootCondition);
 
         Comment::flushCommentCache(static::class, $this->id);
         Comment::flushCommentCache(static::class, $firstRecurrence->id);
         Yii::$app->cache->delete('likes_' . static::class . '_' . $this->id);
         Yii::$app->cache->delete('likes_' . static::class . '_' . $firstRecurrence->id);
+
+        // Update the search index, because the moved comments are indexed with the content
+        (new ContentSearchService($this->content))->update();
+        (new ContentSearchService($firstRecurrence->content))->update();
 
         return $firstRecurrence;
     }

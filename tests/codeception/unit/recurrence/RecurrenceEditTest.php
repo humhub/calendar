@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\tests\codeception\unit;
 
 use calendar\RecurrenceUnitTest;
+use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\CalendarEntry;
@@ -336,6 +337,32 @@ class RecurrenceEditTest extends RecurrenceUnitTest
 
     public function testMoveContentAddonsToFirstRecurrenceOnEnableRecurrence()
     {
+        $this->assertContentAddonsMovedOnEnableRecurrence([
+            'frequency' => Frequency::DAILY,
+        ]);
+    }
+
+    /**
+     * The original date (Sunday, 2019-12-01) doesn't match the rule "weekly on Tuesday",
+     * but it is still the first recurrence (DTSTART), so nothing is moved to a later date
+     */
+    public function testMoveContentAddonsToFirstRecurrenceOnEnableRecurrenceWithNonMatchingRule()
+    {
+        $this->assertContentAddonsMovedOnEnableRecurrence([
+            'frequency' => Frequency::WEEKLY,
+            'weekDays' => [CalendarUtils::DOW_TUESDAY],
+        ]);
+    }
+
+    public function testMoveContentAddonsToFirstRecurrenceOnEnableRecurrenceForNonAllDayEvent()
+    {
+        $this->assertContentAddonsMovedOnEnableRecurrence([
+            'frequency' => Frequency::DAILY,
+        ], false);
+    }
+
+    private function assertContentAddonsMovedOnEnableRecurrence(array $recurrenceFormData, bool $allDay = true)
+    {
         $this->initRecurrentEvents(null, null, false);
         $entry = $this->rootEvent;
         $this->assertFalse(RecurrenceHelper::isRecurrent($entry));
@@ -350,18 +377,18 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $this->assertTrue($form->load([
             'CalendarEntry' => [
                 'title' => $entry->title,
-                'all_day' => '1',
+                'all_day' => $allDay ? '1' : '0',
                 'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_ALL,
             ],
             'CalendarEntryForm' => [
                 'is_public' => '1',
                 'start_date' => '12/1/19',
+                'start_time' => '10:00 AM',
                 'end_date' => '12/1/19',
+                'end_time' => '12:00 PM',
                 'recurring' => 1,
             ],
-            'RecurrenceFormModel' => [
-                'frequency' => Frequency::DAILY,
-            ],
+            'RecurrenceFormModel' => $recurrenceFormData,
         ]));
         $this->assertTrue($form->save());
 
@@ -372,6 +399,11 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $this->assertCount(1, $recurrences);
         $firstRecurrence = $recurrences[0];
         $this->assertEquals($root->start_datetime, $firstRecurrence->start_datetime);
+        $this->assertEquals(
+            RecurrenceHelper::getRecurrentId($root, $root->isAllDay() ? null : $root->getTimezone()),
+            $firstRecurrence->getRecurrenceId(),
+        );
+        $this->assertEquals($firstRecurrence->id, $form->newFirstRecurrence->id);
 
         $this->assertEquals(0, $root->getParticipantEntries()->count());
         $this->assertEquals(1, $firstRecurrence->getParticipantEntries()->count());

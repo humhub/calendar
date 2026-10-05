@@ -250,16 +250,17 @@ class EntryController extends ContentContainerController
             }
 
             if (empty($cal)) {
-                $modalOptions = ['saved' => true];
-                if ($newFirstRecurrence = $calendarEntryForm->newFirstRecurrence) {
+                if ($calendarEntryForm->newFirstRecurrence) {
                     // The event became recurring and its root is hidden from the stream,
-                    // so the stream entry should be reloaded with the first recurrence instead
-                    $modalOptions['script'] = '$(\'[data-content-key="' . $calendarEntryForm->entry->content->id . '"]\')'
-                        . '.attr("data-content-key", ' . $newFirstRecurrence->content->id . ')'
-                        . '.data("content-key", ' . $newFirstRecurrence->content->id . ');';
+                    // so the stream entry should be switched to the first recurrence (see humhub.calendar.js)
+                    return $this->asJson([
+                        'success' => true, // makes ui.modal.submit close the modal before triggering the 'submitted' event
+                        'contentId' => $calendarEntryForm->entry->content->id,
+                        'newFirstRecurrenceContentId' => $calendarEntryForm->newFirstRecurrence->content->id,
+                    ]);
                 }
 
-                return ModalClose::widget($modalOptions);
+                return ModalClose::widget(['saved' => true]);
             }
 
             return empty($id)
