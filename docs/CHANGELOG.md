@@ -4,6 +4,7 @@ Changelog
 1.8.21 (Unreleased)
 -------------------
 - Fix #725: Deleted occurrences of recurring events reappear when the event time zone differs from the user's time zone
+- Fix #731: Don't replace errors of AJAX requests with 401 Unauthorized, keep the real HTTP status code
 
 1.8.20 (September 24, 2026)
 ---------------------------

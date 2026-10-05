@@ -30,6 +30,7 @@ use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Schedule\Plugin as SchedulePlugin;
 use yii\rest\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
 use humhub\modules\admin\permissions\ManageUsers;
@@ -59,20 +60,24 @@ class CalDavController extends Controller
             $accept = array_map(fn($type) => strtok($type, ';'), $accept);
         }
 
-        // Take control of error action only when called from Calendar Clients
+        // Take control of error action only when called from Calendar Clients,
+        // AJAX requests of the web UI (e.g. modals) must be handled by the core error action
         if (
-            !empty($accept)
+            !Yii::$app->request->isAjax
+            && !empty($accept)
             && $accept[0] !== 'text/html'
-            && !empty(array_intersect($accept, ['*/*', 'text/xml', 'application/xml' . 'text/calendar', 'application/ics', 'text/plain']))
+            && !empty(array_intersect($accept, ['*/*', 'text/xml', 'application/xml', 'text/calendar', 'application/ics', 'text/plain']))
         ) {
             if ($exception instanceof ForbiddenHttpException || $exception instanceof UnauthorizedHttpException) {
-                $this->response->statusCode = 401;
-                $this->response->content = Response::$httpStatuses[401];
+                $code = 401;
+            } elseif ($exception instanceof HttpException) {
+                $code = $exception->statusCode;
             } else {
-                $code = $exception->getCode() ?: 401;
-                $this->response->statusCode = $code;
-                $this->response->content = Response::$httpStatuses[$code];
+                $code = 500;
             }
+
+            $this->response->statusCode = $code;
+            $this->response->content = Response::$httpStatuses[$code] ?? '';
 
             return $this->response;
         }
