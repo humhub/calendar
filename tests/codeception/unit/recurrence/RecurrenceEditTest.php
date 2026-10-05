@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\tests\codeception\unit;
 
 use calendar\RecurrenceUnitTest;
+use DateTime;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
@@ -13,7 +14,9 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\like\models\Like;
 use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
 use Recurr\Frequency;
+use Yii;
 
 class RecurrenceEditTest extends RecurrenceUnitTest
 {
@@ -48,6 +51,33 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $this->assertNotEmpty($this->rootEvent->getExdate());
         $this->assertEquals($this->recurrences[1]->getRecurrenceId(), $this->rootEvent->getExdate());
         $this->assertEquals(1, $this->rootEvent->sequence);
+    }
+
+    public function testDeleteRecurrentInstanceWithEventTimeZoneDifferentFromUserTimeZone()
+    {
+        parent::_before();
+        $this->becomeUser('Admin');
+        Yii::$app->user->getIdentity()->updateAttributes(['time_zone' => 'Europe/Berlin']);
+        CalendarUtils::flush();
+
+        $this->space = Space::findOne(['id' => 1]);
+        $this->rootEvent = $this->createEntry((new DateTime('2019-12-01 10:00:00')), 'PT1H', 'Timed Entry', $this->space);
+        $this->setDefaults($this->rootEvent, self::DEFAULT_RRULE);
+        $this->rootEvent->time_zone = 'Europe/London';
+        $this->assertTrue($this->rootEvent->save());
+
+        $recurrences = $this->expand(true);
+        $this->assertCount(7, $recurrences);
+
+        $this->assertEquals(1, $recurrences[1]->delete());
+        $this->rootEvent->refresh();
+        $this->assertEquals($recurrences[1]->getRecurrenceId(), $this->rootEvent->getExdate());
+
+        $recurrences = $this->expand();
+        $this->assertCount(6, $recurrences);
+        foreach ($recurrences as $recurrence) {
+            $this->assertNotEquals($this->rootEvent->getExdate(), $recurrence->getRecurrenceId());
+        }
     }
 
     public function testDeleteRootEvent()
