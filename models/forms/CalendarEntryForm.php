@@ -26,6 +26,7 @@ use humhub\modules\calendar\models\forms\validators\CalendarTypeValidator;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\models\CalendarEntry;
 
 /**
@@ -90,6 +91,16 @@ class CalendarEntryForm extends Model
      * @var CalendarEntry
      */
     public $original;
+
+    /**
+     * @var CalendarEntry|null the first recurrence instance created on save when the event became recurring
+     */
+    public ?CalendarEntry $newFirstRecurrence = null;
+
+    /**
+     * @var CalendarEntry|null the first recurrence instance deleted on save when the recurrence was disabled
+     */
+    public ?CalendarEntry $removedFirstRecurrence = null;
 
     /**
      * @var bool
@@ -508,7 +519,23 @@ class CalendarEntryForm extends Model
                 if (!$this->recurring) {
                     $this->recurrenceForm->frequency = RecurrenceFormModel::FREQUENCY_NEVER;
                 }
+
+                if ($this->original && RecurrenceHelper::isRecurrentRoot($this->original)
+                    && $this->recurrenceForm->frequency == RecurrenceFormModel::FREQUENCY_NEVER) {
+                    // The recurrence is disabled and the instances are going to be deleted,
+                    // keep the participants, comments and likes of the first one on the root
+                    $this->removedFirstRecurrence = $this->entry->moveContentAddonsFromFirstRecurrence(
+                        $this->original->getFirstRecurrenceId(),
+                    );
+                }
+
                 $result = $this->recurrenceForm->save($this->original) && $result;
+
+                if ($result && $this->original && !RecurrenceHelper::isRecurrentRoot($this->original)) {
+                    // The event became a recurrence root (a non-recurring event or an instance edited with "this and following"),
+                    // keep its participants, comments and likes accessible
+                    $this->newFirstRecurrence = $this->entry->moveContentAddonsToFirstRecurrence();
+                }
 
                 if ($result) {
                     $this->sequenceCheck();
@@ -523,6 +550,32 @@ class CalendarEntryForm extends Model
 
             return $result;
         });
+    }
+
+    /**
+     * Returns the content ids for switching the stream entry after saving (see humhub.calendar.js) to the content
+     * which is visible in the stream now: to the first recurrence when the event became recurring and its root
+     * is hidden from the stream, or to the root when the recurrence was disabled and the first recurrence was deleted.
+     *
+     * @return array|null ['contentId' => int, 'newContentId' => int] or null if the stream entry should not be switched
+     */
+    public function getStreamEntrySwitch(): ?array
+    {
+        if ($this->newFirstRecurrence !== null) {
+            return [
+                'contentId' => $this->entry->content->id,
+                'newContentId' => $this->newFirstRecurrence->content->id,
+            ];
+        }
+
+        if ($this->removedFirstRecurrence !== null) {
+            return [
+                'contentId' => $this->removedFirstRecurrence->content->id,
+                'newContentId' => $this->entry->content->id,
+            ];
+        }
+
+        return null;
     }
 
     public function sequenceCheck()

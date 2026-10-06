@@ -250,12 +250,18 @@ class EntryController extends ContentContainerController
             }
 
             if (empty($cal)) {
+                $streamEntrySwitch = $calendarEntryForm->getStreamEntrySwitch();
+                if ($streamEntrySwitch !== null) {
+                    // 'success' makes ui.modal.submit close the modal before triggering the 'submitted' event
+                    return $this->asJson(['success' => true] + $streamEntrySwitch);
+                }
+
                 return ModalClose::widget(['saved' => true]);
             }
 
             return empty($id)
                 ? $this->renderModalParticipation($calendarEntryForm->entry, null, true)
-                : $this->renderModal($calendarEntryForm->entry, 1);
+                : $this->renderModal($calendarEntryForm->newFirstRecurrence ?? $calendarEntryForm->entry, 1);
         }
 
         if ($calendarEntryForm->isAllDay()) {

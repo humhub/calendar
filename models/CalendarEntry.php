@@ -10,6 +10,7 @@ namespace humhub\modules\calendar\models;
 
 use DateTime;
 use DateTimeZone;
+use humhub\modules\calendar\Events;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
 use humhub\modules\calendar\helpers\Url;
@@ -29,14 +30,18 @@ use humhub\modules\calendar\notifications\ReopenedEvent;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
 use humhub\modules\calendar\widgets\WallEntry;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
+use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\like\models\Like;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
@@ -380,6 +385,10 @@ class CalendarEntry extends ContentActiveRecord implements
         if (RecurrenceHelper::isRecurrentRoot($this)
             || (RecurrenceHelper::isRecurrentInstance($this) && $this->content->hidden)) {
             $this->streamChannel = null;
+        } elseif ($this->streamChannel === null) {
+            // Restore the stream channel when the event is not a recurrence root anymore,
+            // e.g. the recurrence was disabled and the root was already saved before in the same request
+            $this->streamChannel = 'default';
         }
 
         if ($this->online && !$this->getParticipationUrl()) {
@@ -442,9 +451,11 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function delete()
     {
-        if (RecurrenceHelper::isRecurrentInstance($this)) {
+        if (RecurrenceHelper::isRecurrentInstance($this) || $this->getRecurrenceRootId()) {
             // Recurrent entry should be deleted hardly, because
-            // the column `exdate` should be filled for the root entry after deletion
+            // the column `exdate` should be filled for the root entry after deletion.
+            // Instances of a root whose recurrence was disabled are deleted hardly as well,
+            // otherwise they would be reused when the recurrence is enabled again
             return $this->hardDelete();
         }
 
@@ -994,6 +1005,120 @@ class CalendarEntry extends ContentActiveRecord implements
         $instance->content->stream_channel = null;
 
         return $instance;
+    }
+
+    /**
+     * Moves participants, comments, likes and followers of this event to its first recurrence instance.
+     * Used when a non-recurring event becomes a recurring one, because the recurrence root is not
+     * visible in the stream and it is not possible to participate in it.
+     *
+     * @return static|null the first recurrence instance
+     * @throws \Throwable
+     */
+    public function moveContentAddonsToFirstRecurrence(): ?self
+    {
+        if (!RecurrenceHelper::isRecurrentRoot($this)) {
+            return null;
+        }
+
+        // The first recurrence is always on the original date (DTSTART) and it is materialized by its recurrence id
+        // in the same way as when it is viewed from the calendar, so nothing is moved to a later date
+        $recurrenceId = $this->getFirstRecurrenceId();
+
+        // A soft deleted instance may remain from a previous disabling of the recurrence,
+        // it must not be reused, otherwise everything would be moved to a deleted content
+        $staleRecurrence = $this->getRecurrenceQuery()->getRecurrenceInstance($recurrenceId);
+        if ($staleRecurrence instanceof self && (int) $staleRecurrence->content->state !== Content::STATE_PUBLISHED) {
+            // Don't add the recurrence id to the exdate of the root on deleting
+            Events::$duplicateIntegrityRun = true;
+            try {
+                $staleRecurrence->hardDelete();
+            } finally {
+                Events::$duplicateIntegrityRun = false;
+            }
+        }
+
+        $firstRecurrence = $this->getRecurrenceQuery()->expandSingle($recurrenceId);
+        if (!$firstRecurrence instanceof self || $firstRecurrence->isNewRecord) {
+            Yii::warning('Could not materialize the first recurrence ' . $recurrenceId . ' of the calendar entry ' . $this->id
+                . ', its participants, comments and likes are not moved.', 'calendar');
+            return null;
+        }
+
+        static::moveContentAddons($this, $firstRecurrence);
+
+        return $firstRecurrence;
+    }
+
+    /**
+     * Moves participants, comments, likes and followers of the first recurrence instance back to this root.
+     * Used when the recurrence is disabled, because the recurrence instances are deleted then.
+     *
+     * @param string $firstRecurrenceId recurrence id of the first recurrence before the event was edited
+     * @return static|null the first recurrence instance
+     * @throws \Throwable
+     */
+    public function moveContentAddonsFromFirstRecurrence(string $firstRecurrenceId): ?self
+    {
+        $firstRecurrence = $this->getRecurrenceQuery()->getRecurrenceInstance($firstRecurrenceId);
+        if (!$firstRecurrence instanceof self) {
+            return null;
+        }
+
+        static::moveContentAddons($firstRecurrence, $this);
+
+        return $firstRecurrence;
+    }
+
+    /**
+     * Recurrence id of the first recurrence instance, it is always on the start date (DTSTART) of the root
+     */
+    public function getFirstRecurrenceId(): string
+    {
+        return RecurrenceHelper::getRecurrentId($this, $this->isAllDay() ? null : $this->getTimezone());
+    }
+
+    /**
+     * Moves participants, comments, likes and followers from one calendar entry to another one
+     */
+    private static function moveContentAddons(self $from, self $to): void
+    {
+        $fromCondition = ['object_model' => static::class, 'object_id' => $from->id];
+        $toCondition = ['object_model' => static::class, 'object_id' => $to->id];
+
+        CalendarEntryParticipant::updateAll(
+            ['calendar_entry_id' => $to->id],
+            ['AND',
+                ['calendar_entry_id' => $from->id],
+                ['NOT IN', 'user_id', CalendarEntryParticipant::find()
+                    ->select('user_id')
+                    ->where(['calendar_entry_id' => $to->id])
+                    ->column()],
+            ],
+        );
+        CalendarEntryParticipant::deleteAll(['calendar_entry_id' => $from->id]);
+
+        Comment::updateAll(['object_id' => $to->id], $fromCondition);
+        Like::updateAll(['object_id' => $to->id], ['AND',
+            $fromCondition,
+            ['NOT IN', 'created_by', Like::find()->select('created_by')->where($toCondition)->column()],
+        ]);
+        Like::deleteAll($fromCondition);
+
+        Follow::updateAll(['object_id' => $to->id], ['AND',
+            $fromCondition,
+            ['NOT IN', 'user_id', Follow::find()->select('user_id')->where($toCondition)->column()],
+        ]);
+        Follow::deleteAll($fromCondition);
+
+        Comment::flushCommentCache(static::class, $from->id);
+        Comment::flushCommentCache(static::class, $to->id);
+        Yii::$app->cache->delete('likes_' . static::class . '_' . $from->id);
+        Yii::$app->cache->delete('likes_' . static::class . '_' . $to->id);
+
+        // Update the search index, because the moved comments are indexed with the content
+        (new ContentSearchService($from->content))->update();
+        (new ContentSearchService($to->content))->update();
     }
 
     /**

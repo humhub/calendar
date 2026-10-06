@@ -3,6 +3,7 @@ Changelog
 
 1.8.21 (Unreleased)
 -------------------
+- Fix #723: Move participants, comments and likes to the first recurrence when an event becomes recurring
 - Fix #725: Deleted occurrences of recurring events reappear when the event time zone differs from the user's time zone
 - Fix #731: Don't replace errors of AJAX requests with 401 Unauthorized, keep the real HTTP status code
 - Fix #730: Occurrences of recurring all-day events not opening for users in time zones behind UTC
