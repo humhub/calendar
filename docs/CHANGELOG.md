@@ -2,7 +2,7 @@ Changelog
 =========
 
 1.8.21 (Unreleased)
---------------------------
+-------------------
 - Fix #723: Move participants, comments and likes to the first recurrence when an event becomes recurring
 - Fix #725: Deleted occurrences of recurring events reappear when the event time zone differs from the user's time zone
 

@@ -403,24 +403,7 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $like = new Like(['object_model' => CalendarEntry::class, 'object_id' => $entry->id]);
         $this->assertTrue($like->save());
 
-        $form = new CalendarEntryForm(['entry' => CalendarEntry::findOne(['id' => $entry->id])]);
-        $this->assertTrue($form->load([
-            'CalendarEntry' => [
-                'title' => $entry->title,
-                'all_day' => $allDay ? '1' : '0',
-                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_ALL,
-            ],
-            'CalendarEntryForm' => [
-                'is_public' => '1',
-                'start_date' => '12/1/19',
-                'start_time' => '10:00 AM',
-                'end_date' => '12/1/19',
-                'end_time' => '12:00 PM',
-                'recurring' => 1,
-            ],
-            'RecurrenceFormModel' => $recurrenceFormData,
-        ]));
-        $this->assertTrue($form->save());
+        $form = $this->saveRecurrenceForm($entry->id, true, $allDay, $recurrenceFormData);
 
         $root = CalendarEntry::findOne(['id' => $entry->id]);
         $this->assertTrue(RecurrenceHelper::isRecurrentRoot($root));
@@ -442,6 +425,124 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $this->assertEquals(0, Comment::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $root->id])->count());
         $this->assertEquals($firstRecurrence->id, Comment::findOne(['id' => $comment->id])->object_id);
         $this->assertEquals($firstRecurrence->id, Like::findOne(['id' => $like->id])->object_id);
+    }
+
+    /**
+     * Recurring -> disabled -> enabled again must not reuse the instance of the previous recurrence
+     */
+    public function testReEnableRecurrenceCreatesNewFirstRecurrence()
+    {
+        $this->initRecurrentEvents(null, null, false);
+        $rootId = $this->rootEvent->id;
+
+        $firstRecurrence = $this->saveRecurrenceForm($rootId, true)->newFirstRecurrence;
+        $this->assertNotNull($firstRecurrence);
+        $this->assertTrue((new Like(['object_model' => CalendarEntry::class, 'object_id' => $firstRecurrence->id]))->save());
+
+        $this->saveRecurrenceForm($rootId, false);
+        $this->assertFalse(RecurrenceHelper::isRecurrent(CalendarEntry::findOne(['id' => $rootId])));
+        // Instances are deleted hardly on disabling the recurrence, the like is moved back to the root
+        $this->assertNull(CalendarEntry::findOne(['id' => $firstRecurrence->id]));
+        $this->assertEquals(1, Like::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $rootId])->count());
+
+        $this->assertNewFirstRecurrenceOnReEnable($rootId, $firstRecurrence->id);
+    }
+
+    /**
+     * A soft deleted first instance which remains from the previous disabling of the recurrence (before the fix)
+     * must not be reused and the moving of a like of the same user must not fail on the unique index
+     */
+    public function testReEnableRecurrenceWithSoftDeletedFirstRecurrence()
+    {
+        $this->initRecurrentEvents(null, null, false);
+        $rootId = $this->rootEvent->id;
+
+        $this->assertTrue((new Like(['object_model' => CalendarEntry::class, 'object_id' => $rootId]))->save());
+        $firstRecurrence = $this->saveRecurrenceForm($rootId, true)->newFirstRecurrence;
+        $this->assertNotNull($firstRecurrence);
+        $this->assertEquals(1, Like::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $firstRecurrence->id])->count());
+
+        // Simulate the previous disabling of the recurrence where the instances were only soft deleted
+        CalendarEntry::findOne(['id' => $rootId])->updateAttributes(['rrule' => null]);
+        $this->assertTrue(CalendarEntry::findOne(['id' => $firstRecurrence->id])->softDelete());
+        $this->assertNotNull(CalendarEntry::findOne(['id' => $firstRecurrence->id]));
+
+        $this->assertTrue((new Like(['object_model' => CalendarEntry::class, 'object_id' => $rootId]))->save());
+
+        $this->assertNewFirstRecurrenceOnReEnable($rootId, $firstRecurrence->id);
+        $this->assertNull(CalendarEntry::findOne(['id' => $firstRecurrence->id]));
+    }
+
+    /**
+     * Recurring -> disabled must keep the participants, comments and likes of the first recurrence on the root
+     * and the root must be visible in the stream again
+     */
+    public function testDisableRecurrenceMovesContentAddonsBackToRoot()
+    {
+        $this->initRecurrentEvents(null, null, false);
+        $rootId = $this->rootEvent->id;
+
+        $this->assertTrue($this->rootEvent->setParticipationStatus(User::findOne(['id' => 1])));
+        $comment = new Comment(['object_model' => CalendarEntry::class, 'object_id' => $rootId, 'message' => 'Test comment']);
+        $this->assertTrue($comment->save());
+        $like = new Like(['object_model' => CalendarEntry::class, 'object_id' => $rootId]);
+        $this->assertTrue($like->save());
+
+        $firstRecurrence = $this->saveRecurrenceForm($rootId, true)->newFirstRecurrence;
+        $this->assertNotNull($firstRecurrence);
+        $this->assertEquals($firstRecurrence->id, Comment::findOne(['id' => $comment->id])->object_id);
+        $this->assertNull(CalendarEntry::findOne(['id' => $rootId])->content->stream_channel);
+
+        $form = $this->saveRecurrenceForm($rootId, false);
+        $this->assertEquals($firstRecurrence->id, $form->removedFirstRecurrence->id);
+        $this->assertNull($form->newFirstRecurrence);
+        $this->assertNull(CalendarEntry::findOne(['id' => $firstRecurrence->id]));
+
+        $root = CalendarEntry::findOne(['id' => $rootId]);
+        $this->assertFalse(RecurrenceHelper::isRecurrent($root));
+        $this->assertEquals('default', $root->content->stream_channel);
+        $this->assertEquals($rootId, Comment::findOne(['id' => $comment->id])->object_id);
+        $this->assertEquals($rootId, Like::findOne(['id' => $like->id])->object_id);
+        $this->assertEquals(1, $root->getParticipantEntries()->count());
+    }
+
+    private function assertNewFirstRecurrenceOnReEnable(int $rootId, int $oldFirstRecurrenceId)
+    {
+        $newFirstRecurrence = $this->saveRecurrenceForm($rootId, true)->newFirstRecurrence;
+        $this->assertNotNull($newFirstRecurrence);
+        $this->assertNotEquals($oldFirstRecurrenceId, $newFirstRecurrence->id);
+        $this->assertEquals(Content::STATE_PUBLISHED, (int) $newFirstRecurrence->content->state);
+
+        $root = CalendarEntry::findOne(['id' => $rootId]);
+        $this->assertTrue(RecurrenceHelper::isRecurrentRoot($root));
+        $this->assertEmpty($root->getExdate());
+        $this->assertEquals(0, Like::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $rootId])->count());
+        $this->assertEquals(1, Like::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $newFirstRecurrence->id])->count());
+    }
+
+    private function saveRecurrenceForm(int $entryId, bool $recurring, bool $allDay = true, array $recurrenceFormData = ['frequency' => Frequency::DAILY]): CalendarEntryForm
+    {
+        $entry = CalendarEntry::findOne(['id' => $entryId]);
+        $form = new CalendarEntryForm(['entry' => $entry]);
+        $this->assertTrue($form->load([
+            'CalendarEntry' => [
+                'title' => $entry->title,
+                'all_day' => $allDay ? '1' : '0',
+                'participation_mode' => CalendarEntryParticipation::PARTICIPATION_MODE_ALL,
+            ],
+            'CalendarEntryForm' => [
+                'is_public' => '1',
+                'start_date' => '12/1/19',
+                'start_time' => '10:00 AM',
+                'end_date' => '12/1/19',
+                'end_time' => '12:00 PM',
+                'recurring' => $recurring ? 1 : 0,
+            ],
+            'RecurrenceFormModel' => $recurrenceFormData,
+        ]));
+        $this->assertTrue($form->save());
+
+        return $form;
     }
 
     //TODO: test edit participation mode

@@ -250,14 +250,10 @@ class EntryController extends ContentContainerController
             }
 
             if (empty($cal)) {
-                if ($calendarEntryForm->newFirstRecurrence) {
-                    // The event became recurring and its root is hidden from the stream,
-                    // so the stream entry should be switched to the first recurrence (see humhub.calendar.js)
-                    return $this->asJson([
-                        'success' => true, // makes ui.modal.submit close the modal before triggering the 'submitted' event
-                        'contentId' => $calendarEntryForm->entry->content->id,
-                        'newFirstRecurrenceContentId' => $calendarEntryForm->newFirstRecurrence->content->id,
-                    ]);
+                $streamEntrySwitch = $calendarEntryForm->getStreamEntrySwitch();
+                if ($streamEntrySwitch !== null) {
+                    // 'success' makes ui.modal.submit close the modal before triggering the 'submitted' event
+                    return $this->asJson(['success' => true] + $streamEntrySwitch);
                 }
 
                 return ModalClose::widget(['saved' => true]);
@@ -265,7 +261,7 @@ class EntryController extends ContentContainerController
 
             return empty($id)
                 ? $this->renderModalParticipation($calendarEntryForm->entry, null, true)
-                : $this->renderModal($calendarEntryForm->entry, 1);
+                : $this->renderModal($calendarEntryForm->newFirstRecurrence ?? $calendarEntryForm->entry, 1);
         }
 
         if ($calendarEntryForm->isAllDay()) {

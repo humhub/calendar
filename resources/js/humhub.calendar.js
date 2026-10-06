@@ -173,9 +173,9 @@ humhub.module('calendar', function (module, require, $) {
         }
 
         var onCalEntryFormSubmitted = function (evt, response) {
-            if (response.newFirstRecurrenceContentId) {
-                // The event became recurring, the modal is already closed by the success response
-                switchStreamEntry(response.contentId, response.newFirstRecurrenceContentId);
+            if (response.newContentId) {
+                // The event became recurring or its recurrence was disabled, the modal is already closed by the success response
+                switchStreamEntry(response.contentId, response.newContentId);
                 module.log.success('saved');
                 return;
             }
@@ -326,7 +326,7 @@ humhub.module('calendar', function (module, require, $) {
 
         /**
          * Switches a stream entry to another content, so the next reload of the entry renders the new content,
-         * e.g. when an event became recurring and its root is replaced in the stream by the first recurrence
+         * e.g. when an event became recurring and its root is replaced in the stream by the first recurrence or vice versa
          *
          * @param {int} oldContentId
          * @param {int} newContentId
