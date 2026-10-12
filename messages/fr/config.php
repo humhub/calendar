@@ -26,6 +26,7 @@ return [
     'If activated, the calendar top menu item and dashboard snippet is only visible for users having the calendar module installed in their profile.' => 'Si activé, le bouton calendrier (en haut de l’interface) ainsi que l’aperçu des prochains événements  sont visibles uniquement par les utilisateurs qui ont activés le module calendrier sur leur profil.',
     'Include birthdays to dashboard snippet' => 'Inclure les anniversaires dans l’aperçu sur le fil d’actualités.',
     'Interval of upcoming events' => 'Intervalle des prochains événements',
+    'List view type' => 'Type d\'affichage sous forme de liste',
     'Max event items' => 'Nombre maximum d\'éléments',
     'Menu settings' => 'Paramétrages du menu',
     'Name' => 'Nom',
@@ -40,5 +41,7 @@ return [
     'There are currently no event types available.' => 'Il n\'y a aucun type d\'événement disponible pour le moment.',
     'Upcoming events snippet' => 'Extrait des prochains événements',
     'View mode' => 'Mode d’affichage',
-    'List view type' => '',
+    'Birthdays' => '',
+    'By default birthdays are only shown for your own profile and for followed users. If activated, birthdays of all otherwise visible users are shown in the calendar and dashboard snippet, no matter which "Calendars" filter is currently selected.' => '',
+    'Show birthdays regardless of the selected calendar filter' => '',
 ];

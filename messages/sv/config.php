@@ -39,6 +39,9 @@ return [
     'There are currently no event types available.' => 'Det finns just nu inga aktivitetstyper',
     'Upcoming events snippet' => 'Kommande Snippet händelser',
     'View mode' => 'Visningsläge',
+    'Birthdays' => '',
+    'By default birthdays are only shown for your own profile and for followed users. If activated, birthdays of all otherwise visible users are shown in the calendar and dashboard snippet, no matter which "Calendars" filter is currently selected.' => '',
     'Export settings' => '',
     'List view type' => '',
+    'Show birthdays regardless of the selected calendar filter' => '',
 ];

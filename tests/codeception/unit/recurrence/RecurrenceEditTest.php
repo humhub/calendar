@@ -416,9 +416,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $this->assertFalse(RecurrenceHelper::isRecurrent($entry));
 
         $this->assertTrue($entry->setParticipationStatus(User::findOne(['id' => 1])));
-        $comment = new Comment(['object_model' => CalendarEntry::class, 'object_id' => $entry->id, 'message' => 'Test comment']);
+        $comment = new Comment(['content_id' => $entry->content->id, 'message' => 'Test comment']);
         $this->assertTrue($comment->save());
-        $like = new Like(['object_model' => CalendarEntry::class, 'object_id' => $entry->id]);
+        $like = new Like(['content_id' => $entry->content->id]);
         $this->assertTrue($like->save());
 
         $form = $this->saveRecurrenceForm($entry->id, true, $allDay, $recurrenceFormData);
@@ -440,9 +440,9 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $this->assertEquals(1, $firstRecurrence->getParticipantEntries()->count());
         $this->assertEquals(CalendarEntry::PARTICIPATION_STATUS_ACCEPTED, $firstRecurrence->getParticipationStatus(User::findOne(['id' => 1])));
 
-        $this->assertEquals(0, Comment::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $root->id])->count());
-        $this->assertEquals($firstRecurrence->id, Comment::findOne(['id' => $comment->id])->object_id);
-        $this->assertEquals($firstRecurrence->id, Like::findOne(['id' => $like->id])->object_id);
+        $this->assertEquals(0, Comment::find()->where(['content_id' => $root->content->id])->count());
+        $this->assertEquals($firstRecurrence->content->id, Comment::findOne(['id' => $comment->id])->content_id);
+        $this->assertEquals($firstRecurrence->content->id, Like::findOne(['id' => $like->id])->content_id);
     }
 
     /**
@@ -455,13 +455,13 @@ class RecurrenceEditTest extends RecurrenceUnitTest
 
         $firstRecurrence = $this->saveRecurrenceForm($rootId, true)->newFirstRecurrence;
         $this->assertNotNull($firstRecurrence);
-        $this->assertTrue((new Like(['object_model' => CalendarEntry::class, 'object_id' => $firstRecurrence->id]))->save());
+        $this->assertTrue((new Like(['content_id' => $firstRecurrence->content->id]))->save());
 
         $this->saveRecurrenceForm($rootId, false);
         $this->assertFalse(RecurrenceHelper::isRecurrent(CalendarEntry::findOne(['id' => $rootId])));
         // Instances are deleted hardly on disabling the recurrence, the like is moved back to the root
         $this->assertNull(CalendarEntry::findOne(['id' => $firstRecurrence->id]));
-        $this->assertEquals(1, Like::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $rootId])->count());
+        $this->assertEquals(1, Like::find()->where(['content_id' => CalendarEntry::findOne(['id' => $rootId])->content->id])->count());
 
         $this->assertNewFirstRecurrenceOnReEnable($rootId, $firstRecurrence->id);
     }
@@ -475,17 +475,17 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $this->initRecurrentEvents(null, null, false);
         $rootId = $this->rootEvent->id;
 
-        $this->assertTrue((new Like(['object_model' => CalendarEntry::class, 'object_id' => $rootId]))->save());
+        $this->assertTrue((new Like(['content_id' => CalendarEntry::findOne(['id' => $rootId])->content->id]))->save());
         $firstRecurrence = $this->saveRecurrenceForm($rootId, true)->newFirstRecurrence;
         $this->assertNotNull($firstRecurrence);
-        $this->assertEquals(1, Like::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $firstRecurrence->id])->count());
+        $this->assertEquals(1, Like::find()->where(['content_id' => $firstRecurrence->content->id])->count());
 
         // Simulate the previous disabling of the recurrence where the instances were only soft deleted
         CalendarEntry::findOne(['id' => $rootId])->updateAttributes(['rrule' => null]);
         $this->assertTrue(CalendarEntry::findOne(['id' => $firstRecurrence->id])->softDelete());
         $this->assertNotNull(CalendarEntry::findOne(['id' => $firstRecurrence->id]));
 
-        $this->assertTrue((new Like(['object_model' => CalendarEntry::class, 'object_id' => $rootId]))->save());
+        $this->assertTrue((new Like(['content_id' => CalendarEntry::findOne(['id' => $rootId])->content->id]))->save());
 
         $this->assertNewFirstRecurrenceOnReEnable($rootId, $firstRecurrence->id);
         $this->assertNull(CalendarEntry::findOne(['id' => $firstRecurrence->id]));
@@ -501,14 +501,14 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $rootId = $this->rootEvent->id;
 
         $this->assertTrue($this->rootEvent->setParticipationStatus(User::findOne(['id' => 1])));
-        $comment = new Comment(['object_model' => CalendarEntry::class, 'object_id' => $rootId, 'message' => 'Test comment']);
+        $comment = new Comment(['content_id' => $this->rootEvent->content->id, 'message' => 'Test comment']);
         $this->assertTrue($comment->save());
-        $like = new Like(['object_model' => CalendarEntry::class, 'object_id' => $rootId]);
+        $like = new Like(['content_id' => CalendarEntry::findOne(['id' => $rootId])->content->id]);
         $this->assertTrue($like->save());
 
         $firstRecurrence = $this->saveRecurrenceForm($rootId, true)->newFirstRecurrence;
         $this->assertNotNull($firstRecurrence);
-        $this->assertEquals($firstRecurrence->id, Comment::findOne(['id' => $comment->id])->object_id);
+        $this->assertEquals($firstRecurrence->content->id, Comment::findOne(['id' => $comment->id])->content_id);
         $this->assertNull(CalendarEntry::findOne(['id' => $rootId])->content->stream_channel);
 
         $form = $this->saveRecurrenceForm($rootId, false);
@@ -519,8 +519,8 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $root = CalendarEntry::findOne(['id' => $rootId]);
         $this->assertFalse(RecurrenceHelper::isRecurrent($root));
         $this->assertEquals('default', $root->content->stream_channel);
-        $this->assertEquals($rootId, Comment::findOne(['id' => $comment->id])->object_id);
-        $this->assertEquals($rootId, Like::findOne(['id' => $like->id])->object_id);
+        $this->assertEquals($root->content->id, Comment::findOne(['id' => $comment->id])->content_id);
+        $this->assertEquals($root->content->id, Like::findOne(['id' => $like->id])->content_id);
         $this->assertEquals(1, $root->getParticipantEntries()->count());
     }
 
@@ -534,8 +534,8 @@ class RecurrenceEditTest extends RecurrenceUnitTest
         $root = CalendarEntry::findOne(['id' => $rootId]);
         $this->assertTrue(RecurrenceHelper::isRecurrentRoot($root));
         $this->assertEmpty($root->getExdate());
-        $this->assertEquals(0, Like::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $rootId])->count());
-        $this->assertEquals(1, Like::find()->where(['object_model' => CalendarEntry::class, 'object_id' => $newFirstRecurrence->id])->count());
+        $this->assertEquals(0, Like::find()->where(['content_id' => CalendarEntry::findOne(['id' => $rootId])->content->id])->count());
+        $this->assertEquals(1, Like::find()->where(['content_id' => $newFirstRecurrence->content->id])->count());
     }
 
     private function saveRecurrenceForm(int $entryId, bool $recurring, bool $allDay = true, array $recurrenceFormData = ['frequency' => Frequency::DAILY]): CalendarEntryForm

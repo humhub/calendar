@@ -9,7 +9,6 @@
 namespace humhub\modules\calendar\models;
 
 use DateTime;
-use DateTimeZone;
 use humhub\modules\calendar\Events;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
@@ -36,15 +35,14 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\services\ContentTagService;
 use humhub\modules\like\models\Like;
-use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Badge;
-use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\helpers\Html;
@@ -82,7 +80,6 @@ use yii\validators\UrlValidator;
  * @property-read CalendarEntry|null $recurrenceRoot
  */
 class CalendarEntry extends ContentActiveRecord implements
-    Searchable,
     RecurrentEventIF,
     FullCalendarEventIF,
     CalendarEventStatusIF,
@@ -514,7 +511,7 @@ class CalendarEntry extends ContentActiveRecord implements
         $type = ($type instanceof ContentTag) ? $type : ContentTag::findOne(['id' => $type]);
         if ($type->is(CalendarEntryType::class)) {
             $this->removeType();
-            $this->content->addTag($type);
+            (new ContentTagService($this->content))->addTag($type);
         }
     }
 
@@ -705,7 +702,7 @@ class CalendarEntry extends ContentActiveRecord implements
             filter_var($this->location, FILTER_VALIDATE_URL) !== false
             && str_starts_with($this->location, 'https://') // restrict to secure URLs (and not HTTP, SSF, FTP, etc.)
         ) {
-            return Button::asLink($this->location)->link($this->location)->options(['target' => '_blank']);
+            return Link::to($this->location, $this->location)->blank();
         }
         return Html::encode($this->location);
     }
@@ -1098,23 +1095,31 @@ class CalendarEntry extends ContentActiveRecord implements
         );
         CalendarEntryParticipant::deleteAll(['calendar_entry_id' => $from->id]);
 
-        Comment::updateAll(['object_id' => $to->id], $fromCondition);
-        Like::updateAll(['object_id' => $to->id], ['AND',
-            $fromCondition,
-            ['NOT IN', 'created_by', Like::find()->select('created_by')->where($toCondition)->column()],
+        $fromContentId = $from->content->id;
+        $toContentId = $to->content->id;
+
+        Comment::updateAll(['content_id' => $toContentId], ['content_id' => $fromContentId]);
+
+        // Likes of the moved comments are moved together with them
+        Like::updateAll(['content_id' => $toContentId], ['AND',
+            ['content_id' => $fromContentId],
+            ['IS NOT', 'content_addon_record_id', null],
         ]);
-        Like::deleteAll($fromCondition);
+        // Likes of the calendar entry itself are moved only if the user didn't like the target entry yet
+        Like::updateAll(['content_id' => $toContentId], ['AND',
+            ['content_id' => $fromContentId, 'content_addon_record_id' => null],
+            ['NOT IN', 'created_by', Like::find()
+                ->select('created_by')
+                ->where(['content_id' => $toContentId, 'content_addon_record_id' => null])
+                ->column()],
+        ]);
+        Like::deleteAll(['content_id' => $fromContentId, 'content_addon_record_id' => null]);
 
         Follow::updateAll(['object_id' => $to->id], ['AND',
             $fromCondition,
             ['NOT IN', 'user_id', Follow::find()->select('user_id')->where($toCondition)->column()],
         ]);
         Follow::deleteAll($fromCondition);
-
-        Comment::flushCommentCache(static::class, $from->id);
-        Comment::flushCommentCache(static::class, $to->id);
-        Yii::$app->cache->delete('likes_' . static::class . '_' . $from->id);
-        Yii::$app->cache->delete('likes_' . static::class . '_' . $to->id);
 
         // Update the search index, because the moved comments are indexed with the content
         (new ContentSearchService($from->content))->update();

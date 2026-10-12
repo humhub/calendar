@@ -33,6 +33,8 @@ return [
     'There are currently no event types available.' => 'De momento, não há tipos de eventos disponíveis.',
     'Upcoming events snippet' => 'Excerto com os próximos eventos',
     'Add \'Calendar\' to the main menu' => '',
+    'Birthdays' => '',
+    'By default birthdays are only shown for your own profile and for followed users. If activated, birthdays of all otherwise visible users are shown in the calendar and dashboard snippet, no matter which "Calendars" filter is currently selected.' => '',
     'Calendar default view mode settings' => '',
     'Default basic settings' => '',
     'Export settings' => '',
@@ -40,5 +42,6 @@ return [
     'Here you can configure default settings for the full calendar.' => '',
     'Here you can configure default settings for the full calendar. These settings can be overwritten on space/profile level.' => '',
     'List view type' => '',
+    'Show birthdays regardless of the selected calendar filter' => '',
     'View mode' => '',
 ];

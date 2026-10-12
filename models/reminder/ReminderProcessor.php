@@ -150,6 +150,8 @@ class ReminderProcessor extends Model
 
         // User level reminder are sorted before container level reminder (see query order_by)
         foreach (CalendarReminder::getEntryLevelReminder($entry) as $reminder) {
+            $containerId = $reminder->contentcontainer_id ?? '';
+
             // User has own reminder settings for this specific event, so ignore this user when handling defaults
             if ($reminder->isUserLevelReminder()) {
                 $skipUsers[] = $reminder->contentcontainer_id;
@@ -157,7 +159,7 @@ class ReminderProcessor extends Model
 
             // Space level reminder were disabled for this specific event, so ignore global defaults
             if ($reminder->isDisabled() && !$reminder->isUserLevelReminder()) {
-                $sentContainer[$reminder->contentcontainer_id] = true;
+                $sentContainer[$containerId] = true;
             }
 
             // Skip reminder which do not match yet
@@ -167,23 +169,23 @@ class ReminderProcessor extends Model
 
             // Check if reminder has already been sent
             if (!$reminder->isActive($entry)) {
-                $sentContainer[$reminder->contentcontainer_id] = true;
+                $sentContainer[$containerId] = true;
                 continue;
             }
 
             // Make sure no other reminder which is closer to the event has already been sent or is disabled (see query order_by)
-            if (isset($sentContainer[$reminder->contentcontainer_id])) {
+            if (isset($sentContainer[$containerId])) {
                 $reminder->acknowledge($entry);
                 continue;
             }
 
             if ($this->sendEntryLevelReminder($reminder, $entry, $skipUsers)) {
-                $sentContainer[$reminder->contentcontainer_id] = true;
+                $sentContainer[$containerId] = true;
             }
         }
 
         // entry reminder without contentcotnainer_id are space level entry reminder
-        return isset($sentContainer[null]) ? true : $skipUsers;
+        return isset($sentContainer['']) ? true : $skipUsers;
     }
 
     /**
