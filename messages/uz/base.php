@@ -50,6 +50,7 @@ return [
     'Email' => '',
     'Enable' => '',
     'Enable Reminder' => '',
+    'Enabled' => '',
     'End' => '',
     'End Date' => '',
     'End Time' => '',

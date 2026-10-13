@@ -107,6 +107,7 @@ return [
     'Display events within the next X days' => '',
     'Edit all events' => '',
     'Edit this and following events' => '',
+    'Enabled' => '',
     'End' => '',
     'Event Types' => '',
     'Event could not be deleted!' => '',

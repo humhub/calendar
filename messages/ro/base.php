@@ -69,6 +69,7 @@ return [
     'Edit this and following events' => '',
     'Enable' => '',
     'Enable Reminder' => '',
+    'Enabled' => '',
     'End' => '',
     'Event Type' => '',
     'Event Types' => '',

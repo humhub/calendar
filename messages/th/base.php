@@ -128,6 +128,7 @@ return [
     'Download ICS' => '',
     'Edit Event' => '',
     'Enable Reminder' => '',
+    'Enabled' => '',
     'Event could not be deleted!' => '',
     'Event has been deleted!' => '',
     'Event types' => '',

@@ -66,6 +66,7 @@ return [
     'Email' => '',
     'Enable' => '',
     'Enable Reminder' => '',
+    'Enabled' => '',
     'End' => '',
     'Event Type' => '',
     'Event Types' => '',

@@ -164,6 +164,7 @@ return [
     '{displayName} invited you to the event "{contentTitle}" in the space {spaceName}, starting at {time}.' => '{displayName} acabou de convidar você para o evento "{contentTitle}" no Espaço {spaceName} a partir de {time}.',
     '{displayName} invited you to the event "{contentTitle}".' => '{displayName} acaba de convidar você para o evento "{contentTitle}".',
     '{name} Calendar' => 'Calendário {name}',
+    'Enabled' => '',
     'Event types' => '',
     'Online event' => '',
     'Participantion information and participantion link are only visible to users marked as <strong>Attending</strong> or <strong>Maybe</strong>.' => '',

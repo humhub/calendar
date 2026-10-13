@@ -137,6 +137,7 @@ return [
     'Calendar event content ID' => '',
     'Calendar events' => '',
     'Display events within the next X days' => '',
+    'Enabled' => '',
     'Event could not be deleted!' => '',
     'Event has been deleted!' => '',
     'Event types' => '',

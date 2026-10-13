@@ -88,6 +88,7 @@ return [
     'Edit Event' => '',
     'Edit this and following events' => '',
     'Enable Reminder' => '',
+    'Enabled' => '',
     'Event could not be deleted!' => '',
     'Event has been deleted!' => '',
     'Event types' => '',

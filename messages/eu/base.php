@@ -60,6 +60,7 @@ return [
     'Edit this event' => '',
     'Email' => '',
     'Enable Reminder' => '',
+    'Enabled' => '',
     'End' => '',
     'End Date' => '',
     'End Time' => '',
