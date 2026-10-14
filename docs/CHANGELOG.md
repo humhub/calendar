@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.9.5 (Unreleased)
-------------------
+1.9.5 (October 13, 2026)
+------------------------
 - Enh: Merge of the changes of versions 1.8.19, 1.8.20 and 1.8.21
 
 1.9.4 (September 8, 2026)
