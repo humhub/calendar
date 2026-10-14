@@ -1,10 +1,13 @@
 Changelog
 =========
 
-1.9.5 (Unreleased)
+1.9.6 (Unreleased)
 ------------------
+- Fix #733: Inline images not shown in calendar notification emails
+
+1.9.5 (October 13, 2026)
+------------------------
 - Enh: Merge of the changes of versions 1.8.19, 1.8.20 and 1.8.21
-- Fix #733: Inline images in event description and participant info were not shown in calendar notification and reminder emails because the file URL had no download token; The receiver user is now passed to the email converter
 
 1.9.4 (September 8, 2026)
 -------------------------
