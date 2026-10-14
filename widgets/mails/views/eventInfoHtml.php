@@ -11,6 +11,7 @@ use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
+use humhub\modules\user\models\User;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
 use yii\web\View;
@@ -19,6 +20,7 @@ use yii\web\View;
 /* @var $event CalendarEventIF */
 /* @var $url string */
 /* @var $extraInfo string */
+/* @var $receiver User|null */
 
 $url ??= $event->getUrl();
 
@@ -52,12 +54,16 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
 
                 <?php if (!empty($event->getDescription())): ?>
                     <strong><?= Yii::t('CalendarModule.notification', 'Description') ?>:</strong><br>
-                    <?= RichTextToEmailHtmlConverter::process($event->getDescription()) ?><br>
+                    <?= RichTextToEmailHtmlConverter::process($event->getDescription(), [
+                        RichTextToEmailHtmlConverter::OPTION_RECEIVER_USER => $receiver ?? null,
+                    ]) ?><br>
                 <?php endif; ?>
 
                 <?php if (isset($extraInfo) && !empty($extraInfo)): ?>
                     <strong><?= Yii::t('CalendarModule.notification', 'Participants info') ?>:</strong><br>
-                    <?= RichTextToEmailHtmlConverter::process($extraInfo) ?><br>
+                    <?= RichTextToEmailHtmlConverter::process($extraInfo, [
+                        RichTextToEmailHtmlConverter::OPTION_RECEIVER_USER => $receiver ?? null,
+                    ]) ?><br>
                 <?php endif; ?>
             </td>
         </tr>

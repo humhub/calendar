@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.6 (Unreleased)
+------------------
+- Fix #733: Inline images not shown in calendar notification emails
+
 1.9.5 (October 13, 2026)
 ------------------------
 - Enh: Merge of the changes of versions 1.8.19, 1.8.20 and 1.8.21

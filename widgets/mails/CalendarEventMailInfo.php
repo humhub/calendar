@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar\widgets\mails;
 
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
+use humhub\modules\user\models\User;
 
 /**
  * @link https://www.humhub.org/
@@ -47,13 +48,19 @@ class CalendarEventMailInfo extends \humhub\components\Widget
      */
     public $extraInfo;
 
-    public static function html($event, $url = null, $extraInfo = null)
+    /**
+     * @var User|null receiver of the email, used to generate download tokens for inline images
+     */
+    public $receiver;
+
+    public static function html($event, $url = null, $extraInfo = null, ?User $receiver = null)
     {
         return static::widget([
             'event' => $event,
             'url' => $url,
             'type' => static::RENDER_TYPE_HTML,
             'extraInfo' => $extraInfo,
+            'receiver' => $receiver,
         ]);
     }
 
@@ -70,6 +77,11 @@ class CalendarEventMailInfo extends \humhub\components\Widget
     public function run()
     {
         $view = $this->type === static::RENDER_TYPE_TEXT ? static::VIEW_Text : static::VIEW_HTML;
-        return $this->render($view, ['event' => $this->event, 'url' => $this->url, 'extraInfo' => $this->extraInfo]);
+        return $this->render($view, [
+            'event' => $this->event,
+            'url' => $this->url,
+            'extraInfo' => $this->extraInfo,
+            'receiver' => $this->receiver,
+        ]);
     }
 }
