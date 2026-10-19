@@ -206,7 +206,8 @@ Beside the `dateQueryType` the following fields can be overwritten in order to c
  
 In case your model extends `ContentActiveRecord` the query class provides a default implementation for the following filter:
  
- - `filterDashboard()`: this filter is used for the dashboard upcoming events snippets, by default this filter will make use of the `USER_RELATED_SCOPE_SPACE` and `USER_RELATED_SCOPE_OWN_PROFILE`
+ - `filterDashboard()`: this filter is used for the dashboard upcoming events snippets, by default this filter will make use of the `USER_RELATED_SCOPE_SPACES`,
+ `USER_RELATED_SCOPE_OWN_PROFILE`, `USER_RELATED_SCOPE_FOLLOWED_SPACES` and `USER_RELATED_SCOPE_FOLLOWED_USERS` scopes and calls `filterOrIsParticipant()` afterwards
  - `filterGuests()`: used for guest users which are not able to use other filters
  - `filterUserRelated()`: used for user related queries e.g: 'Only content from following spaces' (see `ActiveQueryContent::userRelated`)
  - `filterContentContainer()`: used to filter content of a specific ContentContainer (Space/User)
@@ -218,9 +219,12 @@ Some filter can be implemented manually if supported by your model:
  
  - `filterIsParticipant()`: in case the item type supports an own participation logic, this filter is used to only include items
  in which the current logged in user participates (optional)
+ - `filterOrIsParticipant()`: called by `filterDashboard()` to additionally include items in which the current logged in user participates.
+ Implementations must extend the already applied conditions with an `OR` and must not restrict them (optional)
   
 In case a filter is not supported, the respective filter function should throw a `FilterNotSupportedException`, which by default is the case for
-all filters except the date criteria filter when a non `ContentActiveRecord` is used as base model.
+all filters except the date criteria filter when a non `ContentActiveRecord` is used as base model. The only exception is `filterOrIsParticipant()`:
+its default implementation does nothing, so queries without participation support still return their regular dashboard results.
  
 > Note: Guest users are not able to use other filters than the `filterGuests`
 

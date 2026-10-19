@@ -1131,10 +1131,14 @@ abstract class AbstractCalendarQuery extends Component
     }
 
     /**
-     * Extends the current filter with entries the user participates in.
+     * Optional extension of the dashboard filter, called at the end of filterDashboard().
      *
-     * This is an optional extension of the dashboard filter. Queries without participation support
-     * (e.g. external calendars) keep the already applied filters instead of being dropped completely.
+     * The default implementation does nothing on purpose: queries without participation support
+     * (e.g. external calendars) keep the already applied dashboard conditions instead of being dropped
+     * completely. Queries with a participation concept should override this method and extend the
+     * current conditions with an OR condition, never restrict them (see CalendarEntryQuery::filterOrIsParticipant()).
+     *
+     * @return void
      */
     public function filterOrIsParticipant()
     {
