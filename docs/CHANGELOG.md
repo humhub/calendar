@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.7 (Unreleased)
+------------------
+- Fix #734: Upcoming events widget did not show events of external calendars and other queries without participant filter support; Ignore the optional participant extension of the dashboard filter instead of returning no results
+
 1.9.6 (October 14, 2026)
 ------------------------
 - Fix #733: Inline images not shown in calendar notification emails

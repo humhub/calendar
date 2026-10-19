@@ -1130,9 +1130,18 @@ abstract class AbstractCalendarQuery extends Component
         throw new FilterNotSupportedException('Participant filter not supported for this query');
     }
 
+    /**
+     * Optional extension of the dashboard filter, called at the end of filterDashboard().
+     *
+     * The default implementation does nothing on purpose: queries without participation support
+     * (e.g. external calendars) keep the already applied dashboard conditions instead of being dropped
+     * completely. Queries with a participation concept should override this method and extend the
+     * current conditions with an OR condition, never restrict them (see CalendarEntryQuery::filterOrIsParticipant()).
+     *
+     * @return void
+     */
     public function filterOrIsParticipant()
     {
-        throw new FilterNotSupportedException('Participant filter not supported for this query');
     }
 
     /**
