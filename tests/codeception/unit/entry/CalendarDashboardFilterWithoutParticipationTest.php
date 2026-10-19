@@ -26,7 +26,7 @@ class CalendarDashboardFilterWithoutParticipationTest extends CalendarUnitTest
 
         // Simulates a query without participation support (e.g. External Calendar):
         // it does not implement filterOrIsParticipant() and uses the base behavior.
-        $queryClass = get_class(new class () extends CalendarEntryQuery {
+        $queryClass = get_class(new class extends CalendarEntryQuery {
             public function filterOrIsParticipant()
             {
                 AbstractCalendarQuery::filterOrIsParticipant();
