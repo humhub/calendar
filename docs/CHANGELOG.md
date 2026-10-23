@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.8 (Unreleased)
+------------------
+- Enh: Automated code refactoring for HumHub 1.19 using Rector
+
 1.9.7 (October 19, 2026)
 ------------------------
 - Fix #734: Upcoming events widget did not show events of external calendars and other queries without participant filter support; Ignore the optional participant extension of the dashboard filter instead of returning no results
