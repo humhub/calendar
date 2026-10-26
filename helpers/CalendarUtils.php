@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use humhub\libs\DateHelper;
+use humhub\libs\TimezoneHelper;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\interfaces\event\EditableEventIF;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
@@ -239,7 +240,7 @@ class CalendarUtils
             return null;
         }
 
-        return $tz instanceof DateTimeZone ? $tz : new DateTimeZone($tz);
+        return $tz instanceof DateTimeZone ? $tz : static::createTimeZone($tz);
     }
 
     public static function getStartTimeZone(CalendarEventIF $event, $asString = false)
@@ -263,7 +264,7 @@ class CalendarUtils
         $date = ($recurrentId instanceof \DateTimeInterface) ? $recurrentId : new DateTime($recurrentId, new DateTimeZone('UTC'));
 
         if ($targetTZ) {
-            $date->setTimezone(new DateTimeZone($targetTZ));
+            $date->setTimezone(static::createTimeZone($targetTZ));
         }
 
         return $date->format(static::ICAL_TIME_FORMAT);
@@ -291,7 +292,7 @@ class CalendarUtils
 
             if ($tz) {
                 static::$userTimezoneString = $tz;
-                static::$userTimezone = new DateTimeZone($tz);
+                static::$userTimezone = static::createTimeZone($tz);
             }
         }
 
@@ -301,7 +302,22 @@ class CalendarUtils
     public static function getSystemTimeZone($asString = false)
     {
         $tz = Yii::$app->settings->get('defaultTimeZone', Yii::$app->timeZone);
-        return $asString ? $tz : new DateTimeZone($tz);
+        return $asString ? $tz : static::createTimeZone($tz);
+    }
+
+    /**
+     * Creates a DateTimeZone, falling back gracefully on identifiers unknown to PHP
+     * (e.g. the legacy `Europe/Kiev` without the `tzdata-legacy` package), see {@see TimezoneHelper::replaceUnknown()}.
+     *
+     * @since 1.9.8
+     */
+    public static function createTimeZone(?string $timeZone): DateTimeZone
+    {
+        if ($timeZone !== null && TimezoneHelper::isValid($timeZone)) {
+            return new DateTimeZone($timeZone);
+        }
+
+        return new DateTimeZone(TimezoneHelper::replaceUnknown((string) $timeZone, Yii::$app->timeZone));
     }
 
     public static function toDBDateFormat($date, $fixedTZ = true)

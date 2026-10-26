@@ -27,7 +27,7 @@ class RecurrenceHelper
     public static function getRecurrenceIdFromVEvent(VEvent $vEvent, $eventTZ)
     {
         if (is_string($eventTZ)) {
-            $eventTZ = new DateTimeZone($eventTZ);
+            $eventTZ = CalendarUtils::createTimeZone($eventTZ);
         }
 
         $recurrence_id = $vEvent->{'RECURRENCE-ID'}->getValue();
@@ -41,7 +41,7 @@ class RecurrenceHelper
         // Note: VObject supports the EXDATE property for exclusions, but not yet the RDATE and EXRULE properties
         // Note: VCalendar expand will translate all dates with time to UTC
 
-        $tz = (is_string($event->getTimezone())) ? new DateTimeZone($event->getTimezone()) : $event->getTimezone();
+        $tz = (is_string($event->getTimezone())) ? CalendarUtils::createTimeZone($event->getTimezone()) : $event->getTimezone();
 
         $vCalendar = (new VCalendar())->add($event);
         $expandedVCalendar = $vCalendar->getInstance()->expand($start, $end, $tz);
