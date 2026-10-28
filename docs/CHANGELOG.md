@@ -5,6 +5,7 @@ Changelog
 ------------------
 - Enh: Automated code refactoring for HumHub 1.19 using Rector
 - Fix #738: Events were shown with a wrong time and the console logged errors for users in the Europe/Kyiv time zone (outdated moment-timezone data); Fall back gracefully on time zones unknown to PHP, e.g. a missing legacy Europe/Kiev
+- Fix #739: Activities showed "is attending" for invited, maybe and declined participants
 
 1.9.7 (October 19, 2026)
 ------------------------

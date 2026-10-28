@@ -1,5 +1,8 @@
 <?php
 return [
+  '{displayName} cannot attend Event "{contentTitle}" on {dateTime}.' => '{displayName} sa nemôže zúčastniť udalosti "{contentTitle}" dňa {dateTime}.',
+  '{displayName} is invited to Event "{contentTitle}" on {dateTime}.' => '{displayName} je pozvaný na udalosť "{contentTitle}" dňa {dateTime}.',
+  '{displayName} might be attending Event "{contentTitle}" on {dateTime}.' => '{displayName} sa možno zúčastní udalosti "{contentTitle}" dňa {dateTime}.',
   ':count Attending' => ':count Zúčastní sa',
   ':count Declined' => ':count Odmieta',
   ':count Invited' => ':count Pozvaný',
