@@ -1,5 +1,8 @@
 <?php
 return [
+  '{displayName} cannot attend Event "{contentTitle}" on {dateTime}.' => '{displayName} kan inte delta i evenemanget "{contentTitle}" den {dateTime}.',
+  '{displayName} is invited to Event "{contentTitle}" on {dateTime}.' => '{displayName} är inbjuden till evenemanget "{contentTitle}" den {dateTime}.',
+  '{displayName} might be attending Event "{contentTitle}" on {dateTime}.' => '{displayName} kommer kanske att delta i evenemanget "{contentTitle}" den {dateTime}.',
   ':count Attending' => ':count Närvarar',
   ':count Declined' => ':count har avböjt',
   ':count Invited' => ':count Inbjudna',

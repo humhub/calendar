@@ -1,5 +1,8 @@
 <?php
 return [
+  '{displayName} cannot attend Event "{contentTitle}" on {dateTime}.' => '{displayName} nem vehet részt ebben az eseményben: "{contentTitle}" {dateTime}.',
+  '{displayName} is invited to Event "{contentTitle}" on {dateTime}.' => '{displayName} meghívást kapott erre az eseményre: "{contentTitle}" {dateTime}.',
+  '{displayName} might be attending Event "{contentTitle}" on {dateTime}.' => '{displayName} esetleg részt vehet ebben az eseményben: "{contentTitle}" {dateTime}.',
   ':count Attending' => ':count Részt vesz',
   ':count Declined' => ':count Elutasítva',
   ':count Invited' => ':count Meghívva',

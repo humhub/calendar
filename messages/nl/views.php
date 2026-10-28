@@ -1,5 +1,8 @@
 <?php
 return [
+  '{displayName} cannot attend Event "{contentTitle}" on {dateTime}.' => '{displayName} kan het evenement "{contentTitle}" niet bijwonen op {dateTime}.',
+  '{displayName} is invited to Event "{contentTitle}" on {dateTime}.' => '{displayName} is uitgenodigd voor het evenement "{contentTitle}" op {dateTime}.',
+  '{displayName} might be attending Event "{contentTitle}" on {dateTime}.' => '{displayName} is mogelijk aanwezig op het evenement "{contentTitle}" op {dateTime}.',
   ':count Attending' => ':count aanwezig',
   ':count Declined' => ':count afgewezen',
   ':count Invited' => ':count uitgenodigd',
