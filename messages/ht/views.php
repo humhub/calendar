@@ -60,5 +60,8 @@ return [
     'View' => '',
     'You are invited, please select your role:' => '',
     '{count} Participants' => '',
+    '{displayName} cannot attend Event "{contentTitle}" on {dateTime}.' => '',
     '{displayName} is attending Event "{contentTitle}" on {dateTime}.' => '',
+    '{displayName} is invited to Event "{contentTitle}" on {dateTime}.' => '',
+    '{displayName} might be attending Event "{contentTitle}" on {dateTime}.' => '',
 ];
