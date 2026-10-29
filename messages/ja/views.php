@@ -1,5 +1,8 @@
 <?php
 return [
+  '{displayName} cannot attend Event "{contentTitle}" on {dateTime}.' => '{displayName} はイベント "{contentTitle}" {dateTime} に参加できません。',
+  '{displayName} is invited to Event "{contentTitle}" on {dateTime}.' => '{displayName} はイベント "{contentTitle}" {dateTime} に招待されています。',
+  '{displayName} might be attending Event "{contentTitle}" on {dateTime}.' => '{displayName} はイベント "{contentTitle}" {dateTime} に参加している可能性があります。',
   ':count Attending' => ':count 参加者',
   ':count Declined' => ':count 辞退者',
   ':count Invited' => ':count 招待者',

@@ -1,5 +1,8 @@
 <?php
 return [
+  '{displayName} cannot attend Event "{contentTitle}" on {dateTime}.' => '{displayName} ไม่สามารถเข้าร่วมกิจกรรม "{contentTitle}" ใน {dateTime}',
+  '{displayName} is invited to Event "{contentTitle}" on {dateTime}.' => '{displayName} ได้รับเชิญไปยังกิจกรรม "{contentTitle}" ใน {dateTime}',
+  '{displayName} might be attending Event "{contentTitle}" on {dateTime}.' => '{displayName} อาจเข้าร่วมกิจกรรม "{contentTitle}" ใน {dateTime}',
   ':count Attending' => '',
   ':count Declined' => '',
   ':count Invited' => '',

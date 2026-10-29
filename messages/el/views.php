@@ -1,5 +1,8 @@
 <?php
 return [
+  '{displayName} cannot attend Event "{contentTitle}" on {dateTime}.' => '{displayName} δεν μπορεί να παρευρεθεί στην εκδήλωση "{contentTitle}" στις {dateTime}.',
+  '{displayName} is invited to Event "{contentTitle}" on {dateTime}.' => '{displayName} είναι προσκεκλημένος στην εκδήλωση "{contentTitle}" στις {dateTime}.',
+  '{displayName} might be attending Event "{contentTitle}" on {dateTime}.' => '{displayName} μπορεί να παρευρεθεί στην εκδήλωση "{contentTitle}" στις {dateTime}.',
   ':count Attending' => '',
   ':count Declined' => '',
   ':count Invited' => '',
