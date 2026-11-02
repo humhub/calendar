@@ -2,6 +2,8 @@
 
 namespace humhub\modules\calendar\models\reminder;
 
+use DateInterval;
+use DateTime;
 use Exception;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
@@ -9,7 +11,6 @@ use humhub\modules\calendar\interfaces\CalendarService;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use humhub\modules\calendar\interfaces\reminder\CalendarEventReminderIF;
 use humhub\modules\calendar\models\CalendarEntryQuery;
-use humhub\modules\calendar\Module;
 use humhub\modules\calendar\notifications\Remind;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -74,28 +75,58 @@ class ReminderProcessor extends Model
      */
     private function runByUpcomingEvents(?ContentContainerActiveRecord $container = null)
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('calendar');
         $daysInFuture = min(31, CalendarReminder::getMaxReminderDaysInFuture());
-        foreach ($this->calendarService->getUpcomingEntries($container, $daysInFuture, $module->reminderProcessEventLimit, [CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE], true) as $entry) {
-            $entry = CalendarUtils::getCalendarEvent($entry);
+        $start = new DateTime('now', CalendarUtils::getUserTimeZone());
+        $end = $daysInFuture > 0 ? (clone $start)->add(new DateInterval('P' . $daysInFuture . 'D')) : null;
 
-            if (!$entry || !($entry instanceof CalendarEventReminderIF)) {
-                continue;
-            }
+        $query = CalendarEntryQuery::find()
+            ->container($container)
+            ->filter([CalendarEntryQuery::FILTER_INCLUDE_NONREADABLE]);
 
-            if ($entry->closed) {
-                continue;
-            }
-
-            $skipUsers = $this->handleEntryLevelReminder($entry);
-
-            if ($skipUsers === true) {
-                continue; // Handled all recipients already
-            }
-
-            $this->handleDefaultReminder($entry, $skipUsers);
+        if ($end) {
+            $query->to($end);
         }
+
+        $query->withTime();
+        $query->from($start);
+
+        // Recurrent events are expanded one by one, so only the instances of a single event are kept in memory
+        foreach ($query->all() as $entry) {
+            if (empty($entry->getUid())) {
+                $entry->setUid(CalendarUtils::generateEventUid($entry));
+                $entry->saveEvent();
+            }
+
+            if (!RecurrenceHelper::isRecurrentRoot($entry)) {
+                $this->handleEntry($entry);
+                continue;
+            }
+
+            $instances = [];
+            $entry->getRecurrenceQuery()->expandEvent($start, $end, false, $instances);
+            foreach ($instances as $instance) {
+                $this->handleEntry($instance);
+            }
+        }
+    }
+
+    /**
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     */
+    private function handleEntry(CalendarEventReminderIF $entry)
+    {
+        if ($entry->closed) {
+            return;
+        }
+
+        $skipUsers = $this->handleEntryLevelReminder($entry);
+
+        if ($skipUsers === true) {
+            return; // Handled all recipients already
+        }
+
+        $this->handleDefaultReminder($entry, $skipUsers);
     }
 
     /**
@@ -238,14 +269,16 @@ class ReminderProcessor extends Model
      */
     private function handleDefaultReminder(CalendarEventReminderIF $entry, $skipUsers = [])
     {
-        if ($entry instanceof RecurrentEventIF && $entry->getContentRecord()->isNewRecord) { // Make sure our model is saved
-            $entry->saveEvent();
-        }
-
         $sent = false;
         foreach (CalendarReminder::getDefaults($entry->getContentRecord()->container, true) as $reminder) {
             if (!$reminder->checkMaturity($entry)) {
                 continue;
+            }
+
+            // Make sure our model is saved, but only once a reminder is due, so the upcoming recurrence instances
+            // are not persisted on every run
+            if ($entry instanceof RecurrentEventIF && $entry->getContentRecord()->isNewRecord) {
+                $entry->saveEvent();
             }
 
             if (!$reminder->isActive($entry)) {

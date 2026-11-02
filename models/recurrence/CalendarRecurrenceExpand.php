@@ -10,6 +10,7 @@ use Sabre\VObject\Recur\MaxInstancesExceededException;
 use Sabre\VObject\Recur\NoInstancesException;
 use Yii;
 use humhub\modules\calendar\helpers\CalendarUtils;
+use humhub\modules\calendar\interfaces\recurrence\AbstractRecurrenceQuery;
 use humhub\modules\calendar\interfaces\recurrence\RecurrentEventIF;
 use yii\base\Model;
 use DateTime;
@@ -63,9 +64,10 @@ class CalendarRecurrenceExpand extends Model
      * @param DateTime $end
      * @param array $endResult
      * @param bool $save weather or not to automatically save the instances
+     * @param int|null $limit max number of expanded instances
      * @return RecurrentEventIF[]
      */
-    public static function expand(RecurrentEventIF $event, DateTime $start, DateTime $end, array &$endResult = [], $save = false)
+    public static function expand(RecurrentEventIF $event, DateTime $start, DateTime $end, array &$endResult = [], $save = false, $limit = null)
     {
         if (!RecurrenceHelper::isRecurrent($event)) {
             return [];
@@ -73,7 +75,7 @@ class CalendarRecurrenceExpand extends Model
 
         $event = static::assureRootEvent($event);
         $instance = new static(['event' => $event, 'saveInstnace' => $save]);
-        return $instance->expandEvent($start, $end, $endResult);
+        return $instance->expandEvent($start, $end, $endResult, $limit);
     }
 
     /**
@@ -223,10 +225,11 @@ class CalendarRecurrenceExpand extends Model
      * @param DateTime $start
      * @param DateTime $end
      * @param array $endResult
+     * @param int|null $limit max number of expanded instances
      * @return RecurrentEventIF[]
      * @throws \Throwable
      */
-    public function expandEvent(DateTime $start, DateTime $end, array &$endResult = [])
+    public function expandEvent(DateTime $start, DateTime $end, array &$endResult = [], $limit = null)
     {
         if (!RecurrenceHelper::isRecurrent($this->event)) {
             return [$this->event];
@@ -237,9 +240,42 @@ class CalendarRecurrenceExpand extends Model
         }
 
         $recurrencesUTC = $this->calculateRecurrenceInstances($start, $end);
+        if (!$limit || count($recurrencesUTC) <= $limit) {
+            $this->syncRecurrences($recurrencesUTC, $endResult);
+            return $endResult;
+        }
+
+        // The expanded recurrences are sorted by start date
+        $recurrencesUTC = array_slice($recurrencesUTC, 0, $limit);
         $this->syncRecurrences($recurrencesUTC, $endResult);
 
+        // An instance moved to another date is only found by its original recurrence id, which may be behind the
+        // limit, so the saved instances of the period are added explicitly
+        $handledRecurrenceIds = $this->getRecurrenceIds($recurrencesUTC);
+        $systemTimeZone = CalendarUtils::getSystemTimeZone();
+        $exceptions = $this->event->getRecurrenceQuery()->getRecurrenceExceptions(
+            (clone $start)->setTimezone($systemTimeZone),
+            (clone $end)->setTimezone($systemTimeZone),
+        );
+        foreach ($exceptions as $exception) {
+            if (!in_array($exception->getRecurrenceId(), $handledRecurrenceIds, true)) {
+                $endResult[] = $exception;
+            }
+        }
+
         return $endResult;
+    }
+
+    /**
+     * @param VEvent[] $vEvents
+     * @return string[] recurrence ids of the given events, with the same keys
+     */
+    private function getRecurrenceIds(array $vEvents): array
+    {
+        return array_map(
+            fn(VEvent $vEvent) => RecurrenceHelper::getRecurrenceIdFromVEvent($vEvent, $this->event->getTimezone()),
+            $vEvents,
+        );
     }
 
     /**
@@ -264,12 +300,19 @@ class CalendarRecurrenceExpand extends Model
      */
     private function syncRecurrences(array $recurrencesUTC, &$endResult)
     {
-        foreach ($recurrencesUTC as $vEventUTC) {
+        // Load all existing recurrence instances with one query instead of one query per recurrence
+        $existingModels = null;
+        $recurrenceQuery = $this->event->getRecurrenceQuery();
+        $recurrenceIds = $this->getRecurrenceIds($recurrencesUTC);
+        if ($recurrenceQuery instanceof AbstractRecurrenceQuery) {
+            $existingModels = $recurrenceQuery->getRecurrenceInstances($recurrenceIds);
+        }
+
+        foreach ($recurrencesUTC as $index => $vEventUTC) {
             try {
                 /* @var $model RecurrentEventIF */
                 /* @var $vEventStart DateTime */
                 /* @var $vEventEnd DateTime */
-                $model = null;
                 $vEventStart = clone $vEventUTC->DTSTART->getDateTime();
                 $vEventEnd = clone $vEventUTC->DTEND->getDateTime();
 
@@ -278,8 +321,10 @@ class CalendarRecurrenceExpand extends Model
                 }
 
                 // Check if recurrence model exists
-                if (!$model) {
+                if ($existingModels === null) {
                     $model = $this->findRecurrenceModel($vEventUTC);
+                } else {
+                    $model = $existingModels[$recurrenceIds[$index]] ?? null;
                 }
 
                 if (!$model) {

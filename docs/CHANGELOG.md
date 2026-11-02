@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.9.9 (Unreleased)
+------------------
+- Fix #741: Reminders were only sent for the first 500 upcoming events of the reminder period, and all upcoming instances of recurring events were persisted by the reminder process
+- Enh #741: Faster reminder process and upcoming events with many recurring events; Load the existing instances of a recurring event with one query, expand only the requested number of events and process the reminders of recurring events one by one
+
 1.9.8 (October 28, 2026)
 ------------------------
 - Enh: Automated code refactoring for HumHub 1.19 using Rector
