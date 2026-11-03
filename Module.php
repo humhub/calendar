@@ -30,6 +30,7 @@ class Module extends ContentContainerModule
 
     /**
      * @var int Defines the maximum number of events the reminder process can handle at once
+     * @deprecated since 1.9.9, the reminder process handles all upcoming events
      */
     public $reminderProcessEventLimit = 500;
 

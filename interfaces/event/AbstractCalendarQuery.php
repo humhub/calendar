@@ -123,6 +123,13 @@ abstract class AbstractCalendarQuery extends Component
     public $autoSaveRecurrentInstances = false;
 
     /**
+     * Max number of instances expanded per recurrent event, e.g. if only the first x items are used.
+     * @var int|null
+     * @since 1.9.9
+     */
+    public $expandLimit;
+
+    /**
      * @var string database date format
      */
     public $dateFormat;
@@ -220,16 +227,18 @@ abstract class AbstractCalendarQuery extends Component
      * @param array $filters
      * @param int $limit
      * @param bool $expand
+     * @param int|null $expandLimit max number of instances expanded per recurrent event
      * @return array|ActiveRecord[]
      * @throws \Throwable
      */
-    public static function findForFilter(?DateTime $start = null, ?DateTime $end = null, ?ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true, $types = [])
+    public static function findForFilter(?DateTime $start = null, ?DateTime $end = null, ?ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true, $types = [], $expandLimit = null)
     {
         $query = static::find(null, $expand)
             ->container($container)
             ->filter($filters)
             ->types($types)
             ->limit($limit);
+        $query->expandLimit = $expandLimit;
 
         if ($end) {
             $query->to($end);

@@ -70,10 +70,10 @@ class CalendarEntryQuery extends AbstractRecurrenceQuery
      */
     private $praticipantJoined = false;
 
-    public static function findForFilter(?DateTime $start = null, ?DateTime $end = null, ?ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true, $types = [])
+    public static function findForFilter(?DateTime $start = null, ?DateTime $end = null, ?ContentContainerActiveRecord $container = null, $filters = [], $limit = 50, $expand = true, $types = [], $expandLimit = null)
     {
         /* @var $events CalendarEntry[] */
-        $events = parent::findForFilter($start, $end, $container, $filters, $limit, $expand, $types);
+        $events = parent::findForFilter($start, $end, $container, $filters, $limit, $expand, $types, $expandLimit);
         return $events;
     }
 

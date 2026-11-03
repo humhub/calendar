@@ -140,7 +140,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
 
         /* @var $entry RecurrentEventIF */
         if (RecurrenceHelper::isRecurrentRoot($entry)) { // Make sure we only expand recurrence roots
-            $entry->getRecurrenceQuery()->expandEvent($this->_from, $this->_to, $this->autoSaveRecurrentInstances, $expandResult);
+            $entry->getRecurrenceQuery()->expandEvent($this->_from, $this->_to, $this->autoSaveRecurrentInstances, $expandResult, $this->expandLimit);
         } elseif (!in_array($entry->id, ArrayHelper::getColumn($expandResult, 'id'))) { // Do not add duplicate entry if its already loaded
             $expandResult[] = $entry;
         }
@@ -151,10 +151,11 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
      * @param null $from
      * @param null $to
      * @param array $expandResult
+     * @param int|null $limit max number of expanded instances
      * @return array
      * @throws \Throwable
      */
-    public function expandEvent($from = null, $to = null, $save = false, &$expandResult = [])
+    public function expandEvent($from = null, $to = null, $save = false, &$expandResult = [], $limit = null)
     {
         if (!RecurrenceHelper::isRecurrent($this->event)) {
             return $expandResult;
@@ -162,7 +163,7 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
 
         $to = $to ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->add(new \DateInterval('P1Y'));
         $from = $from ?: (new \DateTime('now', CalendarUtils::getUserTimeZone()))->sub(new \DateInterval('P1Y'));
-        return CalendarRecurrenceExpand::expand($this->event, $from, $to, $expandResult, $save);
+        return CalendarRecurrenceExpand::expand($this->event, $from, $to, $expandResult, $save, $limit);
     }
 
     /**
@@ -194,6 +195,24 @@ class AbstractRecurrenceQuery extends AbstractCalendarQuery implements Recurrenc
     public function getRecurrenceInstance($recurrent_id)
     {
         return $this->findRecurrenceInstances()->andWhere([$this->recurrenceIdField => $recurrent_id])->one();
+    }
+
+    /**
+     * @param array $recurrenceIds
+     * @return RecurrentEventIF[] existing recurrence instances indexed by recurrence id
+     * @since 1.9.9
+     */
+    public function getRecurrenceInstances(array $recurrenceIds): array
+    {
+        if (empty($recurrenceIds)) {
+            return [];
+        }
+
+        return $this->findRecurrenceInstances()
+            ->andWhere([$this->recurrenceIdField => $recurrenceIds])
+            ->with('content')
+            ->indexBy($this->recurrenceIdField)
+            ->all();
     }
 
     private static $deletedRoot = [];

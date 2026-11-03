@@ -152,7 +152,8 @@ class CalendarService extends Component
             }
         }
 
-        $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, null, $expand, $types);
+        // The result is limited after sorting, so a recurrent event never needs more than $limit instances
+        $calendarEntries = CalendarEntryQuery::findForFilter($start, $end, $contentContainer, $filters, null, $expand, $types, $limit);
 
         $result = array_merge($calendarEntries, $result);
 
