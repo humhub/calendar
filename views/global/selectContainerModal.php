@@ -24,7 +24,6 @@ use humhub\widgets\modal\ModalButton;
 <?php if ($contentContainerSelection): ?>
     <?= Html::dropDownList('contentContainerId', null, $contentContainerSelection, [
         'class' => 'form-control',
-        'data-ui-select2' => '',
         'prompt' => $canSelectProfileCalendar ?
             Yii::t('CalendarModule.base', 'Select calendar...') :
             Yii::t('CalendarModule.base', 'Select space...'),

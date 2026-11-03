@@ -77,7 +77,6 @@ humhub.module('calendar.reminder.Form', function (module, require, $) {
         $newRow.find('[id]').each(function() {
             $(this).attr('id', $(this).attr('id').replace(/^calendarreminder-\d/, 'calendarreminder-' + $lastIndex));
         });
-        $newRow.find('.select2-container').remove();
         additions.applyTo($newRow);
 
         $newRow.insertAfter($triggerRow);
