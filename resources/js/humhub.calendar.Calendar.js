@@ -80,7 +80,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
             that.resetFilters();
         });
 
-        $('select[name="filterType[]"]').on('change select2:select select2:unselect select2:clear', function () {
+        $('select[name="filterType[]"]').on('change', function () {
             if (that._resetting) {
                 return;
             }
@@ -104,8 +104,8 @@ humhub.module('calendar.Calendar', function (module, require, $) {
      * and reloads the calendar, without navigating away from the current calendar view/date.
      *
      * Values are set via val().trigger('change') (not just val()) since these selects are
-     * enhanced with Select2 (see humhub\helpers\Html::dropDownList()), which only re-renders
-     * its visible display in reaction to a native "change" event on the underlying <select>.
+     * enhanced by the core picker (see humhub\helpers\Html::dropDownList()), which only re-renders
+     * its visible display in reaction to a "change" event on the underlying <select>.
      * The individual change handlers are temporarily suppressed via the _resetting flag so the
      * calendar is only reloaded once, at the end, instead of once per reset field.
      */

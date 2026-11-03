@@ -5,10 +5,9 @@
     "keywords": [
         "calendar"
     ],
-    "version": "1.9.9",
+    "version": "1.10.0",
     "humhub": {
-        "minVersion": "1.19",
-        "maxVersion": "1.19"
+        "minVersion": "1.20"
     },
     "homepage": "https://github.com/humhub/calendar",
     "authors": [

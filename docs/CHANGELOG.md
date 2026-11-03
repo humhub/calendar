@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.0 (Unreleased)
+-------------------
+- Enh: Compatibility with the core picker that replaces Select2 (humhub/humhub#8677)
+
 1.9.9 (Unreleased)
 ------------------
 - Fix #741: Reminders were only sent for the first 500 upcoming events of the reminder period, and all upcoming instances of recurring events were persisted by the reminder process
