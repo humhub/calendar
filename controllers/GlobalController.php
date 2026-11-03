@@ -309,7 +309,13 @@ class GlobalController extends Controller
 
     public function actionUpdateMonthlyRecurrenceSelection($date)
     {
-        $dummy = new CalendarEntryDummy(['start' => CalendarUtils::parseDateTimeString($date, null, null, null)]);
+        $start = CalendarUtils::parseDateTimeString($date, null, null, null);
+        if (!$start) {
+            // Incomplete or invalid date, e.g. while the user is still typing it
+            return $this->asJson(['result' => null]);
+        }
+
+        $dummy = new CalendarEntryDummy(['start' => $start]);
         $recurrenceForm = new RecurrenceFormModel(['entry' => $dummy]);
         return $this->asJson(['result' => $recurrenceForm->getMonthDaySelection()]);
     }
