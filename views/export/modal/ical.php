@@ -17,7 +17,7 @@ $url = Url::to(['/calendar/export/calendar', 'token' => $token], true);
 <div class="mb-3">
     <?= Html::label(Yii::t('CalendarModule.export', 'iCal URL')); ?>
     <?= Html::textInput(null, $url, ['disabled' => true, 'class' => 'form-control']) ?>
-    <div class="text-right help-block">
+    <div class="text-right form-text">
         <div id="url_1" class="d-none"><?= $url ?></div>
         <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_1')->icon('fa-clipboard')->style('color:#777') ?>
     </div>
