@@ -4,6 +4,7 @@ Changelog
 1.10.0 (Unreleased)
 -------------------
 - Enh: Compatibility with the core picker that replaces Select2 (humhub/humhub#8677)
+- Enh: Replaced the Bootstrap 3 classes removed from the core (humhub/humhub#8696)
 
 1.9.9 (Unreleased)
 ------------------
