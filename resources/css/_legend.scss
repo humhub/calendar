@@ -1,8 +1,8 @@
 .calendar-type-legend {
   .calendar-type-item {
     display: inline-block;
-    background: var(--background-color-secondary);
-    color: var(--text-color-main);
+    background: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
     border-radius: 4px;
     padding: 4px 16px;
     margin-right: 8px;
@@ -15,7 +15,7 @@
     display: inline-block;
     width: 16px;
     height: 16px;
-    border: 1px solid var(--text-color-soft3);
+    border: 1px solid var(--bs-tertiary-color);
     border-radius: 4px;
     margin-right: 6px;
     position: relative;

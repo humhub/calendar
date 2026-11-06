@@ -27,7 +27,7 @@ $extraMenus = Html::tag('li', $link);
         <hr class="m-0">
         <div class="hh-list pb-2">
             <?php foreach ($calendarEntries as $entry) : ?>
-                <a href="<?= $entry->getUrl() ?>" class="d-flex" style="border-left: 3px solid <?= Html::encode($entry->color ?: 'var(--info)') ?>">
+                <a href="<?= $entry->getUrl() ?>" class="d-flex" style="border-left: 3px solid <?= Html::encode($entry->color ?: 'var(--bs-info)') ?>">
                     <div class="flex-grow-1 text-break">
                         <?= $entry->getBadge() ?>
                         <strong>

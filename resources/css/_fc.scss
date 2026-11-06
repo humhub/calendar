@@ -125,7 +125,7 @@ html .fc {
 }
 
 td.fc-today {
-  background: var(--background-color-highlight);
+  background: var(--bs-accent-bg-subtle);
 }
 
 .fc-unthemed td.fc-today, .fc-state-highlight { // <td> today cell, TODO: add .fc-today to <th>
