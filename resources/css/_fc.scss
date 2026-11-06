@@ -59,7 +59,7 @@ html .fc {
   white-space: nowrap;
   font-size: 20px;
   font-weight: 600;
-  color: #555555;
+  color: var(--bs-body-color);
 }
 
 .fc .fc-header-space {
@@ -93,7 +93,7 @@ html .fc {
 }
 
 .fc-day-header {
-  border: 1px solid #eeeeee !important;
+  border: 1px solid var(--bs-secondary-bg) !important;
 }
 
 // Hide Create button when user can not create events
@@ -121,7 +121,7 @@ html .fc {
 // Cell Styles ------------------------------------------------------------------------
 .fc-widget-header, // <th>, usually
 .fc-widget-content { // <td>, usually
-  border: 1px solid #eeeeee;
+  border: 1px solid var(--bs-secondary-bg);
 }
 
 td.fc-today {
@@ -129,7 +129,7 @@ td.fc-today {
 }
 
 .fc-unthemed td.fc-today, .fc-state-highlight { // <td> today cell, TODO: add .fc-today to <th>
-  background: #f6fdfc !important;
+  background: var(--hh-accent-bg-soft) !important;
 }
 
 .fc-cell-overlay { // semi-transparent rectangle while dragging
@@ -210,20 +210,20 @@ td.fc-today {
 //borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
 
 .fc-state-default {
-  background-color: #ededed;
-  color: #777;
-  border-color: #ededed;
+  background-color: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+  border-color: var(--bs-secondary-bg);
 }
 
 .fc-state-hover {
-  background-color: #ededed;
-  color: #777;
+  background-color: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
 }
 
 .fc-state-down, .fc-state-active {
-  background-color: #d7d7d7;
-  border-color: #d7d7d7;
-  color: #777;
+  background-color: var(--hh-border-color-strong);
+  border-color: var(--hh-border-color-strong);
+  color: var(--bs-secondary-color);
 }
 
 .fc-state-disabled {
@@ -266,7 +266,7 @@ a.fc-event {
 }
 
 .fc-list-item:focus-visible td {
-  background-color: #f5f5f5;
+  background-color: var(--bs-tertiary-bg);
 }
 
 .fc-event-draggable {
@@ -508,7 +508,7 @@ table.fc-border-separate {
 }
 
 .fc-widget-header .fc-agenda-divider-inner {
-  background: #eee;
+  background: var(--bs-secondary-bg);
 }
 
 // slot rows
@@ -610,7 +610,7 @@ table.fc-border-separate {
 }
 
 .fc th, .fc td, .fc thead, .fc tbody, .fc-divider, .fc-row, .fc-content, .fc-popover, .fc-list-view, .fc-list-heading td {
-  border-color: #eeeeee;
+  border-color: var(--bs-secondary-bg);
 }
 
 .fc-list-view {
@@ -626,7 +626,7 @@ table.fc-border-separate {
 }
 
 .fc-list-heading {
-  background-color: #eeeeee;
+  background-color: var(--bs-secondary-bg);
 }
 
 .fc-view-container .table > {

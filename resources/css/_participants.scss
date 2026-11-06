@@ -67,7 +67,7 @@
 
   .pagination > {
     li > a {
-      color: #000;
+      color: var(--bs-emphasis-color);
     }
 
     .active > a {

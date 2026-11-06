@@ -54,7 +54,7 @@ html .fc {
   white-space: nowrap;
   font-size: 20px;
   font-weight: 600;
-  color: #555555;
+  color: var(--bs-body-color);
 }
 
 .fc .fc-header-space {
@@ -80,7 +80,7 @@ html .fc {
 }
 
 .fc-day-header {
-  border: 1px solid #eeeeee !important;
+  border: 1px solid var(--bs-secondary-bg) !important;
 }
 
 #calendar[data-can-create="0"] .fc-create-button {
@@ -105,7 +105,7 @@ html .fc {
 
 .fc-widget-header,
 .fc-widget-content {
-  border: 1px solid #eeeeee;
+  border: 1px solid var(--bs-secondary-bg);
 }
 
 td.fc-today {
@@ -113,7 +113,7 @@ td.fc-today {
 }
 
 .fc-unthemed td.fc-today, .fc-state-highlight {
-  background: #f6fdfc !important;
+  background: var(--hh-accent-bg-soft) !important;
 }
 
 .fc-cell-overlay {
@@ -182,20 +182,20 @@ td.fc-today {
 }
 
 .fc-state-default {
-  background-color: #ededed;
-  color: #777;
-  border-color: #ededed;
+  background-color: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+  border-color: var(--bs-secondary-bg);
 }
 
 .fc-state-hover {
-  background-color: #ededed;
-  color: #777;
+  background-color: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
 }
 
 .fc-state-down, .fc-state-active {
-  background-color: #d7d7d7;
-  border-color: #d7d7d7;
-  color: #777;
+  background-color: var(--hh-border-color-strong);
+  border-color: var(--hh-border-color-strong);
+  color: var(--bs-secondary-color);
 }
 
 .fc-state-disabled {
@@ -233,7 +233,7 @@ a.fc-event {
 }
 
 .fc-list-item:focus-visible td {
-  background-color: #f5f5f5;
+  background-color: var(--bs-tertiary-bg);
 }
 
 .fc-event-draggable {
@@ -416,7 +416,7 @@ table.fc-border-separate {
 }
 
 .fc-widget-header .fc-agenda-divider-inner {
-  background: #eee;
+  background: var(--bs-secondary-bg);
 }
 
 .fc-agenda-slots th {
@@ -494,7 +494,7 @@ table.fc-border-separate {
 }
 
 .fc th, .fc td, .fc thead, .fc tbody, .fc-divider, .fc-row, .fc-content, .fc-popover, .fc-list-view, .fc-list-heading td {
-  border-color: #eeeeee;
+  border-color: var(--bs-secondary-bg);
 }
 
 .fc-list-view {
@@ -510,7 +510,7 @@ table.fc-border-separate {
 }
 
 .fc-list-heading {
-  background-color: #eeeeee;
+  background-color: var(--bs-secondary-bg);
 }
 
 .fc-view-container .table > thead > tr > th, .fc-view-container .table > tbody > tr > th, .fc-view-container .table > tfoot > tr > th, .fc-view-container .table > thead > tr > td, .fc-view-container .table > tbody > tr > td, .fc-view-container .table > tfoot > tr > td {
@@ -599,7 +599,7 @@ table.fc-border-separate {
   margin-top: 25px;
 }
 .calendar-entry-participants .pagination > li > a {
-  color: #000;
+  color: var(--bs-emphasis-color);
 }
 .calendar-entry-participants .pagination > .active > a {
   color: #fff;
