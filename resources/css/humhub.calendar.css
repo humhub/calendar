@@ -618,10 +618,12 @@ table.fc-border-separate {
 .calendar-wall-entry [data-action-click] {
   cursor: pointer;
 }
-.calendar-wall-entry .event-info-section-content h1 {
+.calendar-wall-entry .event-info-section-title {
   margin: 0 0 5px;
   font-weight: 600;
   font-size: 14px;
+  line-height: 1.2;
+  color: var(--bs-emphasis-color);
 }
 
 .calendar-type-legend .calendar-type-item {

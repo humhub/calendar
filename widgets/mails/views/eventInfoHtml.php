@@ -34,7 +34,7 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
                 style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:left;">
 
                 <?php if (!empty($event->getTitle())): ?>
-                    <h1><?= Html::encode($event->getTitle()) ?></h1>
+                    <p style="margin:0 0 10px 0; font-size:18px; line-height:24px; font-weight:600;"><?= Html::encode($event->getTitle()) ?></p>
                 <?php endif; ?>
 
                 <?php if (!empty($event->getStartDateTime())): ?>

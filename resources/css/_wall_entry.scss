@@ -19,9 +19,11 @@
     cursor: pointer;
   }
 
-  .event-info-section-content h1 {
+  .event-info-section-title {
     margin: 0 0 5px;
     font-weight: 600;
     font-size: 14px;
+    line-height: 1.2;
+    color: var(--bs-emphasis-color);
   }
 }

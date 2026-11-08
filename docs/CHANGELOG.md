@@ -3,6 +3,7 @@ Changelog
 
 1.10.0 (Unreleased)
 -------------------
+- Fix: Headings below the page title in the stream entry and the mail instead of several page titles (humhub/humhub#8721)
 - Enh: The keyboard focus ring of the core instead of an own ring on the events (humhub/humhub#8719)
 - Enh: Dark mode: hard-coded greys and light backgrounds became colour tokens of the core (humhub/humhub#8710)
 - Fix: The border colour of the calendar's tables no longer applies to every table of the page, e.g. a Markdown table in the stream (humhub/humhub#8704)

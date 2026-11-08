@@ -24,7 +24,7 @@ $color = 'var(--bs-secondary-color)';
         <?= Icon::get('file-text')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
 
         <div class="event-info-section-content">
-            <h1>
+            <div class="event-info-section-title">
                 <?= ($calendarEntry->closed) ? '<s>' : '' ?>
                 <?= $calendarEntry->getFormattedTime() ?>
                 <?= ($calendarEntry->closed) ? '</s>' : '' ?>
@@ -37,7 +37,7 @@ $color = 'var(--bs-secondary-color)';
                 <?php if ($calendarEntry->closed) : ?>
                     &nbsp;<?= Badge::danger(Yii::t('CalendarModule.base', 'canceled')) ?>
                 <?php endif; ?>
-            </h1>
+            </div>
         </div>
 
         <?php if (!empty($calendarEntry->description)) : ?>
@@ -51,9 +51,9 @@ $color = 'var(--bs-secondary-color)';
         <div class="event-info-section clearfix">
             <?= Icon::get('map-marker')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
             <div class="event-info-section-content">
-                <h1>
+                <div class="event-info-section-title">
                     <?= Yii::t('CalendarModule.base', 'Location') ?>
-                </h1>
+                </div>
                 <?= $calendarEntry->online
                     ? Yii::t('CalendarModule.base', 'Online')
                     : $calendarEntry->getLocation(true) ?>
@@ -65,9 +65,9 @@ $color = 'var(--bs-secondary-color)';
         <div class="event-info-section clearfix">
             <?= Icon::get('external-link')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
             <div class="event-info-section-content">
-                <h1>
+                <div class="event-info-section-title">
                     <?= Yii::t('CalendarModule.views', 'Participation link') ?>
-                </h1>
+                </div>
                 <div>
                     <?= $calendarEntry->getParticipationLink() ?>
                 </div>
@@ -79,9 +79,9 @@ $color = 'var(--bs-secondary-color)';
         <div class="event-info-section clearfix">
             <?= Icon::get('info-circle')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
             <div class="event-info-section-content">
-                <h1>
+                <div class="event-info-section-title">
                     <?= Yii::t('CalendarModule.views', 'Additional information') ?>
-                </h1>
+                </div>
                 <div data-ui-markdown data-ui-show-more>
                     <?= RichText::output($calendarEntry->participant_info) ?>
                 </div>
@@ -97,9 +97,9 @@ $color = 'var(--bs-secondary-color)';
             <div class="event-info-section clearfix">
                 <?= Icon::get('files-o')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
                 <div class="event-info-section-content">
-                    <h1>
+                    <div class="event-info-section-title">
                         <?= Yii::t('CalendarModule.base', 'Files') ?>
-                    </h1>
+                    </div>
                     <?= FilePreview::widget(['model' => $calendarEntry->getRecurrenceQuery()->getRecurrenceRoot()]) ?>
                 </div>
             </div>
