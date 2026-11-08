@@ -227,8 +227,6 @@ a.fc-event {
 
 .fc-event:focus-visible,
 .fc-list-item:focus-visible {
-  outline: 2px solid var(--bs-primary, #2c3e50);
-  outline-offset: 2px;
   z-index: 10;
 }
 
