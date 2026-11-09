@@ -306,12 +306,40 @@ class ReminderProcessor extends Model
     private function sendReminder(CalendarReminder $reminder, CalendarEventReminderIF $entry, $recipients)
     {
         if ($entry->getStartDateTime() >= new \DateTime()) {
-            Remind::instance()->from($entry->getContentRecord()->createdBy)->about($entry)->sendBulk($recipients);
+            $recipientIds = $this->getRecipientIds($recipients);
+            if (!empty($recipientIds)) {
+                $content = $entry->getContentRecord();
+                // Every reminder of an event (e.g. a day and an hour before) is its own notification, so no dedupe
+                Remind::send(
+                    $recipientIds,
+                    source: $content,
+                    originator: $content->createdBy,
+                    notifyOriginator: true,
+                    dedupe: false,
+                );
+            }
         } else {
             Yii::warning('Calendar reminder for past event detected with id: ' . $reminder->id . ' reminder not sent and disabled.');
         }
 
         $reminder->acknowledge($entry);
         return true;
+    }
+
+    /**
+     * The ids of the recipients: a query bound to the entry (e.g. its participants) cannot be
+     * serialized into the queue, so the recipients are resolved before the notification is sent.
+     *
+     * @param ActiveQueryUser|User[] $recipients
+     * @return int[]
+     */
+    private function getRecipientIds($recipients): array
+    {
+        $ids = [];
+        foreach ($recipients instanceof ActiveQueryUser ? $recipients->each() : $recipients as $user) {
+            $ids[] = (int)$user->id;
+        }
+
+        return array_values(array_unique($ids));
     }
 }

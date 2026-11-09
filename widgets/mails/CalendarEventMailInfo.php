@@ -11,6 +11,10 @@ use humhub\modules\user\models\User;
  * @license https://www.humhub.com/licences
  */
 
+/**
+ * The details of an event (title, time, organizer, location, description) for a mail, as HTML
+ * or plain text; what a notification about the event shows below its sentence.
+ */
 class CalendarEventMailInfo extends \humhub\components\Widget
 {
     public const RENDER_TYPE_TEXT = 'text';
@@ -27,24 +31,10 @@ class CalendarEventMailInfo extends \humhub\components\Widget
     /**
      * @var string
      */
-    public $url;
-
-    /**
-     * @var string
-     */
     public $type = self::RENDER_TYPE_HTML;
 
     /**
-     * @var
-     */
-    public $renderType;
-
-    /**
-     * @param $event
-     * @param null $url
-     * @param null $extraInfo
-     * @return string
-     * @throws \Exception
+     * @var string|null additional information shown below the event details, e.g. the participant information
      */
     public $extraInfo;
 
@@ -53,22 +43,33 @@ class CalendarEventMailInfo extends \humhub\components\Widget
      */
     public $receiver;
 
-    public static function html($event, $url = null, $extraInfo = null, ?User $receiver = null)
+    /**
+     * @param CalendarEventIF $event
+     * @param string|null $extraInfo
+     * @param User|null $receiver
+     * @return string
+     * @throws \Exception
+     */
+    public static function html($event, $extraInfo = null, ?User $receiver = null)
     {
         return static::widget([
             'event' => $event,
-            'url' => $url,
             'type' => static::RENDER_TYPE_HTML,
             'extraInfo' => $extraInfo,
             'receiver' => $receiver,
         ]);
     }
 
-    public static function text($event, $url = null, $extraInfo = null)
+    /**
+     * @param CalendarEventIF $event
+     * @param string|null $extraInfo
+     * @return string
+     * @throws \Exception
+     */
+    public static function text($event, $extraInfo = null)
     {
         return static::widget([
             'event' => $event,
-            'url' => $url,
             'type' => static::RENDER_TYPE_TEXT,
             'extraInfo' => $extraInfo,
         ]);
@@ -79,7 +80,6 @@ class CalendarEventMailInfo extends \humhub\components\Widget
         $view = $this->type === static::RENDER_TYPE_TEXT ? static::VIEW_Text : static::VIEW_HTML;
         return $this->render($view, [
             'event' => $this->event,
-            'url' => $this->url,
             'extraInfo' => $this->extraInfo,
             'receiver' => $this->receiver,
         ]);

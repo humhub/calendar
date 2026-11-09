@@ -8,34 +8,26 @@
 
 namespace humhub\modules\calendar\notifications;
 
-use humhub\helpers\Html;
 use humhub\modules\calendar\notifications\base\EventNotification;
-use humhub\modules\space\models\Space;
 use Yii;
 
+/**
+ * Confirms to a user that they registered for the event.
+ */
 class MarkAttend extends EventNotification
 {
-    public ?int $participationStatus = null;
+    /**
+     * @inheritdoc
+     */
+    protected bool $withParticipantInfo = true;
 
     /**
      * @inheritdoc
      */
-    public $suppressSendToOriginator = false;
-
-    /**
-     * @inheritdoc
-     */
-    public function html()
+    protected function getMessage(array $params): string
     {
-        $params = [
-            'contentTitle' => $this->getContentInfo($this->source, false),
-            'time' => $this->source->getFormattedTime(),
-        ];
-
-        if ($this->source->content->container instanceof Space) {
-            return Yii::t('CalendarModule.base', 'You have been registered for the event "{contentTitle}" in {spaceName}, starting at {time}', array_merge($params, [
-                'spaceName' => Html::encode($this->source->content->container->displayName),
-            ]));
+        if ($this->getSpace() !== null) {
+            return Yii::t('CalendarModule.base', 'You have been registered for the event "{contentTitle}" in {spaceName}, starting at {time}', $params);
         }
 
         return Yii::t('CalendarModule.base', 'You have been registered for the event "{contentTitle}", starting at {time}.', $params);
@@ -44,10 +36,24 @@ class MarkAttend extends EventNotification
     /**
      * @inheritdoc
      */
-    public function getMailSubject()
+    protected function getMessageParams(): array
     {
-        return Yii::t('CalendarModule.base', 'You have been registered for the event "{contentTitle}".', [
-            'contentTitle' => $this->getContentInfo($this->source, false),
-        ]);
+        return ['time' => $this->getFormattedTime()];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('CalendarModule.base', 'You have been registered for an event.');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getMailSubject(array $params): string
+    {
+        return Yii::t('CalendarModule.base', 'You have been registered for the event "{contentTitle}".', $params);
     }
 }

@@ -173,7 +173,7 @@ class CalendarEntryParticipationForm extends Model
         }
 
         if ($this->newParticipantStatus == CalendarEntryParticipant::PARTICIPATION_STATE_INVITED && count($users)) {
-            ParticipantAdded::instance()->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($users);
+            ParticipantAdded::send($users, source: $this->entry, originator: Yii::$app->user->getIdentity(), dedupe: false);
         }
     }
 }

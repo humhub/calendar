@@ -3,6 +3,7 @@ Changelog
 
 1.10.0 (Unreleased)
 -------------------
+- Enh: Notifications built on the rebuilt notification system of the core 1.20: one sentence per notification for the web list, mails and push, the event details as content blocks of the mail with a "Download ICS" button instead of the attached ICS file, and reminders delivered with high priority (humhub/humhub#8576)
 - Fix: Headings below the page title in the stream entry and the mail instead of several page titles (humhub/humhub#8721)
 - Enh: The keyboard focus ring of the core instead of an own ring on the events (humhub/humhub#8719)
 - Enh: Dark mode: hard-coded greys and light backgrounds became colour tokens of the core (humhub/humhub#8710)

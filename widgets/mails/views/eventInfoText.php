@@ -12,10 +12,7 @@ use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\content\widgets\richtext\RichText;
 
 /* @var $event CalendarEventIF */
-/* @var $url string */
 /* @var $extraInfo string */
-
-$url ??= $event->getUrl();
 
 $formatter = new CalendarDateFormatter(['calendarItem' => $event])
 ?>
@@ -42,5 +39,3 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event])
     <?= Yii::t('CalendarModule.notification', 'Participants info') ?>:
     <?= RichText::preview($extraInfo) ?>
 <?php endif; ?>
-
-<?= Yii::t('CalendarModule.notification', 'View Online: {url}', ['url' => $url]); ?>

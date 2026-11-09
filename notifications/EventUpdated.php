@@ -9,46 +9,44 @@
 
 namespace humhub\modules\calendar\notifications;
 
-use humhub\helpers\Html;
 use humhub\modules\calendar\notifications\base\EventNotification;
-use humhub\modules\space\models\Space;
 use Yii;
 
 /**
- * Created by PhpStorm.
- * User: buddha
- * Date: 21.07.2017
- * Time: 23:12
+ * Notifies the participants that the event was updated.
  */
 class EventUpdated extends EventNotification
 {
     /**
      * @inheritdoc
      */
-    public function html()
-    {
-        $params = [
-            'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'contentTitle' => $this->getContentInfo($this->source, false),
-        ];
+    protected bool $withParticipantInfo = true;
 
-        if ($this->source->content->container instanceof Space) {
-            return Yii::t('CalendarModule.notification', '{displayName} updated the event "{contentTitle}" in the space {spaceName}.', array_merge([
-                'spaceName' =>  Html::encode($this->source->content->container->displayName),
-            ], $params));
+    /**
+     * @inheritdoc
+     */
+    protected function getMessage(array $params): string
+    {
+        if ($this->getSpace() !== null) {
+            return Yii::t('CalendarModule.notification', '{displayName} updated the event "{contentTitle}" in the space {spaceName}.', $params);
         }
 
-        return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} updated the event "{contentTitle}".', $params);
+        return Yii::t('CalendarModule.notification', '{displayName} updated the event "{contentTitle}".', $params);
     }
 
     /**
      * @inheritdoc
      */
-    public function getMailSubject()
+    protected function getRedactedMessage(array $params): ?string
     {
-        return Yii::t('CalendarModule.notification', '{displayName} updated the event "{contentTitle}".', [
-            'displayName' => $this->originator->displayName,
-            'contentTitle' => $this->getContentInfo($this->source, false),
-        ]);
+        return Yii::t('CalendarModule.notification', '{displayName} updated an event.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getMailSubject(array $params): string
+    {
+        return Yii::t('CalendarModule.notification', '{displayName} updated the event "{contentTitle}".', $params);
     }
 }

@@ -12,17 +12,12 @@ use humhub\modules\calendar\interfaces\participation\CalendarEventParticipationI
 use humhub\modules\calendar\models\CalendarDateFormatter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\user\models\User;
-use humhub\widgets\mails\MailButton;
-use humhub\widgets\mails\MailButtonList;
 use yii\web\View;
 
 /* @var $this View */
 /* @var $event CalendarEventIF */
-/* @var $url string */
 /* @var $extraInfo string */
 /* @var $receiver User|null */
-
-$url ??= $event->getUrl();
 
 $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
 ?>
@@ -69,8 +64,3 @@ $formatter = new CalendarDateFormatter(['calendarItem' => $event]);
         </tr>
     </table>
 </div>
-<?= MailButtonList::widget([
-    'buttons' => [
-        MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')]),
-    ]
-]) ?>

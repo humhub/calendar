@@ -224,13 +224,13 @@ class Url extends BaseUrl
         return $container->createUrl('/calendar/entry/toggle-close', ['id' => $entry->id]);
     }
 
-    public static function toEntryDownloadICS(ContentActiveRecord $entry, ?ContentContainerActiveRecord $container = null)
+    public static function toEntryDownloadICS(ContentActiveRecord $entry, ?ContentContainerActiveRecord $container = null, $scheme = false)
     {
         if (!$container) {
             $container = $entry->content->container;
         }
 
-        return $container->createUrl('/calendar/export/event', ['id' => $entry->content->id]);
+        return $container->createUrl('/calendar/export/event', ['id' => $entry->content->id], $scheme);
     }
 
     public static function toUserLevelReminderConfig(CalendarEventReminderIF $entry, ?ContentContainerActiveRecord $container = null)

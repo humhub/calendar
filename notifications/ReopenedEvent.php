@@ -9,51 +9,39 @@
 
 namespace humhub\modules\calendar\notifications;
 
-use humhub\helpers\Html;
 use humhub\modules\calendar\notifications\base\EventNotification;
-use humhub\modules\space\models\Space;
 use Yii;
 
 /**
- * Created by PhpStorm.
- * User: buddha
- * Date: 21.07.2017
- * Time: 23:12
+ * Notifies the participants that a canceled event was reopened.
  */
 class ReopenedEvent extends EventNotification
 {
     /**
      * @inheritdoc
      */
-    public $viewName = 'calendarNotification';
-
-    /**
-     * @inheritdoc
-     */
-    public function html()
+    protected function getMessage(array $params): string
     {
-        $params = [
-            'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'contentTitle' => $this->getContentInfo($this->source, false),
-        ];
-
-        if ($this->source->content->container instanceof Space) {
-            return Yii::t('CalendarModule.notification', '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.', array_merge([
-                'spaceName' =>  Html::encode($this->source->content->container->displayName),
-            ]));
+        if ($this->getSpace() !== null) {
+            return Yii::t('CalendarModule.notification', '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.', $params);
         }
 
-        return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} reopened the event "{contentTitle}".', $params);
+        return Yii::t('CalendarModule.notification', '{displayName} reopened the event "{contentTitle}".', $params);
     }
 
     /**
      * @inheritdoc
      */
-    public function getMailSubject()
+    protected function getRedactedMessage(array $params): ?string
     {
-        return Yii::t('CalendarModule.notification', '{displayName} reopened the event "{contentTitle}".', [
-            'displayName' => $this->originator->displayName,
-            'contentTitle' => $this->getContentInfo($this->source, false),
-        ]);
+        return Yii::t('CalendarModule.notification', '{displayName} reopened an event.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getMailSubject(array $params): string
+    {
+        return Yii::t('CalendarModule.notification', '{displayName} reopened the event "{contentTitle}".', $params);
     }
 }

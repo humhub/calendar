@@ -183,9 +183,13 @@ class EntryController extends ContentContainerController
         }
 
         if ($type == CalendarEntryParticipation::PARTICIPATION_STATUS_ACCEPTED) {
-            MarkAttend::instance()->from(Yii::$app->user->identity)
-                ->about($calendarEntry)
-                ->sendBulk([Yii::$app->user->identity]);
+            MarkAttend::send(
+                Yii::$app->user->identity,
+                source: $calendarEntry,
+                originator: Yii::$app->user->identity,
+                notifyOriginator: true,
+                dedupe: false,
+            );
         }
 
         return $this->asJson(['success' => true]);
@@ -432,7 +436,7 @@ class EntryController extends ContentContainerController
         }
 
         if ($isInvitation && count($users)) {
-            ParticipantAdded::instance()->from(Yii::$app->user->getIdentity())->about($entry)->sendBulk($users);
+            ParticipantAdded::send($users, source: $entry, originator: Yii::$app->user->getIdentity(), dedupe: false);
         }
 
         $successMessageParams = ['users' => implode(', ', $addedUserNames)];

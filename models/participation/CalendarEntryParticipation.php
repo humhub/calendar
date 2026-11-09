@@ -160,12 +160,23 @@ class CalendarEntryParticipation extends Model implements CalendarEventParticipa
      */
     public function sendUpdateNotification($notificationClass = EventUpdated::class)
     {
-        $participants = $this->findParticipants([
+        // The participant query is a relation of the entry, which cannot be serialized into the queue
+        $participantIds = $this->findParticipants([
             CalendarEntryParticipant::PARTICIPATION_STATE_INVITED,
             CalendarEntryParticipant::PARTICIPATION_STATE_MAYBE,
-            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED])->all();
+            CalendarEntryParticipant::PARTICIPATION_STATE_ACCEPTED])->select('user.id')->column();
 
-        Yii::createObject(['class' => $notificationClass])->from(Yii::$app->user->getIdentity())->about($this->entry)->sendBulk($participants);
+        if (empty($participantIds)) {
+            return;
+        }
+
+        // Every update of the event is its own notification, so no dedupe
+        $notificationClass::send(
+            $participantIds,
+            source: $this->entry,
+            originator: Yii::$app->user->getIdentity(),
+            dedupe: false,
+        );
     }
 
     public function afterMove(?ContentContainerActiveRecord $container = null)

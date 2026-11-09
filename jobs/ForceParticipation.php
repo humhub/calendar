@@ -63,7 +63,7 @@ class ForceParticipation extends ActiveJob
         }
 
         if (count($users)) {
-            ParticipantAdded::instance()->from($originator)->about($entry)->sendBulk($users);
+            ParticipantAdded::send($users, source: $entry, originator: $originator, dedupe: false);
         }
     }
 }
