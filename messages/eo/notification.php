@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'Calendar' => '',
     'Calendar: Invite' => '',
     'Calendar: attend' => '',
     'Calendar: decline' => '',
@@ -10,17 +9,18 @@ return [
     'Location' => '',
     'Organizer' => '',
     'Participants info' => '',
-    'Receive Calendar related Notifications.' => '',
     'Starting' => '',
-    'View Online: {url}' => '',
     'Whenever someone declines to participate in an event.' => '',
     'Whenever someone invites to participate in an event.' => '',
     'Whenever someone may be participating in an event.' => '',
     'Whenever someone participates in an event.' => '',
+    '{displayName} canceled an event.' => '',
     '{displayName} canceled the event "{contentTitle}" in the space {spaceName}.' => '',
     '{displayName} canceled the event "{contentTitle}".' => '',
+    '{displayName} reopened an event.' => '',
     '{displayName} reopened the event "{contentTitle}" in the space {spaceName}.' => '',
     '{displayName} reopened the event "{contentTitle}".' => '',
+    '{displayName} updated an event.' => '',
     '{displayName} updated the event "{contentTitle}" in the space {spaceName}.' => '',
     '{displayName} updated the event "{contentTitle}".' => '',
 ];
