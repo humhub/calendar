@@ -85,7 +85,7 @@ class CreateSpaceEntryCest
         $I->waitForText('Participants', 10, '#globalModal');
         $I->click('Next', '#globalModal');
         $I->waitForElementVisible('[for="calendarentryparticipationform-forcejoin"]', 10, '#globalModal');
-        $I->click('[for="calendarentryparticipationform-forcejoin"]');
+        $I->checkOption('#calendarentryparticipationform-forcejoin');
         $I->click('Save', '#globalModal');
         $I->seeSuccess();
 
@@ -115,7 +115,7 @@ class CreateSpaceEntryCest
 
         $I->waitForText('Participants', 10, '#globalModal');
         $I->waitForElementVisible('[for="calendarentryparticipationform-forcejoin"]', 10, '#globalModal');
-        $I->click('[for="calendarentryparticipationform-forcejoin"]');
+        $I->checkOption('#calendarentryparticipationform-forcejoin');
         $I->click('Save', '#globalModal');
         $I->seeSuccess();
         $I->click('New Test Event');
@@ -138,8 +138,11 @@ class CreateSpaceEntryCest
         $I->amUser1(true);
 
         $I->expectTo('see the add and cancel notification');
-        $I->seeInNotifications('Admin Tester added you to the event');
-        $I->seeInNotifications('Admin Tester canceled the event');
+        // The bell is covered by the top bar container for a webdriver click, so open the menu by script
+        $I->jsClick('#icon-notifications');
+        $I->waitForText('Notifications', 5, '.notifications');
+        $I->waitForText('Admin Tester added you to the event', 5, '.notifications');
+        $I->waitForText('Admin Tester canceled the event', 5, '.notifications');
 
         $I->wantTo('make sure normal users can\'t see the add all space members feature');
         $I->amOnSpace(1, '/calendar/view/index');
