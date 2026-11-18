@@ -52,6 +52,6 @@ class BirthdayCalendarType implements CalendarTypeIF
      */
     public function getIcon()
     {
-        return 'fa-birthday-cake';
+        return 'ti-cake';
     }
 }

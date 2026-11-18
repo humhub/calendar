@@ -46,7 +46,7 @@ use yii\helpers\Html;
                     Yii::t('CalendarModule.config', 'Do you really want to delte this event type?'),
                     Yii::t('CalendarModule.config', 'Delete'),
                 )
-                ->icon('times')
+                ->icon('x')
                 ->options(['aria-label' => Yii::t('CalendarModule.config', 'Delete')])
                 ->sm()
                 ->cssClass('ms-2') ?>

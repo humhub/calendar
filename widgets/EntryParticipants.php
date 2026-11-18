@@ -62,7 +62,7 @@ class EntryParticipants extends Widget
         $button = Button::accent($label);
         $isActive = $calendarEntry->getParticipationStatus() === $state;
         if ($isActive) {
-            $button->icon('check-circle');
+            $button->icon('circle-check-filled');
         } else {
             $button->outline();
         }

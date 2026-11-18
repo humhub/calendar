@@ -54,7 +54,7 @@ use humhub\widgets\bootstrap\Button;
 
             <div class="form-search-action form-search-action-reset<?= $isFiltered ? '' : ' d-none' ?>">
                 <?= Button::danger()
-                    ->icon('times')
+                    ->icon('x')
                     ->cssClass('calendar-filter-reset')
                     ->tooltip(Yii::t('CalendarModule.views', 'Reset filters'))
                     ->loader(false) ?>

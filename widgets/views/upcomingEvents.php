@@ -3,8 +3,8 @@
 use humhub\libs\Helpers;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\Icon;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 
@@ -13,7 +13,7 @@ use yii\helpers\Html;
 
 $link = Link::to(Yii::t('CalendarModule.views', 'Open Calendar'), $calendarUrl)
     ->cssClass('dropdown-item')
-    ->icon('arrow-circle-right');
+    ->icon('circle-arrow-right-filled');
 $extraMenus = Html::tag('li', $link);
 ?>
 <div class="panel calendar-upcoming-snippet" id="calendar-upcoming-events-snippet">

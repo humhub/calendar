@@ -216,7 +216,7 @@ class CalendarEntry extends ContentActiveRecord implements
      */
     public function getIcon()
     {
-        return 'fa-calendar';
+        return 'ti-calendar';
     }
 
     /**

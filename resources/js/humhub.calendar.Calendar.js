@@ -225,7 +225,7 @@ humhub.module('calendar.Calendar', function (module, require, $) {
 
                         that.fullCalendar.unselect();
                     },
-                    bootstrapFontAwesome: 'fa-plus',
+                    bootstrapFontAwesome: 'ti-plus',
                 }
             },
             header: {
@@ -308,7 +308,10 @@ humhub.module('calendar.Calendar', function (module, require, $) {
         $element.attr(attrs);
 
         var icon = event.extendedProps && event.extendedProps.icon;
-        if (icon && string.startsWith(icon, 'fa-')) {
+        if (icon && string.startsWith(icon, 'ti-')) {
+            $element.find('.fc-content').prepend($('<i class="ti ' + icon + '"></i>'));
+        } else if (icon && string.startsWith(icon, 'fa-')) {
+            // Font Awesome icon of a module that is not migrated yet, rendered by the legacy icon CSS of the core
             $element.find('.fc-content').prepend($('<i class="fa ' + icon + '"></i>'));
         }
     };

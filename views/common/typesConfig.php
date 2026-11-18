@@ -32,7 +32,7 @@ use yii\widgets\ListView;
         <div class="clearfix">
             <h4>
                 <?= Yii::t('CalendarModule.config', 'Event Type Configuration'); ?>
-            <?= ModalButton::success(Yii::t('CalendarModule.config', 'Create new type'))->load($createUrl)->icon('fa-plus')->right(); ?>
+            <?= ModalButton::success(Yii::t('CalendarModule.config', 'Create new type'))->load($createUrl)->icon('plus')->right(); ?>
             </h4>
 
             <div class="form-text">

@@ -6,8 +6,8 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\widgets\EntryParticipants;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\widgets\FilePreview;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\Icon;
 use yii\web\View;
 
 /* @var $calendarEntry CalendarEntry */
@@ -49,7 +49,7 @@ $color = 'var(--bs-secondary-color)';
 
     <?php if ($calendarEntry->hasLocation() || $calendarEntry->online) : ?>
         <div class="event-info-section clearfix">
-            <?= Icon::get('map-marker')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+            <?= Icon::get('map-pin-filled')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
             <div class="event-info-section-content">
                 <div class="event-info-section-title">
                     <?= Yii::t('CalendarModule.base', 'Location') ?>
@@ -95,7 +95,7 @@ $color = 'var(--bs-secondary-color)';
         $root = $calendarEntry->getRecurrenceQuery()->getRecurrenceRoot() ?>
         <?php if ($root && $root->fileManager->find()->count()) : ?>
             <div class="event-info-section clearfix">
-                <?= Icon::get('files-o')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
+                <?= Icon::get('files')->color($color)->left()->size(Icon::SIZE_LG)->style('margin-top:2px;')->fixedWith() ?>
                 <div class="event-info-section-content">
                     <div class="event-info-section-title">
                         <?= Yii::t('CalendarModule.base', 'Files') ?>
@@ -118,7 +118,7 @@ $color = 'var(--bs-secondary-color)';
     <?php if ($calendarEntry->participation->canRespond(Yii::$app->user->identity)): ?>
         <div class="event-participation-buttons clearfix">
             <?php if ($calendarEntry->participation->isInvited() && !$calendarEntry->isPast()) : ?>
-                <div class="text-warning"><?= Icon::get('warning') . Yii::t('CalendarModule.views', 'You are invited, please select your role:') ?></div>
+                <div class="text-warning"><?= Icon::get('alert-triangle') . Yii::t('CalendarModule.views', 'You are invited, please select your role:') ?></div>
             <?php endif ?>
 
             <?php if ($calendarEntry->participation->maxParticipantCheck() || $calendarEntry->participation->isParticipant(Yii::$app->user->identity, false)) : ?>

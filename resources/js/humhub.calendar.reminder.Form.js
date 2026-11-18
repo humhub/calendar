@@ -32,13 +32,13 @@ humhub.module('calendar.reminder.Form', function (module, require, $) {
         this.$.find(SELECTOR_BUTTON).data('action-click', 'delete')
             .removeClass('btn-primary').addClass('btn-danger')
             .find('i')
-            .removeClass('fa-plus').addClass('fa-times');
+            .removeClass('ti-plus').addClass('ti-x');
 
         if (rows.length < this.options.maxReminder) {
             rows.last().find(SELECTOR_BUTTON).data('action-click', 'add')
                 .removeClass('btn-danger').addClass('btn-primary')
                 .find('i')
-                .removeClass('fa-times').addClass('fa-plus');
+                .removeClass('ti-x').addClass('ti-plus');
         }
     };
 

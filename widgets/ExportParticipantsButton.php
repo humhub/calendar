@@ -59,10 +59,10 @@ class ExportParticipantsButton extends Widget
         return [
             Button::none(Yii::t('CalendarModule.base', 'Export as {type}', ['type' => 'csv']))
                 ->link(Url::toExportParticipations('csv', $this->entry, $this->state))
-                ->icon('file-code-o'),
+                ->icon('file-code'),
             Button::none(Yii::t('CalendarModule.base', 'Export as {type}', ['type' => 'xlsx']))
                 ->link(Url::toExportParticipations('xlsx', $this->entry, $this->state))
-                ->icon('file-excel-o'),
+                ->icon('file-spreadsheet'),
         ];
     }
 }

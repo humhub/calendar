@@ -21,7 +21,7 @@ use Yii;
  * Class CalendarFilterBar
  *
  * Renders the calendar filter/selector bar as a set of single-select dropdowns, styled
- * consistently with `humhub\modules\ui\widgets\DirectoryFilters` (used by the People and
+ * consistently with `humhub\widgets\DirectoryFilters` (used by the People and
  * Space directories): one dropdown per filter dimension plus a reset ("x") action, all
  * refreshing the calendar via AJAX without a page reload.
  *

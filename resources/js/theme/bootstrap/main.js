@@ -66,17 +66,17 @@ Docs & License: https://fullcalendar.io/
         // list view
         //listView: 'panel-body'
     };
-    BootstrapTheme.prototype.baseIconClass = 'fa';
+    BootstrapTheme.prototype.baseIconClass = 'ti';
     BootstrapTheme.prototype.iconClasses = {
-        close: 'fa-times',
-        prev: 'fa-chevron-left',
-        next: 'fa-chevron-right',
-        prevYear: 'fa-angle-double-left',
-        nextYear: 'fa-angle-double-right'
+        close: 'ti-x',
+        prev: 'ti-chevron-left',
+        next: 'ti-chevron-right',
+        prevYear: 'ti-chevrons-left',
+        nextYear: 'ti-chevrons-right'
     };
     BootstrapTheme.prototype.iconOverrideOption = 'bootstrapFontAwesome';
     BootstrapTheme.prototype.iconOverrideCustomButtonOption = 'bootstrapFontAwesome';
-    BootstrapTheme.prototype.iconOverridePrefix = 'fa-';
+    BootstrapTheme.prototype.iconOverridePrefix = 'ti-';
     var main = core.createPlugin({
         themeClasses: {
             bootstrap: BootstrapTheme

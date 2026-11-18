@@ -26,7 +26,7 @@ class CalendarEntryType extends ContentTag implements CalendarTypeIF
 
     public const DEFAULT_COLOR = '#59D6E4';
     public const KEY = 'calendar_event';
-    public const ICON = 'fa-calendar';
+    public const ICON = 'ti-calendar';
 
     public function init()
     {

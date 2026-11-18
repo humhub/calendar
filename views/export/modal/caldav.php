@@ -16,7 +16,7 @@ $passwordToken = AuthTokenService::instance()->calDavEncrypt(Yii::$app->user->id
     <?= Html::textInput(null, Url::to(['/calendar/cal-dav/index'], true), ['disabled' => true, 'class' => 'form-control']) ?>
     <div class="text-right form-text">
         <div id="url_2" class="d-none"><?= Url::to(['/calendar/cal-dav/index'], true) ?></div>
-        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_2')->icon('fa-clipboard')->style('color:#777') ?>
+        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_2')->icon('clipboard')->style('color:#777') ?>
     </div>
 </div>
 <div class="mb-3">
@@ -24,7 +24,7 @@ $passwordToken = AuthTokenService::instance()->calDavEncrypt(Yii::$app->user->id
     <?= Html::textInput(null, Url::to(['/'], true), ['disabled' => true, 'class' => 'form-control']) ?>
     <div class="text-right form-text">
         <div id="url_3" class="d-none"><?= Url::to(['/'], true) ?></div>
-        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_3')->icon('fa-clipboard')->style('color:#777') ?>
+        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_3')->icon('clipboard')->style('color:#777') ?>
     </div>
 </div>
 <div class="mb-3">
@@ -32,7 +32,7 @@ $passwordToken = AuthTokenService::instance()->calDavEncrypt(Yii::$app->user->id
     <?= Html::textInput(null, Yii::$app->user->identity->username, ['disabled' => true, 'class' => 'form-control']) ?>
     <div class="text-right form-text">
         <div id="url_4" class="d-none"><?= Yii::$app->user->identity->username ?></div>
-        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_4')->icon('fa-clipboard')->style('color:#777') ?>
+        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_4')->icon('clipboard')->style('color:#777') ?>
     </div>
 </div>
 <div class="mb-3">
@@ -40,7 +40,7 @@ $passwordToken = AuthTokenService::instance()->calDavEncrypt(Yii::$app->user->id
     <?= Html::textInput(null, $passwordToken, ['disabled' => true, 'class' => 'form-control']) ?>
     <div class="text-right form-text">
         <div id="url_5" class="d-none"><?= $passwordToken ?></div>
-        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_5')->icon('fa-clipboard')->style('color:#777') ?>
+        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_5')->icon('clipboard')->style('color:#777') ?>
     </div>
     <div
         class="form-text"><?= Yii::t('CalendarModule.export', 'Alternatively, you can also use your password.') ?></div>

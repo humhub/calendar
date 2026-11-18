@@ -23,7 +23,7 @@ class ParticipantsLink extends WallEntryControlLink
     public function init()
     {
         $this->label = Yii::t('CalendarModule.base', 'Participants');
-        $this->icon = 'fa-users';
+        $this->icon = 'users';
         $this->options = [
             'data-action-click' => 'editModal',
             'data-action-url' => $this->entry->content->canEdit()

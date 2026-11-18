@@ -31,7 +31,7 @@ class DeleteLink extends WallEntryControlLink
     public function init()
     {
         $this->label = Yii::t('ContentModule.base', 'Delete');
-        $this->icon = 'fa-trash';
+        $this->icon = 'trash';
 
         $this->options = [
             'data-action-click' => 'calendar.deleteEvent',

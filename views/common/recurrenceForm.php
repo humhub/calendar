@@ -4,9 +4,9 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
-use humhub\modules\ui\form\widgets\DatePicker;
-use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\DatePicker;
+use humhub\widgets\form\MultiSelect;
 use Recurr\Frequency;
 
 /* @var $this View */

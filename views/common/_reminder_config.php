@@ -50,12 +50,12 @@ ReminderFormAssets::register($this);
                 </div>
                 <div class="col-lg-7">
                     <?= Button::danger()->action('delete')
-                        ->icon('fa-times')->sm()->visible(!$reminder->isNewRecord)
+                        ->icon('x')->sm()->visible(!$reminder->isNewRecord)
                         ->options(['aria-label' => Yii::t('base', 'Delete')])
                         ->style('margin: 7px 0')->loader(false) ?>
 
                     <?= Button::primary()->action('add')
-                        ->icon('fa-plus')->sm()->visible($reminder->isNewRecord)
+                        ->icon('plus')->sm()->visible($reminder->isNewRecord)
                         ->options(['aria-label' => Yii::t('base', 'Add')])
                         ->style('margin: 7px 0')->loader(false) ?>
                 </div>

@@ -12,6 +12,7 @@ Changelog
 - Enh: Compatibility with the core picker that replaces Select2 (humhub/humhub#8677)
 - Enh: Replaced the Bootstrap 3 classes removed from the core (humhub/humhub#8696)
 - Enh: Colour tokens of the core 1.20 instead of the deprecated ones (humhub/humhub#8707)
+- Enh: Deprecated `ui`/`stream` classes and Font Awesome icons replaced by the 1.20 ones and Tabler icons
 
 1.9.9 (Unreleased)
 ------------------
