@@ -3,6 +3,7 @@ Changelog
 
 1.10.0 (Unreleased)
 -------------------
+- Fix: Only CalDAV requests answer their errors through the CalDAV controller; every other request kept the session of its error page switched off, e.g. an impersonation was no longer recognised there
 - Enh: CalDAV with a password for each calendar app: "Connect a calendar app" in the export dialog creates a personal access token of the core 1.20 with the new scopes `calendar:read` and `calendar:write`, listed and revoked under "Devices & Access"; CalDAV passwords of earlier versions become such tokens on first use, the account password still works but is deprecated; CalDAV can be switched off in the export settings and needs personal access tokens
 - Fix: The Sabre packages of the core 1.20 (`sabre/dav`, `sabre/vobject` …) instead of an own, older copy that replaced the core's in every request, e.g. a deprecation error on the WebDAV endpoint `/dav/` of the core
 - Fix: The active toolbar button and the legend swatches take `--bs-border-color` instead of the removed `--hh-border-color-strong` and the disabled grey (humhub/humhub#8752)

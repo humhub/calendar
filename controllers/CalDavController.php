@@ -87,6 +87,11 @@ class CalDavController extends Controller
 
     public function beforeAction($action)
     {
+        // The errors of this request, a failed sign-in included, are answered for calendar
+        // clients (see actionError()). Only for CalDAV: the action disables the session, which
+        // the page of any other request must keep (an impersonation, for one).
+        Yii::$app->errorHandler->errorAction = 'calendar/cal-dav/error';
+
         // CalDAV authenticates statelessly per request (HTTP Basic / token). Disabling the
         // session marks the request as an API request, so the core user gates (2FA, terms,
         // ...) do not intercept the sync — they only apply to session-authenticated

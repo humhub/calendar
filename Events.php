@@ -48,7 +48,6 @@ use Yii;
 use yii\base\Event;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
-use yii\web\Application;
 
 /**
  * Description of CalendarEvents
@@ -62,14 +61,6 @@ class Events
      */
     public static function onBeforeRequest()
     {
-        /**
-         * @todo Temporary workaround – should be removed after the core release 1.18
-         * @see \humhub\modules\calendar\controllers\CalDavController::actionError
-         */
-        if (Yii::$app instanceof Application) {
-            Yii::$app->errorHandler->errorAction = 'calendar/cal-dav/error';
-        }
-
         try {
             static::registerAutoloader();
             Yii::$app->getModule('calendar')->set(CalendarService::class, ['class' => CalendarService::class]);
