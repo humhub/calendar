@@ -145,13 +145,22 @@ class CalDavAuthTest extends CalendarUnitTest
         $this->assertFalse($this->module()->isCalDavAvailable());
     }
 
-    public function testTheSwitchNeedsPersonalAccessTokens()
+    public function testTheSwitchNeedsPrettyUrlsAndPersonalAccessTokens()
     {
-        $this->assertTrue((new ExportSettings())->canEnableCalDav());
-        $this->assertTrue((bool)(new ExportSettings())->enableCalDav);
-
-        OAuthModule::instance()->settings->set('allowPersonalAccessTokens', false);
+        // The test configuration has no pretty URLs, CalDAV is served below them only
         $this->assertFalse((new ExportSettings())->canEnableCalDav());
-        $this->assertFalse($this->module()->isCalDavAvailable());
+        $this->assertStringContainsString('pretty URLs', (new ExportSettings())->getAttributeHint('enableCalDav'));
+
+        Yii::$app->urlManager->enablePrettyUrl = true;
+        try {
+            $this->assertTrue((new ExportSettings())->canEnableCalDav());
+            $this->assertTrue((bool)(new ExportSettings())->enableCalDav);
+
+            OAuthModule::instance()->settings->set('allowPersonalAccessTokens', false);
+            $this->assertFalse((new ExportSettings())->canEnableCalDav());
+            $this->assertFalse($this->module()->isCalDavAvailable());
+        } finally {
+            Yii::$app->urlManager->enablePrettyUrl = false;
+        }
     }
 }

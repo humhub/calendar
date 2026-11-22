@@ -75,17 +75,21 @@ class ExportSettings extends Model
     }
 
     /**
-     * Whether CalDAV can work: a calendar app signs in with a personal access token.
+     * Whether CalDAV can work: it is served below pretty URLs only (`remote/caldav/`), and a
+     * calendar app signs in with a personal access token.
      */
     public function canEnableCalDav(): bool
     {
-        return OAuthModule::instance()->allowsPersonalAccessTokens();
+        return Yii::$app->urlManager->enablePrettyUrl && OAuthModule::instance()->allowsPersonalAccessTokens();
     }
 
     private function getCalDavHint(): string
     {
         $hint = Yii::t('CalendarModule.base', 'Users sync their events with calendar apps, with a password for each device (a personal access token).');
-        if (!$this->canEnableCalDav()) {
+        if (!Yii::$app->urlManager->enablePrettyUrl) {
+            $hint .= ' ' . Yii::t('CalendarModule.base', 'Requires pretty URLs, see the installation guide.');
+        }
+        if (!OAuthModule::instance()->allowsPersonalAccessTokens()) {
             $hint .= ' ' . Yii::t('CalendarModule.base', 'Requires personal access tokens, which are switched off under {link}.', [
                 'link' => Html::a(Yii::t('CalendarModule.base', 'Apps & API Access'), ['/oauth/admin/index']),
             ]);
