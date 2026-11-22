@@ -2,11 +2,7 @@
   "name": "humhub/humhub-calendar",
   "type": "humhub-module",
   "require": {
-    "sabre/vobject": "^4",
-    "simshaun/recurr": "^4",
-    "sabre/xml": "^2",
-    "sabre/uri": "^2",
-    "sabre/dav": "~4.6.0"
+    "simshaun/recurr": "^4"
   },
   "require-dev": {
     "humhub/module-coding-standards": "dev-main"

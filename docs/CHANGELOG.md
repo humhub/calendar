@@ -3,6 +3,7 @@ Changelog
 
 1.10.0 (Unreleased)
 -------------------
+- Fix: The Sabre packages of the core 1.20 (`sabre/dav`, `sabre/vobject` …) instead of an own, older copy that replaced the core's in every request, e.g. a deprecation error on the WebDAV endpoint `/dav/` of the core
 - Fix: The active toolbar button and the legend swatches take `--bs-border-color` instead of the removed `--hh-border-color-strong` and the disabled grey (humhub/humhub#8752)
 - Enh: Notifications built on the rebuilt notification system of the core 1.20: one sentence per notification for the web list, mails and push, the event details as content blocks of the mail with a "Download ICS" button instead of the attached ICS file, and reminders delivered with high priority (humhub/humhub#8576)
 - Fix: Headings below the page title in the stream entry and the mail instead of several page titles (humhub/humhub#8721)
