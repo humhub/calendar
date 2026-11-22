@@ -24,6 +24,8 @@ use humhub\widgets\form\ActiveForm;
         <h4><?= Yii::t('CalendarModule.config', 'Export settings') ?></h4>
         <hr>
 
+        <?= $form->field($model, 'enableCalDav')->checkbox(['disabled' => !$model->canEnableCalDav()]); ?>
+
         <?= $form->field($model, 'jwtKey')->textInput(); ?>
         <?= $form->field($model, 'jwtExpire')->textInput(); ?>
 

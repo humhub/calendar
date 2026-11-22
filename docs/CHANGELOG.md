@@ -3,6 +3,7 @@ Changelog
 
 1.10.0 (Unreleased)
 -------------------
+- Enh: CalDAV with a password for each calendar app: "Connect a calendar app" in the export dialog creates a personal access token of the core 1.20 with the new scopes `calendar:read` and `calendar:write`, listed and revoked under "Devices & Access"; CalDAV passwords of earlier versions become such tokens on first use, the account password still works but is deprecated; CalDAV can be switched off in the export settings and needs personal access tokens
 - Fix: The Sabre packages of the core 1.20 (`sabre/dav`, `sabre/vobject` …) instead of an own, older copy that replaced the core's in every request, e.g. a deprecation error on the WebDAV endpoint `/dav/` of the core
 - Fix: The active toolbar button and the legend swatches take `--bs-border-color` instead of the removed `--hh-border-color-strong` and the disabled grey (humhub/humhub#8752)
 - Enh: Notifications built on the rebuilt notification system of the core 1.20: one sentence per notification for the web list, mails and push, the event details as content blocks of the mail with a "Download ICS" button instead of the attached ICS file, and reminders delivered with high priority (humhub/humhub#8576)

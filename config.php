@@ -16,6 +16,10 @@ use humhub\modules\content\widgets\WallEntryLinks;
 use humhub\commands\IntegrityController;
 use humhub\commands\CronController;
 use humhub\components\ModuleManager;
+use humhub\modules\oauth\components\DeviceConnectionRegistry;
+use humhub\modules\oauth\components\ScopeRegistry;
+use humhub\modules\oauth\models\Grant;
+use yii\db\BaseActiveRecord;
 
 return [
     'id' => 'calendar',
@@ -43,6 +47,9 @@ return [
         ['class' => 'humhub\modules\custom_pages\modules\template\services\ElementTypeService', 'event' => 'init', 'callback' => [Events::class, 'onCustomPagesTemplateElementTypeServiceInit']],
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_SOFT_DELETE, 'callback' => [Events::class, 'onContentAfterSoftDelete']],
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_UPDATE, 'callback' => [Events::class, 'onContentAfterUpdate']],
+        ['class' => ScopeRegistry::class, 'event' => ScopeRegistry::EVENT_COLLECT_SCOPES, 'callback' => [Events::class, 'onCollectScopes']],
+        ['class' => DeviceConnectionRegistry::class, 'event' => DeviceConnectionRegistry::EVENT_COLLECT_CONNECTIONS, 'callback' => [Events::class, 'onCollectDeviceConnections']],
+        ['class' => Grant::class, 'event' => BaseActiveRecord::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onGrantAfterDelete']],
     ],
     'urlManagerRules' => [
         'calendar' => 'calendar/global',

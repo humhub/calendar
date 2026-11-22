@@ -58,6 +58,12 @@ class AuthTokenService extends BaseObject implements StaticInstanceInterface
         }
     }
 
+    /**
+     * A CalDAV password of earlier versions. The export dialog hands out passwords of the
+     * device connection now; still accepted, and converted on first use, see `CalDavAuth`.
+     *
+     * @deprecated since 1.10
+     */
     public function calDavEncrypt(User $user)
     {
         $issuedAt = time();
@@ -77,7 +83,11 @@ class AuthTokenService extends BaseObject implements StaticInstanceInterface
         return JWT::encode($data, $config->jwtKey, 'HS256');
     }
 
-    public function calDavDecrypt(string $token)
+    /**
+     * @return array|null `[$userId, $username, $issuedAt, $expiresAt]` of a valid CalDAV password
+     * of earlier versions, `$expiresAt` null if it never expires
+     */
+    public function calDavDecrypt(string $token): ?array
     {
         try {
             $config = ExportSettings::instance();
@@ -86,7 +96,7 @@ class AuthTokenService extends BaseObject implements StaticInstanceInterface
                 throw new \RuntimeException();
             }
 
-            return [$validData->uid, $validData->username];
+            return [$validData->uid, $validData->username, (int)($validData->iat ?? 0), isset($validData->exp) ? (int)$validData->exp : null];
         } catch (Exception) {
             return null;
         }

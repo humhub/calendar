@@ -13,6 +13,12 @@ use humhub\modules\calendar\models\CalendarEntryParticipant;
 use humhub\modules\calendar\models\MenuSettings;
 use humhub\modules\content\events\ContentEvent;
 use humhub\modules\content\widgets\WallEntryLinks;
+use humhub\modules\oauth\components\DeviceConnection;
+use humhub\modules\oauth\events\DeviceConnectionsEvent;
+use humhub\modules\oauth\events\ScopesEvent;
+use humhub\modules\oauth\models\Grant;
+use humhub\modules\oauth\models\Scope;
+use humhub\modules\user\models\User;
 use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
@@ -39,6 +45,7 @@ use humhub\modules\user\widgets\ProfileSidebar;
 use humhub\widgets\menu\MenuLink;
 use humhub\widgets\TopMenu;
 use Yii;
+use yii\base\Event;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
 use yii\web\Application;
@@ -479,6 +486,60 @@ class Events
         $calendarEntry = $event->sender->getModel();
         if ($calendarEntry) {
             $calendarEntry->syncRecurrenceContentVisibility();
+        }
+    }
+
+    /**
+     * The scopes of the passwords of calendar apps (CalDAV).
+     */
+    public static function onCollectScopes(ScopesEvent $event): void
+    {
+        $event->scopes[] = new Scope(Module::SCOPE_READ, Yii::t('CalendarModule.base', 'Read calendars and events'));
+        $event->scopes[] = new Scope(Module::SCOPE_WRITE, Yii::t('CalendarModule.base', 'Add, change and delete events'));
+    }
+
+    /**
+     * Calendar apps: the CalDAV addresses and a password for the device, offered in the export
+     * dialog of the calendar.
+     */
+    public static function onCollectDeviceConnections(DeviceConnectionsEvent $event): void
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('calendar');
+        // CalDAV is served below pretty URLs only (`remote/caldav/`)
+        if (!$module->isCalDavAvailable() || !Yii::$app->urlManager->enablePrettyUrl) {
+            return;
+        }
+
+        $event->connections[] = new DeviceConnection(
+            Module::CALDAV_CONNECTION,
+            Yii::t('CalendarModule.export', 'Connect a calendar app'),
+            Yii::t('CalendarModule.export', 'Sync your events with your calendar app (CalDAV), in both directions. Some apps ask for the CalDAV address, others only for the server.'),
+            Yii::t('CalendarModule.export', 'CalDAV'),
+            [Module::SCOPE_READ, Module::SCOPE_WRITE],
+            [
+                Yii::t('CalendarModule.export', 'CalDAV address') => Url::to(['/calendar/cal-dav/index'], true),
+                Yii::t('CalendarModule.export', 'Server') => Url::to(['/'], true),
+                Yii::t('CalendarModule.export', 'Username') => $event->user->username,
+            ],
+        );
+    }
+
+    /**
+     * Revoking a CalDAV password converted from an earlier version ends the user's other
+     * earlier passwords too: they are no longer converted (see `CalDavAuth`).
+     */
+    public static function onGrantAfterDelete(Event $event): void
+    {
+        /** @var Grant $grant */
+        $grant = $event->sender;
+        if ($grant->issuer !== Module::CALDAV_CONNECTION || $grant->token_hint !== null) {
+            return;
+        }
+
+        $user = User::findOne(['id' => $grant->user_id]);
+        if ($user !== null) {
+            Yii::$app->getModule('calendar')->settings->user($user)->set(Module::CALDAV_LEGACY_CUTOFF, time());
         }
     }
 }

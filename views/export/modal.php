@@ -1,6 +1,8 @@
 <?php
 
 use humhub\components\View;
+use humhub\modules\calendar\Module;
+use humhub\modules\oauth\components\DeviceConnectionRegistry;
 use humhub\modules\external_calendar\assets\Assets;
 use humhub\modules\external_calendar\models\CalendarExport;
 use humhub\widgets\bootstrap\Tabs;
@@ -15,7 +17,8 @@ use humhub\widgets\modal\ModalButton;
 $items = [
     ['label' => Yii::t('CalendarModule.base', 'iCal'), 'view' => 'ical'],
 ];
-if (Yii::$app->urlManager->enablePrettyUrl) {
+// Offered while CalDAV is available, with pretty URLs (see `Events::onCollectDeviceConnections()`)
+if (DeviceConnectionRegistry::find(Yii::$app->user->identity, Module::CALDAV_CONNECTION) !== null) {
     $items[] = ['label' => Yii::t('CalendarModule.base', 'CalDAV'), 'view' => 'caldav'];
 }
 ?>

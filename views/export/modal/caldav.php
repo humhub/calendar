@@ -1,47 +1,26 @@
 <?php
 
-use humhub\modules\calendar\helpers\AuthTokenService;
-use humhub\widgets\bootstrap\Link;
-use yii\helpers\Html;
-use yii\helpers\Url;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-$passwordToken = AuthTokenService::instance()->calDavEncrypt(Yii::$app->user->identity);
+use humhub\modules\calendar\Module;
+use humhub\modules\oauth\components\DeviceConnectionRegistry;
+use humhub\widgets\modal\ModalButton;
+
+// The tab is only shown while the connection is offered, see `export/modal`
+$connection = DeviceConnectionRegistry::find(Yii::$app->user->identity, Module::CALDAV_CONNECTION);
 ?>
 
 <p class="form-heading">
-    <?= Yii::t('CalendarModule.export', 'This CalDAV link lets you sync events both ways with your calendar app. It supports two-way sync-changes made in your calendar app will be reflected in HumHub, and vice versa. Some calendar apps require the base URL, while others only need the full CalDAV URL. Use the credentials from your HumHub account when prompted.') ?>
+    <?= Yii::t('CalendarModule.export', 'Sync your events with your calendar app (CalDAV), in both directions: changes made in the app show up in HumHub, and the other way round.') ?>
 </p>
-<div class="mb-3">
-    <?= Html::label(Yii::t('CalendarModule.export', 'CalDAV URL')); ?>
-    <?= Html::textInput(null, Url::to(['/calendar/cal-dav/index'], true), ['disabled' => true, 'class' => 'form-control']) ?>
-    <div class="text-right form-text">
-        <div id="url_2" class="d-none"><?= Url::to(['/calendar/cal-dav/index'], true) ?></div>
-        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_2')->icon('clipboard')->style('color:#777') ?>
-    </div>
-</div>
-<div class="mb-3">
-    <?= Html::label(Yii::t('CalendarModule.export', 'CalDAV Base URL')); ?>
-    <?= Html::textInput(null, Url::to(['/'], true), ['disabled' => true, 'class' => 'form-control']) ?>
-    <div class="text-right form-text">
-        <div id="url_3" class="d-none"><?= Url::to(['/'], true) ?></div>
-        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_3')->icon('clipboard')->style('color:#777') ?>
-    </div>
-</div>
-<div class="mb-3">
-    <?= Html::label(Yii::t('CalendarModule.export', 'Username')); ?>
-    <?= Html::textInput(null, Yii::$app->user->identity->username, ['disabled' => true, 'class' => 'form-control']) ?>
-    <div class="text-right form-text">
-        <div id="url_4" class="d-none"><?= Yii::$app->user->identity->username ?></div>
-        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_4')->icon('clipboard')->style('color:#777') ?>
-    </div>
-</div>
-<div class="mb-3">
-    <?= Html::label(Yii::t('CalendarModule.export', 'Password')); ?>
-    <?= Html::textInput(null, $passwordToken, ['disabled' => true, 'class' => 'form-control']) ?>
-    <div class="text-right form-text">
-        <div id="url_5" class="d-none"><?= $passwordToken ?></div>
-        <?= Link::withAction(Yii::t('CalendarModule.export', 'Copy to clipboard'), 'copyToClipboard', null, '#url_5')->icon('clipboard')->style('color:#777') ?>
-    </div>
-    <div
-        class="form-text"><?= Yii::t('CalendarModule.export', 'Alternatively, you can also use your password.') ?></div>
-</div>
+<p>
+    <?= Yii::t('CalendarModule.export', 'The app signs in with a password of its own, which you create for it. You find the passwords of your devices under "Devices & Access" in your account settings.') ?>
+</p>
+
+<?= ModalButton::primary(Yii::t('CalendarModule.export', 'Connect a calendar app'))
+    ->icon('plug-connected')
+    ->load($connection->getUrl()) ?>

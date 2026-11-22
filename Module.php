@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar;
 
 use humhub\modules\calendar\models\CalendarEntryType;
+use humhub\modules\oauth\Module as OAuthModule;
 use Yii;
 use humhub\modules\calendar\helpers\Url;
 use humhub\modules\content\components\ContentContainerModule;
@@ -13,6 +14,28 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 class Module extends ContentContainerModule
 {
+    /**
+     * The OAuth scope a token needs to read calendars and events over CalDAV.
+     */
+    public const SCOPE_READ = 'calendar:read';
+
+    /**
+     * The OAuth scope a token needs to add, change and delete events over CalDAV.
+     */
+    public const SCOPE_WRITE = 'calendar:write';
+
+    /**
+     * The device connection of calendar apps (`DeviceConnection`), also the issuer of their
+     * passwords, see `Events::onCollectDeviceConnections()`.
+     */
+    public const CALDAV_CONNECTION = 'calendar-caldav';
+
+    /**
+     * User setting: since when the CalDAV passwords of earlier versions are no longer converted
+     * into tokens, set when the user revokes a converted one (see `CalDavAuth`).
+     */
+    public const CALDAV_LEGACY_CUTOFF = 'caldavLegacyCutoff';
+
     /**
      * @var string the default route of this module.
      */
@@ -46,6 +69,16 @@ class Module extends ContentContainerModule
      * @see `Include Organizer and Participant Info in Exports` option in Calendar Module Admin UI
      */
     public $icsOrganizer = false;
+
+    /**
+     * Whether calendar apps may sign in over CalDAV: switched on in the export settings, and
+     * personal access tokens allowed, which are their passwords.
+     */
+    public function isCalDavAvailable(): bool
+    {
+        return (bool)$this->settings->get('enableCalDav', true)
+            && OAuthModule::instance()->allowsPersonalAccessTokens();
+    }
 
     /**
      * @return bool
