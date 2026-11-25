@@ -23,14 +23,16 @@ use humhub\widgets\bootstrap\Button;
         <div class="d-flex flex-wrap gap-2">
             <?php if ($showSelectors) : ?>
                 <div class="flex-fill calendar-filter-view-mode">
-                    <div class="form-search-field-info"><?= Yii::t('CalendarModule.views', 'View') ?></div>
+                    <?= Html::label(Yii::t('CalendarModule.views', 'View'), 'calendar-select-view-mode', ['class' => 'form-search-field-info']) ?>
                     <?= Html::dropDownList('viewMode', $viewMode, $viewOptions, [
+                        'id' => 'calendar-select-view-mode',
                         'class' => 'form-control calendar-select-view-mode',
                     ]) ?>
                 </div>
                 <div class="flex-fill calendar-filter-calendars<?= $viewMode === CalendarFilterBar::VIEW_NETWORK ? ' d-none' : '' ?>">
-                    <div class="form-search-field-info"><?= Yii::t('CalendarModule.views', 'Calendars') ?></div>
+                    <?= Html::label(Yii::t('CalendarModule.views', 'Calendars'), 'calendar-select-calendars', ['class' => 'form-search-field-info']) ?>
                     <?= Html::dropDownList('calendars', $calendars, $calendarsOptions, [
+                        'id' => 'calendar-select-calendars',
                         'class' => 'form-control calendar-select-calendars',
                     ]) ?>
                 </div>
@@ -38,8 +40,9 @@ use humhub\widgets\bootstrap\Button;
 
             <?php if ($showFilters) : ?>
                 <div class="flex-fill calendar-filter-show">
-                    <div class="form-search-field-info"><?= Yii::t('CalendarModule.views', 'Show only') ?></div>
+                    <?= Html::label(Yii::t('CalendarModule.views', 'Show only'), 'calendar-select-show', ['class' => 'form-search-field-info']) ?>
                     <?= Html::dropDownList('show', $show, $showOptions, [
+                        'id' => 'calendar-select-show',
                         'class' => 'form-control calendar-select-show',
                     ]) ?>
                 </div>
@@ -47,8 +50,8 @@ use humhub\widgets\bootstrap\Button;
 
             <?php if ($showTypes) : ?>
                 <div class="flex-fill calendar-filter-types">
-                    <div class="form-search-field-info"><?= Yii::t('CalendarModule.base', 'Event types') ?></div>
-                    <?= FilterType::widget(['name' => 'filterType', 'selection' => $typeSelection]) ?>
+                    <?= Html::label(Yii::t('CalendarModule.base', 'Event types'), 'calendar-filter-type', ['class' => 'form-search-field-info']) ?>
+                    <?= FilterType::widget(['id' => 'calendar-filter-type', 'name' => 'filterType', 'selection' => $typeSelection]) ?>
                 </div>
             <?php endif ?>
 
