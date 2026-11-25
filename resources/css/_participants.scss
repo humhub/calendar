@@ -1,27 +1,27 @@
 .calendar-entry-participants {
   &.modal-body {
-    padding: 0 0 20px 0;
+    padding: 0 0 1rem 0;
   }
 
   button.btn-participants-action {
-    margin: 10px 0 0 12px;
+    margin: .5rem 0 0 1rem;
   }
 
   .pagination {
-    margin: 10px 0 0;
+    margin: .5rem 0 0;
   }
 
   select.form-control {
     width: auto;
-    height: 40px;
-    padding-right: 24px;
+    min-height: 2.5rem;
+    padding-right: 1.5rem;
   }
 }
 
 .calendar-entry-new-participants-form {
   .form-check {
     [type=checkbox] {
-      margin-top: 7px;
+      margin-top: .5rem;
     }
 
     .field-calendarentryparticipationform-newforcestatus {
@@ -31,7 +31,7 @@
   }
 
   button.btn {
-    height: 34px;
+    min-height: 2.125rem;
   }
 }
 
@@ -57,12 +57,12 @@
 }
 
 .calendar-entry-participants-filter-title {
-  font-size: 80%;
+  font-size: var(--hh-font-size-meta);
 }
 
 .calendar-entry-participants {
   .pagination-container {
-    margin-top: 25px;
+    margin-top: 1.5rem;
   }
 
   .pagination > {

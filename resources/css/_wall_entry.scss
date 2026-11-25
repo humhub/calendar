@@ -1,17 +1,17 @@
 .calendar-wall-entry {
   .calendar-wall-entry-section, .event-info-section {
-    margin-bottom: 10px;
+    margin-bottom: .5rem;
   }
 
   .event-info-section-content {
-    padding-left: 25px;
+    padding-left: 1.5rem;
   }
 
   .event-participation-buttons {
-    margin: 32px 0 15px;
+    margin: 1.5rem 0 1rem;
 
     button {
-      margin-right: 8px;
+      margin-right: .5rem;
     }
   }
 
@@ -20,9 +20,8 @@
   }
 
   .event-info-section-title {
-    margin: 0 0 5px;
+    margin: 0 0 .25rem;
     font-weight: 600;
-    font-size: 14px;
     line-height: 1.2;
     color: var(--bs-emphasis-color);
   }

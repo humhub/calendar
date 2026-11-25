@@ -18,9 +18,9 @@ use yii\widgets\ListView;
 
 ?>
 
-<div class="panel panel-default">
+<div class="card content-card">
 
-    <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
+    <div class="card-header"><div class="card-title"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div></div>
 
     <?php if ($contentContainer === null) : ?>
         <?= GlobalConfigMenu::widget() ?>
@@ -28,7 +28,7 @@ use yii\widgets\ListView;
         <?= ContainerConfigMenu::widget()?>
     <?php endif; ?>
 
-    <div class="panel-body">
+    <div class="card-body">
         <div class="clearfix">
             <h4>
                 <?= Yii::t('CalendarModule.config', 'Event Type Configuration'); ?>

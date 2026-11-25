@@ -13,7 +13,7 @@ use humhub\widgets\form\ContentHiddenCheckbox;
 /* @var $basicSettings BasicSettings */
 /* @var $form ActiveForm */
 ?>
-<div class="panel-body">
+<div class="card-body">
     <h4>
         <?= Yii::t('CalendarModule.config', 'Default basic settings'); ?>
         <?php if ($basicSettings->showResetButton()) : ?>

@@ -22,12 +22,13 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
 ?>
 
 <div class="<?= $containerClass ?>">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <strong><?= Yii::t('CalendarModule.base', 'Calendar') ?></strong>
+    <div class="card content-card">
+        <div class="card-header">
+            <div class="card-title"><strong><?= Yii::t('CalendarModule.base', 'Calendar') ?></strong></div>
 
-            <div class="float-end">
+            <div class="card-header-actions">
                 <?= CalendarControls::widget([
+                    'seperator' => '',
                     'widgets' => [
                         [ExportButton::class, ['global' => true], ['sortOrder' => 10]],
                         [ConfigureButton::class, [], ['sortOrder' => 100]],
@@ -36,7 +37,7 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
             </div>
         </div>
         <?php if (!Yii::$app->user->isGuest) : ?>
-        <div class="panel-body">
+        <div class="card-body">
             <?= CalendarFilterBar::widget([
                 'viewMode' => $viewMode,
                 'calendars' => $calendars,
@@ -45,7 +46,7 @@ $aspectRatio = $isFluid ? 1.9 : 1.5;
             ]) ?>
         </div>
         <?php endif ?>
-        <div class="panel-body">
+        <div class="card-body">
             <?= FullCalendar::widget([
                 'canWrite' => !Yii::$app->user->isGuest,
                 'aspectRatio' => $aspectRatio,

@@ -22,9 +22,9 @@ CalendarBaseAssets::register($this);
 
 ?>
 
-<div class="panel panel-default">
+<div class="card content-card">
 
-    <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div>
+    <div class="card-header"><div class="card-title"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration'); ?></div></div>
 
     <?php if ($model->isGlobal()) : ?>
         <?= GlobalConfigMenu::widget() ?>
@@ -55,7 +55,7 @@ CalendarBaseAssets::register($this);
 
     <hr>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?= Button::primary(Yii::t('base', 'Save'))->submit() ?>
     </div>
     <?php ActiveForm::end(); ?>

@@ -3,27 +3,21 @@
 use humhub\libs\Helpers;
 use humhub\modules\calendar\interfaces\event\CalendarEventIF;
 use humhub\modules\calendar\models\CalendarDateFormatter;
-use humhub\widgets\bootstrap\Link;
 use humhub\widgets\Icon;
-use humhub\widgets\PanelMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\SidebarCard;
 use yii\helpers\Html;
 
 /* @var $calendarEntries CalendarEventIF[] */
 /* @var $calendarUrl string */
-
-$link = Link::to(Yii::t('CalendarModule.views', 'Open Calendar'), $calendarUrl)
-    ->cssClass('dropdown-item')
-    ->icon('circle-arrow-right-filled');
-$extraMenus = Html::tag('li', $link);
 ?>
-<div class="panel calendar-upcoming-snippet" id="calendar-upcoming-events-snippet">
-    <?= PanelMenu::widget(['id' => 'calendar-upcoming-events-snippet', 'extraMenus' => $extraMenus]) ?>
-
-    <div class="panel-heading">
-        <?= Icon::get('calendar') ?> <?= Yii::t('CalendarModule.views', '<strong>Upcoming</strong> events ') ?>
-    </div>
-
-    <div class="panel-body p-0">
+<?php SidebarCard::begin([
+    'title' => Icon::get('calendar') . ' ' . Yii::t('CalendarModule.views', '<strong>Upcoming</strong> events '),
+    'encodeTitle' => false,
+    'menu' => [new MenuLink(['label' => Yii::t('CalendarModule.views', 'Open Calendar'), 'url' => $calendarUrl, 'icon' => 'circle-arrow-right-filled'])],
+    'options' => ['id' => 'calendar-upcoming-events-snippet', 'class' => 'calendar-upcoming-snippet'],
+    'bodyOptions' => ['class' => 'p-0'],
+]) ?>
         <hr class="m-0">
         <div class="hh-list pb-2">
             <?php foreach ($calendarEntries as $entry) : ?>
@@ -39,6 +33,4 @@ $extraMenus = Html::tag('li', $link);
                 </a>
             <?php endforeach; ?>
         </div>
-    </div>
-
-</div>
+<?php SidebarCard::end() ?>

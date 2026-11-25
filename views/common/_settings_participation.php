@@ -18,7 +18,7 @@ $helpBlock = $participationSettings->isGlobal()
 ParticipationFormAssets::register($this);
 ?>
 
-<div class="panel-body" data-ui-widget="calendar.participation.Form">
+<div class="card-body" data-ui-widget="calendar.participation.Form">
     <h4>
         <?= Yii::t('CalendarModule.config', 'Default participation settings'); ?>
         <?php if ($participationSettings->showResetButton()) : ?>

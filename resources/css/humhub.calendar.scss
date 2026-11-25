@@ -17,8 +17,9 @@
 
 #calendar-overview-loader {
   position: absolute;
-  right: 10px;
-  top: 60px;
+  right: .5rem;
+  // Below the header's buttons (39px high, 1rem from the card's top)
+  top: 3.75rem;
 }
 
 @media (max-width: 767px) {

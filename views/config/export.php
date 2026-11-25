@@ -13,12 +13,12 @@ use humhub\widgets\form\ActiveForm;
 /* @var $model ExportSettings */
 /* @var $this \yii\web\View */
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration') ?></div>
+<div class="card content-card">
+    <div class="card-header"><div class="card-title"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration') ?></div></div>
 
     <?= GlobalConfigMenu::widget() ?>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?php $form = ActiveForm::begin(); ?>
 
         <h4><?= Yii::t('CalendarModule.config', 'Export settings') ?></h4>

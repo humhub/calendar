@@ -52,7 +52,7 @@ html .fc {
 .fc-header-toolbar h2 {
   margin-top: 0;
   white-space: nowrap;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--bs-body-color);
 }
@@ -159,12 +159,12 @@ td.fc-today {
 
 .fc-icon-left-single-arrow:after {
   content: "‹";
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .fc-icon-right-single-arrow:after {
   content: "›";
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .fc-icon-left-double-arrow:after {
@@ -217,7 +217,7 @@ td.fc-today {
 .fc-event {
   background-color: #6fdbe8;
   color: #ffffff;
-  font-size: 0.85em;
+  font-size: var(--hh-font-size-meta);
   cursor: default;
 }
 
@@ -258,7 +258,7 @@ a.fc-event {
 
 .fc-event-time, .fc-event-title {
   padding: 0 1px;
-  font-size: 13px;
+  font-size: var(--hh-font-size-meta);
 }
 
 .fc .ui-resizable-handle {
@@ -357,7 +357,7 @@ table.fc-border-separate {
   padding: 2px 2px 1px;
 }
 .fc-grid .fc-event-time {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .fc-rtl .fc-grid .fc-day-number {
@@ -380,7 +380,7 @@ table.fc-border-separate {
   padding: 0 4px;
   vertical-align: middle;
   text-align: right;
-  font-weight: normal;
+  font-weight: 400;
 }
 
 .fc-agenda-slots .fc-agenda-axis {
@@ -388,7 +388,7 @@ table.fc-border-separate {
 }
 
 .fc-agenda .fc-week-number {
-  font-weight: bold;
+  font-weight: 600;
 }
 .fc-agenda .fc-day-content {
   padding: 2px 2px 1px;
@@ -453,8 +453,8 @@ table.fc-border-separate {
 }
 .fc-event-vert .fc-event-time {
   white-space: nowrap;
-  font-size: 13px;
-  font-weight: bold;
+  font-size: var(--hh-font-size-meta);
+  font-weight: 600;
 }
 .fc-event-vert .fc-event-inner {
   position: relative;
@@ -513,11 +513,11 @@ table.fc-border-separate {
 }
 
 .fc-view-container .table > thead > tr > th, .fc-view-container .table > tbody > tr > th, .fc-view-container .table > tfoot > tr > th, .fc-view-container .table > thead > tr > td, .fc-view-container .table > tbody > tr > td, .fc-view-container .table > tfoot > tr > td {
-  padding: 10px;
+  padding: 0.5rem;
 }
 
 .calendar-options > div {
-  padding: 0 10px;
+  padding: 0 0.5rem;
   border-right: 2px solid var(--bs-light);
 }
 .calendar-options > div:first-child {
@@ -550,29 +550,29 @@ table.fc-border-separate {
 }
 
 .calendar-entry-participants.modal-body {
-  padding: 0 0 20px 0;
+  padding: 0 0 1rem 0;
 }
 .calendar-entry-participants button.btn-participants-action {
-  margin: 10px 0 0 12px;
+  margin: 0.5rem 0 0 1rem;
 }
 .calendar-entry-participants .pagination {
-  margin: 10px 0 0;
+  margin: 0.5rem 0 0;
 }
 .calendar-entry-participants select.form-control {
   width: auto;
-  height: 40px;
-  padding-right: 24px;
+  min-height: 2.5rem;
+  padding-right: 1.5rem;
 }
 
 .calendar-entry-new-participants-form .form-check [type=checkbox] {
-  margin-top: 7px;
+  margin-top: 0.5rem;
 }
 .calendar-entry-new-participants-form .form-check .field-calendarentryparticipationform-newforcestatus {
   vertical-align: middle;
   margin: 0 !important;
 }
 .calendar-entry-new-participants-form button.btn {
-  height: 34px;
+  min-height: 2.125rem;
 }
 
 #calendar-entry-participants-list {
@@ -591,11 +591,11 @@ table.fc-border-separate {
 }
 
 .calendar-entry-participants-filter-title {
-  font-size: 80%;
+  font-size: var(--hh-font-size-meta);
 }
 
 .calendar-entry-participants .pagination-container {
-  margin-top: 25px;
+  margin-top: 1.5rem;
 }
 .calendar-entry-participants .pagination > li > a {
   color: var(--bs-emphasis-color);
@@ -605,24 +605,23 @@ table.fc-border-separate {
 }
 
 .calendar-wall-entry .calendar-wall-entry-section, .calendar-wall-entry .event-info-section {
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 .calendar-wall-entry .event-info-section-content {
-  padding-left: 25px;
+  padding-left: 1.5rem;
 }
 .calendar-wall-entry .event-participation-buttons {
-  margin: 32px 0 15px;
+  margin: 1.5rem 0 1rem;
 }
 .calendar-wall-entry .event-participation-buttons button {
-  margin-right: 8px;
+  margin-right: 0.5rem;
 }
 .calendar-wall-entry [data-action-click] {
   cursor: pointer;
 }
 .calendar-wall-entry .event-info-section-title {
-  margin: 0 0 5px;
+  margin: 0 0 0.25rem;
   font-weight: 600;
-  font-size: 14px;
   line-height: 1.2;
   color: var(--bs-emphasis-color);
 }
@@ -631,20 +630,18 @@ table.fc-border-separate {
   display: inline-block;
   background: var(--bs-tertiary-bg);
   color: var(--bs-body-color);
-  border-radius: 4px;
-  padding: 4px 16px;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: var(--bs-border-radius-sm);
+  padding: 0.25rem 1rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .calendar-type-legend .calendar-type-color {
   display: inline-block;
   width: 16px;
   height: 16px;
   border: 1px solid var(--bs-border-color);
-  border-radius: 4px;
-  margin-right: 6px;
+  border-radius: var(--bs-border-radius-sm);
+  margin-right: 0.25rem;
   position: relative;
   top: 2px;
 }
@@ -658,8 +655,8 @@ table.fc-border-separate {
 
 #calendar-overview-loader {
   position: absolute;
-  right: 10px;
-  top: 60px;
+  right: 0.5rem;
+  top: 3.75rem;
 }
 
 @media (max-width: 767px) {

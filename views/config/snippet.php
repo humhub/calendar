@@ -17,13 +17,13 @@ use yii\web\View;
 /* @var $model SnippetModuleSettings */
 ?>
 
-<div class="panel panel-default">
+<div class="card content-card">
 
-    <div class="panel-heading"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration') ?></div>
+    <div class="card-header"><div class="card-title"><?= Yii::t('CalendarModule.config', '<strong>Calendar</strong> module configuration') ?></div></div>
 
     <?= GlobalConfigMenu::widget() ?>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?php $form = ActiveForm::begin(); ?>
         
         <h4>

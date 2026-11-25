@@ -13,7 +13,7 @@ $helpBlock = $reminderSettings->isGlobalSettings()
 
 ?>
 
-<div class="panel-body">
+<div class="card-body">
     <h4>
         <?= Yii::t('CalendarModule.base', 'Default reminder settings') ?>
     </h4>

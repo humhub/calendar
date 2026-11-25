@@ -15,9 +15,9 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 /* @var $canAddEntries bool */
 /* @var $contentContainer ContentContainerActiveRecord */
 ?>
-<div class="panel panel-default">
+<div class="card content-card">
     <?php if (!Yii::$app->user->isGuest) : ?>
-    <div class="panel-body d-flex flex-wrap gap-2">
+    <div class="card-body d-flex flex-wrap gap-2">
         <div>
             <?= CalendarFilterBar::widget([
                 'show' => $show,
@@ -34,7 +34,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
         </div>
     </div>
     <?php endif ?>
-    <div class="panel-body">
+    <div class="card-body">
         <?= FullCalendar::widget([
             'canWrite' => $canAddEntries,
             'loadUrl' => Url::toAjaxLoad($contentContainer),
