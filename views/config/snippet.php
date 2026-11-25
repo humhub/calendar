@@ -26,7 +26,7 @@ use yii\web\View;
     <div class="card-body">
         <?php $form = ActiveForm::begin(); ?>
         
-        <h4>
+        <h4 class="card-title">
             <?= Yii::t('CalendarModule.config', 'Upcoming events snippet') ?>
         </h4>
         

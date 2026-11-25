@@ -19,7 +19,7 @@ ParticipationFormAssets::register($this);
 ?>
 
 <div class="card-body" data-ui-widget="calendar.participation.Form">
-    <h4>
+    <h4 class="card-title">
         <?= Yii::t('CalendarModule.config', 'Default participation settings'); ?>
         <?php if ($participationSettings->showResetButton()) : ?>
             <?= Button::light(Yii::t('CalendarModule.config', 'Reset'))

@@ -30,7 +30,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
     <div class="card-body">
         <div class="clearfix">
-            <h4>
+            <h4 class="card-title">
                 <?= Yii::t('CalendarModule.config', 'Calendar Configuration'); ?>
             </h4>
 

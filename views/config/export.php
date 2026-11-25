@@ -21,7 +21,7 @@ use humhub\widgets\form\ActiveForm;
     <div class="card-body">
         <?php $form = ActiveForm::begin(); ?>
 
-        <h4><?= Yii::t('CalendarModule.config', 'Export settings') ?></h4>
+        <h4 class="card-title"><?= Yii::t('CalendarModule.config', 'Export settings') ?></h4>
         <hr>
 
         <?= $form->field($model, 'enableCalDav')->checkbox(['disabled' => !$model->canEnableCalDav()]); ?>

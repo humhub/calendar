@@ -14,7 +14,7 @@ use humhub\widgets\form\ContentHiddenCheckbox;
 /* @var $form ActiveForm */
 ?>
 <div class="card-body">
-    <h4>
+    <h4 class="card-title">
         <?= Yii::t('CalendarModule.config', 'Default basic settings'); ?>
         <?php if ($basicSettings->showResetButton()) : ?>
             <?= Button::light(Yii::t('CalendarModule.config', 'Reset'))
@@ -37,7 +37,7 @@ use humhub\widgets\form\ContentHiddenCheckbox;
 
     <?php if ($basicSettings->isGlobal()) : ?>
         <hr>
-        <h4><?= Yii::t('CalendarModule.config', 'Birthdays') ?></h4>
+        <h4 class="card-title"><?= Yii::t('CalendarModule.config', 'Birthdays') ?></h4>
         <?= $form->field($basicSettings, 'birthdayShowToEveryone')->checkbox() ?>
     <?php endif; ?>
 </div>

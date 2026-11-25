@@ -30,7 +30,7 @@ use yii\widgets\ListView;
 
     <div class="card-body">
         <div class="clearfix">
-            <h4>
+            <h4 class="card-title">
                 <?= Yii::t('CalendarModule.config', 'Event Type Configuration'); ?>
             <?= ModalButton::success(Yii::t('CalendarModule.config', 'Create new type'))->load($createUrl)->icon('plus')->right(); ?>
             </h4>
