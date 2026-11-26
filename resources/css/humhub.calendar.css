@@ -113,6 +113,14 @@ td.fc-today {
   background: var(--bs-accent-bg-subtle);
 }
 
+.fc-day-top.fc-other-month {
+  opacity: 1;
+}
+
+td.fc-day.fc-other-month {
+  background: var(--bs-tertiary-bg);
+}
+
 .fc-unthemed td.fc-today, .fc-state-highlight {
   background: var(--hh-accent-bg-soft) !important;
 }
@@ -347,10 +355,6 @@ table.fc-border-separate {
 .fc-grid .fc-day-number {
   float: right;
   padding: 0 2px;
-}
-.fc-grid .fc-other-month .fc-day-number {
-  opacity: 0.3;
-  filter: alpha(opacity=30);
 }
 .fc-grid .fc-day-content {
   clear: both;

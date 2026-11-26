@@ -129,6 +129,16 @@ td.fc-today {
   background: var(--bs-accent-bg-subtle);
 }
 
+// The days of the months before and after: their cells set back by a fill, the numbers in the body colour, not at
+// FullCalendar's 30% opacity (1.6:1, WCAG 1.4.3)
+.fc-day-top.fc-other-month {
+  opacity: 1;
+}
+
+td.fc-day.fc-other-month {
+  background: var(--bs-tertiary-bg);
+}
+
 .fc-unthemed td.fc-today, .fc-state-highlight { // <td> today cell, TODO: add .fc-today to <th>
   background: var(--hh-accent-bg-soft) !important;
 }
@@ -413,14 +423,6 @@ table.fc-border-separate {
   .fc-day-number {
     float: right;
     padding: 0 2px;
-  }
-
-  .fc-other-month .fc-day-number {
-    opacity: 0.3;
-    filter: alpha(opacity = 30); // for IE
-    // opacity with small font can sometimes look too faded
-    // might want to set the 'color' property instead
-    // making day-numbers bold also fixes the problem
   }
 
   .fc-day-content {
