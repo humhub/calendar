@@ -3,6 +3,7 @@ Changelog
 
 1.10.0 (Unreleased)
 -------------------
+- Fix: The days of the months before and after in the month view in the body colour on a fill instead of at 30% opacity (contrast 1.6:1)
 - Fix: The filter bar's captions are the labels of their fields, which had no name for screen readers
 - Enh: Cards instead of Bootstrap 3 panels, the upcoming events as `SidebarCard`, sizes in rem and the text styles of the core 1.20 (humhub/humhub#8777)
 - Fix: Only CalDAV requests answer their errors through the CalDAV controller; every other request kept the session of its error page switched off, e.g. an impersonation was no longer recognised there
