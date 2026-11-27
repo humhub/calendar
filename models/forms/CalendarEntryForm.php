@@ -23,7 +23,6 @@ use humhub\modules\calendar\interfaces\recurrence\RecurrenceFormModel;
 use humhub\modules\calendar\models\forms\validators\CalendarDateFormatValidator;
 use humhub\modules\calendar\models\forms\validators\CalendarEndDateValidator;
 use humhub\modules\calendar\models\forms\validators\CalendarTypeValidator;
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\calendar\helpers\CalendarUtils;
 use humhub\modules\calendar\helpers\RecurrenceHelper;
@@ -495,11 +494,6 @@ class CalendarEntryForm extends Model
 
                 if (!$this->entry->saveEvent()) {
                     return false;
-                }
-
-                // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
-                if ($this->entry->description) {
-                    RichText::postProcess($this->entry->description, $this->entry);
                 }
 
                 $this->entry->setType($this->type_id);

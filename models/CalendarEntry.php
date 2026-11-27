@@ -28,6 +28,7 @@ use humhub\modules\calendar\notifications\CanceledEvent;
 use humhub\modules\calendar\notifications\ReopenedEvent;
 use humhub\modules\calendar\permissions\CreateEntry;
 use humhub\modules\calendar\permissions\ManageEntry;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\calendar\widgets\WallEntry;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -394,6 +395,39 @@ class CalendarEntry extends ContentActiveRecord implements
         }
 
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // Must run while saving, not after the form saved the entry: a mention created later is
+        // notified on its own, on top of the "created" notification.
+        $this->postProcessRichText('description');
+        $this->postProcessRichText('participant_info');
+    }
+
+    private function postProcessRichText(string $attribute): void
+    {
+        // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
+        if (!$this->$attribute) {
+            return;
+        }
+
+        // A generated recurrence is its own record, but it only inherits the text of its root, which was
+        // processed with the root. The mentions must not be created again for every instance.
+        // An instance with a text of its own is processed.
+        if (RecurrenceHelper::isRecurrentInstance($this)) {
+            $root = $this->getRecurrenceRoot();
+            if ($root !== null && $root->$attribute === $this->$attribute) {
+                return;
+            }
+        }
+
+        RichText::postProcess($this->$attribute, $this, $attribute);
     }
 
     /**
