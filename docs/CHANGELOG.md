@@ -19,7 +19,7 @@ Changelog
 - Enh: Replaced the Bootstrap 3 classes removed from the core (humhub/humhub#8696)
 - Enh: Colour tokens of the core 1.20 instead of the deprecated ones (humhub/humhub#8707)
 - Enh: Deprecated `ui`/`stream` classes and Font Awesome icons replaced by the 1.20 ones and Tabler icons
-- Fix: A mention in a new entry sends the mention only, the texts are processed while saving, not again for every generated recurrence
+- Fix: A mention in a new entry sends the mention only, the texts are processed while saving, not again for every generated recurrence (humhub/humhub#8788)
 
 1.9.9 (November 9, 2026)
 ------------------------
