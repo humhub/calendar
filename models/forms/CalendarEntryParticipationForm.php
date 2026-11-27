@@ -13,7 +13,6 @@ use humhub\modules\calendar\models\participation\CalendarEntryParticipation;
 use humhub\modules\calendar\notifications\ParticipantAdded;
 use humhub\modules\calendar\widgets\ParticipantItem;
 use humhub\modules\user\models\User;
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\calendar\models\CalendarEntry;
 use Yii;
 use yii\base\Model;
@@ -120,11 +119,6 @@ class CalendarEntryParticipationForm extends Model
         return CalendarEntry::getDb()->transaction(function ($db) {
             if (!$this->entry->saveEvent()) {
                 return false;
-            }
-
-            // Patch for https://github.com/humhub/humhub/issues/4847 in 1.8.beta1
-            if ($this->entry->participant_info) {
-                RichText::postProcess($this->entry->participant_info, $this->entry);
             }
 
             if ($this->sendUpdateNotification && !$this->entry->isNewRecord && !$this->entry->closed) {
